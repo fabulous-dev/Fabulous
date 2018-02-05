@@ -3,7 +3,8 @@ language: csharp
 os:
   - linux
 
-mono:
-  - latest
+dotnet: 2.0.0
+
+mono: latest
 
 script: ./build.sh NuGet
