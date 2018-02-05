@@ -14,20 +14,16 @@ type internal PropertyBinding<'model,'msg> =
     | Model of ViewModel<'model,'msg>
     | Map of Getter<'model> * (obj -> obj)
 
-and internal ViewModel<'model, 'msg>(m:'model, dispatch, propMap: ViewBindings<'model,'msg>, debug:bool) as self =
-#if DynamicObject
+and ViewModel<'model, 'msg>(m:'model, dispatch, propMap: ViewBindings<'model,'msg>) as self =
+//#if DynamicObject
     inherit System.Dynamic.DynamicObject()
-#endif
+//#endif
 
-    let log msg = if debug then console.log msg
-    
     let props = new Dictionary<string, PropertyBinding<'model,'msg>>()
 
-#if ErrorsChanged
     // Store all errors
     let errors = new Dictionary<string, string list>()
     let errorsChanged = new DelegateEvent<System.EventHandler<DataErrorsChangedEventArgs>>()
-#endif
 
     // Current model
     let mutable model : 'model = m
@@ -36,10 +32,11 @@ and internal ViewModel<'model, 'msg>(m:'model, dispatch, propMap: ViewBindings<'
     let propertyChanged = Event<PropertyChangedEventHandler, PropertyChangedEventArgs> ()
     let notifyPropertyChanged name = 
         let key = "Item[" + name + "]"
-        //log (sprintf "Notify %s" key)
-        propertyChanged.Trigger(self, ComponentModel.PropertyChangedEventArgs key)
+        //log (sprintf "notifyPropertyChanged %s" key)
+        propertyChanged.Trigger(self, PropertyChangedEventArgs key)
 
     let notify (p : string list) =
+        console.log (sprintf "notify %A" p)
         p |> List.iter notifyPropertyChanged
         let raiseCanExecuteChanged accessor =
             match accessor with
@@ -53,10 +50,10 @@ and internal ViewModel<'model, 'msg>(m:'model, dispatch, propMap: ViewBindings<'
         let canExecute = fun p -> canExec p model
         Xamarin.Forms.Command (execute, canExecute)
 
-    let toSubView propMap = ViewModel<_,_>(model, dispatch, propMap, debug)
+    let toSubView propMap = ViewModel<_,_>(model, dispatch, propMap)
 
-    let rec convert = 
-        List.map (fun (name, binding) ->
+    let convert ps = 
+        ps |> List.map (fun (name, binding) ->
             match binding with
             | Bind getter -> name, Get getter
             | BindTwoWay (getter,setter) -> name, GetSet (getter,setter)
@@ -72,26 +69,26 @@ and internal ViewModel<'model, 'msg>(m:'model, dispatch, propMap: ViewBindings<'
         [<CLIEvent>]
         member __.PropertyChanged = propertyChanged.Publish
         
-#if ErrorsChanged
-    // Notification of validation errors - supported by WPF
-    // TODO: check out if Xamarin.Forms supports the same
+    // Notification of validation errors
     interface INotifyDataErrorInfo with
         [<CLIEvent>]
         member __.ErrorsChanged = errorsChanged.Publish
         member __.HasErrors = errors.Count > 0
         member __.GetErrors propName = 
-            log (sprintf "Getting errors for %s" propName)
+            console.log (sprintf "Getting errors for %s" propName)
             match errors.TryGetValue propName with
             | true, errs -> errs
             | false, _ -> []
             :> System.Collections.IEnumerable
-#endif    
 
     member __.UpdateModel other =
-        //log (sprintf "UpdateModel %A" (props.Keys |> Seq.toArray))
-        let propDiff name =
-            function
-            | Get getter | GetSet (getter, _) ->
+        //console.log (sprintf "UpdateModel %A" (props.Keys |> Seq.toArray))
+        let propDiff name prop =
+            match prop with
+            | Get getter 
+            | GetSet (getter, _) 
+            | GetSetValidate (getter, _) 
+            | Map (getter, _) ->
                 if getter model <> getter other then Some name else None
             | _ -> None
 
@@ -104,64 +101,52 @@ and internal ViewModel<'model, 'msg>(m:'model, dispatch, propMap: ViewBindings<'
         notify diffs
 
     member __.Item 
-        with get (name : string) =
-            //log (sprintf "Get item %s" name)
+        with get (name : string) : obj =
+            //console.console.log (sprintf "Get item %s" name)
             if props.ContainsKey name then
                 match props.[name] with 
                 | Get getter 
-                | GetSet (getter,_)
-                | GetSetValidate (getter,_) -> getter model
-                | Cmd c -> unbox c
-                | Model m -> unbox m
+                | GetSetValidate (getter,_) 
+                | GetSet (getter,_) -> getter model
+                | Cmd c -> box c
+                | Model m -> box m
                 | Map (getter,mapper) -> getter model |> mapper
             else 
-                invalidOp <| sprintf "Prop Binding Not Set: %s" name
-        and set (name : string) (value : obj) =
-            //log (sprintf "Set item %s" name)
+                invalidOp (sprintf "Prop Binding Not Set: %s" name)
+
+        and set (name : string) (value : obj) : unit =
+            //console.log (sprintf "Set item %s" name)
             if props.ContainsKey name then
                 match props.[name] with 
                 | GetSet (_, setter) -> setter value model |> dispatch
                 | GetSetValidate (_,setter) -> 
-#if ErrorsChanged
-                    let errorsChanged() = errorsChanged.Trigger([| unbox this; unbox <| DataErrorsChangedEventArgs(binder.Name) |])
+                    let errorsChanged() = errorsChanged.Trigger([| box self; box (DataErrorsChangedEventArgs(name)) |])
                     try 
                         match setter value model with
                         | Ok msg -> 
-                            if errors.Remove(binder.Name) then errorsChanged()
+                            if errors.Remove(name) then errorsChanged()
                             dispatch msg 
                         | Error err ->
-                            match errors.TryGetValue binder.Name with
-                            | true, errs -> errors.[binder.Name] <- err :: errs
-                            | false, _ -> errors.Add(binder.Name, [err])
+                            match errors.TryGetValue name with
+                            | true, errs -> errors.[name] <- err :: errs
+                            | false, _ -> errors.Add(name, [err])
                             errorsChanged()
                     with _err -> ()
-#else
-                    match setter value model with
-                    | Ok msg -> 
-                        dispatch msg 
-                    | Error err ->
-                        failwith err
-#endif
                 | _ -> invalidOp "Unable to set read-only member"
             else 
-                invalidOp <| sprintf "Prop Binding Not Set: %s" name
+                invalidOp (sprintf "Prop Binding Not Set: %s" name)
 
-
-#if DynamicObject
-    // DynamicObject overrides - supported by WPF
-    // TODO: check out if Xamarin.Forms supports the same
 
     override this.TryGetMember (binder, r) = 
-        log (sprintf "TryGetMember %s" binder.Name)
+        console.log (sprintf "TryGetMember %s" binder.Name)
         if props.ContainsKey binder.Name then
             let v = this.[binder.Name] 
             r <- v
             true
         else false
 
-    override __.TrySetMember (binder, value) =
-        log (sprintf "TrySetMember %s" binder.Name)
+    override this.TrySetMember (binder, value) =
+        console.log (sprintf "TrySetMember %s" binder.Name)
         if props.ContainsKey binder.Name then
             this.[binder.Name] <- value
         false
-#endif        

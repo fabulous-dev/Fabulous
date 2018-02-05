@@ -14,7 +14,7 @@ let summary = "F# bindings for using elmish in WPF"
 
 // targetsAreOnSameLevel
 Target "BuildApp" (fun _ ->
-    !! "src/Elmish.XamarinForms.sln"
+    !! "Elmish.XamarinForms.sln"
        |> MSBuildRelease buildDir "Build"
        |> Log "AppBuild-Output: "
 )

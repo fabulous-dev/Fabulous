@@ -14,7 +14,8 @@ let withMessageBoxErrorHandler program =
 
 *)
 
-let _runPage debug (page : Xamarin.Forms.Page) (program : Program<unit, 'model, 'msg, ViewBindings<'model, 'msg>>) = 
+/// Starts Elmish dispatch loop for the page with the given Elmish program
+let runPage (page : Xamarin.Forms.Page) (program : Program<unit, 'model, 'msg, ViewBindings<'model, 'msg>>) = 
 
     let mutable lastModel = None
 
@@ -25,19 +26,19 @@ let _runPage debug (page : Xamarin.Forms.Page) (program : Program<unit, 'model, 
             let mapping = program.view model dispatch
 
             // Construct the binding context for the view model
-            let vm = ViewModel<'model, 'msg> (model, dispatch, mapping, debug)
+            let vm = ViewModel<'model, 'msg> (model, dispatch, mapping)
+            System.Console.WriteLine ("seting data context")
             page.BindingContext <- vm
             lastModel <- Some vm
+            System.Console.WriteLine ("set data context, CounterValue = {0}. vm = {1}", vm.["CounterValue"], vm)
+            
+
         | Some vm ->
+            System.Console.WriteLine ("updating model")
             vm.UpdateModel model
+            System.Console.WriteLine ("updated model")
+            ()
                   
     // Start Elmish dispatch loop  
     { program with setState = setState } 
     |> Program.run
-
-/// Starts both Elmish and Xamarin.Forms dispatch loops.
-let runPage page program = _runPage false page program
-
-/// Starts both Elmish and Xamarin.Forms dispatch loops.
-/// Enables debug console logging.
-let runDebugPage page program = _runPage true page program
