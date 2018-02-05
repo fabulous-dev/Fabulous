@@ -3,7 +3,7 @@ language: csharp
 os:
   - linux
 
-dotnet: 2.0.0
+dotnet: 2.1.4
 
 mono: latest
 
