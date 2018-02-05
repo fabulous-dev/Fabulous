@@ -1,3 +1,6 @@
+WORK IN PROGRESS SAMPLE
+=======
+
 Xamarin.Forms done the Elmish Way
 =======
 
@@ -118,7 +121,8 @@ type CounterApp () =
         |> Program.withConsoleTrace
         |> Program.runPage page
 
-        base.MainPage <- page```
+        base.MainPage <- page
+```
 
 Credits
 -----
