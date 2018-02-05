@@ -1,0 +1,15 @@
+type file
+id Elmish.XamarinForms
+version 0.0
+authors Prolucid
+description
+    F# bindings for using elmish in Xamarin.Forms 
+tags
+	Xamarin.Forms F# Elmish Elm
+projectUrl
+	https://github.com/Prolucid/Elmish.XamarinForms
+licenseUrl
+	https://github.com/Prolucid/Elmish.XamarinForms/blob/master/LICENSE.md
+requireLicenseAcceptance false
+files
+	build_output/Elmish.XamarinForms.dll ==> lib/net45

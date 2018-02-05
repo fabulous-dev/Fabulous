@@ -1,0 +1,13 @@
+framework: netstandard2.0
+source https://www.nuget.org/api/v2
+nuget FAKE
+nuget FSharp.Core redirects:force
+nuget Xamarin.Forms
+
+github fable-elmish/elmish:46f0313c26266c5703d4f7dcf111fb0038393a77 src/cmd.fs 
+github fable-elmish/elmish:46f0313c26266c5703d4f7dcf111fb0038393a77 src/program.fs 
+
+#group sample
+#source https://www.nuget.org/api/v2
+
+# nuget FsXaml.Xamarin.Forms

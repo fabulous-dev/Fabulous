@@ -1,0 +1,10 @@
+RESTRICTION: == netstandard2.0
+NUGET
+  remote: https://www.nuget.org/api/v2
+    FAKE (4.64.4)
+    FSharp.Core (4.3.3) - redirects: force
+    Xamarin.Forms (2.5.0.122203)
+GITHUB
+  remote: fable-elmish/elmish
+    src/cmd.fs (46f0313c26266c5703d4f7dcf111fb0038393a77)
+    src/program.fs (46f0313c26266c5703d4f7dcf111fb0038393a77)
