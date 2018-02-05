@@ -14,6 +14,7 @@ let summary = "F# bindings for using elmish in WPF"
 
 // targetsAreOnSameLevel
 Target "BuildApp" (fun _ ->
+    DotNetCli.Restore id
     !! "Elmish.XamarinForms.sln"
        |> MSBuildRelease buildDir "Build"
        |> Log "AppBuild-Output: "
