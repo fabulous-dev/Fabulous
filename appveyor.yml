@@ -1,0 +1,9 @@
+os: Visual Studio 2017
+
+build_script: 
+  - cmd: .\build.cmd NuGet
+
+test: off
+version: '{build}'
+artifacts:
+  - path: build_output\*.nupkg

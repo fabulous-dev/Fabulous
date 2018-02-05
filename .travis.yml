@@ -1,0 +1,9 @@
+language: csharp
+
+os:
+  - linux
+
+mono:
+  - latest
+
+script: ./build.sh NuGet
