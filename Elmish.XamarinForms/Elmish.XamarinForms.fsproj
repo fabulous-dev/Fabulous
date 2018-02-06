@@ -1,15 +1,16 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="FableStub.fs" />
-    <Compile Include="..\paket-files\fable-elmish\elmish\src\cmd.fs">
+    <Compile Include="..\paket-files\neutral\fable-elmish\elmish\src\cmd.fs">
       <Paket>True</Paket>
       <Link>elmish/src/cmd.fs</Link>
     </Compile>
-    <Compile Include="..\paket-files\fable-elmish\elmish\src\program.fs">
+    <Compile Include="..\paket-files\neutral\fable-elmish\elmish\src\program.fs">
       <Paket>True</Paket>
       <Link>elmish/src/program.fs</Link>
     </Compile>

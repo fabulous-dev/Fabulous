@@ -1,13 +1,35 @@
 framework: netstandard2.0
 source https://www.nuget.org/api/v2
 nuget FAKE
-nuget FSharp.Core redirects:force
-nuget Xamarin.Forms
 
-github fable-elmish/elmish:46f0313c26266c5703d4f7dcf111fb0038393a77 src/cmd.fs 
-github fable-elmish/elmish:46f0313c26266c5703d4f7dcf111fb0038393a77 src/program.fs 
+group Neutral
+  framework: netstandard2.0
+  source https://www.nuget.org/api/v2
+  nuget FSharp.Core 4.3.3
+  nuget Xamarin.Forms 2.5.0.122203
+  github fable-elmish/elmish:46f0313c26266c5703d4f7dcf111fb0038393a77 src/cmd.fs 
+  github fable-elmish/elmish:46f0313c26266c5703d4f7dcf111fb0038393a77 src/program.fs 
 
-#group sample
-#source https://www.nuget.org/api/v2
+group AndroidApp
+  framework: monoandroid71
+  source https://www.nuget.org/api/v2
+  nuget FSharp.Core 4.3.3
+  nuget Xamarin.Forms
+  nuget Xamarin.Android.FSharp.ResourceProvider 1.0.0.14
+  nuget Xamarin.Android.Support.Animated.Vector.Drawable 25.4.0.2
+  nuget Xamarin.Android.Support.Annotations 25.4.0.2
+  nuget Xamarin.Android.Support.Compat 25.4.0.2
+  nuget Xamarin.Android.Support.Core.UI 25.4.0.2
+  nuget Xamarin.Android.Support.Core.Utils 25.4.0.2
+  nuget Xamarin.Android.Support.Design 25.4.0.2
+  nuget Xamarin.Android.Support.Fragment 25.4.0.2
+  nuget Xamarin.Android.Support.Media.Compat 25.4.0.2
+  nuget Xamarin.Android.Support.Transition 25.4.0.2
+  nuget Xamarin.Android.Support.v4 25.4.0.2
+  nuget Xamarin.Android.Support.v7.AppCompat 25.4.0.2
+  nuget Xamarin.Android.Support.v7.CardView 25.4.0.2
+  nuget Xamarin.Android.Support.v7.MediaRouter 25.4.0.2
+  nuget Xamarin.Android.Support.v7.Palette 25.4.0.2
+  nuget Xamarin.Android.Support.v7.RecyclerView 25.4.0.2
+  nuget Xamarin.Android.Support.Vector.Drawable 25.4.0.2
 
-# nuget FsXaml.Xamarin.Forms

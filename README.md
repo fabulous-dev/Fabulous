@@ -114,7 +114,7 @@ type CounterApp () =
     inherit Application ()
 
     ...
-    let page = Samples.CounterPage ()
+    let page = CounterApp.CounterPage ()
 
     do
         Program.mkSimple init update view
