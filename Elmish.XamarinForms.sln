@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{FB19
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CounterApp", "CounterApp", "{A832662D-05EB-4582-B871-143798897673}"
 EndProject
-Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "CounterApp", "Samples\CounterApp\Samples\CounterApp.fsproj", "{231BD370-D64B-481E-A10A-AB932766AEC9}"
+Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "CounterApp", "Samples\CounterApp\CounterApp\CounterApp.fsproj", "{231BD370-D64B-481E-A10A-AB932766AEC9}"
 EndProject
 Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "CounterApp.Android", "Samples\CounterApp\CounterApp.Android\CounterApp.Android.fsproj", "{2D3CBBD7-118F-4457-817E-0D60E03C5534}"
 EndProject

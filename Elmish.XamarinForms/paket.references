@@ -1,6 +1,0 @@
-﻿group Neutral
-  FSharp.Core
-  Xamarin.Forms
-  File: cmd.fs elmish\src
-  File: program.fs elmish\src
-  

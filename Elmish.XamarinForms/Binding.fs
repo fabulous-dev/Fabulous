@@ -15,7 +15,7 @@ type internal Execute<'model, 'msg> =
 type internal CanExecute<'model> = 
     obj -> 'model -> bool
 
-type internal ValidSetter<'model,'msg> = obj -> 'model -> Result<'msg,string>
+type internal ValidSetter<'model,'msg> = obj -> 'model -> Choice<'msg,string>
 
 type ViewBinding<'model, 'msg> = 
     string * Variable<'model, 'msg>
@@ -43,10 +43,10 @@ module Binding =
                 toModel >> getter
                 |> Bind
             | BindTwoWay (getter,setter) -> 
-                (toModel >> getter, fun v m -> (toModel m) |> (setter v >> toMsg))
+                (toModel >> getter, fun v m -> (toModel m) |> setter v |> toMsg)
                 |> BindTwoWay
             | BindTwoWayValidation (getter,setter) -> 
-                (toModel >> getter, fun v m -> (toModel m) |> (setter v >> Result.map toMsg))
+                (toModel >> getter, fun v m -> (toModel m) |> setter v |> function Choice1Of2 r -> Choice1Of2 (toMsg r) | Choice2Of2 err -> Choice2Of2 err)
                 |> BindTwoWayValidation
             | BindCmd (exec,canExec) ->
                 ((fun v m -> (toModel m) |> exec v |> toMsg), (fun v m -> (toModel m) |> canExec v))
@@ -80,7 +80,7 @@ module Binding =
     ///<param name="getter">Gets value from the model</param>
     ///<param name="setter">Validation function, returns a Result with the message to dispatch or an error string</param>
     ///<param name="name">Binding name</param>
-    let twoWayValidation (getter: 'model -> 'a) (setter: 'a -> 'model -> Result<'msg,string>) name : ViewBinding<'model,'msg> = 
+    let twoWayValidation (getter: 'model -> 'a) (setter: 'a -> 'model -> Choice<'msg,string>) name : ViewBinding<'model,'msg> = 
         name, BindTwoWayValidation (getter >> unbox, fun v m -> setter (v :?> 'a) m)
         
     ///<summary>Command binding</summary>

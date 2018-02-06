@@ -2,7 +2,8 @@ framework: netstandard2.0
 source https://www.nuget.org/api/v2
 nuget FAKE
 
-group Neutral
+# dependencies used when compiling and running the library and neutral parts of samples
+group neutral
   framework: netstandard2.0
   source https://www.nuget.org/api/v2
   nuget FSharp.Core 4.3.3
@@ -10,7 +11,9 @@ group Neutral
   github fable-elmish/elmish:46f0313c26266c5703d4f7dcf111fb0038393a77 src/cmd.fs 
   github fable-elmish/elmish:46f0313c26266c5703d4f7dcf111fb0038393a77 src/program.fs 
 
-group AndroidApp
+# Dependencies used when compiling and running Android samples. We use the latest FSharp.Core and 
+# latest Xamarin.Forms
+group androidapp
   framework: monoandroid71
   source https://www.nuget.org/api/v2
   nuget FSharp.Core 4.3.3
@@ -33,3 +36,10 @@ group AndroidApp
   nuget Xamarin.Android.Support.v7.RecyclerView 25.4.0.2
   nuget Xamarin.Android.Support.Vector.Drawable 25.4.0.2
 
+# Dependencies used when compiling and running iOS samples. We use the latest FSharp.Core and 
+# latest Xamarin.Forms
+group iosapp
+  framework: monotouch
+  source https://www.nuget.org/api/v2
+  nuget FSharp.Core 4.3.3
+  nuget Xamarin.Forms

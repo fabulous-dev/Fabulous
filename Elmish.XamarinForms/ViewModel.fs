@@ -123,10 +123,10 @@ and ViewModel<'model, 'msg>(m:'model, dispatch, propMap: ViewBindings<'model,'ms
                     let errorsChanged() = errorsChanged.Trigger([| box self; box (DataErrorsChangedEventArgs(name)) |])
                     try 
                         match setter value model with
-                        | Ok msg -> 
+                        | Choice1Of2 msg -> 
                             if errors.Remove(name) then errorsChanged()
                             dispatch msg 
-                        | Error err ->
+                        | Choice2Of2 err ->
                             match errors.TryGetValue name with
                             | true, errs -> errors.[name] <- err :: errs
                             | false, _ -> errors.Add(name, [err])

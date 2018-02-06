@@ -19,5 +19,18 @@
     <Compile Include="ViewModel.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
-  <Import Project="..\.paket\Paket.Restore.targets" />
+  <ItemGroup>
+    <Reference Include="FSharp.Core">
+        <HintPath>../packages/neutral/FSharp.Core/lib/netstandard1.6/FSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Core">
+       <HintPath>../packages/neutral/Xamarin.Forms/lib/netstandard1.0/Xamarin.Forms.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Platform">
+       <HintPath>../packages/neutral/Xamarin.Forms/lib/netstandard1.0/Xamarin.Forms.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Xaml">
+       <HintPath>../packages/neutral/Xamarin.Forms/lib/netstandard1.0/Xamarin.Forms.Xaml.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

@@ -13,11 +13,20 @@
     </Compile>
     <Compile Include="CounterApp.fs" />
     <Compile Include="AssemblyInfo.fs" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Elmish.XamarinForms\Elmish.XamarinForms.fsproj" />
+    <Reference Include="FSharp.Core">
+        <HintPath>../../../packages/neutral/FSharp.Core/lib/netstandard1.6/FSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Core">
+        <HintPath>../../../packages/neutral/Xamarin.Forms/lib/netstandard1.0/Xamarin.Forms.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Platform">
+        <HintPath>../../../packages/neutral/Xamarin.Forms/lib/netstandard1.0/Xamarin.Forms.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Xaml">
+        <HintPath>../../../packages/neutral/Xamarin.Forms/lib/netstandard1.0/Xamarin.Forms.Xaml.dll</HintPath>
+    </Reference>
   </ItemGroup>
-  <!--  <Import Project="..\packages\Xamarin.Forms.2.5.0.122203\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.5.0.122203\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets')" /> -->
-  <Import Project="..\..\..\.paket\Paket.Restore.targets" />
 </Project>
