@@ -33,7 +33,7 @@ type CounterApp () =
           "DecrementCommand" |> Binding.cmd (fun _ _ -> Decrement)
           "ResetCommand" |> Binding.cmdIf (fun _ _ -> Reset) (fun _ m -> m <> init ())
           "ResetVisible" |> Binding.oneWay (fun m ->  m <> init ())
-          "StepValue" |> Binding.twoWay (fun m -> double m.Step) (fun v m -> v |> int |> SetStep) ]
+          "StepValue" |> Binding.twoWay (fun m -> double m.Step) (fun v m -> v |> ((+)0.5) |> int |> SetStep) ]
 
     let page = CounterApp.CounterPage ()
 

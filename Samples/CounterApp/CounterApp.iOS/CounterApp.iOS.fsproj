@@ -88,6 +88,7 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
     <Reference Include="Xamarin.iOS" />
     <Reference Include="Xamarin.Forms.Core">
        <HintPath>../../../packages/iosapp/Xamarin.Forms/lib/Xamarin.iOS10/Xamarin.Forms.Core.dll</HintPath>
@@ -100,6 +101,9 @@
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml">
        <HintPath>../../../packages/iosapp/Xamarin.Forms/lib/Xamarin.iOS10/Xamarin.Forms.Xaml.dll</HintPath>
+    </Reference>
+    <Reference Include="FSharp.Core">
+        <HintPath>../../../packages/iosapp/FSharp.Core/lib/netstandard1.6/FSharp.Core.dll</HintPath>
     </Reference>
     <ProjectReference Include="..\CounterApp\CounterApp.fsproj">
       <Project>{231BD370-D64B-481E-A10A-AB932766AEC9}</Project>

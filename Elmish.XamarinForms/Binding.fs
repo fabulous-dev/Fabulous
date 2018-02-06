@@ -15,7 +15,7 @@ type internal Execute<'model, 'msg> =
 type internal CanExecute<'model> = 
     obj -> 'model -> bool
 
-type internal ValidSetter<'model,'msg> = obj -> 'model -> Choice<'msg,string>
+type internal ValidSetter<'model,'msg> = obj -> 'model -> Result<'msg,string>
 
 type ViewBinding<'model, 'msg> = 
     string * Variable<'model, 'msg>
@@ -46,10 +46,10 @@ module Binding =
                 (toModel >> getter, fun v m -> (toModel m) |> setter v |> toMsg)
                 |> BindTwoWay
             | BindTwoWayValidation (getter,setter) -> 
-                (toModel >> getter, fun v m -> (toModel m) |> setter v |> function Choice1Of2 r -> Choice1Of2 (toMsg r) | Choice2Of2 err -> Choice2Of2 err)
+                (toModel >> getter, fun v m -> (toModel m) |> setter v |> Result.map toMsg)
                 |> BindTwoWayValidation
-            | BindCmd (exec,canExec) ->
-                ((fun v m -> (toModel m) |> exec v |> toMsg), (fun v m -> (toModel m) |> canExec v))
+            | BindCmd (exec, canExec) ->
+                ((fun v m -> m |> toModel |> exec v |> toMsg), (fun v m -> toModel m |> canExec v))
                 |> BindCmd
             | BindModel (getter,binding) ->
                 (toModel >> getter, binding |> mapViewBinding toModel toMsg)
@@ -67,21 +67,21 @@ module Binding =
     ///<param name="getter">Gets value from the model</param>
     ///<param name="name">Binding name</param>
     let oneWay (getter: 'model -> 'a) name : ViewBinding<'model,'msg> = 
-        name, Bind (getter >> unbox)
+        name, Bind (getter >> box)
     
     ///<summary>Either source to target or target to source (i.e. BindingMode.TwoWay)</summary>
     ///<param name="getter">Gets value from the model</param>
     ///<param name="setter">Setter function, returns a message to dispatch, typically to set the value in the model</param>
     ///<param name="name">Binding name</param>
     let twoWay (getter: 'model -> 'a) (setter: 'a -> 'model -> 'msg) name : ViewBinding<'model,'msg> = 
-        name, BindTwoWay (getter >> unbox, fun v m -> setter (v :?> 'a) m)
+        name, BindTwoWay (getter >> box, fun v m -> setter (unbox v) m)
     
     ///<summary>Either source to target or target to source (i.e. BindingMode.TwoWay) with INotifyDataErrorInfo implementation)</summary>
     ///<param name="getter">Gets value from the model</param>
     ///<param name="setter">Validation function, returns a Result with the message to dispatch or an error string</param>
     ///<param name="name">Binding name</param>
-    let twoWayValidation (getter: 'model -> 'a) (setter: 'a -> 'model -> Choice<'msg,string>) name : ViewBinding<'model,'msg> = 
-        name, BindTwoWayValidation (getter >> unbox, fun v m -> setter (v :?> 'a) m)
+    let twoWayValidation (getter: 'model -> 'a) (setter: 'a -> 'model -> Result<'msg,string>) name : ViewBinding<'model,'msg> = 
+        name, BindTwoWayValidation (getter >> box, fun v m -> setter (unbox v) m)
         
     ///<summary>Command binding</summary>
     ///<param name="exec">Execute function, returns a message to dispatch</param>
@@ -102,7 +102,7 @@ module Binding =
     ///<param name="toMsg">Maps sub-messages to the base message type</param>
     ///<param name="name">Binding name</param>
     let model (getter: 'model -> '_model) (viewBinding: ViewBindings<'_model,'_msg>) (toMsg: '_msg -> 'msg) name : ViewBinding<'model,'msg> = 
-        name, BindModel (getter >> unbox, viewBinding |> mapViewBinding getter toMsg)
+        name, BindModel (getter >> box, viewBinding |> mapViewBinding getter toMsg)
         
     ///<summary>One-way binding that applies a map when passing data to the view.
     /// Should be used for data that a view needs wrapped in some view-specific type. 
@@ -112,4 +112,4 @@ module Binding =
     ///<param name="mapper">Maps the value for consumption by the view</param>
     ///<param name="name">Binding name</param>
     let oneWayMap (getter: 'model -> 'a) (mapper: 'a -> 'b) name : ViewBinding<'model,'msg> =
-        name, BindMap (getter >> unbox, unbox >> mapper >> unbox)
+        name, BindMap (getter >> box, unbox >> mapper >> box)

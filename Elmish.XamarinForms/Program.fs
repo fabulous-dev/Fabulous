@@ -5,7 +5,6 @@ open Xamarin.Forms
 
 open Elmish
 open Elmish.XamarinForms
-open Elmish.XamarinForms.ViewModel
 
 (*
 let withMessageBoxErrorHandler program =
@@ -14,29 +13,27 @@ let withMessageBoxErrorHandler program =
 
 *)
 
-/// Starts Elmish dispatch loop for the page with the given Elmish program
-let runPage (page : Xamarin.Forms.Page) (program : Program<unit, 'model, 'msg, ViewBindings<'model, 'msg>>) = 
+/// Starts the Elmish dispatch loop for the page with the given Elmish program
+let runPage (page: Page) (program: Program<unit, 'model, 'msg, ViewBindings<'model, 'msg>>) = 
 
     let mutable lastModel = None
 
     let setState model dispatch = 
         match lastModel with
         | None -> 
-            // Compute the view mappings once, on startup
+            // Compute the view mappings once, on startup. 
             let mapping = program.view model dispatch
 
             // Construct the binding context for the view model
             let vm = ViewModel<'model, 'msg> (model, dispatch, mapping)
-            System.Console.WriteLine ("seting data context")
+
+            console.log "view: seting data context"
             page.BindingContext <- vm
             lastModel <- Some vm
-            System.Console.WriteLine ("set data context, CounterValue = {0}. vm = {1}", vm.["CounterValue"], vm)
-            
+            console.log "view: set data context"
 
         | Some vm ->
-            System.Console.WriteLine ("updating model")
             vm.UpdateModel model
-            System.Console.WriteLine ("updated model")
             ()
                   
     // Start Elmish dispatch loop  
