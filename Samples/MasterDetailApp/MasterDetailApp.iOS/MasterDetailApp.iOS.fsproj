@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
-    <ProjectGuid>{71C30453-89CF-4955-8DFA-F09231DD99ED}</ProjectGuid>
+    <ProjectGuid>{71C30453-89CF-4955-8DFA-F09231DD99EE}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{F2A71F9B-5D33-465A-A702-920D77279786}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>MasterDetailApp.iOS</RootNamespace>
@@ -106,7 +106,7 @@
         <HintPath>../../../packages/iosapp/FSharp.Core/lib/netstandard1.6/FSharp.Core.dll</HintPath>
     </Reference>
     <ProjectReference Include="..\MasterDetailApp\MasterDetailApp.fsproj">
-      <Project>{231BD370-D64B-481E-A10A-AB932766AEC9}</Project>
+      <Project>{8508CA90-334A-41E0-A99A-E2742E77C88A}</Project>
       <Name>MasterDetailApp</Name>
     </ProjectReference>
   </ItemGroup>

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2D3CBBD7-118F-4457-817E-0D60E03C5534}</ProjectGuid>
+    <ProjectGuid>{2D3CBBD7-118F-4457-817E-0D60E03C5535}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{F2A71F9B-5D33-465A-A702-920D77279786}</ProjectTypeGuids>
     <UseStandardResourceNames>true</UseStandardResourceNames>
     <OutputType>Library</OutputType>
@@ -67,7 +67,7 @@
     <Reference Include="mscorlib" />
     <Reference Include="Mono.Android" />
     <ProjectReference Include="..\MasterDetailApp\MasterDetailApp.fsproj">
-      <Project>{231BD370-D64B-481E-A10A-AB932766AEC9}</Project>
+      <Project>{8508CA90-334A-41E0-A99A-E2742E77C88A}</Project>
       <Name>MasterDetailApp</Name>
     </ProjectReference>
     <Reference Include="Xamarin.Android.FSharp.ResourceProvider.Runtime">

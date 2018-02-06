@@ -5,17 +5,6 @@
     <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Include="CounterPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <Compile Include="CounterPage.xaml.fs">
-      <DependentUpon>CounterPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MasterDetailApp.fs" />
-    <Compile Include="AssemblyInfo.fs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Elmish.XamarinForms\Elmish.XamarinForms.fsproj" />
     <Reference Include="FSharp.Core">
         <HintPath>../../../packages/neutral/FSharp.Core/lib/netstandard1.6/FSharp.Core.dll</HintPath>
     </Reference>
@@ -28,5 +17,39 @@
     <Reference Include="Xamarin.Forms.Xaml">
         <HintPath>../../../packages/neutral/Xamarin.Forms/lib/netstandard1.0/Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="Views\AboutPage.xaml.fs">
+      <DependentUpon>AboutPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ItemDetailPage.xaml.fs">
+      <DependentUpon>ItemDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ItemsPage.xaml.fs">
+      <DependentUpon>ItemsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewItemPage.xaml.fs">
+      <DependentUpon>NewItemPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MasterDetailApp.fs" />
+    <ProjectReference Include="..\..\..\Elmish.XamarinForms\Elmish.XamarinForms.fsproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\AboutPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\ItemDetailPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\ItemsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\NewItemPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)App.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

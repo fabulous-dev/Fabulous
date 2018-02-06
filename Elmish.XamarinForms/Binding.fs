@@ -10,10 +10,10 @@ type internal Setter<'model, 'msg> =
     obj -> 'model -> 'msg
 
 type internal Execute<'model, 'msg> = 
-    obj -> 'model -> 'msg
+    'model -> 'msg
 
 type internal CanExecute<'model> = 
-    obj -> 'model -> bool
+    'model -> bool
 
 type internal ValidSetter<'model,'msg> = obj -> 'model -> Result<'msg,string>
 
@@ -49,7 +49,7 @@ module Binding =
                 (toModel >> getter, fun v m -> (toModel m) |> setter v |> Result.map toMsg)
                 |> BindTwoWayValidation
             | BindCmd (exec, canExec) ->
-                ((fun v m -> m |> toModel |> exec v |> toMsg), (fun v m -> toModel m |> canExec v))
+                ((fun m -> m |> toModel |> exec |> toMsg), (fun m -> toModel m |> canExec))
                 |> BindCmd
             | BindModel (getter,binding) ->
                 (toModel >> getter, binding |> mapViewBinding toModel toMsg)
@@ -87,7 +87,7 @@ module Binding =
     ///<param name="exec">Execute function, returns a message to dispatch</param>
     ///<param name="name">Binding name</param>
     let cmd exec name : ViewBinding<'model,'msg> = 
-        name, BindCmd (exec, fun _ _ -> true)
+        name, BindCmd (exec, fun _ -> true)
         
     ///<summary>Conditional command binding</summary>
     ///<param name="exec">Execute function, returns a message to dispatch</param>
