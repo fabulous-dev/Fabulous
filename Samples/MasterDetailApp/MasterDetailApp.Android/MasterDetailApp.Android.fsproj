@@ -130,6 +130,9 @@
     <Reference Include="Xamarin.Forms.Platform">
        <HintPath>../../../packages/androidapp/Xamarin.Forms/lib/MonoAndroid10/Xamarin.Forms.Platform.dll</HintPath>
     </Reference>
+    <Reference Include="FormsViewGroup">
+       <HintPath>../../../packages/androidapp/Xamarin.Forms/lib/MonoAndroid10/FormsViewGroup.dll</HintPath>
+    </Reference>
     <Reference Include="Xamarin.Forms.Platform.Android">
        <HintPath>../../../packages/androidapp/Xamarin.Forms/lib/MonoAndroid10/Xamarin.Forms.Platform.Android.dll</HintPath>
     </Reference>

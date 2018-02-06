@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\..\packages\androidapp\Xamarin.Forms\build\netstandard1.0\Xamarin.Forms.props" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Forms\build\netstandard1.0\Xamarin.Forms.props')" />
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
@@ -52,4 +53,5 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
+  <Import Project="..\..\..\packages\androidapp\Xamarin.Forms\build\netstandard1.0\Xamarin.Forms.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Forms\build\netstandard1.0\Xamarin.Forms.targets')" />
 </Project>
