@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CounterPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <Compile Include="CounterPage.xaml.fs">
+      <DependentUpon>CounterPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MasterDetailApp.fs" />
+    <Compile Include="AssemblyInfo.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Elmish.XamarinForms\Elmish.XamarinForms.fsproj" />
+    <Reference Include="FSharp.Core">
+        <HintPath>../../../packages/neutral/FSharp.Core/lib/netstandard1.6/FSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Core">
+        <HintPath>../../../packages/neutral/Xamarin.Forms/lib/netstandard1.0/Xamarin.Forms.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Platform">
+        <HintPath>../../../packages/neutral/Xamarin.Forms/lib/netstandard1.0/Xamarin.Forms.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Xaml">
+        <HintPath>../../../packages/neutral/Xamarin.Forms/lib/netstandard1.0/Xamarin.Forms.Xaml.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>
