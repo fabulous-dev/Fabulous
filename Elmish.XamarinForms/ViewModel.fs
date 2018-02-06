@@ -44,9 +44,21 @@ and ViewModel<'model, 'msg>(m: 'model, dispatch, propMap: ViewBindings<'model, '
         props |> List.ofSeq |> List.iter (fun kvp -> raiseCanExecuteChanged kvp.Value)    
 
     /// Convert a command to a XF command
-    let toCommand (exec, canExec) =
-        let execute = Action (fun p -> exec p model |> dispatch)
-        let canExecute = fun p -> canExec p model
+    let toCommand name (exec, canExec) =
+        let execute = 
+            Action (fun () -> 
+                console.log (sprintf "view: execute cmd %s" name)
+                let msgFromCmd = 
+                   try exec model 
+                   with exn -> 
+                       console.log (sprintf "view: execute cmd %s raised exception:\n%s" name (exn.ToString()))
+                       reraise()
+                dispatch msgFromCmd)
+
+        let canExecute = 
+            Func<bool>(fun () -> 
+                console.log (sprintf "view: checking if cmd %s can execute" name)
+                canExec model)
         Xamarin.Forms.Command (execute, canExecute)
 
     /// Convert a sub-model
@@ -58,7 +70,7 @@ and ViewModel<'model, 'msg>(m: 'model, dispatch, propMap: ViewBindings<'model, '
         | Bind getter -> name, Get getter
         | BindTwoWay (getter, setter) -> name, GetSet (getter, setter)
         | BindTwoWayValidation (getter, setter) -> name, GetSetValidate (getter, setter)
-        | BindCmd (exec, canExec) -> name, Cmd (toCommand (exec, canExec))
+        | BindCmd (exec, canExec) -> name, Cmd (toCommand name (exec, canExec))
         | BindModel (_, propMap) -> name, Model (toSubView propMap)
         | BindMap (getter, mapper) -> name, Map (getter, mapper)
 

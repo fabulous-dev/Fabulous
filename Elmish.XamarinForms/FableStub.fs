@@ -17,7 +17,10 @@ module Fable
                 static member error (str, ex) = sprintf "%s: %O" str ex |> System.Console.WriteLine
 
                 [<System.Diagnostics.Conditional("DEBUG")>]
-                static member log o = sprintf "%s -- %A" (System.DateTime.Now.ToString("o")) o |> System.Console.WriteLine
+                static member log (o: string) = sprintf "%s -- %A" (System.DateTime.Now.ToString("o")) o |> System.Console.WriteLine
+
+                [<System.Diagnostics.Conditional("DEBUG")>]
+                static member log (o: string, v:obj) = sprintf "%s -- %s %A" (System.DateTime.Now.ToString("o")) o v |> System.Console.WriteLine
 
             let toJson o = o
 

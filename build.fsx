@@ -14,8 +14,21 @@ let summary = "F# bindings for using elmish in WPF"
 
 // targetsAreOnSameLevel
 Target "BuildApp" (fun _ ->
-    DotNetCli.Restore id
-    !! "Elmish.XamarinForms.sln"
+
+    // needed or else 'project.assets.json' not found'
+    DotNetCli.Restore (fun p -> { p with Project = "Elmish.XamarinForms/Elmish.XamarinForms.fsproj" })
+
+    // needed or else 'project.assets.json' not found'
+    !! "Elmish.XamarinForms/Elmish.XamarinForms.fsproj"
+       |> MSBuildRelease buildDir "Restore"
+       |> Log "AppRestore-Output: "
+
+    // Building apps on CI not yet possible
+    // // build the apps debug
+    //!! "Elmish.XamarinForms.sln"
+    //   |> MSBuildDebug buildDir "Build"
+    //   |> Log "AppBuildDebug-Output: "
+    !! "Elmish.XamarinForms/Elmish.XamarinForms.fsproj"
        |> MSBuildRelease buildDir "Build"
        |> Log "AppBuild-Output: "
 )
