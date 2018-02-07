@@ -6,8 +6,8 @@
     <ProjectGuid>{71C30453-89CF-4955-8DFA-F09231DD99ED}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{F2A71F9B-5D33-465A-A702-920D77279786}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>CounterApp.iOS</RootNamespace>
-    <AssemblyName>CounterApp.iOS</AssemblyName>
+    <RootNamespace>iOS</RootNamespace>
+    <AssemblyName>iOS</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
@@ -110,6 +110,6 @@
       <Name>CounterApp</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets" Condition="Exists('$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets')" />
   <Import Project="..\..\..\packages\iosapp\Xamarin.Forms\build\netstandard1.0\Xamarin.Forms.targets" Condition="Exists('..\..\..\packages\iosapp\Xamarin.Forms\build\netstandard1.0\Xamarin.Forms.targets')" />
 </Project>

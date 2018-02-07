@@ -7,8 +7,8 @@
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{F2A71F9B-5D33-465A-A702-920D77279786}</ProjectTypeGuids>
     <UseStandardResourceNames>true</UseStandardResourceNames>
     <OutputType>Library</OutputType>
-    <RootNamespace>MasterDetailApp.Android</RootNamespace>
-    <AssemblyName>MasterDetailApp.Android</AssemblyName>
+    <RootNamespace>Droid</RootNamespace>
+    <AssemblyName>Droid</AssemblyName>
     <TargetFrameworkIdentifier>MonoAndroid</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
     <AndroidApplication>True</AndroidApplication>
@@ -140,7 +140,7 @@
        <HintPath>../../../packages/androidapp/Xamarin.Forms/lib/MonoAndroid10/Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.FSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.FSharp.targets" Condition="Exists('$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.FSharp.targets')" />
   <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Compat\build\MonoAndroid70\Xamarin.Android.Support.Compat.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Compat\build\MonoAndroid70\Xamarin.Android.Support.Compat.targets')" />
   <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Core.UI\build\MonoAndroid70\Xamarin.Android.Support.Core.UI.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Core.UI\build\MonoAndroid70\Xamarin.Android.Support.Core.UI.targets')" />
   <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Core.Utils\build\MonoAndroid70\Xamarin.Android.Support.Core.Utils.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Core.Utils\build\MonoAndroid70\Xamarin.Android.Support.Core.Utils.targets')" />

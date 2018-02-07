@@ -1,4 +1,4 @@
-﻿namespace CounterApp.iOS
+﻿namespace iOS
 
 open System
 open UIKit

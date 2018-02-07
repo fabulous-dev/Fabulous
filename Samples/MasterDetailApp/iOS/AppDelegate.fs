@@ -1,4 +1,4 @@
-﻿namespace MasterDetailApp.iOS
+﻿namespace iOS
 
 open System
 open UIKit

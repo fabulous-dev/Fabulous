@@ -1,8 +1,8 @@
-﻿namespace MasterDetailApp.Android
+﻿namespace Droid
 open System.Reflection
 open System.Runtime.CompilerServices
 
-[<assembly: AssemblyTitle("MasterDetailApp.Android")>]
+[<assembly: AssemblyTitle("Droid")>]
 [<assembly: AssemblyDescription("")>]
 [<assembly: AssemblyConfiguration("")>]
 [<assembly: AssemblyCompany("")>]

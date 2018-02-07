@@ -1,8 +1,8 @@
-﻿namespace CounterApp.Android
+﻿namespace Droid
 open System.Reflection
 open System.Runtime.CompilerServices
 
-[<assembly: AssemblyTitle("CounterApp.Android")>]
+[<assembly: AssemblyTitle("Droid")>]
 [<assembly: AssemblyDescription("")>]
 [<assembly: AssemblyConfiguration("")>]
 [<assembly: AssemblyCompany("")>]
