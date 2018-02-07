@@ -11,17 +11,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CounterApp", "CounterApp", 
 EndProject
 Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "CounterApp", "Samples\CounterApp\CounterApp\CounterApp.fsproj", "{231BD370-D64B-481E-A10A-AB932766AEC9}"
 EndProject
-Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "CounterApp.Android", "Samples\CounterApp\CounterApp.Android\CounterApp.Android.fsproj", "{2D3CBBD7-118F-4457-817E-0D60E03C5534}"
+Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "Droid", "Samples\CounterApp\Droid\Droid.fsproj", "{2D3CBBD7-118F-4457-817E-0D60E03C5534}"
 EndProject
-Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "CounterApp.iOS", "Samples\CounterApp\CounterApp.iOS\CounterApp.iOS.fsproj", "{71C30453-89CF-4955-8DFA-F09231DD99ED}"
+Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "iOS", "Samples\CounterApp\iOS\iOS.fsproj", "{71C30453-89CF-4955-8DFA-F09231DD99ED}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MasterDetailApp", "MasterDetailApp", "{9869E35B-39CD-490C-A843-842C0993862F}"
 EndProject
 Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "MasterDetailApp", "Samples\MasterDetailApp\MasterDetailApp\MasterDetailApp.fsproj", "{8508CA90-334A-41E0-A99A-E2742E77C88A}"
 EndProject
-Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "MasterDetailApp.Android", "Samples\MasterDetailApp\MasterDetailApp.Android\MasterDetailApp.Android.fsproj", "{2D3CBBD7-118F-4457-817E-F09231DD99ED}"
+Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "Droid", "Samples\MasterDetailApp\Droid\Droid.fsproj", "{2D3CBBD7-118F-4457-817E-F09231DD99ED}"
 EndProject
-Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "MasterDetailApp.iOS", "Samples\MasterDetailApp\MasterDetailApp.iOS\MasterDetailApp.iOS.fsproj", "{71C30453-89CF-4955-8DFA-F09231DD99EE}"
+Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "iOS", "Samples\MasterDetailApp\iOS\iOS.fsproj", "{71C30453-89CF-4955-8DFA-F09231DD99EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
