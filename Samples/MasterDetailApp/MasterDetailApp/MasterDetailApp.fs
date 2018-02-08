@@ -4,50 +4,121 @@ open System
 open Elmish
 open Elmish.XamarinForms
 open Xamarin.Forms
+open Xamarin.Forms.Xaml
 
-type Model = 
-  { Count : int }
+type Item = 
+    { Text: string; Description: string }
 
-type Msg = 
-    | OpenedUri of Uri
-    //| Decrement 
-    //| Reset
-    //| SetStep of int
+module AboutPg = 
+    type Model = unit
+    type Msg = unit
+
+    let init () = ()
+
+    let update msg model = model
+
+    let view _ dispatch =
+        [ "OpenWebCommand" |> Binding.cmd (fun _ m -> Device.OpenUri(Uri("https://xamarin.com/platform")); ()) 
+          "Title" |> Binding.oneWay (fun m -> "About") ]
+
+module ItemsPg = 
+
+    type Model = 
+        { Items : Item[]
+          IsBusy: bool }
+
+    type Msg = 
+        | LoadItemsStart 
+        | LoadItemsComplete
+        | AddItem
+        | Ignore
+
+    let init () = { Items  = [| { Text = "Text1"; Description = "Description1"  } |]; IsBusy = false }
+
+    let update msg model =
+        match msg with
+        | LoadItemsStart -> { model with IsBusy = true }
+        | LoadItemsComplete -> { model with Items = [| { Text = "Text1"; Description = "Description1"  } |]; IsBusy = false }
+        | AddItem -> { model with Items = Array.append model.Items [| { Text = "Text" + string model.Items.Length; Description = "Description1" + string model.Items.Length } |]  }
+        | Ignore -> model
+
+    let view _ dispatch =
+        [ "Items" |> Binding.oneWay (fun m -> m.Items )
+          "IsBusy" |> Binding.oneWay (fun m -> m.IsBusy )
+          "Title" |> Binding.oneWay (fun m -> "Items")
+          "SelectedItem"|> Binding.oneWayFromView (fun (v:obj) m -> if isNull v then Ignore else Device.OpenUri(Uri("http://fsharp.org")); Ignore ) 
+          "LoadItemsCommand" |> Binding.cmd (fun _ _ -> 
+              async { 
+                do! Async.Sleep 2000; 
+                dispatch LoadItemsComplete 
+              } |> Async.StartImmediate
+              LoadItemsStart)
+          "AddItemCommand" |> Binding.cmd (fun _ _ -> AddItem)
+        ]
+
+
+module ItemDetailsPg =
+    type Model = Item 
+
+    let init () = { Text = "Test1"; Description = "This is  a test item"}
+
+    let update msg model = model
+
+    let view _ dispatch =
+        [ "Text" |> Binding.oneWay (fun m -> m.Text )
+          "Description" |> Binding.oneWay (fun m -> m.Description )
+          "Title" |> Binding.oneWay (fun m -> "Item Detail")
+        ]
+
+module NewItemPg =
+    type Model = Item 
+
+    type Msg = 
+        | Save 
+        | SetText of string
+        | SetDescription of string
+
+    let init () = { Text = "Test1"; Description = "This is  a test item"}
+
+    let update msg model =
+        match msg with
+        | Save -> model // { model with Items = Array.append model.Items [| { Text = "Text" + string model.Items.Length; Description = "Description1" + string model.Items.Length } |]  }
+        | SetText t -> { model with Text = t }
+        | SetDescription t -> { model with Description = t } 
+
+    let view _ dispatch =
+        [ "Text" |> Binding.twoWay (fun m -> m.Text ) (fun v m -> SetText v )
+          "Description" |> Binding.twoWay (fun m -> m.Description ) (fun v m -> SetDescription v)
+          "Save" |> Binding.cmd (fun m _ -> Save)
+        ]
+
 
 type MasterDetailApp () as self = 
     inherit Application ()
 
-    let init () = { Count = 0 }
-
-    let update msg model =
-        match msg with
-        | OpenedUri uri -> { model with Count = model.Count + 1 }
-        //| Decrement -> { model with Count = model.Count - model.Step }
-        //| Reset -> init ()
-        //| SetStep n -> { model with Step = n }
-
-    let view _ _ =
-        [ "OpenWebCommand" |> Binding.cmd (fun m -> let uri = Uri("https://xamarin.com/platform") in Device.OpenUri(uri); OpenedUri uri ) 
-          "Title" |> Binding.oneWay (fun m -> "TTRTTTitle")
-
-          //"CounterValue" |> Binding.oneWay (fun m -> m.Count)
-          //"CounterValue2" |> Binding.oneWay (fun m -> m.Count + 1)
-          //"IncrementCommand" |> Binding.cmd (fun _ -> Increment)
-          //"DecrementCommand" |> Binding.cmd (fun _ -> Decrement)
-          //"ResetCommand" |> Binding.cmdIf (fun _ -> Reset) (fun m -> m <> init ())
-          //"ResetVisible" |> Binding.oneWay (fun m ->  m <> init ())
-          //"StepValue" |> Binding.twoWay (fun m -> double m.Step) (fun v m -> v |> ((+)0.5) |> int |> SetStep) 
-        ]
-
-    do global.Xamarin.Forms.Xaml.Extensions.LoadFromXaml(self, typeof<MasterDetailApp>) |> ignore
+    do self.LoadFromXaml(typeof<MasterDetailApp>) |> ignore
 
     do
-        let page = MasterDetailApp.AboutPage ()
-        Program.mkSimple init update view
-        |> Program.withConsoleTrace
-        |> Program.runPage page
+        let aboutPage = MasterDetailApp.AboutPage ()
+        let itemsPage = MasterDetailApp.ItemsPage ()
+        let itemDetailPage = MasterDetailApp.ItemDetailPage ()
+        let newItemPage = MasterDetailApp.NewItemPage ()
 
-        base.MainPage <- page
+        let mainPage = TabbedPage()
+        mainPage.Children.Add(itemsPage)
+        mainPage.Children.Add(aboutPage)
+        mainPage.Children.Add(itemDetailPage)
+
+        let aboutProgram = Program.mkSimple AboutPg.init AboutPg.update AboutPg.view
+        let itemsProgram = Program.mkSimple ItemsPg.init ItemsPg.update ItemsPg.view
+        let itemDetailProgram = Program.mkSimple ItemDetailsPg.init ItemDetailsPg.update ItemDetailsPg.view
+        Program.combine3 aboutProgram itemsProgram itemDetailProgram
+        |> Program.withConsoleTrace
+        |> Program.runPages3 aboutPage itemsPage itemDetailPage
+
+        base.MainPage <- NavigationPage mainPage
+//        await Navigation.PushAsync(new ItemDetailPage(new ItemDetailViewModel(item)));
+
 
 (*
         public static bool UseMockDataStore = true;

@@ -17,3 +17,4 @@ let ofAsyncCallback (task: 'a -> ('b -> unit) -> Async<_>)
                         | Choice2Of2 x -> ofError x)
         }
     [bind >> Async.StartImmediate]
+
