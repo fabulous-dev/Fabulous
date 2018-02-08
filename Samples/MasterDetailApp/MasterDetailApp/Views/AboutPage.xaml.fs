@@ -5,4 +5,4 @@ open Xamarin.Forms.Xaml
 
 type AboutPage() = 
     inherit ContentPage()
-    let _ = base.LoadFromXaml(typeof<AboutPage>)
+    do base.LoadFromXaml(typeof<AboutPage>) |> ignore

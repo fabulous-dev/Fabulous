@@ -10,10 +10,10 @@ type internal Setter<'model, 'msg> =
     obj -> 'model -> 'msg
 
 type internal Execute<'model, 'msg> = 
-    'model -> 'msg
+    obj -> 'model -> 'msg
 
 type internal CanExecute<'model> = 
-    'model -> bool
+    obj -> 'model -> bool
 
 type internal ValidSetter<'model,'msg> = obj -> 'model -> Result<'msg,string>
 
@@ -26,6 +26,7 @@ and ViewBindings<'model, 'msg> =
 and Variable<'model,'msg> =
     internal 
     | Bind of Getter<'model>
+    | BindOneWayFromView of Setter<'model,'msg>
     | BindTwoWay of Getter<'model> * Setter<'model,'msg>
     | BindTwoWayValidation of Getter<'model> * ValidSetter<'model,'msg>
     | BindCmd of Execute<'model,'msg> * CanExecute<'model>
@@ -42,6 +43,9 @@ module Binding =
             | Bind getter ->
                 toModel >> getter
                 |> Bind
+            | BindOneWayFromView setter -> 
+                (fun v m -> (toModel m) |> setter v |> toMsg)
+                |> BindOneWayFromView
             | BindTwoWay (getter,setter) -> 
                 (toModel >> getter, fun v m -> (toModel m) |> setter v |> toMsg)
                 |> BindTwoWay
@@ -49,7 +53,7 @@ module Binding =
                 (toModel >> getter, fun v m -> (toModel m) |> setter v |> Result.map toMsg)
                 |> BindTwoWayValidation
             | BindCmd (exec, canExec) ->
-                ((fun m -> m |> toModel |> exec |> toMsg), (fun m -> toModel m |> canExec))
+                ((fun p m -> m |> toModel |> exec p |> toMsg), (fun p m -> toModel m |> canExec p))
                 |> BindCmd
             | BindModel (getter,binding) ->
                 (toModel >> getter, binding |> mapViewBinding toModel toMsg)
@@ -63,20 +67,26 @@ module Binding =
 
     // Helper functions that clean up binding creation
 
-    ///<summary>Source to target binding (i.e. BindingMode.OneWay)</summary>
+    ///<summary>Model to view binding (i.e. BindingMode.OneWay)</summary>
     ///<param name="getter">Gets value from the model</param>
     ///<param name="name">Binding name</param>
     let oneWay (getter: 'model -> 'a) name : ViewBinding<'model,'msg> = 
         name, Bind (getter >> box)
     
-    ///<summary>Either source to target or target to source (i.e. BindingMode.TwoWay)</summary>
+    ///<summary>Both model to view and view to model (i.e. BindingMode.TwoWay)</summary>
     ///<param name="getter">Gets value from the model</param>
     ///<param name="setter">Setter function, returns a message to dispatch, typically to set the value in the model</param>
     ///<param name="name">Binding name</param>
     let twoWay (getter: 'model -> 'a) (setter: 'a -> 'model -> 'msg) name : ViewBinding<'model,'msg> = 
         name, BindTwoWay (getter >> box, fun v m -> setter (unbox v) m)
     
-    ///<summary>Either source to target or target to source (i.e. BindingMode.TwoWay) with INotifyDataErrorInfo implementation)</summary>
+    ///<summary>View to model binding (i.e. BindingMode.OneWayToSource)</summary>
+    ///<param name="setter">Setter function, returns a message to dispatch, typically to set the value in the model</param>
+    ///<param name="name">Binding name</param>
+    let oneWayFromView (setter: 'a -> 'model -> 'msg) name : ViewBinding<'model,'msg> = 
+        name, BindOneWayFromView (fun v m -> setter (unbox v) m)
+    
+    ///<summary>Both model to view and view to model (i.e. BindingMode.TwoWay) with INotifyDataErrorInfo implementation)</summary>
     ///<param name="getter">Gets value from the model</param>
     ///<param name="setter">Validation function, returns a Result with the message to dispatch or an error string</param>
     ///<param name="name">Binding name</param>
@@ -87,7 +97,7 @@ module Binding =
     ///<param name="exec">Execute function, returns a message to dispatch</param>
     ///<param name="name">Binding name</param>
     let cmd exec name : ViewBinding<'model,'msg> = 
-        name, BindCmd (exec, fun _ -> true)
+        name, BindCmd (exec, fun _ _ -> true)
         
     ///<summary>Conditional command binding</summary>
     ///<param name="exec">Execute function, returns a message to dispatch</param>

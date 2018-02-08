@@ -5,7 +5,7 @@ open Xamarin.Forms.Xaml
 
 type ItemsPage() = 
     inherit ContentPage()
-    let _ = base.LoadFromXaml(typeof<ItemsPage>)
+    do base.LoadFromXaml(typeof<ItemsPage>) |> ignore
 
 
 (*

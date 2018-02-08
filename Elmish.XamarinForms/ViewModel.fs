@@ -9,6 +9,7 @@ open Elmish.XamarinForms
 /// The internal representation of a binding in the ViewModel
 type internal PropertyBinding<'model, 'msg> =
     | Get of Getter<'model>
+    | Set of Setter<'model, 'msg>
     | GetSet of Getter<'model> * Setter<'model, 'msg>
     | GetSetValidate of Getter<'model> * ValidSetter<'model, 'msg>
     | Cmd of Xamarin.Forms.Command
@@ -46,19 +47,19 @@ and ViewModel<'model, 'msg>(m: 'model, dispatch, propMap: ViewBindings<'model, '
     /// Convert a command to a XF command
     let toCommand name (exec, canExec) =
         let execute = 
-            Action (fun () -> 
+            Action<obj> (fun cmdParameter -> 
                 console.log (sprintf "view: execute cmd %s" name)
                 let msgFromCmd = 
-                   try exec model 
+                   try exec cmdParameter model 
                    with exn -> 
                        console.log (sprintf "view: execute cmd %s raised exception:\n%s" name (exn.ToString()))
                        reraise()
                 dispatch msgFromCmd)
 
         let canExecute = 
-            Func<bool>(fun () -> 
+            Func<obj, bool>(fun cmdParameter -> 
                 console.log (sprintf "view: checking if cmd %s can execute" name)
-                canExec model)
+                canExec cmdParameter model)
         Xamarin.Forms.Command (execute, canExecute)
 
     /// Convert a sub-model
@@ -68,6 +69,7 @@ and ViewModel<'model, 'msg>(m: 'model, dispatch, propMap: ViewBindings<'model, '
     let convert (name, binding) =
         match binding with
         | Bind getter -> name, Get getter
+        | BindOneWayFromView setter -> name, Set setter
         | BindTwoWay (getter, setter) -> name, GetSet (getter, setter)
         | BindTwoWayValidation (getter, setter) -> name, GetSetValidate (getter, setter)
         | BindCmd (exec, canExec) -> name, Cmd (toCommand name (exec, canExec))
@@ -129,6 +131,7 @@ and ViewModel<'model, 'msg>(m: 'model, dispatch, propMap: ViewBindings<'model, '
                     | Cmd c -> box c
                     | Model m -> box m
                     | Map (getter, mapper) -> getter model |> mapper
+                    | Set setter -> invalidOp (sprintf "Prop Binding Not Settable: %s" name)
 
                 console.log (sprintf "view: got %s = %A" name value)
                 value
@@ -143,6 +146,7 @@ and ViewModel<'model, 'msg>(m: 'model, dispatch, propMap: ViewBindings<'model, '
             if props.ContainsKey name then
 
                 match props.[name] with 
+                | Set setter
                 | GetSet (_, setter) -> setter value model |> dispatch
                 | GetSetValidate (_, setter) -> 
                     let errorsChanged() = errorsChanged.Trigger([| box self; box (DataErrorsChangedEventArgs(name)) |])

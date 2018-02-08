@@ -3,9 +3,9 @@
 open Xamarin.Forms
 open Xamarin.Forms.Xaml
 
-type ItemDetailPage() as self = 
+type ItemDetailPage() = 
     inherit ContentPage()
-    let _ = base.LoadFromXaml(typeof<ItemDetailPage>)
+    do base.LoadFromXaml(typeof<ItemDetailPage>) |> ignore
 (*
     let item = 
             {
