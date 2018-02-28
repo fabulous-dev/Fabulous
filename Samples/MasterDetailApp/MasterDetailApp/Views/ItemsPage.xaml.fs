@@ -9,57 +9,30 @@ type ItemsPage() =
 
 
 (*
-    let item = 
-            {
-                Text = "Item 1";
-                Description = "This is an item description."
-            }
-    do self.InitializeComponent();
-    do self.BindingContext <- viewModel;
+    member __.OnItemSelected(sender:obj, args: SelectedItemChangedEventArgs) = 
+        async {
+            match args.SelectedItem with 
+            | :? Item as item -> 
 
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+                return! Navigation.PushAsync(new ItemDetailPage(new ItemDetailViewModel(item)));
 
-using Xamarin.Forms;
+                // Manually deselect item
+                //ItemsListView.SelectedItem = null;
+             | _ -> ()
+         } |> Async.StartAsTask
 
-namespace MasterDetailApp
-{
-    public partial class ItemsPage : ContentPage
+    async void AddItem_Clicked(object sender, EventArgs e)
     {
-        ItemsViewModel viewModel;
+        await Navigation.PushAsync(new NewItemPage());
+    }
 
-        public ItemsPage()
-        {
-            InitializeComponent();
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
 
-            BindingContext = viewModel = new ItemsViewModel();
-        }
-
-        async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
-        {
-            var item = args.SelectedItem as Item;
-            if (item == null)
-                return;
-
-            await Navigation.PushAsync(new ItemDetailPage(new ItemDetailViewModel(item)));
-
-            // Manually deselect item
-            ItemsListView.SelectedItem = null;
-        }
-
-        async void AddItem_Clicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new NewItemPage());
-        }
-
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-
-            if (viewModel.Items.Count == 0)
-                viewModel.LoadItemsCommand.Execute(null);
-        }
+        if (viewModel.Items.Count == 0)
+            viewModel.LoadItemsCommand.Execute(null);
+    }
     }
 }
 *)

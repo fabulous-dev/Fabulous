@@ -1,23 +1,24 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\..\..\packages\androidapp\Xamarin.Forms\build\netstandard1.0\Xamarin.Forms.props" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Forms\build\netstandard1.0\Xamarin.Forms.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FSharp.Core">
-        <HintPath>../../../packages/neutral/FSharp.Core/lib/netstandard1.6/FSharp.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Core">
-        <HintPath>../../../packages/neutral/Xamarin.Forms/lib/netstandard1.0/Xamarin.Forms.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Platform">
-        <HintPath>../../../packages/neutral/Xamarin.Forms/lib/netstandard1.0/Xamarin.Forms.Platform.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Forms.Xaml">
-        <HintPath>../../../packages/neutral/Xamarin.Forms/lib/netstandard1.0/Xamarin.Forms.Xaml.dll</HintPath>
-    </Reference>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\AboutPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\ItemDetailPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\NewItemPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\ItemsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)App.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
@@ -27,31 +28,17 @@
     <Compile Include="Views\ItemDetailPage.xaml.fs">
       <DependentUpon>ItemDetailPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ItemsPage.xaml.fs">
-      <DependentUpon>ItemsPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\NewItemPage.xaml.fs">
       <DependentUpon>NewItemPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ItemsPage.xaml.fs">
+      <DependentUpon>ItemsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MasterDetailApp.fs" />
-    <ProjectReference Include="..\..\..\Elmish.XamarinForms\Elmish.XamarinForms.fsproj" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\AboutPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\ItemDetailPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\ItemsPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\NewItemPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)App.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
+    <PackageReference Include="FSharp.Core" Version="4.3.3" />
+    <PackageReference Include="Xamarin.Forms" Version="2.5.0.280555" />
+    <ProjectReference Include="..\..\..\Elmish.XamarinForms\Elmish.XamarinForms.fsproj" />
   </ItemGroup>
-  <Import Project="..\..\..\packages\androidapp\Xamarin.Forms\build\netstandard1.0\Xamarin.Forms.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Forms\build\netstandard1.0\Xamarin.Forms.targets')" />
 </Project>
