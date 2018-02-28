@@ -15,10 +15,10 @@ module AboutPg =
 
     let init () = ()
 
-    let update msg model = model
+    let update embed (msg: Msg) (model: Model) = model, Cmd.none
 
     let view _ dispatch =
-        [ "OpenWebCommand" |> Binding.cmd (fun _ m -> Device.OpenUri(Uri("https://xamarin.com/platform")); ()) 
+        [ "OpenWebCommand" |> Binding.cmd (fun _ m -> Device.OpenUri(Uri("https://xamarin.com/platform")); Cmd.none)
           "Title" |> Binding.oneWay (fun m -> "About") ]
 
 module ItemsPg = 
@@ -28,41 +28,51 @@ module ItemsPg =
           IsBusy: bool }
 
     type Msg = 
-        | LoadItemsStart 
-        | LoadItemsComplete
+        | LoadItems
+        | LoadItemsComplete of Item []
         | AddItem
-        | Ignore
+        | SelectItem of Item
+        | NewItem
 
     let init () = { Items  = [| { Text = "Text1"; Description = "Description1"  } |]; IsBusy = false }
 
-    let update msg model =
+    let update onSelectItem onNewItem embed msg model =
         match msg with
-        | LoadItemsStart -> { model with IsBusy = true }
-        | LoadItemsComplete -> { model with Items = [| { Text = "Text1"; Description = "Description1"  } |]; IsBusy = false }
-        | AddItem -> { model with Items = Array.append model.Items [| { Text = "Text" + string model.Items.Length; Description = "Description1" + string model.Items.Length } |]  }
-        | Ignore -> model
+        | LoadItemsComplete items -> { model with Items = items; IsBusy = false }, Cmd.none
+        | AddItem -> { model with Items = [| yield! model.Items; yield let n = model.Items.Length in { Text = "Text" + string n; Description = "Description" + string n } |]  }, Cmd.none
+        | SelectItem item -> 
+            Device.OpenUri(Uri("http://fsharp.org"))
+            model, onSelectItem item 
+        | LoadItems  -> 
+            { model with IsBusy = true }, 
+            [ fun dispatch -> 
+                async { 
+                  do! Async.Sleep 2000; 
+                  dispatch (LoadItemsComplete [| { Text = "Text1"; Description = "Description1"  } |])
+                } |> Async.StartImmediate ] |> Cmd.map embed
+        | NewItem  -> 
+            model, onNewItem
 
     let view _ dispatch =
         [ "Items" |> Binding.oneWay (fun m -> m.Items )
           "IsBusy" |> Binding.oneWay (fun m -> m.IsBusy )
           "Title" |> Binding.oneWay (fun m -> "Items")
-          "SelectedItem"|> Binding.oneWayFromView (fun (v:obj) m -> if isNull v then Ignore else Device.OpenUri(Uri("http://fsharp.org")); Ignore ) 
-          "LoadItemsCommand" |> Binding.cmd (fun _ _ -> 
-              async { 
-                do! Async.Sleep 2000; 
-                dispatch LoadItemsComplete 
-              } |> Async.StartImmediate
-              LoadItemsStart)
-          "AddItemCommand" |> Binding.cmd (fun _ _ -> AddItem)
+          "SelectedItem"|> Binding.oneWayFromView (fun (v:obj) m -> match v with :? Item as i -> Cmd.ofMsg (SelectItem i)| _ -> Cmd.none) 
+          "LoadItemsCommand" |> Binding.cmd (fun _ _ -> Cmd.ofMsg LoadItems)
+          "NewItemCommand" |> Binding.cmd (fun _ _ -> Cmd.ofMsg NewItem)
+          "AddItemCommand" |> Binding.cmd (fun _ _ -> Cmd.ofMsg AddItem)
         ]
 
 
 module ItemDetailsPg =
-    type Model = Item 
+    type Model = Item
+    type Msg = SetItem of Item
 
     let init () = { Text = "Test1"; Description = "This is  a test item"}
 
-    let update msg model = model
+    let update embed (msg: Msg) (model: Model) = 
+        match msg with 
+        | SetItem item -> item, Cmd.none
 
     let view _ dispatch =
         [ "Text" |> Binding.oneWay (fun m -> m.Text )
@@ -77,20 +87,40 @@ module NewItemPg =
         | Save 
         | SetText of string
         | SetDescription of string
+        | Reset
 
     let init () = { Text = "Test1"; Description = "This is  a test item"}
 
-    let update msg model =
+    let update embed msg model =
         match msg with
-        | Save -> model // { model with Items = Array.append model.Items [| { Text = "Text" + string model.Items.Length; Description = "Description1" + string model.Items.Length } |]  }
-        | SetText t -> { model with Text = t }
-        | SetDescription t -> { model with Description = t } 
+        | Save -> model, Cmd.none // { model with Items = Array.append model.Items [| { Text = "Text" + string model.Items.Length; Description = "Description1" + string model.Items.Length } |]  }
+        | SetText t -> { model with Text = t }, Cmd.none
+        | SetDescription t -> { model with Description = t } , Cmd.none
+        | Reset -> init() , Cmd.none
 
     let view _ dispatch =
-        [ "Text" |> Binding.twoWay (fun m -> m.Text ) (fun v m -> SetText v )
-          "Description" |> Binding.twoWay (fun m -> m.Description ) (fun v m -> SetDescription v)
-          "Save" |> Binding.cmd (fun m _ -> Save)
+        [ "Text" |> Binding.twoWay (fun m -> m.Text ) (fun v m -> SetText v |> Cmd.ofMsg )
+          "Description" |> Binding.twoWay (fun m -> m.Description ) (fun v m -> SetDescription v |> Cmd.ofMsg)
+          "Save" |> Binding.cmd (fun m _ -> Save |> Cmd.ofMsg)
+          "Title" |> Binding.oneWay (fun m -> "New Item")
         ]
+
+
+module Nav =
+    type Model = Item 
+
+    type Msg = 
+        | OpenNewItem  
+        | OpenItemDetails of Item
+
+    let init () = { Text = "Test1"; Description = "This is  a test item"}
+
+    let update (itemsPage: Page, newItemPage, itemDetailPage) embed msg model =
+        match msg with
+        | OpenNewItem          -> model, Cmd.batch [Navigation.pushPage itemsPage.Navigation (newItemPage()); Cmd.ofMsg (Choice4Of5 NewItemPg.Reset)]
+        | OpenItemDetails item -> model, Cmd.batch [Navigation.pushPage itemsPage.Navigation (itemDetailPage()); Cmd.ofMsg (Choice3Of5 (ItemDetailsPg.SetItem item))]
+
+    let view _ dispatch = []
 
 
 type MasterDetailApp () as self = 
@@ -99,22 +129,36 @@ type MasterDetailApp () as self =
     do self.LoadFromXaml(typeof<MasterDetailApp>) |> ignore
 
     do
-        let aboutPage = MasterDetailApp.AboutPage ()
-        let itemsPage = MasterDetailApp.ItemsPage ()
-        let itemDetailPage = MasterDetailApp.ItemDetailPage ()
-        let newItemPage = MasterDetailApp.NewItemPage ()
+        let aboutPage = AboutPage ()
+        let itemsPage = ItemsPage ()
+        let itemDetailPage () = 
+            //let program = Page. ItemDetailsPg.init ItemDetailsPg.update ItemDetailsPg.view
+            ItemDetailPage ()
+
+        let newItemPage = NewItemPage ()
 
         let mainPage = TabbedPage()
         mainPage.Children.Add(itemsPage)
         mainPage.Children.Add(aboutPage)
-        mainPage.Children.Add(itemDetailPage)
+        // Not a child, only accessed via navigation
+        //mainPage.Children.Add(itemDetailPage)
+        //mainPage.Children.Add(newItemPage)
+        let navMainPage = NavigationPage mainPage
+        let nav = navMainPage.Navigation
+        let onSelectItem item = Cmd.ofMsg (Choice5Of5 (Nav.OpenItemDetails item))
+        let onNewItem = Cmd.ofMsg (Choice5Of5 Nav.OpenNewItem)
 
-        let aboutProgram = Program.mkSimple AboutPg.init AboutPg.update AboutPg.view
-        let itemsProgram = Program.mkSimple ItemsPg.init ItemsPg.update ItemsPg.view
-        let itemDetailProgram = Program.mkSimple ItemDetailsPg.init ItemDetailsPg.update ItemDetailsPg.view
-        Program.combine3 aboutProgram itemsProgram itemDetailProgram
+        let program, pages = 
+             Pages.compose5 
+                  "About"       AboutPg.init       AboutPg.update                                        AboutPg.view       aboutPage
+                  "Items"       ItemsPg.init       (ItemsPg.update onSelectItem onNewItem)               ItemsPg.view       itemsPage
+                  "ItemDetails" ItemDetailsPg.init ItemDetailsPg.update                                  ItemDetailsPg.view null
+                  "NewItem"     NewItemPg.init     NewItemPg.update                                      NewItemPg.view     null
+                  "Nav"         Nav.init           (Nav.update (itemsPage, NewItemPage, ItemDetailPage)) View.none          null
+
+        program
         |> Program.withConsoleTrace
-        |> Program.runPages3 aboutPage itemsPage itemDetailPage
+        |> Program.runPages pages
 
         base.MainPage <- NavigationPage mainPage
 //        await Navigation.PushAsync(new ItemDetailPage(new ItemDetailViewModel(item)));

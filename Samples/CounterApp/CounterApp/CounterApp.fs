@@ -29,11 +29,11 @@ type CounterApp () =
     let view _ _ =
         [ "CounterValue" |> Binding.oneWay (fun m -> m.Count)
           "CounterValue2" |> Binding.oneWay (fun m -> m.Count + 1)
-          "IncrementCommand" |> Binding.cmd (fun _ _ -> Increment)
-          "DecrementCommand" |> Binding.cmd (fun _ _ -> Decrement)
-          "ResetCommand" |> Binding.cmdIf (fun _ _ -> Reset) (fun _ m -> m <> init ())
+          "IncrementCommand" |> Binding.cmd (fun _ _ -> Cmd.ofMsg Increment)
+          "DecrementCommand" |> Binding.cmd (fun _ _ -> Cmd.ofMsg Decrement)
+          "ResetCommand" |> Binding.cmdIf (fun _ _ -> Cmd.ofMsg Reset) (fun _ m -> m <> init ())
           "ResetVisible" |> Binding.oneWay (fun m ->  m <> init ())
-          "StepValue" |> Binding.twoWay (fun m -> double m.Step) (fun v m -> v |> ((+)0.5) |> int |> SetStep) ]
+          "StepValue" |> Binding.twoWay (fun m -> double m.Step) (fun v m -> v |> ((+)0.5) |> int |> SetStep |> Cmd.ofMsg ) ]
 
     let page = CounterApp.CounterPage ()
 
