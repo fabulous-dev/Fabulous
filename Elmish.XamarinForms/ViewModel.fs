@@ -50,12 +50,12 @@ and ViewModel<'model, 'msg>(m: 'model, dispatch: 'msg -> unit, propMap: ViewBind
         let execute = 
             Action<obj> (fun cmdParameter -> 
                 if debug then console.log (sprintf "view: execute cmd %s" name)
-                let cmd = 
+                let msg = 
                    try exec cmdParameter model 
                    with exn -> 
                        if debug then console.log (sprintf "view: execute cmd %s raised exception:\n%s" name (exn.ToString()))
                        reraise()
-                Cmd.dispatch dispatch cmd)
+                dispatch msg)
 
         let canExecute = 
             Func<obj, bool>(fun cmdParameter -> 
@@ -68,7 +68,7 @@ and ViewModel<'model, 'msg>(m: 'model, dispatch: 'msg -> unit, propMap: ViewBind
     let convert (name, binding) =
         match binding with
         | Bind getter -> name, Get getter
-        | BindOneWayFromView setter -> name, Set setter
+        | BindOneWayToSource setter -> name, Set setter
         | BindTwoWay (getter, setter) -> name, GetSet (getter, setter)
         | BindTwoWayValidation (getter, setter) -> name, GetSetValidate (getter, setter)
         | BindCmd (exec, canExec) -> name, Cmd (toCommand name (exec, canExec))
@@ -157,8 +157,8 @@ and ViewModel<'model, 'msg>(m: 'model, dispatch: 'msg -> unit, propMap: ViewBind
                 match props.[name] with 
                 | Set setter
                 | GetSet (_, setter) -> 
-                    let cmd = setter value model 
-                    cmd |> Cmd.dispatch dispatch
+                    let msg = setter value model 
+                    dispatch msg
                 | GetSetValidate (_, setter) -> 
                     let errorsChanged() = errorsChanged.Trigger([| box self; box (DataErrorsChangedEventArgs(name)) |])
 
@@ -169,7 +169,7 @@ and ViewModel<'model, 'msg>(m: 'model, dispatch: 'msg -> unit, propMap: ViewBind
                     match resultOfSetting with
                     | Ok msg -> 
                         if errors.Remove(name) then errorsChanged()
-                        Cmd.dispatch dispatch msg 
+                        dispatch msg
                     | Error err ->
                         match errors.TryGetValue name with
                         | true, errs -> errors.[name] <- err :: errs

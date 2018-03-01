@@ -8,16 +8,16 @@ type internal Getter<'model> =
     'model -> obj
 
 type internal Setter<'model, 'msg> = 
-    (*Value*)obj -> 'model -> Cmd<'msg>
+    (*Value*)obj -> 'model -> 'msg
 
 type internal Execute<'model, 'msg> = 
-    (*CommandParameter*)obj -> 'model -> Cmd<'msg>
+    (*CommandParameter*)obj -> 'model -> 'msg
 
 type internal CanExecute<'model> = 
     (*CommandParameter*)obj -> 'model -> bool
 
 type internal ValidSetter<'model,'msg> = 
-    (*Value*)obj -> 'model -> Result<Cmd<'msg>,string>
+    (*Value*)obj -> 'model -> Result<'msg,string>
 
 type ViewBinding<'model, 'msg> = 
     string * ViewVariable<'model, 'msg>
@@ -29,7 +29,7 @@ and ViewVariable<'model,'msg> =
     // representation is internal
     internal
     | Bind of Getter<'model>
-    | BindOneWayFromView of Setter<'model,'msg>
+    | BindOneWayToSource of Setter<'model,'msg>
     | BindTwoWay of Getter<'model> * Setter<'model,'msg>
     | BindTwoWayValidation of Getter<'model> * ValidSetter<'model,'msg>
     | BindCmd of Execute<'model,'msg> * CanExecute<'model>
@@ -49,10 +49,10 @@ module Binding =
     let private boxVariable (variable: ViewVariable<'model,'msg>) : ViewVariable<obj,obj> =
         match variable with
         | Bind getter -> Bind (unbox >> getter)
-        | BindOneWayFromView setter -> BindOneWayFromView (fun v m -> setter v (unbox m) |> Cmd.map box)
-        | BindTwoWay (getter,setter) -> BindTwoWay (unbox >> getter, fun v m -> setter v (unbox m) |> Cmd.map box)
-        | BindTwoWayValidation (getter,setter) -> BindTwoWayValidation (unbox >> getter, fun v m -> setter v (unbox m) |> Result.map (Cmd.map box))
-        | BindCmd (exec, canExec) -> BindCmd ((fun p m -> exec p (unbox m) |> Cmd.map box), (fun p m -> canExec p (unbox m)))
+        | BindOneWayToSource setter -> BindOneWayToSource (fun v m -> setter v (unbox m) |> box)
+        | BindTwoWay (getter,setter) -> BindTwoWay (unbox >> getter, fun v m -> setter v (unbox m) |> box)
+        | BindTwoWayValidation (getter,setter) -> BindTwoWayValidation (unbox >> getter, fun v m -> setter v (unbox m) |> Result.map box)
+        | BindCmd (exec, canExec) -> BindCmd ((fun p m -> exec p (unbox m) |> box), (fun p m -> canExec p (unbox m)))
         | BindSubModel (ViewSubModel (name,getter,toMsg,bindings)) -> BindSubModel (ViewSubModel (name, unbox >> getter, toMsg >> box, bindings))
         | BindMap (getter,mapper) -> BindMap (unbox >> getter, mapper)
 
@@ -71,35 +71,48 @@ module Binding =
     ///<param name="getter">Gets value from the model</param>
     ///<param name="setter">Setter function, returns a message to dispatch, typically to set the value in the model</param>
     ///<param name="name">Binding name</param>
-    let twoWay (getter: 'model -> 'a) (setter: 'a -> 'model -> Cmd<'msg>) name : ViewBinding<'model,'msg> = 
-        name, BindTwoWay (getter >> box, fun v m -> setter (unbox v) m)
+    let twoWay (getter: 'model -> 'a) (setter: 'a -> 'msg) name : ViewBinding<'model,'msg> = 
+        name, BindTwoWay (getter >> box, fun v m -> setter (unbox v))
     
     ///<summary>View to model binding (i.e. BindingMode.OneWayToSource)</summary>
     ///<param name="setter">Setter function, returns a message to dispatch, typically to set the value in the model</param>
     ///<param name="name">Binding name</param>
-    let oneWayFromView (setter: 'a -> 'model -> Cmd<'msg>) name : ViewBinding<'model,'msg> = 
-        name, BindOneWayFromView (fun v m -> setter (unbox v) m)
+    let oneWayToSource (setter: 'a -> 'msg) name : ViewBinding<'model,'msg> = 
+        name, BindOneWayToSource (fun v m -> setter (unbox v))
     
     ///<summary>Both model to view and view to model (i.e. BindingMode.TwoWay) with INotifyDataErrorInfo implementation)</summary>
     ///<param name="getter">Gets value from the model</param>
-    ///<param name="setter">Validation function, returns a Result with the message to dispatch or an error string</param>
+    ///<param name="setter">Validation function, returns a Result with the command to dispatch or an error string</param>
     ///<param name="name">Binding name</param>
-    let twoWayValidation (getter: 'model -> 'a) (setter: 'a -> 'model -> Result<Cmd<'msg>,string>) name : ViewBinding<'model,'msg> = 
-        name, BindTwoWayValidation (getter >> box, fun v m -> setter (unbox v) m)
+    let twoWayValidation (getter: 'model -> 'a) (setter: 'a -> Result<'msg,string>) name : ViewBinding<'model,'msg> = 
+        name, BindTwoWayValidation (getter >> box, fun v m -> setter (unbox v))
         
     ///<summary>Command binding</summary>
-    ///<param name="exec">Execute function, returns a message to dispatch</param>
+    ///<param name="msg">A message to dispatch</param>
     ///<param name="name">Binding name</param>
-    let cmd exec name : ViewBinding<'model,'msg> = 
-        name, BindCmd (exec, fun _ _ -> true)
-        
+    let msg msgToSend name : ViewBinding<'model,'msg> = 
+        name, BindCmd ((fun _ _ -> msgToSend), (fun _ _ -> true))
+
+    ///<summary>Command binding</summary>
+    ///<param name="msgf">A function to create a message to dispatch</param>
+    ///<param name="name">Binding name</param>
+    let msgWithParam msgf name : ViewBinding<'model,'msg> = 
+        name, BindCmd ((fun param _ -> msgf param), (fun _ _ -> true))
+
     ///<summary>Conditional command binding</summary>
-    ///<param name="exec">Execute function, returns a message to dispatch</param>
+    ///<param name="msgf">A function to create a message to dispatch</param>
     ///<param name="canExec">CanExecute function, returns a bool</param>
     ///<param name="name">Binding name</param>
-    let cmdIf exec canExec name : ViewBinding<'model,'msg> = 
-        name, BindCmd (exec, canExec)
+    let msgIf msgToSend canExec name : ViewBinding<'model,'msg> = 
+        name, BindCmd ((fun _ _ -> msgToSend), (fun _ m -> canExec m))
         
+    ///<summary>Conditional command binding</summary>
+    ///<param name="msg">Returns a message to dispatch</param>
+    ///<param name="canExec">CanExecute function, returns a bool</param>
+    ///<param name="name">Binding name</param>
+    let msgWithParamIf msgf canExec name : ViewBinding<'model,'msg> = 
+        name, BindCmd ((fun param _ -> msgf param), canExec)
+
     ///<summary>Sub-view binding</summary>
     ///<param name="getter">Gets the sub-model from the base model</param>
     ///<param name="viewBinding">Set of view bindings for the sub-view</param>
