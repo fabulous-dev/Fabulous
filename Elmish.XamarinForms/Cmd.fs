@@ -1,6 +1,7 @@
 ﻿namespace Elmish.XamarinForms
 
 open Elmish
+open FSharp.Control
 
 [<RequireQualifiedAccess>]
 module Cmd = 
@@ -21,4 +22,15 @@ module Cmd =
         [bind >> Async.StartImmediate]
 
     let dispatch d (cmd: Cmd<_>) = for sub in cmd do sub d
+
+    let ofAsyncSeq p : Cmd<_> =
+        [ fun dispatch -> p |> AsyncSeq.iter dispatch |> Async.StartImmediate ]
+ 
+    type CmdBuilder() = 
+        inherit AsyncSeq.AsyncSeqBuilder()
+        member x.Run(p: AsyncSeq<_>) = ofAsyncSeq p
+ 
+[<AutoOpen>]
+module CommandBuidler = 
+    let cmd = Cmd.CmdBuilder()
 

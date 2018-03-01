@@ -58,6 +58,7 @@
     <Compile Include="Properties\AssemblyInfo.fs" />
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="Assets\AboutAssets.txt" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -67,7 +68,7 @@
     <Reference Include="mscorlib" />
     <Reference Include="Mono.Android" />
     <ProjectReference Include="..\CounterApp\CounterApp.fsproj">
-      <Project>{231BD370-D64B-481E-A10A-AB932766AEC9}</Project>
+      <Project>{4282E90F-2519-46D0-B593-D57CFCA36A28}</Project>
       <Name>CounterApp</Name>
     </ProjectReference>
     <Reference Include="Xamarin.Android.FSharp.ResourceProvider.Runtime">
@@ -121,9 +122,6 @@
     <Reference Include="Xamarin.Android.Support.Vector.Drawable">
        <HintPath>../../../packages/androidapp/Xamarin.Android.Support.Vector.Drawable/lib/MonoAndroid70/Xamarin.Android.Support.Vector.Drawable.dll</HintPath>
     </Reference>
-    <Reference Include="FSharp.Core">
-        <HintPath>../../../packages/androidapp/FSharp.Core/lib/netstandard1.6/FSharp.Core.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Forms.Core">
        <HintPath>../../../packages/androidapp/Xamarin.Forms/lib/MonoAndroid10/Xamarin.Forms.Core.dll</HintPath>
     </Reference>
@@ -138,6 +136,12 @@
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml">
        <HintPath>../../../packages/androidapp/Xamarin.Forms/lib/MonoAndroid10/Xamarin.Forms.Xaml.dll</HintPath>
+    </Reference>
+    <Reference Include="FSharp.Core">
+      <HintPath>..\..\..\packages\FSharp.Core.4.3.4\lib\netstandard1.6\FSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="FSharp.Control.AsyncSeq">
+      <HintPath>..\..\..\packages\FSharp.Control.AsyncSeq.2.0.21\lib\netstandard2.0\FSharp.Control.AsyncSeq.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.FSharp.targets" Condition="Exists('$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.FSharp.targets')" />
