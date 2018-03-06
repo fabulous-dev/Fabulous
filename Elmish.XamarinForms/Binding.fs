@@ -39,8 +39,8 @@ and ViewVariable<'model,'msg> =
 and ViewSubModel<'model,'msg> = 
     // representation is internal
     internal
-    | ViewSubModel of string * ('model -> obj (* '_model *)) * (obj (* '_msg *) -> 'msg) * ViewBindings<obj (* '_model *),obj (* '_msg *) >
-    member x.Name = (let (ViewSubModel(nm, _, _, _)) = x in nm)
+    | ViewSubModel of (obj -> unit) * string * ('model -> obj (* '_model *)) * (obj (* '_msg *) -> 'msg) * ViewBindings<obj (* '_model *),obj (* '_msg *) >
+    member x.Name = (let (ViewSubModel(_, nm, _, _, _)) = x in nm)
 
 [<RequireQualifiedAccess>]
 module Binding =
@@ -53,7 +53,7 @@ module Binding =
         | BindTwoWay (getter,setter) -> BindTwoWay (unbox >> getter, fun v m -> setter v (unbox m) |> box)
         | BindTwoWayValidation (getter,setter) -> BindTwoWayValidation (unbox >> getter, fun v m -> setter v (unbox m) |> Result.map box)
         | BindCmd (exec, canExec) -> BindCmd ((fun p m -> exec p (unbox m) |> box), (fun p m -> canExec p (unbox m)))
-        | BindSubModel (ViewSubModel (name,getter,toMsg,bindings)) -> BindSubModel (ViewSubModel (name, unbox >> getter, toMsg >> box, bindings))
+        | BindSubModel (ViewSubModel (page, name,getter,toMsg,bindings)) -> BindSubModel (ViewSubModel (page, name, unbox >> getter, toMsg >> box, bindings))
         | BindMap (getter,mapper) -> BindMap (unbox >> getter, mapper)
 
     let private boxBindings (viewBindings: ViewBindings<'model,'msg>) : ViewBindings<obj,obj> =
@@ -77,7 +77,7 @@ module Binding =
     ///<summary>View to model binding (i.e. BindingMode.OneWayToSource)</summary>
     ///<param name="setter">Setter function, returns a message to dispatch, typically to set the value in the model</param>
     ///<param name="name">Binding name</param>
-    let oneWayToSource (setter: 'a -> 'msg) name : ViewBinding<'model,'msg> = 
+    let oneWayFromView (setter: 'a -> 'msg) name : ViewBinding<'model,'msg> = 
         name, BindOneWayToSource (fun v m -> setter (unbox v))
     
     ///<summary>Both model to view and view to model (i.e. BindingMode.TwoWay) with INotifyDataErrorInfo implementation)</summary>
@@ -118,8 +118,8 @@ module Binding =
     ///<param name="viewBinding">Set of view bindings for the sub-view</param>
     ///<param name="toMsg">Maps sub-messages to the base message type</param>
     ///<param name="name">Binding name</param>
-    let subView (getter: 'model -> '_model) (toMsg: '_msg -> 'msg) (viewBinding: ViewBindings<'_model,'_msg>)  name : ViewBinding<'model,'msg> = 
-        name, BindSubModel (ViewSubModel (name, getter >> box, unbox >> toMsg, viewBinding |> boxBindings))
+    let subView initf (getter: 'model -> '_model) (toMsg: '_msg -> 'msg) (viewBinding: ViewBindings<'_model,'_msg>)  name : ViewBinding<'model,'msg> = 
+        name, BindSubModel (ViewSubModel (initf, name, getter >> box, unbox >> toMsg, viewBinding |> boxBindings))
         
     ///<summary>One-way binding that applies a map when passing data to the view.
     /// Should be used for data that a view needs wrapped in some view-specific type. 

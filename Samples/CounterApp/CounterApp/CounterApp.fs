@@ -26,7 +26,8 @@ type CounterApp () =
         | Reset -> init ()
         | SetStep n -> { model with Step = n }
 
-    let view _ _ =
+    let view () =
+        CounterPage (), 
         [ "CounterValue" |> Binding.oneWay (fun m -> m.Count)
           "CounterValue2" |> Binding.oneWay (fun m -> m.Count + 1)
           "IncrementCommand" |> Binding.msg Increment
@@ -35,11 +36,10 @@ type CounterApp () =
           "ResetVisible" |> Binding.oneWay (fun m ->  m <> init ())
           "StepValue" |> Binding.twoWay (fun m -> double m.Step) (fun v -> SetStep (int (v + 0.5))) ]
 
-    let page = CounterApp.CounterPage ()
-
     do
-        Program.mkSimple init update view
-        |> Program.withConsoleTrace
-        |> Program.runPage page
+        let page = 
+            Program.mkSimple init update (fun _ _ -> view())
+            |> Program.withConsoleTrace
+            |> Program.run
 
         base.MainPage <- page
