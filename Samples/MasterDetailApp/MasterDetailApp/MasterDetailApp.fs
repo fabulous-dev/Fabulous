@@ -7,148 +7,40 @@ open FSharp.Control
 open Xamarin.Forms
 open Xamarin.Forms.Xaml
 
-type Item = 
-    { Text: string; Description: string }
+module MainPage =
 
-type NavigationMsg = 
-    | NoNav
-    | GoToItemDetailsPage of Item
-    | GoToNewItemPage 
+    // Combine the init logic 
+    let init = 
+        Init.combo4 AboutPage.init ItemsPage.init NewItemPage.init ItemDetailPage.init
 
-module AboutPg = 
+    // Combine the update logic and reconcile the external messages
+    let update = 
+        Update.combo4 AboutPage.update ItemsPage.update NewItemPage.update ItemDetailPage.update 
+        |> Update.reconcile (fun msg ((m1,m2,m3,m4) as m) ->
+            match msg with
+            | NoNav -> m, NoCmd
+            | NewItemRequest req     -> (m1, m2, NewItemPage.init(), m4), Nav.push req NewItemPageID 
+            | NewItemResult (item, req) -> (m1, ItemsPage.addItem item m2, m3, m4), Nav.popToRoot req
+            | ItemDetailsRequest (item, req) -> (m1, m2, m3, item), Nav.push req ItemDetailsPageID
+        )
 
-    type Msg = | OpenAboutPage
+    // Combine the view logic 
+    let view()  = 
+        let (aboutPage, itemsPage, newItemPage, itemDetailPage), bindings = 
+            View.combo4 AboutPage.view ItemsPage.view NewItemPage.view ItemDetailPage.view
 
-    let init () = NoModel
+        let mainPage = 
+            let p = TabbedPage()
+            p.Children.Add(itemsPage)
+            p.Children.Add(aboutPage)
+            p
 
-    let update (msg: Msg) NoModel = 
-        match msg with 
-        | OpenAboutPage -> NoModel, cmd { Device.OpenUri(Uri("https://xamarin.com/platform")) }, NoNav
+        let navMap = 
+            [ (ItemsPageID, (itemsPage :> Page));
+              (NewItemPageID, (newItemPage :> Page));
+              (ItemDetailsPageID, (itemDetailPage :> Page)) ]
 
-    let view _ dispatch =
-        [ "OpenWebCommand" |> Binding.msg OpenAboutPage
-          "Title" |> Binding.oneWay (fun m -> "About") ]
-
-module ItemsPg = 
-
-    type Model = 
-        { Items : Item[]
-          IsUpdating: bool }
-
-    type Msg = 
-        | UpdateItems
-        | UpdateItemsReceived of Item []
-        | UpdateItemsComplete
-        | AddItem
-        | SelectItem of obj
-        | NewItem
-
-    let init () = 
-        let firstItem = { Text = "Text1"; Description = "Description1"  }
-        { Items = [| firstItem |]; IsUpdating = false }
-
-    let updateItemsCmd =
-        cmd { 
-              try
-                do! Async.Sleep 2000; 
-                yield UpdateItemsReceived [| { Text = "Text1"; Description = "Description1"  } |]
-                do! Async.Sleep 2000; 
-                yield UpdateItemsReceived [| { Text = "Text1"; Description = "Description1"  } |]
-                do! Async.Sleep 2000; 
-              with _ -> 
-                yield UpdateItemsComplete
-            }
-
-    let update msg model =
-        match msg with
-        | UpdateItemsReceived items ->
-            { model with Items = [| yield! model.Items; yield! items |] }, Cmd.none, NoNav
-        | UpdateItemsComplete -> 
-            { model with IsUpdating = false }, Cmd.none, NoNav
-        | AddItem -> 
-            let n = model.Items.Length 
-            let newItem = { Text = "Text" + string n; Description = "Description" + string n }
-            let newItems = [| yield! model.Items; yield newItem |]
-            { model with Items = newItems  }, Cmd.none, NoNav
-        | SelectItem item -> 
-            model, Cmd.none, (match item with :? Item as i -> GoToItemDetailsPage i | _ -> NoNav) 
-        | UpdateItems  -> 
-            { model with IsUpdating = true }, updateItemsCmd, NoNav 
-        | NewItem  -> 
-            model, Cmd.none, GoToNewItemPage
-
-    let view _ _ =
-        [ "Items" |> Binding.oneWay (fun m -> m.Items)
-          "IsRefreshing" |> Binding.oneWay (fun m -> m.IsUpdating)
-          "Title" |> Binding.oneWay (fun m -> "Items")
-          "SelectedItem"|> Binding.oneWayToSource SelectItem
-          "LoadtemsCommand" |> Binding.msg UpdateItems
-          "NewItemCommand" |> Binding.msg NewItem
-          "AddItemCommand" |> Binding.msg AddItem
-        ]
-
-module ItemDetailsPg =
-
-    type Model = Item
-
-    type Msg = SetItem of Item
-
-    let init () = { Text = "Test1"; Description = "This is  a test item"}
-
-    let update (msg: Msg) (model: Model) = 
-        match msg with 
-        | SetItem item -> item, Cmd.none, NoNav
-
-    let view _ dispatch =
-        [ "Text" |> Binding.oneWay (fun m -> m.Text)
-          "Description" |> Binding.oneWay (fun m -> m.Description)
-          "Title" |> Binding.oneWay (fun m -> "Item Detail")
-        ]
-
-module NewItemPg =
-
-    type Model = Item 
-
-    type Msg = 
-        | Save 
-        | SetText of string
-        | SetDescription of string
-        | Reset
-
-    let init () = { Text = "Test1"; Description = "This is  a test item"}
-
-    let update msg model =
-        match msg with
-        | Save -> model, Cmd.none, NoNav
-            //let newItems = Array.append model.Items [| item |] 
-            //{ model with Items = newItems }, Cmd.none
-        | SetText t -> { model with Text = t }, Cmd.none, NoNav
-        | SetDescription t -> { model with Description = t }, Cmd.none, NoNav
-        | Reset -> init(), Cmd.none, NoNav
-
-    let view _ dispatch =
-        [ "Text" |> Binding.twoWay (fun m -> m.Text) SetText
-          "Description" |> Binding.twoWay (fun m -> m.Description) SetDescription
-          "Save" |> Binding.msg Save
-          "Title" |> Binding.oneWay (fun m -> "New Item")
-        ]
-
-module Nav =
-
-    type Model = Item 
-
-    type Msg = 
-        | OpenNewItem  
-        | OpenItemDetails of Item
-
-    let init () = { Text = "Test1"; Description = "This is  a test item"}
-
-    let update (itemsPage: Page, newItemPage, itemDetailPage) embed msg model =
-        match msg with
-        | OpenNewItem          -> model, Cmd.batch [Navigation.pushPage itemsPage.Navigation (newItemPage()); Cmd.ofMsg (Choice4Of5 NewItemPg.Reset)]
-        | OpenItemDetails item -> model, Cmd.batch [Navigation.pushPage itemsPage.Navigation (itemDetailPage()); Cmd.ofMsg (Choice3Of5 (ItemDetailsPg.SetItem item))]
-
-    let view _ dispatch = []
+        mainPage, bindings, navMap
 
 
 type MasterDetailApp () as self = 
@@ -156,32 +48,12 @@ type MasterDetailApp () as self =
 
     do self.LoadFromXaml(typeof<MasterDetailApp>) |> ignore
 
-    let aboutPage = AboutPage ()
-    let itemsPage = ItemsPage ()
-    let itemDetailPage  = ItemDetailPage ()
-    let newItemPage = NewItemPage ()
-
-    let program, pages = 
-         Pages.compose4 
-              "About" AboutPg.init AboutPg.update AboutPg.view aboutPage
-              "Items" ItemsPg.init ItemsPg.update ItemsPg.view itemsPage
-              "NewItemPg" NewItemPg.init NewItemPg.update NewItemPg.view newItemPage
-              "ItemDetailsPg" ItemDetailsPg.init ItemDetailsPg.update ItemDetailsPg.view itemDetailPage
-              (fun msg ((m1,m2,m3,m4) as m) ->  
-                  match msg with
-                  | NoNav -> m 
-                  | GoToNewItemPage _ -> itemsPage.Navigation.PushAsync newItemPage |> ignore; (m1, m2, NewItemPg.init(), m4)  
-                  | GoToItemDetailsPage i -> itemsPage.Navigation.PushAsync itemDetailPage |> ignore; (m1, m2, m3, ItemDetailsPg.init())  
-              )
-
     do
-        program
-        |> Program.withConsoleTrace
-        |> Program.runPages pages
-
-        let mainPage = TabbedPage()
-        mainPage.Children.Add(itemsPage)
-        mainPage.Children.Add(aboutPage)
+        let mainPage = 
+            Program.mkProgram (fun () -> MainPage.init(), NoCmd) MainPage.update (fun _ _ -> MainPage.view())
+            |> Program.withConsoleTrace
+            |> Program.withNavigation
+            |> Program.run
 
         base.MainPage <- NavigationPage mainPage
 

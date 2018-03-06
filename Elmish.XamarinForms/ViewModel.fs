@@ -72,7 +72,7 @@ and ViewModel<'model, 'msg>(m: 'model, dispatch: 'msg -> unit, propMap: ViewBind
         | BindTwoWay (getter, setter) -> name, GetSet (getter, setter)
         | BindTwoWayValidation (getter, setter) -> name, GetSetValidate (getter, setter)
         | BindCmd (exec, canExec) -> name, Cmd (toCommand name (exec, canExec))
-        | BindSubModel (ViewSubModel (subName, getter, toMsg, propMap)) -> name, SubModel (getter, toMsg, ViewModel<obj, obj>(getter model, toMsg >> dispatch, propMap, debug))
+        | BindSubModel (ViewSubModel (_, subName, getter, toMsg, propMap)) -> name, SubModel (getter, toMsg, ViewModel<obj, obj>(getter model, toMsg >> dispatch, propMap, debug))
         | BindMap (getter, mapper) -> name, Map (getter, mapper)
 
     do propMap |> List.map convert |> List.iter props.Add
