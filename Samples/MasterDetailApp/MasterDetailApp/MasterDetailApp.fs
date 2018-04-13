@@ -1,4 +1,5 @@
-﻿namespace MasterDetailApp
+﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
+namespace MasterDetailApp
 
 open System
 open Elmish
@@ -27,7 +28,7 @@ module MainPage =
     // Combine the view logic 
     let view()  = 
         let (aboutPage, itemsPage, newItemPage, itemDetailPage), bindings = 
-            View.combo4 AboutPage.view ItemsPage.view NewItemPage.view ItemDetailPage.view
+            StaticView.combo4 AboutPage.view ItemsPage.view NewItemPage.view ItemDetailPage.view
 
         let mainPage = 
             let p = TabbedPage()
@@ -50,10 +51,13 @@ type MasterDetailApp () as self =
 
     do
         let mainPage = 
-            Program.mkProgram (fun () -> MainPage.init(), NoCmd) MainPage.update (fun _ _ -> MainPage.view())
+            Program.mkProgram 
+                (fun () -> MainPage.init(), NoCmd) 
+                MainPage.update 
+                (fun _ _ -> MainPage.view())
             |> Program.withConsoleTrace
             |> Program.withNavigation
-            |> Program.run
+            |> Program.runStaticView
 
         base.MainPage <- NavigationPage mainPage
 

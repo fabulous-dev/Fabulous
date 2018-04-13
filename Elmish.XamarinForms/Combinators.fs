@@ -1,4 +1,5 @@
-﻿namespace Elmish.XamarinForms
+﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
+namespace Elmish.XamarinForms
 
 open Xamarin.Forms
 
@@ -11,7 +12,8 @@ type NoModel =
 
 type Update<'model, 'msg> = 'msg -> 'model -> 'model * Cmd<'msg>
 type Update<'model, 'msg, 'extmsg> = 'msg -> 'model -> 'model * Cmd<'msg> * 'extmsg
-type View<'model, 'msg, 'page> = unit -> 'page * ViewBindings<'model, 'msg>
+type StaticView<'model, 'msg, 'page> = unit -> 'page * ViewBindings<'model, 'msg>
+type DynamicView<'model, 'msg, 'page> = unit -> 'page * ViewBindings<'model, 'msg> * ('model -> 'msg -> View)
 
 [<AutoOpen>]
 module Values =
@@ -151,9 +153,9 @@ module Update =
         newModel2, Cmd.batch [cmds; cmds2]
 
 [<RequireQualifiedAccess>]
-module View =
+module StaticView =
 
-    let setBindingContextsUntyped (bindings: ViewBindings<'model, 'msg>) (viewModel: ViewModel<obj, obj>) = 
+    let internal setBindingContextsUntyped (bindings: ViewBindings<'model, 'msg>) (viewModel: ViewModel<obj, obj>) = 
         for (bindingName, binding) in bindings do 
             match binding with 
             | BindSubModel (ViewSubModel (initf, _, _, _, _)) -> 
@@ -162,7 +164,7 @@ module View =
                 initf subModel
             | _ -> ()
 
-    let setBindingContexts (bindings: ViewBindings<'model, 'msg>) (viewModel: ViewModel<'model, 'msg>) = 
+    let internal setBindingContexts (bindings: ViewBindings<'model, 'msg>) (viewModel: ViewModel<'model, 'msg>) = 
         for (bindingName, binding) in bindings do 
             match binding with 
             | BindSubModel (ViewSubModel (initf, _, _, _, _)) -> 
@@ -171,11 +173,24 @@ module View =
                 initf subModel
             | _ -> ()
 
-    let pageInit (page: Page) bindings (viewModel: ViewModel<'model, 'msg>) =
+    let internal pageInit (page: Page) contentf bindings (viewModel: ViewModel<'model, 'msg>) model dispatch =
         setBindingContexts bindings viewModel
         page.BindingContext <- box viewModel
+        match contentf with 
+        | None -> ()
+        | Some f -> 
+            (page :?> ContentPage).Content <- f model dispatch
 
-    let pageInitUntyped (page: Page) (bindings: ViewBindings<'model, 'msg>) =
+    let internal pageUpdate (page: Page) contentf model dispatch =
+        // TODO: make this incremental
+        //page.BatchBegin()
+        match contentf with 
+        | None -> ()
+        | Some f -> 
+            (page :?> ContentPage).Content <- f model dispatch
+        //page.BatchCommit()
+
+    let pageInitUntyped (page: ContentPage) (bindings: ViewBindings<'model, 'msg>) =
         fun (objViewModel: obj) ->
             match objViewModel with
             | :? ViewModel<obj, obj> as viewModel -> 
@@ -183,25 +198,26 @@ module View =
                 page.BindingContext <- objViewModel
             | _ -> failwithf "unexpected type in pageInitUntyped: %A" (objViewModel.GetType())
 
-    let genViewName = let mutable c = 0 in fun () -> c <- c + 1; "View"+string c
-    let apply (view: View<_, _, _>) = 
+    let internal genViewName = let mutable c = 0 in fun () -> c <- c + 1; "StaticView"+string c
+
+    let internal apply (view: StaticView<_, _, _>) = 
         let page, bindings = view() 
         let name = genViewName()
         name, page, bindings
 
-    let subPage (view1: View<_, _, _>) =
+    let subPage (view1: StaticView<_, _, _>) =
         let nm1, page1, bindings1 = apply view1
         page1,
         [ nm1 |> Binding.subView (pageInitUntyped page1 bindings1) id id bindings1 ]
 
-    let combo2 (view1: View<_, _, _>) (view2: View<_, _, _>) =
+    let combo2 (view1: StaticView<_, _, _>) (view2: StaticView<_, _, _>) =
         let nm1, page1, bindings1 = apply view1
         let nm2, page2, bindings2 = apply view2
         (page1, page2),
         [ nm1 |> Binding.subView (pageInitUntyped page1 bindings1) (fun (a,_) -> a) Choice1Of2 bindings1
           nm2 |> Binding.subView (pageInitUntyped page1 bindings2) (fun (_,a) -> a) Choice2Of2 bindings2 ]
 
-    let combo3 (view1: View<_, _, _>) (view2: View<_, _, _>) (view3: View<_, _, _>) = 
+    let combo3 (view1: StaticView<_, _, _>) (view2: StaticView<_, _, _>) (view3: StaticView<_, _, _>) = 
         let nm1, page1, bindings1 = apply view1
         let nm2, page2, bindings2 = apply view2
         let nm3, page3, bindings3 = apply view3
@@ -210,7 +226,7 @@ module View =
           nm2 |> Binding.subView (pageInitUntyped page2 bindings2) (fun (_,a,_) -> a) Choice2Of3 bindings2
           nm3 |> Binding.subView (pageInitUntyped page3 bindings3) (fun (_,_,a) -> a) Choice3Of3 bindings3 ]
 
-    let combo4 (view1: View<_, _, _>) (view2: View<_, _, _>) (view3: View<_, _, _>) (view4: View<_, _, _>) =
+    let combo4 (view1: StaticView<_, _, _>) (view2: StaticView<_, _, _>) (view3: StaticView<_, _, _>) (view4: StaticView<_, _, _>) =
         let nm1, page1, bindings1 = apply view1
         let nm2, page2, bindings2 = apply view2
         let nm3, page3, bindings3 = apply view3
@@ -248,11 +264,11 @@ module Program =
     let runOnGuiThread (program: Program<unit, 'model, 'msg, 'view>) = runOnGuiThreadWith () program
 
     /// Starts the Elmish dispatch loop for the page with the given Elmish program
-    let _run debug  (program: Program<_, _, _, _>)  = 
+    let _runStaticView debug (program: Program<_, _, _, _>)  = 
 
         // Compute the view mappings once, on startup. 
         console.log "view: computing initial view with dummy model/dispatch"
-        let page, bindings = program.view Unchecked.defaultof<_> (fun _ -> failwith "do not call disaptch in the view")
+        let page,bindings = program.view Unchecked.defaultof<_> (fun _ -> failwith "do not call disaptch in the view")
 
         let mutable lastModel = None
 
@@ -263,12 +279,44 @@ module Program =
                 // Construct the binding context for the view model
                 let viewModel = ViewModel (model, dispatch, bindings, debug)
 
-                View.pageInit page bindings viewModel
+                StaticView.pageInit page None bindings viewModel model dispatch
 
                 lastModel <- Some viewModel
                 console.log "view: set data context"
 
             | Some viewModel ->
+                StaticView.pageUpdate page None model dispatch
+                viewModel.UpdateModel model
+                      
+        // Start Elmish dispatch loop  
+        { program with setState = setState } 
+        |> runOnGuiThread
+
+        page
+
+    /// Starts the Elmish dispatch loop for the page with the given Elmish program
+    let _runDynamicView debug  (program: Program<_, _, _, _>)  = 
+
+        // Compute the view mappings once, on startup. 
+        console.log "view: computing initial page"
+        let page, bindings, contentf = program.view Unchecked.defaultof<_> (fun _ -> failwith "do not call disaptch in the view")
+
+        let mutable lastModel = None
+
+        let setState model dispatch = 
+            match lastModel with
+            | None -> 
+
+                // Construct the binding context for the view model
+                let viewModel = ViewModel (model, dispatch, bindings, debug)
+
+                StaticView.pageInit page (Some contentf) bindings viewModel model dispatch
+
+                lastModel <- Some viewModel
+                console.log "view: set data context"
+
+            | Some viewModel ->
+                StaticView.pageUpdate page (Some contentf) model dispatch
                 viewModel.UpdateModel model
                       
         // Start Elmish dispatch loop  
@@ -279,12 +327,22 @@ module Program =
 
 
     /// Creates the view model for the given page and starts the Elmish dispatch loop for the matching program
-    /// Starts the Elmish dispatch loop for the page with the given Elmish program
-    let run program = _run false program
+    let runDynamicView program = _runDynamicView false program
+
+    /// Creates the view model for the given page and starts the Elmish dispatch loop for the matching program
+    let runStaticView program = _runStaticView false program
+
+    /// Creates the view model for the given page and starts the Elmish dispatch loop for the matching program
+    let run program = runStaticView program
             
     /// Creates the view model for the given page and starts the Elmish dispatch loop for the matching program
-    /// Starts the Elmish dispatch loop for the page with the given Elmish program
-    let runDebug program = _run true program
+    let runDebugDynamicView program = _runDynamicView true program
+
+    /// Creates the view model for the given page and starts the Elmish dispatch loop for the matching program
+    let runDebugStaticView program = _runStaticView true program
+
+    /// Creates the view model for the given page and starts the Elmish dispatch loop for the matching program
+    let runDebug program = runDebugStaticView program
 
 
     let withNavigation (program: Program<_,_,_,_>) = 
@@ -299,3 +357,182 @@ module Program =
                 // TODO: modify the Elmish framework we use to remove this global state and pass it into all commands??
                 Nav.globalNavMap <- (navMap |> List.map (fun (tg, page) -> ((tg :> System.IComparable), page)) |> Map.ofList)
                 page, bindings  )}
+
+module DynamicViewHelpers = 
+    open System.Runtime.CompilerServices
+    open System.Windows.Input
+
+    let gridLength (v: obj) = 
+       match v with 
+       | :? string as s when s = "*" -> GridLength.Star
+       | :? string as s when s = "auto" -> GridLength.Auto
+       | :? float as f -> GridLength.op_Implicit f
+       | _ -> failwithf "gridLength: invalid argument %O" v
+       
+    let rowdef h = RowDefinition(Height=gridLength h)
+    let rowdefs xs = 
+        let c = RowDefinitionCollection() 
+        for xd in xs do 
+            c.Add(xd)
+        c
+
+
+    let coldef h = ColumnDefinition(Width=gridLength h)
+    let coldefs xs = 
+        let c = ColumnDefinitionCollection() 
+        for x in xs do 
+            c.Add(x)
+        c
+
+    let rows rds (els: View list) = 
+        let x = Grid(RowDefinitions=rowdefs rds)
+        for (i, el) in List.indexed els do 
+            x.Children.Add(el); Grid.SetRow(el,i)
+        x
+
+    let cols cds (els: View list) = 
+        let x = Grid(ColumnDefinitions=coldefs cds)
+        for (i, el) in List.indexed els do 
+            x.Children.Add(el); Grid.SetColumn(el,i)
+        x
+
+    let rect col = Grid(BackgroundColor=col)
+
+    let command f = 
+        let ev = Event<_,_>()
+        { new ICommand with 
+            member x.add_CanExecuteChanged h = ev.Publish.AddHandler h
+            member x.remove_CanExecuteChanged h = ev.Publish.RemoveHandler h
+            member x.CanExecute _ = true 
+            member x.Execute _ = f() }
+
+    type RowNumber = int
+    type ColumnNumber = int
+    type RowSpan = int
+    type ColumnSpan = int
+    type GridSpan = GridSpan of RowNumber option * ColumnNumber option * RowSpan option * ColumnSpan option
+    let gridLoc row col = GridSpan (Some row, Some col, None, None)
+    let gridRow row = GridSpan (Some row, None, None, None)
+    let gridCol col = GridSpan (None, Some col, None, None)
+    let gridBlock row col rowspan colspan = GridSpan (Some row, Some col, Some rowspan, Some colspan)
+
+
+    let (@@) (v:View) (loc: GridSpan) = (v, loc)
+
+    let grid rds cds (els: (View * GridSpan) list) =
+        let cdefs = coldefs cds
+        let rdefs = rowdefs rds
+        let x = Grid(RowDefinitions=rdefs, ColumnDefinitions=cdefs)
+        for (el, loc) in els do 
+            x.Children.Add(el); 
+            match loc with 
+            | GridSpan(Some row, None, None, None) -> 
+                Grid.SetRow(el,row)
+                Grid.SetColumnSpan(el,cdefs.Count)
+            | GridSpan(None, Some col, None, None) -> 
+                Grid.SetColumn(el,col)
+                Grid.SetRowSpan(el,rdefs.Count)
+
+            | GridSpan(row, col, rowspan, colspan) -> 
+                row |> Option.iter (fun i -> Grid.SetRow(el,i))
+                col |> Option.iter (fun i -> Grid.SetColumn(el,i))
+                rowspan |> Option.iter (fun i -> Grid.SetRowSpan(el,i))
+                colspan |> Option.iter (fun i -> Grid.SetColumnSpan(el,i))
+        x
+
+    let label msg = Label(Text = msg)
+
+    let button f = Button(Command=command f)
+
+    let imageResource (res: string) = 
+        Image(Source = ImageSource.op_Implicit res)
+
+    [<Extension>]
+    type VisualElementExtensions () =
+        
+        [<Extension>]
+        static member With<'T when 'T :> VisualElement>(x: 'T) = x
+        
+        [<Extension>]
+        static member WithBackgroundColor<'T when 'T :> VisualElement>(x: 'T, c) = x.With<'T>(BackgroundColor=c)
+
+    [<Extension>]
+    type ViewExtensions () =
+        [<Extension>]
+        static member With<'T when 'T :> View>(x: 'T) = x
+        
+        [<Extension>]
+        static member WithMargin<'T when 'T :> View>(x: 'T, m:double) = x.With<'T>(Margin=Thickness.op_Implicit m)
+        
+        [<Extension>]
+        static member WithHorizontalOptions<'T when 'T :> View>(x: 'T, opts) = x.With<'T>(HorizontalOptions=opts)
+        
+        [<Extension>]
+        static member WithVerticalOptions<'T when 'T :> View>(x: 'T, opts) = x.With<'T>(VerticalOptions=opts)
+
+        
+    [<Extension>]
+    type LabelExtensions () =
+        [<Extension>]
+        static member With<'T when 'T :> Label>(x: 'T) = x
+        
+        [<Extension>]
+        static member WithTextColor<'T when 'T :> Label>(x: 'T, c) = x.With<'T>(TextColor=c)
+        
+        [<Extension>]
+        static member WithHorizontalTextAlignment<'T when 'T :> Label>(x: 'T, c) = x.With<'T>(HorizontalTextAlignment=c)
+
+    [<Extension>]
+    type ButtonExtensions () =
+        [<Extension>]
+        static member With<'T when 'T :> Button>(x: 'T) = x
+        
+        [<Extension>]
+        static member WithText<'T when 'T :> Button>(x: 'T, c) = x.With<'T>(Text=c)
+        
+        [<Extension>]
+        static member WithTextColor<'T when 'T :> Button>(x: 'T, c) = x.With<'T>(TextColor=c)
+        
+    [<Extension>]
+    type GridExtensions () =
+        [<Extension>]
+        static member With<'T when 'T :> Grid>(x: 'T) = x
+
+        [<Extension>]
+        static member WithRowSpacing<'T when 'T :> Grid>(x: 'T, c) = x.With<'T>(RowSpacing=c)
+       
+        [<Extension>]
+        static member WithColumnSpacing<'T when 'T :> Grid>(x: 'T, c) = x.With<'T>(ColumnSpacing=c)
+
+    let withMargin<'T when 'T :> View> (m:double) (x: 'T) = x.With(Margin=Thickness.op_Implicit m)
+        
+    let withHorizontalOptions<'T when 'T :> View> opts (x: 'T) = x.With<'T>(HorizontalOptions=opts)
+        
+    let withVerticalOptions<'T when 'T :> View> opts (x: 'T) = x.With<'T>(VerticalOptions=opts)
+
+    let withLabelTextColor<'T when 'T :> Label> color (x: 'T) = x.With<'T>(TextColor=color)
+
+    let withHorizontalTextAlignment<'T when 'T :> Label> alignment (x: 'T) = x.With<'T>(HorizontalTextAlignment=alignment)
+
+    let withRowSpacing<'T when 'T :> Grid> spacing (x: 'T) = x.With<'T>(RowSpacing=spacing)
+
+    let withColumnSpacing<'T when 'T :> Grid> spacing (x: 'T) = x.With<'T>(ColumnSpacing=spacing)
+
+    let withText<'T when 'T :> Button> text (x: 'T) = x.With<'T>(Text=text)
+
+    let withButtonTextColor<'T when 'T :> Button> color (x: 'T) = x.With<'T>(TextColor=color)
+
+    let withBackgroundColor<'T when 'T :> VisualElement> color (x: 'T) = x.With<'T>(BackgroundColor=color)
+
+    // Helper page for the TicTacToe sample
+    // Need to generlize the HeightRequest phase of the XF content digestion process...
+    type HelperPage(viewAllocatedSizeFixup) as self =
+        inherit ContentPage()
+        do Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(self, true)
+
+        // painful.... It is unfortunately not possible to simpy recreate the whole
+        // view here, you have to mutate the content in-place.
+        override this.OnSizeAllocated(width, height) =
+            base.OnSizeAllocated(width, height)
+            viewAllocatedSizeFixup self.Content (width, height)
+

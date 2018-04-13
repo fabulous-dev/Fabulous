@@ -1,4 +1,5 @@
-﻿namespace iOS
+﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
+namespace iOS
 
 open System
 open UIKit

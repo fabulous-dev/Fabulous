@@ -1,4 +1,5 @@
-﻿[<AutoOpen>]
+﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
+[<AutoOpen>]
 module Fable
     [<AutoOpen>]
     module PowerPack = ()

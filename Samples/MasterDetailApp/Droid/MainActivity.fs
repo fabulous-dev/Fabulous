@@ -1,4 +1,5 @@
-﻿namespace Droid
+﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
+namespace Droid
 open System
 
 open Android.App
