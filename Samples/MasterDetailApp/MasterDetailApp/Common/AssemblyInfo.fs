@@ -1,4 +1,5 @@
-﻿namespace MasterDetailApp
+﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
+namespace MasterDetailApp
 open System.Reflection
 open System.Runtime.CompilerServices
 

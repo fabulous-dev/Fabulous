@@ -1,5 +1,5 @@
+// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
 namespace MasterDetailApp
-
 
 /// Represents items in the model
 type Item = 

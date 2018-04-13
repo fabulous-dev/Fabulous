@@ -1,4 +1,4 @@
-Copyright 2016 Elmish.XamarinForms contributors
+Copyright 2018 Elmish.XamarinForms contributors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

@@ -65,7 +65,7 @@ Subscriptions, which are events sent from outside the view or the dispatch loop,
         Cmd.ofSub timerTick
 ```
 
-Binding the Elmish to the XAML
+Binding the Elmish to the XAML (Static Views)
 ------
 Bindings in your XAML code will look like typical bindings, but a bit of extra code is needed to map those bindings to your Elmish model. These are the viewBindings, which expose parts of the model to the view. 
 
@@ -123,6 +123,48 @@ type CounterApp () =
 
         base.MainPage <- page
 ```
+
+Multiple Pages and Navigation
+------
+
+There is some experimental support for multiple-page apps and navigation. See the MasterDetailApp sample.
+
+
+Binding the Elmish to the XAML (Flickering Dynamic Views)
+------
+
+There is **toy-only** support for dynamic view functions that compute entire new content on each update.  This results in flickering,
+dynamic visual updates so is not yet appropriate for use, but is an interesting programming model experiment called the "Full Elmish" or "Phase 2" approach. In
+this case, the `view` function can compute new content. A small F# DSL is provided for this in ``Elmish.XamarinForms.DynamicViewHelpers``.
+
+```fsharp
+    open Elmish.XamarinForms.DynamicViewHelpers
+
+    ...
+    /// The dynamic 'view' function giving updated content for the page
+    let view model dispatch =
+        rect Color.BlackGreen 
+```
+Your application must be started as follows:
+```fsharp
+    let page = 
+        Program.mkSimple 
+            init 
+            (update gameOver) 
+            (fun _ _ -> MyPage(), [ (* any static bindings *) ], App.view) 
+        |> Program.withConsoleTrace
+        |> Program.runDynamicView
+```
+This is work in progress and may change.  
+
+Releasing
+------
+
+Use this:
+
+    .\build NuGet
+    set APIKEY=...
+    ..\fsharp\.nuget\NuGet.exe push C:\GitHub\dsyme\Elmish.XamarinForms\build_output\Elmish.XamarinForms.*.nupkg  %APIKEY% -Source https://www.nuget.org
 
 Credits
 -----

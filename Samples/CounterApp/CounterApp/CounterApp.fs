@@ -1,4 +1,5 @@
-﻿namespace CounterApp
+﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
+namespace CounterApp
 
 open Elmish
 open Elmish.XamarinForms
@@ -27,7 +28,7 @@ type CounterApp () =
         | SetStep n -> { model with Step = n }
 
     let view () =
-        CounterPage (), 
+        CounterPage (),
         [ "CounterValue" |> Binding.oneWay (fun m -> m.Count)
           "CounterValue2" |> Binding.oneWay (fun m -> m.Count + 1)
           "IncrementCommand" |> Binding.msg Increment

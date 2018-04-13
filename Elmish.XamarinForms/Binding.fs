@@ -1,4 +1,5 @@
-﻿namespace Elmish.XamarinForms
+﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
+namespace Elmish.XamarinForms
   
 open System
 open Xamarin.Forms
