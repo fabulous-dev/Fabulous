@@ -1,3 +1,6 @@
+#### 0.3.2
+* Correct version in assembly
+
 #### 0.3.1
 * Correct mistake in nuget pacakge
 
