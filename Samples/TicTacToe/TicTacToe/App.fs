@@ -145,33 +145,35 @@ module App =
             [ grid 
                 [ rowdef "*"; rowdef 5.0; rowdef "*"; rowdef 5.0; rowdef "*" ]
                 [ coldef "*"; coldef 5.0; coldef "*"; coldef 5.0; coldef "*" ]
-                [ yield rect Color.Black @@ gridRow 1
-                  yield rect Color.Black @@ gridRow 3 
-                  yield rect Color.Black @@ gridCol 1
-                  yield rect Color.Black @@ gridCol 3
+                [ yield rectangle Color.Black @@ gridRow 1
+                  yield rectangle Color.Black @@ gridRow 3 
+                  yield rectangle Color.Black @@ gridCol 1
+                  yield rectangle Color.Black @@ gridCol 3
                   for ((row,col) as pos) in positions do 
-                      let x = 
+                      let item = 
                           if canPlay model model.Board.[pos] then 
-                              button (fun () -> dispatch (Play pos)) :> View
+                              button |> command (fun () -> dispatch (Play pos)) 
                           else
-                              imageResource (imageForPos model.Board.[pos]) :> _
+                              imageResource (imageForPos model.Board.[pos]) 
                           |> withMargin 5.0
-                      yield x @@ gridLoc (row*2) (col*2) ]
+                      yield item @@ gridLoc (row*2) (col*2) ]
 
-                |> withRowSpacing 0.0
-                |> withColumnSpacing 0.0
-                |> withHorizontalOptions LayoutOptions.Center
-                |> withVerticalOptions LayoutOptions.Center
+                |> rowSpacing 0.0
+                |> columnSpacing 0.0
+                |> horizontalOptions LayoutOptions.Center
+                |> verticalOptions LayoutOptions.Center
 
-              label (getMessage model) 
-                |> withMargin 10.0
-                |> withLabelTextColor Color.Black
-                |> withHorizontalTextAlignment TextAlignment.Center
+              label 
+                |> text (getMessage model) 
+                |> margin 10.0
+                |> textColor Color.Black
+                |> horizontalTextAlignment TextAlignment.Center
 
-              button (fun () -> dispatch Restart)
-                |> withText("Restart game")
-                |> withBackgroundColor Color.LightBlue
-                |> withButtonTextColor Color.Black  ]
+              button 
+                |> command (fun () -> dispatch Restart)
+                |> text "Restart game"
+                |> backgroundColor Color.LightBlue
+                |> textColor Color.Black  ]
 
                    //,FontSize=(FontSizeConverter().ConvertFromInvariantString "Large") :> float)
 

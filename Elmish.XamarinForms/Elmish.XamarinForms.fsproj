@@ -3,6 +3,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\..\ImmutableUI\out.fs" Link="out.fs" />
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="FableStub.fs" />
     <Compile Include="..\paket-files\neutral\fable-elmish\elmish\src\cmd.fs">
