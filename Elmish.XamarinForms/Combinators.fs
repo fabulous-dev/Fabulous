@@ -5,6 +5,7 @@ open Xamarin.Forms
 
 open Elmish
 open Elmish.XamarinForms
+open Elmish.XamarinForms.DynamicViews
 
 /// Represents a model when you don't have a model.  A Clayton's model.
 type NoModel = 
@@ -177,20 +178,23 @@ module StaticView =
         setBindingContexts bindings viewModel
         page.BindingContext <- box viewModel
         match contentf with 
-        | None -> ()
+        | None -> None
         | Some f -> 
-            let viewData: InterpretedUI.Forms.XamlElement = f model dispatch
+            let viewData: XamlElement = f model dispatch
             let contentPage = (page :?> ContentPage)
-            contentPage.Content <- viewData.CreateView() 
+            contentPage.Content <- viewData.CreateAsView() 
+            Some viewData
 
-    let internal pageUpdate (page: Page) contentf model dispatch =
-        match contentf with 
-        | None -> ()
-        | Some f -> 
-            let viewData: InterpretedUI.Forms.XamlElement = f model dispatch
-            viewData.Apply((page :?> ContentPage).Content)
+    let internal pageUpdate (page: Page) contentf model prevViewDataOpt dispatch =
+        match contentf, prevViewDataOpt with 
+        | Some f, Some prevViewData -> 
+            let viewData: XamlElement = f model dispatch
+            viewData.ApplyIncremental (prevViewData, (page :?> ContentPage).Content)
+            Some viewData
+        | _ -> 
+            prevViewDataOpt
 
-    let pageInitUntyped (page: ContentPage) (bindings: ViewBindings<'model, 'msg>) =
+    let internal pageInitUntyped (page: ContentPage) (bindings: ViewBindings<'model, 'msg>) =
         fun (objViewModel: obj) ->
             match objViewModel with
             | :? ViewModel<obj, obj> as viewModel -> 
@@ -253,6 +257,9 @@ module Program =
                 newCommands |> List.iter (fun sub -> sub dispatch)
                 state <- updatedModel
             with ex ->
+                //System.Diagnostics.Debugger.Log(ex.Message)
+                //System.Diagnostics.Debug.Fail(ex.Message)
+                System.Diagnostics.Debugger.Break()
                 program.onError ("Unable to process a message:", ex)
 
         and dispatch msg = Device.BeginInvokeOnMainThread(fun () -> processMsg msg)
@@ -279,13 +286,14 @@ module Program =
                 // Construct the binding context for the view model
                 let viewModel = ViewModel (model, dispatch, bindings, debug)
 
-                StaticView.pageInit page None bindings viewModel model dispatch
+                let viewData = StaticView.pageInit page None bindings viewModel model dispatch
 
-                lastModel <- Some viewModel
+                lastModel <- Some (viewModel, viewData)
                 console.log "view: set data context"
 
-            | Some viewModel ->
-                StaticView.pageUpdate page None model dispatch
+            | Some (viewModel, prevViewData) ->
+                let viewData = StaticView.pageUpdate page None model prevViewData dispatch
+                lastModel <- Some (viewModel, viewData)
                 viewModel.UpdateModel model
                       
         // Start Elmish dispatch loop  
@@ -310,13 +318,14 @@ module Program =
                 // Construct the binding context for the view model
                 let viewModel = ViewModel (model, dispatch, bindings, debug)
 
-                StaticView.pageInit page (Some contentf) bindings viewModel model dispatch
+                let viewData = StaticView.pageInit page (Some contentf) bindings viewModel model dispatch
 
-                lastModel <- Some viewModel
+                lastModel <- Some (viewModel, viewData)
                 console.log "view: set data context"
 
-            | Some viewModel ->
-                StaticView.pageUpdate page (Some contentf) model dispatch
+            | Some (viewModel, prevViewData) ->
+                let viewData = StaticView.pageUpdate page (Some contentf) model prevViewData dispatch
+                lastModel <- Some (viewModel, viewData)
                 viewModel.UpdateModel model
                       
         // Start Elmish dispatch loop  
@@ -358,266 +367,385 @@ module Program =
                 Nav.globalNavMap <- (navMap |> List.map (fun (tg, page) -> ((tg :> System.IComparable), page)) |> Map.ofList)
                 page, bindings  )}
 
-module DynamicViewHelpers = 
-    open System.Runtime.CompilerServices
-    open System.Collections.Generic
-    open System.Windows.Input
-    open InterpretedUI.Forms
+namespace Elmish.XamarinForms.DynamicViews 
+
+    open Xamarin.Forms
+
+    open Elmish
+    open Elmish.XamarinForms
+    open Elmish.XamarinForms.DynamicViews
+
+    [<AutoOpen>]
+    module GridHelpers = 
+
+        open System.Runtime.CompilerServices
+        open System.Collections.Generic
+        open System.Windows.Input
        
-    type XamlElement with 
-        /// Get the RowDefinition_Height property in the visual element
-        member x.RowDefinition_Height = match x.Attributes.TryFind("RowDefinition_Height") with Some v -> unbox<GridLength>(v) | None -> GridLength.Auto
+        type XamlElement with 
+            /// Get the Grid_Row property in the visual element
+            member x.Grid_Row = match x.Attributes.TryFind("Grid_Row") with Some v -> unbox<int>(v) | None -> 0
 
-        /// Get the ColumnDefinition_Width property in the visual element
-        member x.ColumnDefinition_Width = match x.Attributes.TryFind("ColumnDefinition_Width") with Some v -> unbox<GridLength>(v) | None -> GridLength.Auto
+            /// Get the Grid_Column property in the visual element
+            member x.Grid_Column = match x.Attributes.TryFind("Grid_Column") with Some v -> unbox<int>(v) | None -> 0
 
-        /// Get the RowSpacing property in the visual element
-        member x.RowSpacing = match x.Attributes.TryFind("RowSpacing") with Some v -> unbox<double>(v) | None -> Unchecked.defaultof<double>
+            /// Get the RowDefinition_Height property in the visual element
+            member x.Grid_RowDefinition_Height = match x.Attributes.TryFind("Grid_RowDefinition_Height") with Some v -> unbox<GridLength>(v) | None -> GridLength.Auto
 
-        /// Get the ColumnSpacing property in the visual element
-        member x.ColumnSpacing = match x.Attributes.TryFind("ColumnSpacing") with Some v -> unbox<double>(v) | None -> Unchecked.defaultof<double>
+            /// Get the ColumnDefinition_Width property in the visual element
+            member x.Grid_ColumnDefinition_Width = match x.Attributes.TryFind("Grid_ColumnDefinition_Width") with Some v -> unbox<GridLength>(v) | None -> GridLength.Auto
 
-        /// Get the RowDefinitions property in the visual element
-        member x.RowDefinitions = match x.Attributes.TryFind("RowDefinitions") with Some v -> unbox<IList<XamlElement>>(v) | None -> Unchecked.defaultof<_>
+            /// Get the RowSpacing property in the visual element
+            member x.Grid_RowSpacing = match x.Attributes.TryFind("Grid_RowSpacing") with Some v -> unbox<double>(v) | None -> Unchecked.defaultof<double>
 
-        /// Get the ColumnDefinitions property in the visual element
-        member x.ColumnDefinitions = match x.Attributes.TryFind("ColumnDefinitions") with Some v -> unbox<IList<XamlElement>>(v) | None -> Unchecked.defaultof<_>
+            /// Get the ColumnSpacing property in the visual element
+            member x.Grid_ColumnSpacing = match x.Attributes.TryFind("Grid_ColumnSpacing") with Some v -> unbox<double>(v) | None -> Unchecked.defaultof<double>
 
-        /// Adjust the RowSpacing property in the visual element
-        member x.WithRowSpacing(value: double) = x.WithAttribute("RowSpacing", box value)
+            /// Get the RowDefinitions property in the visual element
+            member x.Grid_RowDefinitions = match x.Attributes.TryFind("Grid_RowDefinitions") with Some v -> unbox<IList<XamlElement>>(v) | None -> Unchecked.defaultof<_>
 
-        /// Adjust the ColumnSpacing property in the visual element
-        member x.WithColumnSpacing(value: double) = x.WithAttribute("ColumnSpacing", box value)
+            /// Get the ColumnDefinitions property in the visual element
+            member x.Grid_ColumnDefinitions = match x.Attributes.TryFind("Grid_ColumnDefinitions") with Some v -> unbox<IList<XamlElement>>(v) | None -> Unchecked.defaultof<_>
+
+            /// Adjust the RowSpacing property in the visual element
+            member x.WithGrid_RowSpacing(value: double) = x.WithAttribute("Grid_RowSpacing", box value)
+
+            /// Adjust the ColumnSpacing property in the visual element
+            member x.WithGrid_ColumnSpacing(value: double) = x.WithAttribute("Grid_ColumnSpacing", box value)
         
-        /// Adjust the RowDefinitions property in the visual element
-        member x.WithRowDefinitions (value: IList<XamlElement>) = x.WithAttribute("RowDefinitions", box value)
+            /// Adjust the RowDefinitions property in the visual element
+            member x.WithGrid_RowDefinitions (value: IList<XamlElement>) = x.WithAttribute("Grid_RowDefinitions", box value)
 
-        /// Adjust the Column property in the visual element
-        member x.WithColumnDefinitions (value: IList<XamlElement>) = x.WithAttribute("Column", box value)
+            /// Adjust the Column property in the visual element
+            member x.WithGrid_ColumnDefinitions (value: IList<XamlElement>) = x.WithAttribute("Grid_ColumnDefinitions", box value)
 
-        member x.CreateColumnDefinition () = x.Create() :?> ColumnDefinition
-        member x.CreateRowDefinition () = x.Create() :?> RowDefinition
-
-    /// Represents a ListViewDescription in the view desription
-    type Xaml with 
-        static member RowDefinition(?height) = 
-            let create () = Xamarin.Forms.RowDefinition() |> box
-            let apply (this: XamlElement) (target: obj) = 
-                let target = (target :?> RowDefinition)
-                target.Height <- this.RowDefinition_Height
-            let attribs = [| 
-                match height with | None -> () | Some v -> yield ("Height", box v) 
-              |]
-            new XamlElement(typeof<Xamarin.Forms.RowDefinition>, create, apply, Map.ofArray attribs)
-
-        static member ColumnDefinition(?width) = 
-            let create () = Xamarin.Forms.ColumnDefinition() |> box
-            let apply (this: XamlElement) (target: obj) = 
-                let target = (target :?> ColumnDefinition)
-                target.Width <- this.ColumnDefinition_Width
-            let attribs = [| 
-                match width with | None -> () | Some v -> yield ("ColumnDefinition_Width", box v) 
-              |]
-            new XamlElement(typeof<Xamarin.Forms.ColumnDefinition>, create, apply, Map.ofArray attribs)
-
-        static member Grid(?children: IList<XamlElement>, ?rowDefinitions: IList<XamlElement>, ?columnDefinitions: IList<XamlElement>, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: Xamarin.Forms.Thickness, ?backgroundColor: Xamarin.Forms.Color, ?isVisible: bool, ?opacity: double, ?widthRequest: double, ?heightRequest: double, ?isEnabled: bool) = 
-            let create () =
-                box (new Xamarin.Forms.Grid())
-
-            let apply (this: XamlElement) (target:obj) = 
-                let target = (target :?> Xamarin.Forms.Grid)
-
-                if (this.RowDefinitions = null || this.RowDefinitions.Count = 0) then
-                    match target.RowDefinitions with
-                    | null -> ()
-                    | coll -> coll.Clear() 
-                else
-                    while (target.RowDefinitions.Count > this.RowDefinitions.Count) do target.RowDefinitions.RemoveAt(target.RowDefinitions.Count - 1)
-                    let n = target.RowDefinitions.Count;
-                    for i in n .. this.RowDefinitions.Count-1 do
-                        target.RowDefinitions.Insert(i, this.RowDefinitions.[i].CreateRowDefinition())
-                    for i in 0 .. n - 1 do
-                        this.RowDefinitions.[i].Apply(target.RowDefinitions.[i])
-
-                if (this.ColumnDefinitions = null || this.ColumnDefinitions.Count = 0) then
-                    match target.ColumnDefinitions with
-                    | null -> ()
-                    | coll -> coll.Clear() 
-                else
-                    while (target.ColumnDefinitions.Count > this.ColumnDefinitions.Count) do target.ColumnDefinitions.RemoveAt(target.ColumnDefinitions.Count - 1)
-                    let n = target.ColumnDefinitions.Count;
-                    for i in n .. this.ColumnDefinitions.Count-1 do
-                        target.ColumnDefinitions.Insert(i, this.ColumnDefinitions.[i].CreateColumnDefinition())
-                    for i in 0 .. n - 1 do
-                        this.ColumnDefinitions.[i].Apply(target.ColumnDefinitions.[i])
-
-
-                if (this.Children = null || this.Children.Count = 0) then
-                    match target.Children with
-                    | null -> ()
-                    | children -> children.Clear() 
-                else
-                    while (target.Children.Count > this.Children.Count) do target.Children.RemoveAt(target.Children.Count - 1)
-                    let n = target.Children.Count;
-                    for i in n .. this.Children.Count-1 do
-                        target.Children.Insert(i, this.Children.[i].CreateView())
-                    for i in 0 .. n - 1 do
-                        this.Children.[i].Apply(target.Children.[i])
-
-                for i in 0 .. this.Children.Count-1 do
-                    match this.Children.[i].Attributes.TryFind("Row") with 
-                    | Some (:? int as v) -> Grid.SetRow(target.Children.[i], v)
-                    | _ -> ()
-                    match this.Children.[i].Attributes.TryFind("Column") with 
-                    | Some (:? int as v) -> Grid.SetColumn(target.Children.[i], v)
-                    | _ -> ()
-                    match this.Children.[i].Attributes.TryFind("RowSpan") with 
-                    | Some (:? int as v) -> Grid.SetRowSpan(target.Children.[i], v)
-                    | _ -> ()
-                    match this.Children.[i].Attributes.TryFind("ColumnSpan") with 
-                    | Some (:? int as v) -> Grid.SetColumnSpan(target.Children.[i], v)
-                    | _ -> ()
-
-                target.HorizontalOptions <- this.HorizontalOptions
-                target.VerticalOptions <- this.VerticalOptions
-                target.Margin <- this.Margin
-                target.BackgroundColor <- this.BackgroundColor
-                target.IsVisible <- this.IsVisible
-                target.Opacity <- this.Opacity
-                target.WidthRequest <- this.WidthRequest
-                target.HeightRequest <- this.HeightRequest
-                target.IsEnabled <- this.IsEnabled
-            let attribs = [| 
-                match children with | None -> () | Some v -> yield ("Children", box children) 
-                match rowDefinitions with | None -> () | Some v -> yield ("RowDefinitions", box rowDefinitions) 
-                match columnDefinitions with | None -> () | Some v -> yield ("ColumnDefinitions", box columnDefinitions) 
-                match horizontalOptions with | None -> () | Some v -> yield ("HorizontalOptions", box horizontalOptions) 
-                match verticalOptions with | None -> () | Some v -> yield ("VerticalOptions", box verticalOptions) 
-                match margin with | None -> () | Some v -> yield ("Margin", box margin) 
-                match backgroundColor with | None -> () | Some v -> yield ("BackgroundColor", box backgroundColor) 
-                match isVisible with | None -> () | Some v -> yield ("IsVisible", box isVisible) 
-                match opacity with | None -> () | Some v -> yield ("Opacity", box opacity) 
-                match widthRequest with | None -> () | Some v -> yield ("WidthRequest", box widthRequest) 
-                match heightRequest with | None -> () | Some v -> yield ("HeightRequest", box heightRequest) 
-                match isEnabled with | None -> () | Some v -> yield ("IsEnabled", box isEnabled) 
-              |]
-            new XamlElement(typeof<Xamarin.Forms.Grid>, create, apply, Map.ofArray attribs)
-
-
-    let gridLength (v: obj) = 
-       match v with 
-       | :? string as s when s = "*" -> GridLength.Star
-       | :? string as s when s = "auto" -> GridLength.Auto
-       | :? float as f -> GridLength.op_Implicit f
-       | _ -> failwithf "gridLength: invalid argument %O" v
-
-    let rowdef h = Xaml.RowDefinition(height=gridLength h)
-    let rowdefs (xs: XamlElement list) = Array.ofList xs
-
-    let coldef h = Xaml.ColumnDefinition(width=gridLength h)
-    let coldefs (xs: XamlElement list) = Array.ofList  xs
-
-    let rows rds (els: XamlElement list) = 
-        let children = Array.ofList els |> Array.mapi (fun i x -> x.WithAttribute("Row", box i))
-        Xaml.Grid(rowDefinitions=rowdefs rds, children=children)
-
-    let cols cds (els: XamlElement list) = 
-        let children = Array.ofList els |> Array.mapi (fun i x -> x.WithAttribute("Column", box i))
-        Xaml.Grid(columnDefinitions=coldefs cds, children=children)
-
-    let rectangle col = Xaml.Grid(backgroundColor=col)
-
-    type RowNumber = int
-    type ColumnNumber = int
-    type RowSpan = int
-    type ColumnSpan = int
-    type GridSpanDescription = GridSpanDescription of RowNumber option * ColumnNumber option * RowSpan option * ColumnSpan option
-    let gridLoc row col = GridSpanDescription (Some row, Some col, None, None)
-    let gridRow row = GridSpanDescription (Some row, None, None, None)
-    let gridCol col = GridSpanDescription (None, Some col, None, None)
-    let gridBlock row col rowspan colspan = GridSpanDescription (Some row, Some col, Some rowspan, Some colspan)
-
-
-    let (@@) (v:XamlElement) (loc: GridSpanDescription) = (v, loc)
-
-    let grid rds cds (els: (XamlElement * GridSpanDescription) list) =
-        let cdefs = coldefs cds
-        let rdefs = rowdefs rds
-        let children = 
-          [| for (el, loc) in els ->
-                match loc with 
-                | GridSpanDescription(Some row, None, None, None) -> 
-                    el.WithAttribute("Row", row).WithAttribute("ColumnSpan", cdefs.Length)
-                | GridSpanDescription(None, Some col, None, None) -> 
-                    el.WithAttribute("Column", col).WithAttribute("RowSpan", rdefs.Length)
-                | GridSpanDescription(row, col, rowspan, colspan) -> 
-                    let el = match row with None -> el | Some i -> el.WithAttribute("Row", box i)
-                    let el = match col with None -> el | Some i -> el.WithAttribute("Column", box i)
-                    let el = match rowspan with None -> el | Some i -> el.WithAttribute("RowSpan", box i)
-                    let el = match colspan with None -> el | Some i -> el.WithAttribute("ColumnSpan", box i)
-                    el
-           |]
-        Xaml.Grid(rowDefinitions=rdefs, columnDefinitions=cdefs, children = children)
-
-    let withMargin (m: double) (x: XamlElement) = x.WithMargin (Thickness.op_Implicit m)
-    let margin m x = withMargin m x
+            /// Adjust the Grid Row property in the visual element
+            member x.WithGrid_Row(value: int) = x.WithAttribute("Grid_Row", box value)
         
-    let withSource (m: ImageSource) (x: XamlElement) = x.WithImageSource m
-    let source m x = withSource m x
-
-    let withHorizontalOptions m (x: XamlElement) = x.WithHorizontalOptions m
-    let horizontalOptions m x = withHorizontalOptions m x
+            /// Adjust the Grid Column property in the visual element
+            member x.WithGrid_Column(value: int) = x.WithAttribute("Grid_Column", box value)
         
-    let withVerticalOptions m (x: XamlElement) = x.WithVerticalOptions m
-    let verticalOptions m x = withVerticalOptions m x
+            /// Adjust the Grid RowSpan property in the visual element
+            member x.WithGrid_RowSpan(value: int) = x.WithAttribute("Grid_RowSpan", box value)
+        
+            /// Adjust the Grid ColumnSpan property in the visual element
+            member x.WithGrid_ColumnSpan(value: int) = x.WithAttribute("Grid_ColumnSpan", box value)
+        
+            /// Try to get the Grid Row property in the visual element
+            member x.TryGrid_Row = match x.Attributes.TryFind("Grid_Row") with Some v -> Some(unbox<int>(v)) | None -> None
 
-    let withTextColor m (x: XamlElement) = x.WithTextColor m
-    let textColor m x = withTextColor m x
+            /// Try to get the Grid Column property in the visual element
+            member x.TryGrid_Column = match x.Attributes.TryFind("Grid_Column") with Some v -> Some(unbox<int>(v)) | None -> None
 
-    let withHorizontalTextAlignment m (x: XamlElement) = x.WithHorizontalTextAlignment m
-    let horizontalTextAlignment m x = withHorizontalTextAlignment m x
+            /// Try to get the Grid RowSpan property in the visual element
+            member x.TryGrid_RowSpan = match x.Attributes.TryFind("Grid_RowSpan") with Some v -> Some(unbox<int>(v)) | None -> None
 
-    let withRowSpacing m (x: XamlElement) = x.WithRowSpacing m
-    let rowSpacing m x = withRowSpacing m x
+            /// Try to get the Grid ColumnSpan property in the visual element
+            member x.TryGrid_ColumnSpan = match x.Attributes.TryFind("Grid_ColumnSpan") with Some v -> Some(unbox<int>(v)) | None -> None
 
-    let withColumnSpacing m (x: XamlElement) = x.WithColumnSpacing m
-    let columnSpacing m (x: XamlElement) = withColumnSpacing m x
+            /// Try to get the Grid RowSpacing property in the visual element
+            member x.TryGrid_RowSpacing = match x.Attributes.TryFind("Grid_RowSpacing") with Some v -> Some(unbox<double>(v)) | None -> None
 
-    let withText m (x: XamlElement) = x.WithText m
-    let text m (x: XamlElement) = x.WithText m
+            /// Try to get the Grid ColumnSpacing property in the visual element
+            member x.TryGrid_ColumnSpacing = match x.Attributes.TryFind("Grid_ColumnSpacing") with Some v -> Some(unbox<double>(v)) | None -> None
 
-    let withCommand f (x: XamlElement) = 
-        let ev = Event<_,_>()
-        let command = 
-            { new ICommand with 
-                member x.add_CanExecuteChanged h = ev.Publish.AddHandler h
-                member x.remove_CanExecuteChanged h = ev.Publish.RemoveHandler h
-                member x.CanExecute _ = true 
-                member x.Execute _ = f() }
-        x.WithCommand command
+            /// Get the RowDefinition_Height property in the visual element
+            member x.TryGrid_RowDefinition_Height = match x.Attributes.TryFind("Grid_RowDefinition_Height") with Some v -> Some(unbox<GridLength>(v)) | None -> None
 
-    let command f (x: XamlElement) = withCommand f x
+            /// Get the ColumnDefinition_Width property in the visual element
+            member x.TryGrid_ColumnDefinition_Width = match x.Attributes.TryFind("Grid_ColumnDefinition_Width") with Some v -> Some(unbox<GridLength>(v)) | None -> None
 
-    let withBackgroundColor m (x: XamlElement) = x.WithBackgroundColor m
-    let backgroundColor m (x: XamlElement) = withBackgroundColor m x
+            /// Get the RowDefinitions property in the visual element
+            member x.TryGrid_RowDefinitions = match x.Attributes.TryFind("Grid_RowDefinitions") with Some v -> Some(unbox<IList<XamlElement>>(v)) | None -> None
 
-    let label = Xaml.Label()
+            /// Get the ColumnDefinitions property in the visual element
+            member x.TryGrid_ColumnDefinitions = match x.Attributes.TryFind("Grid_ColumnDefinitions") with Some v -> Some(unbox<IList<XamlElement>>(v)) | None -> None
 
-    let button = Xaml.Button()
+            /// Create as a ColumnDefinition element
+            member x.CreateAsGrid_ColumnDefinition () = x.Create() :?> ColumnDefinition
 
-    let image = Xaml.Image()
+            /// Create as a RowDefinition element
+            member x.CreateAsGrid_RowDefinition () = x.Create() :?> RowDefinition
 
-    let imageResource (res: string) = image |> withSource (ImageSource.op_Implicit res)
+        /// Represents a ListViewDescription in the view desription
+        type Xaml with 
+            static member RowDefinition(?height: GridLength) = 
+                let create () = Xamarin.Forms.RowDefinition() |> box
+                let apply (prevOpt: XamlElement option) (source: XamlElement) (target: obj) = 
+                    let target = (target :?> RowDefinition)
+                    let prevValueOpt = match prevOpt with Some prev -> prev.TryGrid_RowDefinition_Height | _ -> None
+                    match prevValueOpt, source.TryGrid_RowDefinition_Height with
+                    | Some prevValue, Some v when prevValue = v -> ()
+                    | _, Some v -> target.Height <- v
+                    | _ -> ()
+                let attribs = [| 
+                    match height with | None -> () | Some v -> yield ("Grid_RowDefinition_Height", box v) 
+                  |]
+                new XamlElement(typeof<Xamarin.Forms.RowDefinition>, create, apply, Map.ofArray attribs)
 
-    // Helper page for the TicTacToe sample
-    // Need to generlize the HeightRequest phase of the XF content digestion process...
-    type HelperPage(viewAllocatedSizeFixup) as self =
-        inherit ContentPage()
-        do Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(self, true)
+            static member ColumnDefinition(?width: GridLength) = 
+                let create () = Xamarin.Forms.ColumnDefinition() |> box
+                let apply (prevOpt: XamlElement option) (source: XamlElement) (target: obj) = 
+                    let target = (target :?> ColumnDefinition)
+                    let prevValueOpt = match prevOpt with Some prev -> prev.TryGrid_ColumnDefinition_Width | _ -> None
+                    match prevValueOpt, source.TryGrid_ColumnDefinition_Width with
+                    | Some prevValue, Some v when prevValue = v -> ()
+                    | _, Some v -> target.Width <- v
+                    | _ -> ()
+                let attribs = [| 
+                    match width with | None -> () | Some v -> yield ("Grid_ColumnDefinition_Width", box v) 
+                  |]
+                new XamlElement(typeof<Xamarin.Forms.ColumnDefinition>, create, apply, Map.ofArray attribs)
 
-        // painful.... It is unfortunately not possible to simpy recreate the whole
-        // view here, you have to mutate the content in-place.
-        override this.OnSizeAllocated(width, height) =
-            base.OnSizeAllocated(width, height)
-            viewAllocatedSizeFixup self.Content (width, height)
+            static member Grid(?rowSpacing: GridLength, ?columnSpacing: GridLength, ?children: IList<XamlElement>, ?rowDefinitions: IList<XamlElement>, ?columnDefinitions: IList<XamlElement>, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: Xamarin.Forms.Thickness, ?backgroundColor: Xamarin.Forms.Color, ?isVisible: bool, ?opacity: double, ?widthRequest: double, ?heightRequest: double, ?isEnabled: bool) = 
+            
+                let create () =
+                     box (new Xamarin.Forms.Grid())
+
+                let apply (prevOpt: XamlElement option) (source: XamlElement) (targetObj:obj) = 
+                    let target = (targetObj :?> Xamarin.Forms.Grid)
+
+                    if (source.Grid_RowDefinitions = null || source.Grid_RowDefinitions.Count = 0) then
+                        match target.RowDefinitions with
+                        | null -> ()
+                        | coll -> coll.Clear() 
+                    else
+                        // Remove the excess children
+                        while (target.RowDefinitions.Count > source.Grid_RowDefinitions.Count) do 
+                            target.RowDefinitions.RemoveAt(target.RowDefinitions.Count - 1)
+
+                        // Count the existing children
+                        let n = target.RowDefinitions.Count
+
+                        // Adjust the existing children and create new children
+                        for i in 0 .. n - 1 do
+                            let newChild = source.Grid_RowDefinitions.[i]
+                            let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryChildren with None -> None | Some coll when i < coll.Count -> Some coll.[i] | _ -> None
+                            if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                                let targetChild = target.Children.[i]
+                                if (match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType) then
+                                    target.RowDefinitions.[i] <- newChild.CreateAsGrid_RowDefinition()
+                                else
+                                    newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+
+                        // Create the new children
+                        for i in n .. source.Grid_RowDefinitions.Count-1 do
+                            target.RowDefinitions.Insert(i, source.Grid_RowDefinitions.[i].CreateAsGrid_RowDefinition())
+
+                    if (source.Grid_ColumnDefinitions = null || source.Grid_ColumnDefinitions.Count = 0) then
+                        match target.ColumnDefinitions with
+                        | null -> ()
+                        | coll -> coll.Clear() 
+                    else
+                        // Remove the excess children
+                        while (target.ColumnDefinitions.Count > source.Grid_ColumnDefinitions.Count) do 
+                            target.ColumnDefinitions.RemoveAt(target.ColumnDefinitions.Count - 1)
+
+                        // Count the existing children
+                        let n = target.ColumnDefinitions.Count
+
+                        // Adjust the existing children 
+                        for i in 0 .. n - 1 do
+                            let newChild = source.Grid_ColumnDefinitions.[i]
+                            let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryChildren with None -> None | Some coll when i < coll.Count -> Some coll.[i] | _ -> None
+                            if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                                let targetChild = target.Children.[i]
+                                if (match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType) then
+                                    target.ColumnDefinitions.[i] <- newChild.CreateAsGrid_ColumnDefinition()
+                                else
+                                    newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+
+                        // Create the new children
+                        for i in n .. source.Grid_ColumnDefinitions.Count-1 do
+                            target.ColumnDefinitions.Insert(i, source.Grid_ColumnDefinitions.[i].CreateAsGrid_ColumnDefinition())
+
+                    if (source.Children = null || source.Children.Count = 0) then
+                        match target.Children with
+                        | null -> ()
+                        | children -> children.Clear() 
+                    else
+                        // Remove the excess children
+                        while (target.Children.Count > source.Children.Count) do 
+                            target.Children.RemoveAt(target.Children.Count - 1)
+
+                        // Count the existing children
+                        let n = target.Children.Count
+
+                        // Adjust the existing children and create new children
+                        for i in 0 .. source.Children.Count-1 do
+                            let newChild = source.Children.[i]
+                            let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryChildren with Some coll when i < coll.Count && i < n -> Some coll.[i] | _ -> None
+                            let prevChildOpt, targetChild =
+                                if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                                    let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                                    if mustCreate then
+                                        let targetChild = newChild.CreateAsView()
+
+                                        if i >= n then 
+                                            target.Children.Insert(i, targetChild)
+                                        else 
+                                            target.Children.[i] <- targetChild
+                                        None, targetChild
+                                    else
+                                        let targetChild1 = target.Children.[i]
+                                        let targetChild = target.Children.[i]
+                                        System.Diagnostics.Debug.Assert(targetChild.GetType() = newChild.TargetType)
+                                        if (targetChild.GetType() <> newChild.TargetType) then 
+                                            System.Diagnostics.Debugger.Break()
+                                        newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                        prevChildOpt, targetChild
+                                else
+                                    prevChildOpt, target.Children.[i]
+
+                            // Adjust the attached properties
+                            match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryGrid_Row), newChild.TryGrid_Row with 
+                            | Some prev, Some v when prev = v -> ()
+                            | _, Some v -> Grid.SetRow(targetChild, v)
+                            | _ -> ()
+                            match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryGrid_Column), newChild.TryGrid_Column with 
+                            | Some prev, Some v when prev = v -> ()
+                            | _, Some v -> Grid.SetColumn(targetChild, v)
+                            | _ -> ()
+                            match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryGrid_RowSpan), newChild.TryGrid_RowSpan with 
+                            | Some prev, Some v when prev = v -> ()
+                            | _, Some v -> Grid.SetRowSpan(targetChild, v)
+                            | _ -> ()
+                            match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryGrid_ColumnSpan), newChild.TryGrid_ColumnSpan with 
+                            | Some prev, Some v when prev = v -> ()
+                            | _, Some v -> Grid.SetColumnSpan(targetChild, v)
+                            | _ -> ()
+
+                    let prevValue = match prevOpt with Some prev -> prev.TryGrid_RowSpacing | _ -> None
+                    match prevValue, source.TryGrid_RowSpacing with
+                    | Some prev, Some v when prev = v -> ()
+                    | _, Some v -> target.RowSpacing <- v
+                    | _, None -> () 
+                    let prevValue = match prevOpt with Some prev -> prev.TryGrid_ColumnSpacing | _ -> None
+                    match prevValue, source.TryGrid_ColumnSpacing with
+                    | Some prev, Some v when prev = v -> ()
+                    | _, Some v -> target.ColumnSpacing <- v
+                    | _, None -> () 
+
+                let attribs = [| 
+                    match children with None -> () | Some v -> yield ("Children", box v) 
+                    match rowSpacing with None -> () | Some v -> yield ("Grid_RowSpacing", box v) 
+                    match columnSpacing with None -> () | Some v -> yield ("Grid_ColumnSpacing", box v) 
+                    match rowDefinitions with None -> () | Some v -> yield ("Grid_RowDefinitions", box v) 
+                    match columnDefinitions with None -> () | Some v -> yield ("Grid_ColumnDefinitions", box v) 
+                  |]
+                Xaml.Layout().Inherit(typeof<Xamarin.Forms.Grid>, create, apply, attribs)
+            
+
+        let gridLength (v: obj) = 
+           match v with 
+           | :? string as s when s = "*" -> GridLength.Star
+           | :? string as s when s = "auto" -> GridLength.Auto
+           | :? float as f -> GridLength.op_Implicit f
+           | _ -> failwithf "gridLength: invalid argument %O" v
+
+        let rowdef h = Xaml.RowDefinition(height=gridLength h)
+
+        let rowdefs (xs: XamlElement list) = Array.ofList xs
+
+        let coldef h = Xaml.ColumnDefinition(width=gridLength h)
+
+        let coldefs (xs: XamlElement list) = Array.ofList  xs
+
+        let rows rds (els: XamlElement list) = 
+            let children = Array.ofList els |> Array.mapi (fun i x -> x.WithGrid_Row i)
+            Xaml.Grid(rowDefinitions=rowdefs rds, children=children)
+
+        let cols cds (els: XamlElement list) = 
+            let children = Array.ofList els |> Array.mapi (fun i x -> x.WithGrid_Column i)
+            Xaml.Grid(columnDefinitions=coldefs cds, children=children)
+
+        let rectangle col = Xaml.Grid(backgroundColor=col)
+
+        type RowNumber = int
+        type ColumnNumber = int
+        type RowSpan = int
+        type ColumnSpan = int
+        type GridSpanDescription = GridSpanDescription of RowNumber option * ColumnNumber option * RowSpan option * ColumnSpan option
+
+        let gridLoc row col = GridSpanDescription (Some row, Some col, None, None)
+
+        let gridRow row = GridSpanDescription (Some row, None, None, None)
+
+        let gridCol col = GridSpanDescription (None, Some col, None, None)
+
+        let gridBlock row col rowspan colspan = GridSpanDescription (Some row, Some col, Some rowspan, Some colspan)
+
+        let (@@) (v:XamlElement) (loc: GridSpanDescription) = (v, loc)
+
+        let grid rds cds (els: (XamlElement * GridSpanDescription) list) =
+            let cdefs = coldefs cds
+            let rdefs = rowdefs rds
+            let children = 
+              [| for (el, loc) in els ->
+                    match loc with 
+                    | GridSpanDescription(Some row, None, None, None) -> 
+                        el.WithGrid_Row(row).WithGrid_ColumnSpan(cdefs.Length)
+                    | GridSpanDescription(None, Some col, None, None) -> 
+                        el.WithGrid_Column(col).WithGrid_RowSpan(rdefs.Length)
+                    | GridSpanDescription(row, col, rowspan, colspan) -> 
+                        let el = match row with None -> el | Some i -> el.WithGrid_Row(i)
+                        let el = match col with None -> el | Some i -> el.WithGrid_Column(i)
+                        let el = match rowspan with None -> el | Some i -> el.WithGrid_RowSpan(i)
+                        let el = match colspan with None -> el | Some i -> el.WithGrid_ColumnSpan(i)
+                        el
+               |]
+            Xaml.Grid(rowDefinitions=rdefs, columnDefinitions=cdefs, children = children)
+        let withRowSpacing m (x: XamlElement) = x.WithGrid_RowSpacing m
+        let rowSpacing m x = withRowSpacing m x
+
+        let withColumnSpacing m (x: XamlElement) = x.WithGrid_ColumnSpacing m
+        let columnSpacing m (x: XamlElement) = withColumnSpacing m x
+
+
+    [<AutoOpen>]
+    module SimplerHelpers = 
+        open System.Runtime.CompilerServices
+        open System.Collections.Generic
+        open System.Windows.Input
+
+        let withCommand f (el: XamlElement) = 
+            let ev = Event<_,_>()
+            let command = 
+                { new ICommand with 
+                    member x.add_CanExecuteChanged h = ev.Publish.AddHandler h
+                    member x.remove_CanExecuteChanged h = ev.Publish.RemoveHandler h
+                    member x.CanExecute _ = true 
+                    member x.Execute _ = f() }
+            el.WithCommand command
+
+        let command f el = withCommand f el
+
+        let withImageSource (image: string) (el: XamlElement) = el.WithImageSource (ImageSource.op_Implicit image)
+        let imageSource image el = withImageSource image el
+
+        let withMargin (v: double) (el: XamlElement) = el.WithMargin (Thickness.op_Implicit v)
+        let margin image el = withMargin image el
+
+        let withFontSize (v: obj) (el: XamlElement) = 
+            let sz = 
+                match box v with 
+                | :? string as s -> (FontSizeConverter().ConvertFromInvariantString(s) :?> double)
+                | :? int as i -> double i
+                | :? double as v -> v
+                | _ -> System.Convert.ToDouble(v)
+            el.WithFontSize(sz)
+
+        let fontSize size el = withFontSize size el
+
+        // Helper page for the TicTacToe sample
+        // Need to generlize the HeightRequest phase of the XF content digestion process...
+        type HelperPage(viewAllocatedSizeFixup) as self =
+            inherit ContentPage()
+            do Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(self, true)
+
+            // painful.... It is unfortunately not possible to simpy recreate the whole
+            // view here, you have to mutate the content in-place.
+            override this.OnSizeAllocated(width, height) =
+                base.OnSizeAllocated(width, height)
+                viewAllocatedSizeFixup self.Content (width, height)
 
