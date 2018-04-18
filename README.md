@@ -149,7 +149,7 @@ module App =
     let view (model: Model) dispatch =
         if model.Pressed then 
             Xaml.Label(text="I was pressed!")
-		else
+        else
             Xaml.Button(text="Press Me!", command= convCommand (fun () -> dispatch Pressed))
 ```
 Your application must be started as follows:
