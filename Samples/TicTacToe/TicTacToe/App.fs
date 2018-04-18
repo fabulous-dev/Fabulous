@@ -230,21 +230,21 @@ module Alternatives =
     /// and can be more suitable to those used to Xaml.
     let view2 model dispatch =
         Xaml.Grid(
-            rowDefinitions=[| Xaml.RowDefinition(gridLength "*"); 
-                              Xaml.RowDefinition(gridLength "auto"); 
-                              Xaml.RowDefinition(gridLength "auto") |],
+            rowDefinitions=[| Xaml.RowDefinition(convGridLength "*"); 
+                              Xaml.RowDefinition(convGridLength "auto"); 
+                              Xaml.RowDefinition(convGridLength "auto") |],
             children=[|
                 Xaml.Grid(
-                    rowDefinitions=[| Xaml.RowDefinition(gridLength "*"); 
-                                      Xaml.RowDefinition(gridLength 5.0); 
-                                      Xaml.RowDefinition(gridLength "*"); 
-                                      Xaml.RowDefinition(gridLength 5.0); 
-                                      Xaml.RowDefinition(gridLength "*") |],
-                    columnDefinitions=[| Xaml.ColumnDefinition(gridLength "*"); 
-                                         Xaml.ColumnDefinition(gridLength 5.0); 
-                                         Xaml.ColumnDefinition(gridLength "*"); 
-                                         Xaml.ColumnDefinition(gridLength 5.0); 
-                                         Xaml.ColumnDefinition(gridLength "*") |],
+                    rowDefinitions=[| Xaml.RowDefinition(convGridLength "*"); 
+                                      Xaml.RowDefinition(convGridLength 5.0); 
+                                      Xaml.RowDefinition(convGridLength "*"); 
+                                      Xaml.RowDefinition(convGridLength 5.0); 
+                                      Xaml.RowDefinition(convGridLength "*") |],
+                    columnDefinitions=[| Xaml.ColumnDefinition(convGridLength "*"); 
+                                         Xaml.ColumnDefinition(convGridLength 5.0); 
+                                         Xaml.ColumnDefinition(convGridLength "*"); 
+                                         Xaml.ColumnDefinition(convGridLength 5.0); 
+                                         Xaml.ColumnDefinition(convGridLength "*") |],
                     children=[|
                         yield Xaml.Grid(backgroundColor=Color.Black).WithGridRow(1)
                         yield Xaml.Grid(backgroundColor=Color.Black).WithGridRow(3)
@@ -259,8 +259,8 @@ module Alternatives =
                             let item = item.WithMargin(convThickness 5.0)
                             let item = item.WithGridRow(row*2).WithGridColumn(col*2) 
                             yield item |],
-                    rowSpacing= gridLength 0.0,
-                    columnSpacing= gridLength 0.0,
+                    rowSpacing= convGridLength 0.0,
+                    columnSpacing= convGridLength 0.0,
                     horizontalOptions=LayoutOptions.Center,
                     verticalOptions=LayoutOptions.Center)
 
