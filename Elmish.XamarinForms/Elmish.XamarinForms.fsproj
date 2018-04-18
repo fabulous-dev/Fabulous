@@ -4,6 +4,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="DynamicXaml.fs" />
     <Compile Include="FableStub.fs" />
     <Compile Include="..\paket-files\neutral\fable-elmish\elmish\src\cmd.fs">
       <Paket>True</Paket>

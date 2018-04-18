@@ -112,6 +112,10 @@
       <Project>{AE045D79-7FF3-45F3-BFD0-305542A1C727}</Project>
       <Name>MasterDetailApp</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Elmish.XamarinForms\Elmish.XamarinForms.fsproj">
+      <Project>{AE045D79-7FF3-45F3-BFD0-305542A1C728}</Project>
+      <Name>Elmish.XamarinForms</Name>
+    </ProjectReference>
     <Reference Include="FSharp.Core">
       <HintPath>..\..\..\packages\FSharp.Core.4.3.4\lib\netstandard1.6\FSharp.Core.dll</HintPath>
     </Reference>
