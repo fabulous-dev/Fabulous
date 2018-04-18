@@ -666,6 +666,13 @@ namespace Elmish.XamarinForms.DynamicViews
            | :? float as f -> GridLength.op_Implicit f
            | _ -> failwithf "gridLength: invalid argument %O" v
 
+        let convFontSize (v: obj) = 
+            match box v with 
+            | :? string as s -> (FontSizeConverter().ConvertFromInvariantString(s) :?> double)
+            | :? int as i -> double i
+            | :? double as v -> v
+            | _ -> System.Convert.ToDouble(v)
+
 
         let withCommand f (el: XamlElement) = el.WithCommand (convCommand f)
         let command f el = withCommand f el
@@ -706,13 +713,6 @@ namespace Elmish.XamarinForms.DynamicViews
 
         let withMargin (v: double) (el: XamlElement) = el.WithMargin (convThickness v)
         let margin image el = withMargin image el
-
-        let convFontSize (v: obj) = 
-            match box v with 
-            | :? string as s -> (FontSizeConverter().ConvertFromInvariantString(s) :?> double)
-            | :? int as i -> double i
-            | :? double as v -> v
-            | _ -> System.Convert.ToDouble(v)
 
         let withFontSize (v: obj) (el: XamlElement) = 
             el.WithFontSize(convFontSize v)
