@@ -148,9 +148,9 @@ module App =
     /// The dynamic 'view' function giving updated content for the page
     let view (model: Model) dispatch =
         if model.Pressed then 
-		    Xaml.Label(text="I was pressed!")
+            Xaml.Label(text="I was pressed!")
 		else
-		    Xaml.Button(text="Press Me!", command= convCommand (fun () -> dispatch Pressed))
+            Xaml.Button(text="Press Me!", command= convCommand (fun () -> dispatch Pressed))
 ```
 Your application must be started as follows:
 ```fsharp
