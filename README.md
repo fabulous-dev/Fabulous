@@ -130,20 +130,27 @@ Multiple Pages and Navigation
 There is some experimental support for multiple-page apps and navigation. See the MasterDetailApp sample.
 
 
-Binding the Elmish to the XAML (Flickering Dynamic Views)
+Binding the Elmish to the XAML (Dynamic Views)
 ------
 
-There is **toy-only** support for dynamic view functions that compute entire new content on each update.  This results in flickering,
-dynamic visual updates so is not yet appropriate for use, but is an interesting programming model experiment called the "Full Elmish" or "Phase 2" approach. In
-this case, the `view` function can compute new content. A small F# DSL is provided for this in ``Elmish.XamarinForms.DynamicViewHelpers``.
+
+There is **experimental** support for dynamic view functions that compute new content on each update.
+This is called "Doing The Full Elmish" or "Phase 2" approach. In
+this case, the `view` function can compute new content. A generated immutable Xaml description
+with incremental (differential) update application plus an F# DSL is provided
+for this in ``Elmish.XamarinForms.DynamicViews``.
 
 ```fsharp
-    open Elmish.XamarinForms.DynamicViewHelpers
+module App = 
+    open Elmish.XamarinForms.DynamicViews
 
     ...
     /// The dynamic 'view' function giving updated content for the page
-    let view model dispatch =
-        rect Color.BlackGreen 
+    let view (model: Model) dispatch =
+        if model.Pressed then 
+		    Xaml.Label(text="I was pressed!")
+		else
+		    Xaml.Button(text="Press Me!", command= convCommand (fun () -> dispatch Pressed))
 ```
 Your application must be started as follows:
 ```fsharp
@@ -156,6 +163,31 @@ Your application must be started as follows:
         |> Program.runDynamicView
 ```
 This is work in progress and may change.  
+
+Summary
+* The immutable Xaml model is [generated code](https://github.com/fsprojects/Elmish.XamarinForms/blob/954c3fc6d38ff1a8b308e6cf336571eef8d3e57e/Elmish.XamarinForms/DynamicXaml.fs)
+* There is only one UI element type (XamlElement, an immutable property bag).  Fable uses this approach pretty well.
+* All properties [are extension members that access the property bag](https://github.com/fsprojects/Elmish.XamarinForms/blob/954c3fc6d38ff1a8b308e6cf336571eef8d3e57e/Elmish.XamarinForms/DynamicXaml.fs#L185, also https://github.com/fsprojects/Elmish.XamarinForms/blob/954c3fc6d38ff1a8b308e6cf336571eef8d3e57e/Elmish.XamarinForms/DynamicXaml.fs#L491)
+* Safe creation through [`Xaml.Button(...)`](https://github.com/fsprojects/Elmish.XamarinForms/blob/954c3fc6d38ff1a8b308e6cf336571eef8d3e57e/Elmish.XamarinForms/DynamicXaml.fs#L1248) etc.  
+* Some F# DSL helpers, e.g. [`button |> withText "Hello"`](https://github.com/fsprojects/Elmish.XamarinForms/blob/954c3fc6d38ff1a8b308e6cf336571eef8d3e57e/Elmish.XamarinForms/DynamicXaml.fs#L729) etc.
+* The incrementalization is mostly done.
+* Some types notably Grid are done by hand [here](https://github.com/fsprojects/Elmish.XamarinForms/blob/954c3fc6d38ff1a8b308e6cf336571eef8d3e57e/Elmish.XamarinForms/Combinators.fs#L500).
+
+Example use is either 
+* [this](https://github.com/fsprojects/Elmish.XamarinForms/blob/954c3fc6d38ff1a8b308e6cf336571eef8d3e57e/Samples/TicTacToe/TicTacToe/App.fs#L143) or 
+* [this](https://github.com/fsprojects/Elmish.XamarinForms/blob/954c3fc6d38ff1a8b308e6cf336571eef8d3e57e/Samples/TicTacToe/TicTacToe/App.fs#L231) or potentially
+* [this](https://github.com/fsprojects/Elmish.XamarinForms/blob/954c3fc6d38ff1a8b308e6cf336571eef8d3e57e/Samples/TicTacToe/TicTacToe/App.fs#L273) 
+
+depending on how many extra F# helpers we have and the approach we take to implicit conversions.
+
+Not done:
+* RelativeLayout
+* FlexLayout
+* AbsoluteLayout
+* Slider
+* Much more
+
+
 
 Releasing
 ------
