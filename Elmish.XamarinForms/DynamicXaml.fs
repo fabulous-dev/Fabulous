@@ -190,6 +190,9 @@ module XamlElementExtensions =
         /// Get the BorderColor property in the visual element
         member x.BorderColor = match x.Attributes.TryFind("BorderColor") with Some v -> unbox<Xamarin.Forms.Color>(v) | None -> Xamarin.Forms.Color.Default
 
+        /// Get the TextColor property in the visual element
+        member x.TextColor = match x.Attributes.TryFind("TextColor") with Some v -> unbox<Xamarin.Forms.Color>(v) | None -> Xamarin.Forms.Color.Default
+
         /// Get the Content property in the visual element
         member x.Content = match x.Attributes.TryFind("Content") with Some v -> unbox<XamlElement>(v) | None -> null
 
@@ -225,9 +228,6 @@ module XamlElementExtensions =
 
         /// Get the Keyboard property in the visual element
         member x.Keyboard = match x.Attributes.TryFind("Keyboard") with Some v -> unbox<Xamarin.Forms.Keyboard>(v) | None -> Xamarin.Forms.Keyboard.Default
-
-        /// Get the TextColor property in the visual element
-        member x.TextColor = match x.Attributes.TryFind("TextColor") with Some v -> unbox<Xamarin.Forms.Color>(v) | None -> Xamarin.Forms.Color.Default
 
         /// Get the Placeholder property in the visual element
         member x.Placeholder = match x.Attributes.TryFind("Placeholder") with Some v -> unbox<string>(v) | None -> null
@@ -367,6 +367,9 @@ module XamlElementExtensions =
         /// Try to get the BorderColor property in the visual element
         member x.TryBorderColor = match x.Attributes.TryFind("BorderColor") with Some v -> Some(unbox<Xamarin.Forms.Color>(v)) | None -> None
 
+        /// Try to get the TextColor property in the visual element
+        member x.TryTextColor = match x.Attributes.TryFind("TextColor") with Some v -> Some(unbox<Xamarin.Forms.Color>(v)) | None -> None
+
         /// Try to get the Content property in the visual element
         member x.TryContent = match x.Attributes.TryFind("Content") with Some v -> Some(unbox<XamlElement>(v)) | None -> None
 
@@ -402,9 +405,6 @@ module XamlElementExtensions =
 
         /// Try to get the Keyboard property in the visual element
         member x.TryKeyboard = match x.Attributes.TryFind("Keyboard") with Some v -> Some(unbox<Xamarin.Forms.Keyboard>(v)) | None -> None
-
-        /// Try to get the TextColor property in the visual element
-        member x.TryTextColor = match x.Attributes.TryFind("TextColor") with Some v -> Some(unbox<Xamarin.Forms.Color>(v)) | None -> None
 
         /// Try to get the Placeholder property in the visual element
         member x.TryPlaceholder = match x.Attributes.TryFind("Placeholder") with Some v -> Some(unbox<string>(v)) | None -> None
@@ -544,6 +544,9 @@ module XamlElementExtensions =
         /// Adjusts the BorderColor property in the visual element
         member x.WithBorderColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("BorderColor", box value))
 
+        /// Adjusts the TextColor property in the visual element
+        member x.WithTextColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("TextColor", box value))
+
         /// Adjusts the Content property in the visual element
         member x.WithContent(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Content", box value))
 
@@ -579,9 +582,6 @@ module XamlElementExtensions =
 
         /// Adjusts the Keyboard property in the visual element
         member x.WithKeyboard(value: Xamarin.Forms.Keyboard) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Keyboard", box value))
-
-        /// Adjusts the TextColor property in the visual element
-        member x.WithTextColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("TextColor", box value))
 
         /// Adjusts the Placeholder property in the visual element
         member x.WithPlaceholder(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Placeholder", box value))
@@ -779,6 +779,12 @@ module XamlElementExtensions =
     /// Adjusts the BorderColor property in the visual element
     let borderColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.WithBorderColor(value)
 
+    /// Adjusts the TextColor property in the visual element
+    let withTextColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.WithTextColor(value)
+
+    /// Adjusts the TextColor property in the visual element
+    let textColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.WithTextColor(value)
+
     /// Adjusts the Content property in the visual element
     let withContent (value: XamlElement) (x: XamlElement) = x.WithContent(value)
 
@@ -850,12 +856,6 @@ module XamlElementExtensions =
 
     /// Adjusts the Keyboard property in the visual element
     let keyboard (value: Xamarin.Forms.Keyboard) (x: XamlElement) = x.WithKeyboard(value)
-
-    /// Adjusts the TextColor property in the visual element
-    let withTextColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.WithTextColor(value)
-
-    /// Adjusts the TextColor property in the visual element
-    let textColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.WithTextColor(value)
 
     /// Adjusts the Placeholder property in the visual element
     let withPlaceholder (value: string) (x: XamlElement) = x.WithPlaceholder(value)
@@ -1245,7 +1245,7 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.BoxView>, create, apply, Map.ofArray attribs)
 
     /// Describes a Button in the view
-    static member Button(?text: string, ?command: System.Windows.Input.ICommand, ?commandParameter: System.Object, ?contentLayout: Xamarin.Forms.Button.ButtonContentLayout, ?fontSize: double, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?borderWidth: double, ?borderColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: Xamarin.Forms.Thickness, ?backgroundColor: Xamarin.Forms.Color, ?isVisible: bool, ?opacity: double, ?widthRequest: double, ?heightRequest: double, ?isEnabled: bool) = 
+    static member Button(?text: string, ?command: System.Windows.Input.ICommand, ?commandParameter: System.Object, ?contentLayout: Xamarin.Forms.Button.ButtonContentLayout, ?fontSize: double, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?borderWidth: double, ?borderColor: Xamarin.Forms.Color, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: Xamarin.Forms.Thickness, ?backgroundColor: Xamarin.Forms.Color, ?isVisible: bool, ?opacity: double, ?widthRequest: double, ?heightRequest: double, ?isEnabled: bool) = 
         let attribs = [| 
             match text with | None -> () | Some v -> yield ("Text", box v) 
             match command with | None -> () | Some v -> yield ("Command", box v) 
@@ -1256,6 +1256,7 @@ type Xaml() =
             match fontAttributes with | None -> () | Some v -> yield ("FontAttributes", box v) 
             match borderWidth with | None -> () | Some v -> yield ("BorderWidth", box v) 
             match borderColor with | None -> () | Some v -> yield ("BorderColor", box v) 
+            match textColor with | None -> () | Some v -> yield ("TextColor", box v) 
             match horizontalOptions with | None -> () | Some v -> yield ("HorizontalOptions", box v) 
             match verticalOptions with | None -> () | Some v -> yield ("VerticalOptions", box v) 
             match margin with | None -> () | Some v -> yield ("Margin", box v) 
@@ -1325,6 +1326,12 @@ type Xaml() =
             | Some prevValue, Some value when prevValue = value-> ()
             | _, Some value -> target.BorderColor <- value
             | Some _, None -> target.BorderColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTextColor
+            match prevValueOpt, source.TryTextColor with
+            | Some prevValue, Some value when prevValue = value-> ()
+            | _, Some value -> target.TextColor <- value
+            | Some _, None -> target.TextColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
             match prevValueOpt, source.TryHorizontalOptions with
@@ -2488,7 +2495,7 @@ type Xaml() =
                 for i in 0 .. source.Children.Count-1 do
                     let newChild = source.Children.[i]
                     let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryChildren with None -> None | Some coll when i < coll.Count && i < n -> Some coll.[i] | _ -> None
-                    let targetChild = 
+                    let prevChildOpt, targetChild = 
                         if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
                             let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
                             if mustCreate then
@@ -2497,13 +2504,13 @@ type Xaml() =
                                     target.Children.Insert(i, targetChild)
                                 else
                                     target.Children.[i] <- targetChild
-                                targetChild
+                                None, targetChild
                             else
                                 let targetChild = target.Children.[i]
                                 newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
-                                targetChild
+                                prevChildOpt, targetChild
                         else
-                            target.Children.[i]
+                            prevChildOpt, target.Children.[i]
                     // note, setting attached properties should go here
                     ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOrientation
