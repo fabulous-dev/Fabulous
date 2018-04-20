@@ -375,6 +375,7 @@ namespace Elmish.XamarinForms.DynamicViews
     open Elmish.XamarinForms
     open Elmish.XamarinForms.DynamicViews
 
+(*
     [<AutoOpen>]
     module GridHelpers = 
 
@@ -383,35 +384,12 @@ namespace Elmish.XamarinForms.DynamicViews
         open System.Windows.Input
        
         type XamlElement with 
-            /// Get the GridRow property in the visual element
-            member x.GridRow = match x.Attributes.TryFind("GridRow") with Some v -> unbox<int>(v) | None -> 0
-
-            /// Get the GridColumn property in the visual element
-            member x.GridColumn = match x.Attributes.TryFind("GridColumn") with Some v -> unbox<int>(v) | None -> 0
-
-            /// Get the RowDefinition_Height property in the visual element
-            member x.GridRowDefinition_Height = match x.Attributes.TryFind("GridRowDefinition_Height") with Some v -> unbox<GridLength>(v) | None -> GridLength.Auto
-
-            /// Get the ColumnDefinition_Width property in the visual element
-            member x.GridColumnDefinition_Width = match x.Attributes.TryFind("GridColumnDefinition_Width") with Some v -> unbox<GridLength>(v) | None -> GridLength.Auto
-
-            /// Get the RowSpacing property in the visual element
-            member x.GridRowSpacing = match x.Attributes.TryFind("GridRowSpacing") with Some v -> unbox<double>(v) | None -> Unchecked.defaultof<double>
-
-            /// Get the ColumnSpacing property in the visual element
-            member x.GridColumnSpacing = match x.Attributes.TryFind("GridColumnSpacing") with Some v -> unbox<double>(v) | None -> Unchecked.defaultof<double>
-
-            /// Get the RowDefinitions property in the visual element
-            member x.GridRowDefinitions = match x.Attributes.TryFind("GridRowDefinitions") with Some v -> unbox<IList<XamlElement>>(v) | None -> Unchecked.defaultof<_>
-
-            /// Get the ColumnDefinitions property in the visual element
-            member x.GridColumnDefinitions = match x.Attributes.TryFind("GridColumnDefinitions") with Some v -> unbox<IList<XamlElement>>(v) | None -> Unchecked.defaultof<_>
 
             /// Adjust the RowSpacing property in the visual element
-            member x.WithGridRowSpacing(value: double) = x.WithAttribute("GridRowSpacing", box value)
+            member x.WithGridRowSpacing(value: double) = x.WithAttribute("GridRowSpacing", box (makeGridLength value))
 
             /// Adjust the ColumnSpacing property in the visual element
-            member x.WithGridColumnSpacing(value: double) = x.WithAttribute("GridColumnSpacing", box value)
+            member x.WithGridColumnSpacing(value: double) = x.WithAttribute("GridColumnSpacing", box (makeGridLength value))
         
             /// Adjust the RowDefinitions property in the visual element
             member x.WithGridRowDefinitions (value: IList<XamlElement>) = x.WithAttribute("GridRowDefinitions", box value)
@@ -449,12 +427,6 @@ namespace Elmish.XamarinForms.DynamicViews
             /// Try to get the Grid ColumnSpacing property in the visual element
             member x.TryGridColumnSpacing = match x.Attributes.TryFind("GridColumnSpacing") with Some v -> Some(unbox<double>(v)) | None -> None
 
-            /// Get the RowDefinition_Height property in the visual element
-            member x.TryGridRowDefinition_Height = match x.Attributes.TryFind("GridRowDefinition_Height") with Some v -> Some(unbox<GridLength>(v)) | None -> None
-
-            /// Get the ColumnDefinition_Width property in the visual element
-            member x.TryGridColumnDefinition_Width = match x.Attributes.TryFind("GridColumnDefinition_Width") with Some v -> Some(unbox<GridLength>(v)) | None -> None
-
             /// Get the RowDefinitions property in the visual element
             member x.TryGridRowDefinitions = match x.Attributes.TryFind("GridRowDefinitions") with Some v -> Some(unbox<IList<XamlElement>>(v)) | None -> None
 
@@ -469,35 +441,7 @@ namespace Elmish.XamarinForms.DynamicViews
 
         /// Represents a ListViewDescription in the view desription
         type Xaml with 
-            static member RowDefinition(?height: GridLength) = 
-                let create () = Xamarin.Forms.RowDefinition() |> box
-                let apply (prevOpt: XamlElement option) (source: XamlElement) (target: obj) = 
-                    let target = (target :?> RowDefinition)
-                    let prevHeightOpt = match prevOpt with Some prev -> prev.TryGridRowDefinition_Height | _ -> None
-                    match prevHeightOpt, source.TryGridRowDefinition_Height with
-                    | Some prevHeight, Some v when prevHeight = v -> ()
-                    | _, Some v -> target.Height <- v
-                    | _ -> ()
-                let attribs = [| 
-                    match height with | None -> () | Some v -> yield ("GridRowDefinition_Height", box v) 
-                  |]
-                new XamlElement(typeof<Xamarin.Forms.RowDefinition>, create, apply, Map.ofArray attribs)
-
-            static member ColumnDefinition(?width: GridLength) = 
-                let create () = Xamarin.Forms.ColumnDefinition() |> box
-                let apply (prevOpt: XamlElement option) (source: XamlElement) (target: obj) = 
-                    let target = (target :?> ColumnDefinition)
-                    let prevWidthOpt = match prevOpt with Some prev -> prev.TryGridColumnDefinition_Width | _ -> None
-                    match prevWidthOpt, source.TryGridColumnDefinition_Width with
-                    | Some prevWidth, Some v when prevWidth = v -> ()
-                    | _, Some v -> target.Width <- v
-                    | _ -> ()
-                let attribs = [| 
-                    match width with | None -> () | Some v -> yield ("GridColumnDefinition_Width", box v) 
-                  |]
-                new XamlElement(typeof<Xamarin.Forms.ColumnDefinition>, create, apply, Map.ofArray attribs)
-
-            static member Grid(?rowDefinitions: IList<XamlElement>, ?columnDefinitions: IList<XamlElement>, ?children: IList<XamlElement>, ?rowSpacing: GridLength, ?columnSpacing: GridLength, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: Xamarin.Forms.Thickness, ?backgroundColor: Xamarin.Forms.Color, ?isVisible: bool, ?opacity: double, ?widthRequest: double, ?heightRequest: double, ?isEnabled: bool) = 
+            static member Grid(?rowdefs: IList<XamlElement>, ?coldefs: IList<XamlElement>, ?children: IList<XamlElement>, ?rowSpacing: obj, ?columnSpacing: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: Xamarin.Forms.Thickness, ?backgroundColor: Xamarin.Forms.Color, ?isVisible: bool, ?opacity: double, ?widthRequest: double, ?heightRequest: double, ?isEnabled: bool) = 
             
                 let create () =
                      box (new Xamarin.Forms.Grid())
@@ -505,13 +449,15 @@ namespace Elmish.XamarinForms.DynamicViews
                 let apply (prevOpt: XamlElement option) (source: XamlElement) (targetObj:obj) = 
                     let target = (targetObj :?> Xamarin.Forms.Grid)
 
-                    if (source.GridRowDefinitions = null || source.GridRowDefinitions.Count = 0) then
+                    match source.TryGridRowDefinitions with 
+                    | Some coll when coll <> null && coll.Count > 0 -> 
+                      if (coll = null || coll.Count = 0) then
                         match target.RowDefinitions with
                         | null -> ()
                         | coll -> coll.Clear() 
-                    else
+                      else
                         // Remove the excess children
-                        while (target.RowDefinitions.Count > source.GridRowDefinitions.Count) do 
+                        while (target.RowDefinitions.Count > coll.Count) do 
                             target.RowDefinitions.RemoveAt(target.RowDefinitions.Count - 1)
 
                         // Count the existing children
@@ -519,7 +465,7 @@ namespace Elmish.XamarinForms.DynamicViews
 
                         // Adjust the existing children and create new children
                         for i in 0 .. n - 1 do
-                            let newChild = source.GridRowDefinitions.[i]
+                            let newChild = coll.[i]
                             let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryChildren with None -> None | Some coll when i < coll.Count -> Some coll.[i] | _ -> None
                             if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
                                 let targetChild = target.Children.[i]
@@ -529,16 +475,19 @@ namespace Elmish.XamarinForms.DynamicViews
                                     newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
 
                         // Create the new children
-                        for i in n .. source.GridRowDefinitions.Count-1 do
-                            target.RowDefinitions.Insert(i, source.GridRowDefinitions.[i].CreateAsGridRowDefinition())
+                        for i in n .. coll.Count-1 do
+                            target.RowDefinitions.Insert(i, coll.[i].CreateAsGridRowDefinition())
+                    | _ -> ()
 
-                    if (source.GridColumnDefinitions = null || source.GridColumnDefinitions.Count = 0) then
+                    match source.TryGridColumnDefinitions with 
+                    | Some coll when coll <> null && coll.Count > 0 -> 
+                      if (coll = null || coll.Count = 0) then
                         match target.ColumnDefinitions with
                         | null -> ()
                         | coll -> coll.Clear() 
-                    else
+                      else
                         // Remove the excess children
-                        while (target.ColumnDefinitions.Count > source.GridColumnDefinitions.Count) do 
+                        while (target.ColumnDefinitions.Count > coll.Count) do 
                             target.ColumnDefinitions.RemoveAt(target.ColumnDefinitions.Count - 1)
 
                         // Count the existing children
@@ -546,7 +495,7 @@ namespace Elmish.XamarinForms.DynamicViews
 
                         // Adjust the existing children 
                         for i in 0 .. n - 1 do
-                            let newChild = source.GridColumnDefinitions.[i]
+                            let newChild = coll.[i]
                             let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryChildren with None -> None | Some coll when i < coll.Count -> Some coll.[i] | _ -> None
                             if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
                                 let targetChild = target.Children.[i]
@@ -556,24 +505,27 @@ namespace Elmish.XamarinForms.DynamicViews
                                     newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
 
                         // Create the new children
-                        for i in n .. source.GridColumnDefinitions.Count-1 do
-                            target.ColumnDefinitions.Insert(i, source.GridColumnDefinitions.[i].CreateAsGridColumnDefinition())
+                        for i in n .. coll.Count-1 do
+                            target.ColumnDefinitions.Insert(i, coll.[i].CreateAsGridColumnDefinition())
+                    | _ -> ()
 
-                    if (source.Children = null || source.Children.Count = 0) then
+                    match source.TryChildren with 
+                    | Some coll when coll <> null && coll.Count > 0 -> 
+                      if (coll = null || coll.Count = 0) then
                         match target.Children with
                         | null -> ()
                         | children -> children.Clear() 
-                    else
+                      else
                         // Remove the excess children
-                        while (target.Children.Count > source.Children.Count) do 
+                        while (target.Children.Count > coll.Count) do 
                             target.Children.RemoveAt(target.Children.Count - 1)
 
                         // Count the existing children
                         let n = target.Children.Count
 
                         // Adjust the existing children and create new children
-                        for i in 0 .. source.Children.Count-1 do
-                            let newChild = source.Children.[i]
+                        for i in 0 .. coll.Count-1 do
+                            let newChild = coll.[i]
                             let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryChildren with Some coll when i < coll.Count && i < n -> Some coll.[i] | _ -> None
                             let prevChildOpt, targetChild =
                                 if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
@@ -587,10 +539,7 @@ namespace Elmish.XamarinForms.DynamicViews
                                             target.Children.[i] <- targetChild
                                         None, targetChild
                                     else
-                                        let targetChild1 = target.Children.[i]
                                         let targetChild = target.Children.[i]
-                                        if (targetChild.GetType() <> newChild.TargetType) then 
-                                            System.Diagnostics.Debugger.Break()
                                         newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
                                         prevChildOpt, targetChild
                                 else
@@ -613,6 +562,7 @@ namespace Elmish.XamarinForms.DynamicViews
                             | Some prev, Some v when prev = v -> ()
                             | _, Some v -> Grid.SetColumnSpan(targetChild, v)
                             | _ -> ()
+                    | _ -> ()
 
                     let prevRowSpacing = match prevOpt with Some prev -> prev.TryGridRowSpacing | _ -> None
                     match prevRowSpacing, source.TryGridRowSpacing with
@@ -628,10 +578,10 @@ namespace Elmish.XamarinForms.DynamicViews
 
                 let attribs = [| 
                     match children with None -> () | Some v -> yield ("Children", box v) 
-                    match rowSpacing with None -> () | Some v -> yield ("GridRowSpacing", box v) 
-                    match columnSpacing with None -> () | Some v -> yield ("GridColumnSpacing", box v) 
-                    match rowDefinitions with None -> () | Some v -> yield ("GridRowDefinitions", box v) 
-                    match columnDefinitions with None -> () | Some v -> yield ("GridColumnDefinitions", box v) 
+                    match rowSpacing with None -> () | Some v -> yield ("GridRowSpacing", box (makeGridLength v)) 
+                    match columnSpacing with None -> () | Some v -> yield ("GridColumnSpacing", box (makeGridLength v)) 
+                    match rowdefs with None -> () | Some v -> yield ("GridRowDefinitions", box v) 
+                    match coldefs with None -> () | Some v -> yield ("GridColumnDefinitions", box v) 
                   |]
                 Xaml.Layout().Inherit(typeof<Xamarin.Forms.Grid>, create, apply, attribs)
             
@@ -641,87 +591,37 @@ namespace Elmish.XamarinForms.DynamicViews
         let withColumnSpacing m (x: XamlElement) = x.WithGridColumnSpacing m
         let columnSpacing m (x: XamlElement) = withColumnSpacing m x
 
+        let withGridRow row (el: XamlElement) = el.WithGridRow(row)
+        let gridRow row (el: XamlElement) = el.WithGridRow(row)
+        let withGridColumn col (el: XamlElement) = el.WithGridColumn(col)
+        let gridColumn col (el: XamlElement) = el.WithGridColumn(col)
+        let withGridRowSpan rowspan (el: XamlElement) = el.WithGridRowSpan(rowspan)
+        let gridRowSpan rowspan (el: XamlElement) = el.WithGridRowSpan(rowspan)
+        let withGridColumnSpan colspan (el: XamlElement) = el.WithGridColumnSpan(colspan)
+        let gridColumnSpan colspan (el: XamlElement) = el.WithGridColumnSpan(colspan)
+*)
     [<AutoOpen>]
     module SimplerHelpers = 
         open System.Runtime.CompilerServices
         open System.Collections.Generic
         open System.Windows.Input
 
-        let convCommand f = 
-            let ev = Event<_,_>()
-            { new ICommand with 
-                member x.add_CanExecuteChanged h = ev.Publish.AddHandler h
-                member x.remove_CanExecuteChanged h = ev.Publish.RemoveHandler h
-                member x.CanExecute _ = true 
-                member x.Execute _ = f() }
 
-        let convImageSource (image: string) = ImageSource.op_Implicit image
-
-        let convThickness (v: double) = Thickness.op_Implicit v
-
-        let convGridLength (v: obj) = 
-           match v with 
-           | :? string as s when s = "*" -> GridLength.Star
-           | :? string as s when s = "auto" -> GridLength.Auto
-           | :? float as f -> GridLength.op_Implicit f
-           | _ -> failwithf "gridLength: invalid argument %O" v
-
-        let convFontSize (v: obj) = 
-            match box v with 
-            | :? string as s -> (FontSizeConverter().ConvertFromInvariantString(s) :?> double)
-            | :? int as i -> double i
-            | :? double as v -> v
-            | _ -> System.Convert.ToDouble(v)
-
-
-        let withCommand f (el: XamlElement) = el.WithCommand (convCommand f)
-        let command f el = withCommand f el
-
-        let withImageSource (image: string) (el: XamlElement) = el.WithImageSource (convImageSource image)
-        let imageSource image el = withImageSource image el
-
-        let rowdef h = Xaml.RowDefinition(height=convGridLength h)
-
-        let rowdefs (xs: XamlElement list) = Array.ofList xs
-
-        let coldef h = Xaml.ColumnDefinition(width=convGridLength h)
-
-        let coldefs (xs: XamlElement list) = Array.ofList  xs
+        let rowdef h = Xaml.RowDefinition(height=makeGridLength h)
+        let coldef h = Xaml.ColumnDefinition(width=makeGridLength h)
 
         let rows rds (els: XamlElement list) = 
-            let children = Array.ofList els |> Array.mapi (fun i x -> x.WithGridRow i)
-            Xaml.Grid(rowDefinitions=rowdefs rds, children=children)
+            let children = els |> List.mapi (fun i x -> x.WithGridRow i)
+            Xaml.Grid(rowdefs=rds, children=children)
 
         let cols cds (els: XamlElement list) = 
-            let children = Array.ofList els |> Array.mapi (fun i x -> x.WithGridColumn i)
-            Xaml.Grid(columnDefinitions=coldefs cds, children=children)
+            let children = els |> List.mapi (fun i x -> x.WithGridColumn i)
+            Xaml.Grid(coldefs=cds, children=children)
 
-        let rectangle col = Xaml.Grid(backgroundColor=col)
-
-        let gridLoc row col (el: XamlElement) = el.WithGridRow(row).WithGridColumn(col)
-
-        let gridRow row colspan (el: XamlElement) = el.WithGridRow(row).WithGridColumnSpan(colspan)
-
-        let gridCol col rowspan (el: XamlElement) = el.WithGridColumn(col).WithGridRowSpan(rowspan)
-
-        let gridBlock row col rowspan colspan (el: XamlElement) = el.WithGridColumn(col).WithGridRow(row).WithGridRowSpan(rowspan).WithGridColumnSpan(colspan)
-
-        let grid rds cds (children: XamlElement list) =
-            let cdefs = coldefs cds
-            let rdefs = rowdefs rds
-            Xaml.Grid(rowDefinitions=rdefs, columnDefinitions=cdefs, children = Array.ofList children)
-
-        let withMargin (v: double) (el: XamlElement) = el.WithMargin (convThickness v)
-        let margin image el = withMargin image el
-
-        let withFontSize (v: obj) (el: XamlElement) = 
-            el.WithFontSize(convFontSize v)
-
-        let fontSize size el = withFontSize size el
 
         // Helper page for the TicTacToe sample
         // Need to generlize the HeightRequest phase of the XF content digestion process...
-        type HelperPage(viewAllocatedSizeFixup) as self =
+        type HelperPage(?viewAllocatedSizeFixup) as self =
             inherit ContentPage()
             do Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(self, true)
 
@@ -729,5 +629,7 @@ namespace Elmish.XamarinForms.DynamicViews
             // view here, you have to mutate the content in-place.
             override this.OnSizeAllocated(width, height) =
                 base.OnSizeAllocated(width, height)
-                viewAllocatedSizeFixup self.Content (width, height)
+                match viewAllocatedSizeFixup with 
+                | Some f -> f self.Content (width, height)
+                | None -> ()
 

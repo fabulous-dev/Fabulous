@@ -142,22 +142,22 @@ module App =
     /// The dynamic 'view' function giving the updated content for the view
     let view model dispatch =
         rows 
-            [ rowdef "*"; rowdef "auto"; rowdef "auto" ]
+            [ "*"; "auto"; "auto" ]
             [ grid 
-                [ rowdef "*"; rowdef 5.0; rowdef "*"; rowdef 5.0; rowdef "*" ]
-                [ coldef "*"; coldef 5.0; coldef "*"; coldef 5.0; coldef "*" ]
-                [ yield rectangle Color.Black |> gridRow 1 5
-                  yield rectangle Color.Black |> gridRow 3 5
-                  yield rectangle Color.Black |> gridCol 1 5
-                  yield rectangle Color.Black |> gridCol 3 5
+               |> gridRowDefinitions [ "*"; 5.0; "*"; 5.0; "*" ]
+               |> gridColumnDefinitions [ "*"; 5.0; "*"; 5.0; "*" ]
+               |> children [ 
+                  yield boxView |> color Color.Black |> gridRow 1 |> gridColumnSpan 5
+                  yield boxView |> color Color.Black |> gridRow 3 |> gridColumnSpan 5
+                  yield boxView |> color Color.Black |> gridColumn 1 |> gridRowSpan 5
+                  yield boxView |> color Color.Black |> gridColumn 1 |> gridRowSpan 5
                   for ((row,col) as pos) in positions do 
                       let item = 
                           if canPlay model model.Board.[pos] then 
                               button |> command (fun () -> dispatch (Play pos)) 
                           else
                               image |> imageSource (imageForPos model.Board.[pos]) 
-                      let item = item |> margin 5.0
-                      yield item |> gridLoc (row*2) (col*2) ]
+                      yield item |> margin 5.0 |> gridRow (row*2) |> gridColumn (col*2) ]
 
                 |> rowSpacing 0.0
                 |> columnSpacing 0.0
@@ -230,75 +230,30 @@ module Alternatives =
     /// and can be more suitable to those used to Xaml.
     let view2 model dispatch =
         Xaml.Grid(
-            rowDefinitions=[| Xaml.RowDefinition(convGridLength "*"); 
-                              Xaml.RowDefinition(convGridLength "auto"); 
-                              Xaml.RowDefinition(convGridLength "auto") |],
-            children=[|
+            rowdefs = [ "*"; "auto"; "auto" ],
+            children = [
                 Xaml.Grid(
-                    rowDefinitions=[| Xaml.RowDefinition(convGridLength "*"); 
-                                      Xaml.RowDefinition(convGridLength 5.0); 
-                                      Xaml.RowDefinition(convGridLength "*"); 
-                                      Xaml.RowDefinition(convGridLength 5.0); 
-                                      Xaml.RowDefinition(convGridLength "*") |],
-                    columnDefinitions=[| Xaml.ColumnDefinition(convGridLength "*"); 
-                                         Xaml.ColumnDefinition(convGridLength 5.0); 
-                                         Xaml.ColumnDefinition(convGridLength "*"); 
-                                         Xaml.ColumnDefinition(convGridLength 5.0); 
-                                         Xaml.ColumnDefinition(convGridLength "*") |],
-                    children=[|
-                        yield Xaml.Grid(backgroundColor=Color.Black).WithGridRow(1)
-                        yield Xaml.Grid(backgroundColor=Color.Black).WithGridRow(3)
-                        yield Xaml.Grid(backgroundColor=Color.Black).WithGridColumn(1)
-                        yield Xaml.Grid(backgroundColor=Color.Black).WithGridColumn(3)
+                    rowdefs = [ "*"; 5.0; "*"; 5.0; "*" ],
+                    coldefs = [ "*"; 5.0; "*"; 5.0; "*" ],
+                    children = [
+                        yield Xaml.BoxView(Color.Black).WithGridRow(1).WithGridColumnSpan(5)
+                        yield Xaml.BoxView(Color.Black).WithGridRow(3).WithGridColumnSpan(5)
+                        yield Xaml.BoxView(Color.Black).WithGridColumn(1).WithGridRowSpan(5)
+                        yield Xaml.BoxView(Color.Black).WithGridColumn(3).WithGridRowSpan(5)
                         for ((row,col) as pos) in positions do 
                             let item = 
                                 if canPlay model model.Board.[pos] then 
-                                    Xaml.Button(command=convCommand (fun () -> dispatch (Play pos)))
+                                    Xaml.Button(command = (fun () -> dispatch (Play pos)))
                                 else
-                                    Xaml.Image(imageSource=convImageSource (imageForPos model.Board.[pos])) 
-                            let item = item.WithMargin(convThickness 5.0)
-                            let item = item.WithGridRow(row*2).WithGridColumn(col*2) 
-                            yield item |],
-                    rowSpacing= convGridLength 0.0,
-                    columnSpacing= convGridLength 0.0,
-                    horizontalOptions=LayoutOptions.Center,
-                    verticalOptions=LayoutOptions.Center)
-
-                Xaml.Label(text=getMessage model, margin=convThickness 10.0, textColor=Color.Black, horizontalTextAlignment=TextAlignment.Center, fontSize=convFontSize "Large")
-                Xaml.Button(command=convCommand (fun () -> dispatch Restart), text="Restart game", backgroundColor=Color.LightBlue, textColor=Color.Black, fontSize=convFontSize "Large")
-              |])
-
-
-(*
-    /// The third possible style for the dynamic 'view' function (requires inserting auto-conversion into generated model)
-    let view3 model dispatch =
-        Xaml.Grid(
-            rowDefinitions=[| rowdef "*"; rowdef "auto"; rowdef "auto" |],
-            children=[|
-                Xaml.Grid(
-                    rowDefinitions=[| rowdef "*"; rowdef 5.0; rowdef "*"; rowdef 5.0; rowdef "*" |],
-                    columnDefinitions=[| coldef "*"; coldef 5.0; coldef "*"; coldef 5.0; coldef "*" |],
-                    children=[|
-                        yield Xaml.Grid(backgroundColor=Color.Black).WithGridRow(1)
-                        yield Xaml.Grid(backgroundColor=Color.Black).WithGridRow(3)
-                        yield Xaml.Grid(backgroundColor=Color.Black).WithGridColumn(1)
-                        yield Xaml.Grid(backgroundColor=Color.Black).WithGridColumn(3)
-                        for ((row,col) as pos) in positions do 
-                            let item = 
-                                if canPlay model model.Board.[pos] then 
-                                    Xaml.Button(command=(fun () -> dispatch (Play pos)))
-                                else
-                                    Xaml.Image(imageSource=imageForPos model.Board.[pos]) 
+                                    Xaml.Image(source = imageForPos model.Board.[pos])
                             let item = item.WithMargin(5.0)
                             let item = item.WithGridRow(row*2).WithGridColumn(col*2) 
-                            yield item |],
-                    rowSpacing=0.0,
-                    columnSpacing=0.0,
-                    horizontalOptions=LayoutOptions.Center,
-                    verticalOptions=LayoutOptions.Center)
+                            yield item ],
+                    rowSpacing = 0.0,
+                    columnSpacing = 0.0,
+                    horizontalOptions = LayoutOptions.Center,
+                    verticalOptions = LayoutOptions.Center)
 
-                Xaml.Label(text=getMessage model, margin=10.0, textColor=Color.Black, horizontalTextAlignment=TextAlignment.Center, fontSize=convFontSize "Large")
-                Xaml.Button(command=(fun () -> dispatch Restart), text="Restart game", backgroundColor=Color.LightBlue, textColor=Color.Black, fontSize=convFontSize "Large")
-              |])
-*)
-
+                Xaml.Label(text=getMessage model, margin=10.0, textColor=Color.Black, horizontalTextAlignment=TextAlignment.Center, fontSize="Large")
+                Xaml.Button(command=(fun () -> dispatch Restart), text="Restart game", backgroundColor=Color.LightBlue, textColor=Color.Black, fontSize="Large")
+              ])

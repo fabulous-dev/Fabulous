@@ -39,6 +39,6 @@
     <PackageReference Include="FSharp.Core" Version="4.3.3" />
     <PackageReference Include="Xamarin.Forms" Version="2.5.0.280555" />
     <PackageReference Include="FSharp.Control.AsyncSeq" Version="2.0.21" />
-    <ProjectReference Include="..\..\..\Elmish.XamarinForms\Elmish.XamarinForms.fsproj" />
+    <ProjectReference Include="..\..\..\..\Elmish.XamarinForms\Elmish.XamarinForms.fsproj" />
   </ItemGroup>
 </Project>
