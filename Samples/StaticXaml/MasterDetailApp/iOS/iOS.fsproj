@@ -112,7 +112,7 @@
       <Project>{AE045D79-7FF3-45F3-BFD0-305542A1C727}</Project>
       <Name>MasterDetailApp</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Elmish.XamarinForms\Elmish.XamarinForms.fsproj">
+    <ProjectReference Include="..\..\..\..\Elmish.XamarinForms\Elmish.XamarinForms.fsproj">
       <Project>{AE045D79-7FF3-45F3-BFD0-305542A1C728}</Project>
       <Name>Elmish.XamarinForms</Name>
     </ProjectReference>

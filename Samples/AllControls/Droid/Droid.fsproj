@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{13181907-1c53-47c1-bdf0-dbeccc2ed92e}</ProjectGuid>
+    <ProjectGuid>{5ccd3c0c-3434-434c-b8c2-7ffdedcc2437}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{F2A71F9B-5D33-465A-A702-920D77279786}</ProjectTypeGuids>
     <UseStandardResourceNames>true</UseStandardResourceNames>
     <OutputType>Library</OutputType>
@@ -80,9 +80,9 @@
       <Project>{b459afad-bb5b-43c3-bd86-609e8db3e3fd}</Project>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\CounterApp\CounterApp.fsproj">
-      <Name>CounterApp (Samples\CounterApp\CounterApp)</Name>
-      <Project>{ac36b11a-383d-45a3-8999-4f6475e9dd13}</Project>
+    <ProjectReference Include="..\AllControls\AllControls.fsproj">
+      <Name>AllControls (Samples\AllControls\AllControls)</Name>
+      <Project>{13f140d6-2d21-41be-ac90-4b14d8c16a47}</Project>
       <Private>True</Private>
     </ProjectReference>
     <Reference Include="System" />
