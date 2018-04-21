@@ -343,14 +343,11 @@ module XamlElementExtensions =
         /// Try to get the DateSelected property in the visual element
         member x.TryDateSelected = match x.Attributes.TryFind("DateSelected") with Some v -> Some(unbox<System.EventHandler<Xamarin.Forms.DateChangedEventArgs>>(v)) | None -> None
 
-        /// Try to get the ItemsSource property in the visual element
-        member x.TryItemsSource = match x.Attributes.TryFind("ItemsSource") with Some v -> Some(unbox<System.Collections.IList>(v)) | None -> None
+        /// Try to get the PickerItemsSource property in the visual element
+        member x.TryPickerItemsSource = match x.Attributes.TryFind("PickerItemsSource") with Some v -> Some(unbox<System.Collections.IList>(v)) | None -> None
 
         /// Try to get the SelectedIndex property in the visual element
         member x.TrySelectedIndex = match x.Attributes.TryFind("SelectedIndex") with Some v -> Some(unbox<int>(v)) | None -> None
-
-        /// Try to get the SelectedItem property in the visual element
-        member x.TrySelectedItem = match x.Attributes.TryFind("SelectedItem") with Some v -> Some(unbox<System.Object>(v)) | None -> None
 
         /// Try to get the Title property in the visual element
         member x.TryTitle = match x.Attributes.TryFind("Title") with Some v -> Some(unbox<string>(v)) | None -> None
@@ -421,8 +418,14 @@ module XamlElementExtensions =
         /// Try to get the WebSource property in the visual element
         member x.TryWebSource = match x.Attributes.TryFind("WebSource") with Some v -> Some(unbox<Xamarin.Forms.WebViewSource>(v)) | None -> None
 
+        /// Try to get the ItemsSource property in the visual element
+        member x.TryItemsSource = match x.Attributes.TryFind("ItemsSource") with Some v -> Some(unbox<System.Collections.IEnumerable>(v)) | None -> None
+
         /// Try to get the ItemTemplate property in the visual element
         member x.TryItemTemplate = match x.Attributes.TryFind("ItemTemplate") with Some v -> Some(unbox<Xamarin.Forms.DataTemplate>(v)) | None -> None
+
+        /// Try to get the SelectedItem property in the visual element
+        member x.TrySelectedItem = match x.Attributes.TryFind("SelectedItem") with Some v -> Some(unbox<System.Object>(v)) | None -> None
 
         /// Try to get the CurrentPage property in the visual element
         member x.TryCurrentPage = match x.Attributes.TryFind("CurrentPage") with Some v -> Some(unbox<XamlElement>(v)) | None -> None
@@ -445,17 +448,59 @@ module XamlElementExtensions =
         /// Try to get the View property in the visual element
         member x.TryView = match x.Attributes.TryFind("View") with Some v -> Some(unbox<XamlElement>(v)) | None -> None
 
+        /// Try to get the Footer property in the visual element
+        member x.TryFooter = match x.Attributes.TryFind("Footer") with Some v -> Some(unbox<System.Object>(v)) | None -> None
+
+        /// Try to get the FooterTemplate property in the visual element
+        member x.TryFooterTemplate = match x.Attributes.TryFind("FooterTemplate") with Some v -> Some(unbox<Xamarin.Forms.DataTemplate>(v)) | None -> None
+
+        /// Try to get the GroupHeaderTemplate property in the visual element
+        member x.TryGroupHeaderTemplate = match x.Attributes.TryFind("GroupHeaderTemplate") with Some v -> Some(unbox<Xamarin.Forms.DataTemplate>(v)) | None -> None
+
+        /// Try to get the HasUnevenRows property in the visual element
+        member x.TryHasUnevenRows = match x.Attributes.TryFind("HasUnevenRows") with Some v -> Some(unbox<bool>(v)) | None -> None
+
+        /// Try to get the Header property in the visual element
+        member x.TryHeader = match x.Attributes.TryFind("Header") with Some v -> Some(unbox<System.Object>(v)) | None -> None
+
+        /// Try to get the HeaderTemplate property in the visual element
+        member x.TryHeaderTemplate = match x.Attributes.TryFind("HeaderTemplate") with Some v -> Some(unbox<Xamarin.Forms.DataTemplate>(v)) | None -> None
+
+        /// Try to get the IsGroupingEnabled property in the visual element
+        member x.TryIsGroupingEnabled = match x.Attributes.TryFind("IsGroupingEnabled") with Some v -> Some(unbox<bool>(v)) | None -> None
+
+        /// Try to get the IsPullToRefreshEnabled property in the visual element
+        member x.TryIsPullToRefreshEnabled = match x.Attributes.TryFind("IsPullToRefreshEnabled") with Some v -> Some(unbox<bool>(v)) | None -> None
+
+        /// Try to get the IsRefreshing property in the visual element
+        member x.TryIsRefreshing = match x.Attributes.TryFind("IsRefreshing") with Some v -> Some(unbox<bool>(v)) | None -> None
+
+        /// Try to get the RefreshCommand property in the visual element
+        member x.TryRefreshCommand = match x.Attributes.TryFind("RefreshCommand") with Some v -> Some(unbox<System.Windows.Input.ICommand>(v)) | None -> None
+
+        /// Try to get the RowHeight property in the visual element
+        member x.TryRowHeight = match x.Attributes.TryFind("RowHeight") with Some v -> Some(unbox<int>(v)) | None -> None
+
         /// Try to get the SeparatorVisibility property in the visual element
         member x.TrySeparatorVisibility = match x.Attributes.TryFind("SeparatorVisibility") with Some v -> Some(unbox<Xamarin.Forms.SeparatorVisibility>(v)) | None -> None
 
         /// Try to get the SeparatorColor property in the visual element
         member x.TrySeparatorColor = match x.Attributes.TryFind("SeparatorColor") with Some v -> Some(unbox<Xamarin.Forms.Color>(v)) | None -> None
 
-        /// Try to get the HasUnevenRows property in the visual element
-        member x.TryHasUnevenRows = match x.Attributes.TryFind("HasUnevenRows") with Some v -> Some(unbox<bool>(v)) | None -> None
+        /// Try to get the ItemAppearing property in the visual element
+        member x.TryItemAppearing = match x.Attributes.TryFind("ItemAppearing") with Some v -> Some(unbox<System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>>(v)) | None -> None
 
-        /// Try to get the RowHeight property in the visual element
-        member x.TryRowHeight = match x.Attributes.TryFind("RowHeight") with Some v -> Some(unbox<int>(v)) | None -> None
+        /// Try to get the ItemDisappearing property in the visual element
+        member x.TryItemDisappearing = match x.Attributes.TryFind("ItemDisappearing") with Some v -> Some(unbox<System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>>(v)) | None -> None
+
+        /// Try to get the ItemSelected property in the visual element
+        member x.TryItemSelected = match x.Attributes.TryFind("ItemSelected") with Some v -> Some(unbox<System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>>(v)) | None -> None
+
+        /// Try to get the ItemTapped property in the visual element
+        member x.TryItemTapped = match x.Attributes.TryFind("ItemTapped") with Some v -> Some(unbox<System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>>(v)) | None -> None
+
+        /// Try to get the Refreshing property in the visual element
+        member x.TryRefreshing = match x.Attributes.TryFind("Refreshing") with Some v -> Some(unbox<System.EventHandler>(v)) | None -> None
 
         /// Adjusts the ClassId property in the visual element
         member x.ClassId(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ClassId", box ((value))))
@@ -643,20 +688,17 @@ module XamlElementExtensions =
         /// Adjusts the DateSelected property in the visual element
         member x.DateSelected(value: Xamarin.Forms.DateChangedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("DateSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.DateChangedEventArgs>(fun _sender args -> f args))(value))))
 
-        /// Adjusts the ItemsSource property in the visual element
-        member x.ItemsSource(value: System.Collections.IList) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ItemsSource", box ((value))))
+        /// Adjusts the PickerItemsSource property in the visual element
+        member x.PickerItemsSource(value: 'T list) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("PickerItemsSource", box ((fun es -> es |> Array.ofList :> System.Collections.IList)(value))))
 
         /// Adjusts the SelectedIndex property in the visual element
         member x.SelectedIndex(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("SelectedIndex", box ((value))))
-
-        /// Adjusts the SelectedItem property in the visual element
-        member x.SelectedItem(value: System.Object) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("SelectedItem", box ((value))))
 
         /// Adjusts the Title property in the visual element
         member x.Title(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Title", box ((value))))
 
         /// Adjusts the SelectedIndexChanged property in the visual element
-        member x.SelectedIndexChanged(value: (int * obj) -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("SelectedIndexChanged", box ((fun f -> System.EventHandler(fun sender args -> f ((sender :?> Xamarin.Forms.Picker).SelectedIndex, (sender :?> Xamarin.Forms.Picker).SelectedItem)))(value))))
+        member x.SelectedIndexChanged(value: (int * 'T option) -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("SelectedIndexChanged", box ((fun f -> System.EventHandler(fun sender args -> let picker = (sender :?> Xamarin.Forms.Picker) in f (picker.SelectedIndex, (picker.SelectedItem |> Option.ofObj |> Option.map unbox<'T>))))(value))))
 
         /// Adjusts the OutlineColor property in the visual element
         member x.OutlineColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("OutlineColor", box ((value))))
@@ -721,8 +763,14 @@ module XamlElementExtensions =
         /// Adjusts the WebSource property in the visual element
         member x.WebSource(value: Xamarin.Forms.WebViewSource) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("WebSource", box ((value))))
 
+        /// Adjusts the ItemsSource property in the visual element
+        member x.ItemsSource(value: System.Collections.IEnumerable) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ItemsSource", box ((value))))
+
         /// Adjusts the ItemTemplate property in the visual element
         member x.ItemTemplate(value: Xamarin.Forms.DataTemplate) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ItemTemplate", box ((value))))
+
+        /// Adjusts the SelectedItem property in the visual element
+        member x.SelectedItem(value: System.Object) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("SelectedItem", box ((value))))
 
         /// Adjusts the CurrentPage property in the visual element
         member x.CurrentPage(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("CurrentPage", box ((value))))
@@ -745,17 +793,59 @@ module XamlElementExtensions =
         /// Adjusts the View property in the visual element
         member x.View(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("View", box ((value))))
 
+        /// Adjusts the Footer property in the visual element
+        member x.Footer(value: System.Object) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Footer", box ((value))))
+
+        /// Adjusts the FooterTemplate property in the visual element
+        member x.FooterTemplate(value: Xamarin.Forms.DataTemplate) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("FooterTemplate", box ((value))))
+
+        /// Adjusts the GroupHeaderTemplate property in the visual element
+        member x.GroupHeaderTemplate(value: Xamarin.Forms.DataTemplate) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("GroupHeaderTemplate", box ((value))))
+
+        /// Adjusts the HasUnevenRows property in the visual element
+        member x.HasUnevenRows(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("HasUnevenRows", box ((value))))
+
+        /// Adjusts the Header property in the visual element
+        member x.Header(value: System.Object) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Header", box ((value))))
+
+        /// Adjusts the HeaderTemplate property in the visual element
+        member x.HeaderTemplate(value: Xamarin.Forms.DataTemplate) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("HeaderTemplate", box ((value))))
+
+        /// Adjusts the IsGroupingEnabled property in the visual element
+        member x.IsGroupingEnabled(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsGroupingEnabled", box ((value))))
+
+        /// Adjusts the IsPullToRefreshEnabled property in the visual element
+        member x.IsPullToRefreshEnabled(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsPullToRefreshEnabled", box ((value))))
+
+        /// Adjusts the IsRefreshing property in the visual element
+        member x.IsRefreshing(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsRefreshing", box ((value))))
+
+        /// Adjusts the RefreshCommand property in the visual element
+        member x.RefreshCommand(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("RefreshCommand", box (makeCommand(value))))
+
+        /// Adjusts the RowHeight property in the visual element
+        member x.RowHeight(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("RowHeight", box ((value))))
+
         /// Adjusts the SeparatorVisibility property in the visual element
         member x.SeparatorVisibility(value: Xamarin.Forms.SeparatorVisibility) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("SeparatorVisibility", box ((value))))
 
         /// Adjusts the SeparatorColor property in the visual element
         member x.SeparatorColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("SeparatorColor", box ((value))))
 
-        /// Adjusts the HasUnevenRows property in the visual element
-        member x.HasUnevenRows(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("HasUnevenRows", box ((value))))
+        /// Adjusts the ItemAppearing property in the visual element
+        member x.ItemAppearing(value: Xamarin.Forms.ItemVisibilityEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ItemAppearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))(value))))
 
-        /// Adjusts the RowHeight property in the visual element
-        member x.RowHeight(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("RowHeight", box ((value))))
+        /// Adjusts the ItemDisappearing property in the visual element
+        member x.ItemDisappearing(value: Xamarin.Forms.ItemVisibilityEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ItemDisappearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))(value))))
+
+        /// Adjusts the ItemSelected property in the visual element
+        member x.ItemSelected(value: 'T option -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ItemSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun _sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<'T>)))(value))))
+
+        /// Adjusts the ItemTapped property in the visual element
+        member x.ItemTapped(value: Xamarin.Forms.ItemTappedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ItemTapped", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun _sender args -> f args))(value))))
+
+        /// Adjusts the Refreshing property in the visual element
+        member x.Refreshing(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Refreshing", box ((fun f -> System.EventHandler(fun sender args -> f ()))(value))))
 
 
     /// Adjusts the ClassId property in the visual element
@@ -1130,23 +1220,17 @@ module XamlElementExtensions =
     /// Adjusts the DateSelected property in the visual element
     let dateSelected (value: Xamarin.Forms.DateChangedEventArgs -> unit) (x: XamlElement) = x.DateSelected(value)
 
-    /// Adjusts the ItemsSource property in the visual element
-    let withItemsSource (value: System.Collections.IList) (x: XamlElement) = x.ItemsSource(value)
+    /// Adjusts the PickerItemsSource property in the visual element
+    let withPickerItemsSource (value: 'T list) (x: XamlElement) = x.PickerItemsSource(value)
 
-    /// Adjusts the ItemsSource property in the visual element
-    let itemsSource (value: System.Collections.IList) (x: XamlElement) = x.ItemsSource(value)
+    /// Adjusts the PickerItemsSource property in the visual element
+    let pickerItemsSource (value: 'T list) (x: XamlElement) = x.PickerItemsSource(value)
 
     /// Adjusts the SelectedIndex property in the visual element
     let withSelectedIndex (value: int) (x: XamlElement) = x.SelectedIndex(value)
 
     /// Adjusts the SelectedIndex property in the visual element
     let selectedIndex (value: int) (x: XamlElement) = x.SelectedIndex(value)
-
-    /// Adjusts the SelectedItem property in the visual element
-    let withSelectedItem (value: System.Object) (x: XamlElement) = x.SelectedItem(value)
-
-    /// Adjusts the SelectedItem property in the visual element
-    let selectedItem (value: System.Object) (x: XamlElement) = x.SelectedItem(value)
 
     /// Adjusts the Title property in the visual element
     let withTitle (value: string) (x: XamlElement) = x.Title(value)
@@ -1155,10 +1239,10 @@ module XamlElementExtensions =
     let title (value: string) (x: XamlElement) = x.Title(value)
 
     /// Adjusts the SelectedIndexChanged property in the visual element
-    let withSelectedIndexChanged (value: (int * obj) -> unit) (x: XamlElement) = x.SelectedIndexChanged(value)
+    let withSelectedIndexChanged (value: (int * 'T option) -> unit) (x: XamlElement) = x.SelectedIndexChanged(value)
 
     /// Adjusts the SelectedIndexChanged property in the visual element
-    let selectedIndexChanged (value: (int * obj) -> unit) (x: XamlElement) = x.SelectedIndexChanged(value)
+    let selectedIndexChanged (value: (int * 'T option) -> unit) (x: XamlElement) = x.SelectedIndexChanged(value)
 
     /// Adjusts the OutlineColor property in the visual element
     let withOutlineColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.OutlineColor(value)
@@ -1286,11 +1370,23 @@ module XamlElementExtensions =
     /// Adjusts the WebSource property in the visual element
     let webSource (value: Xamarin.Forms.WebViewSource) (x: XamlElement) = x.WebSource(value)
 
+    /// Adjusts the ItemsSource property in the visual element
+    let withItemsSource (value: System.Collections.IEnumerable) (x: XamlElement) = x.ItemsSource(value)
+
+    /// Adjusts the ItemsSource property in the visual element
+    let itemsSource (value: System.Collections.IEnumerable) (x: XamlElement) = x.ItemsSource(value)
+
     /// Adjusts the ItemTemplate property in the visual element
     let withItemTemplate (value: Xamarin.Forms.DataTemplate) (x: XamlElement) = x.ItemTemplate(value)
 
     /// Adjusts the ItemTemplate property in the visual element
     let itemTemplate (value: Xamarin.Forms.DataTemplate) (x: XamlElement) = x.ItemTemplate(value)
+
+    /// Adjusts the SelectedItem property in the visual element
+    let withSelectedItem (value: System.Object) (x: XamlElement) = x.SelectedItem(value)
+
+    /// Adjusts the SelectedItem property in the visual element
+    let selectedItem (value: System.Object) (x: XamlElement) = x.SelectedItem(value)
 
     /// Adjusts the CurrentPage property in the visual element
     let withCurrentPage (value: XamlElement) (x: XamlElement) = x.CurrentPage(value)
@@ -1334,6 +1430,72 @@ module XamlElementExtensions =
     /// Adjusts the View property in the visual element
     let view (value: XamlElement) (x: XamlElement) = x.View(value)
 
+    /// Adjusts the Footer property in the visual element
+    let withFooter (value: System.Object) (x: XamlElement) = x.Footer(value)
+
+    /// Adjusts the Footer property in the visual element
+    let footer (value: System.Object) (x: XamlElement) = x.Footer(value)
+
+    /// Adjusts the FooterTemplate property in the visual element
+    let withFooterTemplate (value: Xamarin.Forms.DataTemplate) (x: XamlElement) = x.FooterTemplate(value)
+
+    /// Adjusts the FooterTemplate property in the visual element
+    let footerTemplate (value: Xamarin.Forms.DataTemplate) (x: XamlElement) = x.FooterTemplate(value)
+
+    /// Adjusts the GroupHeaderTemplate property in the visual element
+    let withGroupHeaderTemplate (value: Xamarin.Forms.DataTemplate) (x: XamlElement) = x.GroupHeaderTemplate(value)
+
+    /// Adjusts the GroupHeaderTemplate property in the visual element
+    let groupHeaderTemplate (value: Xamarin.Forms.DataTemplate) (x: XamlElement) = x.GroupHeaderTemplate(value)
+
+    /// Adjusts the HasUnevenRows property in the visual element
+    let withHasUnevenRows (value: bool) (x: XamlElement) = x.HasUnevenRows(value)
+
+    /// Adjusts the HasUnevenRows property in the visual element
+    let hasUnevenRows (value: bool) (x: XamlElement) = x.HasUnevenRows(value)
+
+    /// Adjusts the Header property in the visual element
+    let withHeader (value: System.Object) (x: XamlElement) = x.Header(value)
+
+    /// Adjusts the Header property in the visual element
+    let header (value: System.Object) (x: XamlElement) = x.Header(value)
+
+    /// Adjusts the HeaderTemplate property in the visual element
+    let withHeaderTemplate (value: Xamarin.Forms.DataTemplate) (x: XamlElement) = x.HeaderTemplate(value)
+
+    /// Adjusts the HeaderTemplate property in the visual element
+    let headerTemplate (value: Xamarin.Forms.DataTemplate) (x: XamlElement) = x.HeaderTemplate(value)
+
+    /// Adjusts the IsGroupingEnabled property in the visual element
+    let withIsGroupingEnabled (value: bool) (x: XamlElement) = x.IsGroupingEnabled(value)
+
+    /// Adjusts the IsGroupingEnabled property in the visual element
+    let isGroupingEnabled (value: bool) (x: XamlElement) = x.IsGroupingEnabled(value)
+
+    /// Adjusts the IsPullToRefreshEnabled property in the visual element
+    let withIsPullToRefreshEnabled (value: bool) (x: XamlElement) = x.IsPullToRefreshEnabled(value)
+
+    /// Adjusts the IsPullToRefreshEnabled property in the visual element
+    let isPullToRefreshEnabled (value: bool) (x: XamlElement) = x.IsPullToRefreshEnabled(value)
+
+    /// Adjusts the IsRefreshing property in the visual element
+    let withIsRefreshing (value: bool) (x: XamlElement) = x.IsRefreshing(value)
+
+    /// Adjusts the IsRefreshing property in the visual element
+    let isRefreshing (value: bool) (x: XamlElement) = x.IsRefreshing(value)
+
+    /// Adjusts the RefreshCommand property in the visual element
+    let withRefreshCommand (value: unit -> unit) (x: XamlElement) = x.RefreshCommand(value)
+
+    /// Adjusts the RefreshCommand property in the visual element
+    let refreshCommand (value: unit -> unit) (x: XamlElement) = x.RefreshCommand(value)
+
+    /// Adjusts the RowHeight property in the visual element
+    let withRowHeight (value: int) (x: XamlElement) = x.RowHeight(value)
+
+    /// Adjusts the RowHeight property in the visual element
+    let rowHeight (value: int) (x: XamlElement) = x.RowHeight(value)
+
     /// Adjusts the SeparatorVisibility property in the visual element
     let withSeparatorVisibility (value: Xamarin.Forms.SeparatorVisibility) (x: XamlElement) = x.SeparatorVisibility(value)
 
@@ -1346,17 +1508,35 @@ module XamlElementExtensions =
     /// Adjusts the SeparatorColor property in the visual element
     let separatorColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.SeparatorColor(value)
 
-    /// Adjusts the HasUnevenRows property in the visual element
-    let withHasUnevenRows (value: bool) (x: XamlElement) = x.HasUnevenRows(value)
+    /// Adjusts the ItemAppearing property in the visual element
+    let withItemAppearing (value: Xamarin.Forms.ItemVisibilityEventArgs -> unit) (x: XamlElement) = x.ItemAppearing(value)
 
-    /// Adjusts the HasUnevenRows property in the visual element
-    let hasUnevenRows (value: bool) (x: XamlElement) = x.HasUnevenRows(value)
+    /// Adjusts the ItemAppearing property in the visual element
+    let itemAppearing (value: Xamarin.Forms.ItemVisibilityEventArgs -> unit) (x: XamlElement) = x.ItemAppearing(value)
 
-    /// Adjusts the RowHeight property in the visual element
-    let withRowHeight (value: int) (x: XamlElement) = x.RowHeight(value)
+    /// Adjusts the ItemDisappearing property in the visual element
+    let withItemDisappearing (value: Xamarin.Forms.ItemVisibilityEventArgs -> unit) (x: XamlElement) = x.ItemDisappearing(value)
 
-    /// Adjusts the RowHeight property in the visual element
-    let rowHeight (value: int) (x: XamlElement) = x.RowHeight(value)
+    /// Adjusts the ItemDisappearing property in the visual element
+    let itemDisappearing (value: Xamarin.Forms.ItemVisibilityEventArgs -> unit) (x: XamlElement) = x.ItemDisappearing(value)
+
+    /// Adjusts the ItemSelected property in the visual element
+    let withItemSelected (value: 'T option -> unit) (x: XamlElement) = x.ItemSelected(value)
+
+    /// Adjusts the ItemSelected property in the visual element
+    let itemSelected (value: 'T option -> unit) (x: XamlElement) = x.ItemSelected(value)
+
+    /// Adjusts the ItemTapped property in the visual element
+    let withItemTapped (value: Xamarin.Forms.ItemTappedEventArgs -> unit) (x: XamlElement) = x.ItemTapped(value)
+
+    /// Adjusts the ItemTapped property in the visual element
+    let itemTapped (value: Xamarin.Forms.ItemTappedEventArgs -> unit) (x: XamlElement) = x.ItemTapped(value)
+
+    /// Adjusts the Refreshing property in the visual element
+    let withRefreshing (value: unit -> unit) (x: XamlElement) = x.Refreshing(value)
+
+    /// Adjusts the Refreshing property in the visual element
+    let refreshing (value: unit -> unit) (x: XamlElement) = x.Refreshing(value)
 
 type Xaml() =
 
@@ -3954,14 +4134,13 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.DatePicker>, create, apply, Map.ofArray attribs)
 
     /// Describes a Picker in the view
-    static member Picker(?itemsSource: System.Collections.IList, ?selectedIndex: int, ?selectedItem: System.Object, ?title: string, ?textColor: Xamarin.Forms.Color, ?selectedIndexChanged: (int * obj) -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member Picker(?itemsSource: 'T list, ?selectedIndex: int, ?title: string, ?textColor: Xamarin.Forms.Color, ?selectedIndexChanged: (int * 'T option) -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
-            match itemsSource with None -> () | Some v -> yield ("ItemsSource", box ((v))) 
+            match itemsSource with None -> () | Some v -> yield ("PickerItemsSource", box ((fun es -> es |> Array.ofList :> System.Collections.IList)(v))) 
             match selectedIndex with None -> () | Some v -> yield ("SelectedIndex", box ((v))) 
-            match selectedItem with None -> () | Some v -> yield ("SelectedItem", box ((v))) 
             match title with None -> () | Some v -> yield ("Title", box ((v))) 
             match textColor with None -> () | Some v -> yield ("TextColor", box ((v))) 
-            match selectedIndexChanged with None -> () | Some v -> yield ("SelectedIndexChanged", box ((fun f -> System.EventHandler(fun sender args -> f ((sender :?> Xamarin.Forms.Picker).SelectedIndex, (sender :?> Xamarin.Forms.Picker).SelectedItem)))(v))) 
+            match selectedIndexChanged with None -> () | Some v -> yield ("SelectedIndexChanged", box ((fun f -> System.EventHandler(fun sender args -> let picker = (sender :?> Xamarin.Forms.Picker) in f (picker.SelectedIndex, (picker.SelectedItem |> Option.ofObj |> Option.map unbox<'T>))))(v))) 
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
             match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
@@ -3992,8 +4171,8 @@ type Xaml() =
 
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Picker)
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryItemsSource
-            match prevValueOpt, source.TryItemsSource with
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPickerItemsSource
+            match prevValueOpt, source.TryPickerItemsSource with
             | Some prevValue, Some value when prevValue = value -> ()
             | _, Some value -> target.ItemsSource <- value
             | Some _, None -> target.ItemsSource <- null // TODO: not always perfect, should set back to original default?
@@ -4003,12 +4182,6 @@ type Xaml() =
             | Some prevValue, Some value when prevValue = value -> ()
             | _, Some value -> target.SelectedIndex <- value
             | Some _, None -> target.SelectedIndex <- 0 // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TrySelectedItem
-            match prevValueOpt, source.TrySelectedItem with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.SelectedItem <- value
-            | Some _, None -> target.SelectedItem <- null // TODO: not always perfect, should set back to original default?
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTitle
             match prevValueOpt, source.TryTitle with
@@ -7452,15 +7625,29 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.ViewCell>, create, apply, Map.ofArray attribs)
 
     /// Describes a ListView in the view
-    static member ListView(?itemsSource: System.Collections.IEnumerable, ?itemTemplate: Xamarin.Forms.DataTemplate, ?selectedItem: System.Object, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?hasUnevenRows: bool, ?rowHeight: int, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member ListView(?itemsSource: 'T list, ?itemTemplate: Xamarin.Forms.DataTemplate, ?footer: System.Object, ?footerTemplate: Xamarin.Forms.DataTemplate, ?groupHeaderTemplate: Xamarin.Forms.DataTemplate, ?hasUnevenRows: bool, ?header: System.Object, ?headerTemplate: Xamarin.Forms.DataTemplate, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: System.Object, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: Xamarin.Forms.ItemVisibilityEventArgs -> unit, ?itemDisappearing: Xamarin.Forms.ItemVisibilityEventArgs -> unit, ?itemSelected: 'T option -> unit, ?itemTapped: Xamarin.Forms.ItemTappedEventArgs -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
-            match itemsSource with None -> () | Some v -> yield ("ItemsSource", box ((v))) 
+            match itemsSource with None -> () | Some v -> yield ("ItemsSource", box ((fun es -> es |> Array.ofList |> Array.map box :> System.Collections.Generic.IList<obj>)(v))) 
             match itemTemplate with None -> () | Some v -> yield ("ItemTemplate", box ((v))) 
+            match footer with None -> () | Some v -> yield ("Footer", box ((v))) 
+            match footerTemplate with None -> () | Some v -> yield ("FooterTemplate", box ((v))) 
+            match groupHeaderTemplate with None -> () | Some v -> yield ("GroupHeaderTemplate", box ((v))) 
+            match hasUnevenRows with None -> () | Some v -> yield ("HasUnevenRows", box ((v))) 
+            match header with None -> () | Some v -> yield ("Header", box ((v))) 
+            match headerTemplate with None -> () | Some v -> yield ("HeaderTemplate", box ((v))) 
+            match isGroupingEnabled with None -> () | Some v -> yield ("IsGroupingEnabled", box ((v))) 
+            match isPullToRefreshEnabled with None -> () | Some v -> yield ("IsPullToRefreshEnabled", box ((v))) 
+            match isRefreshing with None -> () | Some v -> yield ("IsRefreshing", box ((v))) 
+            match refreshCommand with None -> () | Some v -> yield ("RefreshCommand", box (makeCommand(v))) 
+            match rowHeight with None -> () | Some v -> yield ("RowHeight", box ((v))) 
             match selectedItem with None -> () | Some v -> yield ("SelectedItem", box ((v))) 
             match separatorVisibility with None -> () | Some v -> yield ("SeparatorVisibility", box ((v))) 
             match separatorColor with None -> () | Some v -> yield ("SeparatorColor", box ((v))) 
-            match hasUnevenRows with None -> () | Some v -> yield ("HasUnevenRows", box ((v))) 
-            match rowHeight with None -> () | Some v -> yield ("RowHeight", box ((v))) 
+            match itemAppearing with None -> () | Some v -> yield ("ItemAppearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))(v))) 
+            match itemDisappearing with None -> () | Some v -> yield ("ItemDisappearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))(v))) 
+            match itemSelected with None -> () | Some v -> yield ("ItemSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun _sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<'T>)))(v))) 
+            match itemTapped with None -> () | Some v -> yield ("ItemTapped", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun _sender args -> f args))(v))) 
+            match refreshing with None -> () | Some v -> yield ("Refreshing", box ((fun f -> System.EventHandler(fun sender args -> f ()))(v))) 
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
             match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
@@ -7503,6 +7690,72 @@ type Xaml() =
             | _, Some value -> target.ItemTemplate <- value
             | Some _, None -> target.ItemTemplate <- null // TODO: not always perfect, should set back to original default?
             | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFooter
+            match prevValueOpt, source.TryFooter with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Footer <- value
+            | Some _, None -> target.Footer <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFooterTemplate
+            match prevValueOpt, source.TryFooterTemplate with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.FooterTemplate <- value
+            | Some _, None -> target.FooterTemplate <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryGroupHeaderTemplate
+            match prevValueOpt, source.TryGroupHeaderTemplate with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.GroupHeaderTemplate <- value
+            | Some _, None -> target.GroupHeaderTemplate <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHasUnevenRows
+            match prevValueOpt, source.TryHasUnevenRows with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.HasUnevenRows <- value
+            | Some _, None -> target.HasUnevenRows <- false // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeader
+            match prevValueOpt, source.TryHeader with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Header <- value
+            | Some _, None -> target.Header <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeaderTemplate
+            match prevValueOpt, source.TryHeaderTemplate with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.HeaderTemplate <- value
+            | Some _, None -> target.HeaderTemplate <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsGroupingEnabled
+            match prevValueOpt, source.TryIsGroupingEnabled with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.IsGroupingEnabled <- value
+            | Some _, None -> target.IsGroupingEnabled <- false // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsPullToRefreshEnabled
+            match prevValueOpt, source.TryIsPullToRefreshEnabled with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.IsPullToRefreshEnabled <- value
+            | Some _, None -> target.IsPullToRefreshEnabled <- false // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsRefreshing
+            match prevValueOpt, source.TryIsRefreshing with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.IsRefreshing <- value
+            | Some _, None -> target.IsRefreshing <- false // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRefreshCommand
+            match prevValueOpt, source.TryRefreshCommand with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.RefreshCommand <- value
+            | Some _, None -> target.RefreshCommand <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRowHeight
+            match prevValueOpt, source.TryRowHeight with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.RowHeight <- value
+            | Some _, None -> target.RowHeight <- -1 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TrySelectedItem
             match prevValueOpt, source.TrySelectedItem with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -7521,17 +7774,40 @@ type Xaml() =
             | _, Some value -> target.SeparatorColor <- value
             | Some _, None -> target.SeparatorColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
             | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHasUnevenRows
-            match prevValueOpt, source.TryHasUnevenRows with
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryItemAppearing
+            match prevValueOpt, source.TryItemAppearing with
             | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.HasUnevenRows <- value
-            | Some _, None -> target.HasUnevenRows <- false // TODO: not always perfect, should set back to original default?
+            | Some prevValue, Some value -> target.ItemAppearing.RemoveHandler(prevValue); target.ItemAppearing.AddHandler(value)
+            | None, Some value -> target.ItemAppearing.AddHandler(value)
+            | Some prevValue, None -> target.ItemAppearing.RemoveHandler(prevValue)
             | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRowHeight
-            match prevValueOpt, source.TryRowHeight with
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryItemDisappearing
+            match prevValueOpt, source.TryItemDisappearing with
             | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.RowHeight <- value
-            | Some _, None -> target.RowHeight <- -1 // TODO: not always perfect, should set back to original default?
+            | Some prevValue, Some value -> target.ItemDisappearing.RemoveHandler(prevValue); target.ItemDisappearing.AddHandler(value)
+            | None, Some value -> target.ItemDisappearing.AddHandler(value)
+            | Some prevValue, None -> target.ItemDisappearing.RemoveHandler(prevValue)
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryItemSelected
+            match prevValueOpt, source.TryItemSelected with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | Some prevValue, Some value -> target.ItemSelected.RemoveHandler(prevValue); target.ItemSelected.AddHandler(value)
+            | None, Some value -> target.ItemSelected.AddHandler(value)
+            | Some prevValue, None -> target.ItemSelected.RemoveHandler(prevValue)
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryItemTapped
+            match prevValueOpt, source.TryItemTapped with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | Some prevValue, Some value -> target.ItemTapped.RemoveHandler(prevValue); target.ItemTapped.AddHandler(value)
+            | None, Some value -> target.ItemTapped.AddHandler(value)
+            | Some prevValue, None -> target.ItemTapped.RemoveHandler(prevValue)
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRefreshing
+            match prevValueOpt, source.TryRefreshing with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | Some prevValue, Some value -> target.Refreshing.RemoveHandler(prevValue); target.Refreshing.AddHandler(value)
+            | None, Some value -> target.Refreshing.AddHandler(value)
+            | Some prevValue, None -> target.Refreshing.RemoveHandler(prevValue)
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
             match prevValueOpt, source.TryHorizontalOptions with

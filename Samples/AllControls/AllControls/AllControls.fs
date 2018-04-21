@@ -9,7 +9,8 @@ open Xamarin.Forms
 
 type Model = 
   { Count : int
-    Step : int }
+    Step : int 
+    PickedColorIndex: int }
 
 type Msg = 
     | Increment 
@@ -21,12 +22,13 @@ type Msg =
     | EntryEditCompleted 
     | GridEditCompleted of int * int
     | DateSelected of DateTime * DateTime
-    | PickerItemChanged of Color
+    | PickerItemChanged of int
+    | ListViewSelectedItemChanged of string option
 
 type AllControls () = 
     inherit Application ()
 
-    let init () = { Count = 0; Step = 3 }
+    let init () = { Count = 0; Step = 3; PickedColorIndex = 0 }
 
     let update msg model =
         match msg with
@@ -39,7 +41,8 @@ type AllControls () =
         | EntryEditCompleted  -> model
         | DateSelected (oldValue, newValue) -> model
         | GridEditCompleted (i, j) -> model
-        | PickerItemChanged color -> model
+        | ListViewSelectedItemChanged item -> model
+        | PickerItemChanged i -> { model with PickedColorIndex = i }
 
     let pickerItems = 
         [ ( "Aqua", Color.Aqua ); ( "Black", Color.Black );
@@ -55,7 +58,10 @@ type AllControls () =
         Xaml.ScrollView(
            Xaml.StackLayout(padding=20.0,
               children=[
-                Xaml.Label(text="ActivityIndicator:")
+                Xaml.Label(text="Label:")
+                Xaml.Label(text= sprintf "%d" model.Count, horizontalOptions=LayoutOptions.CenterAndExpand)
+
+                Xaml.Label(text="ActivityIndicator (when count > 5):")
                 Xaml.ActivityIndicator(isRunning=(model.Count > 5), horizontalOptions=LayoutOptions.CenterAndExpand)
                 
                 Xaml.Label(text="Button:")
@@ -95,7 +101,7 @@ type AllControls () =
                             completed=(fun args -> dispatch EntryEditCompleted))
 
                 Xaml.Label(text="Frame (hasShadow=true):")
-                Xaml.Frame(hasShadow=true, horizontalOptions=LayoutOptions.CenterAndExpand)
+                Xaml.Frame(hasShadow=true, backgroundColor=Color.AliceBlue, horizontalOptions=LayoutOptions.CenterAndExpand)
 
 
                 Xaml.Label(text="Grid (6x6, auto):")
@@ -113,9 +119,6 @@ type AllControls () =
 
                 //Xaml.Label(text="Image:")
                 //Xaml.Image(source="icon")
-
-                Xaml.Label(text="Label:")
-                Xaml.Label(text= sprintf "%d" model.Count, horizontalOptions=LayoutOptions.CenterAndExpand)
 
                 // Xaml.AbsoluteLayout: TODO
                 // Xaml.Accelerator: TODO
@@ -136,14 +139,16 @@ type AllControls () =
                 // Xaml.PanGestureRecognizer and others: TODO
                 // TODO: fix slider where minimum = 1.0 (gets set before maximum..)
 
+                Xaml.Label(text="Picker:")
+                Xaml.Picker(title="Choose Color:", textColor= snd pickerItems.[model.PickedColorIndex], selectedIndex=model.PickedColorIndex, itemsSource=(List.map fst pickerItems), horizontalOptions=LayoutOptions.CenterAndExpand,selectedIndexChanged=(fun (i, item) -> dispatch (PickerItemChanged i)))
+
                 // Xaml.ListView - TODO - consider templating and itemsSource
                 // "A little more on collections: I think ListView should just have an immutable list of Cell-typed Items instead of ItemsSource/DataTemplate. If that list is in the model, then the diff I described above can be used and you can do smooth updates when the data changes. This was yet another feature I didn't get to."
                 // https://github.com/praeclarum/ImmutableUI/issues/4#issuecomment-382498256
                 Xaml.Label(text="ListView:")
-                Xaml.ListView(itemsSource= Array.ofList [1;2;3], horizontalOptions=LayoutOptions.CenterAndExpand)
+                Xaml.ListView(itemsSource= ["Ionide"; "Visual Studio"; "Emacs"; "Visual Studio Code"; "Rider"], horizontalOptions=LayoutOptions.CenterAndExpand,
+                              itemSelected=(fun item -> dispatch (ListViewSelectedItemChanged item)))
 
-                Xaml.Label(text="Picker:")
-                Xaml.Picker(itemsSource=(List.map (fst >> box) pickerItems |> Array.ofList), horizontalOptions=LayoutOptions.CenterAndExpand,selectedIndexChanged=(fun (i, item) -> dispatch (PickerItemChanged (snd pickerItems.[i]))))
               ]))
 
     do
