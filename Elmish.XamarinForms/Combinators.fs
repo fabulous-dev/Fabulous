@@ -611,11 +611,11 @@ namespace Elmish.XamarinForms.DynamicViews
         let coldef h = Xaml.ColumnDefinition(width=makeGridLength h)
 
         let rows rds (els: XamlElement list) = 
-            let children = els |> List.mapi (fun i x -> x.WithGridRow i)
+            let children = els |> List.mapi (fun i x -> x.GridRow i)
             Xaml.Grid(rowdefs=rds, children=children)
 
         let cols cds (els: XamlElement list) = 
-            let children = els |> List.mapi (fun i x -> x.WithGridColumn i)
+            let children = els |> List.mapi (fun i x -> x.GridColumn i)
             Xaml.Grid(coldefs=cds, children=children)
 
 

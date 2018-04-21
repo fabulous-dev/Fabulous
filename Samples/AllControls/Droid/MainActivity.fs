@@ -1,5 +1,5 @@
 ﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
-namespace Droid
+namespace AllControls.Droid
 
 open System
 
@@ -10,11 +10,14 @@ open Android.Runtime
 open Android.Views
 open Android.Widget
 open Android.OS
+open Xamarin.Forms.Platform.Android
 
 [<Activity (Label = "Droid", Icon = "@drawable/icon", MainLauncher = true, ConfigurationChanges = (ConfigChanges.ScreenSize ||| ConfigChanges.Orientation))>]
 type MainActivity() =
-    inherit Xamarin.Forms.Platform.Android.FormsApplicationActivity()
+    inherit FormsApplicationActivity()
     override this.OnCreate (bundle: Bundle) =
+        //Resources.Drawable.icon |> ignore
+        //FormsAppCompatActivity.ToolbarResource <- Resources.Layout.Toolbar
         base.OnCreate (bundle)
 
         Xamarin.Forms.Forms.Init (this, bundle)

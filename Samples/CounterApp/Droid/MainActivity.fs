@@ -10,11 +10,14 @@ open Android.Runtime
 open Android.Views
 open Android.Widget
 open Android.OS
+open Xamarin.Forms.Platform.Android
 
 [<Activity (Label = "Droid", Icon = "@drawable/icon", MainLauncher = true, ConfigurationChanges = (ConfigChanges.ScreenSize ||| ConfigChanges.Orientation))>]
 type MainActivity() =
-    inherit Xamarin.Forms.Platform.Android.FormsApplicationActivity()
+    inherit FormsApplicationActivity()
     override this.OnCreate (bundle: Bundle) =
+        //FormsAppCompatActivity.TabLayoutResource <- Resources.Layout.Tabbar
+        //FormsAppCompatActivity.ToolbarResource <- Resources.Layout.Toolbar
         base.OnCreate (bundle)
 
         Xamarin.Forms.Forms.Init (this, bundle)

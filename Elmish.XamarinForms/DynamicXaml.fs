@@ -94,6 +94,9 @@ module XamlElementExtensions =
         /// Create a Xamarin.Forms.DatePicker from the view description
         member x.CreateAsDatePicker() : Xamarin.Forms.DatePicker = (x.Create() :?> Xamarin.Forms.DatePicker)
 
+        /// Create a Xamarin.Forms.Picker from the view description
+        member x.CreateAsPicker() : Xamarin.Forms.Picker = (x.Create() :?> Xamarin.Forms.Picker)
+
         /// Create a Xamarin.Forms.Frame from the view description
         member x.CreateAsFrame() : Xamarin.Forms.Frame = (x.Create() :?> Xamarin.Forms.Frame)
 
@@ -340,6 +343,21 @@ module XamlElementExtensions =
         /// Try to get the DateSelected property in the visual element
         member x.TryDateSelected = match x.Attributes.TryFind("DateSelected") with Some v -> Some(unbox<System.EventHandler<Xamarin.Forms.DateChangedEventArgs>>(v)) | None -> None
 
+        /// Try to get the ItemsSource property in the visual element
+        member x.TryItemsSource = match x.Attributes.TryFind("ItemsSource") with Some v -> Some(unbox<System.Collections.IList>(v)) | None -> None
+
+        /// Try to get the SelectedIndex property in the visual element
+        member x.TrySelectedIndex = match x.Attributes.TryFind("SelectedIndex") with Some v -> Some(unbox<int>(v)) | None -> None
+
+        /// Try to get the SelectedItem property in the visual element
+        member x.TrySelectedItem = match x.Attributes.TryFind("SelectedItem") with Some v -> Some(unbox<System.Object>(v)) | None -> None
+
+        /// Try to get the Title property in the visual element
+        member x.TryTitle = match x.Attributes.TryFind("Title") with Some v -> Some(unbox<string>(v)) | None -> None
+
+        /// Try to get the SelectedIndexChanged property in the visual element
+        member x.TrySelectedIndexChanged = match x.Attributes.TryFind("SelectedIndexChanged") with Some v -> Some(unbox<System.EventHandler>(v)) | None -> None
+
         /// Try to get the OutlineColor property in the visual element
         member x.TryOutlineColor = match x.Attributes.TryFind("OutlineColor") with Some v -> Some(unbox<Xamarin.Forms.Color>(v)) | None -> None
 
@@ -403,17 +421,8 @@ module XamlElementExtensions =
         /// Try to get the WebSource property in the visual element
         member x.TryWebSource = match x.Attributes.TryFind("WebSource") with Some v -> Some(unbox<Xamarin.Forms.WebViewSource>(v)) | None -> None
 
-        /// Try to get the Title property in the visual element
-        member x.TryTitle = match x.Attributes.TryFind("Title") with Some v -> Some(unbox<string>(v)) | None -> None
-
-        /// Try to get the ItemsSource property in the visual element
-        member x.TryItemsSource = match x.Attributes.TryFind("ItemsSource") with Some v -> Some(unbox<System.Collections.IEnumerable>(v)) | None -> None
-
         /// Try to get the ItemTemplate property in the visual element
         member x.TryItemTemplate = match x.Attributes.TryFind("ItemTemplate") with Some v -> Some(unbox<Xamarin.Forms.DataTemplate>(v)) | None -> None
-
-        /// Try to get the SelectedItem property in the visual element
-        member x.TrySelectedItem = match x.Attributes.TryFind("SelectedItem") with Some v -> Some(unbox<System.Object>(v)) | None -> None
 
         /// Try to get the CurrentPage property in the visual element
         member x.TryCurrentPage = match x.Attributes.TryFind("CurrentPage") with Some v -> Some(unbox<XamlElement>(v)) | None -> None
@@ -449,887 +458,905 @@ module XamlElementExtensions =
         member x.TryRowHeight = match x.Attributes.TryFind("RowHeight") with Some v -> Some(unbox<int>(v)) | None -> None
 
         /// Adjusts the ClassId property in the visual element
-        member x.WithClassId(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ClassId", box ((value))))
+        member x.ClassId(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ClassId", box ((value))))
 
         /// Adjusts the StyleId property in the visual element
-        member x.WithStyleId(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("StyleId", box ((value))))
+        member x.StyleId(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("StyleId", box ((value))))
 
         /// Adjusts the AnchorX property in the visual element
-        member x.WithAnchorX(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("AnchorX", box ((value))))
+        member x.AnchorX(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("AnchorX", box ((value))))
 
         /// Adjusts the AnchorY property in the visual element
-        member x.WithAnchorY(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("AnchorY", box ((value))))
+        member x.AnchorY(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("AnchorY", box ((value))))
 
         /// Adjusts the BackgroundColor property in the visual element
-        member x.WithBackgroundColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("BackgroundColor", box ((value))))
+        member x.BackgroundColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("BackgroundColor", box ((value))))
 
         /// Adjusts the HeightRequest property in the visual element
-        member x.WithHeightRequest(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("HeightRequest", box ((value))))
+        member x.HeightRequest(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("HeightRequest", box ((value))))
 
         /// Adjusts the InputTransparent property in the visual element
-        member x.WithInputTransparent(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("InputTransparent", box ((value))))
+        member x.InputTransparent(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("InputTransparent", box ((value))))
 
         /// Adjusts the IsEnabled property in the visual element
-        member x.WithIsEnabled(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsEnabled", box ((value))))
+        member x.IsEnabled(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsEnabled", box ((value))))
 
         /// Adjusts the IsVisible property in the visual element
-        member x.WithIsVisible(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsVisible", box ((value))))
+        member x.IsVisible(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsVisible", box ((value))))
 
         /// Adjusts the MinimumHeightRequest property in the visual element
-        member x.WithMinimumHeightRequest(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("MinimumHeightRequest", box ((value))))
+        member x.MinimumHeightRequest(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("MinimumHeightRequest", box ((value))))
 
         /// Adjusts the MinimumWidthRequest property in the visual element
-        member x.WithMinimumWidthRequest(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("MinimumWidthRequest", box ((value))))
+        member x.MinimumWidthRequest(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("MinimumWidthRequest", box ((value))))
 
         /// Adjusts the Opacity property in the visual element
-        member x.WithOpacity(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Opacity", box ((value))))
+        member x.Opacity(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Opacity", box ((value))))
 
         /// Adjusts the Rotation property in the visual element
-        member x.WithRotation(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Rotation", box ((value))))
+        member x.Rotation(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Rotation", box ((value))))
 
         /// Adjusts the RotationX property in the visual element
-        member x.WithRotationX(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("RotationX", box ((value))))
+        member x.RotationX(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("RotationX", box ((value))))
 
         /// Adjusts the RotationY property in the visual element
-        member x.WithRotationY(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("RotationY", box ((value))))
+        member x.RotationY(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("RotationY", box ((value))))
 
         /// Adjusts the Scale property in the visual element
-        member x.WithScale(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Scale", box ((value))))
+        member x.Scale(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Scale", box ((value))))
 
         /// Adjusts the Style property in the visual element
-        member x.WithStyle(value: Xamarin.Forms.Style) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Style", box ((value))))
+        member x.Style(value: Xamarin.Forms.Style) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Style", box ((value))))
 
         /// Adjusts the TranslationX property in the visual element
-        member x.WithTranslationX(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("TranslationX", box ((value))))
+        member x.TranslationX(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("TranslationX", box ((value))))
 
         /// Adjusts the TranslationY property in the visual element
-        member x.WithTranslationY(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("TranslationY", box ((value))))
+        member x.TranslationY(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("TranslationY", box ((value))))
 
         /// Adjusts the WidthRequest property in the visual element
-        member x.WithWidthRequest(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("WidthRequest", box ((value))))
+        member x.WidthRequest(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("WidthRequest", box ((value))))
 
         /// Adjusts the HorizontalOptions property in the visual element
-        member x.WithHorizontalOptions(value: Xamarin.Forms.LayoutOptions) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("HorizontalOptions", box ((value))))
+        member x.HorizontalOptions(value: Xamarin.Forms.LayoutOptions) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("HorizontalOptions", box ((value))))
 
         /// Adjusts the VerticalOptions property in the visual element
-        member x.WithVerticalOptions(value: Xamarin.Forms.LayoutOptions) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("VerticalOptions", box ((value))))
+        member x.VerticalOptions(value: Xamarin.Forms.LayoutOptions) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("VerticalOptions", box ((value))))
 
         /// Adjusts the Margin property in the visual element
-        member x.WithMargin(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Margin", box (makeThickness(value))))
+        member x.Margin(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Margin", box (makeThickness(value))))
 
         /// Adjusts the Color property in the visual element
-        member x.WithColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Color", box ((value))))
+        member x.Color(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Color", box ((value))))
 
         /// Adjusts the IsRunning property in the visual element
-        member x.WithIsRunning(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsRunning", box ((value))))
+        member x.IsRunning(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsRunning", box ((value))))
 
         /// Adjusts the Content property in the visual element
-        member x.WithContent(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Content", box ((value))))
+        member x.Content(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Content", box ((value))))
 
         /// Adjusts the ScrollOrientation property in the visual element
-        member x.WithScrollOrientation(value: Xamarin.Forms.ScrollOrientation) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ScrollOrientation", box ((value))))
+        member x.ScrollOrientation(value: Xamarin.Forms.ScrollOrientation) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ScrollOrientation", box ((value))))
 
         /// Adjusts the Text property in the visual element
-        member x.WithText(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Text", box ((value))))
+        member x.Text(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Text", box ((value))))
 
         /// Adjusts the Command property in the visual element
-        member x.WithCommand(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Command", box (makeCommand(value))))
+        member x.Command(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Command", box (makeCommand(value))))
 
         /// Adjusts the BorderColor property in the visual element
-        member x.WithBorderColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("BorderColor", box ((value))))
+        member x.BorderColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("BorderColor", box ((value))))
 
         /// Adjusts the BorderWidth property in the visual element
-        member x.WithBorderWidth(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("BorderWidth", box ((value))))
+        member x.BorderWidth(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("BorderWidth", box ((value))))
 
         /// Adjusts the CommandParameter property in the visual element
-        member x.WithCommandParameter(value: System.Object) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("CommandParameter", box ((value))))
+        member x.CommandParameter(value: System.Object) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("CommandParameter", box ((value))))
 
         /// Adjusts the ContentLayout property in the visual element
-        member x.WithContentLayout(value: Xamarin.Forms.Button.ButtonContentLayout) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ContentLayout", box ((value))))
+        member x.ContentLayout(value: Xamarin.Forms.Button.ButtonContentLayout) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ContentLayout", box ((value))))
 
         /// Adjusts the ButtonCornerRadius property in the visual element
-        member x.WithButtonCornerRadius(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ButtonCornerRadius", box ((value))))
+        member x.ButtonCornerRadius(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ButtonCornerRadius", box ((value))))
 
         /// Adjusts the Font property in the visual element
-        member x.WithFont(value: Xamarin.Forms.Font) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Font", box ((value))))
+        member x.Font(value: Xamarin.Forms.Font) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Font", box ((value))))
 
         /// Adjusts the FontFamily property in the visual element
-        member x.WithFontFamily(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("FontFamily", box ((value))))
+        member x.FontFamily(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("FontFamily", box ((value))))
 
         /// Adjusts the FontAttributes property in the visual element
-        member x.WithFontAttributes(value: Xamarin.Forms.FontAttributes) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("FontAttributes", box ((value))))
+        member x.FontAttributes(value: Xamarin.Forms.FontAttributes) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("FontAttributes", box ((value))))
 
         /// Adjusts the FontSize property in the visual element
-        member x.WithFontSize(value: obj) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("FontSize", box (makeFontSize(value))))
+        member x.FontSize(value: obj) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("FontSize", box (makeFontSize(value))))
 
         /// Adjusts the ButtonImageSource property in the visual element
-        member x.WithButtonImageSource(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ButtonImageSource", box (makeFileImageSource(value))))
+        member x.ButtonImageSource(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ButtonImageSource", box (makeFileImageSource(value))))
 
         /// Adjusts the TextColor property in the visual element
-        member x.WithTextColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("TextColor", box ((value))))
+        member x.TextColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("TextColor", box ((value))))
 
         /// Adjusts the Minimum property in the visual element
-        member x.WithMinimum(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Minimum", box ((value))))
+        member x.Minimum(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Minimum", box ((value))))
 
         /// Adjusts the Maximum property in the visual element
-        member x.WithMaximum(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Maximum", box ((value))))
+        member x.Maximum(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Maximum", box ((value))))
 
         /// Adjusts the Value property in the visual element
-        member x.WithValue(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Value", box ((value))))
+        member x.Value(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Value", box ((value))))
 
         /// Adjusts the ValueChanged property in the visual element
-        member x.WithValueChanged(value: Xamarin.Forms.ValueChangedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ValueChanged", box ((fun f -> System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>(fun _sender args -> f args))(value))))
+        member x.ValueChanged(value: Xamarin.Forms.ValueChangedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ValueChanged", box ((fun f -> System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>(fun _sender args -> f args))(value))))
 
         /// Adjusts the GridRowDefinitions property in the visual element
-        member x.WithGridRowDefinitions(value: obj list) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("GridRowDefinitions", box ((fun es -> es |> Array.ofList |> Array.map (fun h -> Xaml.RowDefinition(height=h)))(value))))
+        member x.GridRowDefinitions(value: obj list) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("GridRowDefinitions", box ((fun es -> es |> Array.ofList |> Array.map (fun h -> Xaml.RowDefinition(height=h)))(value))))
 
         /// Adjusts the GridColumnDefinitions property in the visual element
-        member x.WithGridColumnDefinitions(value: obj list) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("GridColumnDefinitions", box ((fun es -> es |> Array.ofList |> Array.map (fun h -> Xaml.ColumnDefinition(width=h)))(value))))
+        member x.GridColumnDefinitions(value: obj list) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("GridColumnDefinitions", box ((fun es -> es |> Array.ofList |> Array.map (fun h -> Xaml.ColumnDefinition(width=h)))(value))))
 
         /// Adjusts the RowSpacing property in the visual element
-        member x.WithRowSpacing(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("RowSpacing", box ((value))))
+        member x.RowSpacing(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("RowSpacing", box ((value))))
 
         /// Adjusts the ColumnSpacing property in the visual element
-        member x.WithColumnSpacing(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ColumnSpacing", box ((value))))
+        member x.ColumnSpacing(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ColumnSpacing", box ((value))))
 
         /// Adjusts the Children property in the visual element
-        member x.WithChildren(value: XamlElement list) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Children", box (Array.ofList(value))))
+        member x.Children(value: XamlElement list) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Children", box (Array.ofList(value))))
 
         /// Adjusts the GridRow property in the visual element
-        member x.WithGridRow(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("GridRow", box ((value))))
+        member x.GridRow(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("GridRow", box ((value))))
 
         /// Adjusts the GridRowSpan property in the visual element
-        member x.WithGridRowSpan(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("GridRowSpan", box ((value))))
+        member x.GridRowSpan(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("GridRowSpan", box ((value))))
 
         /// Adjusts the GridColumn property in the visual element
-        member x.WithGridColumn(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("GridColumn", box ((value))))
+        member x.GridColumn(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("GridColumn", box ((value))))
 
         /// Adjusts the GridColumnSpan property in the visual element
-        member x.WithGridColumnSpan(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("GridColumnSpan", box ((value))))
+        member x.GridColumnSpan(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("GridColumnSpan", box ((value))))
 
         /// Adjusts the AbsoluteLayoutBounds property in the visual element
-        member x.WithAbsoluteLayoutBounds(value: Xamarin.Forms.Rectangle) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("AbsoluteLayoutBounds", box ((value))))
+        member x.AbsoluteLayoutBounds(value: Xamarin.Forms.Rectangle) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("AbsoluteLayoutBounds", box ((value))))
 
         /// Adjusts the AbsoluteLayoutFlags property in the visual element
-        member x.WithAbsoluteLayoutFlags(value: Xamarin.Forms.AbsoluteLayoutFlags) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("AbsoluteLayoutFlags", box ((value))))
+        member x.AbsoluteLayoutFlags(value: Xamarin.Forms.AbsoluteLayoutFlags) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("AbsoluteLayoutFlags", box ((value))))
 
         /// Adjusts the RowDefinitionHeight property in the visual element
-        member x.WithRowDefinitionHeight(value: obj) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("RowDefinitionHeight", box (makeGridLength(value))))
+        member x.RowDefinitionHeight(value: obj) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("RowDefinitionHeight", box (makeGridLength(value))))
 
         /// Adjusts the ColumnDefinitionWidth property in the visual element
-        member x.WithColumnDefinitionWidth(value: obj) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ColumnDefinitionWidth", box (makeGridLength(value))))
+        member x.ColumnDefinitionWidth(value: obj) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ColumnDefinitionWidth", box (makeGridLength(value))))
 
         /// Adjusts the Date property in the visual element
-        member x.WithDate(value: System.DateTime) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Date", box ((value))))
+        member x.Date(value: System.DateTime) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Date", box ((value))))
 
         /// Adjusts the Format property in the visual element
-        member x.WithFormat(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Format", box ((value))))
+        member x.Format(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Format", box ((value))))
 
         /// Adjusts the MinimumDate property in the visual element
-        member x.WithMinimumDate(value: System.DateTime) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("MinimumDate", box ((value))))
+        member x.MinimumDate(value: System.DateTime) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("MinimumDate", box ((value))))
 
         /// Adjusts the MaximumDate property in the visual element
-        member x.WithMaximumDate(value: System.DateTime) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("MaximumDate", box ((value))))
+        member x.MaximumDate(value: System.DateTime) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("MaximumDate", box ((value))))
 
         /// Adjusts the DateSelected property in the visual element
-        member x.WithDateSelected(value: Xamarin.Forms.DateChangedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("DateSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.DateChangedEventArgs>(fun _sender args -> f args))(value))))
-
-        /// Adjusts the OutlineColor property in the visual element
-        member x.WithOutlineColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("OutlineColor", box ((value))))
-
-        /// Adjusts the FrameCornerRadius property in the visual element
-        member x.WithFrameCornerRadius(value: single) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("FrameCornerRadius", box ((value))))
-
-        /// Adjusts the HasShadow property in the visual element
-        member x.WithHasShadow(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("HasShadow", box ((value))))
-
-        /// Adjusts the ImageSource property in the visual element
-        member x.WithImageSource(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ImageSource", box (makeImageSource(value))))
-
-        /// Adjusts the Aspect property in the visual element
-        member x.WithAspect(value: Xamarin.Forms.Aspect) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Aspect", box ((value))))
-
-        /// Adjusts the IsOpaque property in the visual element
-        member x.WithIsOpaque(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsOpaque", box ((value))))
-
-        /// Adjusts the Keyboard property in the visual element
-        member x.WithKeyboard(value: Xamarin.Forms.Keyboard) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Keyboard", box ((value))))
-
-        /// Adjusts the EditorCompleted property in the visual element
-        member x.WithEditorCompleted(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("EditorCompleted", box ((fun f -> System.EventHandler(fun _sender args -> f ()))(value))))
-
-        /// Adjusts the TextChanged property in the visual element
-        member x.WithTextChanged(value: Xamarin.Forms.TextChangedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("TextChanged", box ((fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))(value))))
-
-        /// Adjusts the Placeholder property in the visual element
-        member x.WithPlaceholder(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Placeholder", box ((value))))
-
-        /// Adjusts the HorizontalTextAlignment property in the visual element
-        member x.WithHorizontalTextAlignment(value: Xamarin.Forms.TextAlignment) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("HorizontalTextAlignment", box ((value))))
-
-        /// Adjusts the PlaceholderColor property in the visual element
-        member x.WithPlaceholderColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("PlaceholderColor", box ((value))))
-
-        /// Adjusts the IsPassword property in the visual element
-        member x.WithIsPassword(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsPassword", box ((value))))
-
-        /// Adjusts the EntryCompleted property in the visual element
-        member x.WithEntryCompleted(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("EntryCompleted", box ((fun f -> System.EventHandler(fun _sender args -> f ()))(value))))
-
-        /// Adjusts the VerticalTextAlignment property in the visual element
-        member x.WithVerticalTextAlignment(value: Xamarin.Forms.TextAlignment) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("VerticalTextAlignment", box ((value))))
-
-        /// Adjusts the IsClippedToBounds property in the visual element
-        member x.WithIsClippedToBounds(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsClippedToBounds", box ((value))))
-
-        /// Adjusts the Padding property in the visual element
-        member x.WithPadding(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Padding", box (makeThickness(value))))
-
-        /// Adjusts the StackOrientation property in the visual element
-        member x.WithStackOrientation(value: Xamarin.Forms.StackOrientation) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("StackOrientation", box ((value))))
-
-        /// Adjusts the Spacing property in the visual element
-        member x.WithSpacing(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Spacing", box ((value))))
-
-        /// Adjusts the Time property in the visual element
-        member x.WithTime(value: System.TimeSpan) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Time", box ((value))))
-
-        /// Adjusts the WebSource property in the visual element
-        member x.WithWebSource(value: Xamarin.Forms.WebViewSource) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("WebSource", box ((value))))
-
-        /// Adjusts the Title property in the visual element
-        member x.WithTitle(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Title", box ((value))))
+        member x.DateSelected(value: Xamarin.Forms.DateChangedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("DateSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.DateChangedEventArgs>(fun _sender args -> f args))(value))))
 
         /// Adjusts the ItemsSource property in the visual element
-        member x.WithItemsSource(value: System.Collections.IEnumerable) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ItemsSource", box ((value))))
+        member x.ItemsSource(value: System.Collections.IList) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ItemsSource", box ((value))))
 
-        /// Adjusts the ItemTemplate property in the visual element
-        member x.WithItemTemplate(value: Xamarin.Forms.DataTemplate) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ItemTemplate", box ((value))))
+        /// Adjusts the SelectedIndex property in the visual element
+        member x.SelectedIndex(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("SelectedIndex", box ((value))))
 
         /// Adjusts the SelectedItem property in the visual element
-        member x.WithSelectedItem(value: System.Object) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("SelectedItem", box ((value))))
+        member x.SelectedItem(value: System.Object) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("SelectedItem", box ((value))))
+
+        /// Adjusts the Title property in the visual element
+        member x.Title(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Title", box ((value))))
+
+        /// Adjusts the SelectedIndexChanged property in the visual element
+        member x.SelectedIndexChanged(value: (int * obj) -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("SelectedIndexChanged", box ((fun f -> System.EventHandler(fun sender args -> f ((sender :?> Xamarin.Forms.Picker).SelectedIndex, (sender :?> Xamarin.Forms.Picker).SelectedItem)))(value))))
+
+        /// Adjusts the OutlineColor property in the visual element
+        member x.OutlineColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("OutlineColor", box ((value))))
+
+        /// Adjusts the FrameCornerRadius property in the visual element
+        member x.FrameCornerRadius(value: single) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("FrameCornerRadius", box ((value))))
+
+        /// Adjusts the HasShadow property in the visual element
+        member x.HasShadow(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("HasShadow", box ((value))))
+
+        /// Adjusts the ImageSource property in the visual element
+        member x.ImageSource(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ImageSource", box (makeImageSource(value))))
+
+        /// Adjusts the Aspect property in the visual element
+        member x.Aspect(value: Xamarin.Forms.Aspect) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Aspect", box ((value))))
+
+        /// Adjusts the IsOpaque property in the visual element
+        member x.IsOpaque(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsOpaque", box ((value))))
+
+        /// Adjusts the Keyboard property in the visual element
+        member x.Keyboard(value: Xamarin.Forms.Keyboard) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Keyboard", box ((value))))
+
+        /// Adjusts the EditorCompleted property in the visual element
+        member x.EditorCompleted(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("EditorCompleted", box ((fun f -> System.EventHandler(fun _sender args -> f ()))(value))))
+
+        /// Adjusts the TextChanged property in the visual element
+        member x.TextChanged(value: Xamarin.Forms.TextChangedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("TextChanged", box ((fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))(value))))
+
+        /// Adjusts the Placeholder property in the visual element
+        member x.Placeholder(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Placeholder", box ((value))))
+
+        /// Adjusts the HorizontalTextAlignment property in the visual element
+        member x.HorizontalTextAlignment(value: Xamarin.Forms.TextAlignment) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("HorizontalTextAlignment", box ((value))))
+
+        /// Adjusts the PlaceholderColor property in the visual element
+        member x.PlaceholderColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("PlaceholderColor", box ((value))))
+
+        /// Adjusts the IsPassword property in the visual element
+        member x.IsPassword(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsPassword", box ((value))))
+
+        /// Adjusts the EntryCompleted property in the visual element
+        member x.EntryCompleted(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("EntryCompleted", box ((fun f -> System.EventHandler(fun _sender args -> f ()))(value))))
+
+        /// Adjusts the VerticalTextAlignment property in the visual element
+        member x.VerticalTextAlignment(value: Xamarin.Forms.TextAlignment) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("VerticalTextAlignment", box ((value))))
+
+        /// Adjusts the IsClippedToBounds property in the visual element
+        member x.IsClippedToBounds(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsClippedToBounds", box ((value))))
+
+        /// Adjusts the Padding property in the visual element
+        member x.Padding(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Padding", box (makeThickness(value))))
+
+        /// Adjusts the StackOrientation property in the visual element
+        member x.StackOrientation(value: Xamarin.Forms.StackOrientation) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("StackOrientation", box ((value))))
+
+        /// Adjusts the Spacing property in the visual element
+        member x.Spacing(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Spacing", box ((value))))
+
+        /// Adjusts the Time property in the visual element
+        member x.Time(value: System.TimeSpan) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Time", box ((value))))
+
+        /// Adjusts the WebSource property in the visual element
+        member x.WebSource(value: Xamarin.Forms.WebViewSource) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("WebSource", box ((value))))
+
+        /// Adjusts the ItemTemplate property in the visual element
+        member x.ItemTemplate(value: Xamarin.Forms.DataTemplate) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ItemTemplate", box ((value))))
 
         /// Adjusts the CurrentPage property in the visual element
-        member x.WithCurrentPage(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("CurrentPage", box ((value))))
+        member x.CurrentPage(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("CurrentPage", box ((value))))
 
         /// Adjusts the Master property in the visual element
-        member x.WithMaster(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Master", box ((value))))
+        member x.Master(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Master", box ((value))))
 
         /// Adjusts the Detail property in the visual element
-        member x.WithDetail(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Detail", box ((value))))
+        member x.Detail(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Detail", box ((value))))
 
         /// Adjusts the Height property in the visual element
-        member x.WithHeight(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Height", box ((value))))
+        member x.Height(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Height", box ((value))))
 
         /// Adjusts the TextDetail property in the visual element
-        member x.WithTextDetail(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("TextDetail", box ((value))))
+        member x.TextDetail(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("TextDetail", box ((value))))
 
         /// Adjusts the TextDetailColor property in the visual element
-        member x.WithTextDetailColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("TextDetailColor", box ((value))))
+        member x.TextDetailColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("TextDetailColor", box ((value))))
 
         /// Adjusts the View property in the visual element
-        member x.WithView(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("View", box ((value))))
+        member x.View(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("View", box ((value))))
 
         /// Adjusts the SeparatorVisibility property in the visual element
-        member x.WithSeparatorVisibility(value: Xamarin.Forms.SeparatorVisibility) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("SeparatorVisibility", box ((value))))
+        member x.SeparatorVisibility(value: Xamarin.Forms.SeparatorVisibility) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("SeparatorVisibility", box ((value))))
 
         /// Adjusts the SeparatorColor property in the visual element
-        member x.WithSeparatorColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("SeparatorColor", box ((value))))
+        member x.SeparatorColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("SeparatorColor", box ((value))))
 
         /// Adjusts the HasUnevenRows property in the visual element
-        member x.WithHasUnevenRows(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("HasUnevenRows", box ((value))))
+        member x.HasUnevenRows(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("HasUnevenRows", box ((value))))
 
         /// Adjusts the RowHeight property in the visual element
-        member x.WithRowHeight(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("RowHeight", box ((value))))
+        member x.RowHeight(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("RowHeight", box ((value))))
 
 
     /// Adjusts the ClassId property in the visual element
-    let withClassId (value: string) (x: XamlElement) = x.WithClassId(value)
+    let withClassId (value: string) (x: XamlElement) = x.ClassId(value)
 
     /// Adjusts the ClassId property in the visual element
-    let classId (value: string) (x: XamlElement) = x.WithClassId(value)
+    let classId (value: string) (x: XamlElement) = x.ClassId(value)
 
     /// Adjusts the StyleId property in the visual element
-    let withStyleId (value: string) (x: XamlElement) = x.WithStyleId(value)
+    let withStyleId (value: string) (x: XamlElement) = x.StyleId(value)
 
     /// Adjusts the StyleId property in the visual element
-    let styleId (value: string) (x: XamlElement) = x.WithStyleId(value)
+    let styleId (value: string) (x: XamlElement) = x.StyleId(value)
 
     /// Adjusts the AnchorX property in the visual element
-    let withAnchorX (value: double) (x: XamlElement) = x.WithAnchorX(value)
+    let withAnchorX (value: double) (x: XamlElement) = x.AnchorX(value)
 
     /// Adjusts the AnchorX property in the visual element
-    let anchorX (value: double) (x: XamlElement) = x.WithAnchorX(value)
+    let anchorX (value: double) (x: XamlElement) = x.AnchorX(value)
 
     /// Adjusts the AnchorY property in the visual element
-    let withAnchorY (value: double) (x: XamlElement) = x.WithAnchorY(value)
+    let withAnchorY (value: double) (x: XamlElement) = x.AnchorY(value)
 
     /// Adjusts the AnchorY property in the visual element
-    let anchorY (value: double) (x: XamlElement) = x.WithAnchorY(value)
+    let anchorY (value: double) (x: XamlElement) = x.AnchorY(value)
 
     /// Adjusts the BackgroundColor property in the visual element
-    let withBackgroundColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.WithBackgroundColor(value)
+    let withBackgroundColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.BackgroundColor(value)
 
     /// Adjusts the BackgroundColor property in the visual element
-    let backgroundColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.WithBackgroundColor(value)
+    let backgroundColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.BackgroundColor(value)
 
     /// Adjusts the HeightRequest property in the visual element
-    let withHeightRequest (value: double) (x: XamlElement) = x.WithHeightRequest(value)
+    let withHeightRequest (value: double) (x: XamlElement) = x.HeightRequest(value)
 
     /// Adjusts the HeightRequest property in the visual element
-    let heightRequest (value: double) (x: XamlElement) = x.WithHeightRequest(value)
+    let heightRequest (value: double) (x: XamlElement) = x.HeightRequest(value)
 
     /// Adjusts the InputTransparent property in the visual element
-    let withInputTransparent (value: bool) (x: XamlElement) = x.WithInputTransparent(value)
+    let withInputTransparent (value: bool) (x: XamlElement) = x.InputTransparent(value)
 
     /// Adjusts the InputTransparent property in the visual element
-    let inputTransparent (value: bool) (x: XamlElement) = x.WithInputTransparent(value)
+    let inputTransparent (value: bool) (x: XamlElement) = x.InputTransparent(value)
 
     /// Adjusts the IsEnabled property in the visual element
-    let withIsEnabled (value: bool) (x: XamlElement) = x.WithIsEnabled(value)
+    let withIsEnabled (value: bool) (x: XamlElement) = x.IsEnabled(value)
 
     /// Adjusts the IsEnabled property in the visual element
-    let isEnabled (value: bool) (x: XamlElement) = x.WithIsEnabled(value)
+    let isEnabled (value: bool) (x: XamlElement) = x.IsEnabled(value)
 
     /// Adjusts the IsVisible property in the visual element
-    let withIsVisible (value: bool) (x: XamlElement) = x.WithIsVisible(value)
+    let withIsVisible (value: bool) (x: XamlElement) = x.IsVisible(value)
 
     /// Adjusts the IsVisible property in the visual element
-    let isVisible (value: bool) (x: XamlElement) = x.WithIsVisible(value)
+    let isVisible (value: bool) (x: XamlElement) = x.IsVisible(value)
 
     /// Adjusts the MinimumHeightRequest property in the visual element
-    let withMinimumHeightRequest (value: double) (x: XamlElement) = x.WithMinimumHeightRequest(value)
+    let withMinimumHeightRequest (value: double) (x: XamlElement) = x.MinimumHeightRequest(value)
 
     /// Adjusts the MinimumHeightRequest property in the visual element
-    let minimumHeightRequest (value: double) (x: XamlElement) = x.WithMinimumHeightRequest(value)
+    let minimumHeightRequest (value: double) (x: XamlElement) = x.MinimumHeightRequest(value)
 
     /// Adjusts the MinimumWidthRequest property in the visual element
-    let withMinimumWidthRequest (value: double) (x: XamlElement) = x.WithMinimumWidthRequest(value)
+    let withMinimumWidthRequest (value: double) (x: XamlElement) = x.MinimumWidthRequest(value)
 
     /// Adjusts the MinimumWidthRequest property in the visual element
-    let minimumWidthRequest (value: double) (x: XamlElement) = x.WithMinimumWidthRequest(value)
+    let minimumWidthRequest (value: double) (x: XamlElement) = x.MinimumWidthRequest(value)
 
     /// Adjusts the Opacity property in the visual element
-    let withOpacity (value: double) (x: XamlElement) = x.WithOpacity(value)
+    let withOpacity (value: double) (x: XamlElement) = x.Opacity(value)
 
     /// Adjusts the Opacity property in the visual element
-    let opacity (value: double) (x: XamlElement) = x.WithOpacity(value)
+    let opacity (value: double) (x: XamlElement) = x.Opacity(value)
 
     /// Adjusts the Rotation property in the visual element
-    let withRotation (value: double) (x: XamlElement) = x.WithRotation(value)
+    let withRotation (value: double) (x: XamlElement) = x.Rotation(value)
 
     /// Adjusts the Rotation property in the visual element
-    let rotation (value: double) (x: XamlElement) = x.WithRotation(value)
+    let rotation (value: double) (x: XamlElement) = x.Rotation(value)
 
     /// Adjusts the RotationX property in the visual element
-    let withRotationX (value: double) (x: XamlElement) = x.WithRotationX(value)
+    let withRotationX (value: double) (x: XamlElement) = x.RotationX(value)
 
     /// Adjusts the RotationX property in the visual element
-    let rotationX (value: double) (x: XamlElement) = x.WithRotationX(value)
+    let rotationX (value: double) (x: XamlElement) = x.RotationX(value)
 
     /// Adjusts the RotationY property in the visual element
-    let withRotationY (value: double) (x: XamlElement) = x.WithRotationY(value)
+    let withRotationY (value: double) (x: XamlElement) = x.RotationY(value)
 
     /// Adjusts the RotationY property in the visual element
-    let rotationY (value: double) (x: XamlElement) = x.WithRotationY(value)
+    let rotationY (value: double) (x: XamlElement) = x.RotationY(value)
 
     /// Adjusts the Scale property in the visual element
-    let withScale (value: double) (x: XamlElement) = x.WithScale(value)
+    let withScale (value: double) (x: XamlElement) = x.Scale(value)
 
     /// Adjusts the Scale property in the visual element
-    let scale (value: double) (x: XamlElement) = x.WithScale(value)
+    let scale (value: double) (x: XamlElement) = x.Scale(value)
 
     /// Adjusts the Style property in the visual element
-    let withStyle (value: Xamarin.Forms.Style) (x: XamlElement) = x.WithStyle(value)
+    let withStyle (value: Xamarin.Forms.Style) (x: XamlElement) = x.Style(value)
 
     /// Adjusts the Style property in the visual element
-    let style (value: Xamarin.Forms.Style) (x: XamlElement) = x.WithStyle(value)
+    let style (value: Xamarin.Forms.Style) (x: XamlElement) = x.Style(value)
 
     /// Adjusts the TranslationX property in the visual element
-    let withTranslationX (value: double) (x: XamlElement) = x.WithTranslationX(value)
+    let withTranslationX (value: double) (x: XamlElement) = x.TranslationX(value)
 
     /// Adjusts the TranslationX property in the visual element
-    let translationX (value: double) (x: XamlElement) = x.WithTranslationX(value)
+    let translationX (value: double) (x: XamlElement) = x.TranslationX(value)
 
     /// Adjusts the TranslationY property in the visual element
-    let withTranslationY (value: double) (x: XamlElement) = x.WithTranslationY(value)
+    let withTranslationY (value: double) (x: XamlElement) = x.TranslationY(value)
 
     /// Adjusts the TranslationY property in the visual element
-    let translationY (value: double) (x: XamlElement) = x.WithTranslationY(value)
+    let translationY (value: double) (x: XamlElement) = x.TranslationY(value)
 
     /// Adjusts the WidthRequest property in the visual element
-    let withWidthRequest (value: double) (x: XamlElement) = x.WithWidthRequest(value)
+    let withWidthRequest (value: double) (x: XamlElement) = x.WidthRequest(value)
 
     /// Adjusts the WidthRequest property in the visual element
-    let widthRequest (value: double) (x: XamlElement) = x.WithWidthRequest(value)
+    let widthRequest (value: double) (x: XamlElement) = x.WidthRequest(value)
 
     /// Adjusts the HorizontalOptions property in the visual element
-    let withHorizontalOptions (value: Xamarin.Forms.LayoutOptions) (x: XamlElement) = x.WithHorizontalOptions(value)
+    let withHorizontalOptions (value: Xamarin.Forms.LayoutOptions) (x: XamlElement) = x.HorizontalOptions(value)
 
     /// Adjusts the HorizontalOptions property in the visual element
-    let horizontalOptions (value: Xamarin.Forms.LayoutOptions) (x: XamlElement) = x.WithHorizontalOptions(value)
+    let horizontalOptions (value: Xamarin.Forms.LayoutOptions) (x: XamlElement) = x.HorizontalOptions(value)
 
     /// Adjusts the VerticalOptions property in the visual element
-    let withVerticalOptions (value: Xamarin.Forms.LayoutOptions) (x: XamlElement) = x.WithVerticalOptions(value)
+    let withVerticalOptions (value: Xamarin.Forms.LayoutOptions) (x: XamlElement) = x.VerticalOptions(value)
 
     /// Adjusts the VerticalOptions property in the visual element
-    let verticalOptions (value: Xamarin.Forms.LayoutOptions) (x: XamlElement) = x.WithVerticalOptions(value)
+    let verticalOptions (value: Xamarin.Forms.LayoutOptions) (x: XamlElement) = x.VerticalOptions(value)
 
     /// Adjusts the Margin property in the visual element
-    let withMargin (value: double) (x: XamlElement) = x.WithMargin(value)
+    let withMargin (value: double) (x: XamlElement) = x.Margin(value)
 
     /// Adjusts the Margin property in the visual element
-    let margin (value: double) (x: XamlElement) = x.WithMargin(value)
+    let margin (value: double) (x: XamlElement) = x.Margin(value)
 
     /// Adjusts the Color property in the visual element
-    let withColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.WithColor(value)
+    let withColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.Color(value)
 
     /// Adjusts the Color property in the visual element
-    let color (value: Xamarin.Forms.Color) (x: XamlElement) = x.WithColor(value)
+    let color (value: Xamarin.Forms.Color) (x: XamlElement) = x.Color(value)
 
     /// Adjusts the IsRunning property in the visual element
-    let withIsRunning (value: bool) (x: XamlElement) = x.WithIsRunning(value)
+    let withIsRunning (value: bool) (x: XamlElement) = x.IsRunning(value)
 
     /// Adjusts the IsRunning property in the visual element
-    let isRunning (value: bool) (x: XamlElement) = x.WithIsRunning(value)
+    let isRunning (value: bool) (x: XamlElement) = x.IsRunning(value)
 
     /// Adjusts the Content property in the visual element
-    let withContent (value: XamlElement) (x: XamlElement) = x.WithContent(value)
+    let withContent (value: XamlElement) (x: XamlElement) = x.Content(value)
 
     /// Adjusts the Content property in the visual element
-    let content (value: XamlElement) (x: XamlElement) = x.WithContent(value)
+    let content (value: XamlElement) (x: XamlElement) = x.Content(value)
 
     /// Adjusts the ScrollOrientation property in the visual element
-    let withScrollOrientation (value: Xamarin.Forms.ScrollOrientation) (x: XamlElement) = x.WithScrollOrientation(value)
+    let withScrollOrientation (value: Xamarin.Forms.ScrollOrientation) (x: XamlElement) = x.ScrollOrientation(value)
 
     /// Adjusts the ScrollOrientation property in the visual element
-    let scrollOrientation (value: Xamarin.Forms.ScrollOrientation) (x: XamlElement) = x.WithScrollOrientation(value)
+    let scrollOrientation (value: Xamarin.Forms.ScrollOrientation) (x: XamlElement) = x.ScrollOrientation(value)
 
     /// Adjusts the Text property in the visual element
-    let withText (value: string) (x: XamlElement) = x.WithText(value)
+    let withText (value: string) (x: XamlElement) = x.Text(value)
 
     /// Adjusts the Text property in the visual element
-    let text (value: string) (x: XamlElement) = x.WithText(value)
+    let text (value: string) (x: XamlElement) = x.Text(value)
 
     /// Adjusts the Command property in the visual element
-    let withCommand (value: unit -> unit) (x: XamlElement) = x.WithCommand(value)
+    let withCommand (value: unit -> unit) (x: XamlElement) = x.Command(value)
 
     /// Adjusts the Command property in the visual element
-    let command (value: unit -> unit) (x: XamlElement) = x.WithCommand(value)
+    let command (value: unit -> unit) (x: XamlElement) = x.Command(value)
 
     /// Adjusts the BorderColor property in the visual element
-    let withBorderColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.WithBorderColor(value)
+    let withBorderColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.BorderColor(value)
 
     /// Adjusts the BorderColor property in the visual element
-    let borderColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.WithBorderColor(value)
+    let borderColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.BorderColor(value)
 
     /// Adjusts the BorderWidth property in the visual element
-    let withBorderWidth (value: double) (x: XamlElement) = x.WithBorderWidth(value)
+    let withBorderWidth (value: double) (x: XamlElement) = x.BorderWidth(value)
 
     /// Adjusts the BorderWidth property in the visual element
-    let borderWidth (value: double) (x: XamlElement) = x.WithBorderWidth(value)
+    let borderWidth (value: double) (x: XamlElement) = x.BorderWidth(value)
 
     /// Adjusts the CommandParameter property in the visual element
-    let withCommandParameter (value: System.Object) (x: XamlElement) = x.WithCommandParameter(value)
+    let withCommandParameter (value: System.Object) (x: XamlElement) = x.CommandParameter(value)
 
     /// Adjusts the CommandParameter property in the visual element
-    let commandParameter (value: System.Object) (x: XamlElement) = x.WithCommandParameter(value)
+    let commandParameter (value: System.Object) (x: XamlElement) = x.CommandParameter(value)
 
     /// Adjusts the ContentLayout property in the visual element
-    let withContentLayout (value: Xamarin.Forms.Button.ButtonContentLayout) (x: XamlElement) = x.WithContentLayout(value)
+    let withContentLayout (value: Xamarin.Forms.Button.ButtonContentLayout) (x: XamlElement) = x.ContentLayout(value)
 
     /// Adjusts the ContentLayout property in the visual element
-    let contentLayout (value: Xamarin.Forms.Button.ButtonContentLayout) (x: XamlElement) = x.WithContentLayout(value)
+    let contentLayout (value: Xamarin.Forms.Button.ButtonContentLayout) (x: XamlElement) = x.ContentLayout(value)
 
     /// Adjusts the ButtonCornerRadius property in the visual element
-    let withButtonCornerRadius (value: int) (x: XamlElement) = x.WithButtonCornerRadius(value)
+    let withButtonCornerRadius (value: int) (x: XamlElement) = x.ButtonCornerRadius(value)
 
     /// Adjusts the ButtonCornerRadius property in the visual element
-    let buttonCornerRadius (value: int) (x: XamlElement) = x.WithButtonCornerRadius(value)
+    let buttonCornerRadius (value: int) (x: XamlElement) = x.ButtonCornerRadius(value)
 
     /// Adjusts the Font property in the visual element
-    let withFont (value: Xamarin.Forms.Font) (x: XamlElement) = x.WithFont(value)
+    let withFont (value: Xamarin.Forms.Font) (x: XamlElement) = x.Font(value)
 
     /// Adjusts the Font property in the visual element
-    let font (value: Xamarin.Forms.Font) (x: XamlElement) = x.WithFont(value)
+    let font (value: Xamarin.Forms.Font) (x: XamlElement) = x.Font(value)
 
     /// Adjusts the FontFamily property in the visual element
-    let withFontFamily (value: string) (x: XamlElement) = x.WithFontFamily(value)
+    let withFontFamily (value: string) (x: XamlElement) = x.FontFamily(value)
 
     /// Adjusts the FontFamily property in the visual element
-    let fontFamily (value: string) (x: XamlElement) = x.WithFontFamily(value)
+    let fontFamily (value: string) (x: XamlElement) = x.FontFamily(value)
 
     /// Adjusts the FontAttributes property in the visual element
-    let withFontAttributes (value: Xamarin.Forms.FontAttributes) (x: XamlElement) = x.WithFontAttributes(value)
+    let withFontAttributes (value: Xamarin.Forms.FontAttributes) (x: XamlElement) = x.FontAttributes(value)
 
     /// Adjusts the FontAttributes property in the visual element
-    let fontAttributes (value: Xamarin.Forms.FontAttributes) (x: XamlElement) = x.WithFontAttributes(value)
+    let fontAttributes (value: Xamarin.Forms.FontAttributes) (x: XamlElement) = x.FontAttributes(value)
 
     /// Adjusts the FontSize property in the visual element
-    let withFontSize (value: obj) (x: XamlElement) = x.WithFontSize(value)
+    let withFontSize (value: obj) (x: XamlElement) = x.FontSize(value)
 
     /// Adjusts the FontSize property in the visual element
-    let fontSize (value: obj) (x: XamlElement) = x.WithFontSize(value)
+    let fontSize (value: obj) (x: XamlElement) = x.FontSize(value)
 
     /// Adjusts the ButtonImageSource property in the visual element
-    let withButtonImageSource (value: string) (x: XamlElement) = x.WithButtonImageSource(value)
+    let withButtonImageSource (value: string) (x: XamlElement) = x.ButtonImageSource(value)
 
     /// Adjusts the ButtonImageSource property in the visual element
-    let buttonImageSource (value: string) (x: XamlElement) = x.WithButtonImageSource(value)
+    let buttonImageSource (value: string) (x: XamlElement) = x.ButtonImageSource(value)
 
     /// Adjusts the TextColor property in the visual element
-    let withTextColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.WithTextColor(value)
+    let withTextColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.TextColor(value)
 
     /// Adjusts the TextColor property in the visual element
-    let textColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.WithTextColor(value)
+    let textColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.TextColor(value)
 
     /// Adjusts the Minimum property in the visual element
-    let withMinimum (value: double) (x: XamlElement) = x.WithMinimum(value)
+    let withMinimum (value: double) (x: XamlElement) = x.Minimum(value)
 
     /// Adjusts the Minimum property in the visual element
-    let minimum (value: double) (x: XamlElement) = x.WithMinimum(value)
+    let minimum (value: double) (x: XamlElement) = x.Minimum(value)
 
     /// Adjusts the Maximum property in the visual element
-    let withMaximum (value: double) (x: XamlElement) = x.WithMaximum(value)
+    let withMaximum (value: double) (x: XamlElement) = x.Maximum(value)
 
     /// Adjusts the Maximum property in the visual element
-    let maximum (value: double) (x: XamlElement) = x.WithMaximum(value)
+    let maximum (value: double) (x: XamlElement) = x.Maximum(value)
 
     /// Adjusts the Value property in the visual element
-    let withValue (value: double) (x: XamlElement) = x.WithValue(value)
+    let withValue (value: double) (x: XamlElement) = x.Value(value)
 
     /// Adjusts the Value property in the visual element
-    let value (value: double) (x: XamlElement) = x.WithValue(value)
+    let value (value: double) (x: XamlElement) = x.Value(value)
 
     /// Adjusts the ValueChanged property in the visual element
-    let withValueChanged (value: Xamarin.Forms.ValueChangedEventArgs -> unit) (x: XamlElement) = x.WithValueChanged(value)
+    let withValueChanged (value: Xamarin.Forms.ValueChangedEventArgs -> unit) (x: XamlElement) = x.ValueChanged(value)
 
     /// Adjusts the ValueChanged property in the visual element
-    let valueChanged (value: Xamarin.Forms.ValueChangedEventArgs -> unit) (x: XamlElement) = x.WithValueChanged(value)
+    let valueChanged (value: Xamarin.Forms.ValueChangedEventArgs -> unit) (x: XamlElement) = x.ValueChanged(value)
 
     /// Adjusts the GridRowDefinitions property in the visual element
-    let withGridRowDefinitions (value: obj list) (x: XamlElement) = x.WithGridRowDefinitions(value)
+    let withGridRowDefinitions (value: obj list) (x: XamlElement) = x.GridRowDefinitions(value)
 
     /// Adjusts the GridRowDefinitions property in the visual element
-    let gridRowDefinitions (value: obj list) (x: XamlElement) = x.WithGridRowDefinitions(value)
+    let gridRowDefinitions (value: obj list) (x: XamlElement) = x.GridRowDefinitions(value)
 
     /// Adjusts the GridColumnDefinitions property in the visual element
-    let withGridColumnDefinitions (value: obj list) (x: XamlElement) = x.WithGridColumnDefinitions(value)
+    let withGridColumnDefinitions (value: obj list) (x: XamlElement) = x.GridColumnDefinitions(value)
 
     /// Adjusts the GridColumnDefinitions property in the visual element
-    let gridColumnDefinitions (value: obj list) (x: XamlElement) = x.WithGridColumnDefinitions(value)
+    let gridColumnDefinitions (value: obj list) (x: XamlElement) = x.GridColumnDefinitions(value)
 
     /// Adjusts the RowSpacing property in the visual element
-    let withRowSpacing (value: double) (x: XamlElement) = x.WithRowSpacing(value)
+    let withRowSpacing (value: double) (x: XamlElement) = x.RowSpacing(value)
 
     /// Adjusts the RowSpacing property in the visual element
-    let rowSpacing (value: double) (x: XamlElement) = x.WithRowSpacing(value)
+    let rowSpacing (value: double) (x: XamlElement) = x.RowSpacing(value)
 
     /// Adjusts the ColumnSpacing property in the visual element
-    let withColumnSpacing (value: double) (x: XamlElement) = x.WithColumnSpacing(value)
+    let withColumnSpacing (value: double) (x: XamlElement) = x.ColumnSpacing(value)
 
     /// Adjusts the ColumnSpacing property in the visual element
-    let columnSpacing (value: double) (x: XamlElement) = x.WithColumnSpacing(value)
+    let columnSpacing (value: double) (x: XamlElement) = x.ColumnSpacing(value)
 
     /// Adjusts the Children property in the visual element
-    let withChildren (value: XamlElement list) (x: XamlElement) = x.WithChildren(value)
+    let withChildren (value: XamlElement list) (x: XamlElement) = x.Children(value)
 
     /// Adjusts the Children property in the visual element
-    let children (value: XamlElement list) (x: XamlElement) = x.WithChildren(value)
+    let children (value: XamlElement list) (x: XamlElement) = x.Children(value)
 
     /// Adjusts the GridRow property in the visual element
-    let withGridRow (value: int) (x: XamlElement) = x.WithGridRow(value)
+    let withGridRow (value: int) (x: XamlElement) = x.GridRow(value)
 
     /// Adjusts the GridRow property in the visual element
-    let gridRow (value: int) (x: XamlElement) = x.WithGridRow(value)
+    let gridRow (value: int) (x: XamlElement) = x.GridRow(value)
 
     /// Adjusts the GridRowSpan property in the visual element
-    let withGridRowSpan (value: int) (x: XamlElement) = x.WithGridRowSpan(value)
+    let withGridRowSpan (value: int) (x: XamlElement) = x.GridRowSpan(value)
 
     /// Adjusts the GridRowSpan property in the visual element
-    let gridRowSpan (value: int) (x: XamlElement) = x.WithGridRowSpan(value)
+    let gridRowSpan (value: int) (x: XamlElement) = x.GridRowSpan(value)
 
     /// Adjusts the GridColumn property in the visual element
-    let withGridColumn (value: int) (x: XamlElement) = x.WithGridColumn(value)
+    let withGridColumn (value: int) (x: XamlElement) = x.GridColumn(value)
 
     /// Adjusts the GridColumn property in the visual element
-    let gridColumn (value: int) (x: XamlElement) = x.WithGridColumn(value)
+    let gridColumn (value: int) (x: XamlElement) = x.GridColumn(value)
 
     /// Adjusts the GridColumnSpan property in the visual element
-    let withGridColumnSpan (value: int) (x: XamlElement) = x.WithGridColumnSpan(value)
+    let withGridColumnSpan (value: int) (x: XamlElement) = x.GridColumnSpan(value)
 
     /// Adjusts the GridColumnSpan property in the visual element
-    let gridColumnSpan (value: int) (x: XamlElement) = x.WithGridColumnSpan(value)
+    let gridColumnSpan (value: int) (x: XamlElement) = x.GridColumnSpan(value)
 
     /// Adjusts the AbsoluteLayoutBounds property in the visual element
-    let withAbsoluteLayoutBounds (value: Xamarin.Forms.Rectangle) (x: XamlElement) = x.WithAbsoluteLayoutBounds(value)
+    let withAbsoluteLayoutBounds (value: Xamarin.Forms.Rectangle) (x: XamlElement) = x.AbsoluteLayoutBounds(value)
 
     /// Adjusts the AbsoluteLayoutBounds property in the visual element
-    let absoluteLayoutBounds (value: Xamarin.Forms.Rectangle) (x: XamlElement) = x.WithAbsoluteLayoutBounds(value)
+    let absoluteLayoutBounds (value: Xamarin.Forms.Rectangle) (x: XamlElement) = x.AbsoluteLayoutBounds(value)
 
     /// Adjusts the AbsoluteLayoutFlags property in the visual element
-    let withAbsoluteLayoutFlags (value: Xamarin.Forms.AbsoluteLayoutFlags) (x: XamlElement) = x.WithAbsoluteLayoutFlags(value)
+    let withAbsoluteLayoutFlags (value: Xamarin.Forms.AbsoluteLayoutFlags) (x: XamlElement) = x.AbsoluteLayoutFlags(value)
 
     /// Adjusts the AbsoluteLayoutFlags property in the visual element
-    let absoluteLayoutFlags (value: Xamarin.Forms.AbsoluteLayoutFlags) (x: XamlElement) = x.WithAbsoluteLayoutFlags(value)
+    let absoluteLayoutFlags (value: Xamarin.Forms.AbsoluteLayoutFlags) (x: XamlElement) = x.AbsoluteLayoutFlags(value)
 
     /// Adjusts the RowDefinitionHeight property in the visual element
-    let withRowDefinitionHeight (value: obj) (x: XamlElement) = x.WithRowDefinitionHeight(value)
+    let withRowDefinitionHeight (value: obj) (x: XamlElement) = x.RowDefinitionHeight(value)
 
     /// Adjusts the RowDefinitionHeight property in the visual element
-    let rowDefinitionHeight (value: obj) (x: XamlElement) = x.WithRowDefinitionHeight(value)
+    let rowDefinitionHeight (value: obj) (x: XamlElement) = x.RowDefinitionHeight(value)
 
     /// Adjusts the ColumnDefinitionWidth property in the visual element
-    let withColumnDefinitionWidth (value: obj) (x: XamlElement) = x.WithColumnDefinitionWidth(value)
+    let withColumnDefinitionWidth (value: obj) (x: XamlElement) = x.ColumnDefinitionWidth(value)
 
     /// Adjusts the ColumnDefinitionWidth property in the visual element
-    let columnDefinitionWidth (value: obj) (x: XamlElement) = x.WithColumnDefinitionWidth(value)
+    let columnDefinitionWidth (value: obj) (x: XamlElement) = x.ColumnDefinitionWidth(value)
 
     /// Adjusts the Date property in the visual element
-    let withDate (value: System.DateTime) (x: XamlElement) = x.WithDate(value)
+    let withDate (value: System.DateTime) (x: XamlElement) = x.Date(value)
 
     /// Adjusts the Date property in the visual element
-    let date (value: System.DateTime) (x: XamlElement) = x.WithDate(value)
+    let date (value: System.DateTime) (x: XamlElement) = x.Date(value)
 
     /// Adjusts the Format property in the visual element
-    let withFormat (value: string) (x: XamlElement) = x.WithFormat(value)
+    let withFormat (value: string) (x: XamlElement) = x.Format(value)
 
     /// Adjusts the Format property in the visual element
-    let format (value: string) (x: XamlElement) = x.WithFormat(value)
+    let format (value: string) (x: XamlElement) = x.Format(value)
 
     /// Adjusts the MinimumDate property in the visual element
-    let withMinimumDate (value: System.DateTime) (x: XamlElement) = x.WithMinimumDate(value)
+    let withMinimumDate (value: System.DateTime) (x: XamlElement) = x.MinimumDate(value)
 
     /// Adjusts the MinimumDate property in the visual element
-    let minimumDate (value: System.DateTime) (x: XamlElement) = x.WithMinimumDate(value)
+    let minimumDate (value: System.DateTime) (x: XamlElement) = x.MinimumDate(value)
 
     /// Adjusts the MaximumDate property in the visual element
-    let withMaximumDate (value: System.DateTime) (x: XamlElement) = x.WithMaximumDate(value)
+    let withMaximumDate (value: System.DateTime) (x: XamlElement) = x.MaximumDate(value)
 
     /// Adjusts the MaximumDate property in the visual element
-    let maximumDate (value: System.DateTime) (x: XamlElement) = x.WithMaximumDate(value)
+    let maximumDate (value: System.DateTime) (x: XamlElement) = x.MaximumDate(value)
 
     /// Adjusts the DateSelected property in the visual element
-    let withDateSelected (value: Xamarin.Forms.DateChangedEventArgs -> unit) (x: XamlElement) = x.WithDateSelected(value)
+    let withDateSelected (value: Xamarin.Forms.DateChangedEventArgs -> unit) (x: XamlElement) = x.DateSelected(value)
 
     /// Adjusts the DateSelected property in the visual element
-    let dateSelected (value: Xamarin.Forms.DateChangedEventArgs -> unit) (x: XamlElement) = x.WithDateSelected(value)
-
-    /// Adjusts the OutlineColor property in the visual element
-    let withOutlineColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.WithOutlineColor(value)
-
-    /// Adjusts the OutlineColor property in the visual element
-    let outlineColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.WithOutlineColor(value)
-
-    /// Adjusts the FrameCornerRadius property in the visual element
-    let withFrameCornerRadius (value: single) (x: XamlElement) = x.WithFrameCornerRadius(value)
-
-    /// Adjusts the FrameCornerRadius property in the visual element
-    let frameCornerRadius (value: single) (x: XamlElement) = x.WithFrameCornerRadius(value)
-
-    /// Adjusts the HasShadow property in the visual element
-    let withHasShadow (value: bool) (x: XamlElement) = x.WithHasShadow(value)
-
-    /// Adjusts the HasShadow property in the visual element
-    let hasShadow (value: bool) (x: XamlElement) = x.WithHasShadow(value)
-
-    /// Adjusts the ImageSource property in the visual element
-    let withImageSource (value: string) (x: XamlElement) = x.WithImageSource(value)
-
-    /// Adjusts the ImageSource property in the visual element
-    let imageSource (value: string) (x: XamlElement) = x.WithImageSource(value)
-
-    /// Adjusts the Aspect property in the visual element
-    let withAspect (value: Xamarin.Forms.Aspect) (x: XamlElement) = x.WithAspect(value)
-
-    /// Adjusts the Aspect property in the visual element
-    let aspect (value: Xamarin.Forms.Aspect) (x: XamlElement) = x.WithAspect(value)
-
-    /// Adjusts the IsOpaque property in the visual element
-    let withIsOpaque (value: bool) (x: XamlElement) = x.WithIsOpaque(value)
-
-    /// Adjusts the IsOpaque property in the visual element
-    let isOpaque (value: bool) (x: XamlElement) = x.WithIsOpaque(value)
-
-    /// Adjusts the Keyboard property in the visual element
-    let withKeyboard (value: Xamarin.Forms.Keyboard) (x: XamlElement) = x.WithKeyboard(value)
-
-    /// Adjusts the Keyboard property in the visual element
-    let keyboard (value: Xamarin.Forms.Keyboard) (x: XamlElement) = x.WithKeyboard(value)
-
-    /// Adjusts the EditorCompleted property in the visual element
-    let withEditorCompleted (value: unit -> unit) (x: XamlElement) = x.WithEditorCompleted(value)
-
-    /// Adjusts the EditorCompleted property in the visual element
-    let editorCompleted (value: unit -> unit) (x: XamlElement) = x.WithEditorCompleted(value)
-
-    /// Adjusts the TextChanged property in the visual element
-    let withTextChanged (value: Xamarin.Forms.TextChangedEventArgs -> unit) (x: XamlElement) = x.WithTextChanged(value)
-
-    /// Adjusts the TextChanged property in the visual element
-    let textChanged (value: Xamarin.Forms.TextChangedEventArgs -> unit) (x: XamlElement) = x.WithTextChanged(value)
-
-    /// Adjusts the Placeholder property in the visual element
-    let withPlaceholder (value: string) (x: XamlElement) = x.WithPlaceholder(value)
-
-    /// Adjusts the Placeholder property in the visual element
-    let placeholder (value: string) (x: XamlElement) = x.WithPlaceholder(value)
-
-    /// Adjusts the HorizontalTextAlignment property in the visual element
-    let withHorizontalTextAlignment (value: Xamarin.Forms.TextAlignment) (x: XamlElement) = x.WithHorizontalTextAlignment(value)
-
-    /// Adjusts the HorizontalTextAlignment property in the visual element
-    let horizontalTextAlignment (value: Xamarin.Forms.TextAlignment) (x: XamlElement) = x.WithHorizontalTextAlignment(value)
-
-    /// Adjusts the PlaceholderColor property in the visual element
-    let withPlaceholderColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.WithPlaceholderColor(value)
-
-    /// Adjusts the PlaceholderColor property in the visual element
-    let placeholderColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.WithPlaceholderColor(value)
-
-    /// Adjusts the IsPassword property in the visual element
-    let withIsPassword (value: bool) (x: XamlElement) = x.WithIsPassword(value)
-
-    /// Adjusts the IsPassword property in the visual element
-    let isPassword (value: bool) (x: XamlElement) = x.WithIsPassword(value)
-
-    /// Adjusts the EntryCompleted property in the visual element
-    let withEntryCompleted (value: unit -> unit) (x: XamlElement) = x.WithEntryCompleted(value)
-
-    /// Adjusts the EntryCompleted property in the visual element
-    let entryCompleted (value: unit -> unit) (x: XamlElement) = x.WithEntryCompleted(value)
-
-    /// Adjusts the VerticalTextAlignment property in the visual element
-    let withVerticalTextAlignment (value: Xamarin.Forms.TextAlignment) (x: XamlElement) = x.WithVerticalTextAlignment(value)
-
-    /// Adjusts the VerticalTextAlignment property in the visual element
-    let verticalTextAlignment (value: Xamarin.Forms.TextAlignment) (x: XamlElement) = x.WithVerticalTextAlignment(value)
-
-    /// Adjusts the IsClippedToBounds property in the visual element
-    let withIsClippedToBounds (value: bool) (x: XamlElement) = x.WithIsClippedToBounds(value)
-
-    /// Adjusts the IsClippedToBounds property in the visual element
-    let isClippedToBounds (value: bool) (x: XamlElement) = x.WithIsClippedToBounds(value)
-
-    /// Adjusts the Padding property in the visual element
-    let withPadding (value: double) (x: XamlElement) = x.WithPadding(value)
-
-    /// Adjusts the Padding property in the visual element
-    let padding (value: double) (x: XamlElement) = x.WithPadding(value)
-
-    /// Adjusts the StackOrientation property in the visual element
-    let withStackOrientation (value: Xamarin.Forms.StackOrientation) (x: XamlElement) = x.WithStackOrientation(value)
-
-    /// Adjusts the StackOrientation property in the visual element
-    let stackOrientation (value: Xamarin.Forms.StackOrientation) (x: XamlElement) = x.WithStackOrientation(value)
-
-    /// Adjusts the Spacing property in the visual element
-    let withSpacing (value: double) (x: XamlElement) = x.WithSpacing(value)
-
-    /// Adjusts the Spacing property in the visual element
-    let spacing (value: double) (x: XamlElement) = x.WithSpacing(value)
-
-    /// Adjusts the Time property in the visual element
-    let withTime (value: System.TimeSpan) (x: XamlElement) = x.WithTime(value)
-
-    /// Adjusts the Time property in the visual element
-    let time (value: System.TimeSpan) (x: XamlElement) = x.WithTime(value)
-
-    /// Adjusts the WebSource property in the visual element
-    let withWebSource (value: Xamarin.Forms.WebViewSource) (x: XamlElement) = x.WithWebSource(value)
-
-    /// Adjusts the WebSource property in the visual element
-    let webSource (value: Xamarin.Forms.WebViewSource) (x: XamlElement) = x.WithWebSource(value)
-
-    /// Adjusts the Title property in the visual element
-    let withTitle (value: string) (x: XamlElement) = x.WithTitle(value)
-
-    /// Adjusts the Title property in the visual element
-    let title (value: string) (x: XamlElement) = x.WithTitle(value)
+    let dateSelected (value: Xamarin.Forms.DateChangedEventArgs -> unit) (x: XamlElement) = x.DateSelected(value)
 
     /// Adjusts the ItemsSource property in the visual element
-    let withItemsSource (value: System.Collections.IEnumerable) (x: XamlElement) = x.WithItemsSource(value)
+    let withItemsSource (value: System.Collections.IList) (x: XamlElement) = x.ItemsSource(value)
 
     /// Adjusts the ItemsSource property in the visual element
-    let itemsSource (value: System.Collections.IEnumerable) (x: XamlElement) = x.WithItemsSource(value)
+    let itemsSource (value: System.Collections.IList) (x: XamlElement) = x.ItemsSource(value)
 
-    /// Adjusts the ItemTemplate property in the visual element
-    let withItemTemplate (value: Xamarin.Forms.DataTemplate) (x: XamlElement) = x.WithItemTemplate(value)
+    /// Adjusts the SelectedIndex property in the visual element
+    let withSelectedIndex (value: int) (x: XamlElement) = x.SelectedIndex(value)
 
-    /// Adjusts the ItemTemplate property in the visual element
-    let itemTemplate (value: Xamarin.Forms.DataTemplate) (x: XamlElement) = x.WithItemTemplate(value)
-
-    /// Adjusts the SelectedItem property in the visual element
-    let withSelectedItem (value: System.Object) (x: XamlElement) = x.WithSelectedItem(value)
+    /// Adjusts the SelectedIndex property in the visual element
+    let selectedIndex (value: int) (x: XamlElement) = x.SelectedIndex(value)
 
     /// Adjusts the SelectedItem property in the visual element
-    let selectedItem (value: System.Object) (x: XamlElement) = x.WithSelectedItem(value)
+    let withSelectedItem (value: System.Object) (x: XamlElement) = x.SelectedItem(value)
+
+    /// Adjusts the SelectedItem property in the visual element
+    let selectedItem (value: System.Object) (x: XamlElement) = x.SelectedItem(value)
+
+    /// Adjusts the Title property in the visual element
+    let withTitle (value: string) (x: XamlElement) = x.Title(value)
+
+    /// Adjusts the Title property in the visual element
+    let title (value: string) (x: XamlElement) = x.Title(value)
+
+    /// Adjusts the SelectedIndexChanged property in the visual element
+    let withSelectedIndexChanged (value: (int * obj) -> unit) (x: XamlElement) = x.SelectedIndexChanged(value)
+
+    /// Adjusts the SelectedIndexChanged property in the visual element
+    let selectedIndexChanged (value: (int * obj) -> unit) (x: XamlElement) = x.SelectedIndexChanged(value)
+
+    /// Adjusts the OutlineColor property in the visual element
+    let withOutlineColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.OutlineColor(value)
+
+    /// Adjusts the OutlineColor property in the visual element
+    let outlineColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.OutlineColor(value)
+
+    /// Adjusts the FrameCornerRadius property in the visual element
+    let withFrameCornerRadius (value: single) (x: XamlElement) = x.FrameCornerRadius(value)
+
+    /// Adjusts the FrameCornerRadius property in the visual element
+    let frameCornerRadius (value: single) (x: XamlElement) = x.FrameCornerRadius(value)
+
+    /// Adjusts the HasShadow property in the visual element
+    let withHasShadow (value: bool) (x: XamlElement) = x.HasShadow(value)
+
+    /// Adjusts the HasShadow property in the visual element
+    let hasShadow (value: bool) (x: XamlElement) = x.HasShadow(value)
+
+    /// Adjusts the ImageSource property in the visual element
+    let withImageSource (value: string) (x: XamlElement) = x.ImageSource(value)
+
+    /// Adjusts the ImageSource property in the visual element
+    let imageSource (value: string) (x: XamlElement) = x.ImageSource(value)
+
+    /// Adjusts the Aspect property in the visual element
+    let withAspect (value: Xamarin.Forms.Aspect) (x: XamlElement) = x.Aspect(value)
+
+    /// Adjusts the Aspect property in the visual element
+    let aspect (value: Xamarin.Forms.Aspect) (x: XamlElement) = x.Aspect(value)
+
+    /// Adjusts the IsOpaque property in the visual element
+    let withIsOpaque (value: bool) (x: XamlElement) = x.IsOpaque(value)
+
+    /// Adjusts the IsOpaque property in the visual element
+    let isOpaque (value: bool) (x: XamlElement) = x.IsOpaque(value)
+
+    /// Adjusts the Keyboard property in the visual element
+    let withKeyboard (value: Xamarin.Forms.Keyboard) (x: XamlElement) = x.Keyboard(value)
+
+    /// Adjusts the Keyboard property in the visual element
+    let keyboard (value: Xamarin.Forms.Keyboard) (x: XamlElement) = x.Keyboard(value)
+
+    /// Adjusts the EditorCompleted property in the visual element
+    let withEditorCompleted (value: unit -> unit) (x: XamlElement) = x.EditorCompleted(value)
+
+    /// Adjusts the EditorCompleted property in the visual element
+    let editorCompleted (value: unit -> unit) (x: XamlElement) = x.EditorCompleted(value)
+
+    /// Adjusts the TextChanged property in the visual element
+    let withTextChanged (value: Xamarin.Forms.TextChangedEventArgs -> unit) (x: XamlElement) = x.TextChanged(value)
+
+    /// Adjusts the TextChanged property in the visual element
+    let textChanged (value: Xamarin.Forms.TextChangedEventArgs -> unit) (x: XamlElement) = x.TextChanged(value)
+
+    /// Adjusts the Placeholder property in the visual element
+    let withPlaceholder (value: string) (x: XamlElement) = x.Placeholder(value)
+
+    /// Adjusts the Placeholder property in the visual element
+    let placeholder (value: string) (x: XamlElement) = x.Placeholder(value)
+
+    /// Adjusts the HorizontalTextAlignment property in the visual element
+    let withHorizontalTextAlignment (value: Xamarin.Forms.TextAlignment) (x: XamlElement) = x.HorizontalTextAlignment(value)
+
+    /// Adjusts the HorizontalTextAlignment property in the visual element
+    let horizontalTextAlignment (value: Xamarin.Forms.TextAlignment) (x: XamlElement) = x.HorizontalTextAlignment(value)
+
+    /// Adjusts the PlaceholderColor property in the visual element
+    let withPlaceholderColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.PlaceholderColor(value)
+
+    /// Adjusts the PlaceholderColor property in the visual element
+    let placeholderColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.PlaceholderColor(value)
+
+    /// Adjusts the IsPassword property in the visual element
+    let withIsPassword (value: bool) (x: XamlElement) = x.IsPassword(value)
+
+    /// Adjusts the IsPassword property in the visual element
+    let isPassword (value: bool) (x: XamlElement) = x.IsPassword(value)
+
+    /// Adjusts the EntryCompleted property in the visual element
+    let withEntryCompleted (value: unit -> unit) (x: XamlElement) = x.EntryCompleted(value)
+
+    /// Adjusts the EntryCompleted property in the visual element
+    let entryCompleted (value: unit -> unit) (x: XamlElement) = x.EntryCompleted(value)
+
+    /// Adjusts the VerticalTextAlignment property in the visual element
+    let withVerticalTextAlignment (value: Xamarin.Forms.TextAlignment) (x: XamlElement) = x.VerticalTextAlignment(value)
+
+    /// Adjusts the VerticalTextAlignment property in the visual element
+    let verticalTextAlignment (value: Xamarin.Forms.TextAlignment) (x: XamlElement) = x.VerticalTextAlignment(value)
+
+    /// Adjusts the IsClippedToBounds property in the visual element
+    let withIsClippedToBounds (value: bool) (x: XamlElement) = x.IsClippedToBounds(value)
+
+    /// Adjusts the IsClippedToBounds property in the visual element
+    let isClippedToBounds (value: bool) (x: XamlElement) = x.IsClippedToBounds(value)
+
+    /// Adjusts the Padding property in the visual element
+    let withPadding (value: double) (x: XamlElement) = x.Padding(value)
+
+    /// Adjusts the Padding property in the visual element
+    let padding (value: double) (x: XamlElement) = x.Padding(value)
+
+    /// Adjusts the StackOrientation property in the visual element
+    let withStackOrientation (value: Xamarin.Forms.StackOrientation) (x: XamlElement) = x.StackOrientation(value)
+
+    /// Adjusts the StackOrientation property in the visual element
+    let stackOrientation (value: Xamarin.Forms.StackOrientation) (x: XamlElement) = x.StackOrientation(value)
+
+    /// Adjusts the Spacing property in the visual element
+    let withSpacing (value: double) (x: XamlElement) = x.Spacing(value)
+
+    /// Adjusts the Spacing property in the visual element
+    let spacing (value: double) (x: XamlElement) = x.Spacing(value)
+
+    /// Adjusts the Time property in the visual element
+    let withTime (value: System.TimeSpan) (x: XamlElement) = x.Time(value)
+
+    /// Adjusts the Time property in the visual element
+    let time (value: System.TimeSpan) (x: XamlElement) = x.Time(value)
+
+    /// Adjusts the WebSource property in the visual element
+    let withWebSource (value: Xamarin.Forms.WebViewSource) (x: XamlElement) = x.WebSource(value)
+
+    /// Adjusts the WebSource property in the visual element
+    let webSource (value: Xamarin.Forms.WebViewSource) (x: XamlElement) = x.WebSource(value)
+
+    /// Adjusts the ItemTemplate property in the visual element
+    let withItemTemplate (value: Xamarin.Forms.DataTemplate) (x: XamlElement) = x.ItemTemplate(value)
+
+    /// Adjusts the ItemTemplate property in the visual element
+    let itemTemplate (value: Xamarin.Forms.DataTemplate) (x: XamlElement) = x.ItemTemplate(value)
 
     /// Adjusts the CurrentPage property in the visual element
-    let withCurrentPage (value: XamlElement) (x: XamlElement) = x.WithCurrentPage(value)
+    let withCurrentPage (value: XamlElement) (x: XamlElement) = x.CurrentPage(value)
 
     /// Adjusts the CurrentPage property in the visual element
-    let currentPage (value: XamlElement) (x: XamlElement) = x.WithCurrentPage(value)
+    let currentPage (value: XamlElement) (x: XamlElement) = x.CurrentPage(value)
 
     /// Adjusts the Master property in the visual element
-    let withMaster (value: XamlElement) (x: XamlElement) = x.WithMaster(value)
+    let withMaster (value: XamlElement) (x: XamlElement) = x.Master(value)
 
     /// Adjusts the Master property in the visual element
-    let master (value: XamlElement) (x: XamlElement) = x.WithMaster(value)
+    let master (value: XamlElement) (x: XamlElement) = x.Master(value)
 
     /// Adjusts the Detail property in the visual element
-    let withDetail (value: XamlElement) (x: XamlElement) = x.WithDetail(value)
+    let withDetail (value: XamlElement) (x: XamlElement) = x.Detail(value)
 
     /// Adjusts the Detail property in the visual element
-    let detail (value: XamlElement) (x: XamlElement) = x.WithDetail(value)
+    let detail (value: XamlElement) (x: XamlElement) = x.Detail(value)
 
     /// Adjusts the Height property in the visual element
-    let withHeight (value: double) (x: XamlElement) = x.WithHeight(value)
+    let withHeight (value: double) (x: XamlElement) = x.Height(value)
 
     /// Adjusts the Height property in the visual element
-    let height (value: double) (x: XamlElement) = x.WithHeight(value)
+    let height (value: double) (x: XamlElement) = x.Height(value)
 
     /// Adjusts the TextDetail property in the visual element
-    let withTextDetail (value: string) (x: XamlElement) = x.WithTextDetail(value)
+    let withTextDetail (value: string) (x: XamlElement) = x.TextDetail(value)
 
     /// Adjusts the TextDetail property in the visual element
-    let textDetail (value: string) (x: XamlElement) = x.WithTextDetail(value)
+    let textDetail (value: string) (x: XamlElement) = x.TextDetail(value)
 
     /// Adjusts the TextDetailColor property in the visual element
-    let withTextDetailColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.WithTextDetailColor(value)
+    let withTextDetailColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.TextDetailColor(value)
 
     /// Adjusts the TextDetailColor property in the visual element
-    let textDetailColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.WithTextDetailColor(value)
+    let textDetailColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.TextDetailColor(value)
 
     /// Adjusts the View property in the visual element
-    let withView (value: XamlElement) (x: XamlElement) = x.WithView(value)
+    let withView (value: XamlElement) (x: XamlElement) = x.View(value)
 
     /// Adjusts the View property in the visual element
-    let view (value: XamlElement) (x: XamlElement) = x.WithView(value)
+    let view (value: XamlElement) (x: XamlElement) = x.View(value)
 
     /// Adjusts the SeparatorVisibility property in the visual element
-    let withSeparatorVisibility (value: Xamarin.Forms.SeparatorVisibility) (x: XamlElement) = x.WithSeparatorVisibility(value)
+    let withSeparatorVisibility (value: Xamarin.Forms.SeparatorVisibility) (x: XamlElement) = x.SeparatorVisibility(value)
 
     /// Adjusts the SeparatorVisibility property in the visual element
-    let separatorVisibility (value: Xamarin.Forms.SeparatorVisibility) (x: XamlElement) = x.WithSeparatorVisibility(value)
+    let separatorVisibility (value: Xamarin.Forms.SeparatorVisibility) (x: XamlElement) = x.SeparatorVisibility(value)
 
     /// Adjusts the SeparatorColor property in the visual element
-    let withSeparatorColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.WithSeparatorColor(value)
+    let withSeparatorColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.SeparatorColor(value)
 
     /// Adjusts the SeparatorColor property in the visual element
-    let separatorColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.WithSeparatorColor(value)
+    let separatorColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.SeparatorColor(value)
 
     /// Adjusts the HasUnevenRows property in the visual element
-    let withHasUnevenRows (value: bool) (x: XamlElement) = x.WithHasUnevenRows(value)
+    let withHasUnevenRows (value: bool) (x: XamlElement) = x.HasUnevenRows(value)
 
     /// Adjusts the HasUnevenRows property in the visual element
-    let hasUnevenRows (value: bool) (x: XamlElement) = x.WithHasUnevenRows(value)
+    let hasUnevenRows (value: bool) (x: XamlElement) = x.HasUnevenRows(value)
 
     /// Adjusts the RowHeight property in the visual element
-    let withRowHeight (value: int) (x: XamlElement) = x.WithRowHeight(value)
+    let withRowHeight (value: int) (x: XamlElement) = x.RowHeight(value)
 
     /// Adjusts the RowHeight property in the visual element
-    let rowHeight (value: int) (x: XamlElement) = x.WithRowHeight(value)
+    let rowHeight (value: int) (x: XamlElement) = x.RowHeight(value)
 
 type Xaml() =
 
@@ -3925,6 +3952,222 @@ type Xaml() =
             | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.DatePicker>, create, apply, Map.ofArray attribs)
+
+    /// Describes a Picker in the view
+    static member Picker(?itemsSource: System.Collections.IList, ?selectedIndex: int, ?selectedItem: System.Object, ?title: string, ?textColor: Xamarin.Forms.Color, ?selectedIndexChanged: (int * obj) -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+        let attribs = [| 
+            match itemsSource with None -> () | Some v -> yield ("ItemsSource", box ((v))) 
+            match selectedIndex with None -> () | Some v -> yield ("SelectedIndex", box ((v))) 
+            match selectedItem with None -> () | Some v -> yield ("SelectedItem", box ((v))) 
+            match title with None -> () | Some v -> yield ("Title", box ((v))) 
+            match textColor with None -> () | Some v -> yield ("TextColor", box ((v))) 
+            match selectedIndexChanged with None -> () | Some v -> yield ("SelectedIndexChanged", box ((fun f -> System.EventHandler(fun sender args -> f ((sender :?> Xamarin.Forms.Picker).SelectedIndex, (sender :?> Xamarin.Forms.Picker).SelectedItem)))(v))) 
+            match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
+            match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
+            match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
+            match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
+            match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
+            match heightRequest with None -> () | Some v -> yield ("HeightRequest", box ((v))) 
+            match inputTransparent with None -> () | Some v -> yield ("InputTransparent", box ((v))) 
+            match isEnabled with None -> () | Some v -> yield ("IsEnabled", box ((v))) 
+            match isVisible with None -> () | Some v -> yield ("IsVisible", box ((v))) 
+            match minimumHeightRequest with None -> () | Some v -> yield ("MinimumHeightRequest", box ((v))) 
+            match minimumWidthRequest with None -> () | Some v -> yield ("MinimumWidthRequest", box ((v))) 
+            match opacity with None -> () | Some v -> yield ("Opacity", box ((v))) 
+            match rotation with None -> () | Some v -> yield ("Rotation", box ((v))) 
+            match rotationX with None -> () | Some v -> yield ("RotationX", box ((v))) 
+            match rotationY with None -> () | Some v -> yield ("RotationY", box ((v))) 
+            match scale with None -> () | Some v -> yield ("Scale", box ((v))) 
+            match style with None -> () | Some v -> yield ("Style", box ((v))) 
+            match translationX with None -> () | Some v -> yield ("TranslationX", box ((v))) 
+            match translationY with None -> () | Some v -> yield ("TranslationY", box ((v))) 
+            match widthRequest with None -> () | Some v -> yield ("WidthRequest", box ((v))) 
+            match classId with None -> () | Some v -> yield ("ClassId", box ((v))) 
+            match styleId with None -> () | Some v -> yield ("StyleId", box ((v))) 
+          |]
+
+        let create () =
+            box (new Xamarin.Forms.Picker())
+
+        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+            let target = (target :?> Xamarin.Forms.Picker)
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryItemsSource
+            match prevValueOpt, source.TryItemsSource with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.ItemsSource <- value
+            | Some _, None -> target.ItemsSource <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TrySelectedIndex
+            match prevValueOpt, source.TrySelectedIndex with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.SelectedIndex <- value
+            | Some _, None -> target.SelectedIndex <- 0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TrySelectedItem
+            match prevValueOpt, source.TrySelectedItem with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.SelectedItem <- value
+            | Some _, None -> target.SelectedItem <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTitle
+            match prevValueOpt, source.TryTitle with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Title <- value
+            | Some _, None -> target.Title <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTextColor
+            match prevValueOpt, source.TryTextColor with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.TextColor <- value
+            | Some _, None -> target.TextColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TrySelectedIndexChanged
+            match prevValueOpt, source.TrySelectedIndexChanged with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | Some prevValue, Some value -> target.SelectedIndexChanged.RemoveHandler(prevValue); target.SelectedIndexChanged.AddHandler(value)
+            | None, Some value -> target.SelectedIndexChanged.AddHandler(value)
+            | Some prevValue, None -> target.SelectedIndexChanged.RemoveHandler(prevValue)
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
+            match prevValueOpt, source.TryHorizontalOptions with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.HorizontalOptions <- value
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
+            match prevValueOpt, source.TryVerticalOptions with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.VerticalOptions <- value
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
+            match prevValueOpt, source.TryMargin with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Margin <- value
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
+            match prevValueOpt, source.TryAnchorX with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.AnchorX <- value
+            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
+            match prevValueOpt, source.TryAnchorY with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.AnchorY <- value
+            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
+            match prevValueOpt, source.TryBackgroundColor with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.BackgroundColor <- value
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
+            match prevValueOpt, source.TryHeightRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.HeightRequest <- value
+            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
+            match prevValueOpt, source.TryInputTransparent with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.InputTransparent <- value
+            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
+            match prevValueOpt, source.TryIsEnabled with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.IsEnabled <- value
+            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
+            match prevValueOpt, source.TryIsVisible with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.IsVisible <- value
+            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
+            match prevValueOpt, source.TryMinimumHeightRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.MinimumHeightRequest <- value
+            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
+            match prevValueOpt, source.TryMinimumWidthRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.MinimumWidthRequest <- value
+            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
+            match prevValueOpt, source.TryOpacity with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Opacity <- value
+            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
+            match prevValueOpt, source.TryRotation with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Rotation <- value
+            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
+            match prevValueOpt, source.TryRotationX with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.RotationX <- value
+            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
+            match prevValueOpt, source.TryRotationY with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.RotationY <- value
+            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
+            match prevValueOpt, source.TryScale with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Scale <- value
+            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
+            match prevValueOpt, source.TryStyle with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Style <- value
+            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
+            match prevValueOpt, source.TryTranslationX with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.TranslationX <- value
+            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
+            match prevValueOpt, source.TryTranslationY with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.TranslationY <- value
+            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
+            match prevValueOpt, source.TryWidthRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.WidthRequest <- value
+            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
+            match prevValueOpt, source.TryClassId with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.ClassId <- value
+            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
+            match prevValueOpt, source.TryStyleId with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.StyleId <- value
+            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+        new XamlElement(typeof<Xamarin.Forms.Picker>, create, apply, Map.ofArray attribs)
 
     /// Describes a Frame in the view
     static member Frame(?outlineColor: Xamarin.Forms.Color, ?cornerRadius: single, ?hasShadow: bool, ?content: XamlElement, ?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -7467,6 +7710,9 @@ module XamlCreateExtensions =
 
     /// Specifies a DatePicker in the view description, initially with default attributes
     let datePicker = Xaml.DatePicker()
+
+    /// Specifies a Picker in the view description, initially with default attributes
+    let picker = Xaml.Picker()
 
     /// Specifies a Frame in the view description, initially with default attributes
     let frame = Xaml.Frame()
