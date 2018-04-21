@@ -64,8 +64,14 @@ module XamlElementExtensions =
         /// Create a Xamarin.Forms.BoxView from the view description
         member x.CreateAsBoxView() : Xamarin.Forms.BoxView = (x.Create() :?> Xamarin.Forms.BoxView)
 
+        /// Create a Xamarin.Forms.ProgressBar from the view description
+        member x.CreateAsProgressBar() : Xamarin.Forms.ProgressBar = (x.Create() :?> Xamarin.Forms.ProgressBar)
+
         /// Create a Xamarin.Forms.ScrollView from the view description
         member x.CreateAsScrollView() : Xamarin.Forms.ScrollView = (x.Create() :?> Xamarin.Forms.ScrollView)
+
+        /// Create a Xamarin.Forms.SearchBar from the view description
+        member x.CreateAsSearchBar() : Xamarin.Forms.SearchBar = (x.Create() :?> Xamarin.Forms.SearchBar)
 
         /// Create a Xamarin.Forms.Button from the view description
         member x.CreateAsButton() : Xamarin.Forms.Button = (x.Create() :?> Xamarin.Forms.Button)
@@ -73,11 +79,23 @@ module XamlElementExtensions =
         /// Create a Xamarin.Forms.Slider from the view description
         member x.CreateAsSlider() : Xamarin.Forms.Slider = (x.Create() :?> Xamarin.Forms.Slider)
 
+        /// Create a Xamarin.Forms.Stepper from the view description
+        member x.CreateAsStepper() : Xamarin.Forms.Stepper = (x.Create() :?> Xamarin.Forms.Stepper)
+
+        /// Create a Xamarin.Forms.Switch from the view description
+        member x.CreateAsSwitch() : Xamarin.Forms.Switch = (x.Create() :?> Xamarin.Forms.Switch)
+
+        /// Create a Xamarin.Forms.SwitchCell from the view description
+        member x.CreateAsSwitchCell() : Xamarin.Forms.SwitchCell = (x.Create() :?> Xamarin.Forms.SwitchCell)
+
         /// Create a Xamarin.Forms.Grid from the view description
         member x.CreateAsGrid() : Xamarin.Forms.Grid = (x.Create() :?> Xamarin.Forms.Grid)
 
         /// Create a Xamarin.Forms.AbsoluteLayout from the view description
         member x.CreateAsAbsoluteLayout() : Xamarin.Forms.AbsoluteLayout = (x.Create() :?> Xamarin.Forms.AbsoluteLayout)
+
+        /// Create a Xamarin.Forms.RelativeLayout from the view description
+        member x.CreateAsRelativeLayout() : Xamarin.Forms.RelativeLayout = (x.Create() :?> Xamarin.Forms.RelativeLayout)
 
         /// Create a Xamarin.Forms.RowDefinition from the view description
         member x.CreateAsRowDefinition() : Xamarin.Forms.RowDefinition = (x.Create() :?> Xamarin.Forms.RowDefinition)
@@ -120,6 +138,9 @@ module XamlElementExtensions =
 
         /// Create a Xamarin.Forms.StackLayout from the view description
         member x.CreateAsStackLayout() : Xamarin.Forms.StackLayout = (x.Create() :?> Xamarin.Forms.StackLayout)
+
+        /// Create a Xamarin.Forms.Span from the view description
+        member x.CreateAsSpan() : Xamarin.Forms.Span = (x.Create() :?> Xamarin.Forms.Span)
 
         /// Create a Xamarin.Forms.TimePicker from the view description
         member x.CreateAsTimePicker() : Xamarin.Forms.TimePicker = (x.Create() :?> Xamarin.Forms.TimePicker)
@@ -232,14 +253,44 @@ module XamlElementExtensions =
         /// Try to get the IsRunning property in the visual element
         member x.TryIsRunning = match x.Attributes.TryFind("IsRunning") with Some v -> Some(unbox<bool>(v)) | None -> None
 
+        /// Try to get the Progress property in the visual element
+        member x.TryProgress = match x.Attributes.TryFind("Progress") with Some v -> Some(unbox<double>(v)) | None -> None
+
         /// Try to get the Content property in the visual element
         member x.TryContent = match x.Attributes.TryFind("Content") with Some v -> Some(unbox<XamlElement>(v)) | None -> None
 
         /// Try to get the ScrollOrientation property in the visual element
         member x.TryScrollOrientation = match x.Attributes.TryFind("ScrollOrientation") with Some v -> Some(unbox<Xamarin.Forms.ScrollOrientation>(v)) | None -> None
 
+        /// Try to get the CancelButtonColor property in the visual element
+        member x.TryCancelButtonColor = match x.Attributes.TryFind("CancelButtonColor") with Some v -> Some(unbox<Xamarin.Forms.Color>(v)) | None -> None
+
+        /// Try to get the FontFamily property in the visual element
+        member x.TryFontFamily = match x.Attributes.TryFind("FontFamily") with Some v -> Some(unbox<string>(v)) | None -> None
+
+        /// Try to get the FontAttributes property in the visual element
+        member x.TryFontAttributes = match x.Attributes.TryFind("FontAttributes") with Some v -> Some(unbox<Xamarin.Forms.FontAttributes>(v)) | None -> None
+
+        /// Try to get the FontSize property in the visual element
+        member x.TryFontSize = match x.Attributes.TryFind("FontSize") with Some v -> Some(unbox<double>(v)) | None -> None
+
+        /// Try to get the HorizontalTextAlignment property in the visual element
+        member x.TryHorizontalTextAlignment = match x.Attributes.TryFind("HorizontalTextAlignment") with Some v -> Some(unbox<Xamarin.Forms.TextAlignment>(v)) | None -> None
+
+        /// Try to get the Placeholder property in the visual element
+        member x.TryPlaceholder = match x.Attributes.TryFind("Placeholder") with Some v -> Some(unbox<string>(v)) | None -> None
+
+        /// Try to get the PlaceholderColor property in the visual element
+        member x.TryPlaceholderColor = match x.Attributes.TryFind("PlaceholderColor") with Some v -> Some(unbox<Xamarin.Forms.Color>(v)) | None -> None
+
+        /// Try to get the SearchCommand property in the visual element
+        member x.TrySearchCommand = match x.Attributes.TryFind("SearchCommand") with Some v -> Some(unbox<System.Windows.Input.ICommand>(v)) | None -> None
+
         /// Try to get the Text property in the visual element
         member x.TryText = match x.Attributes.TryFind("Text") with Some v -> Some(unbox<string>(v)) | None -> None
+
+        /// Try to get the TextColor property in the visual element
+        member x.TryTextColor = match x.Attributes.TryFind("TextColor") with Some v -> Some(unbox<Xamarin.Forms.Color>(v)) | None -> None
 
         /// Try to get the Command property in the visual element
         member x.TryCommand = match x.Attributes.TryFind("Command") with Some v -> Some(unbox<System.Windows.Input.ICommand>(v)) | None -> None
@@ -259,23 +310,8 @@ module XamlElementExtensions =
         /// Try to get the ButtonCornerRadius property in the visual element
         member x.TryButtonCornerRadius = match x.Attributes.TryFind("ButtonCornerRadius") with Some v -> Some(unbox<int>(v)) | None -> None
 
-        /// Try to get the Font property in the visual element
-        member x.TryFont = match x.Attributes.TryFind("Font") with Some v -> Some(unbox<Xamarin.Forms.Font>(v)) | None -> None
-
-        /// Try to get the FontFamily property in the visual element
-        member x.TryFontFamily = match x.Attributes.TryFind("FontFamily") with Some v -> Some(unbox<string>(v)) | None -> None
-
-        /// Try to get the FontAttributes property in the visual element
-        member x.TryFontAttributes = match x.Attributes.TryFind("FontAttributes") with Some v -> Some(unbox<Xamarin.Forms.FontAttributes>(v)) | None -> None
-
-        /// Try to get the FontSize property in the visual element
-        member x.TryFontSize = match x.Attributes.TryFind("FontSize") with Some v -> Some(unbox<double>(v)) | None -> None
-
         /// Try to get the ButtonImageSource property in the visual element
         member x.TryButtonImageSource = match x.Attributes.TryFind("ButtonImageSource") with Some v -> Some(unbox<Xamarin.Forms.FileImageSource>(v)) | None -> None
-
-        /// Try to get the TextColor property in the visual element
-        member x.TryTextColor = match x.Attributes.TryFind("TextColor") with Some v -> Some(unbox<Xamarin.Forms.Color>(v)) | None -> None
 
         /// Try to get the Minimum property in the visual element
         member x.TryMinimum = match x.Attributes.TryFind("Minimum") with Some v -> Some(unbox<double>(v)) | None -> None
@@ -288,6 +324,21 @@ module XamlElementExtensions =
 
         /// Try to get the ValueChanged property in the visual element
         member x.TryValueChanged = match x.Attributes.TryFind("ValueChanged") with Some v -> Some(unbox<System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>>(v)) | None -> None
+
+        /// Try to get the Increment property in the visual element
+        member x.TryIncrement = match x.Attributes.TryFind("Increment") with Some v -> Some(unbox<double>(v)) | None -> None
+
+        /// Try to get the IsToggled property in the visual element
+        member x.TryIsToggled = match x.Attributes.TryFind("IsToggled") with Some v -> Some(unbox<bool>(v)) | None -> None
+
+        /// Try to get the Toggled property in the visual element
+        member x.TryToggled = match x.Attributes.TryFind("Toggled") with Some v -> Some(unbox<System.EventHandler<Xamarin.Forms.ToggledEventArgs>>(v)) | None -> None
+
+        /// Try to get the On property in the visual element
+        member x.TryOn = match x.Attributes.TryFind("On") with Some v -> Some(unbox<bool>(v)) | None -> None
+
+        /// Try to get the OnChanged property in the visual element
+        member x.TryOnChanged = match x.Attributes.TryFind("OnChanged") with Some v -> Some(unbox<System.EventHandler<Xamarin.Forms.ToggledEventArgs>>(v)) | None -> None
 
         /// Try to get the GridRowDefinitions property in the visual element
         member x.TryGridRowDefinitions = match x.Attributes.TryFind("GridRowDefinitions") with Some v -> Some(unbox<XamlElement[]>(v)) | None -> None
@@ -321,6 +372,21 @@ module XamlElementExtensions =
 
         /// Try to get the AbsoluteLayoutFlags property in the visual element
         member x.TryAbsoluteLayoutFlags = match x.Attributes.TryFind("AbsoluteLayoutFlags") with Some v -> Some(unbox<Xamarin.Forms.AbsoluteLayoutFlags>(v)) | None -> None
+
+        /// Try to get the BoundsConstraint property in the visual element
+        member x.TryBoundsConstraint = match x.Attributes.TryFind("BoundsConstraint") with Some v -> Some(unbox<Xamarin.Forms.BoundsConstraint>(v)) | None -> None
+
+        /// Try to get the HeightConstraint property in the visual element
+        member x.TryHeightConstraint = match x.Attributes.TryFind("HeightConstraint") with Some v -> Some(unbox<Xamarin.Forms.Constraint>(v)) | None -> None
+
+        /// Try to get the WidthConstraint property in the visual element
+        member x.TryWidthConstraint = match x.Attributes.TryFind("WidthConstraint") with Some v -> Some(unbox<Xamarin.Forms.Constraint>(v)) | None -> None
+
+        /// Try to get the XConstraint property in the visual element
+        member x.TryXConstraint = match x.Attributes.TryFind("XConstraint") with Some v -> Some(unbox<Xamarin.Forms.Constraint>(v)) | None -> None
+
+        /// Try to get the YConstraint property in the visual element
+        member x.TryYConstraint = match x.Attributes.TryFind("YConstraint") with Some v -> Some(unbox<Xamarin.Forms.Constraint>(v)) | None -> None
 
         /// Try to get the RowDefinitionHeight property in the visual element
         member x.TryRowDefinitionHeight = match x.Attributes.TryFind("RowDefinitionHeight") with Some v -> Some(unbox<Xamarin.Forms.GridLength>(v)) | None -> None
@@ -382,15 +448,6 @@ module XamlElementExtensions =
         /// Try to get the TextChanged property in the visual element
         member x.TryTextChanged = match x.Attributes.TryFind("TextChanged") with Some v -> Some(unbox<System.EventHandler<Xamarin.Forms.TextChangedEventArgs>>(v)) | None -> None
 
-        /// Try to get the Placeholder property in the visual element
-        member x.TryPlaceholder = match x.Attributes.TryFind("Placeholder") with Some v -> Some(unbox<string>(v)) | None -> None
-
-        /// Try to get the HorizontalTextAlignment property in the visual element
-        member x.TryHorizontalTextAlignment = match x.Attributes.TryFind("HorizontalTextAlignment") with Some v -> Some(unbox<Xamarin.Forms.TextAlignment>(v)) | None -> None
-
-        /// Try to get the PlaceholderColor property in the visual element
-        member x.TryPlaceholderColor = match x.Attributes.TryFind("PlaceholderColor") with Some v -> Some(unbox<Xamarin.Forms.Color>(v)) | None -> None
-
         /// Try to get the IsPassword property in the visual element
         member x.TryIsPassword = match x.Attributes.TryFind("IsPassword") with Some v -> Some(unbox<bool>(v)) | None -> None
 
@@ -411,6 +468,12 @@ module XamlElementExtensions =
 
         /// Try to get the Spacing property in the visual element
         member x.TrySpacing = match x.Attributes.TryFind("Spacing") with Some v -> Some(unbox<double>(v)) | None -> None
+
+        /// Try to get the ForegroundColor property in the visual element
+        member x.TryForegroundColor = match x.Attributes.TryFind("ForegroundColor") with Some v -> Some(unbox<Xamarin.Forms.Color>(v)) | None -> None
+
+        /// Try to get the PropertyChanged property in the visual element
+        member x.TryPropertyChanged = match x.Attributes.TryFind("PropertyChanged") with Some v -> Some(unbox<System.ComponentModel.PropertyChangedEventHandler>(v)) | None -> None
 
         /// Try to get the Time property in the visual element
         member x.TryTime = match x.Attributes.TryFind("Time") with Some v -> Some(unbox<System.TimeSpan>(v)) | None -> None
@@ -577,14 +640,44 @@ module XamlElementExtensions =
         /// Adjusts the IsRunning property in the visual element
         member x.IsRunning(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsRunning", box ((value))))
 
+        /// Adjusts the Progress property in the visual element
+        member x.Progress(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Progress", box ((value))))
+
         /// Adjusts the Content property in the visual element
         member x.Content(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Content", box ((value))))
 
         /// Adjusts the ScrollOrientation property in the visual element
         member x.ScrollOrientation(value: Xamarin.Forms.ScrollOrientation) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ScrollOrientation", box ((value))))
 
+        /// Adjusts the CancelButtonColor property in the visual element
+        member x.CancelButtonColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("CancelButtonColor", box ((value))))
+
+        /// Adjusts the FontFamily property in the visual element
+        member x.FontFamily(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("FontFamily", box ((value))))
+
+        /// Adjusts the FontAttributes property in the visual element
+        member x.FontAttributes(value: Xamarin.Forms.FontAttributes) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("FontAttributes", box ((value))))
+
+        /// Adjusts the FontSize property in the visual element
+        member x.FontSize(value: obj) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("FontSize", box (makeFontSize(value))))
+
+        /// Adjusts the HorizontalTextAlignment property in the visual element
+        member x.HorizontalTextAlignment(value: Xamarin.Forms.TextAlignment) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("HorizontalTextAlignment", box ((value))))
+
+        /// Adjusts the Placeholder property in the visual element
+        member x.Placeholder(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Placeholder", box ((value))))
+
+        /// Adjusts the PlaceholderColor property in the visual element
+        member x.PlaceholderColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("PlaceholderColor", box ((value))))
+
+        /// Adjusts the SearchCommand property in the visual element
+        member x.SearchCommand(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("SearchCommand", box (makeCommand(value))))
+
         /// Adjusts the Text property in the visual element
         member x.Text(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Text", box ((value))))
+
+        /// Adjusts the TextColor property in the visual element
+        member x.TextColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("TextColor", box ((value))))
 
         /// Adjusts the Command property in the visual element
         member x.Command(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Command", box (makeCommand(value))))
@@ -604,23 +697,8 @@ module XamlElementExtensions =
         /// Adjusts the ButtonCornerRadius property in the visual element
         member x.ButtonCornerRadius(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ButtonCornerRadius", box ((value))))
 
-        /// Adjusts the Font property in the visual element
-        member x.Font(value: Xamarin.Forms.Font) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Font", box ((value))))
-
-        /// Adjusts the FontFamily property in the visual element
-        member x.FontFamily(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("FontFamily", box ((value))))
-
-        /// Adjusts the FontAttributes property in the visual element
-        member x.FontAttributes(value: Xamarin.Forms.FontAttributes) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("FontAttributes", box ((value))))
-
-        /// Adjusts the FontSize property in the visual element
-        member x.FontSize(value: obj) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("FontSize", box (makeFontSize(value))))
-
         /// Adjusts the ButtonImageSource property in the visual element
         member x.ButtonImageSource(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ButtonImageSource", box (makeFileImageSource(value))))
-
-        /// Adjusts the TextColor property in the visual element
-        member x.TextColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("TextColor", box ((value))))
 
         /// Adjusts the Minimum property in the visual element
         member x.Minimum(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Minimum", box ((value))))
@@ -633,6 +711,21 @@ module XamlElementExtensions =
 
         /// Adjusts the ValueChanged property in the visual element
         member x.ValueChanged(value: Xamarin.Forms.ValueChangedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ValueChanged", box ((fun f -> System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>(fun _sender args -> f args))(value))))
+
+        /// Adjusts the Increment property in the visual element
+        member x.Increment(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Increment", box ((value))))
+
+        /// Adjusts the IsToggled property in the visual element
+        member x.IsToggled(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsToggled", box ((value))))
+
+        /// Adjusts the Toggled property in the visual element
+        member x.Toggled(value: Xamarin.Forms.ToggledEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Toggled", box ((fun f -> System.EventHandler<Xamarin.Forms.ToggledEventArgs>(fun _sender args -> f args))(value))))
+
+        /// Adjusts the On property in the visual element
+        member x.On(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("On", box ((value))))
+
+        /// Adjusts the OnChanged property in the visual element
+        member x.OnChanged(value: Xamarin.Forms.ToggledEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("OnChanged", box ((fun f -> System.EventHandler<Xamarin.Forms.ToggledEventArgs>(fun _sender args -> f args))(value))))
 
         /// Adjusts the GridRowDefinitions property in the visual element
         member x.GridRowDefinitions(value: obj list) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("GridRowDefinitions", box ((fun es -> es |> Array.ofList |> Array.map (fun h -> Xaml.RowDefinition(height=h)))(value))))
@@ -666,6 +759,21 @@ module XamlElementExtensions =
 
         /// Adjusts the AbsoluteLayoutFlags property in the visual element
         member x.AbsoluteLayoutFlags(value: Xamarin.Forms.AbsoluteLayoutFlags) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("AbsoluteLayoutFlags", box ((value))))
+
+        /// Adjusts the BoundsConstraint property in the visual element
+        member x.BoundsConstraint(value: Xamarin.Forms.BoundsConstraint) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("BoundsConstraint", box ((value))))
+
+        /// Adjusts the HeightConstraint property in the visual element
+        member x.HeightConstraint(value: Xamarin.Forms.Constraint) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("HeightConstraint", box ((value))))
+
+        /// Adjusts the WidthConstraint property in the visual element
+        member x.WidthConstraint(value: Xamarin.Forms.Constraint) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("WidthConstraint", box ((value))))
+
+        /// Adjusts the XConstraint property in the visual element
+        member x.XConstraint(value: Xamarin.Forms.Constraint) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("XConstraint", box ((value))))
+
+        /// Adjusts the YConstraint property in the visual element
+        member x.YConstraint(value: Xamarin.Forms.Constraint) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("YConstraint", box ((value))))
 
         /// Adjusts the RowDefinitionHeight property in the visual element
         member x.RowDefinitionHeight(value: obj) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("RowDefinitionHeight", box (makeGridLength(value))))
@@ -727,15 +835,6 @@ module XamlElementExtensions =
         /// Adjusts the TextChanged property in the visual element
         member x.TextChanged(value: Xamarin.Forms.TextChangedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("TextChanged", box ((fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))(value))))
 
-        /// Adjusts the Placeholder property in the visual element
-        member x.Placeholder(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Placeholder", box ((value))))
-
-        /// Adjusts the HorizontalTextAlignment property in the visual element
-        member x.HorizontalTextAlignment(value: Xamarin.Forms.TextAlignment) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("HorizontalTextAlignment", box ((value))))
-
-        /// Adjusts the PlaceholderColor property in the visual element
-        member x.PlaceholderColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("PlaceholderColor", box ((value))))
-
         /// Adjusts the IsPassword property in the visual element
         member x.IsPassword(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsPassword", box ((value))))
 
@@ -756,6 +855,12 @@ module XamlElementExtensions =
 
         /// Adjusts the Spacing property in the visual element
         member x.Spacing(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Spacing", box ((value))))
+
+        /// Adjusts the ForegroundColor property in the visual element
+        member x.ForegroundColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ForegroundColor", box ((value))))
+
+        /// Adjusts the PropertyChanged property in the visual element
+        member x.PropertyChanged(value: System.ComponentModel.PropertyChangedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("PropertyChanged", box ((fun f -> System.EventHandler<System.ComponentModel.PropertyChangedEventArgs>(fun _sender args -> f args))(value))))
 
         /// Adjusts the Time property in the visual element
         member x.Time(value: System.TimeSpan) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Time", box ((value))))
@@ -998,6 +1103,12 @@ module XamlElementExtensions =
     /// Adjusts the IsRunning property in the visual element
     let isRunning (value: bool) (x: XamlElement) = x.IsRunning(value)
 
+    /// Adjusts the Progress property in the visual element
+    let withProgress (value: double) (x: XamlElement) = x.Progress(value)
+
+    /// Adjusts the Progress property in the visual element
+    let progress (value: double) (x: XamlElement) = x.Progress(value)
+
     /// Adjusts the Content property in the visual element
     let withContent (value: XamlElement) (x: XamlElement) = x.Content(value)
 
@@ -1010,11 +1121,65 @@ module XamlElementExtensions =
     /// Adjusts the ScrollOrientation property in the visual element
     let scrollOrientation (value: Xamarin.Forms.ScrollOrientation) (x: XamlElement) = x.ScrollOrientation(value)
 
+    /// Adjusts the CancelButtonColor property in the visual element
+    let withCancelButtonColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.CancelButtonColor(value)
+
+    /// Adjusts the CancelButtonColor property in the visual element
+    let cancelButtonColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.CancelButtonColor(value)
+
+    /// Adjusts the FontFamily property in the visual element
+    let withFontFamily (value: string) (x: XamlElement) = x.FontFamily(value)
+
+    /// Adjusts the FontFamily property in the visual element
+    let fontFamily (value: string) (x: XamlElement) = x.FontFamily(value)
+
+    /// Adjusts the FontAttributes property in the visual element
+    let withFontAttributes (value: Xamarin.Forms.FontAttributes) (x: XamlElement) = x.FontAttributes(value)
+
+    /// Adjusts the FontAttributes property in the visual element
+    let fontAttributes (value: Xamarin.Forms.FontAttributes) (x: XamlElement) = x.FontAttributes(value)
+
+    /// Adjusts the FontSize property in the visual element
+    let withFontSize (value: obj) (x: XamlElement) = x.FontSize(value)
+
+    /// Adjusts the FontSize property in the visual element
+    let fontSize (value: obj) (x: XamlElement) = x.FontSize(value)
+
+    /// Adjusts the HorizontalTextAlignment property in the visual element
+    let withHorizontalTextAlignment (value: Xamarin.Forms.TextAlignment) (x: XamlElement) = x.HorizontalTextAlignment(value)
+
+    /// Adjusts the HorizontalTextAlignment property in the visual element
+    let horizontalTextAlignment (value: Xamarin.Forms.TextAlignment) (x: XamlElement) = x.HorizontalTextAlignment(value)
+
+    /// Adjusts the Placeholder property in the visual element
+    let withPlaceholder (value: string) (x: XamlElement) = x.Placeholder(value)
+
+    /// Adjusts the Placeholder property in the visual element
+    let placeholder (value: string) (x: XamlElement) = x.Placeholder(value)
+
+    /// Adjusts the PlaceholderColor property in the visual element
+    let withPlaceholderColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.PlaceholderColor(value)
+
+    /// Adjusts the PlaceholderColor property in the visual element
+    let placeholderColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.PlaceholderColor(value)
+
+    /// Adjusts the SearchCommand property in the visual element
+    let withSearchCommand (value: unit -> unit) (x: XamlElement) = x.SearchCommand(value)
+
+    /// Adjusts the SearchCommand property in the visual element
+    let searchCommand (value: unit -> unit) (x: XamlElement) = x.SearchCommand(value)
+
     /// Adjusts the Text property in the visual element
     let withText (value: string) (x: XamlElement) = x.Text(value)
 
     /// Adjusts the Text property in the visual element
     let text (value: string) (x: XamlElement) = x.Text(value)
+
+    /// Adjusts the TextColor property in the visual element
+    let withTextColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.TextColor(value)
+
+    /// Adjusts the TextColor property in the visual element
+    let textColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.TextColor(value)
 
     /// Adjusts the Command property in the visual element
     let withCommand (value: unit -> unit) (x: XamlElement) = x.Command(value)
@@ -1052,41 +1217,11 @@ module XamlElementExtensions =
     /// Adjusts the ButtonCornerRadius property in the visual element
     let buttonCornerRadius (value: int) (x: XamlElement) = x.ButtonCornerRadius(value)
 
-    /// Adjusts the Font property in the visual element
-    let withFont (value: Xamarin.Forms.Font) (x: XamlElement) = x.Font(value)
-
-    /// Adjusts the Font property in the visual element
-    let font (value: Xamarin.Forms.Font) (x: XamlElement) = x.Font(value)
-
-    /// Adjusts the FontFamily property in the visual element
-    let withFontFamily (value: string) (x: XamlElement) = x.FontFamily(value)
-
-    /// Adjusts the FontFamily property in the visual element
-    let fontFamily (value: string) (x: XamlElement) = x.FontFamily(value)
-
-    /// Adjusts the FontAttributes property in the visual element
-    let withFontAttributes (value: Xamarin.Forms.FontAttributes) (x: XamlElement) = x.FontAttributes(value)
-
-    /// Adjusts the FontAttributes property in the visual element
-    let fontAttributes (value: Xamarin.Forms.FontAttributes) (x: XamlElement) = x.FontAttributes(value)
-
-    /// Adjusts the FontSize property in the visual element
-    let withFontSize (value: obj) (x: XamlElement) = x.FontSize(value)
-
-    /// Adjusts the FontSize property in the visual element
-    let fontSize (value: obj) (x: XamlElement) = x.FontSize(value)
-
     /// Adjusts the ButtonImageSource property in the visual element
     let withButtonImageSource (value: string) (x: XamlElement) = x.ButtonImageSource(value)
 
     /// Adjusts the ButtonImageSource property in the visual element
     let buttonImageSource (value: string) (x: XamlElement) = x.ButtonImageSource(value)
-
-    /// Adjusts the TextColor property in the visual element
-    let withTextColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.TextColor(value)
-
-    /// Adjusts the TextColor property in the visual element
-    let textColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.TextColor(value)
 
     /// Adjusts the Minimum property in the visual element
     let withMinimum (value: double) (x: XamlElement) = x.Minimum(value)
@@ -1111,6 +1246,36 @@ module XamlElementExtensions =
 
     /// Adjusts the ValueChanged property in the visual element
     let valueChanged (value: Xamarin.Forms.ValueChangedEventArgs -> unit) (x: XamlElement) = x.ValueChanged(value)
+
+    /// Adjusts the Increment property in the visual element
+    let withIncrement (value: double) (x: XamlElement) = x.Increment(value)
+
+    /// Adjusts the Increment property in the visual element
+    let increment (value: double) (x: XamlElement) = x.Increment(value)
+
+    /// Adjusts the IsToggled property in the visual element
+    let withIsToggled (value: bool) (x: XamlElement) = x.IsToggled(value)
+
+    /// Adjusts the IsToggled property in the visual element
+    let isToggled (value: bool) (x: XamlElement) = x.IsToggled(value)
+
+    /// Adjusts the Toggled property in the visual element
+    let withToggled (value: Xamarin.Forms.ToggledEventArgs -> unit) (x: XamlElement) = x.Toggled(value)
+
+    /// Adjusts the Toggled property in the visual element
+    let toggled (value: Xamarin.Forms.ToggledEventArgs -> unit) (x: XamlElement) = x.Toggled(value)
+
+    /// Adjusts the On property in the visual element
+    let withOn (value: bool) (x: XamlElement) = x.On(value)
+
+    /// Adjusts the On property in the visual element
+    let on (value: bool) (x: XamlElement) = x.On(value)
+
+    /// Adjusts the OnChanged property in the visual element
+    let withOnChanged (value: Xamarin.Forms.ToggledEventArgs -> unit) (x: XamlElement) = x.OnChanged(value)
+
+    /// Adjusts the OnChanged property in the visual element
+    let onChanged (value: Xamarin.Forms.ToggledEventArgs -> unit) (x: XamlElement) = x.OnChanged(value)
 
     /// Adjusts the GridRowDefinitions property in the visual element
     let withGridRowDefinitions (value: obj list) (x: XamlElement) = x.GridRowDefinitions(value)
@@ -1177,6 +1342,36 @@ module XamlElementExtensions =
 
     /// Adjusts the AbsoluteLayoutFlags property in the visual element
     let absoluteLayoutFlags (value: Xamarin.Forms.AbsoluteLayoutFlags) (x: XamlElement) = x.AbsoluteLayoutFlags(value)
+
+    /// Adjusts the BoundsConstraint property in the visual element
+    let withBoundsConstraint (value: Xamarin.Forms.BoundsConstraint) (x: XamlElement) = x.BoundsConstraint(value)
+
+    /// Adjusts the BoundsConstraint property in the visual element
+    let boundsConstraint (value: Xamarin.Forms.BoundsConstraint) (x: XamlElement) = x.BoundsConstraint(value)
+
+    /// Adjusts the HeightConstraint property in the visual element
+    let withHeightConstraint (value: Xamarin.Forms.Constraint) (x: XamlElement) = x.HeightConstraint(value)
+
+    /// Adjusts the HeightConstraint property in the visual element
+    let heightConstraint (value: Xamarin.Forms.Constraint) (x: XamlElement) = x.HeightConstraint(value)
+
+    /// Adjusts the WidthConstraint property in the visual element
+    let withWidthConstraint (value: Xamarin.Forms.Constraint) (x: XamlElement) = x.WidthConstraint(value)
+
+    /// Adjusts the WidthConstraint property in the visual element
+    let widthConstraint (value: Xamarin.Forms.Constraint) (x: XamlElement) = x.WidthConstraint(value)
+
+    /// Adjusts the XConstraint property in the visual element
+    let withXConstraint (value: Xamarin.Forms.Constraint) (x: XamlElement) = x.XConstraint(value)
+
+    /// Adjusts the XConstraint property in the visual element
+    let xConstraint (value: Xamarin.Forms.Constraint) (x: XamlElement) = x.XConstraint(value)
+
+    /// Adjusts the YConstraint property in the visual element
+    let withYConstraint (value: Xamarin.Forms.Constraint) (x: XamlElement) = x.YConstraint(value)
+
+    /// Adjusts the YConstraint property in the visual element
+    let yConstraint (value: Xamarin.Forms.Constraint) (x: XamlElement) = x.YConstraint(value)
 
     /// Adjusts the RowDefinitionHeight property in the visual element
     let withRowDefinitionHeight (value: obj) (x: XamlElement) = x.RowDefinitionHeight(value)
@@ -1298,24 +1493,6 @@ module XamlElementExtensions =
     /// Adjusts the TextChanged property in the visual element
     let textChanged (value: Xamarin.Forms.TextChangedEventArgs -> unit) (x: XamlElement) = x.TextChanged(value)
 
-    /// Adjusts the Placeholder property in the visual element
-    let withPlaceholder (value: string) (x: XamlElement) = x.Placeholder(value)
-
-    /// Adjusts the Placeholder property in the visual element
-    let placeholder (value: string) (x: XamlElement) = x.Placeholder(value)
-
-    /// Adjusts the HorizontalTextAlignment property in the visual element
-    let withHorizontalTextAlignment (value: Xamarin.Forms.TextAlignment) (x: XamlElement) = x.HorizontalTextAlignment(value)
-
-    /// Adjusts the HorizontalTextAlignment property in the visual element
-    let horizontalTextAlignment (value: Xamarin.Forms.TextAlignment) (x: XamlElement) = x.HorizontalTextAlignment(value)
-
-    /// Adjusts the PlaceholderColor property in the visual element
-    let withPlaceholderColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.PlaceholderColor(value)
-
-    /// Adjusts the PlaceholderColor property in the visual element
-    let placeholderColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.PlaceholderColor(value)
-
     /// Adjusts the IsPassword property in the visual element
     let withIsPassword (value: bool) (x: XamlElement) = x.IsPassword(value)
 
@@ -1357,6 +1534,18 @@ module XamlElementExtensions =
 
     /// Adjusts the Spacing property in the visual element
     let spacing (value: double) (x: XamlElement) = x.Spacing(value)
+
+    /// Adjusts the ForegroundColor property in the visual element
+    let withForegroundColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.ForegroundColor(value)
+
+    /// Adjusts the ForegroundColor property in the visual element
+    let foregroundColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.ForegroundColor(value)
+
+    /// Adjusts the PropertyChanged property in the visual element
+    let withPropertyChanged (value: System.ComponentModel.PropertyChangedEventArgs -> unit) (x: XamlElement) = x.PropertyChanged(value)
+
+    /// Adjusts the PropertyChanged property in the visual element
+    let propertyChanged (value: System.ComponentModel.PropertyChangedEventArgs -> unit) (x: XamlElement) = x.PropertyChanged(value)
 
     /// Adjusts the Time property in the visual element
     let withTime (value: System.TimeSpan) (x: XamlElement) = x.Time(value)
@@ -2258,6 +2447,186 @@ type Xaml() =
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.BoxView>, create, apply, Map.ofArray attribs)
 
+    /// Describes a ProgressBar in the view
+    static member ProgressBar(?progress: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+        let attribs = [| 
+            match progress with None -> () | Some v -> yield ("Progress", box ((v))) 
+            match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
+            match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
+            match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
+            match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
+            match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
+            match heightRequest with None -> () | Some v -> yield ("HeightRequest", box ((v))) 
+            match inputTransparent with None -> () | Some v -> yield ("InputTransparent", box ((v))) 
+            match isEnabled with None -> () | Some v -> yield ("IsEnabled", box ((v))) 
+            match isVisible with None -> () | Some v -> yield ("IsVisible", box ((v))) 
+            match minimumHeightRequest with None -> () | Some v -> yield ("MinimumHeightRequest", box ((v))) 
+            match minimumWidthRequest with None -> () | Some v -> yield ("MinimumWidthRequest", box ((v))) 
+            match opacity with None -> () | Some v -> yield ("Opacity", box ((v))) 
+            match rotation with None -> () | Some v -> yield ("Rotation", box ((v))) 
+            match rotationX with None -> () | Some v -> yield ("RotationX", box ((v))) 
+            match rotationY with None -> () | Some v -> yield ("RotationY", box ((v))) 
+            match scale with None -> () | Some v -> yield ("Scale", box ((v))) 
+            match style with None -> () | Some v -> yield ("Style", box ((v))) 
+            match translationX with None -> () | Some v -> yield ("TranslationX", box ((v))) 
+            match translationY with None -> () | Some v -> yield ("TranslationY", box ((v))) 
+            match widthRequest with None -> () | Some v -> yield ("WidthRequest", box ((v))) 
+            match classId with None -> () | Some v -> yield ("ClassId", box ((v))) 
+            match styleId with None -> () | Some v -> yield ("StyleId", box ((v))) 
+          |]
+
+        let create () =
+            box (new Xamarin.Forms.ProgressBar())
+
+        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+            let target = (target :?> Xamarin.Forms.ProgressBar)
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryProgress
+            match prevValueOpt, source.TryProgress with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Progress <- value
+            | Some _, None -> target.Progress <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
+            match prevValueOpt, source.TryHorizontalOptions with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.HorizontalOptions <- value
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
+            match prevValueOpt, source.TryVerticalOptions with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.VerticalOptions <- value
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
+            match prevValueOpt, source.TryMargin with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Margin <- value
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
+            match prevValueOpt, source.TryAnchorX with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.AnchorX <- value
+            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
+            match prevValueOpt, source.TryAnchorY with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.AnchorY <- value
+            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
+            match prevValueOpt, source.TryBackgroundColor with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.BackgroundColor <- value
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
+            match prevValueOpt, source.TryHeightRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.HeightRequest <- value
+            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
+            match prevValueOpt, source.TryInputTransparent with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.InputTransparent <- value
+            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
+            match prevValueOpt, source.TryIsEnabled with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.IsEnabled <- value
+            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
+            match prevValueOpt, source.TryIsVisible with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.IsVisible <- value
+            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
+            match prevValueOpt, source.TryMinimumHeightRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.MinimumHeightRequest <- value
+            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
+            match prevValueOpt, source.TryMinimumWidthRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.MinimumWidthRequest <- value
+            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
+            match prevValueOpt, source.TryOpacity with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Opacity <- value
+            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
+            match prevValueOpt, source.TryRotation with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Rotation <- value
+            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
+            match prevValueOpt, source.TryRotationX with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.RotationX <- value
+            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
+            match prevValueOpt, source.TryRotationY with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.RotationY <- value
+            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
+            match prevValueOpt, source.TryScale with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Scale <- value
+            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
+            match prevValueOpt, source.TryStyle with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Style <- value
+            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
+            match prevValueOpt, source.TryTranslationX with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.TranslationX <- value
+            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
+            match prevValueOpt, source.TryTranslationY with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.TranslationY <- value
+            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
+            match prevValueOpt, source.TryWidthRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.WidthRequest <- value
+            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
+            match prevValueOpt, source.TryClassId with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.ClassId <- value
+            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
+            match prevValueOpt, source.TryStyleId with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.StyleId <- value
+            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+        new XamlElement(typeof<Xamarin.Forms.ProgressBar>, create, apply, Map.ofArray attribs)
+
     /// Describes a ScrollView in the view
     static member ScrollView(?content: XamlElement, ?orientation: Xamarin.Forms.ScrollOrientation, ?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
@@ -2463,8 +2832,251 @@ type Xaml() =
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.ScrollView>, create, apply, Map.ofArray attribs)
 
+    /// Describes a SearchBar in the view
+    static member SearchBar(?cancelButtonColor: Xamarin.Forms.Color, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?placeholder: string, ?placeholderColor: Xamarin.Forms.Color, ?searchCommand: unit -> unit, ?text: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+        let attribs = [| 
+            match cancelButtonColor with None -> () | Some v -> yield ("CancelButtonColor", box ((v))) 
+            match fontFamily with None -> () | Some v -> yield ("FontFamily", box ((v))) 
+            match fontAttributes with None -> () | Some v -> yield ("FontAttributes", box ((v))) 
+            match fontSize with None -> () | Some v -> yield ("FontSize", box (makeFontSize(v))) 
+            match horizontalTextAlignment with None -> () | Some v -> yield ("HorizontalTextAlignment", box ((v))) 
+            match placeholder with None -> () | Some v -> yield ("Placeholder", box ((v))) 
+            match placeholderColor with None -> () | Some v -> yield ("PlaceholderColor", box ((v))) 
+            match searchCommand with None -> () | Some v -> yield ("SearchCommand", box (makeCommand(v))) 
+            match text with None -> () | Some v -> yield ("Text", box ((v))) 
+            match textColor with None -> () | Some v -> yield ("TextColor", box ((v))) 
+            match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
+            match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
+            match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
+            match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
+            match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
+            match heightRequest with None -> () | Some v -> yield ("HeightRequest", box ((v))) 
+            match inputTransparent with None -> () | Some v -> yield ("InputTransparent", box ((v))) 
+            match isEnabled with None -> () | Some v -> yield ("IsEnabled", box ((v))) 
+            match isVisible with None -> () | Some v -> yield ("IsVisible", box ((v))) 
+            match minimumHeightRequest with None -> () | Some v -> yield ("MinimumHeightRequest", box ((v))) 
+            match minimumWidthRequest with None -> () | Some v -> yield ("MinimumWidthRequest", box ((v))) 
+            match opacity with None -> () | Some v -> yield ("Opacity", box ((v))) 
+            match rotation with None -> () | Some v -> yield ("Rotation", box ((v))) 
+            match rotationX with None -> () | Some v -> yield ("RotationX", box ((v))) 
+            match rotationY with None -> () | Some v -> yield ("RotationY", box ((v))) 
+            match scale with None -> () | Some v -> yield ("Scale", box ((v))) 
+            match style with None -> () | Some v -> yield ("Style", box ((v))) 
+            match translationX with None -> () | Some v -> yield ("TranslationX", box ((v))) 
+            match translationY with None -> () | Some v -> yield ("TranslationY", box ((v))) 
+            match widthRequest with None -> () | Some v -> yield ("WidthRequest", box ((v))) 
+            match classId with None -> () | Some v -> yield ("ClassId", box ((v))) 
+            match styleId with None -> () | Some v -> yield ("StyleId", box ((v))) 
+          |]
+
+        let create () =
+            box (new Xamarin.Forms.SearchBar())
+
+        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+            let target = (target :?> Xamarin.Forms.SearchBar)
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryCancelButtonColor
+            match prevValueOpt, source.TryCancelButtonColor with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.CancelButtonColor <- value
+            | Some _, None -> target.CancelButtonColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontFamily
+            match prevValueOpt, source.TryFontFamily with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.FontFamily <- value
+            | Some _, None -> target.FontFamily <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontAttributes
+            match prevValueOpt, source.TryFontAttributes with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.FontAttributes <- value
+            | Some _, None -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontSize
+            match prevValueOpt, source.TryFontSize with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.FontSize <- value
+            | Some _, None -> target.FontSize <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalTextAlignment
+            match prevValueOpt, source.TryHorizontalTextAlignment with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.HorizontalTextAlignment <- value
+            | Some _, None -> target.HorizontalTextAlignment <- Xamarin.Forms.TextAlignment.Start // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPlaceholder
+            match prevValueOpt, source.TryPlaceholder with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Placeholder <- value
+            | Some _, None -> target.Placeholder <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPlaceholderColor
+            match prevValueOpt, source.TryPlaceholderColor with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.PlaceholderColor <- value
+            | Some _, None -> target.PlaceholderColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TrySearchCommand
+            match prevValueOpt, source.TrySearchCommand with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.SearchCommand <- value
+            | Some _, None -> target.SearchCommand <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryText
+            match prevValueOpt, source.TryText with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Text <- value
+            | Some _, None -> target.Text <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTextColor
+            match prevValueOpt, source.TryTextColor with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.TextColor <- value
+            | Some _, None -> target.TextColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
+            match prevValueOpt, source.TryHorizontalOptions with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.HorizontalOptions <- value
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
+            match prevValueOpt, source.TryVerticalOptions with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.VerticalOptions <- value
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
+            match prevValueOpt, source.TryMargin with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Margin <- value
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
+            match prevValueOpt, source.TryAnchorX with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.AnchorX <- value
+            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
+            match prevValueOpt, source.TryAnchorY with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.AnchorY <- value
+            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
+            match prevValueOpt, source.TryBackgroundColor with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.BackgroundColor <- value
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
+            match prevValueOpt, source.TryHeightRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.HeightRequest <- value
+            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
+            match prevValueOpt, source.TryInputTransparent with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.InputTransparent <- value
+            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
+            match prevValueOpt, source.TryIsEnabled with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.IsEnabled <- value
+            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
+            match prevValueOpt, source.TryIsVisible with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.IsVisible <- value
+            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
+            match prevValueOpt, source.TryMinimumHeightRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.MinimumHeightRequest <- value
+            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
+            match prevValueOpt, source.TryMinimumWidthRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.MinimumWidthRequest <- value
+            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
+            match prevValueOpt, source.TryOpacity with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Opacity <- value
+            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
+            match prevValueOpt, source.TryRotation with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Rotation <- value
+            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
+            match prevValueOpt, source.TryRotationX with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.RotationX <- value
+            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
+            match prevValueOpt, source.TryRotationY with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.RotationY <- value
+            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
+            match prevValueOpt, source.TryScale with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Scale <- value
+            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
+            match prevValueOpt, source.TryStyle with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Style <- value
+            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
+            match prevValueOpt, source.TryTranslationX with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.TranslationX <- value
+            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
+            match prevValueOpt, source.TryTranslationY with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.TranslationY <- value
+            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
+            match prevValueOpt, source.TryWidthRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.WidthRequest <- value
+            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
+            match prevValueOpt, source.TryClassId with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.ClassId <- value
+            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
+            match prevValueOpt, source.TryStyleId with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.StyleId <- value
+            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+        new XamlElement(typeof<Xamarin.Forms.SearchBar>, create, apply, Map.ofArray attribs)
+
     /// Describes a Button in the view
-    static member Button(?text: string, ?command: unit -> unit, ?borderColor: Xamarin.Forms.Color, ?borderWidth: double, ?commandParameter: System.Object, ?contentLayout: Xamarin.Forms.Button.ButtonContentLayout, ?cornerRadius: int, ?font: Xamarin.Forms.Font, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?image: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member Button(?text: string, ?command: unit -> unit, ?borderColor: Xamarin.Forms.Color, ?borderWidth: double, ?commandParameter: System.Object, ?contentLayout: Xamarin.Forms.Button.ButtonContentLayout, ?cornerRadius: int, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?image: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match text with None -> () | Some v -> yield ("Text", box ((v))) 
             match command with None -> () | Some v -> yield ("Command", box (makeCommand(v))) 
@@ -2473,7 +3085,6 @@ type Xaml() =
             match commandParameter with None -> () | Some v -> yield ("CommandParameter", box ((v))) 
             match contentLayout with None -> () | Some v -> yield ("ContentLayout", box ((v))) 
             match cornerRadius with None -> () | Some v -> yield ("ButtonCornerRadius", box ((v))) 
-            match font with None -> () | Some v -> yield ("Font", box ((v))) 
             match fontFamily with None -> () | Some v -> yield ("FontFamily", box ((v))) 
             match fontAttributes with None -> () | Some v -> yield ("FontAttributes", box ((v))) 
             match fontSize with None -> () | Some v -> yield ("FontSize", box (makeFontSize(v))) 
@@ -2550,12 +3161,6 @@ type Xaml() =
             | Some prevValue, Some value when prevValue = value -> ()
             | _, Some value -> target.CornerRadius <- value
             | Some _, None -> target.CornerRadius <- 0 // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFont
-            match prevValueOpt, source.TryFont with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.Font <- value
-            | Some _, None -> target.Font <- Xamarin.Forms.Font.Default // TODO: not always perfect, should set back to original default?
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontFamily
             match prevValueOpt, source.TryFontFamily with
@@ -2928,6 +3533,465 @@ type Xaml() =
             | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.Slider>, create, apply, Map.ofArray attribs)
+
+    /// Describes a Stepper in the view
+    static member Stepper(?minimum: double, ?maximum: double, ?value: double, ?increment: double, ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+        let attribs = [| 
+            match minimum with None -> () | Some v -> yield ("Minimum", box ((v))) 
+            match maximum with None -> () | Some v -> yield ("Maximum", box ((v))) 
+            match value with None -> () | Some v -> yield ("Value", box ((v))) 
+            match increment with None -> () | Some v -> yield ("Increment", box ((v))) 
+            match valueChanged with None -> () | Some v -> yield ("ValueChanged", box ((fun f -> System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>(fun _sender args -> f args))(v))) 
+            match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
+            match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
+            match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
+            match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
+            match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
+            match heightRequest with None -> () | Some v -> yield ("HeightRequest", box ((v))) 
+            match inputTransparent with None -> () | Some v -> yield ("InputTransparent", box ((v))) 
+            match isEnabled with None -> () | Some v -> yield ("IsEnabled", box ((v))) 
+            match isVisible with None -> () | Some v -> yield ("IsVisible", box ((v))) 
+            match minimumHeightRequest with None -> () | Some v -> yield ("MinimumHeightRequest", box ((v))) 
+            match minimumWidthRequest with None -> () | Some v -> yield ("MinimumWidthRequest", box ((v))) 
+            match opacity with None -> () | Some v -> yield ("Opacity", box ((v))) 
+            match rotation with None -> () | Some v -> yield ("Rotation", box ((v))) 
+            match rotationX with None -> () | Some v -> yield ("RotationX", box ((v))) 
+            match rotationY with None -> () | Some v -> yield ("RotationY", box ((v))) 
+            match scale with None -> () | Some v -> yield ("Scale", box ((v))) 
+            match style with None -> () | Some v -> yield ("Style", box ((v))) 
+            match translationX with None -> () | Some v -> yield ("TranslationX", box ((v))) 
+            match translationY with None -> () | Some v -> yield ("TranslationY", box ((v))) 
+            match widthRequest with None -> () | Some v -> yield ("WidthRequest", box ((v))) 
+            match classId with None -> () | Some v -> yield ("ClassId", box ((v))) 
+            match styleId with None -> () | Some v -> yield ("StyleId", box ((v))) 
+          |]
+
+        let create () =
+            box (new Xamarin.Forms.Stepper())
+
+        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+            let target = (target :?> Xamarin.Forms.Stepper)
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimum
+            match prevValueOpt, source.TryMinimum with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Minimum <- value
+            | Some _, None -> target.Minimum <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMaximum
+            match prevValueOpt, source.TryMaximum with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Maximum <- value
+            | Some _, None -> target.Maximum <- 1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryValue
+            match prevValueOpt, source.TryValue with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Value <- value
+            | Some _, None -> target.Value <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIncrement
+            match prevValueOpt, source.TryIncrement with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Increment <- value
+            | Some _, None -> target.Increment <- 1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryValueChanged
+            match prevValueOpt, source.TryValueChanged with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | Some prevValue, Some value -> target.ValueChanged.RemoveHandler(prevValue); target.ValueChanged.AddHandler(value)
+            | None, Some value -> target.ValueChanged.AddHandler(value)
+            | Some prevValue, None -> target.ValueChanged.RemoveHandler(prevValue)
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
+            match prevValueOpt, source.TryHorizontalOptions with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.HorizontalOptions <- value
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
+            match prevValueOpt, source.TryVerticalOptions with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.VerticalOptions <- value
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
+            match prevValueOpt, source.TryMargin with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Margin <- value
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
+            match prevValueOpt, source.TryAnchorX with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.AnchorX <- value
+            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
+            match prevValueOpt, source.TryAnchorY with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.AnchorY <- value
+            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
+            match prevValueOpt, source.TryBackgroundColor with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.BackgroundColor <- value
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
+            match prevValueOpt, source.TryHeightRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.HeightRequest <- value
+            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
+            match prevValueOpt, source.TryInputTransparent with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.InputTransparent <- value
+            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
+            match prevValueOpt, source.TryIsEnabled with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.IsEnabled <- value
+            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
+            match prevValueOpt, source.TryIsVisible with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.IsVisible <- value
+            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
+            match prevValueOpt, source.TryMinimumHeightRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.MinimumHeightRequest <- value
+            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
+            match prevValueOpt, source.TryMinimumWidthRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.MinimumWidthRequest <- value
+            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
+            match prevValueOpt, source.TryOpacity with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Opacity <- value
+            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
+            match prevValueOpt, source.TryRotation with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Rotation <- value
+            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
+            match prevValueOpt, source.TryRotationX with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.RotationX <- value
+            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
+            match prevValueOpt, source.TryRotationY with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.RotationY <- value
+            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
+            match prevValueOpt, source.TryScale with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Scale <- value
+            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
+            match prevValueOpt, source.TryStyle with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Style <- value
+            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
+            match prevValueOpt, source.TryTranslationX with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.TranslationX <- value
+            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
+            match prevValueOpt, source.TryTranslationY with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.TranslationY <- value
+            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
+            match prevValueOpt, source.TryWidthRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.WidthRequest <- value
+            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
+            match prevValueOpt, source.TryClassId with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.ClassId <- value
+            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
+            match prevValueOpt, source.TryStyleId with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.StyleId <- value
+            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+        new XamlElement(typeof<Xamarin.Forms.Stepper>, create, apply, Map.ofArray attribs)
+
+    /// Describes a Switch in the view
+    static member Switch(?isToggled: bool, ?toggled: Xamarin.Forms.ToggledEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+        let attribs = [| 
+            match isToggled with None -> () | Some v -> yield ("IsToggled", box ((v))) 
+            match toggled with None -> () | Some v -> yield ("Toggled", box ((fun f -> System.EventHandler<Xamarin.Forms.ToggledEventArgs>(fun _sender args -> f args))(v))) 
+            match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
+            match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
+            match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
+            match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
+            match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
+            match heightRequest with None -> () | Some v -> yield ("HeightRequest", box ((v))) 
+            match inputTransparent with None -> () | Some v -> yield ("InputTransparent", box ((v))) 
+            match isEnabled with None -> () | Some v -> yield ("IsEnabled", box ((v))) 
+            match isVisible with None -> () | Some v -> yield ("IsVisible", box ((v))) 
+            match minimumHeightRequest with None -> () | Some v -> yield ("MinimumHeightRequest", box ((v))) 
+            match minimumWidthRequest with None -> () | Some v -> yield ("MinimumWidthRequest", box ((v))) 
+            match opacity with None -> () | Some v -> yield ("Opacity", box ((v))) 
+            match rotation with None -> () | Some v -> yield ("Rotation", box ((v))) 
+            match rotationX with None -> () | Some v -> yield ("RotationX", box ((v))) 
+            match rotationY with None -> () | Some v -> yield ("RotationY", box ((v))) 
+            match scale with None -> () | Some v -> yield ("Scale", box ((v))) 
+            match style with None -> () | Some v -> yield ("Style", box ((v))) 
+            match translationX with None -> () | Some v -> yield ("TranslationX", box ((v))) 
+            match translationY with None -> () | Some v -> yield ("TranslationY", box ((v))) 
+            match widthRequest with None -> () | Some v -> yield ("WidthRequest", box ((v))) 
+            match classId with None -> () | Some v -> yield ("ClassId", box ((v))) 
+            match styleId with None -> () | Some v -> yield ("StyleId", box ((v))) 
+          |]
+
+        let create () =
+            box (new Xamarin.Forms.Switch())
+
+        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+            let target = (target :?> Xamarin.Forms.Switch)
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsToggled
+            match prevValueOpt, source.TryIsToggled with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.IsToggled <- value
+            | Some _, None -> target.IsToggled <- false // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryToggled
+            match prevValueOpt, source.TryToggled with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | Some prevValue, Some value -> target.Toggled.RemoveHandler(prevValue); target.Toggled.AddHandler(value)
+            | None, Some value -> target.Toggled.AddHandler(value)
+            | Some prevValue, None -> target.Toggled.RemoveHandler(prevValue)
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
+            match prevValueOpt, source.TryHorizontalOptions with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.HorizontalOptions <- value
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
+            match prevValueOpt, source.TryVerticalOptions with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.VerticalOptions <- value
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
+            match prevValueOpt, source.TryMargin with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Margin <- value
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
+            match prevValueOpt, source.TryAnchorX with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.AnchorX <- value
+            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
+            match prevValueOpt, source.TryAnchorY with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.AnchorY <- value
+            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
+            match prevValueOpt, source.TryBackgroundColor with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.BackgroundColor <- value
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
+            match prevValueOpt, source.TryHeightRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.HeightRequest <- value
+            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
+            match prevValueOpt, source.TryInputTransparent with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.InputTransparent <- value
+            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
+            match prevValueOpt, source.TryIsEnabled with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.IsEnabled <- value
+            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
+            match prevValueOpt, source.TryIsVisible with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.IsVisible <- value
+            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
+            match prevValueOpt, source.TryMinimumHeightRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.MinimumHeightRequest <- value
+            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
+            match prevValueOpt, source.TryMinimumWidthRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.MinimumWidthRequest <- value
+            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
+            match prevValueOpt, source.TryOpacity with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Opacity <- value
+            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
+            match prevValueOpt, source.TryRotation with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Rotation <- value
+            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
+            match prevValueOpt, source.TryRotationX with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.RotationX <- value
+            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
+            match prevValueOpt, source.TryRotationY with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.RotationY <- value
+            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
+            match prevValueOpt, source.TryScale with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Scale <- value
+            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
+            match prevValueOpt, source.TryStyle with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Style <- value
+            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
+            match prevValueOpt, source.TryTranslationX with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.TranslationX <- value
+            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
+            match prevValueOpt, source.TryTranslationY with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.TranslationY <- value
+            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
+            match prevValueOpt, source.TryWidthRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.WidthRequest <- value
+            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
+            match prevValueOpt, source.TryClassId with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.ClassId <- value
+            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
+            match prevValueOpt, source.TryStyleId with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.StyleId <- value
+            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+        new XamlElement(typeof<Xamarin.Forms.Switch>, create, apply, Map.ofArray attribs)
+
+    /// Describes a SwitchCell in the view
+    static member SwitchCell(?on: bool, ?text: string, ?onChanged: Xamarin.Forms.ToggledEventArgs -> unit, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
+        let attribs = [| 
+            match on with None -> () | Some v -> yield ("On", box ((v))) 
+            match text with None -> () | Some v -> yield ("Text", box ((v))) 
+            match onChanged with None -> () | Some v -> yield ("OnChanged", box ((fun f -> System.EventHandler<Xamarin.Forms.ToggledEventArgs>(fun _sender args -> f args))(v))) 
+            match height with None -> () | Some v -> yield ("Height", box ((v))) 
+            match isEnabled with None -> () | Some v -> yield ("IsEnabled", box ((v))) 
+            match classId with None -> () | Some v -> yield ("ClassId", box ((v))) 
+            match styleId with None -> () | Some v -> yield ("StyleId", box ((v))) 
+          |]
+
+        let create () =
+            box (new Xamarin.Forms.SwitchCell())
+
+        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+            let target = (target :?> Xamarin.Forms.SwitchCell)
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOn
+            match prevValueOpt, source.TryOn with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.On <- value
+            | Some _, None -> target.On <- false // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryText
+            match prevValueOpt, source.TryText with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Text <- value
+            | Some _, None -> target.Text <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOnChanged
+            match prevValueOpt, source.TryOnChanged with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | Some prevValue, Some value -> target.OnChanged.RemoveHandler(prevValue); target.OnChanged.AddHandler(value)
+            | None, Some value -> target.OnChanged.AddHandler(value)
+            | Some prevValue, None -> target.OnChanged.RemoveHandler(prevValue)
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeight
+            match prevValueOpt, source.TryHeight with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Height <- value
+            | Some _, None -> target.Height <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
+            match prevValueOpt, source.TryIsEnabled with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.IsEnabled <- value
+            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
+            match prevValueOpt, source.TryClassId with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.ClassId <- value
+            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
+            match prevValueOpt, source.TryStyleId with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.StyleId <- value
+            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+        new XamlElement(typeof<Xamarin.Forms.SwitchCell>, create, apply, Map.ofArray attribs)
 
     /// Describes a Grid in the view
     static member Grid(?rowdefs: obj list, ?coldefs: obj list, ?rowSpacing: double, ?columnSpacing: double, ?children: XamlElement list, ?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -3500,6 +4564,260 @@ type Xaml() =
             | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.AbsoluteLayout>, create, apply, Map.ofArray attribs)
+
+    /// Describes a RelativeLayout in the view
+    static member RelativeLayout(?children: XamlElement list, ?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+        let attribs = [| 
+            match children with None -> () | Some v -> yield ("Children", box (Array.ofList(v))) 
+            match isClippedToBounds with None -> () | Some v -> yield ("IsClippedToBounds", box ((v))) 
+            match padding with None -> () | Some v -> yield ("Padding", box (makeThickness(v))) 
+            match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
+            match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
+            match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
+            match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
+            match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
+            match heightRequest with None -> () | Some v -> yield ("HeightRequest", box ((v))) 
+            match inputTransparent with None -> () | Some v -> yield ("InputTransparent", box ((v))) 
+            match isEnabled with None -> () | Some v -> yield ("IsEnabled", box ((v))) 
+            match isVisible with None -> () | Some v -> yield ("IsVisible", box ((v))) 
+            match minimumHeightRequest with None -> () | Some v -> yield ("MinimumHeightRequest", box ((v))) 
+            match minimumWidthRequest with None -> () | Some v -> yield ("MinimumWidthRequest", box ((v))) 
+            match opacity with None -> () | Some v -> yield ("Opacity", box ((v))) 
+            match rotation with None -> () | Some v -> yield ("Rotation", box ((v))) 
+            match rotationX with None -> () | Some v -> yield ("RotationX", box ((v))) 
+            match rotationY with None -> () | Some v -> yield ("RotationY", box ((v))) 
+            match scale with None -> () | Some v -> yield ("Scale", box ((v))) 
+            match style with None -> () | Some v -> yield ("Style", box ((v))) 
+            match translationX with None -> () | Some v -> yield ("TranslationX", box ((v))) 
+            match translationY with None -> () | Some v -> yield ("TranslationY", box ((v))) 
+            match widthRequest with None -> () | Some v -> yield ("WidthRequest", box ((v))) 
+            match classId with None -> () | Some v -> yield ("ClassId", box ((v))) 
+            match styleId with None -> () | Some v -> yield ("StyleId", box ((v))) 
+          |]
+
+        let create () =
+            box (new Xamarin.Forms.RelativeLayout())
+
+        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+            let target = (target :?> Xamarin.Forms.RelativeLayout)
+            match source.TryChildren with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.Children with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.Children.Count > coll.Length) do
+                    target.Children.RemoveAt(target.Children.Count - 1)
+
+                // Count the existing children
+                let n = target.Children.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryChildren with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsView()
+                                if i >= n then
+                                    target.Children.Insert(i, targetChild)
+                                else
+                                    target.Children.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.Children.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.Children.[i]
+                    // Adjust the attached properties
+                    match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryBoundsConstraint), newChild.TryBoundsConstraint with
+                    | Some prev, Some v when prev = v -> ()
+                    | _, Some v -> Xamarin.Forms.RelativeLayout.SetBoundsConstraint(targetChild, v)
+                    | Some _, None -> Xamarin.Forms.RelativeLayout.SetBoundsConstraint(targetChild, null) // TODO: not always perfect, should set back to original default?
+                    | _ -> ()
+                    // Adjust the attached properties
+                    match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryHeightConstraint), newChild.TryHeightConstraint with
+                    | Some prev, Some v when prev = v -> ()
+                    | _, Some v -> Xamarin.Forms.RelativeLayout.SetHeightConstraint(targetChild, v)
+                    | Some _, None -> Xamarin.Forms.RelativeLayout.SetHeightConstraint(targetChild, null) // TODO: not always perfect, should set back to original default?
+                    | _ -> ()
+                    // Adjust the attached properties
+                    match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryWidthConstraint), newChild.TryWidthConstraint with
+                    | Some prev, Some v when prev = v -> ()
+                    | _, Some v -> Xamarin.Forms.RelativeLayout.SetWidthConstraint(targetChild, v)
+                    | Some _, None -> Xamarin.Forms.RelativeLayout.SetWidthConstraint(targetChild, null) // TODO: not always perfect, should set back to original default?
+                    | _ -> ()
+                    // Adjust the attached properties
+                    match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryXConstraint), newChild.TryXConstraint with
+                    | Some prev, Some v when prev = v -> ()
+                    | _, Some v -> Xamarin.Forms.RelativeLayout.SetXConstraint(targetChild, v)
+                    | Some _, None -> Xamarin.Forms.RelativeLayout.SetXConstraint(targetChild, null) // TODO: not always perfect, should set back to original default?
+                    | _ -> ()
+                    // Adjust the attached properties
+                    match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryYConstraint), newChild.TryYConstraint with
+                    | Some prev, Some v when prev = v -> ()
+                    | _, Some v -> Xamarin.Forms.RelativeLayout.SetYConstraint(targetChild, v)
+                    | Some _, None -> Xamarin.Forms.RelativeLayout.SetYConstraint(targetChild, null) // TODO: not always perfect, should set back to original default?
+                    | _ -> ()
+                    ()
+            | _ -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsClippedToBounds
+            match prevValueOpt, source.TryIsClippedToBounds with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.IsClippedToBounds <- value
+            | Some _, None -> target.IsClippedToBounds <- false // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
+            match prevValueOpt, source.TryPadding with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Padding <- value
+            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
+            match prevValueOpt, source.TryHorizontalOptions with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.HorizontalOptions <- value
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
+            match prevValueOpt, source.TryVerticalOptions with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.VerticalOptions <- value
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
+            match prevValueOpt, source.TryMargin with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Margin <- value
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
+            match prevValueOpt, source.TryAnchorX with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.AnchorX <- value
+            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
+            match prevValueOpt, source.TryAnchorY with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.AnchorY <- value
+            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
+            match prevValueOpt, source.TryBackgroundColor with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.BackgroundColor <- value
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
+            match prevValueOpt, source.TryHeightRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.HeightRequest <- value
+            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
+            match prevValueOpt, source.TryInputTransparent with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.InputTransparent <- value
+            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
+            match prevValueOpt, source.TryIsEnabled with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.IsEnabled <- value
+            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
+            match prevValueOpt, source.TryIsVisible with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.IsVisible <- value
+            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
+            match prevValueOpt, source.TryMinimumHeightRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.MinimumHeightRequest <- value
+            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
+            match prevValueOpt, source.TryMinimumWidthRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.MinimumWidthRequest <- value
+            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
+            match prevValueOpt, source.TryOpacity with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Opacity <- value
+            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
+            match prevValueOpt, source.TryRotation with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Rotation <- value
+            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
+            match prevValueOpt, source.TryRotationX with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.RotationX <- value
+            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
+            match prevValueOpt, source.TryRotationY with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.RotationY <- value
+            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
+            match prevValueOpt, source.TryScale with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Scale <- value
+            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
+            match prevValueOpt, source.TryStyle with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Style <- value
+            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
+            match prevValueOpt, source.TryTranslationX with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.TranslationX <- value
+            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
+            match prevValueOpt, source.TryTranslationY with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.TranslationY <- value
+            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
+            match prevValueOpt, source.TryWidthRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.WidthRequest <- value
+            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
+            match prevValueOpt, source.TryClassId with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.ClassId <- value
+            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
+            match prevValueOpt, source.TryStyleId with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.StyleId <- value
+            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+        new XamlElement(typeof<Xamarin.Forms.RelativeLayout>, create, apply, Map.ofArray attribs)
 
     /// Describes a RowDefinition in the view
     static member RowDefinition(?height: obj) = 
@@ -6072,6 +7390,68 @@ type Xaml() =
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.StackLayout>, create, apply, Map.ofArray attribs)
 
+    /// Describes a Span in the view
+    static member Span(?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?backgroundColor: Xamarin.Forms.Color, ?foregroundColor: Xamarin.Forms.Color, ?text: string, ?propertyChanged: System.ComponentModel.PropertyChangedEventArgs -> unit) = 
+        let attribs = [| 
+            match fontFamily with None -> () | Some v -> yield ("FontFamily", box ((v))) 
+            match fontAttributes with None -> () | Some v -> yield ("FontAttributes", box ((v))) 
+            match fontSize with None -> () | Some v -> yield ("FontSize", box (makeFontSize(v))) 
+            match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
+            match foregroundColor with None -> () | Some v -> yield ("ForegroundColor", box ((v))) 
+            match text with None -> () | Some v -> yield ("Text", box ((v))) 
+            match propertyChanged with None -> () | Some v -> yield ("PropertyChanged", box ((fun f -> System.EventHandler<System.ComponentModel.PropertyChangedEventArgs>(fun _sender args -> f args))(v))) 
+          |]
+
+        let create () =
+            box (new Xamarin.Forms.Span())
+
+        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+            let target = (target :?> Xamarin.Forms.Span)
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontFamily
+            match prevValueOpt, source.TryFontFamily with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.FontFamily <- value
+            | Some _, None -> target.FontFamily <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontAttributes
+            match prevValueOpt, source.TryFontAttributes with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.FontAttributes <- value
+            | Some _, None -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontSize
+            match prevValueOpt, source.TryFontSize with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.FontSize <- value
+            | Some _, None -> target.FontSize <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
+            match prevValueOpt, source.TryBackgroundColor with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.BackgroundColor <- value
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryForegroundColor
+            match prevValueOpt, source.TryForegroundColor with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.ForegroundColor <- value
+            | Some _, None -> target.ForegroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryText
+            match prevValueOpt, source.TryText with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Text <- value
+            | Some _, None -> target.Text <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPropertyChanged
+            match prevValueOpt, source.TryPropertyChanged with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | Some prevValue, Some value -> target.PropertyChanged.RemoveHandler(prevValue); target.PropertyChanged.AddHandler(value)
+            | None, Some value -> target.PropertyChanged.AddHandler(value)
+            | Some prevValue, None -> target.PropertyChanged.RemoveHandler(prevValue)
+            | None, None -> ()
+        new XamlElement(typeof<Xamarin.Forms.Span>, create, apply, Map.ofArray attribs)
+
     /// Describes a TimePicker in the view
     static member TimePicker(?time: System.TimeSpan, ?format: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
@@ -7957,8 +9337,14 @@ module XamlCreateExtensions =
     /// Specifies a BoxView in the view description, initially with default attributes
     let boxView = Xaml.BoxView()
 
+    /// Specifies a ProgressBar in the view description, initially with default attributes
+    let progressBar = Xaml.ProgressBar()
+
     /// Specifies a ScrollView in the view description, initially with default attributes
     let scrollView = Xaml.ScrollView()
+
+    /// Specifies a SearchBar in the view description, initially with default attributes
+    let searchBar = Xaml.SearchBar()
 
     /// Specifies a Button in the view description, initially with default attributes
     let button = Xaml.Button()
@@ -7966,11 +9352,23 @@ module XamlCreateExtensions =
     /// Specifies a Slider in the view description, initially with default attributes
     let slider = Xaml.Slider()
 
+    /// Specifies a Stepper in the view description, initially with default attributes
+    let stepper = Xaml.Stepper()
+
+    /// Specifies a Switch in the view description, initially with default attributes
+    let switch = Xaml.Switch()
+
+    /// Specifies a SwitchCell in the view description, initially with default attributes
+    let switchCell = Xaml.SwitchCell()
+
     /// Specifies a Grid in the view description, initially with default attributes
     let grid = Xaml.Grid()
 
     /// Specifies a AbsoluteLayout in the view description, initially with default attributes
     let absoluteLayout = Xaml.AbsoluteLayout()
+
+    /// Specifies a RelativeLayout in the view description, initially with default attributes
+    let relativeLayout = Xaml.RelativeLayout()
 
     /// Specifies a RowDefinition in the view description, initially with default attributes
     let rowDefinition = Xaml.RowDefinition()
@@ -8007,6 +9405,9 @@ module XamlCreateExtensions =
 
     /// Specifies a StackLayout in the view description, initially with default attributes
     let stackLayout = Xaml.StackLayout()
+
+    /// Specifies a Span in the view description, initially with default attributes
+    let span = Xaml.Span()
 
     /// Specifies a TimePicker in the view description, initially with default attributes
     let timePicker = Xaml.TimePicker()
