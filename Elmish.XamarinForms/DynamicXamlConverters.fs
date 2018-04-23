@@ -41,22 +41,22 @@ module Converters =
 
 type CustomViewCell() = 
     inherit ViewCell()
-    static let t = System.Runtime.CompilerServices.ConditionalWeakTable()
+
+    let mutable oldModel = None
 
     override x.OnBindingContextChanged () =
         base.OnBindingContextChanged ()
         match x.BindingContext with
         | null -> 
-            t.Remove(x) |> ignore
+            oldModel <- None
         | bcNew -> 
-            match t.TryGetValue(x) with 
-            | true, bcPrev -> 
+            match oldModel with 
+            | Some bcPrev -> 
                 let ty = bcNew.GetType()
                 let res = ty.InvokeMember("ApplyIncremental",(BindingFlags.InvokeMethod ||| BindingFlags.Public ||| BindingFlags.Instance),null, bcNew, [| box bcPrev; box x.View |] )
-                t.Remove(x) |> ignore
-                t.Add(x, bcNew)
+                oldModel <- None
                 ignore res
-            | false, _ -> 
+            | None -> 
                 let ty = bcNew.GetType()
                 let res = ty.InvokeMember("Create",(BindingFlags.InvokeMethod ||| BindingFlags.Public ||| BindingFlags.Instance),null, bcNew, [| |] )
                 match res with 
@@ -64,8 +64,7 @@ type CustomViewCell() =
                     x.View <- v
                 | _ -> 
                     failwithf "The cells of a ListView must each be some kind of 'View' and not a '%A'" (res.GetType())
-                t.Add(x, bcNew)
-                ignore res
+                oldModel <- Some bcNew
                 
 type CustomListView() = 
     inherit ListView(ItemTemplate=DataTemplate(typeof<CustomViewCell>))
