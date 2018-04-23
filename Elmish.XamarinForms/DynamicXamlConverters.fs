@@ -42,19 +42,19 @@ module Converters =
 type CustomViewCell() = 
     inherit ViewCell()
 
-    let mutable oldModel = None
+    let mutable modelOpt = None
 
     override x.OnBindingContextChanged () =
         base.OnBindingContextChanged ()
         match x.BindingContext with
         | null -> 
-            oldModel <- None
+            modelOpt <- None
         | bcNew -> 
-            match oldModel with 
-            | Some bcPrev -> 
+            match modelOpt with 
+            | Some prev -> 
                 let ty = bcNew.GetType()
-                let res = ty.InvokeMember("ApplyIncremental",(BindingFlags.InvokeMethod ||| BindingFlags.Public ||| BindingFlags.Instance),null, bcNew, [| box bcPrev; box x.View |] )
-                oldModel <- None
+                let res = ty.InvokeMember("ApplyIncremental",(BindingFlags.InvokeMethod ||| BindingFlags.Public ||| BindingFlags.Instance),null, bcNew, [| box prev; box x.View |] )
+                modelOpt <- None
                 ignore res
             | None -> 
                 let ty = bcNew.GetType()
@@ -64,7 +64,7 @@ type CustomViewCell() =
                     x.View <- v
                 | _ -> 
                     failwithf "The cells of a ListView must each be some kind of 'View' and not a '%A'" (res.GetType())
-                oldModel <- Some bcNew
+                modelOpt <- Some bcNew
                 
 type CustomListView() = 
     inherit ListView(ItemTemplate=DataTemplate(typeof<CustomViewCell>))
