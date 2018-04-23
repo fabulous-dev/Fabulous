@@ -141,8 +141,8 @@ type AllControls () =
                 Xaml.Label(text="Label:")
                 Xaml.Label(text= sprintf "%d" model.CountForActivityIndicator, horizontalOptions=LayoutOptions.CenterAndExpand)
 
-                Xaml.Label(text="ActivityIndicator (when count > 1):")
-                Xaml.ActivityIndicator(isRunning=(model.CountForActivityIndicator > 1), horizontalOptions=LayoutOptions.CenterAndExpand)
+                Xaml.Label(text="ActivityIndicator (when count > 0):")
+                Xaml.ActivityIndicator(isRunning=(model.CountForActivityIndicator > 0), horizontalOptions=LayoutOptions.CenterAndExpand)
                 
                 Xaml.Label(text="Button:")
                 Xaml.Button(text="Increment", command= (fun () -> dispatch IncrementForActivityIndicator), horizontalOptions=LayoutOptions.CenterAndExpand)
