@@ -6,19 +6,11 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="DynamicXamlConverters.fs" />
     <Compile Include="DynamicXaml.fs" />
-    <Compile Include="FableStub.fs" />
-    <Compile Include="..\paket-files\neutral\fable-elmish\elmish\src\cmd.fs">
-      <Paket>True</Paket>
-      <Link>elmish/src/cmd.fs</Link>
-    </Compile>
-    <Compile Include="..\paket-files\neutral\fable-elmish\elmish\src\program.fs">
-      <Paket>True</Paket>
-      <Link>elmish/src/program.fs</Link>
-    </Compile>
-    <Compile Include="Cmd.fs" />
-    <Compile Include="Binding.fs" />
-    <Compile Include="ViewModel.fs" />
-    <Compile Include="Combinators.fs" />
+    <Compile Include="ElmishCmd.fs" />
+    <Compile Include="StaticXamlBinding.fs" />
+    <Compile Include="StaticXamlViewModel.fs" />
+    <Compile Include="ElmishProgram.fs" />
+    <Compile Include="DynamicViewHelpers.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FSharp.Core" Version="4.3.3" />

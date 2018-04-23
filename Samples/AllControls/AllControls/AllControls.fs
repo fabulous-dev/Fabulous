@@ -55,6 +55,7 @@ type AllControls () =
           ( "White", Color.White ); ( "Yellow", Color.Yellow ) ]
 
     let view (model: Model) dispatch =
+      Xaml.ContentPage(
         Xaml.ScrollView(
            Xaml.StackLayout(padding=20.0,
               children=[
@@ -127,7 +128,6 @@ type AllControls () =
                 // Xaml.BoxView: TODO
                 // Xaml.Cell, EntryCell: TODO
                 // Xaml.CarouselPage: TODO
-                // Xaml.ContentPage: TODO
                 // Xaml.MasterDetailPage: TODO
                 // Xaml.Menu: TODO
                 // Xaml.MenuItem: TODO
@@ -149,13 +149,13 @@ type AllControls () =
                 Xaml.ListView(itemsSource= ["Ionide"; "Visual Studio"; "Emacs"; "Visual Studio Code"; "Rider"], horizontalOptions=LayoutOptions.CenterAndExpand,
                               itemSelected=(fun item -> dispatch (ListViewSelectedItemChanged item)))
 
-              ]))
+              ])))
 
     do
         let page = 
-            Program.mkSimple init update 
-                (fun _ _ -> HelperPage(), [], view) 
+            Program.mkSimple init update view
             |> Program.withConsoleTrace
-            |> Program.runDynamicView
+            |> Program.withDynamicView
+            |> Program.run
 
         base.MainPage <- page

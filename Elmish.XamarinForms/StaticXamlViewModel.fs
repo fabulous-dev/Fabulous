@@ -1,24 +1,25 @@
 ﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
-namespace Elmish.XamarinForms
+namespace Elmish.XamarinForms.StaticViews
 
 open System
 open System.Collections.Generic
 open System.ComponentModel
+open System.Diagnostics
 open Xamarin.Forms
 open Elmish
 open Elmish.XamarinForms
 
-/// The internal representation of a binding in the ViewModel
+/// The internal representation of a binding in the ViewModel for static Xaml
 type internal PropertyBinding<'model, 'msg> =
     | Get of Getter<'model>
     | Set of Setter<'model, 'msg>
     | GetSet of Getter<'model> * Setter<'model, 'msg>
     | GetSetValidate of Getter<'model> * ValidSetter<'model, 'msg>
     | Cmd of Xamarin.Forms.Command
-    | SubModel of ('model -> obj) * (obj -> 'msg) * ViewModel<obj, obj>
+    | SubModel of ('model -> obj) * (obj -> 'msg) * StaticViewModel<obj, obj>
     | Map of Getter<'model> * (obj -> obj)
 
-and ViewModel<'model, 'msg>(m: 'model, dispatch: 'msg -> unit, propMap: ViewBindings<'model, 'msg>, debug: bool) as self =
+and StaticViewModel<'model, 'msg>(m: 'model, dispatch: 'msg -> unit, propMap: ViewBindings<'model, 'msg>, debug: bool) as self =
     inherit System.Dynamic.DynamicObject()
 
     let props = new Dictionary<string, PropertyBinding<'model, 'msg>>()
@@ -33,7 +34,7 @@ and ViewModel<'model, 'msg>(m: 'model, dispatch: 'msg -> unit, propMap: ViewBind
     // For INotifyPropertyChanged
     let propertyChanged = Event<PropertyChangedEventHandler, PropertyChangedEventArgs> ()
     let notifyPropertyChanged name = 
-        if debug then console.log (sprintf "notifyPropertyChanged %s" name)
+        if debug then Trace.WriteLine (sprintf "notifyPropertyChanged %s" name)
         let key = "Item[" + name + "]"
         propertyChanged.Trigger(self, PropertyChangedEventArgs key)
 
@@ -50,17 +51,17 @@ and ViewModel<'model, 'msg>(m: 'model, dispatch: 'msg -> unit, propMap: ViewBind
     let toCommand name (exec, canExec) =
         let execute = 
             Action<obj> (fun cmdParameter -> 
-                if debug then console.log (sprintf "view: execute cmd %s" name)
+                if debug then Trace.WriteLine (sprintf "view: execute cmd %s" name)
                 let msg = 
                    try exec cmdParameter model 
                    with exn -> 
-                       if debug then console.log (sprintf "view: execute cmd %s raised exception:\n%s" name (exn.ToString()))
+                       if debug then Trace.WriteLine (sprintf "view: execute cmd %s raised exception:\n%s" name (exn.ToString()))
                        reraise()
                 dispatch msg)
 
         let canExecute = 
             Func<obj, bool>(fun cmdParameter -> 
-                if debug then console.log (sprintf "view: checking if cmd %s can execute" name)
+                if debug then Trace.WriteLine (sprintf "view: checking if cmd %s can execute" name)
                 canExec cmdParameter model)
         Xamarin.Forms.Command (execute, canExecute)
 
@@ -73,7 +74,7 @@ and ViewModel<'model, 'msg>(m: 'model, dispatch: 'msg -> unit, propMap: ViewBind
         | BindTwoWay (getter, setter) -> name, GetSet (getter, setter)
         | BindTwoWayValidation (getter, setter) -> name, GetSetValidate (getter, setter)
         | BindCmd (exec, canExec) -> name, Cmd (toCommand name (exec, canExec))
-        | BindSubModel (ViewSubModel (_, subName, getter, toMsg, propMap)) -> name, SubModel (getter, toMsg, ViewModel<obj, obj>(getter model, toMsg >> dispatch, propMap, debug))
+        | BindSubModel (ViewSubModel (_, subName, getter, toMsg, propMap)) -> name, SubModel (getter, toMsg, StaticViewModel<obj, obj>(getter model, toMsg >> dispatch, propMap, debug))
         | BindMap (getter, mapper) -> name, Map (getter, mapper)
 
     do propMap |> List.map convert |> List.iter props.Add
@@ -89,7 +90,7 @@ and ViewModel<'model, 'msg>(m: 'model, dispatch: 'msg -> unit, propMap: ViewBind
         member __.ErrorsChanged = errorsChanged.Publish
         member __.HasErrors = errors.Count > 0
         member __.GetErrors propName = 
-            if debug then console.log (sprintf "Getting errors for %s" propName)
+            if debug then Trace.WriteLine (sprintf "Getting errors for %s" propName)
             let results = 
                 match errors.TryGetValue propName with
                 | true, errs -> errs
@@ -99,8 +100,8 @@ and ViewModel<'model, 'msg>(m: 'model, dispatch: 'msg -> unit, propMap: ViewBind
     /// Used internally to update the model. Only properties that have changed are updated.
     member __.UpdateModel (other: 'model) : unit =
         if Object.ReferenceEquals (model, other) then 
-            if debug then console.log (sprintf "...Skipping update because model is reference-identical")
-        //if debug then console.log (sprintf "UpdateModel %+A" (props.Keys |> Seq.toArray))
+            if debug then Trace.WriteLine (sprintf "...Skipping update because model is reference-identical")
+        //if debug then Trace.WriteLine (sprintf "UpdateModel %+A" (props.Keys |> Seq.toArray))
         let propDiff name prop =
             match prop with
             | Get getter 
@@ -143,15 +144,15 @@ and ViewModel<'model, 'msg>(m: 'model, dispatch: 'msg -> unit, propMap: ViewBind
                     | Map (getter, mapper) -> getter model |> mapper
                     | Set setter -> invalidOp (sprintf "Prop Binding Not Settable: %s" name)
 
-                if debug then console.log (sprintf "view: got %s = %+A" name value)
+                if debug then Trace.WriteLine (sprintf "view: got %s = %+A" name value)
                 value
 
             else 
-                if debug then console.log (sprintf "view: failed to get property %s" name)
+                if debug then Trace.WriteLine (sprintf "view: failed to get property %s" name)
                 invalidOp (sprintf "Prop Binding Not Set: %s" name)
 
         and set (name : string) (value : obj) : unit =
-            if debug then console.log (sprintf "view: set %s to %+A" name value)
+            if debug then Trace.WriteLine (sprintf "view: set %s to %+A" name value)
 
             if props.ContainsKey name then
 
@@ -177,16 +178,16 @@ and ViewModel<'model, 'msg>(m: 'model, dispatch: 'msg -> unit, propMap: ViewBind
                         | false, _ -> errors.Add(name, [err])
                         errorsChanged()
                 | _ -> 
-                   if debug then console.log (sprintf "view: failed to set read-only property %s" name)
+                   if debug then Trace.WriteLine (sprintf "view: failed to set read-only property %s" name)
                    invalidOp "Unable to set read-only member"
             else 
-                if debug then console.log (sprintf "view: failed to set unbound property %s" name)
+                if debug then Trace.WriteLine (sprintf "view: failed to set unbound property %s" name)
                 invalidOp (sprintf "Prop Binding Not Set: %s" name)
 
 
     /// Used by the view to try to get values 
     override this.TryGetMember (binder, result) = 
-        if debug then console.log (sprintf "view: TryGetMember %s" binder.Name)
+        if debug then Trace.WriteLine (sprintf "view: TryGetMember %s" binder.Name)
         if props.ContainsKey binder.Name then
             let v = this.[binder.Name] 
             result <- v
@@ -195,7 +196,7 @@ and ViewModel<'model, 'msg>(m: 'model, dispatch: 'msg -> unit, propMap: ViewBind
 
     /// Used by the view to try to set values 
     override this.TrySetMember (binder, value) =
-        if debug then console.log (sprintf "view: TrySetMember %s" binder.Name)
+        if debug then Trace.WriteLine (sprintf "view: TrySetMember %s" binder.Name)
         if props.ContainsKey binder.Name then
             this.[binder.Name] <- value
         false

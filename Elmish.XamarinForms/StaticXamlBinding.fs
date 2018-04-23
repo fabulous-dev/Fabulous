@@ -1,9 +1,9 @@
 ﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
-namespace Elmish.XamarinForms
+namespace Elmish.XamarinForms.StaticViews
   
 open System
 open Xamarin.Forms
-open Elmish
+open Elmish.XamarinForms
 
 type internal Getter<'model> = 
     'model -> obj

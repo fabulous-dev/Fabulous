@@ -3,6 +3,7 @@ namespace CounterApp
 
 open Elmish
 open Elmish.XamarinForms
+open Elmish.XamarinForms.StaticViews
 open Xamarin.Forms
 
 type Model = 
@@ -39,8 +40,9 @@ type CounterApp () =
 
     do
         let page = 
-            Program.mkSimple init update (fun _ _ -> view())
+            Program.mkSimple init update view
             |> Program.withConsoleTrace
+            |> Program.withStaticView
             |> Program.run
 
         base.MainPage <- page

@@ -186,12 +186,10 @@ type App() =
         Application.Current.MainPage.DisplayAlert("Game over", msg, "OK") |> ignore
 
     let page = 
-        Program.mkSimple 
-            App.init 
-            (App.update gameOver) 
-            (fun _ _ -> HelperPage(App.viewAllocatedSizeFixup), [], App.view) 
+        Program.mkSimple App.init (App.update gameOver) App.view
         |> Program.withConsoleTrace
-        |> Program.runDynamicView
+        |> Program.withDynamicView
+        |> Program.run
         
     let mainPage = NavigationPage(page, BarBackgroundColor = Color.LightBlue, BarTextColor = Color.Black)
     do base.MainPage <- mainPage

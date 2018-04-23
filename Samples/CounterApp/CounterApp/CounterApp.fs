@@ -29,8 +29,9 @@ type CounterApp () =
         | SetStep n -> { model with Step = n }
 
     let view (model: Model) dispatch =
-        Xaml.StackLayout(padding=20.0,
-          children=[
+      Xaml.ContentPage(
+        content=Xaml.StackLayout(padding=20.0,
+          children=[ 
             yield Xaml.StackLayout(padding=20.0, verticalOptions=LayoutOptions.Center,
               children=[
                  Xaml.Label(text= sprintf "%d" model.Count, horizontalOptions=LayoutOptions.Center, textColor=Color.Blue)
@@ -42,13 +43,13 @@ type CounterApp () =
               ])
             if model <> init() then 
                 yield Xaml.Button(text="Reset", horizontalOptions=LayoutOptions.Center, command= (fun () -> dispatch Reset))
-          ])
+          ]))
 
     do
         let page = 
-            Program.mkSimple init update 
-                (fun _ _ -> HelperPage(), [], view) 
+            Program.mkSimple init update view
             |> Program.withConsoleTrace
-            |> Program.runDynamicView
+            |> Program.withDynamicView
+            |> Program.run
 
         base.MainPage <- page

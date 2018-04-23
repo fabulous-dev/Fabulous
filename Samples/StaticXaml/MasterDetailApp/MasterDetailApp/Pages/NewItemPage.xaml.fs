@@ -4,6 +4,7 @@ namespace MasterDetailApp
 open Xamarin.Forms
 open Xamarin.Forms.Xaml
 open Elmish.XamarinForms
+open Elmish.XamarinForms.StaticViews
 
 type NewItemPage() = 
     inherit ContentPage()

@@ -3,6 +3,7 @@
 open Xamarin.Forms
 open Xamarin.Forms.Xaml
 open Elmish.XamarinForms
+open Elmish.XamarinForms.StaticViews
 
 type ItemDetailPage() = 
     inherit ContentPage()
