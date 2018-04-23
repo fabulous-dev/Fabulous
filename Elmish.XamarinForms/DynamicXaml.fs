@@ -197,6 +197,7 @@ module XamlElementExtensions =
         /// Create a Xamarin.Forms.ListView from the view description
         member x.CreateAsListView() : Xamarin.Forms.ListView = (x.Create() :?> Xamarin.Forms.ListView)
 
+
         /// Try to get the ClassId property in the visual element
         member x.TryClassId = match x.Attributes.TryFind("ClassId") with Some v -> Some(unbox<string>(v)) | None -> None
 
@@ -536,8 +537,8 @@ module XamlElementExtensions =
         /// Try to get the ItemTemplate property in the visual element
         member x.TryItemTemplate = match x.Attributes.TryFind("ItemTemplate") with Some v -> Some(unbox<Xamarin.Forms.DataTemplate>(v)) | None -> None
 
-        /// Try to get the SelectedItem property in the visual element
-        member x.TrySelectedItem = match x.Attributes.TryFind("SelectedItem") with Some v -> Some(unbox<System.Object>(v)) | None -> None
+        /// Try to get the CarouselPage_SelectedItem property in the visual element
+        member x.TryCarouselPage_SelectedItem = match x.Attributes.TryFind("CarouselPage_SelectedItem") with Some v -> Some(unbox<System.Object>(v)) | None -> None
 
         /// Try to get the CurrentPage property in the visual element
         member x.TryCurrentPage = match x.Attributes.TryFind("CurrentPage") with Some v -> Some(unbox<XamlElement>(v)) | None -> None
@@ -591,7 +592,7 @@ module XamlElementExtensions =
         member x.TryView = match x.Attributes.TryFind("View") with Some v -> Some(unbox<XamlElement>(v)) | None -> None
 
         /// Try to get the ListViewItemsSource property in the visual element
-        member x.TryListViewItemsSource = match x.Attributes.TryFind("ListViewItemsSource") with Some v -> Some(unbox<System.Collections.Generic.IList<XamlElement>>(v)) | None -> None
+        member x.TryListViewItemsSource = match x.Attributes.TryFind("ListViewItemsSource") with Some v -> Some(unbox<System.Collections.Generic.IList<ListElementData<XamlElement>>>(v)) | None -> None
 
         /// Try to get the Footer property in the visual element
         member x.TryFooter = match x.Attributes.TryFind("Footer") with Some v -> Some(unbox<System.Object>(v)) | None -> None
@@ -620,8 +621,8 @@ module XamlElementExtensions =
         /// Try to get the RowHeight property in the visual element
         member x.TryRowHeight = match x.Attributes.TryFind("RowHeight") with Some v -> Some(unbox<int>(v)) | None -> None
 
-        /// Try to get the ListViewSelectedItem property in the visual element
-        member x.TryListViewSelectedItem = match x.Attributes.TryFind("ListViewSelectedItem") with Some v -> Some(unbox<int>(v)) | None -> None
+        /// Try to get the ListView_SelectedItem property in the visual element
+        member x.TryListView_SelectedItem = match x.Attributes.TryFind("ListView_SelectedItem") with Some v -> Some(unbox<int>(v)) | None -> None
 
         /// Try to get the SeparatorVisibility property in the visual element
         member x.TrySeparatorVisibility = match x.Attributes.TryFind("SeparatorVisibility") with Some v -> Some(unbox<Xamarin.Forms.SeparatorVisibility>(v)) | None -> None
@@ -635,14 +636,23 @@ module XamlElementExtensions =
         /// Try to get the ItemDisappearing property in the visual element
         member x.TryItemDisappearing = match x.Attributes.TryFind("ItemDisappearing") with Some v -> Some(unbox<System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>>(v)) | None -> None
 
-        /// Try to get the ItemSelected property in the visual element
-        member x.TryItemSelected = match x.Attributes.TryFind("ItemSelected") with Some v -> Some(unbox<System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>>(v)) | None -> None
+        /// Try to get the ListView_ItemSelected property in the visual element
+        member x.TryListView_ItemSelected = match x.Attributes.TryFind("ListView_ItemSelected") with Some v -> Some(unbox<System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>>(v)) | None -> None
 
         /// Try to get the ItemTapped property in the visual element
         member x.TryItemTapped = match x.Attributes.TryFind("ItemTapped") with Some v -> Some(unbox<System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>>(v)) | None -> None
 
         /// Try to get the Refreshing property in the visual element
         member x.TryRefreshing = match x.Attributes.TryFind("Refreshing") with Some v -> Some(unbox<System.EventHandler>(v)) | None -> None
+
+        /// Try to get the GroupListViewItemsSource property in the visual element
+        member x.TryGroupListViewItemsSource = match x.Attributes.TryFind("GroupListViewItemsSource") with Some v -> Some(unbox<System.Collections.Generic.IList<ListGroupData<XamlElement>>>(v)) | None -> None
+
+        /// Try to get the ListViewGrouped_SelectedItem property in the visual element
+        member x.TryListViewGrouped_SelectedItem = match x.Attributes.TryFind("ListViewGrouped_SelectedItem") with Some v -> Some(unbox<(int * int) option>(v)) | None -> None
+
+        /// Try to get the ListViewGrouped_ItemSelected property in the visual element
+        member x.TryListViewGrouped_ItemSelected = match x.Attributes.TryFind("ListViewGrouped_ItemSelected") with Some v -> Some(unbox<System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>>(v)) | None -> None
 
         /// Adjusts the ClassId property in the visual element
         member x.ClassId(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ClassId", box ((value))))
@@ -983,8 +993,8 @@ module XamlElementExtensions =
         /// Adjusts the ItemTemplate property in the visual element
         member x.ItemTemplate(value: Xamarin.Forms.DataTemplate) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ItemTemplate", box ((value))))
 
-        /// Adjusts the SelectedItem property in the visual element
-        member x.SelectedItem(value: System.Object) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("SelectedItem", box ((value))))
+        /// Adjusts the CarouselPage_SelectedItem property in the visual element
+        member x.CarouselPage_SelectedItem(value: System.Object) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("CarouselPage_SelectedItem", box ((value))))
 
         /// Adjusts the CurrentPage property in the visual element
         member x.CurrentPage(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("CurrentPage", box ((value))))
@@ -1038,7 +1048,7 @@ module XamlElementExtensions =
         member x.View(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("View", box ((value))))
 
         /// Adjusts the ListViewItemsSource property in the visual element
-        member x.ListViewItemsSource(value: XamlElement list) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ListViewItemsSource", box ((fun (es: XamlElement list) -> es |> Array.ofList :> System.Collections.Generic.IList<XamlElement>)(value))))
+        member x.ListViewItemsSource(value: XamlElement list) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ListViewItemsSource", box ((fun (es: XamlElement list) -> es |> Array.ofList |> Array.map ListElementData<XamlElement> :> System.Collections.Generic.IList<ListElementData<XamlElement>>)(value))))
 
         /// Adjusts the Footer property in the visual element
         member x.Footer(value: System.Object) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Footer", box ((value))))
@@ -1067,8 +1077,8 @@ module XamlElementExtensions =
         /// Adjusts the RowHeight property in the visual element
         member x.RowHeight(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("RowHeight", box ((value))))
 
-        /// Adjusts the ListViewSelectedItem property in the visual element
-        member x.ListViewSelectedItem(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ListViewSelectedItem", box ((value))))
+        /// Adjusts the ListView_SelectedItem property in the visual element
+        member x.ListView_SelectedItem(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ListView_SelectedItem", box ((value))))
 
         /// Adjusts the SeparatorVisibility property in the visual element
         member x.SeparatorVisibility(value: Xamarin.Forms.SeparatorVisibility) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("SeparatorVisibility", box ((value))))
@@ -1082,14 +1092,23 @@ module XamlElementExtensions =
         /// Adjusts the ItemDisappearing property in the visual element
         member x.ItemDisappearing(value: Xamarin.Forms.ItemVisibilityEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ItemDisappearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))(value))))
 
-        /// Adjusts the ItemSelected property in the visual element
-        member x.ItemSelected(value: int option -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ItemSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<Xamarin.Forms.View> |> Option.bind (fun view -> let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<Xamarin.Forms.Cell> in items |> Seq.tryFindIndex (fun view2 -> System.Object.ReferenceEquals(view, view2))))))(value))))
+        /// Adjusts the ListView_ItemSelected property in the visual element
+        member x.ListView_ItemSelected(value: int option -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ListView_ItemSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<ListElementData<XamlElement>> |> Option.bind (fun item -> let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListElementData<XamlElement>> in items |> Seq.tryFindIndex (fun item2 -> System.Object.ReferenceEquals(item, item2))))))(value))))
 
         /// Adjusts the ItemTapped property in the visual element
         member x.ItemTapped(value: Xamarin.Forms.ItemTappedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ItemTapped", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun _sender args -> f args))(value))))
 
         /// Adjusts the Refreshing property in the visual element
         member x.Refreshing(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Refreshing", box ((fun f -> System.EventHandler(fun sender args -> f ()))(value))))
+
+        /// Adjusts the GroupListViewItemsSource property in the visual element
+        member x.GroupListViewItemsSource(value: (XamlElement * XamlElement list) list) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("GroupListViewItemsSource", box ((fun (es: (XamlElement * XamlElement list) list) -> es |> Array.ofList |> Array.map (fun (a,bs) -> ListGroupData(a, Array.ofList bs)) :> System.Collections.Generic.IList<ListGroupData<XamlElement>>)(value))))
+
+        /// Adjusts the ListViewGrouped_SelectedItem property in the visual element
+        member x.ListViewGrouped_SelectedItem(value: (int * int) option) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ListViewGrouped_SelectedItem", box ((value))))
+
+        /// Adjusts the ListViewGrouped_ItemSelected property in the visual element
+        member x.ListViewGrouped_ItemSelected(value: (int * int) option -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ListViewGrouped_ItemSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<ListElementData<XamlElement>> |> Option.bind (fun item -> let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData<XamlElement>> in Seq.indexed items |> Seq.tryPick (fun (i,items2) -> Seq.indexed items2 |> Seq.tryPick (fun (j,item2) -> if System.Object.ReferenceEquals(item, item2) then Some (i,j) else None))))))(value))))
 
 
     /// Adjusts the ClassId property in the visual element
@@ -1770,11 +1789,11 @@ module XamlElementExtensions =
     /// Adjusts the ItemTemplate property in the visual element
     let itemTemplate (value: Xamarin.Forms.DataTemplate) (x: XamlElement) = x.ItemTemplate(value)
 
-    /// Adjusts the SelectedItem property in the visual element
-    let withSelectedItem (value: System.Object) (x: XamlElement) = x.SelectedItem(value)
+    /// Adjusts the CarouselPage_SelectedItem property in the visual element
+    let withCarouselPage_SelectedItem (value: System.Object) (x: XamlElement) = x.CarouselPage_SelectedItem(value)
 
-    /// Adjusts the SelectedItem property in the visual element
-    let selectedItem (value: System.Object) (x: XamlElement) = x.SelectedItem(value)
+    /// Adjusts the CarouselPage_SelectedItem property in the visual element
+    let carouselPage_SelectedItem (value: System.Object) (x: XamlElement) = x.CarouselPage_SelectedItem(value)
 
     /// Adjusts the CurrentPage property in the visual element
     let withCurrentPage (value: XamlElement) (x: XamlElement) = x.CurrentPage(value)
@@ -1938,11 +1957,11 @@ module XamlElementExtensions =
     /// Adjusts the RowHeight property in the visual element
     let rowHeight (value: int) (x: XamlElement) = x.RowHeight(value)
 
-    /// Adjusts the ListViewSelectedItem property in the visual element
-    let withListViewSelectedItem (value: int) (x: XamlElement) = x.ListViewSelectedItem(value)
+    /// Adjusts the ListView_SelectedItem property in the visual element
+    let withListView_SelectedItem (value: int) (x: XamlElement) = x.ListView_SelectedItem(value)
 
-    /// Adjusts the ListViewSelectedItem property in the visual element
-    let listViewSelectedItem (value: int) (x: XamlElement) = x.ListViewSelectedItem(value)
+    /// Adjusts the ListView_SelectedItem property in the visual element
+    let listView_SelectedItem (value: int) (x: XamlElement) = x.ListView_SelectedItem(value)
 
     /// Adjusts the SeparatorVisibility property in the visual element
     let withSeparatorVisibility (value: Xamarin.Forms.SeparatorVisibility) (x: XamlElement) = x.SeparatorVisibility(value)
@@ -1968,11 +1987,11 @@ module XamlElementExtensions =
     /// Adjusts the ItemDisappearing property in the visual element
     let itemDisappearing (value: Xamarin.Forms.ItemVisibilityEventArgs -> unit) (x: XamlElement) = x.ItemDisappearing(value)
 
-    /// Adjusts the ItemSelected property in the visual element
-    let withItemSelected (value: int option -> unit) (x: XamlElement) = x.ItemSelected(value)
+    /// Adjusts the ListView_ItemSelected property in the visual element
+    let withListView_ItemSelected (value: int option -> unit) (x: XamlElement) = x.ListView_ItemSelected(value)
 
-    /// Adjusts the ItemSelected property in the visual element
-    let itemSelected (value: int option -> unit) (x: XamlElement) = x.ItemSelected(value)
+    /// Adjusts the ListView_ItemSelected property in the visual element
+    let listView_ItemSelected (value: int option -> unit) (x: XamlElement) = x.ListView_ItemSelected(value)
 
     /// Adjusts the ItemTapped property in the visual element
     let withItemTapped (value: Xamarin.Forms.ItemTappedEventArgs -> unit) (x: XamlElement) = x.ItemTapped(value)
@@ -1985,6 +2004,24 @@ module XamlElementExtensions =
 
     /// Adjusts the Refreshing property in the visual element
     let refreshing (value: unit -> unit) (x: XamlElement) = x.Refreshing(value)
+
+    /// Adjusts the GroupListViewItemsSource property in the visual element
+    let withGroupListViewItemsSource (value: (XamlElement * XamlElement list) list) (x: XamlElement) = x.GroupListViewItemsSource(value)
+
+    /// Adjusts the GroupListViewItemsSource property in the visual element
+    let groupListViewItemsSource (value: (XamlElement * XamlElement list) list) (x: XamlElement) = x.GroupListViewItemsSource(value)
+
+    /// Adjusts the ListViewGrouped_SelectedItem property in the visual element
+    let withListViewGrouped_SelectedItem (value: (int * int) option) (x: XamlElement) = x.ListViewGrouped_SelectedItem(value)
+
+    /// Adjusts the ListViewGrouped_SelectedItem property in the visual element
+    let listViewGrouped_SelectedItem (value: (int * int) option) (x: XamlElement) = x.ListViewGrouped_SelectedItem(value)
+
+    /// Adjusts the ListViewGrouped_ItemSelected property in the visual element
+    let withListViewGrouped_ItemSelected (value: (int * int) option -> unit) (x: XamlElement) = x.ListViewGrouped_ItemSelected(value)
+
+    /// Adjusts the ListViewGrouped_ItemSelected property in the visual element
+    let listViewGrouped_ItemSelected (value: (int * int) option -> unit) (x: XamlElement) = x.ListViewGrouped_ItemSelected(value)
 
 type Xaml() =
 
@@ -9456,7 +9493,7 @@ type Xaml() =
             match children with None -> () | Some v -> yield ("Children", box (Array.ofList(v))) 
             match itemsSource with None -> () | Some v -> yield ("ItemsSource", box ((fun es -> es |> Array.ofList |> Array.map box :> System.Collections.Generic.IList<obj>)(v))) 
             match itemTemplate with None -> () | Some v -> yield ("ItemTemplate", box ((v))) 
-            match selectedItem with None -> () | Some v -> yield ("SelectedItem", box ((v))) 
+            match selectedItem with None -> () | Some v -> yield ("CarouselPage_SelectedItem", box ((v))) 
             match currentPage with None -> () | Some v -> yield ("CurrentPage", box ((v))) 
             match currentPageChanged with None -> () | Some v -> yield ("CurrentPageChanged", box ((fun f -> System.EventHandler(fun sender args -> f ((sender :?> Xamarin.Forms.CarouselPage).SelectedItem |> Option.ofObj |> Option.map unbox<'T>)))(v))) 
             match title with None -> () | Some v -> yield ("Title", box ((v))) 
@@ -9536,8 +9573,8 @@ type Xaml() =
             | _, Some value -> target.ItemTemplate <- value
             | Some _, None -> target.ItemTemplate <- null // TODO: not always perfect, should set back to original default?
             | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TrySelectedItem
-            match prevValueOpt, source.TrySelectedItem with
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryCarouselPage_SelectedItem
+            match prevValueOpt, source.TryCarouselPage_SelectedItem with
             | Some prevValue, Some value when prevValue = value -> ()
             | _, Some value -> target.SelectedItem <- value
             | Some _, None -> target.SelectedItem <- null // TODO: not always perfect, should set back to original default?
@@ -10776,9 +10813,9 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.ViewCell>, create, apply, Map.ofArray attribs)
 
     /// Describes a ListView in the view
-    static member ListView(?cells: XamlElement list, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?headerTemplate: Xamarin.Forms.DataTemplate, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: int, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: Xamarin.Forms.ItemVisibilityEventArgs -> unit, ?itemDisappearing: Xamarin.Forms.ItemVisibilityEventArgs -> unit, ?itemSelected: int option -> unit, ?itemTapped: Xamarin.Forms.ItemTappedEventArgs -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member ListView(?items: XamlElement list, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?headerTemplate: Xamarin.Forms.DataTemplate, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: int, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: Xamarin.Forms.ItemVisibilityEventArgs -> unit, ?itemDisappearing: Xamarin.Forms.ItemVisibilityEventArgs -> unit, ?itemSelected: int option -> unit, ?itemTapped: Xamarin.Forms.ItemTappedEventArgs -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
-            match cells with None -> () | Some v -> yield ("ListViewItemsSource", box ((fun (es: XamlElement list) -> es |> Array.ofList :> System.Collections.Generic.IList<XamlElement>)(v))) 
+            match items with None -> () | Some v -> yield ("ListViewItemsSource", box ((fun (es: XamlElement list) -> es |> Array.ofList |> Array.map ListElementData<XamlElement> :> System.Collections.Generic.IList<ListElementData<XamlElement>>)(v))) 
             match footer with None -> () | Some v -> yield ("Footer", box ((v))) 
             match hasUnevenRows with None -> () | Some v -> yield ("HasUnevenRows", box ((v))) 
             match header with None -> () | Some v -> yield ("Header", box ((v))) 
@@ -10788,12 +10825,12 @@ type Xaml() =
             match isRefreshing with None -> () | Some v -> yield ("IsRefreshing", box ((v))) 
             match refreshCommand with None -> () | Some v -> yield ("RefreshCommand", box (makeCommand(v))) 
             match rowHeight with None -> () | Some v -> yield ("RowHeight", box ((v))) 
-            match selectedItem with None -> () | Some v -> yield ("ListViewSelectedItem", box ((v))) 
+            match selectedItem with None -> () | Some v -> yield ("ListView_SelectedItem", box ((v))) 
             match separatorVisibility with None -> () | Some v -> yield ("SeparatorVisibility", box ((v))) 
             match separatorColor with None -> () | Some v -> yield ("SeparatorColor", box ((v))) 
             match itemAppearing with None -> () | Some v -> yield ("ItemAppearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))(v))) 
             match itemDisappearing with None -> () | Some v -> yield ("ItemDisappearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))(v))) 
-            match itemSelected with None -> () | Some v -> yield ("ItemSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<XamlElement> |> Option.bind (fun view -> let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<XamlElement> in items |> Seq.tryFindIndex (fun view2 -> System.Object.ReferenceEquals(view, view2))))))(v))) 
+            match itemSelected with None -> () | Some v -> yield ("ListView_ItemSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<ListElementData<XamlElement>> |> Option.bind (fun item -> let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListElementData<XamlElement>> in items |> Seq.tryFindIndex (fun item2 -> System.Object.ReferenceEquals(item, item2))))))(v))) 
             match itemTapped with None -> () | Some v -> yield ("ItemTapped", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun _sender args -> f args))(v))) 
             match refreshing with None -> () | Some v -> yield ("Refreshing", box ((fun f -> System.EventHandler(fun sender args -> f ()))(v))) 
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
@@ -10887,10 +10924,10 @@ type Xaml() =
             | _, Some value -> target.RowHeight <- value
             | Some _, None -> target.RowHeight <- -1 // TODO: not always perfect, should set back to original default?
             | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryListViewSelectedItem
-            match prevValueOpt, source.TryListViewSelectedItem with
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryListView_SelectedItem
+            match prevValueOpt, source.TryListView_SelectedItem with
             | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.SelectedItem <- (fun i -> let items = target.ItemsSource :?> System.Collections.Generic.IList<Xamarin.Forms.Cell> in if i >= 0 && i < items.Count then items.[i] else null) value
+            | _, Some value -> target.SelectedItem <- (fun i -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListElementData<XamlElement>> in if i >= 0 && i < items.Count then items.[i].Key else null) value
             | Some _, None -> target.SelectedItem <- null // TODO: not always perfect, should set back to original default?
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TrySeparatorVisibility
@@ -10919,8 +10956,342 @@ type Xaml() =
             | None, Some value -> target.ItemDisappearing.AddHandler(value)
             | Some prevValue, None -> target.ItemDisappearing.RemoveHandler(prevValue)
             | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryItemSelected
-            match prevValueOpt, source.TryItemSelected with
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryListView_ItemSelected
+            match prevValueOpt, source.TryListView_ItemSelected with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | Some prevValue, Some value -> target.ItemSelected.RemoveHandler(prevValue); target.ItemSelected.AddHandler(value)
+            | None, Some value -> target.ItemSelected.AddHandler(value)
+            | Some prevValue, None -> target.ItemSelected.RemoveHandler(prevValue)
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryItemTapped
+            match prevValueOpt, source.TryItemTapped with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | Some prevValue, Some value -> target.ItemTapped.RemoveHandler(prevValue); target.ItemTapped.AddHandler(value)
+            | None, Some value -> target.ItemTapped.AddHandler(value)
+            | Some prevValue, None -> target.ItemTapped.RemoveHandler(prevValue)
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRefreshing
+            match prevValueOpt, source.TryRefreshing with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | Some prevValue, Some value -> target.Refreshing.RemoveHandler(prevValue); target.Refreshing.AddHandler(value)
+            | None, Some value -> target.Refreshing.AddHandler(value)
+            | Some prevValue, None -> target.Refreshing.RemoveHandler(prevValue)
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
+            match prevValueOpt, source.TryHorizontalOptions with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.HorizontalOptions <- value
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
+            match prevValueOpt, source.TryVerticalOptions with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.VerticalOptions <- value
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
+            match prevValueOpt, source.TryMargin with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Margin <- value
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            match source.TryGestureRecognizers with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.GestureRecognizers with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.GestureRecognizers.Count > coll.Length) do
+                    target.GestureRecognizers.RemoveAt(target.GestureRecognizers.Count - 1)
+
+                // Count the existing children
+                let n = target.GestureRecognizers.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryGestureRecognizers with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsIGestureRecognizer()
+                                if i >= n then
+                                    target.GestureRecognizers.Insert(i, targetChild)
+                                else
+                                    target.GestureRecognizers.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.GestureRecognizers.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.GestureRecognizers.[i]
+                    ()
+            | _ -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
+            match prevValueOpt, source.TryAnchorX with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.AnchorX <- value
+            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
+            match prevValueOpt, source.TryAnchorY with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.AnchorY <- value
+            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
+            match prevValueOpt, source.TryBackgroundColor with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.BackgroundColor <- value
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
+            match prevValueOpt, source.TryHeightRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.HeightRequest <- value
+            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
+            match prevValueOpt, source.TryInputTransparent with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.InputTransparent <- value
+            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
+            match prevValueOpt, source.TryIsEnabled with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.IsEnabled <- value
+            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
+            match prevValueOpt, source.TryIsVisible with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.IsVisible <- value
+            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
+            match prevValueOpt, source.TryMinimumHeightRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.MinimumHeightRequest <- value
+            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
+            match prevValueOpt, source.TryMinimumWidthRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.MinimumWidthRequest <- value
+            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
+            match prevValueOpt, source.TryOpacity with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Opacity <- value
+            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
+            match prevValueOpt, source.TryRotation with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Rotation <- value
+            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
+            match prevValueOpt, source.TryRotationX with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.RotationX <- value
+            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
+            match prevValueOpt, source.TryRotationY with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.RotationY <- value
+            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
+            match prevValueOpt, source.TryScale with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Scale <- value
+            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
+            match prevValueOpt, source.TryStyle with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Style <- value
+            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
+            match prevValueOpt, source.TryTranslationX with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.TranslationX <- value
+            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
+            match prevValueOpt, source.TryTranslationY with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.TranslationY <- value
+            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
+            match prevValueOpt, source.TryWidthRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.WidthRequest <- value
+            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
+            match prevValueOpt, source.TryClassId with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.ClassId <- value
+            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
+            match prevValueOpt, source.TryStyleId with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.StyleId <- value
+            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+        new XamlElement(typeof<Xamarin.Forms.ListView>, create, apply, Map.ofArray attribs)
+
+    /// Describes a ListViewGrouped in the view
+    static member ListViewGrouped(?items: (XamlElement * XamlElement list) list, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: (int * int) option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: Xamarin.Forms.ItemVisibilityEventArgs -> unit, ?itemDisappearing: Xamarin.Forms.ItemVisibilityEventArgs -> unit, ?itemSelected: (int * int) option -> unit, ?itemTapped: Xamarin.Forms.ItemTappedEventArgs -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+        let attribs = [| 
+            match items with None -> () | Some v -> yield ("GroupListViewItemsSource", box ((fun (es: (XamlElement * XamlElement list) list) -> es |> Array.ofList |> Array.map (fun (a,bs) -> ListGroupData(a, Array.ofList bs)) :> System.Collections.Generic.IList<ListGroupData<XamlElement>>)(v))) 
+            match footer with None -> () | Some v -> yield ("Footer", box ((v))) 
+            match hasUnevenRows with None -> () | Some v -> yield ("HasUnevenRows", box ((v))) 
+            match header with None -> () | Some v -> yield ("Header", box ((v))) 
+            match isGroupingEnabled with None -> () | Some v -> yield ("IsGroupingEnabled", box ((v))) 
+            match isPullToRefreshEnabled with None -> () | Some v -> yield ("IsPullToRefreshEnabled", box ((v))) 
+            match isRefreshing with None -> () | Some v -> yield ("IsRefreshing", box ((v))) 
+            match refreshCommand with None -> () | Some v -> yield ("RefreshCommand", box (makeCommand(v))) 
+            match rowHeight with None -> () | Some v -> yield ("RowHeight", box ((v))) 
+            match selectedItem with None -> () | Some v -> yield ("ListViewGrouped_SelectedItem", box ((v))) 
+            match separatorVisibility with None -> () | Some v -> yield ("SeparatorVisibility", box ((v))) 
+            match separatorColor with None -> () | Some v -> yield ("SeparatorColor", box ((v))) 
+            match itemAppearing with None -> () | Some v -> yield ("ItemAppearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))(v))) 
+            match itemDisappearing with None -> () | Some v -> yield ("ItemDisappearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))(v))) 
+            match itemSelected with None -> () | Some v -> yield ("ListViewGrouped_ItemSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<ListElementData<XamlElement>> |> Option.bind (fun item -> let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData<XamlElement>> in Seq.indexed items |> Seq.tryPick (fun (i,items2) -> Seq.indexed items2 |> Seq.tryPick (fun (j,item2) -> if System.Object.ReferenceEquals(item, item2) then Some (i,j) else None))))))(v))) 
+            match itemTapped with None -> () | Some v -> yield ("ItemTapped", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun _sender args -> f args))(v))) 
+            match refreshing with None -> () | Some v -> yield ("Refreshing", box ((fun f -> System.EventHandler(fun sender args -> f ()))(v))) 
+            match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
+            match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
+            match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
+            match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
+            match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
+            match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
+            match heightRequest with None -> () | Some v -> yield ("HeightRequest", box ((v))) 
+            match inputTransparent with None -> () | Some v -> yield ("InputTransparent", box ((v))) 
+            match isEnabled with None -> () | Some v -> yield ("IsEnabled", box ((v))) 
+            match isVisible with None -> () | Some v -> yield ("IsVisible", box ((v))) 
+            match minimumHeightRequest with None -> () | Some v -> yield ("MinimumHeightRequest", box ((v))) 
+            match minimumWidthRequest with None -> () | Some v -> yield ("MinimumWidthRequest", box ((v))) 
+            match opacity with None -> () | Some v -> yield ("Opacity", box ((v))) 
+            match rotation with None -> () | Some v -> yield ("Rotation", box ((v))) 
+            match rotationX with None -> () | Some v -> yield ("RotationX", box ((v))) 
+            match rotationY with None -> () | Some v -> yield ("RotationY", box ((v))) 
+            match scale with None -> () | Some v -> yield ("Scale", box ((v))) 
+            match style with None -> () | Some v -> yield ("Style", box ((v))) 
+            match translationX with None -> () | Some v -> yield ("TranslationX", box ((v))) 
+            match translationY with None -> () | Some v -> yield ("TranslationY", box ((v))) 
+            match widthRequest with None -> () | Some v -> yield ("WidthRequest", box ((v))) 
+            match classId with None -> () | Some v -> yield ("ClassId", box ((v))) 
+            match styleId with None -> () | Some v -> yield ("StyleId", box ((v))) 
+          |]
+
+        let create () =
+            box (new Elmish.XamarinForms.DynamicViews.CustomGroupListView())
+
+        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+            let target = (target :?> Xamarin.Forms.ListView)
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryGroupListViewItemsSource
+            match prevValueOpt, source.TryGroupListViewItemsSource with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.ItemsSource <- value
+            | Some _, None -> target.ItemsSource <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFooter
+            match prevValueOpt, source.TryFooter with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Footer <- value
+            | Some _, None -> target.Footer <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHasUnevenRows
+            match prevValueOpt, source.TryHasUnevenRows with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.HasUnevenRows <- value
+            | Some _, None -> target.HasUnevenRows <- false // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeader
+            match prevValueOpt, source.TryHeader with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Header <- value
+            | Some _, None -> target.Header <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsGroupingEnabled
+            match prevValueOpt, source.TryIsGroupingEnabled with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.IsGroupingEnabled <- value
+            | Some _, None -> target.IsGroupingEnabled <- false // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsPullToRefreshEnabled
+            match prevValueOpt, source.TryIsPullToRefreshEnabled with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.IsPullToRefreshEnabled <- value
+            | Some _, None -> target.IsPullToRefreshEnabled <- false // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsRefreshing
+            match prevValueOpt, source.TryIsRefreshing with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.IsRefreshing <- value
+            | Some _, None -> target.IsRefreshing <- false // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRefreshCommand
+            match prevValueOpt, source.TryRefreshCommand with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.RefreshCommand <- value
+            | Some _, None -> target.RefreshCommand <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRowHeight
+            match prevValueOpt, source.TryRowHeight with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.RowHeight <- value
+            | Some _, None -> target.RowHeight <- -1 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryListViewGrouped_SelectedItem
+            match prevValueOpt, source.TryListViewGrouped_SelectedItem with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.SelectedItem <- (function None -> null | Some (i,j) -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListGroupData<XamlElement>> in (if i >= 0 && i < items.Count then (let items2 = items.[i] in if j >= 0 && j < items2.Count then items2.[j] else null) else null)) value
+            | Some _, None -> target.SelectedItem <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TrySeparatorVisibility
+            match prevValueOpt, source.TrySeparatorVisibility with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.SeparatorVisibility <- value
+            | Some _, None -> target.SeparatorVisibility <- Xamarin.Forms.SeparatorVisibility.Default // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TrySeparatorColor
+            match prevValueOpt, source.TrySeparatorColor with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.SeparatorColor <- value
+            | Some _, None -> target.SeparatorColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryItemAppearing
+            match prevValueOpt, source.TryItemAppearing with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | Some prevValue, Some value -> target.ItemAppearing.RemoveHandler(prevValue); target.ItemAppearing.AddHandler(value)
+            | None, Some value -> target.ItemAppearing.AddHandler(value)
+            | Some prevValue, None -> target.ItemAppearing.RemoveHandler(prevValue)
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryItemDisappearing
+            match prevValueOpt, source.TryItemDisappearing with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | Some prevValue, Some value -> target.ItemDisappearing.RemoveHandler(prevValue); target.ItemDisappearing.AddHandler(value)
+            | None, Some value -> target.ItemDisappearing.AddHandler(value)
+            | Some prevValue, None -> target.ItemDisappearing.RemoveHandler(prevValue)
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryListViewGrouped_ItemSelected
+            match prevValueOpt, source.TryListViewGrouped_ItemSelected with
             | Some prevValue, Some value when prevValue = value -> ()
             | Some prevValue, Some value -> target.ItemSelected.RemoveHandler(prevValue); target.ItemSelected.AddHandler(value)
             | None, Some value -> target.ItemSelected.AddHandler(value)
@@ -11243,3 +11614,6 @@ module XamlCreateExtensions =
 
     /// Specifies a ListView in the view description, initially with default attributes
     let listView = Xaml.ListView()
+
+    /// Specifies a ListViewGrouped in the view description, initially with default attributes
+    let listViewGrouped = Xaml.ListViewGrouped()

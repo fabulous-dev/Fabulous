@@ -997,6 +997,7 @@
 				},
 				{
 					"name": "SelectedItem",
+					"uniqueName": "CarouselPage_SelectedItem",
 					"default": "null"
 				},
 				{
@@ -1174,10 +1175,10 @@
 				{
 					"name": "ItemsSource",
 					"uniqueName": "ListViewItemsSource",
-					"shortName": "cells",
+					"shortName": "items",
 					"inputType": "XamlElement list",
-					"modelType": "System.Collections.Generic.IList<XamlElement>",
-					"conv": "(fun (es: XamlElement list) -> es |> Array.ofList :> System.Collections.Generic.IList<XamlElement>)",
+					"modelType": "System.Collections.Generic.IList<ListElementData<XamlElement>>",
+					"conv": "(fun (es: XamlElement list) -> es |> Array.ofList |> Array.map ListElementData<XamlElement> :> System.Collections.Generic.IList<ListElementData<XamlElement>>)",
 					"default": "null"
 				},
 				//{
@@ -1233,10 +1234,10 @@
 				{
 					// the SelectedItem is stored as an index integer, when we apply it we fetch out the element from the source
 					"name": "SelectedItem",
-					"uniqueName": "ListViewSelectedItem",
+					"uniqueName": "ListView_SelectedItem",
 					"default": "null",
 					"modelType": "int",
-					"apply": "(fun i -> let items = target.ItemsSource :?> System.Collections.Generic.IList<Xamarin.Forms.Cell> in if i >= 0 && i < items.Count then items.[i] else null)"
+					"apply": "(fun i -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListElementData<XamlElement>> in if i >= 0 && i < items.Count then items.[i].Key else null)"
 				},
 				{
 					"name": "SeparatorVisibility",
@@ -1260,9 +1261,123 @@
 				},
 				{
 					"name": "ItemSelected",
+					"uniqueName": "ListView_ItemSelected",
 					"default": "null",
 					"inputType": "int option -> unit",
-					"conv": "(fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<Xamarin.Forms.View> |> Option.bind (fun view -> let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<Xamarin.Forms.Cell> in items |> Seq.tryFindIndex (fun view2 -> System.Object.ReferenceEquals(view, view2))))))"
+					"conv": "(fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<ListElementData<XamlElement>> |> Option.bind (fun item -> let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListElementData<XamlElement>> in items |> Seq.tryFindIndex (fun item2 -> System.Object.ReferenceEquals(item, item2))))))"
+				},
+				{
+					"name": "ItemTapped",
+					"default": "null",
+					"inputType": "Xamarin.Forms.ItemTappedEventArgs -> unit",
+					"conv": "(fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun _sender args -> f args))"
+				},
+				{
+					"name": "Refreshing",
+					"default": "null",
+					"inputType": "unit -> unit",
+					"conv": "(fun f -> System.EventHandler(fun sender args -> f ()))"
+				}
+			]
+		},
+		{
+			"name": "Xamarin.Forms.ListView",
+			"modelName": "ListViewGrouped",
+			"customType": "Elmish.XamarinForms.DynamicViews.CustomGroupListView",
+			"members": [
+				{
+					"name": "ItemsSource",
+					"uniqueName": "GroupListViewItemsSource",
+					"shortName": "items",
+					"inputType": "(XamlElement * XamlElement list) list",
+					"modelType": "System.Collections.Generic.IList<ListGroupData<XamlElement>>",
+					"conv": "(fun (es: (XamlElement * XamlElement list) list) -> es |> Array.ofList |> Array.map (fun (a,bs) -> ListGroupData(a, Array.ofList bs)) :> System.Collections.Generic.IList<ListGroupData<XamlElement>>)",
+					"default": "null"
+				},
+				//{
+				//	"name": "ItemTemplate",
+				//	"default": "null"
+				//},
+				{
+					"name": "Footer",
+					"default": "null"
+				},
+				//{
+				//		"name": "FooterTemplate",
+				//		"default": "null"
+				//		},
+				//	{
+				//			"name": "GroupHeaderTemplate",
+				//			"default": "null"
+				//		},
+				{
+					"name": "HasUnevenRows",
+					"default": "false"
+				},
+				{
+					"name": "Header",
+					"default": "null"
+				},
+				//{
+				//	"name": "HeaderTemplate",
+				//	"default": "null"
+				//},
+				{
+					"name": "IsGroupingEnabled",
+					"default": "false"
+				},
+				{
+					"name": "IsPullToRefreshEnabled",
+					"default": "false"
+				},
+				{
+					"name": "IsRefreshing",
+					"default": "false"
+				},
+				{
+					"name": "RefreshCommand",
+					"default": "null",
+					"inputType": "unit -> unit",
+					"conv": "makeCommand"
+				},
+				{
+					"name": "RowHeight",
+					"default": "-1"
+				},
+				{
+					// the SelectedItem is stored as an index integer, when we apply it we fetch out the element from the source
+					"name": "SelectedItem",
+					"uniqueName": "ListViewGrouped_SelectedItem",
+					"default": "null",
+					"modelType": "(int * int) option",
+					"apply": "(function None -> null | Some (i,j) -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListGroupData<XamlElement>> in (if i >= 0 && i < items.Count then (let items2 = items.[i] in if j >= 0 && j < items2.Count then items2.[j] else null) else null))"
+				},
+				{
+					"name": "SeparatorVisibility",
+					"default": "Xamarin.Forms.SeparatorVisibility.Default"
+				},
+				{
+					"name": "SeparatorColor",
+					"default": "Xamarin.Forms.Color.Default"
+				},
+				{
+					"name": "ItemAppearing",
+					"default": "null",
+					"inputType": "Xamarin.Forms.ItemVisibilityEventArgs -> unit",
+					"conv": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))"
+				},
+				{
+					"name": "ItemDisappearing",
+					"default": "null",
+					"inputType": "Xamarin.Forms.ItemVisibilityEventArgs -> unit",
+					"conv": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))"
+				},
+				{
+					"name": "ItemSelected",
+					"uniqueName": "ListViewGrouped_ItemSelected",
+					"default": "null",
+					"inputType": "(int * int) option -> unit",
+					"conv": "(fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<ListElementData<XamlElement>> |> Option.bind (fun item -> let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData<XamlElement>> in Seq.indexed items |> Seq.tryPick (fun (i,items2) -> Seq.indexed items2 |> Seq.tryPick (fun (j,item2) -> if System.Object.ReferenceEquals(item, item2) then Some (i,j) else None))))))"
 				},
 				{
 					"name": "ItemTapped",

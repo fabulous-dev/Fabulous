@@ -37,6 +37,7 @@ type Msg =
     | EndDateSelected of DateTime 
     | PickerItemChanged of int
     | ListViewSelectedItemChanged of int option
+    | ListViewGroupedSelectedItemChanged of (int * int) option
     | FrameTapped 
     | FrameTapped2 
     | UpdateGridSize of double
@@ -75,6 +76,7 @@ type AllControls () =
         | EndDateSelected d -> { model with EndDate = d }
         | GridEditCompleted (i, j) -> model
         | ListViewSelectedItemChanged item -> model
+        | ListViewGroupedSelectedItemChanged item -> model
         | PickerItemChanged i -> { model with PickedColorIndex = i }
         | FrameTapped -> { model with NumTaps= model.NumTaps + 1 }
         | FrameTapped2 -> { model with NumTaps2= model.NumTaps2 + 1 }
@@ -139,8 +141,8 @@ type AllControls () =
                 Xaml.Label(text="Label:")
                 Xaml.Label(text= sprintf "%d" model.CountForActivityIndicator, horizontalOptions=LayoutOptions.CenterAndExpand)
 
-                Xaml.Label(text="ActivityIndicator (when count > 1):")
-                Xaml.ActivityIndicator(isRunning=(model.CountForActivityIndicator > 1), horizontalOptions=LayoutOptions.CenterAndExpand)
+                Xaml.Label(text="ActivityIndicator (when count > 0):")
+                Xaml.ActivityIndicator(isRunning=(model.CountForActivityIndicator > 0), horizontalOptions=LayoutOptions.CenterAndExpand)
                 
                 Xaml.Label(text="Button:")
                 Xaml.Button(text="Increment", command= (fun () -> dispatch IncrementForActivityIndicator), horizontalOptions=LayoutOptions.CenterAndExpand)
@@ -281,11 +283,10 @@ type AllControls () =
             Xaml.ScrollView(
               Xaml.StackLayout(padding=20.0,
                children=[
-                // Xaml.ListView - TODO - consider templating and itemsSource
-                // "A little more on collections: I think ListView should just have an immutable list of Cell-typed Items instead of ItemsSource/DataTemplate. If that list is in the model, then the diff I described above can be used and you can do smooth updates when the data changes. This was yet another feature I didn't get to."
-                // https://github.com/praeclarum/ImmutableUI/issues/4#issuecomment-382498256
                 Xaml.Label(text="ListView:")
-                Xaml.ListView(cells= amortize () (fun () -> 
+                // Note: the view contents of lists must always be amortized, otherwise 'itemSelected' can't find the
+                // correct index for the item using object reference identity
+                Xaml.ListView(items = amortize () (fun () -> 
                                         [ for i in 0 .. 10 do 
                                            yield Xaml.Label "Ionide"
                                            yield Xaml.Label "Visual Studio"
@@ -295,13 +296,32 @@ type AllControls () =
                               horizontalOptions=LayoutOptions.CenterAndExpand,
                               itemSelected=(fun idx -> dispatch (ListViewSelectedItemChanged idx)))
 
+              ]))) 
+
+         Xaml.ContentPage(
+          title="ListViewGrouped",
+          content=
+            Xaml.ScrollView(
+              Xaml.StackLayout(padding=20.0,
+               children=[
+                Xaml.Label(text="ListView (grouped):")
+                // Note: the view contents of lists must always be amortized, otherwise 'itemSelected' can't find the
+                // correct index for the item using object reference identity
+                Xaml.ListViewGrouped(items= amortize () (fun () -> 
+                                        [  yield Xaml.Label "Europe", [ Xaml.Label "Russia"; Xaml.Label "Germany"; Xaml.Label "Poland"; Xaml.Label "Greece"   ]
+                                           yield Xaml.Label "Asia", [ Xaml.Label "China"; Xaml.Label "Japan"; Xaml.Label "North Korea"; Xaml.Label "South Korea"   ]
+                                           yield Xaml.Label "Australasia", [ Xaml.Label "Australia"; Xaml.Label "New Zealand"; Xaml.Label "Fiji" ] ]), 
+                              horizontalOptions=LayoutOptions.CenterAndExpand,
+                              isGroupingEnabled=true,
+                              itemSelected=(fun idx -> dispatch (ListViewGroupedSelectedItemChanged idx)))
+
               ]))) ])
 
-                //Xaml.ListView() // Grouping...
+                //Xaml.ListView() // Persistent selection in grouping
                 //
                 //Xaml.Image(source="icon") // TODO
                 //
-                // Xaml.Table, Cell, EntryCell and others: TODO
+                // Xaml.Table, EntryCell and others: TODO
                 //
                 // Xaml.NavigationPage: TODO
                 // Xaml.Menu: TODO
@@ -309,11 +329,11 @@ type AllControls () =
                 // Xaml.NavigationMenu: TODO
                 // Xaml.Accelerator: TODO
                 //
-                // Xaml.CarouselPage: TODO
+                // Xaml.CarouselPage: ok, needs sample
+                //
+                // Xaml.AbsoluteLayout: ok, needs sample
                 //
                 // Xaml.MasterDetailPage: TODO
-                //
-                // Xaml.AbsoluteLayout: TODO
                 //
                 // Xaml.Animation: TODO
                 //
