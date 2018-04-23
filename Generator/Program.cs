@@ -266,8 +266,11 @@ namespace Generator
                     .FirstOrDefault();
 
                 w.WriteLine();
-                w.WriteLine($"        /// Create a {tdef.FullName} from the view description");
-                w.WriteLine($"        member x.CreateAs{tdef.Name}() : {tdef.FullName} = (x.Create() :?> {tdef.FullName})");
+                if (string.IsNullOrWhiteSpace(type.ModelName))
+                {
+                    w.WriteLine($"        /// Create a {tdef.FullName} from the view description");
+                    w.WriteLine($"        member x.CreateAs{tdef.Name}() : {tdef.FullName} = (x.Create() :?> {tdef.FullName})");
+                }
             }
             var allMembersInAllTypes = new List<MemberBinding>();
             foreach (var type in bindings.Types)
@@ -328,26 +331,27 @@ namespace Generator
             foreach (var type in bindings.Types)
             {
                 var tdef = type.Definition;
-                var tname = string.IsNullOrWhiteSpace(type.ModelName) ? tdef.Name : type.ModelName;
-                var customType = string.IsNullOrWhiteSpace(type.CustomType) ? tdef.FullName : type.CustomType;
+                var nameOfCreator = string.IsNullOrWhiteSpace(type.ModelName) ? tdef.Name : type.ModelName;
+                var customTypeToCreate = string.IsNullOrWhiteSpace(type.CustomType) ? tdef.FullName : type.CustomType;
                 var hierarchy = GetHierarchy(type.Definition).ToList();
                 var boundHierarchy = 
                     hierarchy.Select(x => bindings.Types.FirstOrDefault(y => y.Name == x.Item2.FullName))
                     .Where(x => x != null)
                     .ToList();
 
-
                 var baseType = boundHierarchy.Count > 1 ? boundHierarchy[1] : null;
 
                 // All properties and events apart from the attached ones
-                var allDirectMembers = (from x in boundHierarchy from y in x.Members select y).ToList();
+                var allBaseMembers = (from x in boundHierarchy.Skip(1) from y in x.Members select y).ToList();
+                var allImmediateMembers = type.Members.ToList();
+                var allMembers = allImmediateMembers.Concat(allBaseMembers);
 
                 // Emit the constructor
                 w.WriteLine();
-                w.WriteLine($"    /// Describes a {tname} in the view");
-                w.Write($"    static member {tname}(");
+                w.WriteLine($"    /// Describes a {nameOfCreator} in the view");
+                w.Write($"    static member {nameOfCreator}(");
                 head = "";
-                foreach (var m in allDirectMembers)
+                foreach (var m in allMembers)
                 {
                     var inputType = m.GetInputType(bindings, null);
 
@@ -356,7 +360,7 @@ namespace Generator
                 }
                 w.WriteLine($") = ");
                 w.WriteLine($"        let attribs = [| ");
-                foreach (var m in allDirectMembers)
+                foreach (var m in allMembers)
                 {
                     var conv = string.IsNullOrWhiteSpace(m.Conv) ? "" : m.Conv;
                     w.WriteLine("            match " + m.LowerBoundShortName + " with None -> () | Some v -> yield (\"" + m.BoundUniqueName + "\"" + $", box (" + conv + "(v))) ");
@@ -372,7 +376,7 @@ namespace Generator
                 w.WriteLine($"        let create () =");
                 if (!tdef.IsAbstract && ctor != null && ctor.Parameters.Count == 0)
                 {
-                    w.WriteLine($"            box (new {customType}())");
+                    w.WriteLine($"            box (new {customTypeToCreate}())");
                 }
                 else
                 {
@@ -388,7 +392,7 @@ namespace Generator
                 else
                 {
                     w.WriteLine($"            let target = (target :?> {tdef.FullName})");
-                    foreach (var m in allDirectMembers)
+                    foreach (var m in allMembers)
                     {
                         var bt = ResolveGenericParameter(m.BoundType, hierarchy);
                         string elementType = m.GetElementType(hierarchy);

@@ -39,6 +39,22 @@ module Converters =
         | :? double as v -> v
         | _ -> System.Convert.ToDouble(v)
 
+[<AllowNullLiteral>]
+type IListGroupData = 
+    abstract Key : obj
+
+[<AllowNullLiteral>]
+type ListElementData<'T>(key:'T) = 
+    interface IListGroupData with member x.Key = box key
+    member x.Key = key
+
+[<AllowNullLiteral>]
+type ListGroupData<'T>(key:'T, items: seq<'T>) = 
+    inherit System.Collections.Generic.List<ListElementData<'T>>(Seq.map ListElementData items)
+    interface IListGroupData with member x.Key = box key
+    member x.Key = key
+    member x.Items = items
+
 type CustomViewCell() = 
     inherit ViewCell()
 
@@ -47,25 +63,29 @@ type CustomViewCell() =
     override x.OnBindingContextChanged () =
         base.OnBindingContextChanged ()
         match x.BindingContext with
-        | null -> 
-            modelOpt <- None
-        | bcNew -> 
+        | :? IListGroupData as data -> 
+            let newModel = data.Key
             match modelOpt with 
             | Some prev -> 
-                let ty = bcNew.GetType()
-                let res = ty.InvokeMember("ApplyIncremental",(BindingFlags.InvokeMethod ||| BindingFlags.Public ||| BindingFlags.Instance),null, bcNew, [| box prev; box x.View |] )
+                let ty = newModel.GetType()
+                let res = ty.InvokeMember("ApplyIncremental",(BindingFlags.InvokeMethod ||| BindingFlags.Public ||| BindingFlags.Instance), null, newModel, [| box prev; box x.View |] )
                 modelOpt <- None
                 ignore res
             | None -> 
-                let ty = bcNew.GetType()
-                let res = ty.InvokeMember("Create",(BindingFlags.InvokeMethod ||| BindingFlags.Public ||| BindingFlags.Instance),null, bcNew, [| |] )
+                let ty = newModel.GetType()
+                let res = ty.InvokeMember("Create",(BindingFlags.InvokeMethod ||| BindingFlags.Public ||| BindingFlags.Instance), null, newModel, [| |] )
                 match res with 
                 | :? View as v -> 
                     x.View <- v
                 | _ -> 
                     failwithf "The cells of a ListView must each be some kind of 'View' and not a '%A'" (res.GetType())
-                modelOpt <- Some bcNew
-                
+                modelOpt <- Some newModel
+        | _ -> 
+            modelOpt <- None
+
 type CustomListView() = 
     inherit ListView(ItemTemplate=DataTemplate(typeof<CustomViewCell>))
+
+type CustomGroupListView() = 
+    inherit ListView(ItemTemplate=DataTemplate(typeof<CustomViewCell>), GroupHeaderTemplate=DataTemplate(typeof<CustomViewCell>))
 
