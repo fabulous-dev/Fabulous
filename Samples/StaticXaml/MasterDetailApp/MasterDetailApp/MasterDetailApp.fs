@@ -4,6 +4,7 @@ namespace MasterDetailApp
 open System
 open Elmish
 open Elmish.XamarinForms
+open Elmish.XamarinForms.StaticViews
 open FSharp.Control
 open Xamarin.Forms
 open Xamarin.Forms.Xaml
@@ -51,13 +52,11 @@ type MasterDetailApp () as self =
 
     do
         let mainPage = 
-            Program.mkProgram 
-                (fun () -> MainPage.init(), NoCmd) 
-                MainPage.update 
-                (fun _ _ -> MainPage.view())
+            Program.mkProgram (fun () -> MainPage.init(), NoCmd) MainPage.update MainPage.view
             |> Program.withConsoleTrace
             |> Program.withNavigation
-            |> Program.runStaticView
+            |> Program.withStaticView
+            |> Program.run
 
         base.MainPage <- NavigationPage mainPage
 

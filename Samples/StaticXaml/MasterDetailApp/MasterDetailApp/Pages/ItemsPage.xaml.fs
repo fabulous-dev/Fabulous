@@ -4,6 +4,7 @@ open FSharp.Control
 open Xamarin.Forms
 open Xamarin.Forms.Xaml
 open Elmish.XamarinForms
+open Elmish.XamarinForms.StaticViews
 
 type ItemsPage() = 
     inherit ContentPage()

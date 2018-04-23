@@ -30,6 +30,12 @@ type XamlElement(targetType: Type, create: (unit -> obj), apply: (XamlElement op
     [<DebuggerBrowsable(DebuggerBrowsableState.Never)>]
     member x.CreateMethod = create
 
+    /// Create the UI element from the view description
+    member x.Create() : obj =
+        let target = x.CreateMethod()
+        x.Apply(target)
+        target
+
     /// Produce a new visual element with an adjusted attribute
     member x.WithAttribute(name: string, value: obj) = XamlElement(targetType, create, apply, x.Attributes.Add(name, value))
 
@@ -43,11 +49,6 @@ type XamlElement(targetType: Type, create: (unit -> obj), apply: (XamlElement op
 module XamlElementExtensions = 
 
     type XamlElement with
-        /// Create the UI element from the view description
-        member x.Create() : obj =
-            let target = x.CreateMethod()
-            x.Apply(target)
-            target
 
         /// Create a Xamarin.Forms.Element from the view description
         member x.CreateAsElement() : Xamarin.Forms.Element = (x.Create() :?> Xamarin.Forms.Element)
@@ -57,6 +58,21 @@ module XamlElementExtensions =
 
         /// Create a Xamarin.Forms.View from the view description
         member x.CreateAsView() : Xamarin.Forms.View = (x.Create() :?> Xamarin.Forms.View)
+
+        /// Create a Xamarin.Forms.IGestureRecognizer from the view description
+        member x.CreateAsIGestureRecognizer() : Xamarin.Forms.IGestureRecognizer = (x.Create() :?> Xamarin.Forms.IGestureRecognizer)
+
+        /// Create a Xamarin.Forms.PanGestureRecognizer from the view description
+        member x.CreateAsPanGestureRecognizer() : Xamarin.Forms.PanGestureRecognizer = (x.Create() :?> Xamarin.Forms.PanGestureRecognizer)
+
+        /// Create a Xamarin.Forms.TapGestureRecognizer from the view description
+        member x.CreateAsTapGestureRecognizer() : Xamarin.Forms.TapGestureRecognizer = (x.Create() :?> Xamarin.Forms.TapGestureRecognizer)
+
+        /// Create a Xamarin.Forms.ClickGestureRecognizer from the view description
+        member x.CreateAsClickGestureRecognizer() : Xamarin.Forms.ClickGestureRecognizer = (x.Create() :?> Xamarin.Forms.ClickGestureRecognizer)
+
+        /// Create a Xamarin.Forms.PinchGestureRecognizer from the view description
+        member x.CreateAsPinchGestureRecognizer() : Xamarin.Forms.PinchGestureRecognizer = (x.Create() :?> Xamarin.Forms.PinchGestureRecognizer)
 
         /// Create a Xamarin.Forms.ActivityIndicator from the view description
         member x.CreateAsActivityIndicator() : Xamarin.Forms.ActivityIndicator = (x.Create() :?> Xamarin.Forms.ActivityIndicator)
@@ -154,14 +170,17 @@ module XamlElementExtensions =
         /// Create a Xamarin.Forms.CarouselPage from the view description
         member x.CreateAsCarouselPage() : Xamarin.Forms.CarouselPage = (x.Create() :?> Xamarin.Forms.CarouselPage)
 
+        /// Create a Xamarin.Forms.NavigationPage from the view description
+        member x.CreateAsNavigationPage() : Xamarin.Forms.NavigationPage = (x.Create() :?> Xamarin.Forms.NavigationPage)
+
+        /// Create a Xamarin.Forms.TabbedPage from the view description
+        member x.CreateAsTabbedPage() : Xamarin.Forms.TabbedPage = (x.Create() :?> Xamarin.Forms.TabbedPage)
+
         /// Create a Xamarin.Forms.ContentPage from the view description
         member x.CreateAsContentPage() : Xamarin.Forms.ContentPage = (x.Create() :?> Xamarin.Forms.ContentPage)
 
         /// Create a Xamarin.Forms.MasterDetailPage from the view description
         member x.CreateAsMasterDetailPage() : Xamarin.Forms.MasterDetailPage = (x.Create() :?> Xamarin.Forms.MasterDetailPage)
-
-        /// Create a Xamarin.Forms.TabbedPage from the view description
-        member x.CreateAsTabbedPage() : Xamarin.Forms.TabbedPage = (x.Create() :?> Xamarin.Forms.TabbedPage)
 
         /// Create a Xamarin.Forms.Cell from the view description
         member x.CreateAsCell() : Xamarin.Forms.Cell = (x.Create() :?> Xamarin.Forms.Cell)
@@ -247,6 +266,33 @@ module XamlElementExtensions =
         /// Try to get the Margin property in the visual element
         member x.TryMargin = match x.Attributes.TryFind("Margin") with Some v -> Some(unbox<Xamarin.Forms.Thickness>(v)) | None -> None
 
+        /// Try to get the GestureRecognizers property in the visual element
+        member x.TryGestureRecognizers = match x.Attributes.TryFind("GestureRecognizers") with Some v -> Some(unbox<XamlElement[]>(v)) | None -> None
+
+        /// Try to get the TouchPoints property in the visual element
+        member x.TryTouchPoints = match x.Attributes.TryFind("TouchPoints") with Some v -> Some(unbox<int>(v)) | None -> None
+
+        /// Try to get the PanUpdated property in the visual element
+        member x.TryPanUpdated = match x.Attributes.TryFind("PanUpdated") with Some v -> Some(unbox<System.EventHandler<Xamarin.Forms.PanUpdatedEventArgs>>(v)) | None -> None
+
+        /// Try to get the Command property in the visual element
+        member x.TryCommand = match x.Attributes.TryFind("Command") with Some v -> Some(unbox<System.Windows.Input.ICommand>(v)) | None -> None
+
+        /// Try to get the NumberOfTapsRequired property in the visual element
+        member x.TryNumberOfTapsRequired = match x.Attributes.TryFind("NumberOfTapsRequired") with Some v -> Some(unbox<int>(v)) | None -> None
+
+        /// Try to get the NumberOfClicksRequired property in the visual element
+        member x.TryNumberOfClicksRequired = match x.Attributes.TryFind("NumberOfClicksRequired") with Some v -> Some(unbox<int>(v)) | None -> None
+
+        /// Try to get the Buttons property in the visual element
+        member x.TryButtons = match x.Attributes.TryFind("Buttons") with Some v -> Some(unbox<Xamarin.Forms.ButtonsMask>(v)) | None -> None
+
+        /// Try to get the IsPinching property in the visual element
+        member x.TryIsPinching = match x.Attributes.TryFind("IsPinching") with Some v -> Some(unbox<bool>(v)) | None -> None
+
+        /// Try to get the PinchUpdated property in the visual element
+        member x.TryPinchUpdated = match x.Attributes.TryFind("PinchUpdated") with Some v -> Some(unbox<System.EventHandler<Xamarin.Forms.PinchGestureUpdatedEventArgs>>(v)) | None -> None
+
         /// Try to get the Color property in the visual element
         member x.TryColor = match x.Attributes.TryFind("Color") with Some v -> Some(unbox<Xamarin.Forms.Color>(v)) | None -> None
 
@@ -291,9 +337,6 @@ module XamlElementExtensions =
 
         /// Try to get the TextColor property in the visual element
         member x.TryTextColor = match x.Attributes.TryFind("TextColor") with Some v -> Some(unbox<Xamarin.Forms.Color>(v)) | None -> None
-
-        /// Try to get the Command property in the visual element
-        member x.TryCommand = match x.Attributes.TryFind("Command") with Some v -> Some(unbox<System.Windows.Input.ICommand>(v)) | None -> None
 
         /// Try to get the BorderColor property in the visual element
         member x.TryBorderColor = match x.Attributes.TryFind("BorderColor") with Some v -> Some(unbox<Xamarin.Forms.Color>(v)) | None -> None
@@ -481,8 +524,14 @@ module XamlElementExtensions =
         /// Try to get the WebSource property in the visual element
         member x.TryWebSource = match x.Attributes.TryFind("WebSource") with Some v -> Some(unbox<Xamarin.Forms.WebViewSource>(v)) | None -> None
 
+        /// Try to get the Navigated property in the visual element
+        member x.TryNavigated = match x.Attributes.TryFind("Navigated") with Some v -> Some(unbox<System.EventHandler<Xamarin.Forms.WebNavigatedEventArgs>>(v)) | None -> None
+
+        /// Try to get the Navigating property in the visual element
+        member x.TryNavigating = match x.Attributes.TryFind("Navigating") with Some v -> Some(unbox<System.EventHandler<Xamarin.Forms.WebNavigatingEventArgs>>(v)) | None -> None
+
         /// Try to get the ItemsSource property in the visual element
-        member x.TryItemsSource = match x.Attributes.TryFind("ItemsSource") with Some v -> Some(unbox<System.Collections.IEnumerable>(v)) | None -> None
+        member x.TryItemsSource = match x.Attributes.TryFind("ItemsSource") with Some v -> Some(unbox<System.Collections.Generic.IList<obj>>(v)) | None -> None
 
         /// Try to get the ItemTemplate property in the visual element
         member x.TryItemTemplate = match x.Attributes.TryFind("ItemTemplate") with Some v -> Some(unbox<Xamarin.Forms.DataTemplate>(v)) | None -> None
@@ -493,11 +542,41 @@ module XamlElementExtensions =
         /// Try to get the CurrentPage property in the visual element
         member x.TryCurrentPage = match x.Attributes.TryFind("CurrentPage") with Some v -> Some(unbox<XamlElement>(v)) | None -> None
 
+        /// Try to get the CurrentPageChanged property in the visual element
+        member x.TryCurrentPageChanged = match x.Attributes.TryFind("CurrentPageChanged") with Some v -> Some(unbox<System.EventHandler>(v)) | None -> None
+
+        /// Try to get the BarBackgroundColor property in the visual element
+        member x.TryBarBackgroundColor = match x.Attributes.TryFind("BarBackgroundColor") with Some v -> Some(unbox<Xamarin.Forms.Color>(v)) | None -> None
+
+        /// Try to get the BarTextColor property in the visual element
+        member x.TryBarTextColor = match x.Attributes.TryFind("BarTextColor") with Some v -> Some(unbox<Xamarin.Forms.Color>(v)) | None -> None
+
+        /// Try to get the Popped property in the visual element
+        member x.TryPopped = match x.Attributes.TryFind("Popped") with Some v -> Some(unbox<System.EventHandler<Xamarin.Forms.NavigationEventArgs>>(v)) | None -> None
+
+        /// Try to get the PoppedToRoot property in the visual element
+        member x.TryPoppedToRoot = match x.Attributes.TryFind("PoppedToRoot") with Some v -> Some(unbox<System.EventHandler<Xamarin.Forms.NavigationEventArgs>>(v)) | None -> None
+
+        /// Try to get the Pushed property in the visual element
+        member x.TryPushed = match x.Attributes.TryFind("Pushed") with Some v -> Some(unbox<System.EventHandler<Xamarin.Forms.NavigationEventArgs>>(v)) | None -> None
+
         /// Try to get the Master property in the visual element
         member x.TryMaster = match x.Attributes.TryFind("Master") with Some v -> Some(unbox<XamlElement>(v)) | None -> None
 
         /// Try to get the Detail property in the visual element
         member x.TryDetail = match x.Attributes.TryFind("Detail") with Some v -> Some(unbox<XamlElement>(v)) | None -> None
+
+        /// Try to get the IsGestureEnabled property in the visual element
+        member x.TryIsGestureEnabled = match x.Attributes.TryFind("IsGestureEnabled") with Some v -> Some(unbox<bool>(v)) | None -> None
+
+        /// Try to get the IsPresented property in the visual element
+        member x.TryIsPresented = match x.Attributes.TryFind("IsPresented") with Some v -> Some(unbox<bool>(v)) | None -> None
+
+        /// Try to get the MasterBehavior property in the visual element
+        member x.TryMasterBehavior = match x.Attributes.TryFind("MasterBehavior") with Some v -> Some(unbox<Xamarin.Forms.MasterBehavior>(v)) | None -> None
+
+        /// Try to get the IsPresentedChanged property in the visual element
+        member x.TryIsPresentedChanged = match x.Attributes.TryFind("IsPresentedChanged") with Some v -> Some(unbox<System.EventHandler>(v)) | None -> None
 
         /// Try to get the Height property in the visual element
         member x.TryHeight = match x.Attributes.TryFind("Height") with Some v -> Some(unbox<double>(v)) | None -> None
@@ -511,14 +590,11 @@ module XamlElementExtensions =
         /// Try to get the View property in the visual element
         member x.TryView = match x.Attributes.TryFind("View") with Some v -> Some(unbox<XamlElement>(v)) | None -> None
 
+        /// Try to get the ListViewItemsSource property in the visual element
+        member x.TryListViewItemsSource = match x.Attributes.TryFind("ListViewItemsSource") with Some v -> Some(unbox<System.Collections.Generic.IList<XamlElement>>(v)) | None -> None
+
         /// Try to get the Footer property in the visual element
         member x.TryFooter = match x.Attributes.TryFind("Footer") with Some v -> Some(unbox<System.Object>(v)) | None -> None
-
-        /// Try to get the FooterTemplate property in the visual element
-        member x.TryFooterTemplate = match x.Attributes.TryFind("FooterTemplate") with Some v -> Some(unbox<Xamarin.Forms.DataTemplate>(v)) | None -> None
-
-        /// Try to get the GroupHeaderTemplate property in the visual element
-        member x.TryGroupHeaderTemplate = match x.Attributes.TryFind("GroupHeaderTemplate") with Some v -> Some(unbox<Xamarin.Forms.DataTemplate>(v)) | None -> None
 
         /// Try to get the HasUnevenRows property in the visual element
         member x.TryHasUnevenRows = match x.Attributes.TryFind("HasUnevenRows") with Some v -> Some(unbox<bool>(v)) | None -> None
@@ -543,6 +619,9 @@ module XamlElementExtensions =
 
         /// Try to get the RowHeight property in the visual element
         member x.TryRowHeight = match x.Attributes.TryFind("RowHeight") with Some v -> Some(unbox<int>(v)) | None -> None
+
+        /// Try to get the ListViewSelectedItem property in the visual element
+        member x.TryListViewSelectedItem = match x.Attributes.TryFind("ListViewSelectedItem") with Some v -> Some(unbox<int>(v)) | None -> None
 
         /// Try to get the SeparatorVisibility property in the visual element
         member x.TrySeparatorVisibility = match x.Attributes.TryFind("SeparatorVisibility") with Some v -> Some(unbox<Xamarin.Forms.SeparatorVisibility>(v)) | None -> None
@@ -634,6 +713,33 @@ module XamlElementExtensions =
         /// Adjusts the Margin property in the visual element
         member x.Margin(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Margin", box (makeThickness(value))))
 
+        /// Adjusts the GestureRecognizers property in the visual element
+        member x.GestureRecognizers(value: XamlElement list) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("GestureRecognizers", box (Array.ofList(value))))
+
+        /// Adjusts the TouchPoints property in the visual element
+        member x.TouchPoints(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("TouchPoints", box ((value))))
+
+        /// Adjusts the PanUpdated property in the visual element
+        member x.PanUpdated(value: Xamarin.Forms.PanUpdatedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("PanUpdated", box ((fun f -> System.EventHandler<Xamarin.Forms.PanUpdatedEventArgs>(fun _sender args -> f args))(value))))
+
+        /// Adjusts the Command property in the visual element
+        member x.Command(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Command", box (makeCommand(value))))
+
+        /// Adjusts the NumberOfTapsRequired property in the visual element
+        member x.NumberOfTapsRequired(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("NumberOfTapsRequired", box ((value))))
+
+        /// Adjusts the NumberOfClicksRequired property in the visual element
+        member x.NumberOfClicksRequired(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("NumberOfClicksRequired", box ((value))))
+
+        /// Adjusts the Buttons property in the visual element
+        member x.Buttons(value: Xamarin.Forms.ButtonsMask) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Buttons", box ((value))))
+
+        /// Adjusts the IsPinching property in the visual element
+        member x.IsPinching(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsPinching", box ((value))))
+
+        /// Adjusts the PinchUpdated property in the visual element
+        member x.PinchUpdated(value: Xamarin.Forms.PinchGestureUpdatedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("PinchUpdated", box ((fun f -> System.EventHandler<Xamarin.Forms.PinchGestureUpdatedEventArgs>(fun _sender args -> f args))(value))))
+
         /// Adjusts the Color property in the visual element
         member x.Color(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Color", box ((value))))
 
@@ -678,9 +784,6 @@ module XamlElementExtensions =
 
         /// Adjusts the TextColor property in the visual element
         member x.TextColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("TextColor", box ((value))))
-
-        /// Adjusts the Command property in the visual element
-        member x.Command(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Command", box (makeCommand(value))))
 
         /// Adjusts the BorderColor property in the visual element
         member x.BorderColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("BorderColor", box ((value))))
@@ -868,8 +971,14 @@ module XamlElementExtensions =
         /// Adjusts the WebSource property in the visual element
         member x.WebSource(value: Xamarin.Forms.WebViewSource) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("WebSource", box ((value))))
 
+        /// Adjusts the Navigated property in the visual element
+        member x.Navigated(value: Xamarin.Forms.WebNavigatedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Navigated", box ((fun f -> System.EventHandler<Xamarin.Forms.WebNavigatedEventArgs>(fun _sender args -> f args))(value))))
+
+        /// Adjusts the Navigating property in the visual element
+        member x.Navigating(value: Xamarin.Forms.WebNavigatingEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Navigating", box ((fun f -> System.EventHandler<Xamarin.Forms.WebNavigatingEventArgs>(fun _sender args -> f args))(value))))
+
         /// Adjusts the ItemsSource property in the visual element
-        member x.ItemsSource(value: System.Collections.IEnumerable) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ItemsSource", box ((value))))
+        member x.ItemsSource(value: 'T list) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ItemsSource", box ((fun es -> es |> Array.ofList |> Array.map box :> System.Collections.Generic.IList<obj>)(value))))
 
         /// Adjusts the ItemTemplate property in the visual element
         member x.ItemTemplate(value: Xamarin.Forms.DataTemplate) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ItemTemplate", box ((value))))
@@ -880,11 +989,41 @@ module XamlElementExtensions =
         /// Adjusts the CurrentPage property in the visual element
         member x.CurrentPage(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("CurrentPage", box ((value))))
 
+        /// Adjusts the CurrentPageChanged property in the visual element
+        member x.CurrentPageChanged(value: 'T option -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("CurrentPageChanged", box ((fun f -> System.EventHandler(fun sender args -> f ((sender :?> Xamarin.Forms.CarouselPage).SelectedItem |> Option.ofObj |> Option.map unbox<'T>)))(value))))
+
+        /// Adjusts the BarBackgroundColor property in the visual element
+        member x.BarBackgroundColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("BarBackgroundColor", box ((value))))
+
+        /// Adjusts the BarTextColor property in the visual element
+        member x.BarTextColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("BarTextColor", box ((value))))
+
+        /// Adjusts the Popped property in the visual element
+        member x.Popped(value: Xamarin.Forms.NavigationEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Popped", box ((fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(value))))
+
+        /// Adjusts the PoppedToRoot property in the visual element
+        member x.PoppedToRoot(value: Xamarin.Forms.NavigationEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("PoppedToRoot", box ((fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(value))))
+
+        /// Adjusts the Pushed property in the visual element
+        member x.Pushed(value: Xamarin.Forms.NavigationEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Pushed", box ((fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(value))))
+
         /// Adjusts the Master property in the visual element
         member x.Master(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Master", box ((value))))
 
         /// Adjusts the Detail property in the visual element
         member x.Detail(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Detail", box ((value))))
+
+        /// Adjusts the IsGestureEnabled property in the visual element
+        member x.IsGestureEnabled(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsGestureEnabled", box ((value))))
+
+        /// Adjusts the IsPresented property in the visual element
+        member x.IsPresented(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsPresented", box ((value))))
+
+        /// Adjusts the MasterBehavior property in the visual element
+        member x.MasterBehavior(value: Xamarin.Forms.MasterBehavior) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("MasterBehavior", box ((value))))
+
+        /// Adjusts the IsPresentedChanged property in the visual element
+        member x.IsPresentedChanged(value: bool -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsPresentedChanged", box ((fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.MasterDetailPage).IsPresented))(value))))
 
         /// Adjusts the Height property in the visual element
         member x.Height(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Height", box ((value))))
@@ -898,14 +1037,11 @@ module XamlElementExtensions =
         /// Adjusts the View property in the visual element
         member x.View(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("View", box ((value))))
 
+        /// Adjusts the ListViewItemsSource property in the visual element
+        member x.ListViewItemsSource(value: XamlElement list) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ListViewItemsSource", box ((fun (es: XamlElement list) -> es |> Array.ofList :> System.Collections.Generic.IList<XamlElement>)(value))))
+
         /// Adjusts the Footer property in the visual element
         member x.Footer(value: System.Object) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Footer", box ((value))))
-
-        /// Adjusts the FooterTemplate property in the visual element
-        member x.FooterTemplate(value: Xamarin.Forms.DataTemplate) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("FooterTemplate", box ((value))))
-
-        /// Adjusts the GroupHeaderTemplate property in the visual element
-        member x.GroupHeaderTemplate(value: Xamarin.Forms.DataTemplate) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("GroupHeaderTemplate", box ((value))))
 
         /// Adjusts the HasUnevenRows property in the visual element
         member x.HasUnevenRows(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("HasUnevenRows", box ((value))))
@@ -931,6 +1067,9 @@ module XamlElementExtensions =
         /// Adjusts the RowHeight property in the visual element
         member x.RowHeight(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("RowHeight", box ((value))))
 
+        /// Adjusts the ListViewSelectedItem property in the visual element
+        member x.ListViewSelectedItem(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ListViewSelectedItem", box ((value))))
+
         /// Adjusts the SeparatorVisibility property in the visual element
         member x.SeparatorVisibility(value: Xamarin.Forms.SeparatorVisibility) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("SeparatorVisibility", box ((value))))
 
@@ -944,7 +1083,7 @@ module XamlElementExtensions =
         member x.ItemDisappearing(value: Xamarin.Forms.ItemVisibilityEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ItemDisappearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))(value))))
 
         /// Adjusts the ItemSelected property in the visual element
-        member x.ItemSelected(value: 'T option -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ItemSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun _sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<'T>)))(value))))
+        member x.ItemSelected(value: int option -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ItemSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<Xamarin.Forms.View> |> Option.bind (fun view -> let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<Xamarin.Forms.Cell> in items |> Seq.tryFindIndex (fun view2 -> System.Object.ReferenceEquals(view, view2))))))(value))))
 
         /// Adjusts the ItemTapped property in the visual element
         member x.ItemTapped(value: Xamarin.Forms.ItemTappedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ItemTapped", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun _sender args -> f args))(value))))
@@ -1091,6 +1230,60 @@ module XamlElementExtensions =
     /// Adjusts the Margin property in the visual element
     let margin (value: double) (x: XamlElement) = x.Margin(value)
 
+    /// Adjusts the GestureRecognizers property in the visual element
+    let withGestureRecognizers (value: XamlElement list) (x: XamlElement) = x.GestureRecognizers(value)
+
+    /// Adjusts the GestureRecognizers property in the visual element
+    let gestureRecognizers (value: XamlElement list) (x: XamlElement) = x.GestureRecognizers(value)
+
+    /// Adjusts the TouchPoints property in the visual element
+    let withTouchPoints (value: int) (x: XamlElement) = x.TouchPoints(value)
+
+    /// Adjusts the TouchPoints property in the visual element
+    let touchPoints (value: int) (x: XamlElement) = x.TouchPoints(value)
+
+    /// Adjusts the PanUpdated property in the visual element
+    let withPanUpdated (value: Xamarin.Forms.PanUpdatedEventArgs -> unit) (x: XamlElement) = x.PanUpdated(value)
+
+    /// Adjusts the PanUpdated property in the visual element
+    let panUpdated (value: Xamarin.Forms.PanUpdatedEventArgs -> unit) (x: XamlElement) = x.PanUpdated(value)
+
+    /// Adjusts the Command property in the visual element
+    let withCommand (value: unit -> unit) (x: XamlElement) = x.Command(value)
+
+    /// Adjusts the Command property in the visual element
+    let command (value: unit -> unit) (x: XamlElement) = x.Command(value)
+
+    /// Adjusts the NumberOfTapsRequired property in the visual element
+    let withNumberOfTapsRequired (value: int) (x: XamlElement) = x.NumberOfTapsRequired(value)
+
+    /// Adjusts the NumberOfTapsRequired property in the visual element
+    let numberOfTapsRequired (value: int) (x: XamlElement) = x.NumberOfTapsRequired(value)
+
+    /// Adjusts the NumberOfClicksRequired property in the visual element
+    let withNumberOfClicksRequired (value: int) (x: XamlElement) = x.NumberOfClicksRequired(value)
+
+    /// Adjusts the NumberOfClicksRequired property in the visual element
+    let numberOfClicksRequired (value: int) (x: XamlElement) = x.NumberOfClicksRequired(value)
+
+    /// Adjusts the Buttons property in the visual element
+    let withButtons (value: Xamarin.Forms.ButtonsMask) (x: XamlElement) = x.Buttons(value)
+
+    /// Adjusts the Buttons property in the visual element
+    let buttons (value: Xamarin.Forms.ButtonsMask) (x: XamlElement) = x.Buttons(value)
+
+    /// Adjusts the IsPinching property in the visual element
+    let withIsPinching (value: bool) (x: XamlElement) = x.IsPinching(value)
+
+    /// Adjusts the IsPinching property in the visual element
+    let isPinching (value: bool) (x: XamlElement) = x.IsPinching(value)
+
+    /// Adjusts the PinchUpdated property in the visual element
+    let withPinchUpdated (value: Xamarin.Forms.PinchGestureUpdatedEventArgs -> unit) (x: XamlElement) = x.PinchUpdated(value)
+
+    /// Adjusts the PinchUpdated property in the visual element
+    let pinchUpdated (value: Xamarin.Forms.PinchGestureUpdatedEventArgs -> unit) (x: XamlElement) = x.PinchUpdated(value)
+
     /// Adjusts the Color property in the visual element
     let withColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.Color(value)
 
@@ -1180,12 +1373,6 @@ module XamlElementExtensions =
 
     /// Adjusts the TextColor property in the visual element
     let textColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.TextColor(value)
-
-    /// Adjusts the Command property in the visual element
-    let withCommand (value: unit -> unit) (x: XamlElement) = x.Command(value)
-
-    /// Adjusts the Command property in the visual element
-    let command (value: unit -> unit) (x: XamlElement) = x.Command(value)
 
     /// Adjusts the BorderColor property in the visual element
     let withBorderColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.BorderColor(value)
@@ -1559,11 +1746,23 @@ module XamlElementExtensions =
     /// Adjusts the WebSource property in the visual element
     let webSource (value: Xamarin.Forms.WebViewSource) (x: XamlElement) = x.WebSource(value)
 
-    /// Adjusts the ItemsSource property in the visual element
-    let withItemsSource (value: System.Collections.IEnumerable) (x: XamlElement) = x.ItemsSource(value)
+    /// Adjusts the Navigated property in the visual element
+    let withNavigated (value: Xamarin.Forms.WebNavigatedEventArgs -> unit) (x: XamlElement) = x.Navigated(value)
+
+    /// Adjusts the Navigated property in the visual element
+    let navigated (value: Xamarin.Forms.WebNavigatedEventArgs -> unit) (x: XamlElement) = x.Navigated(value)
+
+    /// Adjusts the Navigating property in the visual element
+    let withNavigating (value: Xamarin.Forms.WebNavigatingEventArgs -> unit) (x: XamlElement) = x.Navigating(value)
+
+    /// Adjusts the Navigating property in the visual element
+    let navigating (value: Xamarin.Forms.WebNavigatingEventArgs -> unit) (x: XamlElement) = x.Navigating(value)
 
     /// Adjusts the ItemsSource property in the visual element
-    let itemsSource (value: System.Collections.IEnumerable) (x: XamlElement) = x.ItemsSource(value)
+    let withItemsSource (value: 'T list) (x: XamlElement) = x.ItemsSource(value)
+
+    /// Adjusts the ItemsSource property in the visual element
+    let itemsSource (value: 'T list) (x: XamlElement) = x.ItemsSource(value)
 
     /// Adjusts the ItemTemplate property in the visual element
     let withItemTemplate (value: Xamarin.Forms.DataTemplate) (x: XamlElement) = x.ItemTemplate(value)
@@ -1583,6 +1782,42 @@ module XamlElementExtensions =
     /// Adjusts the CurrentPage property in the visual element
     let currentPage (value: XamlElement) (x: XamlElement) = x.CurrentPage(value)
 
+    /// Adjusts the CurrentPageChanged property in the visual element
+    let withCurrentPageChanged (value: 'T option -> unit) (x: XamlElement) = x.CurrentPageChanged(value)
+
+    /// Adjusts the CurrentPageChanged property in the visual element
+    let currentPageChanged (value: 'T option -> unit) (x: XamlElement) = x.CurrentPageChanged(value)
+
+    /// Adjusts the BarBackgroundColor property in the visual element
+    let withBarBackgroundColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.BarBackgroundColor(value)
+
+    /// Adjusts the BarBackgroundColor property in the visual element
+    let barBackgroundColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.BarBackgroundColor(value)
+
+    /// Adjusts the BarTextColor property in the visual element
+    let withBarTextColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.BarTextColor(value)
+
+    /// Adjusts the BarTextColor property in the visual element
+    let barTextColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.BarTextColor(value)
+
+    /// Adjusts the Popped property in the visual element
+    let withPopped (value: Xamarin.Forms.NavigationEventArgs -> unit) (x: XamlElement) = x.Popped(value)
+
+    /// Adjusts the Popped property in the visual element
+    let popped (value: Xamarin.Forms.NavigationEventArgs -> unit) (x: XamlElement) = x.Popped(value)
+
+    /// Adjusts the PoppedToRoot property in the visual element
+    let withPoppedToRoot (value: Xamarin.Forms.NavigationEventArgs -> unit) (x: XamlElement) = x.PoppedToRoot(value)
+
+    /// Adjusts the PoppedToRoot property in the visual element
+    let poppedToRoot (value: Xamarin.Forms.NavigationEventArgs -> unit) (x: XamlElement) = x.PoppedToRoot(value)
+
+    /// Adjusts the Pushed property in the visual element
+    let withPushed (value: Xamarin.Forms.NavigationEventArgs -> unit) (x: XamlElement) = x.Pushed(value)
+
+    /// Adjusts the Pushed property in the visual element
+    let pushed (value: Xamarin.Forms.NavigationEventArgs -> unit) (x: XamlElement) = x.Pushed(value)
+
     /// Adjusts the Master property in the visual element
     let withMaster (value: XamlElement) (x: XamlElement) = x.Master(value)
 
@@ -1594,6 +1829,30 @@ module XamlElementExtensions =
 
     /// Adjusts the Detail property in the visual element
     let detail (value: XamlElement) (x: XamlElement) = x.Detail(value)
+
+    /// Adjusts the IsGestureEnabled property in the visual element
+    let withIsGestureEnabled (value: bool) (x: XamlElement) = x.IsGestureEnabled(value)
+
+    /// Adjusts the IsGestureEnabled property in the visual element
+    let isGestureEnabled (value: bool) (x: XamlElement) = x.IsGestureEnabled(value)
+
+    /// Adjusts the IsPresented property in the visual element
+    let withIsPresented (value: bool) (x: XamlElement) = x.IsPresented(value)
+
+    /// Adjusts the IsPresented property in the visual element
+    let isPresented (value: bool) (x: XamlElement) = x.IsPresented(value)
+
+    /// Adjusts the MasterBehavior property in the visual element
+    let withMasterBehavior (value: Xamarin.Forms.MasterBehavior) (x: XamlElement) = x.MasterBehavior(value)
+
+    /// Adjusts the MasterBehavior property in the visual element
+    let masterBehavior (value: Xamarin.Forms.MasterBehavior) (x: XamlElement) = x.MasterBehavior(value)
+
+    /// Adjusts the IsPresentedChanged property in the visual element
+    let withIsPresentedChanged (value: bool -> unit) (x: XamlElement) = x.IsPresentedChanged(value)
+
+    /// Adjusts the IsPresentedChanged property in the visual element
+    let isPresentedChanged (value: bool -> unit) (x: XamlElement) = x.IsPresentedChanged(value)
 
     /// Adjusts the Height property in the visual element
     let withHeight (value: double) (x: XamlElement) = x.Height(value)
@@ -1619,23 +1878,17 @@ module XamlElementExtensions =
     /// Adjusts the View property in the visual element
     let view (value: XamlElement) (x: XamlElement) = x.View(value)
 
+    /// Adjusts the ListViewItemsSource property in the visual element
+    let withListViewItemsSource (value: XamlElement list) (x: XamlElement) = x.ListViewItemsSource(value)
+
+    /// Adjusts the ListViewItemsSource property in the visual element
+    let listViewItemsSource (value: XamlElement list) (x: XamlElement) = x.ListViewItemsSource(value)
+
     /// Adjusts the Footer property in the visual element
     let withFooter (value: System.Object) (x: XamlElement) = x.Footer(value)
 
     /// Adjusts the Footer property in the visual element
     let footer (value: System.Object) (x: XamlElement) = x.Footer(value)
-
-    /// Adjusts the FooterTemplate property in the visual element
-    let withFooterTemplate (value: Xamarin.Forms.DataTemplate) (x: XamlElement) = x.FooterTemplate(value)
-
-    /// Adjusts the FooterTemplate property in the visual element
-    let footerTemplate (value: Xamarin.Forms.DataTemplate) (x: XamlElement) = x.FooterTemplate(value)
-
-    /// Adjusts the GroupHeaderTemplate property in the visual element
-    let withGroupHeaderTemplate (value: Xamarin.Forms.DataTemplate) (x: XamlElement) = x.GroupHeaderTemplate(value)
-
-    /// Adjusts the GroupHeaderTemplate property in the visual element
-    let groupHeaderTemplate (value: Xamarin.Forms.DataTemplate) (x: XamlElement) = x.GroupHeaderTemplate(value)
 
     /// Adjusts the HasUnevenRows property in the visual element
     let withHasUnevenRows (value: bool) (x: XamlElement) = x.HasUnevenRows(value)
@@ -1685,6 +1938,12 @@ module XamlElementExtensions =
     /// Adjusts the RowHeight property in the visual element
     let rowHeight (value: int) (x: XamlElement) = x.RowHeight(value)
 
+    /// Adjusts the ListViewSelectedItem property in the visual element
+    let withListViewSelectedItem (value: int) (x: XamlElement) = x.ListViewSelectedItem(value)
+
+    /// Adjusts the ListViewSelectedItem property in the visual element
+    let listViewSelectedItem (value: int) (x: XamlElement) = x.ListViewSelectedItem(value)
+
     /// Adjusts the SeparatorVisibility property in the visual element
     let withSeparatorVisibility (value: Xamarin.Forms.SeparatorVisibility) (x: XamlElement) = x.SeparatorVisibility(value)
 
@@ -1710,10 +1969,10 @@ module XamlElementExtensions =
     let itemDisappearing (value: Xamarin.Forms.ItemVisibilityEventArgs -> unit) (x: XamlElement) = x.ItemDisappearing(value)
 
     /// Adjusts the ItemSelected property in the visual element
-    let withItemSelected (value: 'T option -> unit) (x: XamlElement) = x.ItemSelected(value)
+    let withItemSelected (value: int option -> unit) (x: XamlElement) = x.ItemSelected(value)
 
     /// Adjusts the ItemSelected property in the visual element
-    let itemSelected (value: 'T option -> unit) (x: XamlElement) = x.ItemSelected(value)
+    let itemSelected (value: int option -> unit) (x: XamlElement) = x.ItemSelected(value)
 
     /// Adjusts the ItemTapped property in the visual element
     let withItemTapped (value: Xamarin.Forms.ItemTappedEventArgs -> unit) (x: XamlElement) = x.ItemTapped(value)
@@ -1908,11 +2167,12 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.VisualElement>, create, apply, Map.ofArray attribs)
 
     /// Describes a View in the view
-    static member View(?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member View(?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
             match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -1958,6 +2218,42 @@ type Xaml() =
             | _, Some value -> target.Margin <- value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
             | None, None -> ()
+            match source.TryGestureRecognizers with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.GestureRecognizers with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.GestureRecognizers.Count > coll.Length) do
+                    target.GestureRecognizers.RemoveAt(target.GestureRecognizers.Count - 1)
+
+                // Count the existing children
+                let n = target.GestureRecognizers.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryGestureRecognizers with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsIGestureRecognizer()
+                                if i >= n then
+                                    target.GestureRecognizers.Insert(i, targetChild)
+                                else
+                                    target.GestureRecognizers.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.GestureRecognizers.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.GestureRecognizers.[i]
+                    ()
+            | _ -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             match prevValueOpt, source.TryAnchorX with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -2080,14 +2376,196 @@ type Xaml() =
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.View>, create, apply, Map.ofArray attribs)
 
+    /// Describes a IGestureRecognizer in the view
+    static member IGestureRecognizer() = 
+        let attribs = [| 
+          |]
+
+        let create () =
+            failwith "can'tdef create Xamarin.Forms.IGestureRecognizer"
+
+        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+            ()
+        new XamlElement(typeof<Xamarin.Forms.IGestureRecognizer>, create, apply, Map.ofArray attribs)
+
+    /// Describes a PanGestureRecognizer in the view
+    static member PanGestureRecognizer(?touchPoints: int, ?panUpdated: Xamarin.Forms.PanUpdatedEventArgs -> unit, ?classId: string, ?styleId: string) = 
+        let attribs = [| 
+            match touchPoints with None -> () | Some v -> yield ("TouchPoints", box ((v))) 
+            match panUpdated with None -> () | Some v -> yield ("PanUpdated", box ((fun f -> System.EventHandler<Xamarin.Forms.PanUpdatedEventArgs>(fun _sender args -> f args))(v))) 
+            match classId with None -> () | Some v -> yield ("ClassId", box ((v))) 
+            match styleId with None -> () | Some v -> yield ("StyleId", box ((v))) 
+          |]
+
+        let create () =
+            box (new Xamarin.Forms.PanGestureRecognizer())
+
+        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+            let target = (target :?> Xamarin.Forms.PanGestureRecognizer)
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTouchPoints
+            match prevValueOpt, source.TryTouchPoints with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.TouchPoints <- value
+            | Some _, None -> target.TouchPoints <- 1 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPanUpdated
+            match prevValueOpt, source.TryPanUpdated with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | Some prevValue, Some value -> target.PanUpdated.RemoveHandler(prevValue); target.PanUpdated.AddHandler(value)
+            | None, Some value -> target.PanUpdated.AddHandler(value)
+            | Some prevValue, None -> target.PanUpdated.RemoveHandler(prevValue)
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
+            match prevValueOpt, source.TryClassId with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.ClassId <- value
+            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
+            match prevValueOpt, source.TryStyleId with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.StyleId <- value
+            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+        new XamlElement(typeof<Xamarin.Forms.PanGestureRecognizer>, create, apply, Map.ofArray attribs)
+
+    /// Describes a TapGestureRecognizer in the view
+    static member TapGestureRecognizer(?command: unit -> unit, ?numberOfTapsRequired: int, ?classId: string, ?styleId: string) = 
+        let attribs = [| 
+            match command with None -> () | Some v -> yield ("Command", box (makeCommand(v))) 
+            match numberOfTapsRequired with None -> () | Some v -> yield ("NumberOfTapsRequired", box ((v))) 
+            match classId with None -> () | Some v -> yield ("ClassId", box ((v))) 
+            match styleId with None -> () | Some v -> yield ("StyleId", box ((v))) 
+          |]
+
+        let create () =
+            box (new Xamarin.Forms.TapGestureRecognizer())
+
+        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+            let target = (target :?> Xamarin.Forms.TapGestureRecognizer)
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryCommand
+            match prevValueOpt, source.TryCommand with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Command <- value
+            | Some _, None -> target.Command <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryNumberOfTapsRequired
+            match prevValueOpt, source.TryNumberOfTapsRequired with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.NumberOfTapsRequired <- value
+            | Some _, None -> target.NumberOfTapsRequired <- 1 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
+            match prevValueOpt, source.TryClassId with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.ClassId <- value
+            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
+            match prevValueOpt, source.TryStyleId with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.StyleId <- value
+            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+        new XamlElement(typeof<Xamarin.Forms.TapGestureRecognizer>, create, apply, Map.ofArray attribs)
+
+    /// Describes a ClickGestureRecognizer in the view
+    static member ClickGestureRecognizer(?command: unit -> unit, ?numberOfClicksRequired: int, ?buttons: Xamarin.Forms.ButtonsMask, ?classId: string, ?styleId: string) = 
+        let attribs = [| 
+            match command with None -> () | Some v -> yield ("Command", box (makeCommand(v))) 
+            match numberOfClicksRequired with None -> () | Some v -> yield ("NumberOfClicksRequired", box ((v))) 
+            match buttons with None -> () | Some v -> yield ("Buttons", box ((v))) 
+            match classId with None -> () | Some v -> yield ("ClassId", box ((v))) 
+            match styleId with None -> () | Some v -> yield ("StyleId", box ((v))) 
+          |]
+
+        let create () =
+            box (new Xamarin.Forms.ClickGestureRecognizer())
+
+        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+            let target = (target :?> Xamarin.Forms.ClickGestureRecognizer)
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryCommand
+            match prevValueOpt, source.TryCommand with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Command <- value
+            | Some _, None -> target.Command <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryNumberOfClicksRequired
+            match prevValueOpt, source.TryNumberOfClicksRequired with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.NumberOfClicksRequired <- value
+            | Some _, None -> target.NumberOfClicksRequired <- 1 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryButtons
+            match prevValueOpt, source.TryButtons with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Buttons <- value
+            | Some _, None -> target.Buttons <- Xamarin.Forms.ButtonsMask.Primary // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
+            match prevValueOpt, source.TryClassId with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.ClassId <- value
+            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
+            match prevValueOpt, source.TryStyleId with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.StyleId <- value
+            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+        new XamlElement(typeof<Xamarin.Forms.ClickGestureRecognizer>, create, apply, Map.ofArray attribs)
+
+    /// Describes a PinchGestureRecognizer in the view
+    static member PinchGestureRecognizer(?isPinching: bool, ?pinchUpdated: Xamarin.Forms.PinchGestureUpdatedEventArgs -> unit, ?classId: string, ?styleId: string) = 
+        let attribs = [| 
+            match isPinching with None -> () | Some v -> yield ("IsPinching", box ((v))) 
+            match pinchUpdated with None -> () | Some v -> yield ("PinchUpdated", box ((fun f -> System.EventHandler<Xamarin.Forms.PinchGestureUpdatedEventArgs>(fun _sender args -> f args))(v))) 
+            match classId with None -> () | Some v -> yield ("ClassId", box ((v))) 
+            match styleId with None -> () | Some v -> yield ("StyleId", box ((v))) 
+          |]
+
+        let create () =
+            box (new Xamarin.Forms.PinchGestureRecognizer())
+
+        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+            let target = (target :?> Xamarin.Forms.PinchGestureRecognizer)
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsPinching
+            match prevValueOpt, source.TryIsPinching with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.IsPinching <- value
+            | Some _, None -> target.IsPinching <- false // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPinchUpdated
+            match prevValueOpt, source.TryPinchUpdated with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | Some prevValue, Some value -> target.PinchUpdated.RemoveHandler(prevValue); target.PinchUpdated.AddHandler(value)
+            | None, Some value -> target.PinchUpdated.AddHandler(value)
+            | Some prevValue, None -> target.PinchUpdated.RemoveHandler(prevValue)
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
+            match prevValueOpt, source.TryClassId with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.ClassId <- value
+            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
+            match prevValueOpt, source.TryStyleId with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.StyleId <- value
+            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+        new XamlElement(typeof<Xamarin.Forms.PinchGestureRecognizer>, create, apply, Map.ofArray attribs)
+
     /// Describes a ActivityIndicator in the view
-    static member ActivityIndicator(?color: Xamarin.Forms.Color, ?isRunning: bool, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member ActivityIndicator(?color: Xamarin.Forms.Color, ?isRunning: bool, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match color with None -> () | Some v -> yield ("Color", box ((v))) 
             match isRunning with None -> () | Some v -> yield ("IsRunning", box ((v))) 
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
             match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -2145,6 +2623,42 @@ type Xaml() =
             | _, Some value -> target.Margin <- value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
             | None, None -> ()
+            match source.TryGestureRecognizers with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.GestureRecognizers with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.GestureRecognizers.Count > coll.Length) do
+                    target.GestureRecognizers.RemoveAt(target.GestureRecognizers.Count - 1)
+
+                // Count the existing children
+                let n = target.GestureRecognizers.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryGestureRecognizers with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsIGestureRecognizer()
+                                if i >= n then
+                                    target.GestureRecognizers.Insert(i, targetChild)
+                                else
+                                    target.GestureRecognizers.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.GestureRecognizers.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.GestureRecognizers.[i]
+                    ()
+            | _ -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             match prevValueOpt, source.TryAnchorX with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -2268,12 +2782,13 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.ActivityIndicator>, create, apply, Map.ofArray attribs)
 
     /// Describes a BoxView in the view
-    static member BoxView(?color: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member BoxView(?color: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match color with None -> () | Some v -> yield ("Color", box ((v))) 
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
             match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -2325,6 +2840,42 @@ type Xaml() =
             | _, Some value -> target.Margin <- value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
             | None, None -> ()
+            match source.TryGestureRecognizers with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.GestureRecognizers with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.GestureRecognizers.Count > coll.Length) do
+                    target.GestureRecognizers.RemoveAt(target.GestureRecognizers.Count - 1)
+
+                // Count the existing children
+                let n = target.GestureRecognizers.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryGestureRecognizers with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsIGestureRecognizer()
+                                if i >= n then
+                                    target.GestureRecognizers.Insert(i, targetChild)
+                                else
+                                    target.GestureRecognizers.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.GestureRecognizers.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.GestureRecognizers.[i]
+                    ()
+            | _ -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             match prevValueOpt, source.TryAnchorX with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -2448,12 +2999,13 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.BoxView>, create, apply, Map.ofArray attribs)
 
     /// Describes a ProgressBar in the view
-    static member ProgressBar(?progress: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member ProgressBar(?progress: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match progress with None -> () | Some v -> yield ("Progress", box ((v))) 
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
             match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -2505,6 +3057,42 @@ type Xaml() =
             | _, Some value -> target.Margin <- value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
             | None, None -> ()
+            match source.TryGestureRecognizers with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.GestureRecognizers with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.GestureRecognizers.Count > coll.Length) do
+                    target.GestureRecognizers.RemoveAt(target.GestureRecognizers.Count - 1)
+
+                // Count the existing children
+                let n = target.GestureRecognizers.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryGestureRecognizers with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsIGestureRecognizer()
+                                if i >= n then
+                                    target.GestureRecognizers.Insert(i, targetChild)
+                                else
+                                    target.GestureRecognizers.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.GestureRecognizers.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.GestureRecognizers.[i]
+                    ()
+            | _ -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             match prevValueOpt, source.TryAnchorX with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -2628,7 +3216,7 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.ProgressBar>, create, apply, Map.ofArray attribs)
 
     /// Describes a ScrollView in the view
-    static member ScrollView(?content: XamlElement, ?orientation: Xamarin.Forms.ScrollOrientation, ?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member ScrollView(?content: XamlElement, ?orientation: Xamarin.Forms.ScrollOrientation, ?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match content with None -> () | Some v -> yield ("Content", box ((v))) 
             match orientation with None -> () | Some v -> yield ("ScrollOrientation", box ((v))) 
@@ -2637,6 +3225,7 @@ type Xaml() =
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
             match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -2672,8 +3261,9 @@ type Xaml() =
                 newChild.ApplyIncremental(prevChild, target.Content)
             | None, Some newChild ->
                 target.Content <- newChild.CreateAsView()
-            | _, None ->
+            | Some _, None ->
                 target.Content <- null;
+            | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScrollOrientation
             match prevValueOpt, source.TryScrollOrientation with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -2710,6 +3300,42 @@ type Xaml() =
             | _, Some value -> target.Margin <- value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
             | None, None -> ()
+            match source.TryGestureRecognizers with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.GestureRecognizers with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.GestureRecognizers.Count > coll.Length) do
+                    target.GestureRecognizers.RemoveAt(target.GestureRecognizers.Count - 1)
+
+                // Count the existing children
+                let n = target.GestureRecognizers.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryGestureRecognizers with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsIGestureRecognizer()
+                                if i >= n then
+                                    target.GestureRecognizers.Insert(i, targetChild)
+                                else
+                                    target.GestureRecognizers.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.GestureRecognizers.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.GestureRecognizers.[i]
+                    ()
+            | _ -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             match prevValueOpt, source.TryAnchorX with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -2833,7 +3459,7 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.ScrollView>, create, apply, Map.ofArray attribs)
 
     /// Describes a SearchBar in the view
-    static member SearchBar(?cancelButtonColor: Xamarin.Forms.Color, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?placeholder: string, ?placeholderColor: Xamarin.Forms.Color, ?searchCommand: unit -> unit, ?text: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member SearchBar(?cancelButtonColor: Xamarin.Forms.Color, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?placeholder: string, ?placeholderColor: Xamarin.Forms.Color, ?searchCommand: unit -> unit, ?text: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match cancelButtonColor with None -> () | Some v -> yield ("CancelButtonColor", box ((v))) 
             match fontFamily with None -> () | Some v -> yield ("FontFamily", box ((v))) 
@@ -2848,6 +3474,7 @@ type Xaml() =
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
             match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -2953,6 +3580,42 @@ type Xaml() =
             | _, Some value -> target.Margin <- value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
             | None, None -> ()
+            match source.TryGestureRecognizers with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.GestureRecognizers with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.GestureRecognizers.Count > coll.Length) do
+                    target.GestureRecognizers.RemoveAt(target.GestureRecognizers.Count - 1)
+
+                // Count the existing children
+                let n = target.GestureRecognizers.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryGestureRecognizers with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsIGestureRecognizer()
+                                if i >= n then
+                                    target.GestureRecognizers.Insert(i, targetChild)
+                                else
+                                    target.GestureRecognizers.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.GestureRecognizers.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.GestureRecognizers.[i]
+                    ()
+            | _ -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             match prevValueOpt, source.TryAnchorX with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -3076,7 +3739,7 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.SearchBar>, create, apply, Map.ofArray attribs)
 
     /// Describes a Button in the view
-    static member Button(?text: string, ?command: unit -> unit, ?borderColor: Xamarin.Forms.Color, ?borderWidth: double, ?commandParameter: System.Object, ?contentLayout: Xamarin.Forms.Button.ButtonContentLayout, ?cornerRadius: int, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?image: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member Button(?text: string, ?command: unit -> unit, ?borderColor: Xamarin.Forms.Color, ?borderWidth: double, ?commandParameter: System.Object, ?contentLayout: Xamarin.Forms.Button.ButtonContentLayout, ?cornerRadius: int, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?image: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match text with None -> () | Some v -> yield ("Text", box ((v))) 
             match command with None -> () | Some v -> yield ("Command", box (makeCommand(v))) 
@@ -3093,6 +3756,7 @@ type Xaml() =
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
             match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -3210,6 +3874,42 @@ type Xaml() =
             | _, Some value -> target.Margin <- value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
             | None, None -> ()
+            match source.TryGestureRecognizers with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.GestureRecognizers with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.GestureRecognizers.Count > coll.Length) do
+                    target.GestureRecognizers.RemoveAt(target.GestureRecognizers.Count - 1)
+
+                // Count the existing children
+                let n = target.GestureRecognizers.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryGestureRecognizers with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsIGestureRecognizer()
+                                if i >= n then
+                                    target.GestureRecognizers.Insert(i, targetChild)
+                                else
+                                    target.GestureRecognizers.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.GestureRecognizers.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.GestureRecognizers.[i]
+                    ()
+            | _ -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             match prevValueOpt, source.TryAnchorX with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -3333,7 +4033,7 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.Button>, create, apply, Map.ofArray attribs)
 
     /// Describes a Slider in the view
-    static member Slider(?minimum: double, ?maximum: double, ?value: double, ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member Slider(?minimum: double, ?maximum: double, ?value: double, ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match minimum with None -> () | Some v -> yield ("Minimum", box ((v))) 
             match maximum with None -> () | Some v -> yield ("Maximum", box ((v))) 
@@ -3342,6 +4042,7 @@ type Xaml() =
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
             match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -3412,6 +4113,42 @@ type Xaml() =
             | _, Some value -> target.Margin <- value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
             | None, None -> ()
+            match source.TryGestureRecognizers with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.GestureRecognizers with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.GestureRecognizers.Count > coll.Length) do
+                    target.GestureRecognizers.RemoveAt(target.GestureRecognizers.Count - 1)
+
+                // Count the existing children
+                let n = target.GestureRecognizers.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryGestureRecognizers with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsIGestureRecognizer()
+                                if i >= n then
+                                    target.GestureRecognizers.Insert(i, targetChild)
+                                else
+                                    target.GestureRecognizers.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.GestureRecognizers.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.GestureRecognizers.[i]
+                    ()
+            | _ -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             match prevValueOpt, source.TryAnchorX with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -3535,7 +4272,7 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.Slider>, create, apply, Map.ofArray attribs)
 
     /// Describes a Stepper in the view
-    static member Stepper(?minimum: double, ?maximum: double, ?value: double, ?increment: double, ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member Stepper(?minimum: double, ?maximum: double, ?value: double, ?increment: double, ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match minimum with None -> () | Some v -> yield ("Minimum", box ((v))) 
             match maximum with None -> () | Some v -> yield ("Maximum", box ((v))) 
@@ -3545,6 +4282,7 @@ type Xaml() =
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
             match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -3621,6 +4359,42 @@ type Xaml() =
             | _, Some value -> target.Margin <- value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
             | None, None -> ()
+            match source.TryGestureRecognizers with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.GestureRecognizers with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.GestureRecognizers.Count > coll.Length) do
+                    target.GestureRecognizers.RemoveAt(target.GestureRecognizers.Count - 1)
+
+                // Count the existing children
+                let n = target.GestureRecognizers.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryGestureRecognizers with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsIGestureRecognizer()
+                                if i >= n then
+                                    target.GestureRecognizers.Insert(i, targetChild)
+                                else
+                                    target.GestureRecognizers.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.GestureRecognizers.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.GestureRecognizers.[i]
+                    ()
+            | _ -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             match prevValueOpt, source.TryAnchorX with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -3744,13 +4518,14 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.Stepper>, create, apply, Map.ofArray attribs)
 
     /// Describes a Switch in the view
-    static member Switch(?isToggled: bool, ?toggled: Xamarin.Forms.ToggledEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member Switch(?isToggled: bool, ?toggled: Xamarin.Forms.ToggledEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match isToggled with None -> () | Some v -> yield ("IsToggled", box ((v))) 
             match toggled with None -> () | Some v -> yield ("Toggled", box ((fun f -> System.EventHandler<Xamarin.Forms.ToggledEventArgs>(fun _sender args -> f args))(v))) 
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
             match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -3809,6 +4584,42 @@ type Xaml() =
             | _, Some value -> target.Margin <- value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
             | None, None -> ()
+            match source.TryGestureRecognizers with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.GestureRecognizers with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.GestureRecognizers.Count > coll.Length) do
+                    target.GestureRecognizers.RemoveAt(target.GestureRecognizers.Count - 1)
+
+                // Count the existing children
+                let n = target.GestureRecognizers.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryGestureRecognizers with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsIGestureRecognizer()
+                                if i >= n then
+                                    target.GestureRecognizers.Insert(i, targetChild)
+                                else
+                                    target.GestureRecognizers.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.GestureRecognizers.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.GestureRecognizers.[i]
+                    ()
+            | _ -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             match prevValueOpt, source.TryAnchorX with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -3994,7 +4805,7 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.SwitchCell>, create, apply, Map.ofArray attribs)
 
     /// Describes a Grid in the view
-    static member Grid(?rowdefs: obj list, ?coldefs: obj list, ?rowSpacing: double, ?columnSpacing: double, ?children: XamlElement list, ?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member Grid(?rowdefs: obj list, ?coldefs: obj list, ?rowSpacing: double, ?columnSpacing: double, ?children: XamlElement list, ?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match rowdefs with None -> () | Some v -> yield ("GridRowDefinitions", box ((fun es -> es |> Array.ofList |> Array.map (fun h -> Xaml.RowDefinition(height=h)))(v))) 
             match coldefs with None -> () | Some v -> yield ("GridColumnDefinitions", box ((fun es -> es |> Array.ofList |> Array.map (fun h -> Xaml.ColumnDefinition(width=h)))(v))) 
@@ -4006,6 +4817,7 @@ type Xaml() =
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
             match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -4154,25 +4966,25 @@ type Xaml() =
                     // Adjust the attached properties
                     match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryGridRow), newChild.TryGridRow with
                     | Some prev, Some v when prev = v -> ()
-                    | _, Some v -> Xamarin.Forms.Grid.SetRow(targetChild, v)
+                    | _, Some value -> Xamarin.Forms.Grid.SetRow(targetChild, value)
                     | Some _, None -> Xamarin.Forms.Grid.SetRow(targetChild, 0) // TODO: not always perfect, should set back to original default?
                     | _ -> ()
                     // Adjust the attached properties
                     match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryGridRowSpan), newChild.TryGridRowSpan with
                     | Some prev, Some v when prev = v -> ()
-                    | _, Some v -> Xamarin.Forms.Grid.SetRowSpan(targetChild, v)
+                    | _, Some value -> Xamarin.Forms.Grid.SetRowSpan(targetChild, value)
                     | Some _, None -> Xamarin.Forms.Grid.SetRowSpan(targetChild, 0) // TODO: not always perfect, should set back to original default?
                     | _ -> ()
                     // Adjust the attached properties
                     match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryGridColumn), newChild.TryGridColumn with
                     | Some prev, Some v when prev = v -> ()
-                    | _, Some v -> Xamarin.Forms.Grid.SetColumn(targetChild, v)
+                    | _, Some value -> Xamarin.Forms.Grid.SetColumn(targetChild, value)
                     | Some _, None -> Xamarin.Forms.Grid.SetColumn(targetChild, 0) // TODO: not always perfect, should set back to original default?
                     | _ -> ()
                     // Adjust the attached properties
                     match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryGridColumnSpan), newChild.TryGridColumnSpan with
                     | Some prev, Some v when prev = v -> ()
-                    | _, Some v -> Xamarin.Forms.Grid.SetColumnSpan(targetChild, v)
+                    | _, Some value -> Xamarin.Forms.Grid.SetColumnSpan(targetChild, value)
                     | Some _, None -> Xamarin.Forms.Grid.SetColumnSpan(targetChild, 0) // TODO: not always perfect, should set back to original default?
                     | _ -> ()
                     ()
@@ -4207,6 +5019,42 @@ type Xaml() =
             | _, Some value -> target.Margin <- value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
             | None, None -> ()
+            match source.TryGestureRecognizers with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.GestureRecognizers with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.GestureRecognizers.Count > coll.Length) do
+                    target.GestureRecognizers.RemoveAt(target.GestureRecognizers.Count - 1)
+
+                // Count the existing children
+                let n = target.GestureRecognizers.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryGestureRecognizers with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsIGestureRecognizer()
+                                if i >= n then
+                                    target.GestureRecognizers.Insert(i, targetChild)
+                                else
+                                    target.GestureRecognizers.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.GestureRecognizers.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.GestureRecognizers.[i]
+                    ()
+            | _ -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             match prevValueOpt, source.TryAnchorX with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -4330,7 +5178,7 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.Grid>, create, apply, Map.ofArray attribs)
 
     /// Describes a AbsoluteLayout in the view
-    static member AbsoluteLayout(?children: XamlElement list, ?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member AbsoluteLayout(?children: XamlElement list, ?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match children with None -> () | Some v -> yield ("Children", box (Array.ofList(v))) 
             match isClippedToBounds with None -> () | Some v -> yield ("IsClippedToBounds", box ((v))) 
@@ -4338,6 +5186,7 @@ type Xaml() =
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
             match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -4402,13 +5251,13 @@ type Xaml() =
                     // Adjust the attached properties
                     match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryAbsoluteLayoutBounds), newChild.TryAbsoluteLayoutBounds with
                     | Some prev, Some v when prev = v -> ()
-                    | _, Some v -> Xamarin.Forms.AbsoluteLayout.SetLayoutBounds(targetChild, v)
+                    | _, Some value -> Xamarin.Forms.AbsoluteLayout.SetLayoutBounds(targetChild, value)
                     | Some _, None -> Xamarin.Forms.AbsoluteLayout.SetLayoutBounds(targetChild, Xamarin.Forms.Rectangle.Zero) // TODO: not always perfect, should set back to original default?
                     | _ -> ()
                     // Adjust the attached properties
                     match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryAbsoluteLayoutFlags), newChild.TryAbsoluteLayoutFlags with
                     | Some prev, Some v when prev = v -> ()
-                    | _, Some v -> Xamarin.Forms.AbsoluteLayout.SetLayoutFlags(targetChild, v)
+                    | _, Some value -> Xamarin.Forms.AbsoluteLayout.SetLayoutFlags(targetChild, value)
                     | Some _, None -> Xamarin.Forms.AbsoluteLayout.SetLayoutFlags(targetChild, Xamarin.Forms.AbsoluteLayoutFlags.None) // TODO: not always perfect, should set back to original default?
                     | _ -> ()
                     ()
@@ -4443,6 +5292,42 @@ type Xaml() =
             | _, Some value -> target.Margin <- value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
             | None, None -> ()
+            match source.TryGestureRecognizers with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.GestureRecognizers with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.GestureRecognizers.Count > coll.Length) do
+                    target.GestureRecognizers.RemoveAt(target.GestureRecognizers.Count - 1)
+
+                // Count the existing children
+                let n = target.GestureRecognizers.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryGestureRecognizers with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsIGestureRecognizer()
+                                if i >= n then
+                                    target.GestureRecognizers.Insert(i, targetChild)
+                                else
+                                    target.GestureRecognizers.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.GestureRecognizers.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.GestureRecognizers.[i]
+                    ()
+            | _ -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             match prevValueOpt, source.TryAnchorX with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -4566,7 +5451,7 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.AbsoluteLayout>, create, apply, Map.ofArray attribs)
 
     /// Describes a RelativeLayout in the view
-    static member RelativeLayout(?children: XamlElement list, ?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member RelativeLayout(?children: XamlElement list, ?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match children with None -> () | Some v -> yield ("Children", box (Array.ofList(v))) 
             match isClippedToBounds with None -> () | Some v -> yield ("IsClippedToBounds", box ((v))) 
@@ -4574,6 +5459,7 @@ type Xaml() =
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
             match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -4638,31 +5524,31 @@ type Xaml() =
                     // Adjust the attached properties
                     match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryBoundsConstraint), newChild.TryBoundsConstraint with
                     | Some prev, Some v when prev = v -> ()
-                    | _, Some v -> Xamarin.Forms.RelativeLayout.SetBoundsConstraint(targetChild, v)
+                    | _, Some value -> Xamarin.Forms.RelativeLayout.SetBoundsConstraint(targetChild, value)
                     | Some _, None -> Xamarin.Forms.RelativeLayout.SetBoundsConstraint(targetChild, null) // TODO: not always perfect, should set back to original default?
                     | _ -> ()
                     // Adjust the attached properties
                     match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryHeightConstraint), newChild.TryHeightConstraint with
                     | Some prev, Some v when prev = v -> ()
-                    | _, Some v -> Xamarin.Forms.RelativeLayout.SetHeightConstraint(targetChild, v)
+                    | _, Some value -> Xamarin.Forms.RelativeLayout.SetHeightConstraint(targetChild, value)
                     | Some _, None -> Xamarin.Forms.RelativeLayout.SetHeightConstraint(targetChild, null) // TODO: not always perfect, should set back to original default?
                     | _ -> ()
                     // Adjust the attached properties
                     match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryWidthConstraint), newChild.TryWidthConstraint with
                     | Some prev, Some v when prev = v -> ()
-                    | _, Some v -> Xamarin.Forms.RelativeLayout.SetWidthConstraint(targetChild, v)
+                    | _, Some value -> Xamarin.Forms.RelativeLayout.SetWidthConstraint(targetChild, value)
                     | Some _, None -> Xamarin.Forms.RelativeLayout.SetWidthConstraint(targetChild, null) // TODO: not always perfect, should set back to original default?
                     | _ -> ()
                     // Adjust the attached properties
                     match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryXConstraint), newChild.TryXConstraint with
                     | Some prev, Some v when prev = v -> ()
-                    | _, Some v -> Xamarin.Forms.RelativeLayout.SetXConstraint(targetChild, v)
+                    | _, Some value -> Xamarin.Forms.RelativeLayout.SetXConstraint(targetChild, value)
                     | Some _, None -> Xamarin.Forms.RelativeLayout.SetXConstraint(targetChild, null) // TODO: not always perfect, should set back to original default?
                     | _ -> ()
                     // Adjust the attached properties
                     match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryYConstraint), newChild.TryYConstraint with
                     | Some prev, Some v when prev = v -> ()
-                    | _, Some v -> Xamarin.Forms.RelativeLayout.SetYConstraint(targetChild, v)
+                    | _, Some value -> Xamarin.Forms.RelativeLayout.SetYConstraint(targetChild, value)
                     | Some _, None -> Xamarin.Forms.RelativeLayout.SetYConstraint(targetChild, null) // TODO: not always perfect, should set back to original default?
                     | _ -> ()
                     ()
@@ -4697,6 +5583,42 @@ type Xaml() =
             | _, Some value -> target.Margin <- value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
             | None, None -> ()
+            match source.TryGestureRecognizers with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.GestureRecognizers with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.GestureRecognizers.Count > coll.Length) do
+                    target.GestureRecognizers.RemoveAt(target.GestureRecognizers.Count - 1)
+
+                // Count the existing children
+                let n = target.GestureRecognizers.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryGestureRecognizers with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsIGestureRecognizer()
+                                if i >= n then
+                                    target.GestureRecognizers.Insert(i, targetChild)
+                                else
+                                    target.GestureRecognizers.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.GestureRecognizers.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.GestureRecognizers.[i]
+                    ()
+            | _ -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             match prevValueOpt, source.TryAnchorX with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -4858,7 +5780,7 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.ColumnDefinition>, create, apply, Map.ofArray attribs)
 
     /// Describes a ContentView in the view
-    static member ContentView(?content: XamlElement, ?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member ContentView(?content: XamlElement, ?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match content with None -> () | Some v -> yield ("Content", box ((v))) 
             match isClippedToBounds with None -> () | Some v -> yield ("IsClippedToBounds", box ((v))) 
@@ -4866,6 +5788,7 @@ type Xaml() =
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
             match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -4901,8 +5824,9 @@ type Xaml() =
                 newChild.ApplyIncremental(prevChild, target.Content)
             | None, Some newChild ->
                 target.Content <- newChild.CreateAsView()
-            | _, None ->
+            | Some _, None ->
                 target.Content <- null;
+            | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsClippedToBounds
             match prevValueOpt, source.TryIsClippedToBounds with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -4933,6 +5857,42 @@ type Xaml() =
             | _, Some value -> target.Margin <- value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
             | None, None -> ()
+            match source.TryGestureRecognizers with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.GestureRecognizers with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.GestureRecognizers.Count > coll.Length) do
+                    target.GestureRecognizers.RemoveAt(target.GestureRecognizers.Count - 1)
+
+                // Count the existing children
+                let n = target.GestureRecognizers.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryGestureRecognizers with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsIGestureRecognizer()
+                                if i >= n then
+                                    target.GestureRecognizers.Insert(i, targetChild)
+                                else
+                                    target.GestureRecognizers.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.GestureRecognizers.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.GestureRecognizers.[i]
+                    ()
+            | _ -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             match prevValueOpt, source.TryAnchorX with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -5056,13 +6016,14 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.ContentView>, create, apply, Map.ofArray attribs)
 
     /// Describes a TemplatedView in the view
-    static member TemplatedView(?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member TemplatedView(?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match isClippedToBounds with None -> () | Some v -> yield ("IsClippedToBounds", box ((v))) 
             match padding with None -> () | Some v -> yield ("Padding", box (makeThickness(v))) 
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
             match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -5120,6 +6081,42 @@ type Xaml() =
             | _, Some value -> target.Margin <- value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
             | None, None -> ()
+            match source.TryGestureRecognizers with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.GestureRecognizers with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.GestureRecognizers.Count > coll.Length) do
+                    target.GestureRecognizers.RemoveAt(target.GestureRecognizers.Count - 1)
+
+                // Count the existing children
+                let n = target.GestureRecognizers.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryGestureRecognizers with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsIGestureRecognizer()
+                                if i >= n then
+                                    target.GestureRecognizers.Insert(i, targetChild)
+                                else
+                                    target.GestureRecognizers.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.GestureRecognizers.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.GestureRecognizers.[i]
+                    ()
+            | _ -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             match prevValueOpt, source.TryAnchorX with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -5243,7 +6240,7 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.TemplatedView>, create, apply, Map.ofArray attribs)
 
     /// Describes a DatePicker in the view
-    static member DatePicker(?date: System.DateTime, ?format: string, ?minimumDate: System.DateTime, ?maximumDate: System.DateTime, ?dateSelected: Xamarin.Forms.DateChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member DatePicker(?date: System.DateTime, ?format: string, ?minimumDate: System.DateTime, ?maximumDate: System.DateTime, ?dateSelected: Xamarin.Forms.DateChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match date with None -> () | Some v -> yield ("Date", box ((v))) 
             match format with None -> () | Some v -> yield ("Format", box ((v))) 
@@ -5253,6 +6250,7 @@ type Xaml() =
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
             match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -5329,6 +6327,42 @@ type Xaml() =
             | _, Some value -> target.Margin <- value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
             | None, None -> ()
+            match source.TryGestureRecognizers with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.GestureRecognizers with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.GestureRecognizers.Count > coll.Length) do
+                    target.GestureRecognizers.RemoveAt(target.GestureRecognizers.Count - 1)
+
+                // Count the existing children
+                let n = target.GestureRecognizers.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryGestureRecognizers with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsIGestureRecognizer()
+                                if i >= n then
+                                    target.GestureRecognizers.Insert(i, targetChild)
+                                else
+                                    target.GestureRecognizers.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.GestureRecognizers.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.GestureRecognizers.[i]
+                    ()
+            | _ -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             match prevValueOpt, source.TryAnchorX with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -5452,7 +6486,7 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.DatePicker>, create, apply, Map.ofArray attribs)
 
     /// Describes a Picker in the view
-    static member Picker(?itemsSource: 'T list, ?selectedIndex: int, ?title: string, ?textColor: Xamarin.Forms.Color, ?selectedIndexChanged: (int * 'T option) -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member Picker(?itemsSource: 'T list, ?selectedIndex: int, ?title: string, ?textColor: Xamarin.Forms.Color, ?selectedIndexChanged: (int * 'T option) -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match itemsSource with None -> () | Some v -> yield ("PickerItemsSource", box ((fun es -> es |> Array.ofList :> System.Collections.IList)(v))) 
             match selectedIndex with None -> () | Some v -> yield ("SelectedIndex", box ((v))) 
@@ -5462,6 +6496,7 @@ type Xaml() =
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
             match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -5538,6 +6573,42 @@ type Xaml() =
             | _, Some value -> target.Margin <- value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
             | None, None -> ()
+            match source.TryGestureRecognizers with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.GestureRecognizers with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.GestureRecognizers.Count > coll.Length) do
+                    target.GestureRecognizers.RemoveAt(target.GestureRecognizers.Count - 1)
+
+                // Count the existing children
+                let n = target.GestureRecognizers.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryGestureRecognizers with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsIGestureRecognizer()
+                                if i >= n then
+                                    target.GestureRecognizers.Insert(i, targetChild)
+                                else
+                                    target.GestureRecognizers.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.GestureRecognizers.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.GestureRecognizers.[i]
+                    ()
+            | _ -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             match prevValueOpt, source.TryAnchorX with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -5661,7 +6732,7 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.Picker>, create, apply, Map.ofArray attribs)
 
     /// Describes a Frame in the view
-    static member Frame(?outlineColor: Xamarin.Forms.Color, ?cornerRadius: single, ?hasShadow: bool, ?content: XamlElement, ?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member Frame(?outlineColor: Xamarin.Forms.Color, ?cornerRadius: single, ?hasShadow: bool, ?content: XamlElement, ?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match outlineColor with None -> () | Some v -> yield ("OutlineColor", box ((v))) 
             match cornerRadius with None -> () | Some v -> yield ("FrameCornerRadius", box ((v))) 
@@ -5672,6 +6743,7 @@ type Xaml() =
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
             match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -5725,8 +6797,9 @@ type Xaml() =
                 newChild.ApplyIncremental(prevChild, target.Content)
             | None, Some newChild ->
                 target.Content <- newChild.CreateAsView()
-            | _, None ->
+            | Some _, None ->
                 target.Content <- null;
+            | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsClippedToBounds
             match prevValueOpt, source.TryIsClippedToBounds with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -5757,6 +6830,42 @@ type Xaml() =
             | _, Some value -> target.Margin <- value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
             | None, None -> ()
+            match source.TryGestureRecognizers with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.GestureRecognizers with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.GestureRecognizers.Count > coll.Length) do
+                    target.GestureRecognizers.RemoveAt(target.GestureRecognizers.Count - 1)
+
+                // Count the existing children
+                let n = target.GestureRecognizers.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryGestureRecognizers with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsIGestureRecognizer()
+                                if i >= n then
+                                    target.GestureRecognizers.Insert(i, targetChild)
+                                else
+                                    target.GestureRecognizers.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.GestureRecognizers.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.GestureRecognizers.[i]
+                    ()
+            | _ -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             match prevValueOpt, source.TryAnchorX with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -5880,7 +6989,7 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.Frame>, create, apply, Map.ofArray attribs)
 
     /// Describes a Image in the view
-    static member Image(?source: string, ?aspect: Xamarin.Forms.Aspect, ?isOpaque: bool, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member Image(?source: string, ?aspect: Xamarin.Forms.Aspect, ?isOpaque: bool, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match source with None -> () | Some v -> yield ("ImageSource", box (makeImageSource(v))) 
             match aspect with None -> () | Some v -> yield ("Aspect", box ((v))) 
@@ -5888,6 +6997,7 @@ type Xaml() =
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
             match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -5951,6 +7061,42 @@ type Xaml() =
             | _, Some value -> target.Margin <- value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
             | None, None -> ()
+            match source.TryGestureRecognizers with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.GestureRecognizers with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.GestureRecognizers.Count > coll.Length) do
+                    target.GestureRecognizers.RemoveAt(target.GestureRecognizers.Count - 1)
+
+                // Count the existing children
+                let n = target.GestureRecognizers.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryGestureRecognizers with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsIGestureRecognizer()
+                                if i >= n then
+                                    target.GestureRecognizers.Insert(i, targetChild)
+                                else
+                                    target.GestureRecognizers.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.GestureRecognizers.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.GestureRecognizers.[i]
+                    ()
+            | _ -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             match prevValueOpt, source.TryAnchorX with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -6074,12 +7220,13 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.Image>, create, apply, Map.ofArray attribs)
 
     /// Describes a InputView in the view
-    static member InputView(?keyboard: Xamarin.Forms.Keyboard, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member InputView(?keyboard: Xamarin.Forms.Keyboard, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match keyboard with None -> () | Some v -> yield ("Keyboard", box ((v))) 
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
             match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -6131,6 +7278,42 @@ type Xaml() =
             | _, Some value -> target.Margin <- value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
             | None, None -> ()
+            match source.TryGestureRecognizers with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.GestureRecognizers with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.GestureRecognizers.Count > coll.Length) do
+                    target.GestureRecognizers.RemoveAt(target.GestureRecognizers.Count - 1)
+
+                // Count the existing children
+                let n = target.GestureRecognizers.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryGestureRecognizers with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsIGestureRecognizer()
+                                if i >= n then
+                                    target.GestureRecognizers.Insert(i, targetChild)
+                                else
+                                    target.GestureRecognizers.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.GestureRecognizers.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.GestureRecognizers.[i]
+                    ()
+            | _ -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             match prevValueOpt, source.TryAnchorX with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -6254,7 +7437,7 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.InputView>, create, apply, Map.ofArray attribs)
 
     /// Describes a Editor in the view
-    static member Editor(?text: string, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?completed: unit -> unit, ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?keyboard: Xamarin.Forms.Keyboard, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member Editor(?text: string, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?completed: unit -> unit, ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?keyboard: Xamarin.Forms.Keyboard, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match text with None -> () | Some v -> yield ("Text", box ((v))) 
             match fontSize with None -> () | Some v -> yield ("FontSize", box (makeFontSize(v))) 
@@ -6267,6 +7450,7 @@ type Xaml() =
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
             match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -6362,6 +7546,42 @@ type Xaml() =
             | _, Some value -> target.Margin <- value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
             | None, None -> ()
+            match source.TryGestureRecognizers with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.GestureRecognizers with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.GestureRecognizers.Count > coll.Length) do
+                    target.GestureRecognizers.RemoveAt(target.GestureRecognizers.Count - 1)
+
+                // Count the existing children
+                let n = target.GestureRecognizers.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryGestureRecognizers with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsIGestureRecognizer()
+                                if i >= n then
+                                    target.GestureRecognizers.Insert(i, targetChild)
+                                else
+                                    target.GestureRecognizers.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.GestureRecognizers.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.GestureRecognizers.[i]
+                    ()
+            | _ -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             match prevValueOpt, source.TryAnchorX with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -6485,7 +7705,7 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.Editor>, create, apply, Map.ofArray attribs)
 
     /// Describes a Entry in the view
-    static member Entry(?text: string, ?placeholder: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?placeholderColor: Xamarin.Forms.Color, ?isPassword: bool, ?completed: unit -> unit, ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?keyboard: Xamarin.Forms.Keyboard, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member Entry(?text: string, ?placeholder: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?placeholderColor: Xamarin.Forms.Color, ?isPassword: bool, ?completed: unit -> unit, ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?keyboard: Xamarin.Forms.Keyboard, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match text with None -> () | Some v -> yield ("Text", box ((v))) 
             match placeholder with None -> () | Some v -> yield ("Placeholder", box ((v))) 
@@ -6502,6 +7722,7 @@ type Xaml() =
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
             match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -6621,6 +7842,42 @@ type Xaml() =
             | _, Some value -> target.Margin <- value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
             | None, None -> ()
+            match source.TryGestureRecognizers with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.GestureRecognizers with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.GestureRecognizers.Count > coll.Length) do
+                    target.GestureRecognizers.RemoveAt(target.GestureRecognizers.Count - 1)
+
+                // Count the existing children
+                let n = target.GestureRecognizers.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryGestureRecognizers with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsIGestureRecognizer()
+                                if i >= n then
+                                    target.GestureRecognizers.Insert(i, targetChild)
+                                else
+                                    target.GestureRecognizers.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.GestureRecognizers.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.GestureRecognizers.[i]
+                    ()
+            | _ -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             match prevValueOpt, source.TryAnchorX with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -6744,7 +8001,7 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.Entry>, create, apply, Map.ofArray attribs)
 
     /// Describes a Label in the view
-    static member Label(?text: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?verticalTextAlignment: Xamarin.Forms.TextAlignment, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member Label(?text: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?verticalTextAlignment: Xamarin.Forms.TextAlignment, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match text with None -> () | Some v -> yield ("Text", box ((v))) 
             match horizontalTextAlignment with None -> () | Some v -> yield ("HorizontalTextAlignment", box ((v))) 
@@ -6756,6 +8013,7 @@ type Xaml() =
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
             match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -6843,6 +8101,42 @@ type Xaml() =
             | _, Some value -> target.Margin <- value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
             | None, None -> ()
+            match source.TryGestureRecognizers with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.GestureRecognizers with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.GestureRecognizers.Count > coll.Length) do
+                    target.GestureRecognizers.RemoveAt(target.GestureRecognizers.Count - 1)
+
+                // Count the existing children
+                let n = target.GestureRecognizers.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryGestureRecognizers with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsIGestureRecognizer()
+                                if i >= n then
+                                    target.GestureRecognizers.Insert(i, targetChild)
+                                else
+                                    target.GestureRecognizers.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.GestureRecognizers.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.GestureRecognizers.[i]
+                    ()
+            | _ -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             match prevValueOpt, source.TryAnchorX with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -6966,13 +8260,14 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.Label>, create, apply, Map.ofArray attribs)
 
     /// Describes a Layout in the view
-    static member Layout(?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member Layout(?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match isClippedToBounds with None -> () | Some v -> yield ("IsClippedToBounds", box ((v))) 
             match padding with None -> () | Some v -> yield ("Padding", box (makeThickness(v))) 
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
             match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -7030,6 +8325,42 @@ type Xaml() =
             | _, Some value -> target.Margin <- value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
             | None, None -> ()
+            match source.TryGestureRecognizers with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.GestureRecognizers with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.GestureRecognizers.Count > coll.Length) do
+                    target.GestureRecognizers.RemoveAt(target.GestureRecognizers.Count - 1)
+
+                // Count the existing children
+                let n = target.GestureRecognizers.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryGestureRecognizers with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsIGestureRecognizer()
+                                if i >= n then
+                                    target.GestureRecognizers.Insert(i, targetChild)
+                                else
+                                    target.GestureRecognizers.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.GestureRecognizers.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.GestureRecognizers.[i]
+                    ()
+            | _ -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             match prevValueOpt, source.TryAnchorX with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -7153,7 +8484,7 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.Layout>, create, apply, Map.ofArray attribs)
 
     /// Describes a StackLayout in the view
-    static member StackLayout(?children: XamlElement list, ?orientation: Xamarin.Forms.StackOrientation, ?spacing: double, ?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member StackLayout(?children: XamlElement list, ?orientation: Xamarin.Forms.StackOrientation, ?spacing: double, ?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match children with None -> () | Some v -> yield ("Children", box (Array.ofList(v))) 
             match orientation with None -> () | Some v -> yield ("StackOrientation", box ((v))) 
@@ -7163,6 +8494,7 @@ type Xaml() =
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
             match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -7268,6 +8600,42 @@ type Xaml() =
             | _, Some value -> target.Margin <- value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
             | None, None -> ()
+            match source.TryGestureRecognizers with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.GestureRecognizers with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.GestureRecognizers.Count > coll.Length) do
+                    target.GestureRecognizers.RemoveAt(target.GestureRecognizers.Count - 1)
+
+                // Count the existing children
+                let n = target.GestureRecognizers.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryGestureRecognizers with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsIGestureRecognizer()
+                                if i >= n then
+                                    target.GestureRecognizers.Insert(i, targetChild)
+                                else
+                                    target.GestureRecognizers.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.GestureRecognizers.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.GestureRecognizers.[i]
+                    ()
+            | _ -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             match prevValueOpt, source.TryAnchorX with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -7453,7 +8821,7 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.Span>, create, apply, Map.ofArray attribs)
 
     /// Describes a TimePicker in the view
-    static member TimePicker(?time: System.TimeSpan, ?format: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member TimePicker(?time: System.TimeSpan, ?format: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match time with None -> () | Some v -> yield ("Time", box ((v))) 
             match format with None -> () | Some v -> yield ("Format", box ((v))) 
@@ -7461,6 +8829,7 @@ type Xaml() =
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
             match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -7524,6 +8893,42 @@ type Xaml() =
             | _, Some value -> target.Margin <- value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
             | None, None -> ()
+            match source.TryGestureRecognizers with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.GestureRecognizers with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.GestureRecognizers.Count > coll.Length) do
+                    target.GestureRecognizers.RemoveAt(target.GestureRecognizers.Count - 1)
+
+                // Count the existing children
+                let n = target.GestureRecognizers.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryGestureRecognizers with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsIGestureRecognizer()
+                                if i >= n then
+                                    target.GestureRecognizers.Insert(i, targetChild)
+                                else
+                                    target.GestureRecognizers.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.GestureRecognizers.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.GestureRecognizers.[i]
+                    ()
+            | _ -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             match prevValueOpt, source.TryAnchorX with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -7647,12 +9052,15 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.TimePicker>, create, apply, Map.ofArray attribs)
 
     /// Describes a WebView in the view
-    static member WebView(?source: Xamarin.Forms.WebViewSource, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member WebView(?source: Xamarin.Forms.WebViewSource, ?navigated: Xamarin.Forms.WebNavigatedEventArgs -> unit, ?navigating: Xamarin.Forms.WebNavigatingEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match source with None -> () | Some v -> yield ("WebSource", box ((v))) 
+            match navigated with None -> () | Some v -> yield ("Navigated", box ((fun f -> System.EventHandler<Xamarin.Forms.WebNavigatedEventArgs>(fun _sender args -> f args))(v))) 
+            match navigating with None -> () | Some v -> yield ("Navigating", box ((fun f -> System.EventHandler<Xamarin.Forms.WebNavigatingEventArgs>(fun _sender args -> f args))(v))) 
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
             match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -7686,6 +9094,20 @@ type Xaml() =
             | _, Some value -> target.Source <- value
             | Some _, None -> target.Source <- null // TODO: not always perfect, should set back to original default?
             | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryNavigated
+            match prevValueOpt, source.TryNavigated with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | Some prevValue, Some value -> target.Navigated.RemoveHandler(prevValue); target.Navigated.AddHandler(value)
+            | None, Some value -> target.Navigated.AddHandler(value)
+            | Some prevValue, None -> target.Navigated.RemoveHandler(prevValue)
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryNavigating
+            match prevValueOpt, source.TryNavigating with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | Some prevValue, Some value -> target.Navigating.RemoveHandler(prevValue); target.Navigating.AddHandler(value)
+            | None, Some value -> target.Navigating.AddHandler(value)
+            | Some prevValue, None -> target.Navigating.RemoveHandler(prevValue)
+            | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
             match prevValueOpt, source.TryHorizontalOptions with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -7704,6 +9126,42 @@ type Xaml() =
             | _, Some value -> target.Margin <- value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
             | None, None -> ()
+            match source.TryGestureRecognizers with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.GestureRecognizers with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.GestureRecognizers.Count > coll.Length) do
+                    target.GestureRecognizers.RemoveAt(target.GestureRecognizers.Count - 1)
+
+                // Count the existing children
+                let n = target.GestureRecognizers.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryGestureRecognizers with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsIGestureRecognizer()
+                                if i >= n then
+                                    target.GestureRecognizers.Insert(i, targetChild)
+                                else
+                                    target.GestureRecognizers.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.GestureRecognizers.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.GestureRecognizers.[i]
+                    ()
+            | _ -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             match prevValueOpt, source.TryAnchorX with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -7993,12 +9451,14 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.Page>, create, apply, Map.ofArray attribs)
 
     /// Describes a CarouselPage in the view
-    static member CarouselPage(?itemsSource: System.Collections.IEnumerable, ?itemTemplate: Xamarin.Forms.DataTemplate, ?selectedItem: System.Object, ?currentPage: XamlElement, ?title: string, ?padding: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member CarouselPage(?children: XamlElement list, ?itemsSource: 'T list, ?itemTemplate: Xamarin.Forms.DataTemplate, ?selectedItem: System.Object, ?currentPage: XamlElement, ?currentPageChanged: 'T option -> unit, ?title: string, ?padding: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
-            match itemsSource with None -> () | Some v -> yield ("ItemsSource", box ((v))) 
+            match children with None -> () | Some v -> yield ("Children", box (Array.ofList(v))) 
+            match itemsSource with None -> () | Some v -> yield ("ItemsSource", box ((fun es -> es |> Array.ofList |> Array.map box :> System.Collections.Generic.IList<obj>)(v))) 
             match itemTemplate with None -> () | Some v -> yield ("ItemTemplate", box ((v))) 
             match selectedItem with None -> () | Some v -> yield ("SelectedItem", box ((v))) 
             match currentPage with None -> () | Some v -> yield ("CurrentPage", box ((v))) 
+            match currentPageChanged with None -> () | Some v -> yield ("CurrentPageChanged", box ((fun f -> System.EventHandler(fun sender args -> f ((sender :?> Xamarin.Forms.CarouselPage).SelectedItem |> Option.ofObj |> Option.map unbox<'T>)))(v))) 
             match title with None -> () | Some v -> yield ("Title", box ((v))) 
             match padding with None -> () | Some v -> yield ("Padding", box (makeThickness(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
@@ -8028,6 +9488,42 @@ type Xaml() =
 
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.CarouselPage)
+            match source.TryChildren with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.Children with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.Children.Count > coll.Length) do
+                    target.Children.RemoveAt(target.Children.Count - 1)
+
+                // Count the existing children
+                let n = target.Children.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryChildren with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsContentPage()
+                                if i >= n then
+                                    target.Children.Insert(i, targetChild)
+                                else
+                                    target.Children.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.Children.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.Children.[i]
+                    ()
+            | _ -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryItemsSource
             match prevValueOpt, source.TryItemsSource with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -8054,8 +9550,16 @@ type Xaml() =
                 newChild.ApplyIncremental(prevChild, target.CurrentPage)
             | None, Some newChild ->
                 target.CurrentPage <- newChild.CreateAsContentPage()
-            | _, None ->
+            | Some _, None ->
                 target.CurrentPage <- null;
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryCurrentPageChanged
+            match prevValueOpt, source.TryCurrentPageChanged with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | Some prevValue, Some value -> target.CurrentPageChanged.RemoveHandler(prevValue); target.CurrentPageChanged.AddHandler(value)
+            | None, Some value -> target.CurrentPageChanged.AddHandler(value)
+            | Some prevValue, None -> target.CurrentPageChanged.RemoveHandler(prevValue)
+            | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTitle
             match prevValueOpt, source.TryTitle with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -8190,6 +9694,427 @@ type Xaml() =
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.CarouselPage>, create, apply, Map.ofArray attribs)
 
+    /// Describes a NavigationPage in the view
+    static member NavigationPage(?barBackgroundColor: Xamarin.Forms.Color, ?barTextColor: Xamarin.Forms.Color, ?popped: Xamarin.Forms.NavigationEventArgs -> unit, ?poppedToRoot: Xamarin.Forms.NavigationEventArgs -> unit, ?pushed: Xamarin.Forms.NavigationEventArgs -> unit, ?title: string, ?padding: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+        let attribs = [| 
+            match barBackgroundColor with None -> () | Some v -> yield ("BarBackgroundColor", box ((v))) 
+            match barTextColor with None -> () | Some v -> yield ("BarTextColor", box ((v))) 
+            match popped with None -> () | Some v -> yield ("Popped", box ((fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(v))) 
+            match poppedToRoot with None -> () | Some v -> yield ("PoppedToRoot", box ((fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(v))) 
+            match pushed with None -> () | Some v -> yield ("Pushed", box ((fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(v))) 
+            match title with None -> () | Some v -> yield ("Title", box ((v))) 
+            match padding with None -> () | Some v -> yield ("Padding", box (makeThickness(v))) 
+            match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
+            match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
+            match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
+            match heightRequest with None -> () | Some v -> yield ("HeightRequest", box ((v))) 
+            match inputTransparent with None -> () | Some v -> yield ("InputTransparent", box ((v))) 
+            match isEnabled with None -> () | Some v -> yield ("IsEnabled", box ((v))) 
+            match isVisible with None -> () | Some v -> yield ("IsVisible", box ((v))) 
+            match minimumHeightRequest with None -> () | Some v -> yield ("MinimumHeightRequest", box ((v))) 
+            match minimumWidthRequest with None -> () | Some v -> yield ("MinimumWidthRequest", box ((v))) 
+            match opacity with None -> () | Some v -> yield ("Opacity", box ((v))) 
+            match rotation with None -> () | Some v -> yield ("Rotation", box ((v))) 
+            match rotationX with None -> () | Some v -> yield ("RotationX", box ((v))) 
+            match rotationY with None -> () | Some v -> yield ("RotationY", box ((v))) 
+            match scale with None -> () | Some v -> yield ("Scale", box ((v))) 
+            match style with None -> () | Some v -> yield ("Style", box ((v))) 
+            match translationX with None -> () | Some v -> yield ("TranslationX", box ((v))) 
+            match translationY with None -> () | Some v -> yield ("TranslationY", box ((v))) 
+            match widthRequest with None -> () | Some v -> yield ("WidthRequest", box ((v))) 
+            match classId with None -> () | Some v -> yield ("ClassId", box ((v))) 
+            match styleId with None -> () | Some v -> yield ("StyleId", box ((v))) 
+          |]
+
+        let create () =
+            box (new Xamarin.Forms.NavigationPage())
+
+        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+            let target = (target :?> Xamarin.Forms.NavigationPage)
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBarBackgroundColor
+            match prevValueOpt, source.TryBarBackgroundColor with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.BarBackgroundColor <- value
+            | Some _, None -> target.BarBackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBarTextColor
+            match prevValueOpt, source.TryBarTextColor with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.BarTextColor <- value
+            | Some _, None -> target.BarTextColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPopped
+            match prevValueOpt, source.TryPopped with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | Some prevValue, Some value -> target.Popped.RemoveHandler(prevValue); target.Popped.AddHandler(value)
+            | None, Some value -> target.Popped.AddHandler(value)
+            | Some prevValue, None -> target.Popped.RemoveHandler(prevValue)
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPoppedToRoot
+            match prevValueOpt, source.TryPoppedToRoot with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | Some prevValue, Some value -> target.PoppedToRoot.RemoveHandler(prevValue); target.PoppedToRoot.AddHandler(value)
+            | None, Some value -> target.PoppedToRoot.AddHandler(value)
+            | Some prevValue, None -> target.PoppedToRoot.RemoveHandler(prevValue)
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPushed
+            match prevValueOpt, source.TryPushed with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | Some prevValue, Some value -> target.Pushed.RemoveHandler(prevValue); target.Pushed.AddHandler(value)
+            | None, Some value -> target.Pushed.AddHandler(value)
+            | Some prevValue, None -> target.Pushed.RemoveHandler(prevValue)
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTitle
+            match prevValueOpt, source.TryTitle with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Title <- value
+            | Some _, None -> target.Title <- "" // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
+            match prevValueOpt, source.TryPadding with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Padding <- value
+            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
+            match prevValueOpt, source.TryAnchorX with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.AnchorX <- value
+            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
+            match prevValueOpt, source.TryAnchorY with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.AnchorY <- value
+            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
+            match prevValueOpt, source.TryBackgroundColor with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.BackgroundColor <- value
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
+            match prevValueOpt, source.TryHeightRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.HeightRequest <- value
+            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
+            match prevValueOpt, source.TryInputTransparent with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.InputTransparent <- value
+            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
+            match prevValueOpt, source.TryIsEnabled with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.IsEnabled <- value
+            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
+            match prevValueOpt, source.TryIsVisible with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.IsVisible <- value
+            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
+            match prevValueOpt, source.TryMinimumHeightRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.MinimumHeightRequest <- value
+            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
+            match prevValueOpt, source.TryMinimumWidthRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.MinimumWidthRequest <- value
+            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
+            match prevValueOpt, source.TryOpacity with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Opacity <- value
+            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
+            match prevValueOpt, source.TryRotation with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Rotation <- value
+            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
+            match prevValueOpt, source.TryRotationX with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.RotationX <- value
+            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
+            match prevValueOpt, source.TryRotationY with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.RotationY <- value
+            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
+            match prevValueOpt, source.TryScale with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Scale <- value
+            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
+            match prevValueOpt, source.TryStyle with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Style <- value
+            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
+            match prevValueOpt, source.TryTranslationX with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.TranslationX <- value
+            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
+            match prevValueOpt, source.TryTranslationY with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.TranslationY <- value
+            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
+            match prevValueOpt, source.TryWidthRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.WidthRequest <- value
+            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
+            match prevValueOpt, source.TryClassId with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.ClassId <- value
+            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
+            match prevValueOpt, source.TryStyleId with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.StyleId <- value
+            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+        new XamlElement(typeof<Xamarin.Forms.NavigationPage>, create, apply, Map.ofArray attribs)
+
+    /// Describes a TabbedPage in the view
+    static member TabbedPage(?children: XamlElement list, ?barBackgroundColor: Xamarin.Forms.Color, ?barTextColor: Xamarin.Forms.Color, ?title: string, ?padding: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+        let attribs = [| 
+            match children with None -> () | Some v -> yield ("Children", box (Array.ofList(v))) 
+            match barBackgroundColor with None -> () | Some v -> yield ("BarBackgroundColor", box ((v))) 
+            match barTextColor with None -> () | Some v -> yield ("BarTextColor", box ((v))) 
+            match title with None -> () | Some v -> yield ("Title", box ((v))) 
+            match padding with None -> () | Some v -> yield ("Padding", box (makeThickness(v))) 
+            match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
+            match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
+            match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
+            match heightRequest with None -> () | Some v -> yield ("HeightRequest", box ((v))) 
+            match inputTransparent with None -> () | Some v -> yield ("InputTransparent", box ((v))) 
+            match isEnabled with None -> () | Some v -> yield ("IsEnabled", box ((v))) 
+            match isVisible with None -> () | Some v -> yield ("IsVisible", box ((v))) 
+            match minimumHeightRequest with None -> () | Some v -> yield ("MinimumHeightRequest", box ((v))) 
+            match minimumWidthRequest with None -> () | Some v -> yield ("MinimumWidthRequest", box ((v))) 
+            match opacity with None -> () | Some v -> yield ("Opacity", box ((v))) 
+            match rotation with None -> () | Some v -> yield ("Rotation", box ((v))) 
+            match rotationX with None -> () | Some v -> yield ("RotationX", box ((v))) 
+            match rotationY with None -> () | Some v -> yield ("RotationY", box ((v))) 
+            match scale with None -> () | Some v -> yield ("Scale", box ((v))) 
+            match style with None -> () | Some v -> yield ("Style", box ((v))) 
+            match translationX with None -> () | Some v -> yield ("TranslationX", box ((v))) 
+            match translationY with None -> () | Some v -> yield ("TranslationY", box ((v))) 
+            match widthRequest with None -> () | Some v -> yield ("WidthRequest", box ((v))) 
+            match classId with None -> () | Some v -> yield ("ClassId", box ((v))) 
+            match styleId with None -> () | Some v -> yield ("StyleId", box ((v))) 
+          |]
+
+        let create () =
+            box (new Xamarin.Forms.TabbedPage())
+
+        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+            let target = (target :?> Xamarin.Forms.TabbedPage)
+            match source.TryChildren with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.Children with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.Children.Count > coll.Length) do
+                    target.Children.RemoveAt(target.Children.Count - 1)
+
+                // Count the existing children
+                let n = target.Children.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryChildren with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsPage()
+                                if i >= n then
+                                    target.Children.Insert(i, targetChild)
+                                else
+                                    target.Children.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.Children.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.Children.[i]
+                    ()
+            | _ -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBarBackgroundColor
+            match prevValueOpt, source.TryBarBackgroundColor with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.BarBackgroundColor <- value
+            | Some _, None -> target.BarBackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBarTextColor
+            match prevValueOpt, source.TryBarTextColor with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.BarTextColor <- value
+            | Some _, None -> target.BarTextColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTitle
+            match prevValueOpt, source.TryTitle with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Title <- value
+            | Some _, None -> target.Title <- "" // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
+            match prevValueOpt, source.TryPadding with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Padding <- value
+            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
+            match prevValueOpt, source.TryAnchorX with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.AnchorX <- value
+            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
+            match prevValueOpt, source.TryAnchorY with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.AnchorY <- value
+            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
+            match prevValueOpt, source.TryBackgroundColor with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.BackgroundColor <- value
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
+            match prevValueOpt, source.TryHeightRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.HeightRequest <- value
+            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
+            match prevValueOpt, source.TryInputTransparent with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.InputTransparent <- value
+            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
+            match prevValueOpt, source.TryIsEnabled with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.IsEnabled <- value
+            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
+            match prevValueOpt, source.TryIsVisible with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.IsVisible <- value
+            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
+            match prevValueOpt, source.TryMinimumHeightRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.MinimumHeightRequest <- value
+            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
+            match prevValueOpt, source.TryMinimumWidthRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.MinimumWidthRequest <- value
+            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
+            match prevValueOpt, source.TryOpacity with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Opacity <- value
+            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
+            match prevValueOpt, source.TryRotation with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Rotation <- value
+            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
+            match prevValueOpt, source.TryRotationX with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.RotationX <- value
+            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
+            match prevValueOpt, source.TryRotationY with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.RotationY <- value
+            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
+            match prevValueOpt, source.TryScale with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Scale <- value
+            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
+            match prevValueOpt, source.TryStyle with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.Style <- value
+            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
+            match prevValueOpt, source.TryTranslationX with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.TranslationX <- value
+            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
+            match prevValueOpt, source.TryTranslationY with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.TranslationY <- value
+            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
+            match prevValueOpt, source.TryWidthRequest with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.WidthRequest <- value
+            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
+            match prevValueOpt, source.TryClassId with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.ClassId <- value
+            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
+            match prevValueOpt, source.TryStyleId with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.StyleId <- value
+            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+        new XamlElement(typeof<Xamarin.Forms.TabbedPage>, create, apply, Map.ofArray attribs)
+
     /// Describes a ContentPage in the view
     static member ContentPage(?content: XamlElement, ?title: string, ?padding: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
@@ -8231,8 +10156,9 @@ type Xaml() =
                 newChild.ApplyIncremental(prevChild, target.Content)
             | None, Some newChild ->
                 target.Content <- newChild.CreateAsView()
-            | _, None ->
+            | Some _, None ->
                 target.Content <- null;
+            | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTitle
             match prevValueOpt, source.TryTitle with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -8368,10 +10294,14 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.ContentPage>, create, apply, Map.ofArray attribs)
 
     /// Describes a MasterDetailPage in the view
-    static member MasterDetailPage(?master: XamlElement, ?detail: XamlElement, ?title: string, ?padding: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member MasterDetailPage(?master: XamlElement, ?detail: XamlElement, ?isGestureEnabled: bool, ?isPresented: bool, ?masterBehavior: Xamarin.Forms.MasterBehavior, ?isPresentedChanged: bool -> unit, ?title: string, ?padding: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match master with None -> () | Some v -> yield ("Master", box ((v))) 
             match detail with None -> () | Some v -> yield ("Detail", box ((v))) 
+            match isGestureEnabled with None -> () | Some v -> yield ("IsGestureEnabled", box ((v))) 
+            match isPresented with None -> () | Some v -> yield ("IsPresented", box ((v))) 
+            match masterBehavior with None -> () | Some v -> yield ("MasterBehavior", box ((v))) 
+            match isPresentedChanged with None -> () | Some v -> yield ("IsPresentedChanged", box ((fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.MasterDetailPage).IsPresented))(v))) 
             match title with None -> () | Some v -> yield ("Title", box ((v))) 
             match padding with None -> () | Some v -> yield ("Padding", box (makeThickness(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
@@ -8409,8 +10339,9 @@ type Xaml() =
                 newChild.ApplyIncremental(prevChild, target.Master)
             | None, Some newChild ->
                 target.Master <- newChild.CreateAsPage()
-            | _, None ->
+            | Some _, None ->
                 target.Master <- null;
+            | None, None -> ()
             let prevChildOpt = match prevOpt with None -> None | Some prev -> prev.TryDetail
             match prevChildOpt, source.TryDetail with
             // For structured objects, the only caching is based on reference equality
@@ -8419,8 +10350,34 @@ type Xaml() =
                 newChild.ApplyIncremental(prevChild, target.Detail)
             | None, Some newChild ->
                 target.Detail <- newChild.CreateAsPage()
-            | _, None ->
+            | Some _, None ->
                 target.Detail <- null;
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsGestureEnabled
+            match prevValueOpt, source.TryIsGestureEnabled with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.IsGestureEnabled <- value
+            | Some _, None -> target.IsGestureEnabled <- true // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsPresented
+            match prevValueOpt, source.TryIsPresented with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.IsPresented <- value
+            | Some _, None -> target.IsPresented <- true // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMasterBehavior
+            match prevValueOpt, source.TryMasterBehavior with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | _, Some value -> target.MasterBehavior <- value
+            | Some _, None -> target.MasterBehavior <- Xamarin.Forms.MasterBehavior.Default // TODO: not always perfect, should set back to original default?
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsPresentedChanged
+            match prevValueOpt, source.TryIsPresentedChanged with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | Some prevValue, Some value -> target.IsPresentedChanged.RemoveHandler(prevValue); target.IsPresentedChanged.AddHandler(value)
+            | None, Some value -> target.IsPresentedChanged.AddHandler(value)
+            | Some prevValue, None -> target.IsPresentedChanged.RemoveHandler(prevValue)
+            | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTitle
             match prevValueOpt, source.TryTitle with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -8554,193 +10511,6 @@ type Xaml() =
             | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.MasterDetailPage>, create, apply, Map.ofArray attribs)
-
-    /// Describes a TabbedPage in the view
-    static member TabbedPage(?itemsSource: System.Collections.IEnumerable, ?itemTemplate: Xamarin.Forms.DataTemplate, ?selectedItem: System.Object, ?title: string, ?padding: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
-        let attribs = [| 
-            match itemsSource with None -> () | Some v -> yield ("ItemsSource", box ((v))) 
-            match itemTemplate with None -> () | Some v -> yield ("ItemTemplate", box ((v))) 
-            match selectedItem with None -> () | Some v -> yield ("SelectedItem", box ((v))) 
-            match title with None -> () | Some v -> yield ("Title", box ((v))) 
-            match padding with None -> () | Some v -> yield ("Padding", box (makeThickness(v))) 
-            match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
-            match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
-            match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
-            match heightRequest with None -> () | Some v -> yield ("HeightRequest", box ((v))) 
-            match inputTransparent with None -> () | Some v -> yield ("InputTransparent", box ((v))) 
-            match isEnabled with None -> () | Some v -> yield ("IsEnabled", box ((v))) 
-            match isVisible with None -> () | Some v -> yield ("IsVisible", box ((v))) 
-            match minimumHeightRequest with None -> () | Some v -> yield ("MinimumHeightRequest", box ((v))) 
-            match minimumWidthRequest with None -> () | Some v -> yield ("MinimumWidthRequest", box ((v))) 
-            match opacity with None -> () | Some v -> yield ("Opacity", box ((v))) 
-            match rotation with None -> () | Some v -> yield ("Rotation", box ((v))) 
-            match rotationX with None -> () | Some v -> yield ("RotationX", box ((v))) 
-            match rotationY with None -> () | Some v -> yield ("RotationY", box ((v))) 
-            match scale with None -> () | Some v -> yield ("Scale", box ((v))) 
-            match style with None -> () | Some v -> yield ("Style", box ((v))) 
-            match translationX with None -> () | Some v -> yield ("TranslationX", box ((v))) 
-            match translationY with None -> () | Some v -> yield ("TranslationY", box ((v))) 
-            match widthRequest with None -> () | Some v -> yield ("WidthRequest", box ((v))) 
-            match classId with None -> () | Some v -> yield ("ClassId", box ((v))) 
-            match styleId with None -> () | Some v -> yield ("StyleId", box ((v))) 
-          |]
-
-        let create () =
-            box (new Xamarin.Forms.TabbedPage())
-
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
-            let target = (target :?> Xamarin.Forms.TabbedPage)
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryItemsSource
-            match prevValueOpt, source.TryItemsSource with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.ItemsSource <- value
-            | Some _, None -> target.ItemsSource <- null // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryItemTemplate
-            match prevValueOpt, source.TryItemTemplate with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.ItemTemplate <- value
-            | Some _, None -> target.ItemTemplate <- null // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TrySelectedItem
-            match prevValueOpt, source.TrySelectedItem with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.SelectedItem <- value
-            | Some _, None -> target.SelectedItem <- null // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTitle
-            match prevValueOpt, source.TryTitle with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.Title <- value
-            | Some _, None -> target.Title <- "" // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
-            match prevValueOpt, source.TryPadding with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.Padding <- value
-            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.TabbedPage>, create, apply, Map.ofArray attribs)
 
     /// Describes a Cell in the view
     static member Cell(?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
@@ -8976,8 +10746,9 @@ type Xaml() =
                 newChild.ApplyIncremental(prevChild, target.View)
             | None, Some newChild ->
                 target.View <- newChild.CreateAsView()
-            | _, None ->
+            | Some _, None ->
                 target.View <- null;
+            | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeight
             match prevValueOpt, source.TryHeight with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -9005,13 +10776,10 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.ViewCell>, create, apply, Map.ofArray attribs)
 
     /// Describes a ListView in the view
-    static member ListView(?itemsSource: 'T list, ?itemTemplate: Xamarin.Forms.DataTemplate, ?footer: System.Object, ?footerTemplate: Xamarin.Forms.DataTemplate, ?groupHeaderTemplate: Xamarin.Forms.DataTemplate, ?hasUnevenRows: bool, ?header: System.Object, ?headerTemplate: Xamarin.Forms.DataTemplate, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: System.Object, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: Xamarin.Forms.ItemVisibilityEventArgs -> unit, ?itemDisappearing: Xamarin.Forms.ItemVisibilityEventArgs -> unit, ?itemSelected: 'T option -> unit, ?itemTapped: Xamarin.Forms.ItemTappedEventArgs -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member ListView(?cells: XamlElement list, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?headerTemplate: Xamarin.Forms.DataTemplate, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: int, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: Xamarin.Forms.ItemVisibilityEventArgs -> unit, ?itemDisappearing: Xamarin.Forms.ItemVisibilityEventArgs -> unit, ?itemSelected: int option -> unit, ?itemTapped: Xamarin.Forms.ItemTappedEventArgs -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: double, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
-            match itemsSource with None -> () | Some v -> yield ("ItemsSource", box ((fun es -> es |> Array.ofList |> Array.map box :> System.Collections.Generic.IList<obj>)(v))) 
-            match itemTemplate with None -> () | Some v -> yield ("ItemTemplate", box ((v))) 
+            match cells with None -> () | Some v -> yield ("ListViewItemsSource", box ((fun (es: XamlElement list) -> es |> Array.ofList :> System.Collections.Generic.IList<XamlElement>)(v))) 
             match footer with None -> () | Some v -> yield ("Footer", box ((v))) 
-            match footerTemplate with None -> () | Some v -> yield ("FooterTemplate", box ((v))) 
-            match groupHeaderTemplate with None -> () | Some v -> yield ("GroupHeaderTemplate", box ((v))) 
             match hasUnevenRows with None -> () | Some v -> yield ("HasUnevenRows", box ((v))) 
             match header with None -> () | Some v -> yield ("Header", box ((v))) 
             match headerTemplate with None -> () | Some v -> yield ("HeaderTemplate", box ((v))) 
@@ -9020,17 +10788,18 @@ type Xaml() =
             match isRefreshing with None -> () | Some v -> yield ("IsRefreshing", box ((v))) 
             match refreshCommand with None -> () | Some v -> yield ("RefreshCommand", box (makeCommand(v))) 
             match rowHeight with None -> () | Some v -> yield ("RowHeight", box ((v))) 
-            match selectedItem with None -> () | Some v -> yield ("SelectedItem", box ((v))) 
+            match selectedItem with None -> () | Some v -> yield ("ListViewSelectedItem", box ((v))) 
             match separatorVisibility with None -> () | Some v -> yield ("SeparatorVisibility", box ((v))) 
             match separatorColor with None -> () | Some v -> yield ("SeparatorColor", box ((v))) 
             match itemAppearing with None -> () | Some v -> yield ("ItemAppearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))(v))) 
             match itemDisappearing with None -> () | Some v -> yield ("ItemDisappearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))(v))) 
-            match itemSelected with None -> () | Some v -> yield ("ItemSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun _sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<'T>)))(v))) 
+            match itemSelected with None -> () | Some v -> yield ("ItemSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<XamlElement> |> Option.bind (fun view -> let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<XamlElement> in items |> Seq.tryFindIndex (fun view2 -> System.Object.ReferenceEquals(view, view2))))))(v))) 
             match itemTapped with None -> () | Some v -> yield ("ItemTapped", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun _sender args -> f args))(v))) 
             match refreshing with None -> () | Some v -> yield ("Refreshing", box ((fun f -> System.EventHandler(fun sender args -> f ()))(v))) 
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
             match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -9054,39 +10823,21 @@ type Xaml() =
           |]
 
         let create () =
-            box (new Xamarin.Forms.ListView())
+            box (new Elmish.XamarinForms.DynamicViews.CustomListView())
 
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ListView)
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryItemsSource
-            match prevValueOpt, source.TryItemsSource with
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryListViewItemsSource
+            match prevValueOpt, source.TryListViewItemsSource with
             | Some prevValue, Some value when prevValue = value -> ()
             | _, Some value -> target.ItemsSource <- value
             | Some _, None -> target.ItemsSource <- null // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryItemTemplate
-            match prevValueOpt, source.TryItemTemplate with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.ItemTemplate <- value
-            | Some _, None -> target.ItemTemplate <- null // TODO: not always perfect, should set back to original default?
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFooter
             match prevValueOpt, source.TryFooter with
             | Some prevValue, Some value when prevValue = value -> ()
             | _, Some value -> target.Footer <- value
             | Some _, None -> target.Footer <- null // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFooterTemplate
-            match prevValueOpt, source.TryFooterTemplate with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.FooterTemplate <- value
-            | Some _, None -> target.FooterTemplate <- null // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryGroupHeaderTemplate
-            match prevValueOpt, source.TryGroupHeaderTemplate with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.GroupHeaderTemplate <- value
-            | Some _, None -> target.GroupHeaderTemplate <- null // TODO: not always perfect, should set back to original default?
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHasUnevenRows
             match prevValueOpt, source.TryHasUnevenRows with
@@ -9136,10 +10887,10 @@ type Xaml() =
             | _, Some value -> target.RowHeight <- value
             | Some _, None -> target.RowHeight <- -1 // TODO: not always perfect, should set back to original default?
             | None, None -> ()
-            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TrySelectedItem
-            match prevValueOpt, source.TrySelectedItem with
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryListViewSelectedItem
+            match prevValueOpt, source.TryListViewSelectedItem with
             | Some prevValue, Some value when prevValue = value -> ()
-            | _, Some value -> target.SelectedItem <- value
+            | _, Some value -> target.SelectedItem <- (fun i -> let items = target.ItemsSource :?> System.Collections.Generic.IList<Xamarin.Forms.Cell> in if i >= 0 && i < items.Count then items.[i] else null) value
             | Some _, None -> target.SelectedItem <- null // TODO: not always perfect, should set back to original default?
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TrySeparatorVisibility
@@ -9207,6 +10958,42 @@ type Xaml() =
             | _, Some value -> target.Margin <- value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
             | None, None -> ()
+            match source.TryGestureRecognizers with
+            | Some coll when coll <> null && coll.Length > 0 ->
+              if (coll = null || coll.Length = 0) then
+                match target.GestureRecognizers with
+                | null -> ()
+                | targetColl -> targetColl.Clear() 
+              else
+                // Remove the excess children
+                while (target.GestureRecognizers.Count > coll.Length) do
+                    target.GestureRecognizers.RemoveAt(target.GestureRecognizers.Count - 1)
+
+                // Count the existing children
+                let n = target.GestureRecognizers.Count;
+
+                // Adjust the existing children and create the new children
+                for i in 0 .. coll.Length-1 do
+                    let newChild = coll.[i]
+                    let prevChildOpt = match prevOpt with None -> None | Some prev -> match prev.TryGestureRecognizers with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt, targetChild = 
+                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> newChild.TargetType <> prevChild.TargetType)
+                            if mustCreate then
+                                let targetChild = newChild.CreateAsIGestureRecognizer()
+                                if i >= n then
+                                    target.GestureRecognizers.Insert(i, targetChild)
+                                else
+                                    target.GestureRecognizers.[i] <- targetChild
+                                None, targetChild
+                            else
+                                let targetChild = target.GestureRecognizers.[i]
+                                newChild.ApplyIncremental(prevChildOpt.Value, targetChild)
+                                prevChildOpt, targetChild
+                        else
+                            prevChildOpt, target.GestureRecognizers.[i]
+                    ()
+            | _ -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             match prevValueOpt, source.TryAnchorX with
             | Some prevValue, Some value when prevValue = value -> ()
@@ -9331,6 +11118,18 @@ type Xaml() =
 [<AutoOpen>]
 module XamlCreateExtensions = 
 
+    /// Specifies a PanGestureRecognizer in the view description, initially with default attributes
+    let panGestureRecognizer = Xaml.PanGestureRecognizer()
+
+    /// Specifies a TapGestureRecognizer in the view description, initially with default attributes
+    let tapGestureRecognizer = Xaml.TapGestureRecognizer()
+
+    /// Specifies a ClickGestureRecognizer in the view description, initially with default attributes
+    let clickGestureRecognizer = Xaml.ClickGestureRecognizer()
+
+    /// Specifies a PinchGestureRecognizer in the view description, initially with default attributes
+    let pinchGestureRecognizer = Xaml.PinchGestureRecognizer()
+
     /// Specifies a ActivityIndicator in the view description, initially with default attributes
     let activityIndicator = Xaml.ActivityIndicator()
 
@@ -9421,14 +11220,17 @@ module XamlCreateExtensions =
     /// Specifies a CarouselPage in the view description, initially with default attributes
     let carouselPage = Xaml.CarouselPage()
 
+    /// Specifies a NavigationPage in the view description, initially with default attributes
+    let navigationPage = Xaml.NavigationPage()
+
+    /// Specifies a TabbedPage in the view description, initially with default attributes
+    let tabbedPage = Xaml.TabbedPage()
+
     /// Specifies a ContentPage in the view description, initially with default attributes
     let contentPage = Xaml.ContentPage()
 
     /// Specifies a MasterDetailPage in the view description, initially with default attributes
     let masterDetailPage = Xaml.MasterDetailPage()
-
-    /// Specifies a TabbedPage in the view description, initially with default attributes
-    let tabbedPage = Xaml.TabbedPage()
 
     /// Specifies a TextCell in the view description, initially with default attributes
     let textCell = Xaml.TextCell()
