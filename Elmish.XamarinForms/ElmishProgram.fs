@@ -361,7 +361,6 @@ module Program =
                         let newPageDescription: XamlElement = contentf model dispatch
                         newPageDescription.ApplyIncremental (prevPageDescription, page)
                         Choice2Of2 (newPageDescription, page, contentf)
-                    | _ -> failwith "unreachable"
                 lastViewData <- Some viewData
                       
         let initialMsgs = initialMessages.ToArray()

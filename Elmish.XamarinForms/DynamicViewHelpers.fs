@@ -5,12 +5,12 @@ open Xamarin.Forms
 
 open Elmish.XamarinForms
 open Elmish.XamarinForms.DynamicViews
+open System.Runtime.CompilerServices
+open System.Collections.Generic
+open System.Windows.Input
+
 [<AutoOpen>]
 module SimplerHelpers = 
-    open System.Runtime.CompilerServices
-    open System.Collections.Generic
-    open System.Windows.Input
-
 
     let rowdef h = Xaml.RowDefinition(height=makeGridLength h)
     let coldef h = Xaml.ColumnDefinition(width=makeGridLength h)
@@ -23,7 +23,20 @@ module SimplerHelpers =
         let children = els |> List.mapi (fun i x -> x.GridColumn i)
         Xaml.Grid(coldefs=cds, children=children)
 
+    type Box<'T> = Box of 'T
+    type Amortizations<'Key,'Value when 'Key : equality>() = 
+       static let t = Dictionary<Box<'Key>,'Value>(HashIdentity.Structural)
+       static member T = t
 
+    let amortize key f = 
+        let bkey = Box key
+        match Amortizations.T.TryGetValue(bkey) with 
+        | true, res -> res
+        | false, _ ->
+             let res = f key
+             Amortizations.T.[bkey] <- res
+             res
+        
     // Helper page for the TicTacToe sample
     // Need to generlize the HeightRequest phase of the XF content digestion process...
     type HelperPage(?viewAllocatedSizeFixup) as self =

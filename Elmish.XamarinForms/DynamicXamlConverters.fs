@@ -3,6 +3,7 @@ namespace Elmish.XamarinForms.DynamicViews
 #nowarn "67" // cast always holds
 
 open System
+open System.Reflection
 open System.Diagnostics
 open System.Windows.Input
 open Xamarin.Forms
@@ -37,4 +38,35 @@ module Converters =
         | :? int as i -> double i
         | :? double as v -> v
         | _ -> System.Convert.ToDouble(v)
+
+type CustomViewCell() = 
+    inherit ViewCell()
+    static let t = System.Runtime.CompilerServices.ConditionalWeakTable()
+
+    override x.OnBindingContextChanged () =
+        base.OnBindingContextChanged ()
+        match x.BindingContext with
+        | null -> 
+            t.Remove(x) |> ignore
+        | bcNew -> 
+            match t.TryGetValue(x) with 
+            | true, bcPrev -> 
+                let ty = bcNew.GetType()
+                let res = ty.InvokeMember("ApplyIncremental",(BindingFlags.InvokeMethod ||| BindingFlags.Public ||| BindingFlags.Instance),null, bcNew, [| box bcPrev; box x.View |] )
+                t.Remove(x) |> ignore
+                t.Add(x, bcNew)
+                ignore res
+            | false, _ -> 
+                let ty = bcNew.GetType()
+                let res = ty.InvokeMember("Create",(BindingFlags.InvokeMethod ||| BindingFlags.Public ||| BindingFlags.Instance),null, bcNew, [| |] )
+                match res with 
+                | :? View as v -> 
+                    x.View <- v
+                | _ -> 
+                    failwithf "The cells of a ListView must each be some kind of 'View' and not a '%A'" (res.GetType())
+                t.Add(x, bcNew)
+                ignore res
+                
+type CustomListView() = 
+    inherit ListView(ItemTemplate=DataTemplate(typeof<CustomViewCell>))
 

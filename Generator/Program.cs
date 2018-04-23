@@ -33,6 +33,8 @@ namespace Generator
     {
         // Input
         public string Name { get; set; }
+        public string ModelName { get; set; }
+        public string CustomType { get; set; }
         public List<MemberBinding> Members { get; set; }
 
         // Output
@@ -51,6 +53,7 @@ namespace Generator
         public string Default { get; set; }
         public string Equality { get; set; }
         public string Conv { get; set; }
+        public string Apply { get; set; }
         public string ModelType { get; set; }
         public string ElementType { get; set; }
         public string InputType { get; set; }
@@ -233,6 +236,12 @@ namespace Generator
             w.WriteLine($"    [<DebuggerBrowsable(DebuggerBrowsableState.Never)>]");
             w.WriteLine($"    member x.CreateMethod = create");
             w.WriteLine();
+            w.WriteLine($"    /// Create the UI element from the view description");
+            w.WriteLine($"    member x.Create() : obj =");
+            w.WriteLine($"        let target = x.CreateMethod()");
+            w.WriteLine($"        x.Apply(target)");
+            w.WriteLine($"        target");
+            w.WriteLine();
             w.WriteLine($"    /// Produce a new visual element with an adjusted attribute");
             w.WriteLine($"    member x.WithAttribute(name: string, value: obj) = XamlElement(targetType, create, apply, x.Attributes.Add(name, value))");
             w.WriteLine();
@@ -247,11 +256,6 @@ namespace Generator
             w.WriteLine($"module XamlElementExtensions = ");
             w.WriteLine();
             w.WriteLine($"    type XamlElement with");
-            w.WriteLine($"        /// Create the UI element from the view description");
-            w.WriteLine($"        member x.Create() : obj =");
-            w.WriteLine($"            let target = x.CreateMethod()");
-            w.WriteLine($"            x.Apply(target)");
-            w.WriteLine($"            target");
             foreach (var type in bindings.Types)
             {
                 var tdef = type.Definition;
@@ -324,6 +328,8 @@ namespace Generator
             foreach (var type in bindings.Types)
             {
                 var tdef = type.Definition;
+                var tname = string.IsNullOrWhiteSpace(type.ModelName) ? tdef.Name : type.ModelName;
+                var customType = string.IsNullOrWhiteSpace(type.CustomType) ? tdef.FullName : type.CustomType;
                 var hierarchy = GetHierarchy(type.Definition).ToList();
                 var boundHierarchy = 
                     hierarchy.Select(x => bindings.Types.FirstOrDefault(y => y.Name == x.Item2.FullName))
@@ -338,8 +344,8 @@ namespace Generator
 
                 // Emit the constructor
                 w.WriteLine();
-                w.WriteLine($"    /// Describes a {tdef.Name} in the view");
-                w.Write($"    static member {tdef.Name}(");
+                w.WriteLine($"    /// Describes a {tname} in the view");
+                w.Write($"    static member {tname}(");
                 head = "";
                 foreach (var m in allDirectMembers)
                 {
@@ -366,7 +372,7 @@ namespace Generator
                 w.WriteLine($"        let create () =");
                 if (!tdef.IsAbstract && ctor != null && ctor.Parameters.Count == 0)
                 {
-                    w.WriteLine($"            box (new {tdef.FullName}())");
+                    w.WriteLine($"            box (new {customType}())");
                 }
                 else
                 {
@@ -429,7 +435,8 @@ namespace Generator
                                     w.WriteLine($"                    // Adjust the attached properties");
                                     w.WriteLine($"                    match (match prevChildOpt with None -> None | Some prevChild -> prevChild.Try{ap.BoundUniqueName}), newChild.Try{ap.BoundUniqueName} with");
                                     w.WriteLine($"                    | Some prev, Some v when prev = v -> ()");
-                                    w.WriteLine($"                    | _, Some v -> {tdef.FullName}.Set{ap.Name}(targetChild, v)");
+                                    var apply = string.IsNullOrWhiteSpace(m.Apply) ? "" : m.Apply + " ";
+                                    w.WriteLine($"                    | _, Some value -> {tdef.FullName}.Set{ap.Name}(targetChild, {apply}value)");
                                     w.WriteLine($"                    | Some _, None -> {tdef.FullName}.Set{ap.Name}(targetChild, {ap.Default}) // TODO: not always perfect, should set back to original default?");
                                     w.WriteLine($"                    | _ -> ()");
                                 }
@@ -449,8 +456,9 @@ namespace Generator
                                     w.WriteLine($"            | Some prevChild, Some newChild when obj.ReferenceEquals(prevChild, newChild) -> ()");
                                     w.WriteLine($"            | _, Some newChild ->");
                                     w.WriteLine($"                target.{m.Name} <- newChild.CreateAs{bt.Name}()");
-                                    w.WriteLine($"            | _, None ->");
+                                    w.WriteLine($"            | Some _, None ->");
                                     w.WriteLine($"                target.{m.Name} <- Unchecked.defaultof<_>");
+                                    w.WriteLine($"            | None, None -> ()");
                                 }
                                 else
                                 {
@@ -462,8 +470,9 @@ namespace Generator
                                     w.WriteLine($"                newChild.ApplyIncremental(prevChild, target.{m.Name})");
                                     w.WriteLine($"            | None, Some newChild ->");
                                     w.WriteLine($"                target.{m.Name} <- newChild.CreateAs{bt.Name}()");
-                                    w.WriteLine($"            | _, None ->");
+                                    w.WriteLine($"            | Some _, None ->");
                                     w.WriteLine($"                target.{m.Name} <- null;");
+                                    w.WriteLine($"            | None, None -> ()");
                                 }
                             }
                             else if (bt.Name.EndsWith("Handler") || bt.Name.EndsWith("Handler`1") || bt.Name.EndsWith("Handler`2"))
@@ -481,7 +490,8 @@ namespace Generator
                                 w.WriteLine($"            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.Try{m.BoundUniqueName}");
                                 w.WriteLine($"            match prevValueOpt, source.Try{m.BoundUniqueName} with");
                                 w.WriteLine($"            | Some prevValue, Some value when prevValue = value -> ()");
-                                w.WriteLine($"            | _, Some value -> target.{m.Name} <- value");
+                                var apply = string.IsNullOrWhiteSpace(m.Apply) ? "" : m.Apply + " ";
+                                w.WriteLine($"            | _, Some value -> target.{m.Name} <- {apply}value");
                                 w.WriteLine($"            | Some _, None -> target.{m.Name} <- {m.Default} // TODO: not always perfect, should set back to original default?");
                                 w.WriteLine($"            | None, None -> ()");
                             }
@@ -497,6 +507,7 @@ namespace Generator
             foreach (var type in bindings.Types)
             {
                 var tdef = type.Definition;
+                var tname = string.IsNullOrWhiteSpace(type.ModelName) ? tdef.Name : type.ModelName;
                 var hierarchy = GetHierarchy(type.Definition).ToList();
                 var boundHierarchy = hierarchy.Select(x => bindings.Types.FirstOrDefault(y => y.Name == x.Item2.FullName))
                             .Where(x => x != null)
@@ -510,8 +521,8 @@ namespace Generator
                 if (!tdef.IsAbstract && ctor != null && ctor.Parameters.Count == 0)
                 {
                     w.WriteLine();
-                    w.WriteLine($"    /// Specifies a {tdef.Name} in the view description, initially with default attributes");
-                    w.WriteLine($"    let {Char.ToLower(tdef.Name[0])}{tdef.Name.Substring(1)} = Xaml.{tdef.Name}()");
+                    w.WriteLine($"    /// Specifies a {tname} in the view description, initially with default attributes");
+                    w.WriteLine($"    let {Char.ToLower(tname[0])}{tname.Substring(1)} = Xaml.{tname}()");
                 }
             }
             return w.ToString ();
