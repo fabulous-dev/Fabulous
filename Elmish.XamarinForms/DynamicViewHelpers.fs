@@ -23,18 +23,29 @@ module SimplerHelpers =
         let children = els |> List.mapi (fun i x -> x.GridColumn i)
         Xaml.Grid(coldefs=cds, children=children)
 
-    type Box<'T> = Box of 'T
-    type Amortizations<'Key,'Value when 'Key : equality>() = 
-       static let t = Dictionary<Box<'Key>,'Value>(HashIdentity.Structural)
+    type internal Amortizations<'Key,'Value when 'Key : equality and 'Value : not struct>() = 
+       static let t = Dictionary<'Key,System.WeakReference<'Value>>(HashIdentity.Structural)
        static member T = t
 
+    type DoNotUseModelInsideAmortize = | DoNotUseModelInsideAmortize
+
+    /// Amortize part of a view model computation and prevent the use of the model inside
+    /// the amortized computation except where explicitly de-referenced.
+    ///
+    /// Usage: "amortize model.Count <| fun model count -> ..."
+    ///
+    /// Note, this function uses "f.GetType()" to get a unique code location.
     let amortize key f = 
-        let bkey = Box key
-        match Amortizations.T.TryGetValue(bkey) with 
-        | true, res -> res
-        | false, _ ->
-             let res = f key
-             Amortizations.T.[bkey] <- res
+        let bkey = (key, f.GetType())
+        let mutable res = Unchecked.defaultof<'Value>
+        match Amortizations<('Key * System.Type),'Value>.T.TryGetValue(bkey) with 
+        | true, weak when weak.TryGetTarget(&res) -> 
+             //printfn "amortized key = %A --> %A" bkey res
+             res
+        | _ ->
+             let res = f DoNotUseModelInsideAmortize key
+             Amortizations<('Key * System.Type),'Value>.T.[bkey] <- System.WeakReference<'Value>(res)
+             //printfn "calculated key = %A --> %A" bkey res
              res
         
     // Helper page for the TicTacToe sample

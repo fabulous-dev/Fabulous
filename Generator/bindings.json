@@ -109,7 +109,8 @@
 				},
 				{
 					"name": "Margin",
-					"inputType": "double",
+					"inputType": "obj",
+					"modelType": "Xamarin.Forms.Thickness",
 					"conv": "makeThickness",
 					"default": "Unchecked.defaultof<Xamarin.Forms.Thickness>"
 				},
@@ -745,8 +746,8 @@
 					"name": "Completed",
 					"uniqueName": "EditorCompleted",
 					"default": "null",
-					"inputType": "unit -> unit",
-					"conv": "(fun f -> System.EventHandler(fun _sender args -> f ()))"
+					"inputType": "string -> unit",
+					"conv": "(fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.Editor).Text))"
 				},
 				{
 					"name": "TextChanged",
@@ -801,8 +802,8 @@
 					"name": "Completed",
 					"uniqueName": "EntryCompleted",
 					"default": "null",
-					"inputType": "unit -> unit",
-					"conv": "(fun f -> System.EventHandler(fun _sender args -> f ()))"
+					"inputType": "string -> unit",
+					"conv": "(fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.Entry).Text))"
 				},
 				{
 					"name": "TextChanged",
@@ -1174,11 +1175,12 @@
 			"members": [
 				{
 					"name": "ItemsSource",
-					"uniqueName": "ListViewItemsSource",
+					"uniqueName": "ListViewItems",
 					"shortName": "items",
 					"inputType": "XamlElement list",
-					"modelType": "System.Collections.Generic.IList<ListElementData<XamlElement>>",
-					"conv": "(fun (es: XamlElement list) -> es |> Array.ofList |> Array.map ListElementData<XamlElement> :> System.Collections.Generic.IList<ListElementData<XamlElement>>)",
+					"modelType": "XamlElement[]",
+					"conv": "Array.ofList",
+					"applyCode": "applyToListViewItems prevValueOpt value target",
 					"default": "null"
 				},
 				//{
@@ -1236,8 +1238,8 @@
 					"name": "SelectedItem",
 					"uniqueName": "ListView_SelectedItem",
 					"default": "null",
-					"modelType": "int",
-					"apply": "(fun i -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListElementData<XamlElement>> in if i >= 0 && i < items.Count then items.[i].Key else null)"
+					"modelType": "int option",
+					"apply": "(match value with None -> null | Some i -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListElementData<XamlElement>> in if i >= 0 && i < items.Count then items.[i] else null)"
 				},
 				{
 					"name": "SeparatorVisibility",
@@ -1264,7 +1266,7 @@
 					"uniqueName": "ListView_ItemSelected",
 					"default": "null",
 					"inputType": "int option -> unit",
-					"conv": "(fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<ListElementData<XamlElement>> |> Option.bind (fun item -> let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListElementData<XamlElement>> in items |> Seq.tryFindIndex (fun item2 -> System.Object.ReferenceEquals(item, item2))))))"
+					"conv": "(fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<ListElementData<XamlElement>> |> Option.bind (fun item -> let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListElementData<XamlElement>> in items |> Seq.tryFindIndex (fun item2 -> System.Object.ReferenceEquals(item.Key, item2.Key))))))"
 				},
 				{
 					"name": "ItemTapped",
@@ -1290,8 +1292,9 @@
 					"uniqueName": "GroupListViewItemsSource",
 					"shortName": "items",
 					"inputType": "(XamlElement * XamlElement list) list",
-					"modelType": "System.Collections.Generic.IList<ListGroupData<XamlElement>>",
-					"conv": "(fun (es: (XamlElement * XamlElement list) list) -> es |> Array.ofList |> Array.map (fun (a,bs) -> ListGroupData(a, Array.ofList bs)) :> System.Collections.Generic.IList<ListGroupData<XamlElement>>)",
+					"modelType": "(XamlElement * XamlElement[])[]",
+					"conv": "(fun es -> es |> Array.ofList |> Array.map (fun (e,l) -> (e, Array.ofList l)))",
+					"applyCode": "applyToListViewGroupedItems prevValueOpt value target",
 					"default": "null"
 				},
 				//{
@@ -1350,7 +1353,7 @@
 					"uniqueName": "ListViewGrouped_SelectedItem",
 					"default": "null",
 					"modelType": "(int * int) option",
-					"apply": "(function None -> null | Some (i,j) -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListGroupData<XamlElement>> in (if i >= 0 && i < items.Count then (let items2 = items.[i] in if j >= 0 && j < items2.Count then items2.[j] else null) else null))"
+					"apply": "(match value with None -> null | Some (i,j) -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListGroupData<XamlElement>> in (if i >= 0 && i < items.Count then (let items2 = items.[i] in if j >= 0 && j < items2.Count then items2.[j] else null) else null))"
 				},
 				{
 					"name": "SeparatorVisibility",
@@ -1377,7 +1380,7 @@
 					"uniqueName": "ListViewGrouped_ItemSelected",
 					"default": "null",
 					"inputType": "(int * int) option -> unit",
-					"conv": "(fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<ListElementData<XamlElement>> |> Option.bind (fun item -> let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData<XamlElement>> in Seq.indexed items |> Seq.tryPick (fun (i,items2) -> Seq.indexed items2 |> Seq.tryPick (fun (j,item2) -> if System.Object.ReferenceEquals(item, item2) then Some (i,j) else None))))))"
+					"conv": "(fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<ListElementData<XamlElement>> |> Option.bind (fun item -> let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData<XamlElement>> in Seq.indexed items |> Seq.tryPick (fun (i,items2) -> Seq.indexed items2 |> Seq.tryPick (fun (j,item2) -> if System.Object.ReferenceEquals(item.Key, item2.Key) then Some (i,j) else None))))))"
 				},
 				{
 					"name": "ItemTapped",
