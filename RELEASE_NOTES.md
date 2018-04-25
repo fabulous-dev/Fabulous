@@ -1,3 +1,6 @@
+#### 0.4.0
+* Lots of updates to dynamic views
+
 #### 0.3.2
 * Correct version in assembly
 

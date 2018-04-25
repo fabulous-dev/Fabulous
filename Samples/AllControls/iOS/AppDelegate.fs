@@ -13,7 +13,7 @@ type AppDelegate () =
 
     override this.FinishedLaunching (app, options) =
         Forms.Init()
-        this.LoadApplication (new AllControls.AllControls())
+        this.LoadApplication (new AllControls.App())
         base.FinishedLaunching(app, options)
 
 module Main =

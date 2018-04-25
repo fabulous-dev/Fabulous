@@ -22,5 +22,5 @@ type MainActivity() =
 
         Xamarin.Forms.Forms.Init (this, bundle)
 
-        this.LoadApplication (new AllControls.AllControls ())
+        this.LoadApplication (new AllControls.App ())
 

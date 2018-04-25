@@ -149,6 +149,7 @@ module App =
                         yield Xaml.BoxView(Color.Black).GridRow(3).GridColumnSpan(5)
                         yield Xaml.BoxView(Color.Black).GridColumn(1).GridRowSpan(5)
                         yield Xaml.BoxView(Color.Black).GridColumn(3).GridRowSpan(5)
+
                         for ((row,col) as pos) in positions do 
                             let item = 
                                 if canPlay model model.Board.[pos] then 
@@ -158,6 +159,7 @@ module App =
                             let item = item.Margin(5.0)
                             let item = item.GridRow(row*2).GridColumn(col*2) 
                             yield item ],
+
                     rowSpacing=0.0,
                     columnSpacing=0.0,
                     horizontalOptions=LayoutOptions.Center,
