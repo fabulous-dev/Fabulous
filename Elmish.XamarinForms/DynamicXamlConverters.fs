@@ -11,7 +11,7 @@ open Xamarin.Forms
 
 /// A description of a visual element
 [<AllowNullLiteral>]
-type XamlElement(targetType: Type, create: (unit -> obj), apply: (XamlElement option -> XamlElement -> obj -> unit), attribs: Map<string, obj>) = 
+type XamlElement(targetType: Type, create: (unit -> obj), update: (XamlElement option -> XamlElement -> obj -> unit), attribs: Map<string, obj>) = 
 
     /// Get the type created by the visual element
     member x.TargetType = targetType
@@ -20,19 +20,19 @@ type XamlElement(targetType: Type, create: (unit -> obj), apply: (XamlElement op
     [<DebuggerBrowsable(DebuggerBrowsableState.RootHidden)>]
     member x.Attributes = attribs
 
-    /// Apply the description to a visual element
-    member x.Apply (target: obj) = apply None x target
+    /// Update the description to a visual element
+    member x.Update (target: obj) = update None x target
 
-    /// Apply a different description to a similar visual element
+    /// Update a different description to a similar visual element
     [<DebuggerBrowsable(DebuggerBrowsableState.Never)>]
-    member x.ApplyMethod = apply
+    member x.UpdateMethod = update
 
-    /// Incrementally apply a description to a visual element
-    member x.ApplyIncremental(prev: XamlElement, target: obj) = 
+    /// Incrementally update a description to a visual element
+    member x.UpdateIncremental(prev: XamlElement, target: obj) = 
         Debug.WriteLine (sprintf "Update %O" x.TargetType)
-        apply (Some prev) x target
+        update (Some prev) x target
 
-    /// Apply a different description to a similar visual element
+    /// Update a different description to a similar visual element
     [<DebuggerBrowsable(DebuggerBrowsableState.Never)>]
     member x.CreateMethod = create
 
@@ -40,16 +40,16 @@ type XamlElement(targetType: Type, create: (unit -> obj), apply: (XamlElement op
     member x.Create() : obj =
         Debug.WriteLine (sprintf "Create %O" x.TargetType)
         let target = x.CreateMethod()
-        x.Apply(target)
+        x.Update(target)
         target
 
     /// Produce a new visual element with an adjusted attribute
-    member x.WithAttribute(name: string, value: obj) = XamlElement(targetType, create, apply, x.Attributes.Add(name, value))
+    member x.WithAttribute(name: string, value: obj) = XamlElement(targetType, create, update, x.Attributes.Add(name, value))
 
     /// Produce a visual element from a visual element for a different type
     member x.Inherit(newTargetType, newCreate, newApply, newAttribs) = 
         let combinedAttribs = Map.ofArray(Array.append(Map.toArray attribs) newAttribs)
-        XamlElement(newTargetType, newCreate, (fun prevOpt source target -> apply prevOpt source target; newApply prevOpt source target), combinedAttribs)
+        XamlElement(newTargetType, newCreate, (fun prevOpt source target -> update prevOpt source target; newApply prevOpt source target), combinedAttribs)
 
     override x.ToString() = sprintf "%s(...)@%d" x.TargetType.Name (x.GetHashCode())
 
@@ -83,7 +83,7 @@ type XamlElementCell() =
             match modelOpt with 
             | Some prev -> 
                 let ty = newModel.GetType()
-                let res = ty.InvokeMember("ApplyIncremental",(BindingFlags.InvokeMethod ||| BindingFlags.Public ||| BindingFlags.Instance), null, newModel, [| box prev; box x.View |] )
+                let res = ty.InvokeMember("UpdateIncremental",(BindingFlags.InvokeMethod ||| BindingFlags.Public ||| BindingFlags.Instance), null, newModel, [| box prev; box x.View |] )
                 modelOpt <- None
                 ignore res
             | None -> 
@@ -162,7 +162,7 @@ module Converters =
            (create: 'T -> 'TargetT)
            (attach: 'T option -> 'T -> 'TargetT -> unit) // adjust attached properties
            (canReuse : 'T -> 'T -> bool) // Used to check if reuse is possible
-           (apply: 'T -> 'T -> 'TargetT -> unit) // Incremental element-wise apply, only if element reuse is allowed
+           (update: 'T -> 'T -> 'TargetT -> unit) // Incremental element-wise update, only if element reuse is allowed
         =
           match prevCollOpt, collOpt with 
           | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
@@ -196,7 +196,7 @@ module Converters =
                             else
                                 //printfn "Applying child %d, prevChild = %A, newChild = %A, (prevChild == newChild) = %A" i prevChildOpt.Value newChild (obj.ReferenceEquals(prevChildOpt.Value, newChild))
                                 let targetChild = targetColl.[i]
-                                apply prevChildOpt.Value newChild targetChild
+                                update prevChildOpt.Value newChild targetChild
                                 prevChildOpt, targetChild
                         else
                             //printfn "Skipping child %d" i
@@ -224,4 +224,9 @@ module Converters =
                 oc
         applyToIList prevCollOpt coll oc ListGroupData (fun _ _ _ -> ()) (fun _ _ -> false) (fun _ _ _ -> failwith "no element reuse")
 
+    let equalLayoutOptions (x:Xamarin.Forms.LayoutOptions) (y:Xamarin.Forms.LayoutOptions)  =
+        x.Alignment = y.Alignment && x.Expands = y.Expands
+
+    let equalThickness (x:Xamarin.Forms.Thickness) (y:Xamarin.Forms.Thickness)  =
+        x.Bottom = y.Bottom && x.Top = y.Top && x.Left = y.Left && x.Right = y.Right
 

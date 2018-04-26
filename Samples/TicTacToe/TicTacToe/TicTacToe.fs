@@ -201,6 +201,7 @@ type App() =
         Application.Current.MainPage.DisplayAlert("Game over", msg, "OK") |> ignore
 
     let page = 
+        //Program.mkSimple App.init (App.update gameOver) App.view
         Program.mkSimple App.init (App.update gameOver) App.view
         |> Program.withConsoleTrace
         |> Program.withDynamicView

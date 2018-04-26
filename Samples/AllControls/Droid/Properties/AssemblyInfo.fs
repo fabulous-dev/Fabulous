@@ -1,8 +1,12 @@
-﻿namespace Droid
+﻿namespace AllControls.Droid
 open System.Reflection
 open System.Runtime.CompilerServices
 
-[<assembly: AssemblyTitle("Droid")>]
+// the name of the type here needs to match the name inside the ResourceDesigner attribute
+type Resources = AllControls.Droid.Resource
+[<assembly: Android.Runtime.ResourceDesigner("AllControls.Droid.Resources", IsApplication=true)>]
+
+[<assembly: AssemblyTitle("AllControls.Droid")>]
 [<assembly: AssemblyDescription("")>]
 [<assembly: AssemblyConfiguration("")>]
 [<assembly: AssemblyCompany("")>]

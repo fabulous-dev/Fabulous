@@ -8,8 +8,8 @@
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{F2A71F9B-5D33-465A-A702-920D77279786}</ProjectTypeGuids>
     <UseStandardResourceNames>true</UseStandardResourceNames>
     <OutputType>Library</OutputType>
-    <RootNamespace>Droid</RootNamespace>
-    <AssemblyName>Droid</AssemblyName>
+    <RootNamespace>AllControls.Droid</RootNamespace>
+    <AssemblyName>AllControls.Droid</AssemblyName>
     <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
@@ -20,6 +20,7 @@
     <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
     <SelectedDevice>Google Pixel 2</SelectedDevice>
     <DefaultDevice>new_device</DefaultDevice>
+    <Name>AllControls.Droid</Name>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,22 +48,26 @@
     </PlatformTarget>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.FSharp.targets" />
-  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Compat\build\MonoAndroid70\Xamarin.Android.Support.Compat.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Compat\build\MonoAndroid70\Xamarin.Android.Support.Compat.targets')" />
-  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Core.UI\build\MonoAndroid70\Xamarin.Android.Support.Core.UI.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Core.UI\build\MonoAndroid70\Xamarin.Android.Support.Core.UI.targets')" />
-  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Core.Utils\build\MonoAndroid70\Xamarin.Android.Support.Core.Utils.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Core.Utils\build\MonoAndroid70\Xamarin.Android.Support.Core.Utils.targets')" />
-  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Media.Compat\build\MonoAndroid70\Xamarin.Android.Support.Media.Compat.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Media.Compat\build\MonoAndroid70\Xamarin.Android.Support.Media.Compat.targets')" />
-  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Fragment\build\MonoAndroid70\Xamarin.Android.Support.Fragment.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Fragment\build\MonoAndroid70\Xamarin.Android.Support.Fragment.targets')" />
-  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.v4\build\MonoAndroid70\Xamarin.Android.Support.v4.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.v4\build\MonoAndroid70\Xamarin.Android.Support.v4.targets')" />
-  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Transition\build\MonoAndroid70\Xamarin.Android.Support.Transition.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Transition\build\MonoAndroid70\Xamarin.Android.Support.Transition.targets')" />
-  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.v7.CardView\build\MonoAndroid70\Xamarin.Android.Support.v7.CardView.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.v7.CardView\build\MonoAndroid70\Xamarin.Android.Support.v7.CardView.targets')" />
-  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.v7.Palette\build\MonoAndroid70\Xamarin.Android.Support.v7.Palette.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.v7.Palette\build\MonoAndroid70\Xamarin.Android.Support.v7.Palette.targets')" />
-  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.v7.RecyclerView\build\MonoAndroid70\Xamarin.Android.Support.v7.RecyclerView.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.v7.RecyclerView\build\MonoAndroid70\Xamarin.Android.Support.v7.RecyclerView.targets')" />
-  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Vector.Drawable\build\MonoAndroid70\Xamarin.Android.Support.Vector.Drawable.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Vector.Drawable\build\MonoAndroid70\Xamarin.Android.Support.Vector.Drawable.targets')" />
-  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Animated.Vector.Drawable\build\MonoAndroid70\Xamarin.Android.Support.Animated.Vector.Drawable.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Animated.Vector.Drawable\build\MonoAndroid70\Xamarin.Android.Support.Animated.Vector.Drawable.targets')" />
-  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.v7.AppCompat\build\MonoAndroid70\Xamarin.Android.Support.v7.AppCompat.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.v7.AppCompat\build\MonoAndroid70\Xamarin.Android.Support.v7.AppCompat.targets')" />
-  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Design\build\MonoAndroid70\Xamarin.Android.Support.Design.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Design\build\MonoAndroid70\Xamarin.Android.Support.Design.targets')" />
-  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.v7.MediaRouter\build\MonoAndroid70\Xamarin.Android.Support.v7.MediaRouter.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.v7.MediaRouter\build\MonoAndroid70\Xamarin.Android.Support.v7.MediaRouter.targets')" />
-  <Import Project="..\..\..\packages\androidapp\Xamarin.Forms\build\netstandard1.0\Xamarin.Forms.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Forms\build\netstandard1.0\Xamarin.Forms.targets')" />
+  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Compat\build\MonoAndroid81\Xamarin.Android.Support.Compat.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Compat\build\MonoAndroid81\Xamarin.Android.Support.Compat.targets')" />
+  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Annotations\build\MonoAndroid81\Xamarin.Android.Support.Annotations.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Annotations\build\MonoAndroid81\Xamarin.Android.Support.Annotations.targets')" />
+  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Arch.Core.Common.1.0.0\build\MonoAndroid80\Xamarin.Android.Arch.Core.Common.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Arch.Core.Common.1.0.0\build\MonoAndroid80\Xamarin.Android.Arch.Core.Common.targets')" />
+  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Arch.Lifecycle.Common.1.0.3\build\MonoAndroid80\Xamarin.Android.Arch.Lifecycle.Common.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Arch.Lifecycle.Common.1.0.3\build\MonoAndroid80\Xamarin.Android.Arch.Lifecycle.Common.targets')" />
+  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Arch.Lifecycle.Runtime.1.0.3\build\MonoAndroid80\Xamarin.Android.Arch.Lifecycle.Runtime.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Arch.Lifecycle.Runtime.1.0.3\build\MonoAndroid80\Xamarin.Android.Arch.Lifecycle.Runtime.targets')" />
+  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Core.UI\build\MonoAndroid81\Xamarin.Android.Support.Core.UI.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Core.UI\build\MonoAndroid81\Xamarin.Android.Support.Core.UI.targets')" />
+  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Core.Utils\build\MonoAndroid81\Xamarin.Android.Support.Core.Utils.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Core.Utils\build\MonoAndroid81\Xamarin.Android.Support.Core.Utils.targets')" />
+  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Fragment\build\MonoAndroid81\Xamarin.Android.Support.Fragment.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Fragment\build\MonoAndroid81\Xamarin.Android.Support.Fragment.targets')" />
+  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Media.Compat\build\MonoAndroid81\Xamarin.Android.Support.Media.Compat.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Media.Compat\build\MonoAndroid81\Xamarin.Android.Support.Media.Compat.targets')" />
+  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Transition\build\MonoAndroid81\Xamarin.Android.Support.Transition.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Transition\build\MonoAndroid81\Xamarin.Android.Support.Transition.targets')" />
+  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.v4\build\MonoAndroid81\Xamarin.Android.Support.v4.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.v4\build\MonoAndroid81\Xamarin.Android.Support.v4.targets')" />
+  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.v7.CardView\build\MonoAndroid81\Xamarin.Android.Support.v7.CardView.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.v7.CardView\build\MonoAndroid81\Xamarin.Android.Support.v7.CardView.targets')" />
+  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.v7.Palette\build\MonoAndroid81\Xamarin.Android.Support.v7.Palette.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.v7.Palette\build\MonoAndroid81\Xamarin.Android.Support.v7.Palette.targets')" />
+  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.v7.RecyclerView\build\MonoAndroid81\Xamarin.Android.Support.v7.RecyclerView.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.v7.RecyclerView\build\MonoAndroid81\Xamarin.Android.Support.v7.RecyclerView.targets')" />
+  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Vector.Drawable\build\MonoAndroid81\Xamarin.Android.Support.Vector.Drawable.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Vector.Drawable\build\MonoAndroid81\Xamarin.Android.Support.Vector.Drawable.targets')" />
+  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Animated.Vector.Drawable\build\MonoAndroid81\Xamarin.Android.Support.Animated.Vector.Drawable.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Animated.Vector.Drawable\build\MonoAndroid81\Xamarin.Android.Support.Animated.Vector.Drawable.targets')" />
+  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.v7.AppCompat\build\MonoAndroid81\Xamarin.Android.Support.v7.AppCompat.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.v7.AppCompat\build\MonoAndroid81\Xamarin.Android.Support.v7.AppCompat.targets')" />
+  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Design\build\MonoAndroid81\Xamarin.Android.Support.Design.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Design\build\MonoAndroid81\Xamarin.Android.Support.Design.targets')" />
+  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.v7.MediaRouter\build\MonoAndroid81\Xamarin.Android.Support.v7.MediaRouter.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.v7.MediaRouter\build\MonoAndroid81\Xamarin.Android.Support.v7.MediaRouter.targets')" />
+  <Import Project="..\..\..\packages\androidapp\Xamarin.Forms\build\netstandard1.0\Xamarin.Forms.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Forms.2.5.1.444934\build\netstandard1.0\Xamarin.Forms.targets')" />
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.fs" />
     <None Include="Properties\AndroidManifest.xml" />
@@ -156,11 +161,11 @@
     </Reference>
     <ProjectReference Include="..\AllControls\AllControls.fsproj">
       <Project>{13f140d6-2d21-41be-ac90-4b14d8c16a47}</Project>
-      <Name>AllControls (Samples\AllControls\AllControls)</Name>
+      <Name>AllControls</Name>
       <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Elmish.XamarinForms\Elmish.XamarinForms.fsproj">
-      <Project>{b459afad-bb5b-43c3-bd86-609e8db3e3fd}</Project>
+      <Project>{AE045D79-7FF3-45F3-BFD0-305542A1C728}</Project>
       <Name>Elmish.XamarinForms</Name>
       <Private>True</Private>
     </ProjectReference>

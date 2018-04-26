@@ -12,12 +12,10 @@ open Android.Widget
 open Android.OS
 open Xamarin.Forms.Platform.Android
 
-[<Activity (Label = "Droid", Icon = "@drawable/icon", MainLauncher = true, ConfigurationChanges = (ConfigChanges.ScreenSize ||| ConfigChanges.Orientation))>]
+[<Activity (Label = "AllControls.Droid", Icon = "@drawable/icon", MainLauncher = true, ConfigurationChanges = (ConfigChanges.ScreenSize ||| ConfigChanges.Orientation))>]
 type MainActivity() =
     inherit FormsApplicationActivity()
     override this.OnCreate (bundle: Bundle) =
-        //Resources.Drawable.icon |> ignore
-        //FormsAppCompatActivity.ToolbarResource <- Resources.Layout.Toolbar
         base.OnCreate (bundle)
 
         Xamarin.Forms.Forms.Init (this, bundle)
