@@ -62,6 +62,9 @@ module XamlElementExtensions =
         /// Create a Xamarin.Forms.SwitchCell from the view description
         member x.CreateAsSwitchCell() : Xamarin.Forms.SwitchCell = (x.Create() :?> Xamarin.Forms.SwitchCell)
 
+        /// Create a Xamarin.Forms.TableView from the view description
+        member x.CreateAsTableView() : Xamarin.Forms.TableView = (x.Create() :?> Xamarin.Forms.TableView)
+
         /// Create a Xamarin.Forms.Grid from the view description
         member x.CreateAsGrid() : Xamarin.Forms.Grid = (x.Create() :?> Xamarin.Forms.Grid)
 
@@ -103,6 +106,9 @@ module XamlElementExtensions =
 
         /// Create a Xamarin.Forms.Entry from the view description
         member x.CreateAsEntry() : Xamarin.Forms.Entry = (x.Create() :?> Xamarin.Forms.Entry)
+
+        /// Create a Xamarin.Forms.EntryCell from the view description
+        member x.CreateAsEntryCell() : Xamarin.Forms.EntryCell = (x.Create() :?> Xamarin.Forms.EntryCell)
 
         /// Create a Xamarin.Forms.Label from the view description
         member x.CreateAsLabel() : Xamarin.Forms.Label = (x.Create() :?> Xamarin.Forms.Label)
@@ -313,7 +319,7 @@ module XamlElementExtensions =
         member x.TryButtonCornerRadius = match x.Attributes.TryFind("ButtonCornerRadius") with Some v -> Some(unbox<int>(v)) | None -> None
 
         /// Try to get the ButtonImageSource property in the visual element
-        member x.TryButtonImageSource = match x.Attributes.TryFind("ButtonImageSource") with Some v -> Some(unbox<Xamarin.Forms.FileImageSource>(v)) | None -> None
+        member x.TryButtonImageSource = match x.Attributes.TryFind("ButtonImageSource") with Some v -> Some(unbox<string>(v)) | None -> None
 
         /// Try to get the Minimum property in the visual element
         member x.TryMinimum = match x.Attributes.TryFind("Minimum") with Some v -> Some(unbox<double>(v)) | None -> None
@@ -341,6 +347,18 @@ module XamlElementExtensions =
 
         /// Try to get the OnChanged property in the visual element
         member x.TryOnChanged = match x.Attributes.TryFind("OnChanged") with Some v -> Some(unbox<System.EventHandler<Xamarin.Forms.ToggledEventArgs>>(v)) | None -> None
+
+        /// Try to get the Intent property in the visual element
+        member x.TryIntent = match x.Attributes.TryFind("Intent") with Some v -> Some(unbox<Xamarin.Forms.TableIntent>(v)) | None -> None
+
+        /// Try to get the HasUnevenRows property in the visual element
+        member x.TryHasUnevenRows = match x.Attributes.TryFind("HasUnevenRows") with Some v -> Some(unbox<bool>(v)) | None -> None
+
+        /// Try to get the RowHeight property in the visual element
+        member x.TryRowHeight = match x.Attributes.TryFind("RowHeight") with Some v -> Some(unbox<int>(v)) | None -> None
+
+        /// Try to get the TableRoot property in the visual element
+        member x.TryTableRoot = match x.Attributes.TryFind("TableRoot") with Some v -> Some(unbox<(string * XamlElement[])[]>(v)) | None -> None
 
         /// Try to get the GridRowDefinitions property in the visual element
         member x.TryGridRowDefinitions = match x.Attributes.TryFind("GridRowDefinitions") with Some v -> Some(unbox<XamlElement[]>(v)) | None -> None
@@ -433,7 +451,7 @@ module XamlElementExtensions =
         member x.TryHasShadow = match x.Attributes.TryFind("HasShadow") with Some v -> Some(unbox<bool>(v)) | None -> None
 
         /// Try to get the ImageSource property in the visual element
-        member x.TryImageSource = match x.Attributes.TryFind("ImageSource") with Some v -> Some(unbox<Xamarin.Forms.ImageSource>(v)) | None -> None
+        member x.TryImageSource = match x.Attributes.TryFind("ImageSource") with Some v -> Some(unbox<string>(v)) | None -> None
 
         /// Try to get the Aspect property in the visual element
         member x.TryAspect = match x.Attributes.TryFind("Aspect") with Some v -> Some(unbox<Xamarin.Forms.Aspect>(v)) | None -> None
@@ -455,6 +473,9 @@ module XamlElementExtensions =
 
         /// Try to get the EntryCompleted property in the visual element
         member x.TryEntryCompleted = match x.Attributes.TryFind("EntryCompleted") with Some v -> Some(unbox<System.EventHandler>(v)) | None -> None
+
+        /// Try to get the Label property in the visual element
+        member x.TryLabel = match x.Attributes.TryFind("Label") with Some v -> Some(unbox<string>(v)) | None -> None
 
         /// Try to get the VerticalTextAlignment property in the visual element
         member x.TryVerticalTextAlignment = match x.Attributes.TryFind("VerticalTextAlignment") with Some v -> Some(unbox<Xamarin.Forms.TextAlignment>(v)) | None -> None
@@ -558,9 +579,6 @@ module XamlElementExtensions =
         /// Try to get the Footer property in the visual element
         member x.TryFooter = match x.Attributes.TryFind("Footer") with Some v -> Some(unbox<System.Object>(v)) | None -> None
 
-        /// Try to get the HasUnevenRows property in the visual element
-        member x.TryHasUnevenRows = match x.Attributes.TryFind("HasUnevenRows") with Some v -> Some(unbox<bool>(v)) | None -> None
-
         /// Try to get the Header property in the visual element
         member x.TryHeader = match x.Attributes.TryFind("Header") with Some v -> Some(unbox<System.Object>(v)) | None -> None
 
@@ -578,9 +596,6 @@ module XamlElementExtensions =
 
         /// Try to get the RefreshCommand property in the visual element
         member x.TryRefreshCommand = match x.Attributes.TryFind("RefreshCommand") with Some v -> Some(unbox<System.Windows.Input.ICommand>(v)) | None -> None
-
-        /// Try to get the RowHeight property in the visual element
-        member x.TryRowHeight = match x.Attributes.TryFind("RowHeight") with Some v -> Some(unbox<int>(v)) | None -> None
 
         /// Try to get the ListView_SelectedItem property in the visual element
         member x.TryListView_SelectedItem = match x.Attributes.TryFind("ListView_SelectedItem") with Some v -> Some(unbox<int option>(v)) | None -> None
@@ -616,463 +631,472 @@ module XamlElementExtensions =
         member x.TryListViewGrouped_ItemSelected = match x.Attributes.TryFind("ListViewGrouped_ItemSelected") with Some v -> Some(unbox<System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>>(v)) | None -> None
 
         /// Adjusts the ClassId property in the visual element
-        member x.ClassId(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ClassId", box ((value))))
+        member x.ClassId(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ClassId", box ((value))))
 
         /// Adjusts the StyleId property in the visual element
-        member x.StyleId(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("StyleId", box ((value))))
+        member x.StyleId(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("StyleId", box ((value))))
 
         /// Adjusts the AnchorX property in the visual element
-        member x.AnchorX(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("AnchorX", box ((value))))
+        member x.AnchorX(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("AnchorX", box ((value))))
 
         /// Adjusts the AnchorY property in the visual element
-        member x.AnchorY(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("AnchorY", box ((value))))
+        member x.AnchorY(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("AnchorY", box ((value))))
 
         /// Adjusts the BackgroundColor property in the visual element
-        member x.BackgroundColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("BackgroundColor", box ((value))))
+        member x.BackgroundColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("BackgroundColor", box ((value))))
 
         /// Adjusts the HeightRequest property in the visual element
-        member x.HeightRequest(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("HeightRequest", box ((value))))
+        member x.HeightRequest(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("HeightRequest", box ((value))))
 
         /// Adjusts the InputTransparent property in the visual element
-        member x.InputTransparent(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("InputTransparent", box ((value))))
+        member x.InputTransparent(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("InputTransparent", box ((value))))
 
         /// Adjusts the IsEnabled property in the visual element
-        member x.IsEnabled(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsEnabled", box ((value))))
+        member x.IsEnabled(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("IsEnabled", box ((value))))
 
         /// Adjusts the IsVisible property in the visual element
-        member x.IsVisible(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsVisible", box ((value))))
+        member x.IsVisible(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("IsVisible", box ((value))))
 
         /// Adjusts the MinimumHeightRequest property in the visual element
-        member x.MinimumHeightRequest(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("MinimumHeightRequest", box ((value))))
+        member x.MinimumHeightRequest(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("MinimumHeightRequest", box ((value))))
 
         /// Adjusts the MinimumWidthRequest property in the visual element
-        member x.MinimumWidthRequest(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("MinimumWidthRequest", box ((value))))
+        member x.MinimumWidthRequest(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("MinimumWidthRequest", box ((value))))
 
         /// Adjusts the Opacity property in the visual element
-        member x.Opacity(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Opacity", box ((value))))
+        member x.Opacity(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Opacity", box ((value))))
 
         /// Adjusts the Rotation property in the visual element
-        member x.Rotation(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Rotation", box ((value))))
+        member x.Rotation(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Rotation", box ((value))))
 
         /// Adjusts the RotationX property in the visual element
-        member x.RotationX(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("RotationX", box ((value))))
+        member x.RotationX(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("RotationX", box ((value))))
 
         /// Adjusts the RotationY property in the visual element
-        member x.RotationY(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("RotationY", box ((value))))
+        member x.RotationY(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("RotationY", box ((value))))
 
         /// Adjusts the Scale property in the visual element
-        member x.Scale(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Scale", box ((value))))
+        member x.Scale(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Scale", box ((value))))
 
         /// Adjusts the Style property in the visual element
-        member x.Style(value: Xamarin.Forms.Style) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Style", box ((value))))
+        member x.Style(value: Xamarin.Forms.Style) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Style", box ((value))))
 
         /// Adjusts the TranslationX property in the visual element
-        member x.TranslationX(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("TranslationX", box ((value))))
+        member x.TranslationX(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("TranslationX", box ((value))))
 
         /// Adjusts the TranslationY property in the visual element
-        member x.TranslationY(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("TranslationY", box ((value))))
+        member x.TranslationY(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("TranslationY", box ((value))))
 
         /// Adjusts the WidthRequest property in the visual element
-        member x.WidthRequest(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("WidthRequest", box ((value))))
+        member x.WidthRequest(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("WidthRequest", box ((value))))
 
         /// Adjusts the HorizontalOptions property in the visual element
-        member x.HorizontalOptions(value: Xamarin.Forms.LayoutOptions) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("HorizontalOptions", box ((value))))
+        member x.HorizontalOptions(value: Xamarin.Forms.LayoutOptions) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("HorizontalOptions", box ((value))))
 
         /// Adjusts the VerticalOptions property in the visual element
-        member x.VerticalOptions(value: Xamarin.Forms.LayoutOptions) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("VerticalOptions", box ((value))))
+        member x.VerticalOptions(value: Xamarin.Forms.LayoutOptions) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("VerticalOptions", box ((value))))
 
         /// Adjusts the Margin property in the visual element
-        member x.Margin(value: obj) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Margin", box (makeThickness(value))))
+        member x.Margin(value: obj) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Margin", box (makeThickness(value))))
 
         /// Adjusts the GestureRecognizers property in the visual element
-        member x.GestureRecognizers(value: XamlElement list) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("GestureRecognizers", box (Array.ofList(value))))
+        member x.GestureRecognizers(value: XamlElement list) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("GestureRecognizers", box (Array.ofList(value))))
 
         /// Adjusts the TouchPoints property in the visual element
-        member x.TouchPoints(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("TouchPoints", box ((value))))
+        member x.TouchPoints(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("TouchPoints", box ((value))))
 
         /// Adjusts the PanUpdated property in the visual element
-        member x.PanUpdated(value: Xamarin.Forms.PanUpdatedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("PanUpdated", box ((fun f -> System.EventHandler<Xamarin.Forms.PanUpdatedEventArgs>(fun _sender args -> f args))(value))))
+        member x.PanUpdated(value: Xamarin.Forms.PanUpdatedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("PanUpdated", box ((fun f -> System.EventHandler<Xamarin.Forms.PanUpdatedEventArgs>(fun _sender args -> f args))(value))))
 
         /// Adjusts the Command property in the visual element
-        member x.Command(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Command", box (makeCommand(value))))
+        member x.Command(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Command", box (makeCommand(value))))
 
         /// Adjusts the NumberOfTapsRequired property in the visual element
-        member x.NumberOfTapsRequired(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("NumberOfTapsRequired", box ((value))))
+        member x.NumberOfTapsRequired(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("NumberOfTapsRequired", box ((value))))
 
         /// Adjusts the NumberOfClicksRequired property in the visual element
-        member x.NumberOfClicksRequired(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("NumberOfClicksRequired", box ((value))))
+        member x.NumberOfClicksRequired(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("NumberOfClicksRequired", box ((value))))
 
         /// Adjusts the Buttons property in the visual element
-        member x.Buttons(value: Xamarin.Forms.ButtonsMask) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Buttons", box ((value))))
+        member x.Buttons(value: Xamarin.Forms.ButtonsMask) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Buttons", box ((value))))
 
         /// Adjusts the IsPinching property in the visual element
-        member x.IsPinching(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsPinching", box ((value))))
+        member x.IsPinching(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("IsPinching", box ((value))))
 
         /// Adjusts the PinchUpdated property in the visual element
-        member x.PinchUpdated(value: Xamarin.Forms.PinchGestureUpdatedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("PinchUpdated", box ((fun f -> System.EventHandler<Xamarin.Forms.PinchGestureUpdatedEventArgs>(fun _sender args -> f args))(value))))
+        member x.PinchUpdated(value: Xamarin.Forms.PinchGestureUpdatedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("PinchUpdated", box ((fun f -> System.EventHandler<Xamarin.Forms.PinchGestureUpdatedEventArgs>(fun _sender args -> f args))(value))))
 
         /// Adjusts the Color property in the visual element
-        member x.Color(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Color", box ((value))))
+        member x.Color(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Color", box ((value))))
 
         /// Adjusts the IsRunning property in the visual element
-        member x.IsRunning(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsRunning", box ((value))))
+        member x.IsRunning(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("IsRunning", box ((value))))
 
         /// Adjusts the Progress property in the visual element
-        member x.Progress(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Progress", box ((value))))
+        member x.Progress(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Progress", box ((value))))
 
         /// Adjusts the Content property in the visual element
-        member x.Content(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Content", box ((value))))
+        member x.Content(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Content", box ((value))))
 
         /// Adjusts the ScrollOrientation property in the visual element
-        member x.ScrollOrientation(value: Xamarin.Forms.ScrollOrientation) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ScrollOrientation", box ((value))))
+        member x.ScrollOrientation(value: Xamarin.Forms.ScrollOrientation) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ScrollOrientation", box ((value))))
 
         /// Adjusts the CancelButtonColor property in the visual element
-        member x.CancelButtonColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("CancelButtonColor", box ((value))))
+        member x.CancelButtonColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("CancelButtonColor", box ((value))))
 
         /// Adjusts the FontFamily property in the visual element
-        member x.FontFamily(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("FontFamily", box ((value))))
+        member x.FontFamily(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("FontFamily", box ((value))))
 
         /// Adjusts the FontAttributes property in the visual element
-        member x.FontAttributes(value: Xamarin.Forms.FontAttributes) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("FontAttributes", box ((value))))
+        member x.FontAttributes(value: Xamarin.Forms.FontAttributes) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("FontAttributes", box ((value))))
 
         /// Adjusts the FontSize property in the visual element
-        member x.FontSize(value: obj) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("FontSize", box (makeFontSize(value))))
+        member x.FontSize(value: obj) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("FontSize", box (makeFontSize(value))))
 
         /// Adjusts the HorizontalTextAlignment property in the visual element
-        member x.HorizontalTextAlignment(value: Xamarin.Forms.TextAlignment) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("HorizontalTextAlignment", box ((value))))
+        member x.HorizontalTextAlignment(value: Xamarin.Forms.TextAlignment) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("HorizontalTextAlignment", box ((value))))
 
         /// Adjusts the Placeholder property in the visual element
-        member x.Placeholder(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Placeholder", box ((value))))
+        member x.Placeholder(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Placeholder", box ((value))))
 
         /// Adjusts the PlaceholderColor property in the visual element
-        member x.PlaceholderColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("PlaceholderColor", box ((value))))
+        member x.PlaceholderColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("PlaceholderColor", box ((value))))
 
         /// Adjusts the SearchCommand property in the visual element
-        member x.SearchCommand(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("SearchCommand", box (makeCommand(value))))
+        member x.SearchCommand(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("SearchCommand", box (makeCommand(value))))
 
         /// Adjusts the Text property in the visual element
-        member x.Text(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Text", box ((value))))
+        member x.Text(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Text", box ((value))))
 
         /// Adjusts the TextColor property in the visual element
-        member x.TextColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("TextColor", box ((value))))
+        member x.TextColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("TextColor", box ((value))))
 
         /// Adjusts the BorderColor property in the visual element
-        member x.BorderColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("BorderColor", box ((value))))
+        member x.BorderColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("BorderColor", box ((value))))
 
         /// Adjusts the BorderWidth property in the visual element
-        member x.BorderWidth(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("BorderWidth", box ((value))))
+        member x.BorderWidth(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("BorderWidth", box ((value))))
 
         /// Adjusts the CommandParameter property in the visual element
-        member x.CommandParameter(value: System.Object) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("CommandParameter", box ((value))))
+        member x.CommandParameter(value: System.Object) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("CommandParameter", box ((value))))
 
         /// Adjusts the ContentLayout property in the visual element
-        member x.ContentLayout(value: Xamarin.Forms.Button.ButtonContentLayout) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ContentLayout", box ((value))))
+        member x.ContentLayout(value: Xamarin.Forms.Button.ButtonContentLayout) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ContentLayout", box ((value))))
 
         /// Adjusts the ButtonCornerRadius property in the visual element
-        member x.ButtonCornerRadius(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ButtonCornerRadius", box ((value))))
+        member x.ButtonCornerRadius(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ButtonCornerRadius", box ((value))))
 
         /// Adjusts the ButtonImageSource property in the visual element
-        member x.ButtonImageSource(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ButtonImageSource", box (makeFileImageSource(value))))
+        member x.ButtonImageSource(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ButtonImageSource", box ((value))))
 
         /// Adjusts the Minimum property in the visual element
-        member x.Minimum(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Minimum", box ((value))))
+        member x.Minimum(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Minimum", box ((value))))
 
         /// Adjusts the Maximum property in the visual element
-        member x.Maximum(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Maximum", box ((value))))
+        member x.Maximum(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Maximum", box ((value))))
 
         /// Adjusts the Value property in the visual element
-        member x.Value(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Value", box ((value))))
+        member x.Value(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Value", box ((value))))
 
         /// Adjusts the ValueChanged property in the visual element
-        member x.ValueChanged(value: Xamarin.Forms.ValueChangedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ValueChanged", box ((fun f -> System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>(fun _sender args -> f args))(value))))
+        member x.ValueChanged(value: Xamarin.Forms.ValueChangedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ValueChanged", box ((fun f -> System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>(fun _sender args -> f args))(value))))
 
         /// Adjusts the Increment property in the visual element
-        member x.Increment(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Increment", box ((value))))
+        member x.Increment(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Increment", box ((value))))
 
         /// Adjusts the IsToggled property in the visual element
-        member x.IsToggled(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsToggled", box ((value))))
+        member x.IsToggled(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("IsToggled", box ((value))))
 
         /// Adjusts the Toggled property in the visual element
-        member x.Toggled(value: Xamarin.Forms.ToggledEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Toggled", box ((fun f -> System.EventHandler<Xamarin.Forms.ToggledEventArgs>(fun _sender args -> f args))(value))))
+        member x.Toggled(value: Xamarin.Forms.ToggledEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Toggled", box ((fun f -> System.EventHandler<Xamarin.Forms.ToggledEventArgs>(fun _sender args -> f args))(value))))
 
         /// Adjusts the On property in the visual element
-        member x.On(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("On", box ((value))))
+        member x.On(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("On", box ((value))))
 
         /// Adjusts the OnChanged property in the visual element
-        member x.OnChanged(value: Xamarin.Forms.ToggledEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("OnChanged", box ((fun f -> System.EventHandler<Xamarin.Forms.ToggledEventArgs>(fun _sender args -> f args))(value))))
+        member x.OnChanged(value: Xamarin.Forms.ToggledEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("OnChanged", box ((fun f -> System.EventHandler<Xamarin.Forms.ToggledEventArgs>(fun _sender args -> f args))(value))))
 
-        /// Adjusts the GridRowDefinitions property in the visual element
-        member x.GridRowDefinitions(value: obj list) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("GridRowDefinitions", box ((fun es -> es |> Array.ofList |> Array.map (fun h -> Xaml.RowDefinition(height=h)))(value))))
-
-        /// Adjusts the GridColumnDefinitions property in the visual element
-        member x.GridColumnDefinitions(value: obj list) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("GridColumnDefinitions", box ((fun es -> es |> Array.ofList |> Array.map (fun h -> Xaml.ColumnDefinition(width=h)))(value))))
-
-        /// Adjusts the RowSpacing property in the visual element
-        member x.RowSpacing(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("RowSpacing", box ((value))))
-
-        /// Adjusts the ColumnSpacing property in the visual element
-        member x.ColumnSpacing(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ColumnSpacing", box ((value))))
-
-        /// Adjusts the Children property in the visual element
-        member x.Children(value: XamlElement list) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Children", box (Array.ofList(value))))
-
-        /// Adjusts the GridRow property in the visual element
-        member x.GridRow(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("GridRow", box ((value))))
-
-        /// Adjusts the GridRowSpan property in the visual element
-        member x.GridRowSpan(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("GridRowSpan", box ((value))))
-
-        /// Adjusts the GridColumn property in the visual element
-        member x.GridColumn(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("GridColumn", box ((value))))
-
-        /// Adjusts the GridColumnSpan property in the visual element
-        member x.GridColumnSpan(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("GridColumnSpan", box ((value))))
-
-        /// Adjusts the AbsoluteLayoutBounds property in the visual element
-        member x.AbsoluteLayoutBounds(value: Xamarin.Forms.Rectangle) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("AbsoluteLayoutBounds", box ((value))))
-
-        /// Adjusts the AbsoluteLayoutFlags property in the visual element
-        member x.AbsoluteLayoutFlags(value: Xamarin.Forms.AbsoluteLayoutFlags) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("AbsoluteLayoutFlags", box ((value))))
-
-        /// Adjusts the BoundsConstraint property in the visual element
-        member x.BoundsConstraint(value: Xamarin.Forms.BoundsConstraint) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("BoundsConstraint", box ((value))))
-
-        /// Adjusts the HeightConstraint property in the visual element
-        member x.HeightConstraint(value: Xamarin.Forms.Constraint) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("HeightConstraint", box ((value))))
-
-        /// Adjusts the WidthConstraint property in the visual element
-        member x.WidthConstraint(value: Xamarin.Forms.Constraint) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("WidthConstraint", box ((value))))
-
-        /// Adjusts the XConstraint property in the visual element
-        member x.XConstraint(value: Xamarin.Forms.Constraint) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("XConstraint", box ((value))))
-
-        /// Adjusts the YConstraint property in the visual element
-        member x.YConstraint(value: Xamarin.Forms.Constraint) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("YConstraint", box ((value))))
-
-        /// Adjusts the RowDefinitionHeight property in the visual element
-        member x.RowDefinitionHeight(value: obj) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("RowDefinitionHeight", box (makeGridLength(value))))
-
-        /// Adjusts the ColumnDefinitionWidth property in the visual element
-        member x.ColumnDefinitionWidth(value: obj) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ColumnDefinitionWidth", box (makeGridLength(value))))
-
-        /// Adjusts the Date property in the visual element
-        member x.Date(value: System.DateTime) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Date", box ((value))))
-
-        /// Adjusts the Format property in the visual element
-        member x.Format(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Format", box ((value))))
-
-        /// Adjusts the MinimumDate property in the visual element
-        member x.MinimumDate(value: System.DateTime) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("MinimumDate", box ((value))))
-
-        /// Adjusts the MaximumDate property in the visual element
-        member x.MaximumDate(value: System.DateTime) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("MaximumDate", box ((value))))
-
-        /// Adjusts the DateSelected property in the visual element
-        member x.DateSelected(value: Xamarin.Forms.DateChangedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("DateSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.DateChangedEventArgs>(fun _sender args -> f args))(value))))
-
-        /// Adjusts the PickerItemsSource property in the visual element
-        member x.PickerItemsSource(value: 'T list) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("PickerItemsSource", box ((fun es -> es |> Array.ofList :> System.Collections.IList)(value))))
-
-        /// Adjusts the SelectedIndex property in the visual element
-        member x.SelectedIndex(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("SelectedIndex", box ((value))))
-
-        /// Adjusts the Title property in the visual element
-        member x.Title(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Title", box ((value))))
-
-        /// Adjusts the SelectedIndexChanged property in the visual element
-        member x.SelectedIndexChanged(value: (int * 'T option) -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("SelectedIndexChanged", box ((fun f -> System.EventHandler(fun sender args -> let picker = (sender :?> Xamarin.Forms.Picker) in f (picker.SelectedIndex, (picker.SelectedItem |> Option.ofObj |> Option.map unbox<'T>))))(value))))
-
-        /// Adjusts the OutlineColor property in the visual element
-        member x.OutlineColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("OutlineColor", box ((value))))
-
-        /// Adjusts the FrameCornerRadius property in the visual element
-        member x.FrameCornerRadius(value: single) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("FrameCornerRadius", box ((value))))
-
-        /// Adjusts the HasShadow property in the visual element
-        member x.HasShadow(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("HasShadow", box ((value))))
-
-        /// Adjusts the ImageSource property in the visual element
-        member x.ImageSource(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ImageSource", box (makeImageSource(value))))
-
-        /// Adjusts the Aspect property in the visual element
-        member x.Aspect(value: Xamarin.Forms.Aspect) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Aspect", box ((value))))
-
-        /// Adjusts the IsOpaque property in the visual element
-        member x.IsOpaque(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsOpaque", box ((value))))
-
-        /// Adjusts the Keyboard property in the visual element
-        member x.Keyboard(value: Xamarin.Forms.Keyboard) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Keyboard", box ((value))))
-
-        /// Adjusts the EditorCompleted property in the visual element
-        member x.EditorCompleted(value: string -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("EditorCompleted", box ((fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.Editor).Text))(value))))
-
-        /// Adjusts the TextChanged property in the visual element
-        member x.TextChanged(value: Xamarin.Forms.TextChangedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("TextChanged", box ((fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))(value))))
-
-        /// Adjusts the IsPassword property in the visual element
-        member x.IsPassword(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsPassword", box ((value))))
-
-        /// Adjusts the EntryCompleted property in the visual element
-        member x.EntryCompleted(value: string -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("EntryCompleted", box ((fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.Entry).Text))(value))))
-
-        /// Adjusts the VerticalTextAlignment property in the visual element
-        member x.VerticalTextAlignment(value: Xamarin.Forms.TextAlignment) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("VerticalTextAlignment", box ((value))))
-
-        /// Adjusts the IsClippedToBounds property in the visual element
-        member x.IsClippedToBounds(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsClippedToBounds", box ((value))))
-
-        /// Adjusts the Padding property in the visual element
-        member x.Padding(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Padding", box (makeThickness(value))))
-
-        /// Adjusts the StackOrientation property in the visual element
-        member x.StackOrientation(value: Xamarin.Forms.StackOrientation) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("StackOrientation", box ((value))))
-
-        /// Adjusts the Spacing property in the visual element
-        member x.Spacing(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Spacing", box ((value))))
-
-        /// Adjusts the ForegroundColor property in the visual element
-        member x.ForegroundColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ForegroundColor", box ((value))))
-
-        /// Adjusts the PropertyChanged property in the visual element
-        member x.PropertyChanged(value: System.ComponentModel.PropertyChangedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("PropertyChanged", box ((fun f -> System.EventHandler<System.ComponentModel.PropertyChangedEventArgs>(fun _sender args -> f args))(value))))
-
-        /// Adjusts the Time property in the visual element
-        member x.Time(value: System.TimeSpan) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Time", box ((value))))
-
-        /// Adjusts the WebSource property in the visual element
-        member x.WebSource(value: Xamarin.Forms.WebViewSource) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("WebSource", box ((value))))
-
-        /// Adjusts the Navigated property in the visual element
-        member x.Navigated(value: Xamarin.Forms.WebNavigatedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Navigated", box ((fun f -> System.EventHandler<Xamarin.Forms.WebNavigatedEventArgs>(fun _sender args -> f args))(value))))
-
-        /// Adjusts the Navigating property in the visual element
-        member x.Navigating(value: Xamarin.Forms.WebNavigatingEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Navigating", box ((fun f -> System.EventHandler<Xamarin.Forms.WebNavigatingEventArgs>(fun _sender args -> f args))(value))))
-
-        /// Adjusts the ItemsSource property in the visual element
-        member x.ItemsSource(value: 'T list) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ItemsSource", box ((fun es -> es |> Array.ofList |> Array.map box :> System.Collections.Generic.IList<obj>)(value))))
-
-        /// Adjusts the ItemTemplate property in the visual element
-        member x.ItemTemplate(value: Xamarin.Forms.DataTemplate) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ItemTemplate", box ((value))))
-
-        /// Adjusts the CarouselPage_SelectedItem property in the visual element
-        member x.CarouselPage_SelectedItem(value: System.Object) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("CarouselPage_SelectedItem", box ((value))))
-
-        /// Adjusts the CurrentPage property in the visual element
-        member x.CurrentPage(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("CurrentPage", box ((value))))
-
-        /// Adjusts the CurrentPageChanged property in the visual element
-        member x.CurrentPageChanged(value: 'T option -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("CurrentPageChanged", box ((fun f -> System.EventHandler(fun sender args -> f ((sender :?> Xamarin.Forms.CarouselPage).SelectedItem |> Option.ofObj |> Option.map unbox<'T>)))(value))))
-
-        /// Adjusts the BarBackgroundColor property in the visual element
-        member x.BarBackgroundColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("BarBackgroundColor", box ((value))))
-
-        /// Adjusts the BarTextColor property in the visual element
-        member x.BarTextColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("BarTextColor", box ((value))))
-
-        /// Adjusts the Popped property in the visual element
-        member x.Popped(value: Xamarin.Forms.NavigationEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Popped", box ((fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(value))))
-
-        /// Adjusts the PoppedToRoot property in the visual element
-        member x.PoppedToRoot(value: Xamarin.Forms.NavigationEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("PoppedToRoot", box ((fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(value))))
-
-        /// Adjusts the Pushed property in the visual element
-        member x.Pushed(value: Xamarin.Forms.NavigationEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Pushed", box ((fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(value))))
-
-        /// Adjusts the OnSizeAllocatedCallback property in the visual element
-        member x.OnSizeAllocatedCallback(value: (double * double) -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("OnSizeAllocatedCallback", box ((fun f -> FSharp.Control.Handler<_>(fun _sender args -> f args))(value))))
-
-        /// Adjusts the Master property in the visual element
-        member x.Master(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Master", box ((value))))
-
-        /// Adjusts the Detail property in the visual element
-        member x.Detail(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Detail", box ((value))))
-
-        /// Adjusts the IsGestureEnabled property in the visual element
-        member x.IsGestureEnabled(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsGestureEnabled", box ((value))))
-
-        /// Adjusts the IsPresented property in the visual element
-        member x.IsPresented(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsPresented", box ((value))))
-
-        /// Adjusts the MasterBehavior property in the visual element
-        member x.MasterBehavior(value: Xamarin.Forms.MasterBehavior) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("MasterBehavior", box ((value))))
-
-        /// Adjusts the IsPresentedChanged property in the visual element
-        member x.IsPresentedChanged(value: bool -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsPresentedChanged", box ((fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.MasterDetailPage).IsPresented))(value))))
-
-        /// Adjusts the Height property in the visual element
-        member x.Height(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Height", box ((value))))
-
-        /// Adjusts the TextDetail property in the visual element
-        member x.TextDetail(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("TextDetail", box ((value))))
-
-        /// Adjusts the TextDetailColor property in the visual element
-        member x.TextDetailColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("TextDetailColor", box ((value))))
-
-        /// Adjusts the View property in the visual element
-        member x.View(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("View", box ((value))))
-
-        /// Adjusts the ListViewItems property in the visual element
-        member x.ListViewItems(value: XamlElement list) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ListViewItems", box (Array.ofList(value))))
-
-        /// Adjusts the Footer property in the visual element
-        member x.Footer(value: System.Object) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Footer", box ((value))))
+        /// Adjusts the Intent property in the visual element
+        member x.Intent(value: Xamarin.Forms.TableIntent) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Intent", box ((value))))
 
         /// Adjusts the HasUnevenRows property in the visual element
-        member x.HasUnevenRows(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("HasUnevenRows", box ((value))))
-
-        /// Adjusts the Header property in the visual element
-        member x.Header(value: System.Object) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Header", box ((value))))
-
-        /// Adjusts the HeaderTemplate property in the visual element
-        member x.HeaderTemplate(value: Xamarin.Forms.DataTemplate) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("HeaderTemplate", box ((value))))
-
-        /// Adjusts the IsGroupingEnabled property in the visual element
-        member x.IsGroupingEnabled(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsGroupingEnabled", box ((value))))
-
-        /// Adjusts the IsPullToRefreshEnabled property in the visual element
-        member x.IsPullToRefreshEnabled(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsPullToRefreshEnabled", box ((value))))
-
-        /// Adjusts the IsRefreshing property in the visual element
-        member x.IsRefreshing(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("IsRefreshing", box ((value))))
-
-        /// Adjusts the RefreshCommand property in the visual element
-        member x.RefreshCommand(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("RefreshCommand", box (makeCommand(value))))
+        member x.HasUnevenRows(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("HasUnevenRows", box ((value))))
 
         /// Adjusts the RowHeight property in the visual element
-        member x.RowHeight(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("RowHeight", box ((value))))
+        member x.RowHeight(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("RowHeight", box ((value))))
+
+        /// Adjusts the TableRoot property in the visual element
+        member x.TableRoot(value: (string * XamlElement list) list) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("TableRoot", box ((fun es -> es |> Array.ofList |> Array.map (fun (title, es) -> (title, Array.ofList es)))(value))))
+
+        /// Adjusts the GridRowDefinitions property in the visual element
+        member x.GridRowDefinitions(value: obj list) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("GridRowDefinitions", box ((fun es -> es |> Array.ofList |> Array.map (fun h -> Xaml.RowDefinition(height=h)))(value))))
+
+        /// Adjusts the GridColumnDefinitions property in the visual element
+        member x.GridColumnDefinitions(value: obj list) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("GridColumnDefinitions", box ((fun es -> es |> Array.ofList |> Array.map (fun h -> Xaml.ColumnDefinition(width=h)))(value))))
+
+        /// Adjusts the RowSpacing property in the visual element
+        member x.RowSpacing(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("RowSpacing", box ((value))))
+
+        /// Adjusts the ColumnSpacing property in the visual element
+        member x.ColumnSpacing(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ColumnSpacing", box ((value))))
+
+        /// Adjusts the Children property in the visual element
+        member x.Children(value: XamlElement list) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Children", box (Array.ofList(value))))
+
+        /// Adjusts the GridRow property in the visual element
+        member x.GridRow(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("GridRow", box ((value))))
+
+        /// Adjusts the GridRowSpan property in the visual element
+        member x.GridRowSpan(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("GridRowSpan", box ((value))))
+
+        /// Adjusts the GridColumn property in the visual element
+        member x.GridColumn(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("GridColumn", box ((value))))
+
+        /// Adjusts the GridColumnSpan property in the visual element
+        member x.GridColumnSpan(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("GridColumnSpan", box ((value))))
+
+        /// Adjusts the AbsoluteLayoutBounds property in the visual element
+        member x.AbsoluteLayoutBounds(value: Xamarin.Forms.Rectangle) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("AbsoluteLayoutBounds", box ((value))))
+
+        /// Adjusts the AbsoluteLayoutFlags property in the visual element
+        member x.AbsoluteLayoutFlags(value: Xamarin.Forms.AbsoluteLayoutFlags) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("AbsoluteLayoutFlags", box ((value))))
+
+        /// Adjusts the BoundsConstraint property in the visual element
+        member x.BoundsConstraint(value: Xamarin.Forms.BoundsConstraint) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("BoundsConstraint", box ((value))))
+
+        /// Adjusts the HeightConstraint property in the visual element
+        member x.HeightConstraint(value: Xamarin.Forms.Constraint) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("HeightConstraint", box ((value))))
+
+        /// Adjusts the WidthConstraint property in the visual element
+        member x.WidthConstraint(value: Xamarin.Forms.Constraint) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("WidthConstraint", box ((value))))
+
+        /// Adjusts the XConstraint property in the visual element
+        member x.XConstraint(value: Xamarin.Forms.Constraint) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("XConstraint", box ((value))))
+
+        /// Adjusts the YConstraint property in the visual element
+        member x.YConstraint(value: Xamarin.Forms.Constraint) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("YConstraint", box ((value))))
+
+        /// Adjusts the RowDefinitionHeight property in the visual element
+        member x.RowDefinitionHeight(value: obj) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("RowDefinitionHeight", box (makeGridLength(value))))
+
+        /// Adjusts the ColumnDefinitionWidth property in the visual element
+        member x.ColumnDefinitionWidth(value: obj) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ColumnDefinitionWidth", box (makeGridLength(value))))
+
+        /// Adjusts the Date property in the visual element
+        member x.Date(value: System.DateTime) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Date", box ((value))))
+
+        /// Adjusts the Format property in the visual element
+        member x.Format(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Format", box ((value))))
+
+        /// Adjusts the MinimumDate property in the visual element
+        member x.MinimumDate(value: System.DateTime) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("MinimumDate", box ((value))))
+
+        /// Adjusts the MaximumDate property in the visual element
+        member x.MaximumDate(value: System.DateTime) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("MaximumDate", box ((value))))
+
+        /// Adjusts the DateSelected property in the visual element
+        member x.DateSelected(value: Xamarin.Forms.DateChangedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("DateSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.DateChangedEventArgs>(fun _sender args -> f args))(value))))
+
+        /// Adjusts the PickerItemsSource property in the visual element
+        member x.PickerItemsSource(value: 'T list) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("PickerItemsSource", box ((fun es -> es |> Array.ofList :> System.Collections.IList)(value))))
+
+        /// Adjusts the SelectedIndex property in the visual element
+        member x.SelectedIndex(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("SelectedIndex", box ((value))))
+
+        /// Adjusts the Title property in the visual element
+        member x.Title(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Title", box ((value))))
+
+        /// Adjusts the SelectedIndexChanged property in the visual element
+        member x.SelectedIndexChanged(value: (int * 'T option) -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("SelectedIndexChanged", box ((fun f -> System.EventHandler(fun sender args -> let picker = (sender :?> Xamarin.Forms.Picker) in f (picker.SelectedIndex, (picker.SelectedItem |> Option.ofObj |> Option.map unbox<'T>))))(value))))
+
+        /// Adjusts the OutlineColor property in the visual element
+        member x.OutlineColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("OutlineColor", box ((value))))
+
+        /// Adjusts the FrameCornerRadius property in the visual element
+        member x.FrameCornerRadius(value: single) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("FrameCornerRadius", box ((value))))
+
+        /// Adjusts the HasShadow property in the visual element
+        member x.HasShadow(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("HasShadow", box ((value))))
+
+        /// Adjusts the ImageSource property in the visual element
+        member x.ImageSource(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ImageSource", box ((value))))
+
+        /// Adjusts the Aspect property in the visual element
+        member x.Aspect(value: Xamarin.Forms.Aspect) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Aspect", box ((value))))
+
+        /// Adjusts the IsOpaque property in the visual element
+        member x.IsOpaque(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("IsOpaque", box ((value))))
+
+        /// Adjusts the Keyboard property in the visual element
+        member x.Keyboard(value: Xamarin.Forms.Keyboard) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Keyboard", box ((value))))
+
+        /// Adjusts the EditorCompleted property in the visual element
+        member x.EditorCompleted(value: string -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("EditorCompleted", box ((fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.Editor).Text))(value))))
+
+        /// Adjusts the TextChanged property in the visual element
+        member x.TextChanged(value: Xamarin.Forms.TextChangedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("TextChanged", box ((fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))(value))))
+
+        /// Adjusts the IsPassword property in the visual element
+        member x.IsPassword(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("IsPassword", box ((value))))
+
+        /// Adjusts the EntryCompleted property in the visual element
+        member x.EntryCompleted(value: string -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("EntryCompleted", box ((fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.Entry).Text))(value))))
+
+        /// Adjusts the Label property in the visual element
+        member x.Label(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Label", box ((value))))
+
+        /// Adjusts the VerticalTextAlignment property in the visual element
+        member x.VerticalTextAlignment(value: Xamarin.Forms.TextAlignment) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("VerticalTextAlignment", box ((value))))
+
+        /// Adjusts the IsClippedToBounds property in the visual element
+        member x.IsClippedToBounds(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("IsClippedToBounds", box ((value))))
+
+        /// Adjusts the Padding property in the visual element
+        member x.Padding(value: obj) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Padding", box (makeThickness(value))))
+
+        /// Adjusts the StackOrientation property in the visual element
+        member x.StackOrientation(value: Xamarin.Forms.StackOrientation) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("StackOrientation", box ((value))))
+
+        /// Adjusts the Spacing property in the visual element
+        member x.Spacing(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Spacing", box ((value))))
+
+        /// Adjusts the ForegroundColor property in the visual element
+        member x.ForegroundColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ForegroundColor", box ((value))))
+
+        /// Adjusts the PropertyChanged property in the visual element
+        member x.PropertyChanged(value: System.ComponentModel.PropertyChangedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("PropertyChanged", box ((fun f -> System.EventHandler<System.ComponentModel.PropertyChangedEventArgs>(fun _sender args -> f args))(value))))
+
+        /// Adjusts the Time property in the visual element
+        member x.Time(value: System.TimeSpan) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Time", box ((value))))
+
+        /// Adjusts the WebSource property in the visual element
+        member x.WebSource(value: Xamarin.Forms.WebViewSource) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("WebSource", box ((value))))
+
+        /// Adjusts the Navigated property in the visual element
+        member x.Navigated(value: Xamarin.Forms.WebNavigatedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Navigated", box ((fun f -> System.EventHandler<Xamarin.Forms.WebNavigatedEventArgs>(fun _sender args -> f args))(value))))
+
+        /// Adjusts the Navigating property in the visual element
+        member x.Navigating(value: Xamarin.Forms.WebNavigatingEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Navigating", box ((fun f -> System.EventHandler<Xamarin.Forms.WebNavigatingEventArgs>(fun _sender args -> f args))(value))))
+
+        /// Adjusts the ItemsSource property in the visual element
+        member x.ItemsSource(value: 'T list) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ItemsSource", box ((fun es -> es |> Array.ofList |> Array.map box :> System.Collections.Generic.IList<obj>)(value))))
+
+        /// Adjusts the ItemTemplate property in the visual element
+        member x.ItemTemplate(value: Xamarin.Forms.DataTemplate) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ItemTemplate", box ((value))))
+
+        /// Adjusts the CarouselPage_SelectedItem property in the visual element
+        member x.CarouselPage_SelectedItem(value: System.Object) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("CarouselPage_SelectedItem", box ((value))))
+
+        /// Adjusts the CurrentPage property in the visual element
+        member x.CurrentPage(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("CurrentPage", box ((value))))
+
+        /// Adjusts the CurrentPageChanged property in the visual element
+        member x.CurrentPageChanged(value: 'T option -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("CurrentPageChanged", box ((fun f -> System.EventHandler(fun sender args -> f ((sender :?> Xamarin.Forms.CarouselPage).SelectedItem |> Option.ofObj |> Option.map unbox<'T>)))(value))))
+
+        /// Adjusts the BarBackgroundColor property in the visual element
+        member x.BarBackgroundColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("BarBackgroundColor", box ((value))))
+
+        /// Adjusts the BarTextColor property in the visual element
+        member x.BarTextColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("BarTextColor", box ((value))))
+
+        /// Adjusts the Popped property in the visual element
+        member x.Popped(value: Xamarin.Forms.NavigationEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Popped", box ((fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(value))))
+
+        /// Adjusts the PoppedToRoot property in the visual element
+        member x.PoppedToRoot(value: Xamarin.Forms.NavigationEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("PoppedToRoot", box ((fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(value))))
+
+        /// Adjusts the Pushed property in the visual element
+        member x.Pushed(value: Xamarin.Forms.NavigationEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Pushed", box ((fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(value))))
+
+        /// Adjusts the OnSizeAllocatedCallback property in the visual element
+        member x.OnSizeAllocatedCallback(value: (double * double) -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("OnSizeAllocatedCallback", box ((fun f -> FSharp.Control.Handler<_>(fun _sender args -> f args))(value))))
+
+        /// Adjusts the Master property in the visual element
+        member x.Master(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Master", box ((value))))
+
+        /// Adjusts the Detail property in the visual element
+        member x.Detail(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Detail", box ((value))))
+
+        /// Adjusts the IsGestureEnabled property in the visual element
+        member x.IsGestureEnabled(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("IsGestureEnabled", box ((value))))
+
+        /// Adjusts the IsPresented property in the visual element
+        member x.IsPresented(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("IsPresented", box ((value))))
+
+        /// Adjusts the MasterBehavior property in the visual element
+        member x.MasterBehavior(value: Xamarin.Forms.MasterBehavior) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("MasterBehavior", box ((value))))
+
+        /// Adjusts the IsPresentedChanged property in the visual element
+        member x.IsPresentedChanged(value: bool -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("IsPresentedChanged", box ((fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.MasterDetailPage).IsPresented))(value))))
+
+        /// Adjusts the Height property in the visual element
+        member x.Height(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Height", box ((value))))
+
+        /// Adjusts the TextDetail property in the visual element
+        member x.TextDetail(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("TextDetail", box ((value))))
+
+        /// Adjusts the TextDetailColor property in the visual element
+        member x.TextDetailColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("TextDetailColor", box ((value))))
+
+        /// Adjusts the View property in the visual element
+        member x.View(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("View", box ((value))))
+
+        /// Adjusts the ListViewItems property in the visual element
+        member x.ListViewItems(value: XamlElement list) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ListViewItems", box (Array.ofList(value))))
+
+        /// Adjusts the Footer property in the visual element
+        member x.Footer(value: System.Object) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Footer", box ((value))))
+
+        /// Adjusts the Header property in the visual element
+        member x.Header(value: System.Object) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Header", box ((value))))
+
+        /// Adjusts the HeaderTemplate property in the visual element
+        member x.HeaderTemplate(value: Xamarin.Forms.DataTemplate) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("HeaderTemplate", box ((value))))
+
+        /// Adjusts the IsGroupingEnabled property in the visual element
+        member x.IsGroupingEnabled(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("IsGroupingEnabled", box ((value))))
+
+        /// Adjusts the IsPullToRefreshEnabled property in the visual element
+        member x.IsPullToRefreshEnabled(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("IsPullToRefreshEnabled", box ((value))))
+
+        /// Adjusts the IsRefreshing property in the visual element
+        member x.IsRefreshing(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("IsRefreshing", box ((value))))
+
+        /// Adjusts the RefreshCommand property in the visual element
+        member x.RefreshCommand(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("RefreshCommand", box (makeCommand(value))))
 
         /// Adjusts the ListView_SelectedItem property in the visual element
-        member x.ListView_SelectedItem(value: int option) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ListView_SelectedItem", box ((value))))
+        member x.ListView_SelectedItem(value: int option) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ListView_SelectedItem", box ((value))))
 
         /// Adjusts the SeparatorVisibility property in the visual element
-        member x.SeparatorVisibility(value: Xamarin.Forms.SeparatorVisibility) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("SeparatorVisibility", box ((value))))
+        member x.SeparatorVisibility(value: Xamarin.Forms.SeparatorVisibility) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("SeparatorVisibility", box ((value))))
 
         /// Adjusts the SeparatorColor property in the visual element
-        member x.SeparatorColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("SeparatorColor", box ((value))))
+        member x.SeparatorColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("SeparatorColor", box ((value))))
 
         /// Adjusts the ItemAppearing property in the visual element
-        member x.ItemAppearing(value: Xamarin.Forms.ItemVisibilityEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ItemAppearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))(value))))
+        member x.ItemAppearing(value: Xamarin.Forms.ItemVisibilityEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ItemAppearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))(value))))
 
         /// Adjusts the ItemDisappearing property in the visual element
-        member x.ItemDisappearing(value: Xamarin.Forms.ItemVisibilityEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ItemDisappearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))(value))))
+        member x.ItemDisappearing(value: Xamarin.Forms.ItemVisibilityEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ItemDisappearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))(value))))
 
         /// Adjusts the ListView_ItemSelected property in the visual element
-        member x.ListView_ItemSelected(value: int option -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ListView_ItemSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<ListElementData<XamlElement>> |> Option.bind (fun item -> let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListElementData<XamlElement>> in items |> Seq.tryFindIndex (fun item2 -> System.Object.ReferenceEquals(item.Key, item2.Key))))))(value))))
+        member x.ListView_ItemSelected(value: int option -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ListView_ItemSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<ListElementData<XamlElement>> |> Option.bind (fun item -> let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListElementData<XamlElement>> in items |> Seq.tryFindIndex (fun item2 -> System.Object.ReferenceEquals(item.Key, item2.Key))))))(value))))
 
         /// Adjusts the ItemTapped property in the visual element
-        member x.ItemTapped(value: Xamarin.Forms.ItemTappedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ItemTapped", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun _sender args -> f args))(value))))
+        member x.ItemTapped(value: Xamarin.Forms.ItemTappedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ItemTapped", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun _sender args -> f args))(value))))
 
         /// Adjusts the Refreshing property in the visual element
-        member x.Refreshing(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Refreshing", box ((fun f -> System.EventHandler(fun sender args -> f ()))(value))))
+        member x.Refreshing(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Refreshing", box ((fun f -> System.EventHandler(fun sender args -> f ()))(value))))
 
         /// Adjusts the GroupListViewItemsSource property in the visual element
-        member x.GroupListViewItemsSource(value: (XamlElement * XamlElement list) list) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("GroupListViewItemsSource", box ((fun es -> es |> Array.ofList |> Array.map (fun (e,l) -> (e, Array.ofList l)))(value))))
+        member x.GroupListViewItemsSource(value: (XamlElement * XamlElement list) list) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("GroupListViewItemsSource", box ((fun es -> es |> Array.ofList |> Array.map (fun (e,l) -> (e, Array.ofList l)))(value))))
 
         /// Adjusts the ListViewGrouped_SelectedItem property in the visual element
-        member x.ListViewGrouped_SelectedItem(value: (int * int) option) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ListViewGrouped_SelectedItem", box ((value))))
+        member x.ListViewGrouped_SelectedItem(value: (int * int) option) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ListViewGrouped_SelectedItem", box ((value))))
 
         /// Adjusts the ListViewGrouped_ItemSelected property in the visual element
-        member x.ListViewGrouped_ItemSelected(value: (int * int) option -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("ListViewGrouped_ItemSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<ListElementData<XamlElement>> |> Option.bind (fun item -> let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData<XamlElement>> in Seq.indexed items |> Seq.tryPick (fun (i,items2) -> Seq.indexed items2 |> Seq.tryPick (fun (j,item2) -> if System.Object.ReferenceEquals(item.Key, item2.Key) then Some (i,j) else None))))))(value))))
+        member x.ListViewGrouped_ItemSelected(value: (int * int) option -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ListViewGrouped_ItemSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<ListElementData<XamlElement>> |> Option.bind (fun item -> let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData<XamlElement>> in Seq.indexed items |> Seq.tryPick (fun (i,items2) -> Seq.indexed items2 |> Seq.tryPick (fun (j,item2) -> if System.Object.ReferenceEquals(item.Key, item2.Key) then Some (i,j) else None))))))(value))))
 
 
     /// Adjusts the ClassId property in the visual element
@@ -1447,6 +1471,30 @@ module XamlElementExtensions =
     /// Adjusts the OnChanged property in the visual element
     let onChanged (value: Xamarin.Forms.ToggledEventArgs -> unit) (x: XamlElement) = x.OnChanged(value)
 
+    /// Adjusts the Intent property in the visual element
+    let withIntent (value: Xamarin.Forms.TableIntent) (x: XamlElement) = x.Intent(value)
+
+    /// Adjusts the Intent property in the visual element
+    let intent (value: Xamarin.Forms.TableIntent) (x: XamlElement) = x.Intent(value)
+
+    /// Adjusts the HasUnevenRows property in the visual element
+    let withHasUnevenRows (value: bool) (x: XamlElement) = x.HasUnevenRows(value)
+
+    /// Adjusts the HasUnevenRows property in the visual element
+    let hasUnevenRows (value: bool) (x: XamlElement) = x.HasUnevenRows(value)
+
+    /// Adjusts the RowHeight property in the visual element
+    let withRowHeight (value: int) (x: XamlElement) = x.RowHeight(value)
+
+    /// Adjusts the RowHeight property in the visual element
+    let rowHeight (value: int) (x: XamlElement) = x.RowHeight(value)
+
+    /// Adjusts the TableRoot property in the visual element
+    let withTableRoot (value: (string * XamlElement list) list) (x: XamlElement) = x.TableRoot(value)
+
+    /// Adjusts the TableRoot property in the visual element
+    let tableRoot (value: (string * XamlElement list) list) (x: XamlElement) = x.TableRoot(value)
+
     /// Adjusts the GridRowDefinitions property in the visual element
     let withGridRowDefinitions (value: obj list) (x: XamlElement) = x.GridRowDefinitions(value)
 
@@ -1675,6 +1723,12 @@ module XamlElementExtensions =
     /// Adjusts the EntryCompleted property in the visual element
     let entryCompleted (value: string -> unit) (x: XamlElement) = x.EntryCompleted(value)
 
+    /// Adjusts the Label property in the visual element
+    let withLabel (value: string) (x: XamlElement) = x.Label(value)
+
+    /// Adjusts the Label property in the visual element
+    let label (value: string) (x: XamlElement) = x.Label(value)
+
     /// Adjusts the VerticalTextAlignment property in the visual element
     let withVerticalTextAlignment (value: Xamarin.Forms.TextAlignment) (x: XamlElement) = x.VerticalTextAlignment(value)
 
@@ -1688,10 +1742,10 @@ module XamlElementExtensions =
     let isClippedToBounds (value: bool) (x: XamlElement) = x.IsClippedToBounds(value)
 
     /// Adjusts the Padding property in the visual element
-    let withPadding (value: double) (x: XamlElement) = x.Padding(value)
+    let withPadding (value: obj) (x: XamlElement) = x.Padding(value)
 
     /// Adjusts the Padding property in the visual element
-    let padding (value: double) (x: XamlElement) = x.Padding(value)
+    let padding (value: obj) (x: XamlElement) = x.Padding(value)
 
     /// Adjusts the StackOrientation property in the visual element
     let withStackOrientation (value: Xamarin.Forms.StackOrientation) (x: XamlElement) = x.StackOrientation(value)
@@ -1879,12 +1933,6 @@ module XamlElementExtensions =
     /// Adjusts the Footer property in the visual element
     let footer (value: System.Object) (x: XamlElement) = x.Footer(value)
 
-    /// Adjusts the HasUnevenRows property in the visual element
-    let withHasUnevenRows (value: bool) (x: XamlElement) = x.HasUnevenRows(value)
-
-    /// Adjusts the HasUnevenRows property in the visual element
-    let hasUnevenRows (value: bool) (x: XamlElement) = x.HasUnevenRows(value)
-
     /// Adjusts the Header property in the visual element
     let withHeader (value: System.Object) (x: XamlElement) = x.Header(value)
 
@@ -1920,12 +1968,6 @@ module XamlElementExtensions =
 
     /// Adjusts the RefreshCommand property in the visual element
     let refreshCommand (value: unit -> unit) (x: XamlElement) = x.RefreshCommand(value)
-
-    /// Adjusts the RowHeight property in the visual element
-    let withRowHeight (value: int) (x: XamlElement) = x.RowHeight(value)
-
-    /// Adjusts the RowHeight property in the visual element
-    let rowHeight (value: int) (x: XamlElement) = x.RowHeight(value)
 
     /// Adjusts the ListView_SelectedItem property in the visual element
     let withListView_SelectedItem (value: int option) (x: XamlElement) = x.ListView_SelectedItem(value)
@@ -2005,23 +2047,23 @@ type Xaml() =
         let create () =
             failwith "can'tdef create Xamarin.Forms.Element"
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Element)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.Element>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Element>, create, update, Map.ofArray attribs)
 
     /// Describes a VisualElement in the view
     static member VisualElement(?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -2051,149 +2093,149 @@ type Xaml() =
         let create () =
             failwith "can'tdef create Xamarin.Forms.VisualElement"
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.VisualElement)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.VisualElement>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.VisualElement>, create, update, Map.ofArray attribs)
 
     /// Describes a View in the view
     static member View(?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -2227,177 +2269,177 @@ type Xaml() =
         let create () =
             failwith "can'tdef create Xamarin.Forms.View"
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.View)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
             | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.VerticalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
             | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Margin <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.View>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.View>, create, update, Map.ofArray attribs)
 
     /// Describes a IGestureRecognizer in the view
     static member IGestureRecognizer() = 
@@ -2407,9 +2449,9 @@ type Xaml() =
         let create () =
             failwith "can'tdef create Xamarin.Forms.IGestureRecognizer"
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             ()
-        new XamlElement(typeof<Xamarin.Forms.IGestureRecognizer>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.IGestureRecognizer>, create, update, Map.ofArray attribs)
 
     /// Describes a PanGestureRecognizer in the view
     static member PanGestureRecognizer(?touchPoints: int, ?panUpdated: Xamarin.Forms.PanUpdatedEventArgs -> unit, ?classId: string, ?styleId: string) = 
@@ -2423,13 +2465,13 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.PanGestureRecognizer())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.PanGestureRecognizer)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTouchPoints
             let valueOpt = source.TryTouchPoints
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TouchPoints <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TouchPoints "); target.TouchPoints <-  value
             | Some _, None -> target.TouchPoints <- 1
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPanUpdated
@@ -2443,17 +2485,17 @@ type Xaml() =
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.PanGestureRecognizer>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.PanGestureRecognizer>, create, update, Map.ofArray attribs)
 
     /// Describes a TapGestureRecognizer in the view
     static member TapGestureRecognizer(?command: unit -> unit, ?numberOfTapsRequired: int, ?classId: string, ?styleId: string) = 
@@ -2467,37 +2509,37 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.TapGestureRecognizer())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.TapGestureRecognizer)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryCommand
             let valueOpt = source.TryCommand
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Command <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Command "); target.Command <-  value
             | Some _, None -> target.Command <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryNumberOfTapsRequired
             let valueOpt = source.TryNumberOfTapsRequired
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.NumberOfTapsRequired <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting NumberOfTapsRequired "); target.NumberOfTapsRequired <-  value
             | Some _, None -> target.NumberOfTapsRequired <- 1
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.TapGestureRecognizer>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.TapGestureRecognizer>, create, update, Map.ofArray attribs)
 
     /// Describes a ClickGestureRecognizer in the view
     static member ClickGestureRecognizer(?command: unit -> unit, ?numberOfClicksRequired: int, ?buttons: Xamarin.Forms.ButtonsMask, ?classId: string, ?styleId: string) = 
@@ -2512,44 +2554,44 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.ClickGestureRecognizer())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ClickGestureRecognizer)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryCommand
             let valueOpt = source.TryCommand
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Command <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Command "); target.Command <-  value
             | Some _, None -> target.Command <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryNumberOfClicksRequired
             let valueOpt = source.TryNumberOfClicksRequired
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.NumberOfClicksRequired <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting NumberOfClicksRequired "); target.NumberOfClicksRequired <-  value
             | Some _, None -> target.NumberOfClicksRequired <- 1
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryButtons
             let valueOpt = source.TryButtons
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Buttons <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Buttons "); target.Buttons <-  value
             | Some _, None -> target.Buttons <- Xamarin.Forms.ButtonsMask.Primary
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.ClickGestureRecognizer>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.ClickGestureRecognizer>, create, update, Map.ofArray attribs)
 
     /// Describes a PinchGestureRecognizer in the view
     static member PinchGestureRecognizer(?isPinching: bool, ?pinchUpdated: Xamarin.Forms.PinchGestureUpdatedEventArgs -> unit, ?classId: string, ?styleId: string) = 
@@ -2563,13 +2605,13 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.PinchGestureRecognizer())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.PinchGestureRecognizer)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsPinching
             let valueOpt = source.TryIsPinching
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsPinching <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsPinching "); target.IsPinching <-  value
             | Some _, None -> target.IsPinching <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPinchUpdated
@@ -2583,17 +2625,17 @@ type Xaml() =
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.PinchGestureRecognizer>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.PinchGestureRecognizer>, create, update, Map.ofArray attribs)
 
     /// Describes a ActivityIndicator in the view
     static member ActivityIndicator(?color: Xamarin.Forms.Color, ?isRunning: bool, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -2629,191 +2671,191 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.ActivityIndicator())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ActivityIndicator)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryColor
             let valueOpt = source.TryColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Color <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Color "); target.Color <-  value
             | Some _, None -> target.Color <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsRunning
             let valueOpt = source.TryIsRunning
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsRunning <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsRunning "); target.IsRunning <-  value
             | Some _, None -> target.IsRunning <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
             | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.VerticalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
             | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Margin <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.ActivityIndicator>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.ActivityIndicator>, create, update, Map.ofArray attribs)
 
     /// Describes a BoxView in the view
     static member BoxView(?color: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -2848,184 +2890,184 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.BoxView())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.BoxView)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryColor
             let valueOpt = source.TryColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Color <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Color "); target.Color <-  value
             | Some _, None -> target.Color <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
             | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.VerticalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
             | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Margin <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.BoxView>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.BoxView>, create, update, Map.ofArray attribs)
 
     /// Describes a ProgressBar in the view
     static member ProgressBar(?progress: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -3060,187 +3102,187 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.ProgressBar())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ProgressBar)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryProgress
             let valueOpt = source.TryProgress
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Progress <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Progress "); target.Progress <-  value
             | Some _, None -> target.Progress <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
             | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.VerticalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
             | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Margin <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.ProgressBar>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.ProgressBar>, create, update, Map.ofArray attribs)
 
     /// Describes a ScrollView in the view
-    static member ScrollView(?content: XamlElement, ?orientation: Xamarin.Forms.ScrollOrientation, ?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member ScrollView(?content: XamlElement, ?orientation: Xamarin.Forms.ScrollOrientation, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match content with None -> () | Some v -> yield ("Content", box ((v))) 
             match orientation with None -> () | Some v -> yield ("ScrollOrientation", box ((v))) 
@@ -3275,14 +3317,14 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.ScrollView())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ScrollView)
             let prevChildOpt = match prevOpt with None -> None | Some prev -> prev.TryContent
             match prevChildOpt, source.TryContent with
             // For structured objects, amortize on reference equality
             | Some prevChild, Some newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
             | Some prevChild, Some newChild ->
-                newChild.ApplyIncremental(prevChild, target.Content)
+                newChild.UpdateIncremental(prevChild, target.Content)
             | None, Some newChild ->
                 target.Content <- newChild.CreateAsView()
             | Some _, None ->
@@ -3292,192 +3334,192 @@ type Xaml() =
             let valueOpt = source.TryScrollOrientation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Orientation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Orientation "); target.Orientation <-  value
             | Some _, None -> target.Orientation <- Unchecked.defaultof<Xamarin.Forms.ScrollOrientation>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsClippedToBounds
             let valueOpt = source.TryIsClippedToBounds
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsClippedToBounds <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsClippedToBounds "); target.IsClippedToBounds <-  value
             | Some _, None -> target.IsClippedToBounds <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
             let valueOpt = source.TryPadding
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Padding <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Padding "); target.Padding <-  value
             | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
             | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.VerticalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
             | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Margin <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.ScrollView>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.ScrollView>, create, update, Map.ofArray attribs)
 
     /// Describes a SearchBar in the view
     static member SearchBar(?cancelButtonColor: Xamarin.Forms.Color, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?placeholder: string, ?placeholderColor: Xamarin.Forms.Color, ?searchCommand: unit -> unit, ?text: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -3521,247 +3563,247 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.SearchBar())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.SearchBar)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryCancelButtonColor
             let valueOpt = source.TryCancelButtonColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.CancelButtonColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting CancelButtonColor "); target.CancelButtonColor <-  value
             | Some _, None -> target.CancelButtonColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontFamily
             let valueOpt = source.TryFontFamily
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.FontFamily <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting FontFamily "); target.FontFamily <-  value
             | Some _, None -> target.FontFamily <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontAttributes
             let valueOpt = source.TryFontAttributes
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.FontAttributes <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting FontAttributes "); target.FontAttributes <-  value
             | Some _, None -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontSize
             let valueOpt = source.TryFontSize
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.FontSize <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting FontSize "); target.FontSize <-  value
             | Some _, None -> target.FontSize <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalTextAlignment
             let valueOpt = source.TryHorizontalTextAlignment
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalTextAlignment <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalTextAlignment "); target.HorizontalTextAlignment <-  value
             | Some _, None -> target.HorizontalTextAlignment <- Xamarin.Forms.TextAlignment.Start
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPlaceholder
             let valueOpt = source.TryPlaceholder
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Placeholder <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Placeholder "); target.Placeholder <-  value
             | Some _, None -> target.Placeholder <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPlaceholderColor
             let valueOpt = source.TryPlaceholderColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.PlaceholderColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting PlaceholderColor "); target.PlaceholderColor <-  value
             | Some _, None -> target.PlaceholderColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TrySearchCommand
             let valueOpt = source.TrySearchCommand
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.SearchCommand <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting SearchCommand "); target.SearchCommand <-  value
             | Some _, None -> target.SearchCommand <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryText
             let valueOpt = source.TryText
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Text <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Text "); target.Text <-  value
             | Some _, None -> target.Text <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTextColor
             let valueOpt = source.TryTextColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TextColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TextColor "); target.TextColor <-  value
             | Some _, None -> target.TextColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
             | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.VerticalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
             | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Margin <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.SearchBar>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.SearchBar>, create, update, Map.ofArray attribs)
 
     /// Describes a Button in the view
     static member Button(?text: string, ?command: unit -> unit, ?borderColor: Xamarin.Forms.Color, ?borderWidth: double, ?commandParameter: System.Object, ?contentLayout: Xamarin.Forms.Button.ButtonContentLayout, ?cornerRadius: int, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?image: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -3776,7 +3818,7 @@ type Xaml() =
             match fontFamily with None -> () | Some v -> yield ("FontFamily", box ((v))) 
             match fontAttributes with None -> () | Some v -> yield ("FontAttributes", box ((v))) 
             match fontSize with None -> () | Some v -> yield ("FontSize", box (makeFontSize(v))) 
-            match image with None -> () | Some v -> yield ("ButtonImageSource", box (makeFileImageSource(v))) 
+            match image with None -> () | Some v -> yield ("ButtonImageSource", box ((v))) 
             match textColor with None -> () | Some v -> yield ("TextColor", box ((v))) 
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
             match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
@@ -3807,261 +3849,261 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.Button())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Button)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryText
             let valueOpt = source.TryText
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Text <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Text "); target.Text <-  value
             | Some _, None -> target.Text <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryCommand
             let valueOpt = source.TryCommand
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Command <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Command "); target.Command <-  value
             | Some _, None -> target.Command <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBorderColor
             let valueOpt = source.TryBorderColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BorderColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BorderColor "); target.BorderColor <-  value
             | Some _, None -> target.BorderColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBorderWidth
             let valueOpt = source.TryBorderWidth
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BorderWidth <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BorderWidth "); target.BorderWidth <-  value
             | Some _, None -> target.BorderWidth <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryCommandParameter
             let valueOpt = source.TryCommandParameter
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.CommandParameter <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting CommandParameter "); target.CommandParameter <-  value
             | Some _, None -> target.CommandParameter <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryContentLayout
             let valueOpt = source.TryContentLayout
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ContentLayout <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ContentLayout "); target.ContentLayout <-  value
             | Some _, None -> target.ContentLayout <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryButtonCornerRadius
             let valueOpt = source.TryButtonCornerRadius
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.CornerRadius <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting CornerRadius "); target.CornerRadius <-  value
             | Some _, None -> target.CornerRadius <- 0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontFamily
             let valueOpt = source.TryFontFamily
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.FontFamily <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting FontFamily "); target.FontFamily <-  value
             | Some _, None -> target.FontFamily <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontAttributes
             let valueOpt = source.TryFontAttributes
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.FontAttributes <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting FontAttributes "); target.FontAttributes <-  value
             | Some _, None -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontSize
             let valueOpt = source.TryFontSize
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.FontSize <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting FontSize "); target.FontSize <-  value
             | Some _, None -> target.FontSize <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryButtonImageSource
             let valueOpt = source.TryButtonImageSource
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Image <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Image "); target.Image <- makeFileImageSource  value
             | Some _, None -> target.Image <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTextColor
             let valueOpt = source.TryTextColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TextColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TextColor "); target.TextColor <-  value
             | Some _, None -> target.TextColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
             | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.VerticalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
             | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Margin <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.Button>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Button>, create, update, Map.ofArray attribs)
 
     /// Describes a Slider in the view
     static member Slider(?minimum: double, ?maximum: double, ?value: double, ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -4099,27 +4141,27 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.Slider())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Slider)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimum
             let valueOpt = source.TryMinimum
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Minimum <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Minimum "); target.Minimum <-  value
             | Some _, None -> target.Minimum <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMaximum
             let valueOpt = source.TryMaximum
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Maximum <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Maximum "); target.Maximum <-  value
             | Some _, None -> target.Maximum <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryValue
             let valueOpt = source.TryValue
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Value <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Value "); target.Value <-  value
             | Some _, None -> target.Value <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryValueChanged
@@ -4133,171 +4175,171 @@ type Xaml() =
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
             | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.VerticalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
             | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Margin <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.Slider>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Slider>, create, update, Map.ofArray attribs)
 
     /// Describes a Stepper in the view
     static member Stepper(?minimum: double, ?maximum: double, ?value: double, ?increment: double, ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -4336,34 +4378,34 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.Stepper())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Stepper)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimum
             let valueOpt = source.TryMinimum
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Minimum <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Minimum "); target.Minimum <-  value
             | Some _, None -> target.Minimum <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMaximum
             let valueOpt = source.TryMaximum
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Maximum <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Maximum "); target.Maximum <-  value
             | Some _, None -> target.Maximum <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryValue
             let valueOpt = source.TryValue
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Value <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Value "); target.Value <-  value
             | Some _, None -> target.Value <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIncrement
             let valueOpt = source.TryIncrement
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Increment <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Increment "); target.Increment <-  value
             | Some _, None -> target.Increment <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryValueChanged
@@ -4377,171 +4419,171 @@ type Xaml() =
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
             | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.VerticalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
             | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Margin <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.Stepper>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Stepper>, create, update, Map.ofArray attribs)
 
     /// Describes a Switch in the view
     static member Switch(?isToggled: bool, ?toggled: Xamarin.Forms.ToggledEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -4577,13 +4619,13 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.Switch())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Switch)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsToggled
             let valueOpt = source.TryIsToggled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsToggled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsToggled "); target.IsToggled <-  value
             | Some _, None -> target.IsToggled <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryToggled
@@ -4597,171 +4639,171 @@ type Xaml() =
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
             | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.VerticalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
             | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Margin <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.Switch>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Switch>, create, update, Map.ofArray attribs)
 
     /// Describes a SwitchCell in the view
     static member SwitchCell(?on: bool, ?text: string, ?onChanged: Xamarin.Forms.ToggledEventArgs -> unit, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
@@ -4778,20 +4820,20 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.SwitchCell())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.SwitchCell)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOn
             let valueOpt = source.TryOn
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.On <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting On "); target.On <-  value
             | Some _, None -> target.On <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryText
             let valueOpt = source.TryText
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Text <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Text "); target.Text <-  value
             | Some _, None -> target.Text <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOnChanged
@@ -4805,34 +4847,266 @@ type Xaml() =
             let valueOpt = source.TryHeight
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Height <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Height "); target.Height <-  value
             | Some _, None -> target.Height <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.SwitchCell>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.SwitchCell>, create, update, Map.ofArray attribs)
+
+    /// Describes a TableView in the view
+    static member TableView(?intent: Xamarin.Forms.TableIntent, ?hasUnevenRows: bool, ?rowHeight: int, ?items: (string * XamlElement list) list, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+        let attribs = [| 
+            match intent with None -> () | Some v -> yield ("Intent", box ((v))) 
+            match hasUnevenRows with None -> () | Some v -> yield ("HasUnevenRows", box ((v))) 
+            match rowHeight with None -> () | Some v -> yield ("RowHeight", box ((v))) 
+            match items with None -> () | Some v -> yield ("TableRoot", box ((fun es -> es |> Array.ofList |> Array.map (fun (title, es) -> (title, Array.ofList es)))(v))) 
+            match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
+            match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
+            match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
+            match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
+            match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
+            match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
+            match heightRequest with None -> () | Some v -> yield ("HeightRequest", box ((v))) 
+            match inputTransparent with None -> () | Some v -> yield ("InputTransparent", box ((v))) 
+            match isEnabled with None -> () | Some v -> yield ("IsEnabled", box ((v))) 
+            match isVisible with None -> () | Some v -> yield ("IsVisible", box ((v))) 
+            match minimumHeightRequest with None -> () | Some v -> yield ("MinimumHeightRequest", box ((v))) 
+            match minimumWidthRequest with None -> () | Some v -> yield ("MinimumWidthRequest", box ((v))) 
+            match opacity with None -> () | Some v -> yield ("Opacity", box ((v))) 
+            match rotation with None -> () | Some v -> yield ("Rotation", box ((v))) 
+            match rotationX with None -> () | Some v -> yield ("RotationX", box ((v))) 
+            match rotationY with None -> () | Some v -> yield ("RotationY", box ((v))) 
+            match scale with None -> () | Some v -> yield ("Scale", box ((v))) 
+            match style with None -> () | Some v -> yield ("Style", box ((v))) 
+            match translationX with None -> () | Some v -> yield ("TranslationX", box ((v))) 
+            match translationY with None -> () | Some v -> yield ("TranslationY", box ((v))) 
+            match widthRequest with None -> () | Some v -> yield ("WidthRequest", box ((v))) 
+            match classId with None -> () | Some v -> yield ("ClassId", box ((v))) 
+            match styleId with None -> () | Some v -> yield ("StyleId", box ((v))) 
+          |]
+
+        let create () =
+            box (new Xamarin.Forms.TableView())
+
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+            let target = (target :?> Xamarin.Forms.TableView)
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIntent
+            let valueOpt = source.TryIntent
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Intent "); target.Intent <-  value
+            | Some _, None -> target.Intent <- Unchecked.defaultof<Xamarin.Forms.TableIntent>
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHasUnevenRows
+            let valueOpt = source.TryHasUnevenRows
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HasUnevenRows "); target.HasUnevenRows <-  value
+            | Some _, None -> target.HasUnevenRows <- false
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRowHeight
+            let valueOpt = source.TryRowHeight
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RowHeight "); target.RowHeight <-  value
+            | Some _, None -> target.RowHeight <- -1
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTableRoot
+            let valueOpt = source.TryTableRoot
+            updateTableViewItems prevValueOpt valueOpt target (fun (x:XamlElement) -> x.CreateAsCell()) (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType) (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
+            | None, None -> ()
+            let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
+            let collOpt = source.TryGestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | Some _, None -> target.AnchorX <- 0.0
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | Some _, None -> target.AnchorY <- 0.0
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | Some _, None -> target.HeightRequest <- -1.0
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | Some _, None -> target.InputTransparent <- false
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | Some _, None -> target.IsEnabled <- true
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | Some _, None -> target.IsVisible <- true
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | Some _, None -> target.Opacity <- 1.0
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | Some _, None -> target.Rotation <- 0.0
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | Some _, None -> target.RotationX <- 0.0
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | Some _, None -> target.RotationY <- 0.0
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | Some _, None -> target.Scale <- 1.0
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | Some _, None -> target.Style <- null
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | Some _, None -> target.TranslationX <- 0.0
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | Some _, None -> target.TranslationY <- 0.0
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | Some _, None -> target.WidthRequest <- -1.0
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | Some _, None -> target.ClassId <- null
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | Some _, None -> target.StyleId <- null
+            | None, None -> ()
+        new XamlElement(typeof<Xamarin.Forms.TableView>, create, update, Map.ofArray attribs)
 
     /// Describes a Grid in the view
-    static member Grid(?rowdefs: obj list, ?coldefs: obj list, ?rowSpacing: double, ?columnSpacing: double, ?children: XamlElement list, ?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member Grid(?rowdefs: obj list, ?coldefs: obj list, ?rowSpacing: double, ?columnSpacing: double, ?children: XamlElement list, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match rowdefs with None -> () | Some v -> yield ("GridRowDefinitions", box ((fun es -> es |> Array.ofList |> Array.map (fun h -> Xaml.RowDefinition(height=h)))(v))) 
             match coldefs with None -> () | Some v -> yield ("GridColumnDefinitions", box ((fun es -> es |> Array.ofList |> Array.map (fun h -> Xaml.ColumnDefinition(width=h)))(v))) 
@@ -4870,39 +5144,39 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.Grid())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Grid)
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGridRowDefinitions
             let collOpt = source.TryGridRowDefinitions
-            applyToIList prevCollOpt collOpt target.RowDefinitions
+            updateIList prevCollOpt collOpt target.RowDefinitions
                 (fun (x:XamlElement) -> x.CreateAsRowDefinition())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGridColumnDefinitions
             let collOpt = source.TryGridColumnDefinitions
-            applyToIList prevCollOpt collOpt target.ColumnDefinitions
+            updateIList prevCollOpt collOpt target.ColumnDefinitions
                 (fun (x:XamlElement) -> x.CreateAsColumnDefinition())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRowSpacing
             let valueOpt = source.TryRowSpacing
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RowSpacing <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RowSpacing "); target.RowSpacing <-  value
             | Some _, None -> target.RowSpacing <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryColumnSpacing
             let valueOpt = source.TryColumnSpacing
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ColumnSpacing <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ColumnSpacing "); target.ColumnSpacing <-  value
             | Some _, None -> target.ColumnSpacing <- 0.0
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryChildren
             let collOpt = source.TryChildren
-            applyToIList prevCollOpt collOpt target.Children
+            updateIList prevCollOpt collOpt target.Children
                 (fun (x:XamlElement) -> x.CreateAsView())
                 (fun prevChildOpt newChild targetChild -> 
                     // Adjust the attached properties
@@ -4931,193 +5205,193 @@ type Xaml() =
                     | _ -> ()
                     ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsClippedToBounds
             let valueOpt = source.TryIsClippedToBounds
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsClippedToBounds <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsClippedToBounds "); target.IsClippedToBounds <-  value
             | Some _, None -> target.IsClippedToBounds <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
             let valueOpt = source.TryPadding
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Padding <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Padding "); target.Padding <-  value
             | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
             | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.VerticalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
             | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Margin <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.Grid>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Grid>, create, update, Map.ofArray attribs)
 
     /// Describes a AbsoluteLayout in the view
-    static member AbsoluteLayout(?children: XamlElement list, ?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member AbsoluteLayout(?children: XamlElement list, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match children with None -> () | Some v -> yield ("Children", box (Array.ofList(v))) 
             match isClippedToBounds with None -> () | Some v -> yield ("IsClippedToBounds", box ((v))) 
@@ -5151,11 +5425,11 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.AbsoluteLayout())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.AbsoluteLayout)
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryChildren
             let collOpt = source.TryChildren
-            applyToIList prevCollOpt collOpt target.Children
+            updateIList prevCollOpt collOpt target.Children
                 (fun (x:XamlElement) -> x.CreateAsView())
                 (fun prevChildOpt newChild targetChild -> 
                     // Adjust the attached properties
@@ -5172,193 +5446,193 @@ type Xaml() =
                     | _ -> ()
                     ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsClippedToBounds
             let valueOpt = source.TryIsClippedToBounds
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsClippedToBounds <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsClippedToBounds "); target.IsClippedToBounds <-  value
             | Some _, None -> target.IsClippedToBounds <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
             let valueOpt = source.TryPadding
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Padding <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Padding "); target.Padding <-  value
             | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
             | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.VerticalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
             | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Margin <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.AbsoluteLayout>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.AbsoluteLayout>, create, update, Map.ofArray attribs)
 
     /// Describes a RelativeLayout in the view
-    static member RelativeLayout(?children: XamlElement list, ?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member RelativeLayout(?children: XamlElement list, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match children with None -> () | Some v -> yield ("Children", box (Array.ofList(v))) 
             match isClippedToBounds with None -> () | Some v -> yield ("IsClippedToBounds", box ((v))) 
@@ -5392,11 +5666,11 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.RelativeLayout())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.RelativeLayout)
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryChildren
             let collOpt = source.TryChildren
-            applyToIList prevCollOpt collOpt target.Children
+            updateIList prevCollOpt collOpt target.Children
                 (fun (x:XamlElement) -> x.CreateAsView())
                 (fun prevChildOpt newChild targetChild -> 
                     // Adjust the attached properties
@@ -5431,190 +5705,190 @@ type Xaml() =
                     | _ -> ()
                     ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsClippedToBounds
             let valueOpt = source.TryIsClippedToBounds
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsClippedToBounds <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsClippedToBounds "); target.IsClippedToBounds <-  value
             | Some _, None -> target.IsClippedToBounds <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
             let valueOpt = source.TryPadding
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Padding <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Padding "); target.Padding <-  value
             | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
             | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.VerticalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
             | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Margin <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.RelativeLayout>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.RelativeLayout>, create, update, Map.ofArray attribs)
 
     /// Describes a RowDefinition in the view
     static member RowDefinition(?height: obj) = 
@@ -5625,16 +5899,16 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.RowDefinition())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.RowDefinition)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRowDefinitionHeight
             let valueOpt = source.TryRowDefinitionHeight
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Height <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Height "); target.Height <-  value
             | Some _, None -> target.Height <- Xamarin.Forms.GridLength.Auto
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.RowDefinition>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.RowDefinition>, create, update, Map.ofArray attribs)
 
     /// Describes a ColumnDefinition in the view
     static member ColumnDefinition(?width: obj) = 
@@ -5645,19 +5919,19 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.ColumnDefinition())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ColumnDefinition)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryColumnDefinitionWidth
             let valueOpt = source.TryColumnDefinitionWidth
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Width <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Width "); target.Width <-  value
             | Some _, None -> target.Width <- Xamarin.Forms.GridLength.Auto
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.ColumnDefinition>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.ColumnDefinition>, create, update, Map.ofArray attribs)
 
     /// Describes a ContentView in the view
-    static member ContentView(?content: XamlElement, ?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member ContentView(?content: XamlElement, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match content with None -> () | Some v -> yield ("Content", box ((v))) 
             match isClippedToBounds with None -> () | Some v -> yield ("IsClippedToBounds", box ((v))) 
@@ -5691,14 +5965,14 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.ContentView())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ContentView)
             let prevChildOpt = match prevOpt with None -> None | Some prev -> prev.TryContent
             match prevChildOpt, source.TryContent with
             // For structured objects, amortize on reference equality
             | Some prevChild, Some newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
             | Some prevChild, Some newChild ->
-                newChild.ApplyIncremental(prevChild, target.Content)
+                newChild.UpdateIncremental(prevChild, target.Content)
             | None, Some newChild ->
                 target.Content <- newChild.CreateAsView()
             | Some _, None ->
@@ -5708,188 +5982,188 @@ type Xaml() =
             let valueOpt = source.TryIsClippedToBounds
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsClippedToBounds <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsClippedToBounds "); target.IsClippedToBounds <-  value
             | Some _, None -> target.IsClippedToBounds <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
             let valueOpt = source.TryPadding
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Padding <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Padding "); target.Padding <-  value
             | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
             | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.VerticalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
             | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Margin <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.ContentView>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.ContentView>, create, update, Map.ofArray attribs)
 
     /// Describes a TemplatedView in the view
-    static member TemplatedView(?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member TemplatedView(?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match isClippedToBounds with None -> () | Some v -> yield ("IsClippedToBounds", box ((v))) 
             match padding with None -> () | Some v -> yield ("Padding", box (makeThickness(v))) 
@@ -5922,191 +6196,191 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.TemplatedView())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.TemplatedView)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsClippedToBounds
             let valueOpt = source.TryIsClippedToBounds
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsClippedToBounds <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsClippedToBounds "); target.IsClippedToBounds <-  value
             | Some _, None -> target.IsClippedToBounds <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
             let valueOpt = source.TryPadding
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Padding <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Padding "); target.Padding <-  value
             | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
             | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.VerticalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
             | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Margin <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.TemplatedView>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.TemplatedView>, create, update, Map.ofArray attribs)
 
     /// Describes a DatePicker in the view
     static member DatePicker(?date: System.DateTime, ?format: string, ?minimumDate: System.DateTime, ?maximumDate: System.DateTime, ?dateSelected: Xamarin.Forms.DateChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -6145,34 +6419,34 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.DatePicker())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.DatePicker)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryDate
             let valueOpt = source.TryDate
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Date <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Date "); target.Date <-  value
             | Some _, None -> target.Date <- Unchecked.defaultof<System.DateTime>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFormat
             let valueOpt = source.TryFormat
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Format <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Format "); target.Format <-  value
             | Some _, None -> target.Format <- "d"
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumDate
             let valueOpt = source.TryMinimumDate
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumDate <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumDate "); target.MinimumDate <-  value
             | Some _, None -> target.MinimumDate <- new System.DateTime(1900, 1, 1)
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMaximumDate
             let valueOpt = source.TryMaximumDate
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MaximumDate <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MaximumDate "); target.MaximumDate <-  value
             | Some _, None -> target.MaximumDate <- new System.DateTime(2100, 12, 31)
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryDateSelected
@@ -6186,171 +6460,171 @@ type Xaml() =
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
             | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.VerticalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
             | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Margin <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.DatePicker>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.DatePicker>, create, update, Map.ofArray attribs)
 
     /// Describes a Picker in the view
     static member Picker(?itemsSource: 'T list, ?selectedIndex: int, ?title: string, ?textColor: Xamarin.Forms.Color, ?selectedIndexChanged: (int * 'T option) -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -6389,34 +6663,34 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.Picker())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Picker)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPickerItemsSource
             let valueOpt = source.TryPickerItemsSource
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ItemsSource <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ItemsSource "); target.ItemsSource <-  value
             | Some _, None -> target.ItemsSource <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TrySelectedIndex
             let valueOpt = source.TrySelectedIndex
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.SelectedIndex <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting SelectedIndex "); target.SelectedIndex <-  value
             | Some _, None -> target.SelectedIndex <- 0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTitle
             let valueOpt = source.TryTitle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Title <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Title "); target.Title <-  value
             | Some _, None -> target.Title <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTextColor
             let valueOpt = source.TryTextColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TextColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TextColor "); target.TextColor <-  value
             | Some _, None -> target.TextColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TrySelectedIndexChanged
@@ -6430,174 +6704,174 @@ type Xaml() =
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
             | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.VerticalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
             | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Margin <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.Picker>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Picker>, create, update, Map.ofArray attribs)
 
     /// Describes a Frame in the view
-    static member Frame(?outlineColor: Xamarin.Forms.Color, ?cornerRadius: single, ?hasShadow: bool, ?content: XamlElement, ?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member Frame(?outlineColor: Xamarin.Forms.Color, ?cornerRadius: single, ?hasShadow: bool, ?content: XamlElement, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match outlineColor with None -> () | Some v -> yield ("OutlineColor", box ((v))) 
             match cornerRadius with None -> () | Some v -> yield ("FrameCornerRadius", box ((v))) 
@@ -6634,27 +6908,27 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.Frame())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Frame)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOutlineColor
             let valueOpt = source.TryOutlineColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.OutlineColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting OutlineColor "); target.OutlineColor <-  value
             | Some _, None -> target.OutlineColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFrameCornerRadius
             let valueOpt = source.TryFrameCornerRadius
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.CornerRadius <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting CornerRadius "); target.CornerRadius <-  value
             | Some _, None -> target.CornerRadius <- -1.0f
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHasShadow
             let valueOpt = source.TryHasShadow
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HasShadow <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HasShadow "); target.HasShadow <-  value
             | Some _, None -> target.HasShadow <- true
             | None, None -> ()
             let prevChildOpt = match prevOpt with None -> None | Some prev -> prev.TryContent
@@ -6662,7 +6936,7 @@ type Xaml() =
             // For structured objects, amortize on reference equality
             | Some prevChild, Some newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
             | Some prevChild, Some newChild ->
-                newChild.ApplyIncremental(prevChild, target.Content)
+                newChild.UpdateIncremental(prevChild, target.Content)
             | None, Some newChild ->
                 target.Content <- newChild.CreateAsView()
             | Some _, None ->
@@ -6672,190 +6946,190 @@ type Xaml() =
             let valueOpt = source.TryIsClippedToBounds
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsClippedToBounds <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsClippedToBounds "); target.IsClippedToBounds <-  value
             | Some _, None -> target.IsClippedToBounds <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
             let valueOpt = source.TryPadding
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Padding <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Padding "); target.Padding <-  value
             | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
             | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.VerticalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
             | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Margin <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.Frame>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Frame>, create, update, Map.ofArray attribs)
 
     /// Describes a Image in the view
     static member Image(?source: string, ?aspect: Xamarin.Forms.Aspect, ?isOpaque: bool, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
-            match source with None -> () | Some v -> yield ("ImageSource", box (makeImageSource(v))) 
+            match source with None -> () | Some v -> yield ("ImageSource", box ((v))) 
             match aspect with None -> () | Some v -> yield ("Aspect", box ((v))) 
             match isOpaque with None -> () | Some v -> yield ("IsOpaque", box ((v))) 
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
@@ -6887,198 +7161,198 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.Image())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Image)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryImageSource
             let valueOpt = source.TryImageSource
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Source <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Source "); target.Source <- makeImageSource  value
             | Some _, None -> target.Source <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAspect
             let valueOpt = source.TryAspect
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Aspect <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Aspect "); target.Aspect <-  value
             | Some _, None -> target.Aspect <- Xamarin.Forms.Aspect.AspectFit
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsOpaque
             let valueOpt = source.TryIsOpaque
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsOpaque <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsOpaque "); target.IsOpaque <-  value
             | Some _, None -> target.IsOpaque <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
             | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.VerticalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
             | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Margin <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.Image>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Image>, create, update, Map.ofArray attribs)
 
     /// Describes a InputView in the view
     static member InputView(?keyboard: Xamarin.Forms.Keyboard, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -7113,184 +7387,184 @@ type Xaml() =
         let create () =
             failwith "can'tdef create Xamarin.Forms.InputView"
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.InputView)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryKeyboard
             let valueOpt = source.TryKeyboard
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Keyboard <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Keyboard "); target.Keyboard <-  value
             | Some _, None -> target.Keyboard <- Xamarin.Forms.Keyboard.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
             | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.VerticalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
             | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Margin <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.InputView>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.InputView>, create, update, Map.ofArray attribs)
 
     /// Describes a Editor in the view
     static member Editor(?text: string, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?completed: string -> unit, ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?keyboard: Xamarin.Forms.Keyboard, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -7332,41 +7606,41 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.Editor())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Editor)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryText
             let valueOpt = source.TryText
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Text <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Text "); target.Text <-  value
             | Some _, None -> target.Text <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontSize
             let valueOpt = source.TryFontSize
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.FontSize <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting FontSize "); target.FontSize <-  value
             | Some _, None -> target.FontSize <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontFamily
             let valueOpt = source.TryFontFamily
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.FontFamily <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting FontFamily "); target.FontFamily <-  value
             | Some _, None -> target.FontFamily <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontAttributes
             let valueOpt = source.TryFontAttributes
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.FontAttributes <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting FontAttributes "); target.FontAttributes <-  value
             | Some _, None -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTextColor
             let valueOpt = source.TryTextColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TextColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TextColor "); target.TextColor <-  value
             | Some _, None -> target.TextColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryEditorCompleted
@@ -7387,178 +7661,178 @@ type Xaml() =
             let valueOpt = source.TryKeyboard
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Keyboard <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Keyboard "); target.Keyboard <-  value
             | Some _, None -> target.Keyboard <- Xamarin.Forms.Keyboard.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
             | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.VerticalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
             | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Margin <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.Editor>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Editor>, create, update, Map.ofArray attribs)
 
     /// Describes a Entry in the view
     static member Entry(?text: string, ?placeholder: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?placeholderColor: Xamarin.Forms.Color, ?isPassword: bool, ?completed: string -> unit, ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?keyboard: Xamarin.Forms.Keyboard, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -7604,69 +7878,69 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.Entry())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Entry)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryText
             let valueOpt = source.TryText
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Text <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Text "); target.Text <-  value
             | Some _, None -> target.Text <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPlaceholder
             let valueOpt = source.TryPlaceholder
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Placeholder <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Placeholder "); target.Placeholder <-  value
             | Some _, None -> target.Placeholder <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalTextAlignment
             let valueOpt = source.TryHorizontalTextAlignment
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalTextAlignment <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalTextAlignment "); target.HorizontalTextAlignment <-  value
             | Some _, None -> target.HorizontalTextAlignment <- Xamarin.Forms.TextAlignment.Start
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontSize
             let valueOpt = source.TryFontSize
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.FontSize <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting FontSize "); target.FontSize <-  value
             | Some _, None -> target.FontSize <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontFamily
             let valueOpt = source.TryFontFamily
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.FontFamily <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting FontFamily "); target.FontFamily <-  value
             | Some _, None -> target.FontFamily <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontAttributes
             let valueOpt = source.TryFontAttributes
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.FontAttributes <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting FontAttributes "); target.FontAttributes <-  value
             | Some _, None -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTextColor
             let valueOpt = source.TryTextColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TextColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TextColor "); target.TextColor <-  value
             | Some _, None -> target.TextColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPlaceholderColor
             let valueOpt = source.TryPlaceholderColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.PlaceholderColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting PlaceholderColor "); target.PlaceholderColor <-  value
             | Some _, None -> target.PlaceholderColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsPassword
             let valueOpt = source.TryIsPassword
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsPassword <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsPassword "); target.IsPassword <-  value
             | Some _, None -> target.IsPassword <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryEntryCompleted
@@ -7687,178 +7961,270 @@ type Xaml() =
             let valueOpt = source.TryKeyboard
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Keyboard <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Keyboard "); target.Keyboard <-  value
             | Some _, None -> target.Keyboard <- Xamarin.Forms.Keyboard.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
             | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.VerticalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
             | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Margin <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.Entry>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Entry>, create, update, Map.ofArray attribs)
+
+    /// Describes a EntryCell in the view
+    static member EntryCell(?label: string, ?text: string, ?keyboard: Xamarin.Forms.Keyboard, ?placeholder: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?completed: string -> unit, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
+        let attribs = [| 
+            match label with None -> () | Some v -> yield ("Label", box ((v))) 
+            match text with None -> () | Some v -> yield ("Text", box ((v))) 
+            match keyboard with None -> () | Some v -> yield ("Keyboard", box ((v))) 
+            match placeholder with None -> () | Some v -> yield ("Placeholder", box ((v))) 
+            match horizontalTextAlignment with None -> () | Some v -> yield ("HorizontalTextAlignment", box ((v))) 
+            match completed with None -> () | Some v -> yield ("EntryCompleted", box ((fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.Entry).Text))(v))) 
+            match height with None -> () | Some v -> yield ("Height", box ((v))) 
+            match isEnabled with None -> () | Some v -> yield ("IsEnabled", box ((v))) 
+            match classId with None -> () | Some v -> yield ("ClassId", box ((v))) 
+            match styleId with None -> () | Some v -> yield ("StyleId", box ((v))) 
+          |]
+
+        let create () =
+            box (new Xamarin.Forms.EntryCell())
+
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+            let target = (target :?> Xamarin.Forms.EntryCell)
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryLabel
+            let valueOpt = source.TryLabel
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Label "); target.Label <-  value
+            | Some _, None -> target.Label <- null
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryText
+            let valueOpt = source.TryText
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Text "); target.Text <-  value
+            | Some _, None -> target.Text <- null
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryKeyboard
+            let valueOpt = source.TryKeyboard
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Keyboard "); target.Keyboard <-  value
+            | Some _, None -> target.Keyboard <- Xamarin.Forms.Keyboard.Default
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPlaceholder
+            let valueOpt = source.TryPlaceholder
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Placeholder "); target.Placeholder <-  value
+            | Some _, None -> target.Placeholder <- null
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalTextAlignment
+            let valueOpt = source.TryHorizontalTextAlignment
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalTextAlignment "); target.HorizontalTextAlignment <-  value
+            | Some _, None -> target.HorizontalTextAlignment <- Xamarin.Forms.TextAlignment.Start
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryEntryCompleted
+            match prevValueOpt, source.TryEntryCompleted with
+            | Some prevValue, Some value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | Some prevValue, Some value -> target.Completed.RemoveHandler(prevValue); target.Completed.AddHandler(value)
+            | None, Some value -> target.Completed.AddHandler(value)
+            | Some prevValue, None -> target.Completed.RemoveHandler(prevValue)
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeight
+            let valueOpt = source.TryHeight
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Height "); target.Height <-  value
+            | Some _, None -> target.Height <- -1.0
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | Some _, None -> target.IsEnabled <- true
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | Some _, None -> target.ClassId <- null
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | Some _, None -> target.StyleId <- null
+            | None, None -> ()
+        new XamlElement(typeof<Xamarin.Forms.EntryCell>, create, update, Map.ofArray attribs)
 
     /// Describes a Label in the view
     static member Label(?text: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?verticalTextAlignment: Xamarin.Forms.TextAlignment, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -7899,229 +8265,229 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.Label())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Label)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryText
             let valueOpt = source.TryText
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Text <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Text "); target.Text <-  value
             | Some _, None -> target.Text <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalTextAlignment
             let valueOpt = source.TryHorizontalTextAlignment
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalTextAlignment <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalTextAlignment "); target.HorizontalTextAlignment <-  value
             | Some _, None -> target.HorizontalTextAlignment <- Xamarin.Forms.TextAlignment.Start
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalTextAlignment
             let valueOpt = source.TryVerticalTextAlignment
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.VerticalTextAlignment <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalTextAlignment "); target.VerticalTextAlignment <-  value
             | Some _, None -> target.VerticalTextAlignment <- Xamarin.Forms.TextAlignment.Start
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontSize
             let valueOpt = source.TryFontSize
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.FontSize <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting FontSize "); target.FontSize <-  value
             | Some _, None -> target.FontSize <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontFamily
             let valueOpt = source.TryFontFamily
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.FontFamily <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting FontFamily "); target.FontFamily <-  value
             | Some _, None -> target.FontFamily <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontAttributes
             let valueOpt = source.TryFontAttributes
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.FontAttributes <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting FontAttributes "); target.FontAttributes <-  value
             | Some _, None -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTextColor
             let valueOpt = source.TryTextColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TextColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TextColor "); target.TextColor <-  value
             | Some _, None -> target.TextColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
             | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.VerticalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
             | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Margin <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.Label>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Label>, create, update, Map.ofArray attribs)
 
     /// Describes a Layout in the view
-    static member Layout(?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member Layout(?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match isClippedToBounds with None -> () | Some v -> yield ("IsClippedToBounds", box ((v))) 
             match padding with None -> () | Some v -> yield ("Padding", box (makeThickness(v))) 
@@ -8154,194 +8520,194 @@ type Xaml() =
         let create () =
             failwith "can'tdef create Xamarin.Forms.Layout"
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Layout)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsClippedToBounds
             let valueOpt = source.TryIsClippedToBounds
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsClippedToBounds <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsClippedToBounds "); target.IsClippedToBounds <-  value
             | Some _, None -> target.IsClippedToBounds <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
             let valueOpt = source.TryPadding
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Padding <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Padding "); target.Padding <-  value
             | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
             | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.VerticalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
             | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Margin <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.Layout>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Layout>, create, update, Map.ofArray attribs)
 
     /// Describes a StackLayout in the view
-    static member StackLayout(?children: XamlElement list, ?orientation: Xamarin.Forms.StackOrientation, ?spacing: double, ?isClippedToBounds: bool, ?padding: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member StackLayout(?children: XamlElement list, ?orientation: Xamarin.Forms.StackOrientation, ?spacing: double, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match children with None -> () | Some v -> yield ("Children", box (Array.ofList(v))) 
             match orientation with None -> () | Some v -> yield ("StackOrientation", box ((v))) 
@@ -8377,212 +8743,212 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.StackLayout())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.StackLayout)
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryChildren
             let collOpt = source.TryChildren
-            applyToIList prevCollOpt collOpt target.Children
+            updateIList prevCollOpt collOpt target.Children
                 (fun (x:XamlElement) -> x.CreateAsView())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStackOrientation
             let valueOpt = source.TryStackOrientation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Orientation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Orientation "); target.Orientation <-  value
             | Some _, None -> target.Orientation <- Xamarin.Forms.StackOrientation.Vertical
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TrySpacing
             let valueOpt = source.TrySpacing
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Spacing <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Spacing "); target.Spacing <-  value
             | Some _, None -> target.Spacing <- 6.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsClippedToBounds
             let valueOpt = source.TryIsClippedToBounds
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsClippedToBounds <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsClippedToBounds "); target.IsClippedToBounds <-  value
             | Some _, None -> target.IsClippedToBounds <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
             let valueOpt = source.TryPadding
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Padding <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Padding "); target.Padding <-  value
             | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
             | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.VerticalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
             | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Margin <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.StackLayout>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.StackLayout>, create, update, Map.ofArray attribs)
 
     /// Describes a Span in the view
     static member Span(?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?backgroundColor: Xamarin.Forms.Color, ?foregroundColor: Xamarin.Forms.Color, ?text: string, ?propertyChanged: System.ComponentModel.PropertyChangedEventArgs -> unit) = 
@@ -8599,48 +8965,48 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.Span())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Span)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontFamily
             let valueOpt = source.TryFontFamily
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.FontFamily <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting FontFamily "); target.FontFamily <-  value
             | Some _, None -> target.FontFamily <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontAttributes
             let valueOpt = source.TryFontAttributes
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.FontAttributes <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting FontAttributes "); target.FontAttributes <-  value
             | Some _, None -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontSize
             let valueOpt = source.TryFontSize
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.FontSize <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting FontSize "); target.FontSize <-  value
             | Some _, None -> target.FontSize <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryForegroundColor
             let valueOpt = source.TryForegroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ForegroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ForegroundColor "); target.ForegroundColor <-  value
             | Some _, None -> target.ForegroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryText
             let valueOpt = source.TryText
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Text <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Text "); target.Text <-  value
             | Some _, None -> target.Text <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPropertyChanged
@@ -8650,7 +9016,7 @@ type Xaml() =
             | None, Some value -> target.PropertyChanged.AddHandler(value)
             | Some prevValue, None -> target.PropertyChanged.RemoveHandler(prevValue)
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.Span>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Span>, create, update, Map.ofArray attribs)
 
     /// Describes a TimePicker in the view
     static member TimePicker(?time: System.TimeSpan, ?format: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -8687,198 +9053,198 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.TimePicker())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.TimePicker)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTime
             let valueOpt = source.TryTime
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Time <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Time "); target.Time <-  value
             | Some _, None -> target.Time <- new System.TimeSpan()
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFormat
             let valueOpt = source.TryFormat
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Format <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Format "); target.Format <-  value
             | Some _, None -> target.Format <- "t"
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTextColor
             let valueOpt = source.TryTextColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TextColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TextColor "); target.TextColor <-  value
             | Some _, None -> target.TextColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
             | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.VerticalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
             | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Margin <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.TimePicker>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.TimePicker>, create, update, Map.ofArray attribs)
 
     /// Describes a WebView in the view
     static member WebView(?source: Xamarin.Forms.WebViewSource, ?navigated: Xamarin.Forms.WebNavigatedEventArgs -> unit, ?navigating: Xamarin.Forms.WebNavigatingEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -8915,13 +9281,13 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.WebView())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.WebView)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWebSource
             let valueOpt = source.TryWebSource
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Source <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Source "); target.Source <-  value
             | Some _, None -> target.Source <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryNavigated
@@ -8942,174 +9308,174 @@ type Xaml() =
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
             | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.VerticalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
             | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Margin <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.WebView>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.WebView>, create, update, Map.ofArray attribs)
 
     /// Describes a Page in the view
-    static member Page(?title: string, ?padding: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member Page(?title: string, ?padding: obj, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match title with None -> () | Some v -> yield ("Title", box ((v))) 
             match padding with None -> () | Some v -> yield ("Padding", box (makeThickness(v))) 
@@ -9138,166 +9504,166 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.Page())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Page)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTitle
             let valueOpt = source.TryTitle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Title <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Title "); target.Title <-  value
             | Some _, None -> target.Title <- ""
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
             let valueOpt = source.TryPadding
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Padding <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Padding "); target.Padding <-  value
             | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.Page>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Page>, create, update, Map.ofArray attribs)
 
     /// Describes a CarouselPage in the view
-    static member CarouselPage(?children: XamlElement list, ?itemsSource: 'T list, ?itemTemplate: Xamarin.Forms.DataTemplate, ?selectedItem: System.Object, ?currentPage: XamlElement, ?currentPageChanged: 'T option -> unit, ?title: string, ?padding: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member CarouselPage(?children: XamlElement list, ?itemsSource: 'T list, ?itemTemplate: Xamarin.Forms.DataTemplate, ?selectedItem: System.Object, ?currentPage: XamlElement, ?currentPageChanged: 'T option -> unit, ?title: string, ?padding: obj, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match children with None -> () | Some v -> yield ("Children", box (Array.ofList(v))) 
             match itemsSource with None -> () | Some v -> yield ("ItemsSource", box ((fun es -> es |> Array.ofList |> Array.map box :> System.Collections.Generic.IList<obj>)(v))) 
@@ -9332,34 +9698,34 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.CarouselPage())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.CarouselPage)
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryChildren
             let collOpt = source.TryChildren
-            applyToIList prevCollOpt collOpt target.Children
+            updateIList prevCollOpt collOpt target.Children
                 (fun (x:XamlElement) -> x.CreateAsContentPage())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryItemsSource
             let valueOpt = source.TryItemsSource
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ItemsSource <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ItemsSource "); target.ItemsSource <-  value
             | Some _, None -> target.ItemsSource <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryItemTemplate
             let valueOpt = source.TryItemTemplate
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ItemTemplate <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ItemTemplate "); target.ItemTemplate <-  value
             | Some _, None -> target.ItemTemplate <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryCarouselPage_SelectedItem
             let valueOpt = source.TryCarouselPage_SelectedItem
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.SelectedItem <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting SelectedItem "); target.SelectedItem <-  value
             | Some _, None -> target.SelectedItem <- null
             | None, None -> ()
             let prevChildOpt = match prevOpt with None -> None | Some prev -> prev.TryCurrentPage
@@ -9367,7 +9733,7 @@ type Xaml() =
             // For structured objects, amortize on reference equality
             | Some prevChild, Some newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
             | Some prevChild, Some newChild ->
-                newChild.ApplyIncremental(prevChild, target.CurrentPage)
+                newChild.UpdateIncremental(prevChild, target.CurrentPage)
             | None, Some newChild ->
                 target.CurrentPage <- newChild.CreateAsContentPage()
             | Some _, None ->
@@ -9384,160 +9750,160 @@ type Xaml() =
             let valueOpt = source.TryTitle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Title <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Title "); target.Title <-  value
             | Some _, None -> target.Title <- ""
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
             let valueOpt = source.TryPadding
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Padding <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Padding "); target.Padding <-  value
             | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.CarouselPage>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.CarouselPage>, create, update, Map.ofArray attribs)
 
     /// Describes a NavigationPage in the view
-    static member NavigationPage(?barBackgroundColor: Xamarin.Forms.Color, ?barTextColor: Xamarin.Forms.Color, ?popped: Xamarin.Forms.NavigationEventArgs -> unit, ?poppedToRoot: Xamarin.Forms.NavigationEventArgs -> unit, ?pushed: Xamarin.Forms.NavigationEventArgs -> unit, ?title: string, ?padding: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member NavigationPage(?barBackgroundColor: Xamarin.Forms.Color, ?barTextColor: Xamarin.Forms.Color, ?popped: Xamarin.Forms.NavigationEventArgs -> unit, ?poppedToRoot: Xamarin.Forms.NavigationEventArgs -> unit, ?pushed: Xamarin.Forms.NavigationEventArgs -> unit, ?title: string, ?padding: obj, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match barBackgroundColor with None -> () | Some v -> yield ("BarBackgroundColor", box ((v))) 
             match barTextColor with None -> () | Some v -> yield ("BarTextColor", box ((v))) 
@@ -9571,20 +9937,20 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.NavigationPage())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.NavigationPage)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBarBackgroundColor
             let valueOpt = source.TryBarBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BarBackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BarBackgroundColor "); target.BarBackgroundColor <-  value
             | Some _, None -> target.BarBackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBarTextColor
             let valueOpt = source.TryBarTextColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BarTextColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BarTextColor "); target.BarTextColor <-  value
             | Some _, None -> target.BarTextColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPopped
@@ -9612,160 +9978,160 @@ type Xaml() =
             let valueOpt = source.TryTitle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Title <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Title "); target.Title <-  value
             | Some _, None -> target.Title <- ""
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
             let valueOpt = source.TryPadding
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Padding <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Padding "); target.Padding <-  value
             | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.NavigationPage>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.NavigationPage>, create, update, Map.ofArray attribs)
 
     /// Describes a TabbedPage in the view
-    static member TabbedPage(?children: XamlElement list, ?barBackgroundColor: Xamarin.Forms.Color, ?barTextColor: Xamarin.Forms.Color, ?title: string, ?padding: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member TabbedPage(?children: XamlElement list, ?barBackgroundColor: Xamarin.Forms.Color, ?barTextColor: Xamarin.Forms.Color, ?title: string, ?padding: obj, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match children with None -> () | Some v -> yield ("Children", box (Array.ofList(v))) 
             match barBackgroundColor with None -> () | Some v -> yield ("BarBackgroundColor", box ((v))) 
@@ -9797,187 +10163,187 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.TabbedPage())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.TabbedPage)
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryChildren
             let collOpt = source.TryChildren
-            applyToIList prevCollOpt collOpt target.Children
+            updateIList prevCollOpt collOpt target.Children
                 (fun (x:XamlElement) -> x.CreateAsPage())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBarBackgroundColor
             let valueOpt = source.TryBarBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BarBackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BarBackgroundColor "); target.BarBackgroundColor <-  value
             | Some _, None -> target.BarBackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBarTextColor
             let valueOpt = source.TryBarTextColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BarTextColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BarTextColor "); target.BarTextColor <-  value
             | Some _, None -> target.BarTextColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTitle
             let valueOpt = source.TryTitle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Title <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Title "); target.Title <-  value
             | Some _, None -> target.Title <- ""
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
             let valueOpt = source.TryPadding
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Padding <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Padding "); target.Padding <-  value
             | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.TabbedPage>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.TabbedPage>, create, update, Map.ofArray attribs)
 
     /// Describes a ContentPage in the view
-    static member ContentPage(?content: XamlElement, ?onSizeAllocated: (double * double) -> unit, ?title: string, ?padding: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member ContentPage(?content: XamlElement, ?onSizeAllocated: (double * double) -> unit, ?title: string, ?padding: obj, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match content with None -> () | Some v -> yield ("Content", box ((v))) 
             match onSizeAllocated with None -> () | Some v -> yield ("OnSizeAllocatedCallback", box ((fun f -> FSharp.Control.Handler<_>(fun _sender args -> f args))(v))) 
@@ -10008,14 +10374,14 @@ type Xaml() =
         let create () =
             box (new Elmish.XamarinForms.DynamicViews.CustomContentPage())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ContentPage)
             let prevChildOpt = match prevOpt with None -> None | Some prev -> prev.TryContent
             match prevChildOpt, source.TryContent with
             // For structured objects, amortize on reference equality
             | Some prevChild, Some newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
             | Some prevChild, Some newChild ->
-                newChild.ApplyIncremental(prevChild, target.Content)
+                newChild.UpdateIncremental(prevChild, target.Content)
             | None, Some newChild ->
                 target.Content <- newChild.CreateAsView()
             | Some _, None ->
@@ -10028,160 +10394,160 @@ type Xaml() =
             let valueOpt = source.TryTitle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Title <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Title "); target.Title <-  value
             | Some _, None -> target.Title <- ""
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
             let valueOpt = source.TryPadding
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Padding <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Padding "); target.Padding <-  value
             | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.ContentPage>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.ContentPage>, create, update, Map.ofArray attribs)
 
     /// Describes a MasterDetailPage in the view
-    static member MasterDetailPage(?master: XamlElement, ?detail: XamlElement, ?isGestureEnabled: bool, ?isPresented: bool, ?masterBehavior: Xamarin.Forms.MasterBehavior, ?isPresentedChanged: bool -> unit, ?title: string, ?padding: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member MasterDetailPage(?master: XamlElement, ?detail: XamlElement, ?isGestureEnabled: bool, ?isPresented: bool, ?masterBehavior: Xamarin.Forms.MasterBehavior, ?isPresentedChanged: bool -> unit, ?title: string, ?padding: obj, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match master with None -> () | Some v -> yield ("Master", box ((v))) 
             match detail with None -> () | Some v -> yield ("Detail", box ((v))) 
@@ -10216,14 +10582,14 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.MasterDetailPage())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.MasterDetailPage)
             let prevChildOpt = match prevOpt with None -> None | Some prev -> prev.TryMaster
             match prevChildOpt, source.TryMaster with
             // For structured objects, amortize on reference equality
             | Some prevChild, Some newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
             | Some prevChild, Some newChild ->
-                newChild.ApplyIncremental(prevChild, target.Master)
+                newChild.UpdateIncremental(prevChild, target.Master)
             | None, Some newChild ->
                 target.Master <- newChild.CreateAsPage()
             | Some _, None ->
@@ -10234,7 +10600,7 @@ type Xaml() =
             // For structured objects, amortize on reference equality
             | Some prevChild, Some newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
             | Some prevChild, Some newChild ->
-                newChild.ApplyIncremental(prevChild, target.Detail)
+                newChild.UpdateIncremental(prevChild, target.Detail)
             | None, Some newChild ->
                 target.Detail <- newChild.CreateAsPage()
             | Some _, None ->
@@ -10244,21 +10610,21 @@ type Xaml() =
             let valueOpt = source.TryIsGestureEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsGestureEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsGestureEnabled "); target.IsGestureEnabled <-  value
             | Some _, None -> target.IsGestureEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsPresented
             let valueOpt = source.TryIsPresented
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsPresented <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsPresented "); target.IsPresented <-  value
             | Some _, None -> target.IsPresented <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMasterBehavior
             let valueOpt = source.TryMasterBehavior
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MasterBehavior <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MasterBehavior "); target.MasterBehavior <-  value
             | Some _, None -> target.MasterBehavior <- Xamarin.Forms.MasterBehavior.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsPresentedChanged
@@ -10272,157 +10638,157 @@ type Xaml() =
             let valueOpt = source.TryTitle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Title <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Title "); target.Title <-  value
             | Some _, None -> target.Title <- ""
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
             let valueOpt = source.TryPadding
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Padding <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Padding "); target.Padding <-  value
             | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.MasterDetailPage>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.MasterDetailPage>, create, update, Map.ofArray attribs)
 
     /// Describes a Cell in the view
     static member Cell(?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
@@ -10436,37 +10802,37 @@ type Xaml() =
         let create () =
             failwith "can'tdef create Xamarin.Forms.Cell"
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Cell)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeight
             let valueOpt = source.TryHeight
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Height <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Height "); target.Height <-  value
             | Some _, None -> target.Height <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.Cell>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Cell>, create, update, Map.ofArray attribs)
 
     /// Describes a TextCell in the view
     static member TextCell(?text: string, ?detail: string, ?textColor: Xamarin.Forms.Color, ?detailColor: Xamarin.Forms.Color, ?command: unit -> unit, ?commandParameter: System.Object, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
@@ -10486,82 +10852,82 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.TextCell())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.TextCell)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryText
             let valueOpt = source.TryText
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Text <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Text "); target.Text <-  value
             | Some _, None -> target.Text <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTextDetail
             let valueOpt = source.TryTextDetail
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Detail <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Detail "); target.Detail <-  value
             | Some _, None -> target.Detail <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTextColor
             let valueOpt = source.TryTextColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TextColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TextColor "); target.TextColor <-  value
             | Some _, None -> target.TextColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTextDetailColor
             let valueOpt = source.TryTextDetailColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.DetailColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting DetailColor "); target.DetailColor <-  value
             | Some _, None -> target.DetailColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryCommand
             let valueOpt = source.TryCommand
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Command <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Command "); target.Command <-  value
             | Some _, None -> target.Command <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryCommandParameter
             let valueOpt = source.TryCommandParameter
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.CommandParameter <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting CommandParameter "); target.CommandParameter <-  value
             | Some _, None -> target.CommandParameter <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeight
             let valueOpt = source.TryHeight
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Height <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Height "); target.Height <-  value
             | Some _, None -> target.Height <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.TextCell>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.TextCell>, create, update, Map.ofArray attribs)
 
     /// Describes a ImageCell in the view
-    static member ImageCell(?imageSource: Xamarin.Forms.ImageSource, ?text: string, ?detail: string, ?textColor: Xamarin.Forms.Color, ?detailColor: Xamarin.Forms.Color, ?command: unit -> unit, ?commandParameter: System.Object, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
+    static member ImageCell(?imageSource: string, ?text: string, ?detail: string, ?textColor: Xamarin.Forms.Color, ?detailColor: Xamarin.Forms.Color, ?command: unit -> unit, ?commandParameter: System.Object, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match imageSource with None -> () | Some v -> yield ("ImageSource", box ((v))) 
             match text with None -> () | Some v -> yield ("Text", box ((v))) 
@@ -10579,86 +10945,86 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.ImageCell())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ImageCell)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryImageSource
             let valueOpt = source.TryImageSource
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ImageSource <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ImageSource "); target.ImageSource <- makeImageSource  value
             | Some _, None -> target.ImageSource <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryText
             let valueOpt = source.TryText
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Text <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Text "); target.Text <-  value
             | Some _, None -> target.Text <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTextDetail
             let valueOpt = source.TryTextDetail
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Detail <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Detail "); target.Detail <-  value
             | Some _, None -> target.Detail <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTextColor
             let valueOpt = source.TryTextColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TextColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TextColor "); target.TextColor <-  value
             | Some _, None -> target.TextColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTextDetailColor
             let valueOpt = source.TryTextDetailColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.DetailColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting DetailColor "); target.DetailColor <-  value
             | Some _, None -> target.DetailColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryCommand
             let valueOpt = source.TryCommand
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Command <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Command "); target.Command <-  value
             | Some _, None -> target.Command <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryCommandParameter
             let valueOpt = source.TryCommandParameter
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.CommandParameter <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting CommandParameter "); target.CommandParameter <-  value
             | Some _, None -> target.CommandParameter <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeight
             let valueOpt = source.TryHeight
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Height <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Height "); target.Height <-  value
             | Some _, None -> target.Height <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.ImageCell>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.ImageCell>, create, update, Map.ofArray attribs)
 
     /// Describes a ViewCell in the view
     static member ViewCell(?view: XamlElement, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
@@ -10673,14 +11039,14 @@ type Xaml() =
         let create () =
             box (new Xamarin.Forms.ViewCell())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ViewCell)
             let prevChildOpt = match prevOpt with None -> None | Some prev -> prev.TryView
             match prevChildOpt, source.TryView with
             // For structured objects, amortize on reference equality
             | Some prevChild, Some newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
             | Some prevChild, Some newChild ->
-                newChild.ApplyIncremental(prevChild, target.View)
+                newChild.UpdateIncremental(prevChild, target.View)
             | None, Some newChild ->
                 target.View <- newChild.CreateAsView()
             | Some _, None ->
@@ -10690,31 +11056,31 @@ type Xaml() =
             let valueOpt = source.TryHeight
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Height <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Height "); target.Height <-  value
             | Some _, None -> target.Height <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.ViewCell>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.ViewCell>, create, update, Map.ofArray attribs)
 
     /// Describes a ListView in the view
     static member ListView(?items: XamlElement list, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?headerTemplate: Xamarin.Forms.DataTemplate, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: int option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: Xamarin.Forms.ItemVisibilityEventArgs -> unit, ?itemDisappearing: Xamarin.Forms.ItemVisibilityEventArgs -> unit, ?itemSelected: int option -> unit, ?itemTapped: Xamarin.Forms.ItemTappedEventArgs -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -10766,93 +11132,93 @@ type Xaml() =
         let create () =
             box (new Elmish.XamarinForms.DynamicViews.CustomListView())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ListView)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryListViewItems
             let valueOpt = source.TryListViewItems
-            applyToListViewItems prevValueOpt valueOpt target
+            updateListViewItems prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFooter
             let valueOpt = source.TryFooter
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Footer <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Footer "); target.Footer <-  value
             | Some _, None -> target.Footer <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHasUnevenRows
             let valueOpt = source.TryHasUnevenRows
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HasUnevenRows <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HasUnevenRows "); target.HasUnevenRows <-  value
             | Some _, None -> target.HasUnevenRows <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeader
             let valueOpt = source.TryHeader
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Header <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Header "); target.Header <-  value
             | Some _, None -> target.Header <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeaderTemplate
             let valueOpt = source.TryHeaderTemplate
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeaderTemplate <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeaderTemplate "); target.HeaderTemplate <-  value
             | Some _, None -> target.HeaderTemplate <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsGroupingEnabled
             let valueOpt = source.TryIsGroupingEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsGroupingEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsGroupingEnabled "); target.IsGroupingEnabled <-  value
             | Some _, None -> target.IsGroupingEnabled <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsPullToRefreshEnabled
             let valueOpt = source.TryIsPullToRefreshEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsPullToRefreshEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsPullToRefreshEnabled "); target.IsPullToRefreshEnabled <-  value
             | Some _, None -> target.IsPullToRefreshEnabled <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsRefreshing
             let valueOpt = source.TryIsRefreshing
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsRefreshing <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsRefreshing "); target.IsRefreshing <-  value
             | Some _, None -> target.IsRefreshing <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRefreshCommand
             let valueOpt = source.TryRefreshCommand
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RefreshCommand <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RefreshCommand "); target.RefreshCommand <-  value
             | Some _, None -> target.RefreshCommand <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRowHeight
             let valueOpt = source.TryRowHeight
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RowHeight <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RowHeight "); target.RowHeight <-  value
             | Some _, None -> target.RowHeight <- -1
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryListView_SelectedItem
             let valueOpt = source.TryListView_SelectedItem
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.SelectedItem <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting SelectedItem "); target.SelectedItem <- (function None -> null | Some i -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListElementData<XamlElement>> in if i >= 0 && i < items.Count then items.[i] else null)  value
             | Some _, None -> target.SelectedItem <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TrySeparatorVisibility
             let valueOpt = source.TrySeparatorVisibility
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.SeparatorVisibility <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting SeparatorVisibility "); target.SeparatorVisibility <-  value
             | Some _, None -> target.SeparatorVisibility <- Xamarin.Forms.SeparatorVisibility.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TrySeparatorColor
             let valueOpt = source.TrySeparatorColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.SeparatorColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting SeparatorColor "); target.SeparatorColor <-  value
             | Some _, None -> target.SeparatorColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryItemAppearing
@@ -10894,171 +11260,171 @@ type Xaml() =
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
             | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.VerticalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
             | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Margin <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.ListView>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.ListView>, create, update, Map.ofArray attribs)
 
     /// Describes a ListViewGrouped in the view
     static member ListViewGrouped(?items: (XamlElement * XamlElement list) list, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: (int * int) option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: Xamarin.Forms.ItemVisibilityEventArgs -> unit, ?itemDisappearing: Xamarin.Forms.ItemVisibilityEventArgs -> unit, ?itemSelected: (int * int) option -> unit, ?itemTapped: Xamarin.Forms.ItemTappedEventArgs -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -11109,86 +11475,86 @@ type Xaml() =
         let create () =
             box (new Elmish.XamarinForms.DynamicViews.CustomGroupListView())
 
-        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ListView)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryGroupListViewItemsSource
             let valueOpt = source.TryGroupListViewItemsSource
-            applyToListViewGroupedItems prevValueOpt valueOpt target
+            updateListViewGroupedItems prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFooter
             let valueOpt = source.TryFooter
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Footer <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Footer "); target.Footer <-  value
             | Some _, None -> target.Footer <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHasUnevenRows
             let valueOpt = source.TryHasUnevenRows
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HasUnevenRows <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HasUnevenRows "); target.HasUnevenRows <-  value
             | Some _, None -> target.HasUnevenRows <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeader
             let valueOpt = source.TryHeader
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Header <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Header "); target.Header <-  value
             | Some _, None -> target.Header <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsGroupingEnabled
             let valueOpt = source.TryIsGroupingEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsGroupingEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsGroupingEnabled "); target.IsGroupingEnabled <-  value
             | Some _, None -> target.IsGroupingEnabled <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsPullToRefreshEnabled
             let valueOpt = source.TryIsPullToRefreshEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsPullToRefreshEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsPullToRefreshEnabled "); target.IsPullToRefreshEnabled <-  value
             | Some _, None -> target.IsPullToRefreshEnabled <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsRefreshing
             let valueOpt = source.TryIsRefreshing
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsRefreshing <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsRefreshing "); target.IsRefreshing <-  value
             | Some _, None -> target.IsRefreshing <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRefreshCommand
             let valueOpt = source.TryRefreshCommand
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RefreshCommand <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RefreshCommand "); target.RefreshCommand <-  value
             | Some _, None -> target.RefreshCommand <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRowHeight
             let valueOpt = source.TryRowHeight
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RowHeight <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RowHeight "); target.RowHeight <-  value
             | Some _, None -> target.RowHeight <- -1
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryListViewGrouped_SelectedItem
             let valueOpt = source.TryListViewGrouped_SelectedItem
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.SelectedItem <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting SelectedItem "); target.SelectedItem <- (function None -> null | Some (i,j) -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListGroupData<XamlElement>> in (if i >= 0 && i < items.Count then (let items2 = items.[i] in if j >= 0 && j < items2.Count then items2.[j] else null) else null))  value
             | Some _, None -> target.SelectedItem <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TrySeparatorVisibility
             let valueOpt = source.TrySeparatorVisibility
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.SeparatorVisibility <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting SeparatorVisibility "); target.SeparatorVisibility <-  value
             | Some _, None -> target.SeparatorVisibility <- Xamarin.Forms.SeparatorVisibility.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TrySeparatorColor
             let valueOpt = source.TrySeparatorColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.SeparatorColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting SeparatorColor "); target.SeparatorColor <-  value
             | Some _, None -> target.SeparatorColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryItemAppearing
@@ -11230,171 +11596,171 @@ type Xaml() =
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HorizontalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
             | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.VerticalOptions <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
             | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Margin <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
             | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
             | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.AnchorY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
             | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.BackgroundColor <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
             | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.HeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
             | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.InputTransparent <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
             | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsEnabled <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
             | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.IsVisible <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
             | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumHeightRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.MinimumWidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Opacity <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
             | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Rotation <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
             | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
             | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.RotationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
             | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Scale <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
             | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.Style <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
             | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationX <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
             | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.TranslationY <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
             | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.WidthRequest <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
             | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.ClassId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
             | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.StyleId <- value
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
             | Some _, None -> target.StyleId <- null
             | None, None -> ()
-        new XamlElement(typeof<Xamarin.Forms.ListView>, create, apply, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.ListView>, create, update, Map.ofArray attribs)
 [<AutoOpen>]
 module XamlCreateExtensions = 
 
@@ -11440,6 +11806,9 @@ module XamlCreateExtensions =
     /// Specifies a SwitchCell in the view description, initially with default attributes
     let switchCell = Xaml.SwitchCell()
 
+    /// Specifies a TableView in the view description, initially with default attributes
+    let tableView = Xaml.TableView()
+
     /// Specifies a Grid in the view description, initially with default attributes
     let grid = Xaml.Grid()
 
@@ -11478,6 +11847,9 @@ module XamlCreateExtensions =
 
     /// Specifies a Entry in the view description, initially with default attributes
     let entry = Xaml.Entry()
+
+    /// Specifies a EntryCell in the view description, initially with default attributes
+    let entryCell = Xaml.EntryCell()
 
     /// Specifies a Label in the view description, initially with default attributes
     let label = Xaml.Label()

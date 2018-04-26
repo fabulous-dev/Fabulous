@@ -59,18 +59,19 @@ namespace Generator
         public string InputType { get; set; }
 
         /// The default value when applying to the target
-        public string ApplyDefault { get; set; }
+        public string DefaultValue { get; set; }
 
-        //public string Equality { get; set; }
+        /// The function used to compute equality between previous and subsequent values
+        public string Equality { get; set; }
 
         /// Converts the input type to the model type
-        public string Conv { get; set; }
+        public string ConvToModel { get; set; }
 
         /// The expression to convert the model type to the value to be assigned to the property in the target
-        public string Apply { get; set; }
+        public string ConvToValue { get; set; }
 
         /// The full code for incrementally assigning to the property in the target
-        public string ApplyCode { get; set; }
+        public string UpdateCode { get; set; }
 
         /// The type as stored in the model
         /// 
@@ -109,6 +110,10 @@ namespace Generator
             if (!string.IsNullOrWhiteSpace(ModelType))
             {
                 return ModelType;
+            }
+            if (this.BoundType == null)
+            {
+                throw new Exception($"no type for {this.Name}");
             }
             return GetModelTypeInner(bindings, this.BoundType, hierarchy);
         }
@@ -208,7 +213,7 @@ namespace Generator
                         else if (FindEvent (m.Name, x.Definition) is EventDefinition e) {
                             m.Definition = e;
                         }
-                        else if (string.IsNullOrWhiteSpace(m.ApplyCode)) {
+                        else if (string.IsNullOrWhiteSpace(m.UpdateCode)) {
                             Console.WriteLine($"Could not find member '{m.Name}'");
                         }
                     }
@@ -293,9 +298,9 @@ namespace Generator
                 var m = ms.First();
                 w.WriteLine();
                 w.WriteLine($"        /// Adjusts the {m.BoundUniqueName} property in the visual element");
-                var conv = string.IsNullOrWhiteSpace(m.Conv) ? "" : m.Conv;
+                var conv = string.IsNullOrWhiteSpace(m.ConvToModel) ? "" : m.ConvToModel;
                 var inputType = m.GetInputType(bindings, null);
-                w.WriteLine("        member x." + m.BoundUniqueName + "(value: " + inputType + ") = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add(\"" + m.BoundUniqueName + "\", box (" + conv + "(value))))");
+                w.WriteLine("        member x." + m.BoundUniqueName + "(value: " + inputType + ") = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add(\"" + m.BoundUniqueName + "\", box (" + conv + "(value))))");
             }
             w.WriteLine();
             foreach (var ms in allMembersInAllTypesGroupedByName)
@@ -345,7 +350,7 @@ namespace Generator
                 w.WriteLine($"        let attribs = [| ");
                 foreach (var m in allMembers)
                 {
-                    var conv = string.IsNullOrWhiteSpace(m.Conv) ? "" : m.Conv;
+                    var conv = string.IsNullOrWhiteSpace(m.ConvToModel) ? "" : m.ConvToModel;
                     w.WriteLine("            match " + m.LowerBoundShortName + " with None -> () | Some v -> yield (\"" + m.BoundUniqueName + "\"" + $", box (" + conv + "(v))) ");
                 }
                 w.WriteLine($"          |]");
@@ -366,7 +371,7 @@ namespace Generator
                     w.WriteLine($"            failwith \"can'tdef create {tdef.FullName}\"");
                 }
                 w.WriteLine();
-                w.WriteLine($"        let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = ");
+                w.WriteLine($"        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = ");
 
                 if (baseType == null && type.Members.Count() == 0)
                 {
@@ -377,7 +382,7 @@ namespace Generator
                     w.WriteLine($"            let target = (target :?> {tdef.FullName})");
                     foreach (var m in allMembers)
                     {
-                        var hasApply = !string.IsNullOrWhiteSpace(m.Apply) || !string.IsNullOrWhiteSpace(m.ApplyCode);
+                        var hasApply = !string.IsNullOrWhiteSpace(m.ConvToValue) || !string.IsNullOrWhiteSpace(m.UpdateCode);
 
                         var bt = ResolveGenericParameter(m.BoundType, hierarchy);
                         string elementType = m.GetElementType(hierarchy);
@@ -385,7 +390,7 @@ namespace Generator
                         {
                             w.WriteLine($"            let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.Try{m.BoundUniqueName}");
                             w.WriteLine($"            let collOpt = source.Try{m.BoundUniqueName}");
-                            w.WriteLine($"            applyToIList prevCollOpt collOpt target.{m.Name}");
+                            w.WriteLine($"            updateIList prevCollOpt collOpt target.{m.Name}");
                             w.WriteLine($"                (fun (x:XamlElement) -> x.CreateAs{elementType}())");
                             if (m.Attached != null)
                             {
@@ -395,9 +400,9 @@ namespace Generator
                                     w.WriteLine($"                    // Adjust the attached properties");
                                     w.WriteLine($"                    match (match prevChildOpt with None -> None | Some prevChild -> prevChild.Try{ap.BoundUniqueName}), newChild.Try{ap.BoundUniqueName} with");
                                     w.WriteLine($"                    | Some prev, Some v when prev = v -> ()");
-                                    var apApply = string.IsNullOrWhiteSpace(ap.Apply) ? "" : ap.Apply + " ";
+                                    var apApply = string.IsNullOrWhiteSpace(ap.ConvToValue) ? "" : ap.ConvToValue + " ";
                                     w.WriteLine($"                    | prevOpt, Some value -> {tdef.FullName}.Set{ap.Name}(targetChild, {apApply}value)");
-                                    w.WriteLine($"                    | Some _, None -> {tdef.FullName}.Set{ap.Name}(targetChild, {ap.ApplyDefault}) // TODO: not always perfect, should set back to original default?");
+                                    w.WriteLine($"                    | Some _, None -> {tdef.FullName}.Set{ap.Name}(targetChild, {ap.DefaultValue}) // TODO: not always perfect, should set back to original default?");
                                     w.WriteLine($"                    | _ -> ()");
                                 }
                                 w.WriteLine($"                    ())");
@@ -407,7 +412,7 @@ namespace Generator
                                 w.WriteLine($"                (fun _ _ _ -> ())");
                             }
                             w.WriteLine($"                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)");
-                            w.WriteLine($"                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))");
+                            w.WriteLine($"                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))");
                         }
                         else
                         {
@@ -432,7 +437,7 @@ namespace Generator
                                     w.WriteLine($"            // For structured objects, amortize on reference equality");
                                     w.WriteLine($"            | Some prevChild, Some newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()");
                                     w.WriteLine($"            | Some prevChild, Some newChild ->");
-                                    w.WriteLine($"                newChild.ApplyIncremental(prevChild, target.{m.Name})");
+                                    w.WriteLine($"                newChild.UpdateIncremental(prevChild, target.{m.Name})");
                                     w.WriteLine($"            | None, Some newChild ->");
                                     w.WriteLine($"                target.{m.Name} <- newChild.CreateAs{bt.Name}()");
                                     w.WriteLine($"            | Some _, None ->");
@@ -454,24 +459,19 @@ namespace Generator
                             {
                                 w.WriteLine($"            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.Try{m.BoundUniqueName}");
                                 w.WriteLine($"            let valueOpt = source.Try{m.BoundUniqueName}");
-                                if (!string.IsNullOrWhiteSpace(m.ApplyCode))
+                                if (!string.IsNullOrWhiteSpace(m.UpdateCode))
                                 {
-                                    w.WriteLine($"            {m.ApplyCode}"); // may reference prevValueOpt, valueOpt, target
+                                    w.WriteLine($"            {m.UpdateCode}"); // may reference prevValueOpt, valueOpt, target
                                 }
-                                else if (!string.IsNullOrWhiteSpace(m.ApplyCode))
+                                else 
                                 {
+                                    var update = string.IsNullOrWhiteSpace(m.ConvToValue) ? "" : m.ConvToValue + " ";
+                                    var equality = string.IsNullOrWhiteSpace(m.Equality) ? "" : m.Equality + " ";
+
                                     w.WriteLine($"            match prevValueOpt, valueOpt with");
                                     w.WriteLine($"            | Some prevValue, Some value when prevValue = value -> ()");
-                                    w.WriteLine($"            | prevOpt, Some value -> target.{m.Name} <- {m.Apply} value");
-                                    w.WriteLine($"            | Some _, None -> target.{m.Name} <- {m.ApplyDefault}");
-                                    w.WriteLine($"            | None, None -> ()");
-                                }
-                                else
-                                {
-                                    w.WriteLine($"            match prevValueOpt, valueOpt with");
-                                    w.WriteLine($"            | Some prevValue, Some value when prevValue = value -> ()");
-                                    w.WriteLine($"            | prevOpt, Some value -> target.{m.Name} <- value");
-                                    w.WriteLine($"            | Some _, None -> target.{m.Name} <- {m.ApplyDefault}");
+                                    w.WriteLine($"            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine(\"Setting {m.Name} \"); target.{m.Name} <- {update} value");
+                                    w.WriteLine($"            | Some _, None -> target.{m.Name} <- {m.DefaultValue}");
                                     w.WriteLine($"            | None, None -> ()");
                                 }
                             }
@@ -479,7 +479,7 @@ namespace Generator
                     }
                 }
                                 
-                w.WriteLine($"        new XamlElement(typeof<{tdef.FullName}>, create, apply, Map.ofArray attribs)");
+                w.WriteLine($"        new XamlElement(typeof<{tdef.FullName}>, create, update, Map.ofArray attribs)");
 
             }
             w.WriteLine($"[<AutoOpen>]");

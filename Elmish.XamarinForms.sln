@@ -37,7 +37,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllControls", "AllControls"
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "AllControls", "Samples\AllControls\AllControls\AllControls.fsproj", "{13F140D6-2D21-41BE-AC90-4B14D8C16A47}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Droid", "Samples\AllControls\Droid\Droid.fsproj", "{5CCD3C0C-3434-434C-B8C2-7FFDEDCC2437}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AllControls.Droid", "Samples\AllControls\Droid\AllControls.Droid.fsproj", "{5CCD3C0C-3434-434C-B8C2-7FFDEDCC2437}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "iOS", "Samples\AllControls\iOS\iOS.fsproj", "{9031246B-4B08-47C9-A500-30334A245272}"
 EndProject

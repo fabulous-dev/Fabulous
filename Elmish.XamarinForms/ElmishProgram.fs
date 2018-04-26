@@ -356,7 +356,7 @@ module Program =
                         Choice1Of2 (page, bindings, viewModel)
                     | Choice2Of2 (prevPageDescription, page, contentf) -> 
                         let newPageDescription: XamlElement = contentf model dispatch
-                        newPageDescription.ApplyIncremental (prevPageDescription, page)
+                        newPageDescription.UpdateIncremental (prevPageDescription, page)
                         Choice2Of2 (newPageDescription, page, contentf)
                 lastViewData <- Some viewData
                       
