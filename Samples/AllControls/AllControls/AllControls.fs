@@ -241,7 +241,7 @@ module App =
            [Xaml.Label(text=sprintf "Grid (nxn, pinch, size = %f):" newGridSize)
             // The Grid doesn't change during the pinch...
             amortize gridSize (fun _ _ -> 
-              Xaml.Grid(rowdefs= [for i in 1 .. gridSize -> box "auto"], coldefs=[for i in 1 .. gridSize -> box "auto"], 
+              Xaml.Grid(rowdefs= [for i in 1 .. gridSize -> box "*"], coldefs=[for i in 1 .. gridSize -> box "*"], 
                       children = 
                           [ for i in 1 .. gridSize do for j in 1 .. gridSize -> Xaml.BoxView(Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0) ).GridRow(i-1).GridColumn(j-1) ]))
            ],
@@ -252,15 +252,15 @@ module App =
           let dx, dy = gridPortal
           Xaml.NonScrollingContentPage("Grid+Pan",
            [Xaml.Label(text= sprintf "Grid (nxn, auto, edit entries, 1-touch pan, (%d, %d):" dx dy)
-            Xaml.Grid(rowdefs= [for row in 1 .. 6 -> box "auto"], coldefs=[for col in 1 .. 6 -> box "auto"], 
+            Xaml.Grid(rowdefs= [for row in 1 .. 6 -> box "*"], coldefs=[for col in 1 .. 6 -> box "*"], 
                       children = [ for row in 1 .. 6 do 
                                      for col in 1 .. 6 ->
                                        let item = Xaml.Label(text=sprintf "(%d,%d)" (col+dx) (row+dy), backgroundColor=Color.White, textColor=Color.Black) 
-                                       item.GridRow(row-1).GridColumn(col-1) ],
-                      gestureRecognizers=[ Xaml.PanGestureRecognizer(touchPoints=1,panUpdated=(fun panArgs -> 
-                                                 if panArgs.StatusType = GestureStatus.Running then 
-                                                     dispatch (UpdateGridPortal (int -(panArgs.TotalX/10.0), int -(panArgs.TotalY/10.0))))) ] )
-              ]))
+                                       item.GridRow(row-1).GridColumn(col-1) ])
+              ],
+            gestureRecognizers=[ Xaml.PanGestureRecognizer(touchPoints=1,panUpdated=(fun panArgs -> 
+                                    if panArgs.StatusType = GestureStatus.Running then 
+                                        dispatch (UpdateGridPortal (dx - int (panArgs.TotalX/10.0), dy - int (panArgs.TotalY/10.0))))) ] ))
 
          amortize (model.PickedColorIndex) (fun model (pickedColorIndex) -> 
           Xaml.NonScrollingContentPage("Image", 
@@ -299,9 +299,19 @@ module App =
 
               ]))
 
+         amortize () (fun model () -> 
+          Xaml.ScrollingContentPage("TableView",
+           [Xaml.Label(text="TableView:")
+            Xaml.TableView(items= [ ("Videos", [ Xaml.SwitchCell(on=true,text="Luca 2008",onChanged=(fun args -> ()) ) 
+                                                 Xaml.SwitchCell(on=true,text="Don 2010",onChanged=(fun args -> ()) ) ] )
+                                    ("Books", [ Xaml.SwitchCell(on=true,text="Expert F#",onChanged=(fun args -> ()) ) 
+                                                Xaml.SwitchCell(on=false,text="Programming F#",onChanged=(fun args -> ()) ) ])
+                                    ("Contact", [ Xaml.EntryCell(label="Email",placeholder="foo@bar.com",completed=(fun args -> ()) )
+                                                  Xaml.EntryCell(label="Phone",placeholder="+44 87654321",completed=(fun args -> ()) )] )],
+                            horizontalOptions=LayoutOptions.StartAndExpand) 
+              ]))
+
         ] 
-                // Xaml.Table, EntryCell and others: TODO
-                //
                 // Xaml.NavigationPage: TODO
                 // Xaml.Menu: TODO
                 // Xaml.MenuItem: TODO
@@ -313,6 +323,8 @@ module App =
                 // Xaml.Animation: TODO
                 //
                 // Xaml.OpenGLView: TODO
+                //
+                // ListView: CachingStrategy read-only parameter to ctor
                 //
                 // Xaml.AppLinkEntry: TODO
                 // Xaml.MessagingCenter: TODO

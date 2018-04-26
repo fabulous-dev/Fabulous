@@ -62,6 +62,9 @@ module XamlElementExtensions =
         /// Create a Xamarin.Forms.SwitchCell from the view description
         member x.CreateAsSwitchCell() : Xamarin.Forms.SwitchCell = (x.Create() :?> Xamarin.Forms.SwitchCell)
 
+        /// Create a Xamarin.Forms.TableView from the view description
+        member x.CreateAsTableView() : Xamarin.Forms.TableView = (x.Create() :?> Xamarin.Forms.TableView)
+
         /// Create a Xamarin.Forms.Grid from the view description
         member x.CreateAsGrid() : Xamarin.Forms.Grid = (x.Create() :?> Xamarin.Forms.Grid)
 
@@ -103,6 +106,9 @@ module XamlElementExtensions =
 
         /// Create a Xamarin.Forms.Entry from the view description
         member x.CreateAsEntry() : Xamarin.Forms.Entry = (x.Create() :?> Xamarin.Forms.Entry)
+
+        /// Create a Xamarin.Forms.EntryCell from the view description
+        member x.CreateAsEntryCell() : Xamarin.Forms.EntryCell = (x.Create() :?> Xamarin.Forms.EntryCell)
 
         /// Create a Xamarin.Forms.Label from the view description
         member x.CreateAsLabel() : Xamarin.Forms.Label = (x.Create() :?> Xamarin.Forms.Label)
@@ -342,6 +348,18 @@ module XamlElementExtensions =
         /// Try to get the OnChanged property in the visual element
         member x.TryOnChanged = match x.Attributes.TryFind("OnChanged") with Some v -> Some(unbox<System.EventHandler<Xamarin.Forms.ToggledEventArgs>>(v)) | None -> None
 
+        /// Try to get the Intent property in the visual element
+        member x.TryIntent = match x.Attributes.TryFind("Intent") with Some v -> Some(unbox<Xamarin.Forms.TableIntent>(v)) | None -> None
+
+        /// Try to get the HasUnevenRows property in the visual element
+        member x.TryHasUnevenRows = match x.Attributes.TryFind("HasUnevenRows") with Some v -> Some(unbox<bool>(v)) | None -> None
+
+        /// Try to get the RowHeight property in the visual element
+        member x.TryRowHeight = match x.Attributes.TryFind("RowHeight") with Some v -> Some(unbox<int>(v)) | None -> None
+
+        /// Try to get the TableRoot property in the visual element
+        member x.TryTableRoot = match x.Attributes.TryFind("TableRoot") with Some v -> Some(unbox<(string * XamlElement[])[]>(v)) | None -> None
+
         /// Try to get the GridRowDefinitions property in the visual element
         member x.TryGridRowDefinitions = match x.Attributes.TryFind("GridRowDefinitions") with Some v -> Some(unbox<XamlElement[]>(v)) | None -> None
 
@@ -456,6 +474,9 @@ module XamlElementExtensions =
         /// Try to get the EntryCompleted property in the visual element
         member x.TryEntryCompleted = match x.Attributes.TryFind("EntryCompleted") with Some v -> Some(unbox<System.EventHandler>(v)) | None -> None
 
+        /// Try to get the Label property in the visual element
+        member x.TryLabel = match x.Attributes.TryFind("Label") with Some v -> Some(unbox<string>(v)) | None -> None
+
         /// Try to get the VerticalTextAlignment property in the visual element
         member x.TryVerticalTextAlignment = match x.Attributes.TryFind("VerticalTextAlignment") with Some v -> Some(unbox<Xamarin.Forms.TextAlignment>(v)) | None -> None
 
@@ -558,9 +579,6 @@ module XamlElementExtensions =
         /// Try to get the Footer property in the visual element
         member x.TryFooter = match x.Attributes.TryFind("Footer") with Some v -> Some(unbox<System.Object>(v)) | None -> None
 
-        /// Try to get the HasUnevenRows property in the visual element
-        member x.TryHasUnevenRows = match x.Attributes.TryFind("HasUnevenRows") with Some v -> Some(unbox<bool>(v)) | None -> None
-
         /// Try to get the Header property in the visual element
         member x.TryHeader = match x.Attributes.TryFind("Header") with Some v -> Some(unbox<System.Object>(v)) | None -> None
 
@@ -578,9 +596,6 @@ module XamlElementExtensions =
 
         /// Try to get the RefreshCommand property in the visual element
         member x.TryRefreshCommand = match x.Attributes.TryFind("RefreshCommand") with Some v -> Some(unbox<System.Windows.Input.ICommand>(v)) | None -> None
-
-        /// Try to get the RowHeight property in the visual element
-        member x.TryRowHeight = match x.Attributes.TryFind("RowHeight") with Some v -> Some(unbox<int>(v)) | None -> None
 
         /// Try to get the ListView_SelectedItem property in the visual element
         member x.TryListView_SelectedItem = match x.Attributes.TryFind("ListView_SelectedItem") with Some v -> Some(unbox<int option>(v)) | None -> None
@@ -801,6 +816,18 @@ module XamlElementExtensions =
         /// Adjusts the OnChanged property in the visual element
         member x.OnChanged(value: Xamarin.Forms.ToggledEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("OnChanged", box ((fun f -> System.EventHandler<Xamarin.Forms.ToggledEventArgs>(fun _sender args -> f args))(value))))
 
+        /// Adjusts the Intent property in the visual element
+        member x.Intent(value: Xamarin.Forms.TableIntent) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Intent", box ((value))))
+
+        /// Adjusts the HasUnevenRows property in the visual element
+        member x.HasUnevenRows(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("HasUnevenRows", box ((value))))
+
+        /// Adjusts the RowHeight property in the visual element
+        member x.RowHeight(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("RowHeight", box ((value))))
+
+        /// Adjusts the TableRoot property in the visual element
+        member x.TableRoot(value: (string * XamlElement list) list) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("TableRoot", box ((fun es -> es |> Array.ofList |> Array.map (fun (title, es) -> (title, Array.ofList es)))(value))))
+
         /// Adjusts the GridRowDefinitions property in the visual element
         member x.GridRowDefinitions(value: obj list) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("GridRowDefinitions", box ((fun es -> es |> Array.ofList |> Array.map (fun h -> Xaml.RowDefinition(height=h)))(value))))
 
@@ -915,6 +942,9 @@ module XamlElementExtensions =
         /// Adjusts the EntryCompleted property in the visual element
         member x.EntryCompleted(value: string -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("EntryCompleted", box ((fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.Entry).Text))(value))))
 
+        /// Adjusts the Label property in the visual element
+        member x.Label(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Label", box ((value))))
+
         /// Adjusts the VerticalTextAlignment property in the visual element
         member x.VerticalTextAlignment(value: Xamarin.Forms.TextAlignment) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("VerticalTextAlignment", box ((value))))
 
@@ -1017,9 +1047,6 @@ module XamlElementExtensions =
         /// Adjusts the Footer property in the visual element
         member x.Footer(value: System.Object) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Footer", box ((value))))
 
-        /// Adjusts the HasUnevenRows property in the visual element
-        member x.HasUnevenRows(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("HasUnevenRows", box ((value))))
-
         /// Adjusts the Header property in the visual element
         member x.Header(value: System.Object) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Header", box ((value))))
 
@@ -1037,9 +1064,6 @@ module XamlElementExtensions =
 
         /// Adjusts the RefreshCommand property in the visual element
         member x.RefreshCommand(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("RefreshCommand", box (makeCommand(value))))
-
-        /// Adjusts the RowHeight property in the visual element
-        member x.RowHeight(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("RowHeight", box ((value))))
 
         /// Adjusts the ListView_SelectedItem property in the visual element
         member x.ListView_SelectedItem(value: int option) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ListView_SelectedItem", box ((value))))
@@ -1447,6 +1471,30 @@ module XamlElementExtensions =
     /// Adjusts the OnChanged property in the visual element
     let onChanged (value: Xamarin.Forms.ToggledEventArgs -> unit) (x: XamlElement) = x.OnChanged(value)
 
+    /// Adjusts the Intent property in the visual element
+    let withIntent (value: Xamarin.Forms.TableIntent) (x: XamlElement) = x.Intent(value)
+
+    /// Adjusts the Intent property in the visual element
+    let intent (value: Xamarin.Forms.TableIntent) (x: XamlElement) = x.Intent(value)
+
+    /// Adjusts the HasUnevenRows property in the visual element
+    let withHasUnevenRows (value: bool) (x: XamlElement) = x.HasUnevenRows(value)
+
+    /// Adjusts the HasUnevenRows property in the visual element
+    let hasUnevenRows (value: bool) (x: XamlElement) = x.HasUnevenRows(value)
+
+    /// Adjusts the RowHeight property in the visual element
+    let withRowHeight (value: int) (x: XamlElement) = x.RowHeight(value)
+
+    /// Adjusts the RowHeight property in the visual element
+    let rowHeight (value: int) (x: XamlElement) = x.RowHeight(value)
+
+    /// Adjusts the TableRoot property in the visual element
+    let withTableRoot (value: (string * XamlElement list) list) (x: XamlElement) = x.TableRoot(value)
+
+    /// Adjusts the TableRoot property in the visual element
+    let tableRoot (value: (string * XamlElement list) list) (x: XamlElement) = x.TableRoot(value)
+
     /// Adjusts the GridRowDefinitions property in the visual element
     let withGridRowDefinitions (value: obj list) (x: XamlElement) = x.GridRowDefinitions(value)
 
@@ -1675,6 +1723,12 @@ module XamlElementExtensions =
     /// Adjusts the EntryCompleted property in the visual element
     let entryCompleted (value: string -> unit) (x: XamlElement) = x.EntryCompleted(value)
 
+    /// Adjusts the Label property in the visual element
+    let withLabel (value: string) (x: XamlElement) = x.Label(value)
+
+    /// Adjusts the Label property in the visual element
+    let label (value: string) (x: XamlElement) = x.Label(value)
+
     /// Adjusts the VerticalTextAlignment property in the visual element
     let withVerticalTextAlignment (value: Xamarin.Forms.TextAlignment) (x: XamlElement) = x.VerticalTextAlignment(value)
 
@@ -1879,12 +1933,6 @@ module XamlElementExtensions =
     /// Adjusts the Footer property in the visual element
     let footer (value: System.Object) (x: XamlElement) = x.Footer(value)
 
-    /// Adjusts the HasUnevenRows property in the visual element
-    let withHasUnevenRows (value: bool) (x: XamlElement) = x.HasUnevenRows(value)
-
-    /// Adjusts the HasUnevenRows property in the visual element
-    let hasUnevenRows (value: bool) (x: XamlElement) = x.HasUnevenRows(value)
-
     /// Adjusts the Header property in the visual element
     let withHeader (value: System.Object) (x: XamlElement) = x.Header(value)
 
@@ -1920,12 +1968,6 @@ module XamlElementExtensions =
 
     /// Adjusts the RefreshCommand property in the visual element
     let refreshCommand (value: unit -> unit) (x: XamlElement) = x.RefreshCommand(value)
-
-    /// Adjusts the RowHeight property in the visual element
-    let withRowHeight (value: int) (x: XamlElement) = x.RowHeight(value)
-
-    /// Adjusts the RowHeight property in the visual element
-    let rowHeight (value: int) (x: XamlElement) = x.RowHeight(value)
 
     /// Adjusts the ListView_SelectedItem property in the visual element
     let withListView_SelectedItem (value: int option) (x: XamlElement) = x.ListView_SelectedItem(value)
@@ -2252,7 +2294,7 @@ type Xaml() =
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -2668,7 +2710,7 @@ type Xaml() =
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -2880,7 +2922,7 @@ type Xaml() =
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -3092,7 +3134,7 @@ type Xaml() =
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -3332,7 +3374,7 @@ type Xaml() =
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -3616,7 +3658,7 @@ type Xaml() =
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -3916,7 +3958,7 @@ type Xaml() =
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -4152,7 +4194,7 @@ type Xaml() =
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -4396,7 +4438,7 @@ type Xaml() =
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -4616,7 +4658,7 @@ type Xaml() =
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -4831,6 +4873,238 @@ type Xaml() =
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.SwitchCell>, create, update, Map.ofArray attribs)
 
+    /// Describes a TableView in the view
+    static member TableView(?intent: Xamarin.Forms.TableIntent, ?hasUnevenRows: bool, ?rowHeight: int, ?items: (string * XamlElement list) list, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+        let attribs = [| 
+            match intent with None -> () | Some v -> yield ("Intent", box ((v))) 
+            match hasUnevenRows with None -> () | Some v -> yield ("HasUnevenRows", box ((v))) 
+            match rowHeight with None -> () | Some v -> yield ("RowHeight", box ((v))) 
+            match items with None -> () | Some v -> yield ("TableRoot", box ((fun es -> es |> Array.ofList |> Array.map (fun (title, es) -> (title, Array.ofList es)))(v))) 
+            match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
+            match verticalOptions with None -> () | Some v -> yield ("VerticalOptions", box ((v))) 
+            match margin with None -> () | Some v -> yield ("Margin", box (makeThickness(v))) 
+            match gestureRecognizers with None -> () | Some v -> yield ("GestureRecognizers", box (Array.ofList(v))) 
+            match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
+            match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
+            match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
+            match heightRequest with None -> () | Some v -> yield ("HeightRequest", box ((v))) 
+            match inputTransparent with None -> () | Some v -> yield ("InputTransparent", box ((v))) 
+            match isEnabled with None -> () | Some v -> yield ("IsEnabled", box ((v))) 
+            match isVisible with None -> () | Some v -> yield ("IsVisible", box ((v))) 
+            match minimumHeightRequest with None -> () | Some v -> yield ("MinimumHeightRequest", box ((v))) 
+            match minimumWidthRequest with None -> () | Some v -> yield ("MinimumWidthRequest", box ((v))) 
+            match opacity with None -> () | Some v -> yield ("Opacity", box ((v))) 
+            match rotation with None -> () | Some v -> yield ("Rotation", box ((v))) 
+            match rotationX with None -> () | Some v -> yield ("RotationX", box ((v))) 
+            match rotationY with None -> () | Some v -> yield ("RotationY", box ((v))) 
+            match scale with None -> () | Some v -> yield ("Scale", box ((v))) 
+            match style with None -> () | Some v -> yield ("Style", box ((v))) 
+            match translationX with None -> () | Some v -> yield ("TranslationX", box ((v))) 
+            match translationY with None -> () | Some v -> yield ("TranslationY", box ((v))) 
+            match widthRequest with None -> () | Some v -> yield ("WidthRequest", box ((v))) 
+            match classId with None -> () | Some v -> yield ("ClassId", box ((v))) 
+            match styleId with None -> () | Some v -> yield ("StyleId", box ((v))) 
+          |]
+
+        let create () =
+            box (new Xamarin.Forms.TableView())
+
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+            let target = (target :?> Xamarin.Forms.TableView)
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIntent
+            let valueOpt = source.TryIntent
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Intent "); target.Intent <-  value
+            | Some _, None -> target.Intent <- Unchecked.defaultof<Xamarin.Forms.TableIntent>
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHasUnevenRows
+            let valueOpt = source.TryHasUnevenRows
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HasUnevenRows "); target.HasUnevenRows <-  value
+            | Some _, None -> target.HasUnevenRows <- false
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRowHeight
+            let valueOpt = source.TryRowHeight
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RowHeight "); target.RowHeight <-  value
+            | Some _, None -> target.RowHeight <- -1
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTableRoot
+            let valueOpt = source.TryTableRoot
+            updateTableViewItems prevValueOpt valueOpt target (fun (x:XamlElement) -> x.CreateAsCell()) (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType) (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
+            | None, None -> ()
+            let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
+            let collOpt = source.TryGestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | Some _, None -> target.AnchorX <- 0.0
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | Some _, None -> target.AnchorY <- 0.0
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | Some _, None -> target.HeightRequest <- -1.0
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | Some _, None -> target.InputTransparent <- false
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | Some _, None -> target.IsEnabled <- true
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | Some _, None -> target.IsVisible <- true
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | Some _, None -> target.Opacity <- 1.0
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | Some _, None -> target.Rotation <- 0.0
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | Some _, None -> target.RotationX <- 0.0
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | Some _, None -> target.RotationY <- 0.0
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | Some _, None -> target.Scale <- 1.0
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | Some _, None -> target.Style <- null
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | Some _, None -> target.TranslationX <- 0.0
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | Some _, None -> target.TranslationY <- 0.0
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | Some _, None -> target.WidthRequest <- -1.0
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | Some _, None -> target.ClassId <- null
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | Some _, None -> target.StyleId <- null
+            | None, None -> ()
+        new XamlElement(typeof<Xamarin.Forms.TableView>, create, update, Map.ofArray attribs)
+
     /// Describes a Grid in the view
     static member Grid(?rowdefs: obj list, ?coldefs: obj list, ?rowSpacing: double, ?columnSpacing: double, ?children: XamlElement list, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
@@ -4874,14 +5148,14 @@ type Xaml() =
             let target = (target :?> Xamarin.Forms.Grid)
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGridRowDefinitions
             let collOpt = source.TryGridRowDefinitions
-            applyToIList prevCollOpt collOpt target.RowDefinitions
+            updateIList prevCollOpt collOpt target.RowDefinitions
                 (fun (x:XamlElement) -> x.CreateAsRowDefinition())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
                 (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGridColumnDefinitions
             let collOpt = source.TryGridColumnDefinitions
-            applyToIList prevCollOpt collOpt target.ColumnDefinitions
+            updateIList prevCollOpt collOpt target.ColumnDefinitions
                 (fun (x:XamlElement) -> x.CreateAsColumnDefinition())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -4902,7 +5176,7 @@ type Xaml() =
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryChildren
             let collOpt = source.TryChildren
-            applyToIList prevCollOpt collOpt target.Children
+            updateIList prevCollOpt collOpt target.Children
                 (fun (x:XamlElement) -> x.CreateAsView())
                 (fun prevChildOpt newChild targetChild -> 
                     // Adjust the attached properties
@@ -4969,7 +5243,7 @@ type Xaml() =
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -5155,7 +5429,7 @@ type Xaml() =
             let target = (target :?> Xamarin.Forms.AbsoluteLayout)
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryChildren
             let collOpt = source.TryChildren
-            applyToIList prevCollOpt collOpt target.Children
+            updateIList prevCollOpt collOpt target.Children
                 (fun (x:XamlElement) -> x.CreateAsView())
                 (fun prevChildOpt newChild targetChild -> 
                     // Adjust the attached properties
@@ -5210,7 +5484,7 @@ type Xaml() =
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -5396,7 +5670,7 @@ type Xaml() =
             let target = (target :?> Xamarin.Forms.RelativeLayout)
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryChildren
             let collOpt = source.TryChildren
-            applyToIList prevCollOpt collOpt target.Children
+            updateIList prevCollOpt collOpt target.Children
                 (fun (x:XamlElement) -> x.CreateAsView())
                 (fun prevChildOpt newChild targetChild -> 
                     // Adjust the attached properties
@@ -5469,7 +5743,7 @@ type Xaml() =
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -5741,7 +6015,7 @@ type Xaml() =
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -5961,7 +6235,7 @@ type Xaml() =
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -6205,7 +6479,7 @@ type Xaml() =
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -6449,7 +6723,7 @@ type Xaml() =
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -6705,7 +6979,7 @@ type Xaml() =
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -6933,7 +7207,7 @@ type Xaml() =
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -7145,7 +7419,7 @@ type Xaml() =
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -7413,7 +7687,7 @@ type Xaml() =
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -7713,7 +7987,7 @@ type Xaml() =
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -7860,6 +8134,98 @@ type Xaml() =
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.Entry>, create, update, Map.ofArray attribs)
 
+    /// Describes a EntryCell in the view
+    static member EntryCell(?label: string, ?text: string, ?keyboard: Xamarin.Forms.Keyboard, ?placeholder: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?completed: string -> unit, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
+        let attribs = [| 
+            match label with None -> () | Some v -> yield ("Label", box ((v))) 
+            match text with None -> () | Some v -> yield ("Text", box ((v))) 
+            match keyboard with None -> () | Some v -> yield ("Keyboard", box ((v))) 
+            match placeholder with None -> () | Some v -> yield ("Placeholder", box ((v))) 
+            match horizontalTextAlignment with None -> () | Some v -> yield ("HorizontalTextAlignment", box ((v))) 
+            match completed with None -> () | Some v -> yield ("EntryCompleted", box ((fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.Entry).Text))(v))) 
+            match height with None -> () | Some v -> yield ("Height", box ((v))) 
+            match isEnabled with None -> () | Some v -> yield ("IsEnabled", box ((v))) 
+            match classId with None -> () | Some v -> yield ("ClassId", box ((v))) 
+            match styleId with None -> () | Some v -> yield ("StyleId", box ((v))) 
+          |]
+
+        let create () =
+            box (new Xamarin.Forms.EntryCell())
+
+        let update (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
+            let target = (target :?> Xamarin.Forms.EntryCell)
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryLabel
+            let valueOpt = source.TryLabel
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Label "); target.Label <-  value
+            | Some _, None -> target.Label <- null
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryText
+            let valueOpt = source.TryText
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Text "); target.Text <-  value
+            | Some _, None -> target.Text <- null
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryKeyboard
+            let valueOpt = source.TryKeyboard
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Keyboard "); target.Keyboard <-  value
+            | Some _, None -> target.Keyboard <- Xamarin.Forms.Keyboard.Default
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPlaceholder
+            let valueOpt = source.TryPlaceholder
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Placeholder "); target.Placeholder <-  value
+            | Some _, None -> target.Placeholder <- null
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalTextAlignment
+            let valueOpt = source.TryHorizontalTextAlignment
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalTextAlignment "); target.HorizontalTextAlignment <-  value
+            | Some _, None -> target.HorizontalTextAlignment <- Xamarin.Forms.TextAlignment.Start
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryEntryCompleted
+            match prevValueOpt, source.TryEntryCompleted with
+            | Some prevValue, Some value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | Some prevValue, Some value -> target.Completed.RemoveHandler(prevValue); target.Completed.AddHandler(value)
+            | None, Some value -> target.Completed.AddHandler(value)
+            | Some prevValue, None -> target.Completed.RemoveHandler(prevValue)
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeight
+            let valueOpt = source.TryHeight
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting Height "); target.Height <-  value
+            | Some _, None -> target.Height <- -1.0
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | Some _, None -> target.IsEnabled <- true
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | Some _, None -> target.ClassId <- null
+            | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
+            | Some prevValue, Some value when prevValue = value -> ()
+            | prevOpt, Some value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | Some _, None -> target.StyleId <- null
+            | None, None -> ()
+        new XamlElement(typeof<Xamarin.Forms.EntryCell>, create, update, Map.ofArray attribs)
+
     /// Describes a Label in the view
     static member Label(?text: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?verticalTextAlignment: Xamarin.Forms.TextAlignment, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
@@ -7973,7 +8339,7 @@ type Xaml() =
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -8193,7 +8559,7 @@ type Xaml() =
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -8381,7 +8747,7 @@ type Xaml() =
             let target = (target :?> Xamarin.Forms.StackLayout)
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryChildren
             let collOpt = source.TryChildren
-            applyToIList prevCollOpt collOpt target.Children
+            updateIList prevCollOpt collOpt target.Children
                 (fun (x:XamlElement) -> x.CreateAsView())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -8437,7 +8803,7 @@ type Xaml() =
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -8733,7 +9099,7 @@ type Xaml() =
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -8961,7 +9327,7 @@ type Xaml() =
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -9336,7 +9702,7 @@ type Xaml() =
             let target = (target :?> Xamarin.Forms.CarouselPage)
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryChildren
             let collOpt = source.TryChildren
-            applyToIList prevCollOpt collOpt target.Children
+            updateIList prevCollOpt collOpt target.Children
                 (fun (x:XamlElement) -> x.CreateAsContentPage())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -9801,7 +10167,7 @@ type Xaml() =
             let target = (target :?> Xamarin.Forms.TabbedPage)
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryChildren
             let collOpt = source.TryChildren
-            applyToIList prevCollOpt collOpt target.Children
+            updateIList prevCollOpt collOpt target.Children
                 (fun (x:XamlElement) -> x.CreateAsPage())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -10770,7 +11136,7 @@ type Xaml() =
             let target = (target :?> Xamarin.Forms.ListView)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryListViewItems
             let valueOpt = source.TryListViewItems
-            applyToListViewItems prevValueOpt valueOpt target
+            updateListViewItems prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFooter
             let valueOpt = source.TryFooter
             match prevValueOpt, valueOpt with
@@ -10913,7 +11279,7 @@ type Xaml() =
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -11113,7 +11479,7 @@ type Xaml() =
             let target = (target :?> Xamarin.Forms.ListView)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryGroupListViewItemsSource
             let valueOpt = source.TryGroupListViewItemsSource
-            applyToListViewGroupedItems prevValueOpt valueOpt target
+            updateListViewGroupedItems prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFooter
             let valueOpt = source.TryFooter
             match prevValueOpt, valueOpt with
@@ -11249,7 +11615,7 @@ type Xaml() =
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
             let collOpt = source.TryGestureRecognizers
-            applyToIList prevCollOpt collOpt target.GestureRecognizers
+            updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
                 (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
@@ -11440,6 +11806,9 @@ module XamlCreateExtensions =
     /// Specifies a SwitchCell in the view description, initially with default attributes
     let switchCell = Xaml.SwitchCell()
 
+    /// Specifies a TableView in the view description, initially with default attributes
+    let tableView = Xaml.TableView()
+
     /// Specifies a Grid in the view description, initially with default attributes
     let grid = Xaml.Grid()
 
@@ -11478,6 +11847,9 @@ module XamlCreateExtensions =
 
     /// Specifies a Entry in the view description, initially with default attributes
     let entry = Xaml.Entry()
+
+    /// Specifies a EntryCell in the view description, initially with default attributes
+    let entryCell = Xaml.EntryCell()
 
     /// Specifies a Label in the view description, initially with default attributes
     let label = Xaml.Label()

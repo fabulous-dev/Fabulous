@@ -155,7 +155,7 @@ module Converters =
 
     // Incremental list maintenance: given a collection, and a previous version of that collection, perform
     // a reduced number of clear/add/remove/insert operations
-    let applyToIList
+    let updateIList
            (prevCollOpt: 'T[] option) 
            (collOpt: 'T[] option) 
            (targetColl: IList<'TargetT>) 
@@ -204,7 +204,7 @@ module Converters =
                     attach prevChildOpt newChild targetChild
 
 
-    let applyToListViewItems (prevCollOpt: 'T[] option) (coll: 'T[] option) (target: Xamarin.Forms.ListView) = 
+    let updateListViewItems (prevCollOpt: 'T[] option) (coll: 'T[] option) (target: Xamarin.Forms.ListView) = 
         let oc = 
             match target.ItemsSource with 
             | :? ObservableCollection<ListElementData<'T>> as oc -> oc
@@ -212,9 +212,9 @@ module Converters =
                 let oc = ObservableCollection<ListElementData<'T>>()
                 target.ItemsSource <- oc
                 oc
-        applyToIList prevCollOpt coll oc ListElementData (fun _ _ _ -> ()) (fun _ _ -> false) (fun _ _ _ -> failwith "no element reuse") 
+        updateIList prevCollOpt coll oc ListElementData (fun _ _ _ -> ()) (fun _ _ -> false) (fun _ _ _ -> failwith "no element reuse") 
 
-    let applyToListViewGroupedItems (prevCollOpt: ('T * 'T[])[] option) (coll: ('T * 'T[])[] option) (target: Xamarin.Forms.ListView) = 
+    let updateListViewGroupedItems (prevCollOpt: ('T * 'T[])[] option) (coll: ('T * 'T[])[] option) (target: Xamarin.Forms.ListView) = 
         let oc = 
             match target.ItemsSource with 
             | :? ObservableCollection<ListGroupData<'T>> as oc -> oc
@@ -222,7 +222,22 @@ module Converters =
                 let oc = ObservableCollection<ListGroupData<'T>>()
                 target.ItemsSource <- oc
                 oc
-        applyToIList prevCollOpt coll oc ListGroupData (fun _ _ _ -> ()) (fun _ _ -> false) (fun _ _ _ -> failwith "no element reuse")
+        updateIList prevCollOpt coll oc ListGroupData (fun _ _ _ -> ()) (fun _ _ -> false) (fun _ _ _ -> failwith "no element reuse")
+
+    let updateTableViewItems (prevCollOpt: (string * 'T[])[] option) (coll: (string * 'T[])[] option) (target: Xamarin.Forms.TableView) create canReuse update = 
+        let root = 
+            match target.Root with 
+            | null -> 
+                let v = TableRoot()
+                target.Root <- v
+                v
+            | v -> v
+        updateIList prevCollOpt coll root 
+            (fun (s, es) -> let section = TableSection(s) in section.Add(Seq.map create es); section) 
+            (fun _ _ _ -> ()) // attach
+            (fun _ _ -> true) // canReuse
+            (fun (prevTitle,prevChild) (newTitle, newChild) target -> 
+                updateIList (Some prevChild) (Some newChild) target create (fun _ _ _ -> ()) canReuse update) 
 
     let equalLayoutOptions (x:Xamarin.Forms.LayoutOptions) (y:Xamarin.Forms.LayoutOptions)  =
         x.Alignment = y.Alignment && x.Expands = y.Expands

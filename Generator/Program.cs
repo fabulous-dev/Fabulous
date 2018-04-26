@@ -111,6 +111,10 @@ namespace Generator
             {
                 return ModelType;
             }
+            if (this.BoundType == null)
+            {
+                throw new Exception($"no type for {this.Name}");
+            }
             return GetModelTypeInner(bindings, this.BoundType, hierarchy);
         }
         public static string GetModelTypeInner(Bindings bindings, TypeReference tref, IEnumerable<Tuple<TypeReference, TypeDefinition>> hierarchy)
@@ -386,7 +390,7 @@ namespace Generator
                         {
                             w.WriteLine($"            let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.Try{m.BoundUniqueName}");
                             w.WriteLine($"            let collOpt = source.Try{m.BoundUniqueName}");
-                            w.WriteLine($"            applyToIList prevCollOpt collOpt target.{m.Name}");
+                            w.WriteLine($"            updateIList prevCollOpt collOpt target.{m.Name}");
                             w.WriteLine($"                (fun (x:XamlElement) -> x.CreateAs{elementType}())");
                             if (m.Attached != null)
                             {

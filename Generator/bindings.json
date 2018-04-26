@@ -436,6 +436,34 @@
 			]
 		},
 		{
+			"name": "Xamarin.Forms.TableView",
+			"members": [
+				{
+					"name": "Intent",
+					"defaultValue": "Unchecked.defaultof<Xamarin.Forms.TableIntent>"
+				},
+				{
+					"name": "HasUnevenRows",
+					"defaultValue": "false"
+				},
+				{
+					"name": "RowHeight",
+					"defaultValue": "-1"
+				},
+				{
+					"name": "Root",
+					"uniqueName": "TableRoot",
+					"shortName": "items",
+					"defaultValue": "null",
+					"elementType": "TableSection",
+					"modelType": "(string * XamlElement[])[]",
+					"inputType": "(string * XamlElement list) list",
+					"convToModel": "(fun es -> es |> Array.ofList |> Array.map (fun (title, es) -> (title, Array.ofList es)))",
+					"updateCode": "updateTableViewItems prevValueOpt valueOpt target (fun (x:XamlElement) -> x.CreateAsCell()) (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType) (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))"
+				}
+			]
+		},
+		{
 			"name": "Xamarin.Forms.Grid",
 			"members": [
 				{
@@ -698,7 +726,7 @@
 					"uniqueName": "ImageSource",
 					"inputType": "string",
 					"modelType": "string",
-          "convToValue": "makeImageSource",
+					"convToValue": "makeImageSource",
 					"defaultValue": "null"
 				},
 				{
@@ -813,6 +841,38 @@
 					"defaultValue": "null",
 					"inputType": "Xamarin.Forms.TextChangedEventArgs -> unit",
 					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))"
+				}
+			]
+		},
+		{
+			"name": "Xamarin.Forms.EntryCell",
+			"members": [
+				{
+					"name": "Label",
+					"defaultValue": "null"
+				},
+				{
+					"name": "Text",
+					"defaultValue": "null"
+				},
+				{
+					"name": "Keyboard",
+					"defaultValue": "Xamarin.Forms.Keyboard.Default"
+				},
+				{
+					"name": "Placeholder",
+					"defaultValue": "null"
+				},
+				{
+					"name": "HorizontalTextAlignment",
+					"defaultValue": "Xamarin.Forms.TextAlignment.Start"
+				},
+				{
+					"name": "Completed",
+					"uniqueName": "EntryCompleted",
+					"defaultValue": "null",
+					"inputType": "string -> unit",
+					"convToModel": "(fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.EntryCell).Text))"
 				}
 			]
 		},
@@ -1079,14 +1139,14 @@
 					"name": "Content",
 					"defaultValue": "null"
 				},
-							{
-								"name": "OnSizeAllocatedCallback",
-								"shortName": "onSizeAllocated",
-								"modelType": "FSharp.Control.Handler<(double * double)>",
-								"inputType": "(double * double) -> unit",
-								"convToModel": "(fun f -> FSharp.Control.Handler<_>(fun _sender args -> f args))",
-								"updateCode": "(let target = (target :?> Elmish.XamarinForms.DynamicViews.CustomContentPage) in (match prevValueOpt with None -> () | Some f -> target.SizeAllocated.RemoveHandler(f)); (match valueOpt with None -> () | Some f -> target.SizeAllocated.AddHandler(f)))"
-							}
+				{
+					"name": "OnSizeAllocatedCallback",
+					"shortName": "onSizeAllocated",
+					"modelType": "FSharp.Control.Handler<(double * double)>",
+					"inputType": "(double * double) -> unit",
+					"convToModel": "(fun f -> FSharp.Control.Handler<_>(fun _sender args -> f args))",
+					"updateCode": "(let target = (target :?> Elmish.XamarinForms.DynamicViews.CustomContentPage) in (match prevValueOpt with None -> () | Some f -> target.SizeAllocated.RemoveHandler(f)); (match valueOpt with None -> () | Some f -> target.SizeAllocated.AddHandler(f)))"
+				}
 			]
 		},
 		{
@@ -1174,7 +1234,7 @@
 					"name": "ImageSource",
 					"inputType": "string",
 					"modelType": "string",
-          "convToValue": "makeImageSource",
+					"convToValue": "makeImageSource",
 					"defaultValue": "null"
 				}
 			]
@@ -1199,7 +1259,7 @@
 					"inputType": "XamlElement list",
 					"modelType": "XamlElement[]",
 					"convToModel": "Array.ofList",
-					"updateCode": "applyToListViewItems prevValueOpt valueOpt target"
+					"updateCode": "updateListViewItems prevValueOpt valueOpt target"
 				},
 				//{
 				//	"name": "ItemTemplate",
@@ -1312,7 +1372,7 @@
 					"inputType": "(XamlElement * XamlElement list) list",
 					"modelType": "(XamlElement * XamlElement[])[]",
 					"convToModel": "(fun es -> es |> Array.ofList |> Array.map (fun (e,l) -> (e, Array.ofList l)))",
-					"updateCode": "applyToListViewGroupedItems prevValueOpt valueOpt target"
+					"updateCode": "updateListViewGroupedItems prevValueOpt valueOpt target"
 				},
 				//{
 				//	"name": "ItemTemplate",
