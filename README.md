@@ -13,7 +13,7 @@ Getting started with Elmish.XamarinForms
 2. Add nuget package `Elmish.XamarinForms` to to your shared code project.
 3. Put the sample code below in your shared app library
 
-The Elmish Stuff
+A Basic Example
 ------
 Here is an example of an Elmish model (`Model`) with a composite model inside of it (`ClockModel`) and the corresponding messages:
 ```fsharp
