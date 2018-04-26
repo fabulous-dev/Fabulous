@@ -46,18 +46,40 @@ namespace Generator
 
     class MemberBinding
     {
-        // Input
+        /// The name of the property in the target
         public string Name { get; set; }
+        
+        /// A unique name of the property in the model
         public string UniqueName { get; set; }
+        
+        /// The lowercase name used as a parameter in the API
         public string ShortName { get; set; }
-        public string Default { get; set; }
-        public string Equality { get; set; }
-        public string Conv { get; set; }
-        public string Apply { get; set; }
-        public string ApplyCode { get; set; }
-        public string ModelType { get; set; }
-        public string ElementType { get; set; }
+        
+        /// The input type type of the property as seen in the API
         public string InputType { get; set; }
+
+        /// The default value when applying to the target
+        public string Default { get; set; }
+
+        //public string Equality { get; set; }
+
+        /// Converts the input type to the model type
+        public string Conv { get; set; }
+
+        /// The expression to convert the model type to the value to be assigned to the property in the target
+        public string Apply { get; set; }
+
+        /// The full code for incrementally assigning to the property in the target
+        public string ApplyCode { get; set; }
+
+        /// The type as stored in the model
+        /// 
+        public string ModelType { get; set; }
+
+        /// The element type of the collection property
+        public string ElementType { get; set; }
+
+        /// The attached properties for items in the collection property
         public List<MemberBinding> Attached { get; set; }
 
         // Output
@@ -65,8 +87,10 @@ namespace Generator
 
         public TypeReference BoundType =>
             (Definition is PropertyDefinition p) 
-              ? p.PropertyType 
-              : ((EventDefinition)Definition).EventType;
+              ? p.PropertyType
+              : (Definition is EventDefinition e)
+              ? e.EventType
+              : null;
 
         public string BoundUniqueName => string.IsNullOrEmpty(UniqueName) ? Name : UniqueName;
         public string LowerBoundUniqueName => char.ToLowerInvariant (BoundUniqueName[0]) + BoundUniqueName.Substring (1);
@@ -185,7 +209,7 @@ namespace Generator
                             m.Definition = e;
                         }
                         else {
-                            throw new Exception ($"Could not find member `{m.Name}`");
+                            Console.WriteLine($"Could not find member `{m.Name}`");
                         }
                     }
                 }
@@ -353,52 +377,41 @@ namespace Generator
                     w.WriteLine($"            let target = (target :?> {tdef.FullName})");
                     foreach (var m in allMembers)
                     {
-                        var apply = 
-                            !string.IsNullOrWhiteSpace(m.Apply)
-                               ? $"target.{m.Name} <- " + m.Apply
-                               : !string.IsNullOrWhiteSpace(m.ApplyCode)
-                                  ? m.ApplyCode
-                                  : "";
+                        var hasApply = !string.IsNullOrWhiteSpace(m.Apply) || !string.IsNullOrWhiteSpace(m.ApplyCode);
+
                         var bt = ResolveGenericParameter(m.BoundType, hierarchy);
                         string elementType = m.GetElementType(hierarchy);
-                        if (elementType != null && elementType != "obj" && string.IsNullOrWhiteSpace(apply))
+                        if (elementType != null && elementType != "obj" && !hasApply)
                         {
                             w.WriteLine($"            let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.Try{m.BoundUniqueName}");
-                            w.WriteLine($"            match prevCollOpt, source.Try{m.BoundUniqueName} with");
-                            w.WriteLine($"            // For structured objects, amortize on reference equality");
-                            w.WriteLine($"            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()");
-                            w.WriteLine($"            | _, Some coll when coll <> null && coll.Length > 0 ->");
-                            w.WriteLine($"                applyToIList");
-                            w.WriteLine($"                    prevCollOpt");
-                            w.WriteLine($"                    coll");
-                            w.WriteLine($"                    target.{m.Name}");
-                            w.WriteLine($"                    (fun (x:XamlElement) -> x.CreateAs{elementType}())");
+                            w.WriteLine($"            let collOpt = source.Try{m.BoundUniqueName}");
+                            w.WriteLine($"            applyToIList prevCollOpt collOpt target.{m.Name}");
+                            w.WriteLine($"                (fun (x:XamlElement) -> x.CreateAs{elementType}())");
                             if (m.Attached != null)
                             {
-                                w.WriteLine($"                    (fun prevChildOpt newChild targetChild -> ");
+                                w.WriteLine($"                (fun prevChildOpt newChild targetChild -> ");
                                 foreach (var ap in m.Attached)
                                 {
-                                    w.WriteLine($"                        // Adjust the attached properties");
-                                    w.WriteLine($"                        match (match prevChildOpt with None -> None | Some prevChild -> prevChild.Try{ap.BoundUniqueName}), newChild.Try{ap.BoundUniqueName} with");
-                                    w.WriteLine($"                        | Some prev, Some v when prev = v -> ()");
+                                    w.WriteLine($"                    // Adjust the attached properties");
+                                    w.WriteLine($"                    match (match prevChildOpt with None -> None | Some prevChild -> prevChild.Try{ap.BoundUniqueName}), newChild.Try{ap.BoundUniqueName} with");
+                                    w.WriteLine($"                    | Some prev, Some v when prev = v -> ()");
                                     var apApply = string.IsNullOrWhiteSpace(ap.Apply) ? "" : ap.Apply + " ";
-                                    w.WriteLine($"                        | prevOpt, Some value -> {tdef.FullName}.Set{ap.Name}(targetChild, {apApply}value)");
-                                    w.WriteLine($"                        | Some _, None -> {tdef.FullName}.Set{ap.Name}(targetChild, {ap.Default}) // TODO: not always perfect, should set back to original default?");
-                                    w.WriteLine($"                        | _ -> ()");
+                                    w.WriteLine($"                    | prevOpt, Some value -> {tdef.FullName}.Set{ap.Name}(targetChild, {apApply}value)");
+                                    w.WriteLine($"                    | Some _, None -> {tdef.FullName}.Set{ap.Name}(targetChild, {ap.Default}) // TODO: not always perfect, should set back to original default?");
+                                    w.WriteLine($"                    | _ -> ()");
                                 }
-                                w.WriteLine($"                        ())");
+                                w.WriteLine($"                    ())");
                             }
                             else
                             {
-                                w.WriteLine($"                    (fun _ _ _ -> ())");
+                                w.WriteLine($"                (fun _ _ _ -> ())");
                             }
-                            w.WriteLine($"                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)");
-                            w.WriteLine($"                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))");
-                            w.WriteLine($"            | _ -> target.{m.Name}.Clear()");
+                            w.WriteLine($"                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)");
+                            w.WriteLine($"                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))");
                         }
                         else
                         {
-                            if (bindings.FindType(bt.FullName) is TypeBinding b && string.IsNullOrWhiteSpace(apply))
+                            if (bt != null && bindings.FindType(bt.FullName) is TypeBinding b && !hasApply)
                             {
                                 if (bt.IsValueType)
                                 {
@@ -427,7 +440,7 @@ namespace Generator
                                     w.WriteLine($"            | None, None -> ()");
                                 }
                             }
-                            else if ((bt.Name.EndsWith("Handler") || bt.Name.EndsWith("Handler`1") || bt.Name.EndsWith("Handler`2")) &&  string.IsNullOrWhiteSpace(apply))
+                            else if (bt != null && (bt.Name.EndsWith("Handler") || bt.Name.EndsWith("Handler`1") || bt.Name.EndsWith("Handler`2")) &&  !hasApply)
                             {
                                 w.WriteLine($"            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.Try{m.BoundUniqueName}");
                                 w.WriteLine($"            match prevValueOpt, source.Try{m.BoundUniqueName} with");
@@ -440,18 +453,27 @@ namespace Generator
                             else
                             {
                                 w.WriteLine($"            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.Try{m.BoundUniqueName}");
-                                w.WriteLine($"            match prevValueOpt, source.Try{m.BoundUniqueName} with");
-                                w.WriteLine($"            | Some prevValue, Some value when prevValue = value -> ()");
-                                if (!string.IsNullOrWhiteSpace(apply))
+                                w.WriteLine($"            let valueOpt = source.Try{m.BoundUniqueName}");
+                                if (!string.IsNullOrWhiteSpace(m.ApplyCode))
                                 {
-                                    w.WriteLine($"            | prevOpt, Some value -> {apply}");
+                                    w.WriteLine($"            {m.ApplyCode}"); // may reference prevValueOpt, valueOpt, target
+                                }
+                                else if (!string.IsNullOrWhiteSpace(m.ApplyCode))
+                                {
+                                    w.WriteLine($"            match prevValueOpt, valueOpt with");
+                                    w.WriteLine($"            | Some prevValue, Some value when prevValue = value -> ()");
+                                    w.WriteLine($"            | prevOpt, Some value -> target.{m.Name} <- {m.Apply} value");
+                                    w.WriteLine($"            | Some _, None -> target.{m.Name} <- {m.Default}");
+                                    w.WriteLine($"            | None, None -> ()");
                                 }
                                 else
                                 {
+                                    w.WriteLine($"            match prevValueOpt, valueOpt with");
+                                    w.WriteLine($"            | Some prevValue, Some value when prevValue = value -> ()");
                                     w.WriteLine($"            | prevOpt, Some value -> target.{m.Name} <- value");
+                                    w.WriteLine($"            | Some _, None -> target.{m.Name} <- {m.Default}");
+                                    w.WriteLine($"            | None, None -> ()");
                                 }
-                                w.WriteLine($"            | Some _, None -> target.{m.Name} <- {m.Default} // TODO: not always perfect, should set back to original default?");
-                                w.WriteLine($"            | None, None -> ()");
                             }
                         }
                     }

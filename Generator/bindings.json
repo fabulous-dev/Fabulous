@@ -1066,10 +1066,18 @@
 		},
 		{
 			"name": "Xamarin.Forms.ContentPage",
+			"customType": "Elmish.XamarinForms.DynamicViews.CustomContentPage",
 			"members": [
 				{
 					"name": "Content",
 					"default": "null"
+				},
+				{
+					"name": "OnSizeAllocatedCallback",
+					"shortName": "onSizeAllocated",
+					"modelType": "(Xamarin.Forms.View -> (double * double) -> unit)",
+					"default": "None",
+					"applyCode": "(match valueOpt with None -> () | Some f -> (target :?> Elmish.XamarinForms.DynamicViews.CustomContentPage).OnSizeAllocatedCallback <- Some f)"
 				}
 			]
 		},
@@ -1180,7 +1188,7 @@
 					"inputType": "XamlElement list",
 					"modelType": "XamlElement[]",
 					"conv": "Array.ofList",
-					"applyCode": "applyToListViewItems prevValueOpt value target",
+					"applyCode": "applyToListViewItems prevValueOpt valueOpt target",
 					"default": "null"
 				},
 				//{
@@ -1294,7 +1302,7 @@
 					"inputType": "(XamlElement * XamlElement list) list",
 					"modelType": "(XamlElement * XamlElement[])[]",
 					"conv": "(fun es -> es |> Array.ofList |> Array.map (fun (e,l) -> (e, Array.ofList l)))",
-					"applyCode": "applyToListViewGroupedItems prevValueOpt value target",
+					"applyCode": "applyToListViewGroupedItems prevValueOpt valueOpt target",
 					"default": "null"
 				},
 				//{

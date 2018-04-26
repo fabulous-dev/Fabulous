@@ -29,7 +29,7 @@ type XamlElement(targetType: Type, create: (unit -> obj), apply: (XamlElement op
 
     /// Incrementally apply a description to a visual element
     member x.ApplyIncremental(prev: XamlElement, target: obj) = 
-        //printfn "Update %O" x.TargetType
+        printfn "Update %O" x.TargetType
         apply (Some prev) x target
 
     /// Apply a different description to a similar visual element
@@ -38,7 +38,7 @@ type XamlElement(targetType: Type, create: (unit -> obj), apply: (XamlElement op
 
     /// Create the UI element from the view description
     member x.Create() : obj =
-        //printfn "Create %O" x.TargetType
+        printfn "Create %O" x.TargetType
         let target = x.CreateMethod()
         x.Apply(target)
         target
@@ -104,6 +104,18 @@ type CustomListView() =
 type CustomGroupListView() = 
     inherit ListView(ItemTemplate=DataTemplate(typeof<XamlElementCell>), GroupHeaderTemplate=DataTemplate(typeof<XamlElementCell>))
 
+type CustomContentPage() as self = 
+    inherit ContentPage()
+    do Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(self, true)
+    member val OnSizeAllocatedCallback: (View -> (double * double) -> unit) option = None with get,set 
+
+    override this.OnSizeAllocated(width, height) =
+        base.OnSizeAllocated(width, height)
+        match this.OnSizeAllocatedCallback with 
+        | Some f -> f self.Content (width, height)
+        | None -> ()
+
+
 [<AutoOpen>]
 module Converters =
     open System.Collections.ObjectModel
@@ -145,13 +157,17 @@ module Converters =
     // a reduced number of clear/add/remove/insert operations
     let applyToIList
            (prevCollOpt: 'T[] option) 
-           (coll: 'T[]) 
+           (collOpt: 'T[] option) 
            (targetColl: IList<'TargetT>) 
            (create: 'T -> 'TargetT)
            (attach: 'T option -> 'T -> 'TargetT -> unit) // adjust attached properties
            (canReuse : 'T -> 'T -> bool) // Used to check if reuse is possible
            (apply: 'T -> 'T -> 'TargetT -> unit) // Incremental element-wise apply, only if element reuse is allowed
         =
+          match prevCollOpt, collOpt with 
+          | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
+          | _, None -> targetColl.Clear()
+          | _, Some coll ->
               if (coll = null || coll.Length = 0) then
                 targetColl.Clear()
               else
@@ -188,7 +204,7 @@ module Converters =
                     attach prevChildOpt newChild targetChild
 
 
-    let applyToListViewItems (prevCollOpt: 'T[] option) (coll: 'T[]) (target: Xamarin.Forms.ListView) = 
+    let applyToListViewItems (prevCollOpt: 'T[] option) (coll: 'T[] option) (target: Xamarin.Forms.ListView) = 
         let oc = 
             match target.ItemsSource with 
             | :? ObservableCollection<ListElementData<'T>> as oc -> oc
@@ -198,7 +214,7 @@ module Converters =
                 oc
         applyToIList prevCollOpt coll oc ListElementData (fun _ _ _ -> ()) (fun _ _ -> false) (fun _ _ _ -> failwith "no element reuse") 
 
-    let applyToListViewGroupedItems (prevCollOpt: ('T * 'T[])[] option) (coll: ('T * 'T[])[]) (target: Xamarin.Forms.ListView) = 
+    let applyToListViewGroupedItems (prevCollOpt: ('T * 'T[])[] option) (coll: ('T * 'T[])[] option) (target: Xamarin.Forms.ListView) = 
         let oc = 
             match target.ItemsSource with 
             | :? ObservableCollection<ListGroupData<'T>> as oc -> oc

@@ -101,14 +101,14 @@ module App =
         | UpdateGridPortal (x,y) -> { model with GridPortal = (x,y) }
 
     let pickerItems = 
-        [ ( "Aqua", Color.Aqua ); ( "Black", Color.Black );
-          ( "Blue", Color.Blue ); ( "Fucshia", Color.Fuchsia);
-          ( "Gray", Color.Gray ); ( "Green", Color.Green );
-          ( "Lime", Color.Lime ); ( "Maroon", Color.Maroon );
-          ( "Navy", Color.Navy ); ( "Olive", Color.Olive );
-          ( "Purple", Color.Purple ); ( "Red", Color.Red );
-          ( "Silver", Color.Silver ); ( "Teal", Color.Teal );
-          ( "White", Color.White ); ( "Yellow", Color.Yellow ) ]
+        [ ("Aqua", Color.Aqua); ("Black", Color.Black);
+          ("Blue", Color.Blue); ("Fucshia", Color.Fuchsia);
+          ("Gray", Color.Gray); ("Green", Color.Green);
+          ("Lime", Color.Lime); ("Maroon", Color.Maroon);
+          ("Navy", Color.Navy); ("Olive", Color.Olive);
+          ("Purple", Color.Purple); ("Red", Color.Red);
+          ("Silver", Color.Silver); ("Teal", Color.Teal);
+          ("White", Color.White); ("Yellow", Color.Yellow ) ]
 
     type Xaml with 
         static member ScrollingContentPage(title, children) =
@@ -124,10 +124,10 @@ module App =
             Xaml.Label(text= sprintf "%d" count, horizontalOptions=LayoutOptions.CenterAndExpand)
                 
             Xaml.Label(text="Button:")
-            Xaml.Button(text="Increment", command= (fun () -> dispatch Increment), horizontalOptions=LayoutOptions.CenterAndExpand)
+            Xaml.Button(text="Increment", command=(fun () -> dispatch Increment), horizontalOptions=LayoutOptions.CenterAndExpand)
                 
             Xaml.Label(text="Button (cornerRadius=5):")
-            Xaml.Button(text="Decrement", cornerRadius=5, command= (fun () -> dispatch Decrement), horizontalOptions=LayoutOptions.CenterAndExpand)
+            Xaml.Button(text="Decrement", cornerRadius=5, command=(fun () -> dispatch Decrement), horizontalOptions=LayoutOptions.CenterAndExpand)
                
            ]))
 
@@ -137,10 +137,10 @@ module App =
             Xaml.Label(text= sprintf "%d" count, horizontalOptions=LayoutOptions.CenterAndExpand)
 
             Xaml.Label(text="Button:")
-            Xaml.Button(text="Increment", command= (fun () -> dispatch IncrementForSlider), horizontalOptions=LayoutOptions.CenterAndExpand)
+            Xaml.Button(text="Increment", command=(fun () -> dispatch IncrementForSlider), horizontalOptions=LayoutOptions.CenterAndExpand)
                 
             Xaml.Label(text="Button:")
-            Xaml.Button(text="Decrement", command= (fun () -> dispatch DecrementForSlider), horizontalOptions=LayoutOptions.CenterAndExpand)
+            Xaml.Button(text="Decrement", command=(fun () -> dispatch DecrementForSlider), horizontalOptions=LayoutOptions.CenterAndExpand)
                 
             Xaml.Label(text="Slider:")
             Xaml.Slider(minimum=0.0, maximum=10.0, value= double step, 
@@ -157,10 +157,10 @@ module App =
             Xaml.ActivityIndicator(isRunning=(count > 0), horizontalOptions=LayoutOptions.CenterAndExpand)
                 
             Xaml.Label(text="Button:")
-            Xaml.Button(text="Increment", command= (fun () -> dispatch IncrementForActivityIndicator), horizontalOptions=LayoutOptions.CenterAndExpand)
+            Xaml.Button(text="Increment", command=(fun () -> dispatch IncrementForActivityIndicator), horizontalOptions=LayoutOptions.CenterAndExpand)
 
             Xaml.Label(text="Button:")
-            Xaml.Button(text="Decrement", command= (fun () -> dispatch DecrementForActivityIndicator), horizontalOptions=LayoutOptions.CenterAndExpand)
+            Xaml.Button(text="Decrement", command=(fun () -> dispatch DecrementForActivityIndicator), horizontalOptions=LayoutOptions.CenterAndExpand)
                 
           ]))
 
@@ -224,14 +224,14 @@ module App =
 
          amortize () (fun model () -> 
           Xaml.NonScrollingContentPage("Grid",
-           [Xaml.Label(text=sprintf "Grid (nxn, auto, fixed size):")
+           [Xaml.Label(text=sprintf "Grid (6x6, auto):")
             Xaml.Grid(rowdefs= [for i in 1 .. 6 -> box "auto"], coldefs=[for i in 1 .. 6 -> box "auto"], 
                       children = [ for i in 1 .. 6 do for j in 1 .. 6 -> Xaml.BoxView(Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0) ).GridRow(i-1).GridColumn(j-1) ] )
            ]))
 
          amortize () (fun model () -> 
           Xaml.NonScrollingContentPage("Grid",
-           [Xaml.Label(text=sprintf "Grid (nxn, *, fixed size):")
+           [Xaml.Label(text=sprintf "Grid (6x6, *):")
             Xaml.Grid(rowdefs= [for i in 1 .. 6 -> box "*"], coldefs=[for i in 1 .. 6 -> box "*"], 
                       children = [ for i in 1 .. 6 do for j in 1 .. 6 -> Xaml.BoxView(Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0) ).GridRow(i-1).GridColumn(j-1) ] )
            ]))

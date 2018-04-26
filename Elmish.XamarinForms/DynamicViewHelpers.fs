@@ -48,17 +48,3 @@ module SimplerHelpers =
              //printfn "calculated key = %A --> %A" bkey res
              res
         
-    // Helper page for the TicTacToe sample
-    // Need to generlize the HeightRequest phase of the XF content digestion process...
-    type HelperPage(?viewAllocatedSizeFixup) as self =
-        inherit ContentPage()
-        do Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(self, true)
-
-        // painful.... It is unfortunately not possible to simpy recreate the whole
-        // view here, you have to mutate the content in-place.
-        override this.OnSizeAllocated(width, height) =
-            base.OnSizeAllocated(width, height)
-            match viewAllocatedSizeFixup with 
-            | Some f -> f self.Content (width, height)
-            | None -> ()
-
