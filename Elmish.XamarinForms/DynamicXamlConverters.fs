@@ -29,7 +29,7 @@ type XamlElement(targetType: Type, create: (unit -> obj), apply: (XamlElement op
 
     /// Incrementally apply a description to a visual element
     member x.ApplyIncremental(prev: XamlElement, target: obj) = 
-        printfn "Update %O" x.TargetType
+        Debug.WriteLine (sprintf "Update %O" x.TargetType)
         apply (Some prev) x target
 
     /// Apply a different description to a similar visual element
@@ -38,7 +38,7 @@ type XamlElement(targetType: Type, create: (unit -> obj), apply: (XamlElement op
 
     /// Create the UI element from the view description
     member x.Create() : obj =
-        printfn "Create %O" x.TargetType
+        Debug.WriteLine (sprintf "Create %O" x.TargetType)
         let target = x.CreateMethod()
         x.Apply(target)
         target

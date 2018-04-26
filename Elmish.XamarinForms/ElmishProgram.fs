@@ -162,7 +162,6 @@ module StaticView =
         for (bindingName, binding) in bindings do 
             match binding with 
             | BindSubModel (ViewSubModel (initf, _, _, _, _)) -> 
-                Trace.WriteLine (sprintf "view: seting data context for %s" bindingName)
                 let subModel = viewModel.[bindingName]
                 initf subModel
             | _ -> ()
@@ -171,7 +170,6 @@ module StaticView =
         for (bindingName, binding) in bindings do 
             match binding with 
             | BindSubModel (ViewSubModel (initf, _, _, _, _)) -> 
-                Trace.WriteLine (sprintf "view: seting data context for %s" bindingName)
                 let subModel = viewModel.[bindingName]
                 initf subModel
             | _ -> ()
@@ -236,7 +234,7 @@ type Program<'model, 'msg, 'view> =
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module Program =
     let internal onError (text: string, ex: exn) = 
-        Trace.WriteLine (sprintf "%s: %A" text ex)
+        Debug.WriteLine (sprintf "%s: %A" text ex)
 
     /// Typical program, new commands are produced by `init` and `update` along with the new state.
     let mkProgram init update view =
@@ -261,13 +259,13 @@ module Program =
     let withConsoleTrace (program: Program<'model, 'msg, 'view>) =
         let traceInit () =
             let initModel,cmd = program.init ()
-            printfn "Initial state: %A" initModel
+            Debug.WriteLine (sprintf "Initial state: %A" initModel)
             initModel,cmd
 
         let traceUpdate msg model =
-            printfn "New message: %A" msg
+            Debug.WriteLine (sprintf "New message: %A" msg)
             let newModel,cmd = program.update msg model
-            printfn "Updated state: %A" newModel
+            Debug.WriteLine (sprintf "Updated state: %A" newModel)
             newModel,cmd
 
         { program with
@@ -288,7 +286,7 @@ module Program =
     /// Starts the Elmish dispatch loop for the page with the given Elmish program
     let _run debug  (program: Program<_, _, _>)  = 
 
-        Trace.WriteLine "run: computing initial model"
+        Debug.WriteLine "run: computing initial model"
 
         // Get the initial model
         let (model,cmd) = program.init ()
@@ -299,7 +297,7 @@ module Program =
         let mutable dispatchImpl = (fun msg -> initialMessages.Add(msg))
         let dispatch msg = dispatchImpl msg
 
-        Trace.WriteLine "run: computing static components of view"
+        Debug.WriteLine "run: computing static components of view"
 
         // Extract the static content from the view
         let viewInfo = program.view ()
@@ -329,7 +327,7 @@ module Program =
             with ex ->
                 //System.Diagnostics.Debugger.Log(ex.Message)
                 //System.Diagnostics.Debug.Fail(ex.Message)
-                System.Diagnostics.Debugger.Break()
+                //System.Diagnostics.Debugger.Break()
                 program.onError ("Unable to process a message:", ex)
 
         and updateView model = 
@@ -349,7 +347,6 @@ module Program =
                         Choice2Of2 (pageDescription, mainPage, contentf)
 
                 lastViewData <- Some viewData
-                Trace.WriteLine "view: set data context"
 
             | Some prevViewData ->
                 let viewData = 
@@ -367,11 +364,11 @@ module Program =
         initialMessages.Clear()
         dispatchImpl <- (fun msg -> Device.BeginInvokeOnMainThread(fun () -> processMsg msg))
 
-        Trace.WriteLine "updating the initial view"
+        Debug.WriteLine "updating the initial view"
 
         updateView model 
 
-        Trace.WriteLine "dispatching initial commands"
+        Debug.WriteLine "dispatching initial commands"
         for sub in (program.subscribe model @ cmd) do
             sub dispatch
         for initialMsg in initialMsgs do 
@@ -393,7 +390,7 @@ module Program =
           onError = program.onError
           view = (fun () -> 
               let page, contents, navMap = program.view ()
-              Trace.WriteLine "view: setting global navigation map"
+              Debug.WriteLine "setting global navigation map"
               // TODO: modify the Elmish framework we use to remove this global state and pass it into all commands??
               Nav.globalNavMap <- (navMap |> List.map (fun (tg, page) -> ((tg :> System.IComparable), page)) |> Map.ofList)
               page, contents  )}
