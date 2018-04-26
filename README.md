@@ -5,72 +5,34 @@ Xamarin.Forms done the Elmish Way
 
 Never write a ViewModel class again!  Conquer the world with clean dynamic UIs!
 
-This library uses a variation of [elmish](https://fable-elmish.github.io/), an Elm architecture implemented in F#, to build Xamarin.Forms applications. Fable-elmish was originally written for [Fable](https://github.com/fable-compiler) applications, however it is used here for Xamarin.Forms. It is highly recommended to have a look at the [elmish docs site](https://fable-elmish.github.io/elmish/) if you are not familiar with the Elm architecture.
+This library uses a variation of [elmish](https://fable-elmish.github.io/), an Elm architecture implemented in F#, to build Xamarin.Forms applications. Fable-elmish was originally written for [Fable](https://github.com/fable-compiler) applications, however it is used here for Xamarin.Forms. Have a look at the [elmish docs site](https://fable-elmish.github.io/elmish/) if you are not familiar with the Elm architecture.
 
 Getting started with Elmish.XamarinForms
 ------
-1. Create a Xamarin app in Visual Studio or Visual Studio Code.  Make sure your shared code is an F# .NET Standard 2.0 Library project. 
+1. Create a blank F# Xamarin Forms app in Visual Studio or Visual Studio Code.  Make sure your shared code is an F# .NET Standard 2.0 Library project. 
 2. Add nuget package `Elmish.XamarinForms` to to your shared code project.
-3. Put the sample code below in your library
-4. Reference your project in your Xamarin project.
+3. Put the sample code below in your shared app library
 
 The Elmish Stuff
 ------
 Here is an example of an Elmish model (`Model`) with a composite model inside of it (`ClockModel`) and the corresponding messages:
 ```fsharp
-    type ClockMsg =
-        | Tick of DateTime
-
-    type ClockModel =
-        { Time: DateTime }
-
     type Msg =
-        | ClockMsg of ClockMsg
-        | Increment
-        | Decrement
         | Pressed
-        | SetStepSize of int
 
     type Model = 
-        { Count: int
-          StepSize: int
-          Pressed: bool
-          Clock: ClockModel }
+        { Pressed: bool }
 ```
 The init function returns your initial state, and each model gets an update function for message processing:
 ```fsharp
-    let init() = { Count = 0; StepSize = 1; Clock = { Time = DateTime.Now }; Pressed=false}
+    let init() = { Pressed=false}
     
-    let clockUpdate (msg:ClockMsg) (model:ClockModel) =
-        match msg with
-        | Tick t -> { model with Time = t }
-
     let update (msg:Msg) (model:Model) =
         match msg with
         | Pressed -> { model with Pressed = true }
-        | Increment -> { model with Count = model.Count + model.StepSize }
-        | Decrement -> { model with Count = model.Count - model.StepSize }
-        | SetStepSize n -> { model with StepSize = n }
-        | ClockMsg m -> { model with Clock = clockUpdate m model.Clock }
 ```
-Subscriptions, which are events sent from outside the view or the dispatch loop, are created using `Cmd.ofSub`. For example, dispatching events on a timer:
-```fsharp
-    let timerTick dispatch =
-        let timer = new System.Timers.Timer(1.0)
-        timer.Elapsed.Subscribe (fun _ -> dispatch (System.DateTime.Now |> Tick |> ClockMsg)) |> ignore
-        timer.Enabled <- true
-        timer.Start()
-
-    let subscribe model =
-        Cmd.ofSub timerTick
-```
-
-
-Binding the Elmish to the XAML (Dynamic Views)
-------
-
-Your `view` function can compute new content. A generated immutable Xaml description
-with incremental (differential) update application plus an F# DSL is provided
+Your `view` function computes an immutable Xaml-like description.
+Incremental (differential) update application plus an F# DSL is provided
 for this in ``Elmish.XamarinForms.DynamicViews``.
 
 ```fsharp
@@ -85,6 +47,9 @@ module App =
         else
             Xaml.Button(text="Press Me!", command= (fun () -> dispatch Pressed))
 ```
+Dynamic Views excel in cases where the existence, characteristics and layout of the view depends on information in the model.
+In the above example, the choice between a label and button depends on the `model.Pressed` value.
+
 Your application must be started as follows:
 ```fsharp
     let page = 
@@ -92,21 +57,50 @@ Your application must be started as follows:
         |> Program.withConsoleTrace
         |> Program.withDynamicView
         |> Program.run
+
+```
+And assign to the MainPage of your app:
+
+```
+type App () = 
+    inherit Application ()
+
+    do base.MainPage <- page
 ```
 
-Summary
-* The immutable Xaml model is [generated code](https://github.com/fsprojects/Elmish.XamarinForms/blob/954c3fc6d38ff1a8b308e6cf336571eef8d3e57e/Elmish.XamarinForms/DynamicXaml.fs)
-* There is only one UI element type (XamlElement, an immutable property bag).  Fable uses this approach pretty well.
-* All properties [are extension members that access the property bag](https://github.com/fsprojects/Elmish.XamarinForms/blob/954c3fc6d38ff1a8b308e6cf336571eef8d3e57e/Elmish.XamarinForms/DynamicXaml.fs#L185, also https://github.com/fsprojects/Elmish.XamarinForms/blob/954c3fc6d38ff1a8b308e6cf336571eef8d3e57e/Elmish.XamarinForms/DynamicXaml.fs#L491)
-* Safe creation through [`Xaml.Button(...)`](https://github.com/fsprojects/Elmish.XamarinForms/blob/954c3fc6d38ff1a8b308e6cf336571eef8d3e57e/Elmish.XamarinForms/DynamicXaml.fs#L1248) etc.  
-* Some F# DSL helpers, e.g. [`button |> withText "Hello"`](https://github.com/fsprojects/Elmish.XamarinForms/blob/954c3fc6d38ff1a8b308e6cf336571eef8d3e57e/Elmish.XamarinForms/DynamicXaml.fs#L729) etc.
-* The incrementalization is mostly done.
+Example Xaml descriptions
+------
 
+The sample [AllControls](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Samples/AllControls/AllControls/AllControls.fs) contains examples of instantiating most controls in `Xamarin.Forms.Core`.
+
+<img src="https://user-images.githubusercontent.com/7204669/39318922-57c95174-4977-11e8-94a9-cc385101ce5d.png" width="100">
+<img src="https://user-images.githubusercontent.com/7204669/39318926-59f844e6-4977-11e8-9834-325a6517ced6.png" width="100">
+<img src="https://user-images.githubusercontent.com/7204669/39318929-5b66c776-4977-11e8-8317-ee1c121301d4.png" width="100">
+<img src="https://user-images.githubusercontent.com/7204669/39318934-5cbe3c3a-4977-11e8-92aa-c3fdf644b01c.png" width="100">
+<img src="https://user-images.githubusercontent.com/7204669/39318936-5e2380bc-4977-11e8-8912-f078744a2bde.png" width="100">
+<img src="https://user-images.githubusercontent.com/7204669/39318938-5f6ec4f4-4977-11e8-97a9-779edd3594bc.png" width="100">
+<img src="https://user-images.githubusercontent.com/7204669/39318941-60c1b0f0-4977-11e8-8a4a-57e17ef8c6ec.png" width="100">
+
+
+More on Dynamic Views
+------
+
+* The immutable Xaml model is [generated code](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms/DynamicXaml.fs)
+* There is only one UI element type (XamlElement, an immutable property bag).  Fable uses this approach pretty well.
+* All properties [are extension members that access the property bag](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms/DynamicXaml.fs#L185, also https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms/DynamicXaml.fs#L491)
+* Safe creation through [`Xaml.Button(...)`](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms/DynamicXaml.fs#L1248) etc.  
+* Some F# DSL helpers, e.g. [`button |> withText "Hello"`](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms/DynamicXaml.fs#L729) etc.
 
 Not done:
+* Menu, MenuItem
+* NavigationBar
 * RelativeLayout
 * FlexLayout
 * AbsoluteLayout
+
+Examples of Dynamic Views
+------
+
 
 Binding the Elmish to the XAML (Static Views)
 ------
@@ -170,6 +164,22 @@ type CounterApp () =
 
         base.MainPage <- page
 ```
+
+Subscriptions
+------
+Subscriptions, which are events sent from outside the view or the dispatch loop, are created using `Cmd.ofSub`. For example, dispatching events on a timer:
+```fsharp
+    let timerTick dispatch =
+        let timer = new System.Timers.Timer(1.0)
+        timer.Elapsed.Subscribe (fun _ -> dispatch (System.DateTime.Now |> Tick |> ClockMsg)) |> ignore
+        timer.Enabled <- true
+        timer.Start()
+
+    let subscribe model =
+        Cmd.ofSub timerTick
+```
+
+
 
 Multiple Pages and Navigation
 ------
