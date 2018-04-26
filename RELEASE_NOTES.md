@@ -1,3 +1,8 @@
+#### 0.4.1
+* Updates to README
+* View amortization
+* Use and recycle ObservableCollection for ListView entries
+
 #### 0.4.0
 * Lots of updates to dynamic views
 

@@ -19,6 +19,7 @@
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
     <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
     <SelectedDevice>Google Pixel 2</SelectedDevice>
+    <DefaultDevice>new_device</DefaultDevice>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,11 +47,11 @@
     </PlatformTarget>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.FSharp.targets" />
+  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Compat\build\MonoAndroid81\Xamarin.Android.Support.Compat.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Compat\build\MonoAndroid81\Xamarin.Android.Support.Compat.targets')" />
   <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Annotations\build\MonoAndroid81\Xamarin.Android.Support.Annotations.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Annotations\build\MonoAndroid81\Xamarin.Android.Support.Annotations.targets')" />
   <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Arch.Core.Common.1.0.0\build\MonoAndroid80\Xamarin.Android.Arch.Core.Common.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Arch.Core.Common.1.0.0\build\MonoAndroid80\Xamarin.Android.Arch.Core.Common.targets')" />
   <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Arch.Lifecycle.Common.1.0.3\build\MonoAndroid80\Xamarin.Android.Arch.Lifecycle.Common.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Arch.Lifecycle.Common.1.0.3\build\MonoAndroid80\Xamarin.Android.Arch.Lifecycle.Common.targets')" />
   <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Arch.Lifecycle.Runtime.1.0.3\build\MonoAndroid80\Xamarin.Android.Arch.Lifecycle.Runtime.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Arch.Lifecycle.Runtime.1.0.3\build\MonoAndroid80\Xamarin.Android.Arch.Lifecycle.Runtime.targets')" />
-  <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Compat\build\MonoAndroid81\Xamarin.Android.Support.Compat.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Compat\build\MonoAndroid81\Xamarin.Android.Support.Compat.targets')" />
   <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Core.UI\build\MonoAndroid81\Xamarin.Android.Support.Core.UI.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Core.UI\build\MonoAndroid81\Xamarin.Android.Support.Core.UI.targets')" />
   <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Core.Utils\build\MonoAndroid81\Xamarin.Android.Support.Core.Utils.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Core.Utils\build\MonoAndroid81\Xamarin.Android.Support.Core.Utils.targets')" />
   <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Fragment\build\MonoAndroid81\Xamarin.Android.Support.Fragment.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Fragment\build\MonoAndroid81\Xamarin.Android.Support.Fragment.targets')" />

@@ -519,6 +519,9 @@ module XamlElementExtensions =
         /// Try to get the Pushed property in the visual element
         member x.TryPushed = match x.Attributes.TryFind("Pushed") with Some v -> Some(unbox<System.EventHandler<Xamarin.Forms.NavigationEventArgs>>(v)) | None -> None
 
+        /// Try to get the OnSizeAllocatedCallback property in the visual element
+        member x.TryOnSizeAllocatedCallback = match x.Attributes.TryFind("OnSizeAllocatedCallback") with Some v -> Some(unbox<(Xamarin.Forms.View -> (double * double) -> unit)>(v)) | None -> None
+
         /// Try to get the Master property in the visual element
         member x.TryMaster = match x.Attributes.TryFind("Master") with Some v -> Some(unbox<XamlElement>(v)) | None -> None
 
@@ -974,6 +977,9 @@ module XamlElementExtensions =
 
         /// Adjusts the Pushed property in the visual element
         member x.Pushed(value: Xamarin.Forms.NavigationEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Pushed", box ((fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(value))))
+
+        /// Adjusts the OnSizeAllocatedCallback property in the visual element
+        member x.OnSizeAllocatedCallback(value: (Xamarin.Forms.View -> (double * double) -> unit)) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("OnSizeAllocatedCallback", box ((value))))
 
         /// Adjusts the Master property in the visual element
         member x.Master(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Master", box ((value))))
@@ -1795,6 +1801,12 @@ module XamlElementExtensions =
     /// Adjusts the Pushed property in the visual element
     let pushed (value: Xamarin.Forms.NavigationEventArgs -> unit) (x: XamlElement) = x.Pushed(value)
 
+    /// Adjusts the OnSizeAllocatedCallback property in the visual element
+    let withOnSizeAllocatedCallback (value: (Xamarin.Forms.View -> (double * double) -> unit)) (x: XamlElement) = x.OnSizeAllocatedCallback(value)
+
+    /// Adjusts the OnSizeAllocatedCallback property in the visual element
+    let onSizeAllocatedCallback (value: (Xamarin.Forms.View -> (double * double) -> unit)) (x: XamlElement) = x.OnSizeAllocatedCallback(value)
+
     /// Adjusts the Master property in the visual element
     let withMaster (value: XamlElement) (x: XamlElement) = x.Master(value)
 
@@ -1996,16 +2008,18 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Element)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.Element>, create, apply, Map.ofArray attribs)
 
@@ -2040,124 +2054,144 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.VisualElement)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.VisualElement>, create, apply, Map.ofArray attribs)
 
@@ -2196,156 +2230,172 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.View)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
-            match prevValueOpt, source.TryHorizontalOptions with
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalOptions <- value
-            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
-            match prevValueOpt, source.TryVerticalOptions with
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.VerticalOptions <- value
-            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
-            match prevValueOpt, source.TryMargin with
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Margin <- value
-            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
-            match prevCollOpt, source.TryGestureRecognizers with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.GestureRecognizers
-                    (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.GestureRecognizers.Clear()
+            let collOpt = source.TryGestureRecognizers
+            applyToIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.View>, create, apply, Map.ofArray attribs)
 
@@ -2376,10 +2426,11 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.PanGestureRecognizer)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTouchPoints
-            match prevValueOpt, source.TryTouchPoints with
+            let valueOpt = source.TryTouchPoints
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TouchPoints <- value
-            | Some _, None -> target.TouchPoints <- 1 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TouchPoints <- 1
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPanUpdated
             match prevValueOpt, source.TryPanUpdated with
@@ -2389,16 +2440,18 @@ type Xaml() =
             | Some prevValue, None -> target.PanUpdated.RemoveHandler(prevValue)
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.PanGestureRecognizer>, create, apply, Map.ofArray attribs)
 
@@ -2417,28 +2470,32 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.TapGestureRecognizer)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryCommand
-            match prevValueOpt, source.TryCommand with
+            let valueOpt = source.TryCommand
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Command <- value
-            | Some _, None -> target.Command <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Command <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryNumberOfTapsRequired
-            match prevValueOpt, source.TryNumberOfTapsRequired with
+            let valueOpt = source.TryNumberOfTapsRequired
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.NumberOfTapsRequired <- value
-            | Some _, None -> target.NumberOfTapsRequired <- 1 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.NumberOfTapsRequired <- 1
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.TapGestureRecognizer>, create, apply, Map.ofArray attribs)
 
@@ -2458,34 +2515,39 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ClickGestureRecognizer)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryCommand
-            match prevValueOpt, source.TryCommand with
+            let valueOpt = source.TryCommand
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Command <- value
-            | Some _, None -> target.Command <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Command <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryNumberOfClicksRequired
-            match prevValueOpt, source.TryNumberOfClicksRequired with
+            let valueOpt = source.TryNumberOfClicksRequired
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.NumberOfClicksRequired <- value
-            | Some _, None -> target.NumberOfClicksRequired <- 1 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.NumberOfClicksRequired <- 1
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryButtons
-            match prevValueOpt, source.TryButtons with
+            let valueOpt = source.TryButtons
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Buttons <- value
-            | Some _, None -> target.Buttons <- Xamarin.Forms.ButtonsMask.Primary // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Buttons <- Xamarin.Forms.ButtonsMask.Primary
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.ClickGestureRecognizer>, create, apply, Map.ofArray attribs)
 
@@ -2504,10 +2566,11 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.PinchGestureRecognizer)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsPinching
-            match prevValueOpt, source.TryIsPinching with
+            let valueOpt = source.TryIsPinching
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsPinching <- value
-            | Some _, None -> target.IsPinching <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsPinching <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPinchUpdated
             match prevValueOpt, source.TryPinchUpdated with
@@ -2517,16 +2580,18 @@ type Xaml() =
             | Some prevValue, None -> target.PinchUpdated.RemoveHandler(prevValue)
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.PinchGestureRecognizer>, create, apply, Map.ofArray attribs)
 
@@ -2567,168 +2632,186 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ActivityIndicator)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryColor
-            match prevValueOpt, source.TryColor with
+            let valueOpt = source.TryColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Color <- value
-            | Some _, None -> target.Color <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Color <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsRunning
-            match prevValueOpt, source.TryIsRunning with
+            let valueOpt = source.TryIsRunning
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsRunning <- value
-            | Some _, None -> target.IsRunning <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsRunning <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
-            match prevValueOpt, source.TryHorizontalOptions with
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalOptions <- value
-            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
-            match prevValueOpt, source.TryVerticalOptions with
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.VerticalOptions <- value
-            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
-            match prevValueOpt, source.TryMargin with
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Margin <- value
-            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
-            match prevCollOpt, source.TryGestureRecognizers with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.GestureRecognizers
-                    (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.GestureRecognizers.Clear()
+            let collOpt = source.TryGestureRecognizers
+            applyToIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.ActivityIndicator>, create, apply, Map.ofArray attribs)
 
@@ -2768,162 +2851,179 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.BoxView)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryColor
-            match prevValueOpt, source.TryColor with
+            let valueOpt = source.TryColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Color <- value
-            | Some _, None -> target.Color <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Color <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
-            match prevValueOpt, source.TryHorizontalOptions with
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalOptions <- value
-            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
-            match prevValueOpt, source.TryVerticalOptions with
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.VerticalOptions <- value
-            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
-            match prevValueOpt, source.TryMargin with
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Margin <- value
-            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
-            match prevCollOpt, source.TryGestureRecognizers with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.GestureRecognizers
-                    (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.GestureRecognizers.Clear()
+            let collOpt = source.TryGestureRecognizers
+            applyToIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.BoxView>, create, apply, Map.ofArray attribs)
 
@@ -2963,162 +3063,179 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ProgressBar)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryProgress
-            match prevValueOpt, source.TryProgress with
+            let valueOpt = source.TryProgress
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Progress <- value
-            | Some _, None -> target.Progress <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Progress <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
-            match prevValueOpt, source.TryHorizontalOptions with
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalOptions <- value
-            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
-            match prevValueOpt, source.TryVerticalOptions with
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.VerticalOptions <- value
-            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
-            match prevValueOpt, source.TryMargin with
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Margin <- value
-            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
-            match prevCollOpt, source.TryGestureRecognizers with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.GestureRecognizers
-                    (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.GestureRecognizers.Clear()
+            let collOpt = source.TryGestureRecognizers
+            applyToIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.ProgressBar>, create, apply, Map.ofArray attribs)
 
@@ -3172,174 +3289,193 @@ type Xaml() =
                 target.Content <- null;
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScrollOrientation
-            match prevValueOpt, source.TryScrollOrientation with
+            let valueOpt = source.TryScrollOrientation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Orientation <- value
-            | Some _, None -> target.Orientation <- Unchecked.defaultof<Xamarin.Forms.ScrollOrientation> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Orientation <- Unchecked.defaultof<Xamarin.Forms.ScrollOrientation>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsClippedToBounds
-            match prevValueOpt, source.TryIsClippedToBounds with
+            let valueOpt = source.TryIsClippedToBounds
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsClippedToBounds <- value
-            | Some _, None -> target.IsClippedToBounds <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsClippedToBounds <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
-            match prevValueOpt, source.TryPadding with
+            let valueOpt = source.TryPadding
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Padding <- value
-            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
-            match prevValueOpt, source.TryHorizontalOptions with
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalOptions <- value
-            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
-            match prevValueOpt, source.TryVerticalOptions with
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.VerticalOptions <- value
-            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
-            match prevValueOpt, source.TryMargin with
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Margin <- value
-            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
-            match prevCollOpt, source.TryGestureRecognizers with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.GestureRecognizers
-                    (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.GestureRecognizers.Clear()
+            let collOpt = source.TryGestureRecognizers
+            applyToIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.ScrollView>, create, apply, Map.ofArray attribs)
 
@@ -3388,216 +3524,242 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.SearchBar)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryCancelButtonColor
-            match prevValueOpt, source.TryCancelButtonColor with
+            let valueOpt = source.TryCancelButtonColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.CancelButtonColor <- value
-            | Some _, None -> target.CancelButtonColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.CancelButtonColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontFamily
-            match prevValueOpt, source.TryFontFamily with
+            let valueOpt = source.TryFontFamily
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.FontFamily <- value
-            | Some _, None -> target.FontFamily <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.FontFamily <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontAttributes
-            match prevValueOpt, source.TryFontAttributes with
+            let valueOpt = source.TryFontAttributes
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.FontAttributes <- value
-            | Some _, None -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontSize
-            match prevValueOpt, source.TryFontSize with
+            let valueOpt = source.TryFontSize
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.FontSize <- value
-            | Some _, None -> target.FontSize <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.FontSize <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalTextAlignment
-            match prevValueOpt, source.TryHorizontalTextAlignment with
+            let valueOpt = source.TryHorizontalTextAlignment
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalTextAlignment <- value
-            | Some _, None -> target.HorizontalTextAlignment <- Xamarin.Forms.TextAlignment.Start // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalTextAlignment <- Xamarin.Forms.TextAlignment.Start
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPlaceholder
-            match prevValueOpt, source.TryPlaceholder with
+            let valueOpt = source.TryPlaceholder
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Placeholder <- value
-            | Some _, None -> target.Placeholder <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Placeholder <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPlaceholderColor
-            match prevValueOpt, source.TryPlaceholderColor with
+            let valueOpt = source.TryPlaceholderColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.PlaceholderColor <- value
-            | Some _, None -> target.PlaceholderColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.PlaceholderColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TrySearchCommand
-            match prevValueOpt, source.TrySearchCommand with
+            let valueOpt = source.TrySearchCommand
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.SearchCommand <- value
-            | Some _, None -> target.SearchCommand <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.SearchCommand <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryText
-            match prevValueOpt, source.TryText with
+            let valueOpt = source.TryText
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Text <- value
-            | Some _, None -> target.Text <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Text <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTextColor
-            match prevValueOpt, source.TryTextColor with
+            let valueOpt = source.TryTextColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TextColor <- value
-            | Some _, None -> target.TextColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TextColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
-            match prevValueOpt, source.TryHorizontalOptions with
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalOptions <- value
-            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
-            match prevValueOpt, source.TryVerticalOptions with
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.VerticalOptions <- value
-            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
-            match prevValueOpt, source.TryMargin with
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Margin <- value
-            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
-            match prevCollOpt, source.TryGestureRecognizers with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.GestureRecognizers
-                    (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.GestureRecognizers.Clear()
+            let collOpt = source.TryGestureRecognizers
+            applyToIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.SearchBar>, create, apply, Map.ofArray attribs)
 
@@ -3648,228 +3810,256 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Button)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryText
-            match prevValueOpt, source.TryText with
+            let valueOpt = source.TryText
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Text <- value
-            | Some _, None -> target.Text <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Text <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryCommand
-            match prevValueOpt, source.TryCommand with
+            let valueOpt = source.TryCommand
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Command <- value
-            | Some _, None -> target.Command <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Command <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBorderColor
-            match prevValueOpt, source.TryBorderColor with
+            let valueOpt = source.TryBorderColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BorderColor <- value
-            | Some _, None -> target.BorderColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BorderColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBorderWidth
-            match prevValueOpt, source.TryBorderWidth with
+            let valueOpt = source.TryBorderWidth
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BorderWidth <- value
-            | Some _, None -> target.BorderWidth <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BorderWidth <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryCommandParameter
-            match prevValueOpt, source.TryCommandParameter with
+            let valueOpt = source.TryCommandParameter
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.CommandParameter <- value
-            | Some _, None -> target.CommandParameter <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.CommandParameter <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryContentLayout
-            match prevValueOpt, source.TryContentLayout with
+            let valueOpt = source.TryContentLayout
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ContentLayout <- value
-            | Some _, None -> target.ContentLayout <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ContentLayout <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryButtonCornerRadius
-            match prevValueOpt, source.TryButtonCornerRadius with
+            let valueOpt = source.TryButtonCornerRadius
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.CornerRadius <- value
-            | Some _, None -> target.CornerRadius <- 0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.CornerRadius <- 0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontFamily
-            match prevValueOpt, source.TryFontFamily with
+            let valueOpt = source.TryFontFamily
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.FontFamily <- value
-            | Some _, None -> target.FontFamily <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.FontFamily <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontAttributes
-            match prevValueOpt, source.TryFontAttributes with
+            let valueOpt = source.TryFontAttributes
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.FontAttributes <- value
-            | Some _, None -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontSize
-            match prevValueOpt, source.TryFontSize with
+            let valueOpt = source.TryFontSize
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.FontSize <- value
-            | Some _, None -> target.FontSize <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.FontSize <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryButtonImageSource
-            match prevValueOpt, source.TryButtonImageSource with
+            let valueOpt = source.TryButtonImageSource
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Image <- value
-            | Some _, None -> target.Image <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Image <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTextColor
-            match prevValueOpt, source.TryTextColor with
+            let valueOpt = source.TryTextColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TextColor <- value
-            | Some _, None -> target.TextColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TextColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
-            match prevValueOpt, source.TryHorizontalOptions with
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalOptions <- value
-            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
-            match prevValueOpt, source.TryVerticalOptions with
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.VerticalOptions <- value
-            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
-            match prevValueOpt, source.TryMargin with
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Margin <- value
-            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
-            match prevCollOpt, source.TryGestureRecognizers with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.GestureRecognizers
-                    (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.GestureRecognizers.Clear()
+            let collOpt = source.TryGestureRecognizers
+            applyToIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.Button>, create, apply, Map.ofArray attribs)
 
@@ -3912,22 +4102,25 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Slider)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimum
-            match prevValueOpt, source.TryMinimum with
+            let valueOpt = source.TryMinimum
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Minimum <- value
-            | Some _, None -> target.Minimum <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Minimum <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMaximum
-            match prevValueOpt, source.TryMaximum with
+            let valueOpt = source.TryMaximum
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Maximum <- value
-            | Some _, None -> target.Maximum <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Maximum <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryValue
-            match prevValueOpt, source.TryValue with
+            let valueOpt = source.TryValue
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Value <- value
-            | Some _, None -> target.Value <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Value <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryValueChanged
             match prevValueOpt, source.TryValueChanged with
@@ -3937,156 +4130,172 @@ type Xaml() =
             | Some prevValue, None -> target.ValueChanged.RemoveHandler(prevValue)
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
-            match prevValueOpt, source.TryHorizontalOptions with
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalOptions <- value
-            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
-            match prevValueOpt, source.TryVerticalOptions with
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.VerticalOptions <- value
-            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
-            match prevValueOpt, source.TryMargin with
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Margin <- value
-            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
-            match prevCollOpt, source.TryGestureRecognizers with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.GestureRecognizers
-                    (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.GestureRecognizers.Clear()
+            let collOpt = source.TryGestureRecognizers
+            applyToIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.Slider>, create, apply, Map.ofArray attribs)
 
@@ -4130,28 +4339,32 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Stepper)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimum
-            match prevValueOpt, source.TryMinimum with
+            let valueOpt = source.TryMinimum
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Minimum <- value
-            | Some _, None -> target.Minimum <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Minimum <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMaximum
-            match prevValueOpt, source.TryMaximum with
+            let valueOpt = source.TryMaximum
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Maximum <- value
-            | Some _, None -> target.Maximum <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Maximum <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryValue
-            match prevValueOpt, source.TryValue with
+            let valueOpt = source.TryValue
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Value <- value
-            | Some _, None -> target.Value <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Value <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIncrement
-            match prevValueOpt, source.TryIncrement with
+            let valueOpt = source.TryIncrement
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Increment <- value
-            | Some _, None -> target.Increment <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Increment <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryValueChanged
             match prevValueOpt, source.TryValueChanged with
@@ -4161,156 +4374,172 @@ type Xaml() =
             | Some prevValue, None -> target.ValueChanged.RemoveHandler(prevValue)
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
-            match prevValueOpt, source.TryHorizontalOptions with
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalOptions <- value
-            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
-            match prevValueOpt, source.TryVerticalOptions with
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.VerticalOptions <- value
-            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
-            match prevValueOpt, source.TryMargin with
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Margin <- value
-            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
-            match prevCollOpt, source.TryGestureRecognizers with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.GestureRecognizers
-                    (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.GestureRecognizers.Clear()
+            let collOpt = source.TryGestureRecognizers
+            applyToIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.Stepper>, create, apply, Map.ofArray attribs)
 
@@ -4351,10 +4580,11 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Switch)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsToggled
-            match prevValueOpt, source.TryIsToggled with
+            let valueOpt = source.TryIsToggled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsToggled <- value
-            | Some _, None -> target.IsToggled <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsToggled <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryToggled
             match prevValueOpt, source.TryToggled with
@@ -4364,156 +4594,172 @@ type Xaml() =
             | Some prevValue, None -> target.Toggled.RemoveHandler(prevValue)
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
-            match prevValueOpt, source.TryHorizontalOptions with
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalOptions <- value
-            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
-            match prevValueOpt, source.TryVerticalOptions with
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.VerticalOptions <- value
-            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
-            match prevValueOpt, source.TryMargin with
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Margin <- value
-            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
-            match prevCollOpt, source.TryGestureRecognizers with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.GestureRecognizers
-                    (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.GestureRecognizers.Clear()
+            let collOpt = source.TryGestureRecognizers
+            applyToIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.Switch>, create, apply, Map.ofArray attribs)
 
@@ -4535,16 +4781,18 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.SwitchCell)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOn
-            match prevValueOpt, source.TryOn with
+            let valueOpt = source.TryOn
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.On <- value
-            | Some _, None -> target.On <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.On <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryText
-            match prevValueOpt, source.TryText with
+            let valueOpt = source.TryText
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Text <- value
-            | Some _, None -> target.Text <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Text <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOnChanged
             match prevValueOpt, source.TryOnChanged with
@@ -4554,28 +4802,32 @@ type Xaml() =
             | Some prevValue, None -> target.OnChanged.RemoveHandler(prevValue)
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeight
-            match prevValueOpt, source.TryHeight with
+            let valueOpt = source.TryHeight
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Height <- value
-            | Some _, None -> target.Height <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Height <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.SwitchCell>, create, apply, Map.ofArray attribs)
 
@@ -4621,247 +4873,246 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Grid)
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGridRowDefinitions
-            match prevCollOpt, source.TryGridRowDefinitions with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.RowDefinitions
-                    (fun (x:XamlElement) -> x.CreateAsRowDefinition())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.RowDefinitions.Clear()
+            let collOpt = source.TryGridRowDefinitions
+            applyToIList prevCollOpt collOpt target.RowDefinitions
+                (fun (x:XamlElement) -> x.CreateAsRowDefinition())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGridColumnDefinitions
-            match prevCollOpt, source.TryGridColumnDefinitions with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.ColumnDefinitions
-                    (fun (x:XamlElement) -> x.CreateAsColumnDefinition())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.ColumnDefinitions.Clear()
+            let collOpt = source.TryGridColumnDefinitions
+            applyToIList prevCollOpt collOpt target.ColumnDefinitions
+                (fun (x:XamlElement) -> x.CreateAsColumnDefinition())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRowSpacing
-            match prevValueOpt, source.TryRowSpacing with
+            let valueOpt = source.TryRowSpacing
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RowSpacing <- value
-            | Some _, None -> target.RowSpacing <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RowSpacing <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryColumnSpacing
-            match prevValueOpt, source.TryColumnSpacing with
+            let valueOpt = source.TryColumnSpacing
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ColumnSpacing <- value
-            | Some _, None -> target.ColumnSpacing <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ColumnSpacing <- 0.0
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryChildren
-            match prevCollOpt, source.TryChildren with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.Children
-                    (fun (x:XamlElement) -> x.CreateAsView())
-                    (fun prevChildOpt newChild targetChild -> 
-                        // Adjust the attached properties
-                        match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryGridRow), newChild.TryGridRow with
-                        | Some prev, Some v when prev = v -> ()
-                        | prevOpt, Some value -> Xamarin.Forms.Grid.SetRow(targetChild, value)
-                        | Some _, None -> Xamarin.Forms.Grid.SetRow(targetChild, 0) // TODO: not always perfect, should set back to original default?
-                        | _ -> ()
-                        // Adjust the attached properties
-                        match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryGridRowSpan), newChild.TryGridRowSpan with
-                        | Some prev, Some v when prev = v -> ()
-                        | prevOpt, Some value -> Xamarin.Forms.Grid.SetRowSpan(targetChild, value)
-                        | Some _, None -> Xamarin.Forms.Grid.SetRowSpan(targetChild, 0) // TODO: not always perfect, should set back to original default?
-                        | _ -> ()
-                        // Adjust the attached properties
-                        match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryGridColumn), newChild.TryGridColumn with
-                        | Some prev, Some v when prev = v -> ()
-                        | prevOpt, Some value -> Xamarin.Forms.Grid.SetColumn(targetChild, value)
-                        | Some _, None -> Xamarin.Forms.Grid.SetColumn(targetChild, 0) // TODO: not always perfect, should set back to original default?
-                        | _ -> ()
-                        // Adjust the attached properties
-                        match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryGridColumnSpan), newChild.TryGridColumnSpan with
-                        | Some prev, Some v when prev = v -> ()
-                        | prevOpt, Some value -> Xamarin.Forms.Grid.SetColumnSpan(targetChild, value)
-                        | Some _, None -> Xamarin.Forms.Grid.SetColumnSpan(targetChild, 0) // TODO: not always perfect, should set back to original default?
-                        | _ -> ()
-                        ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.Children.Clear()
+            let collOpt = source.TryChildren
+            applyToIList prevCollOpt collOpt target.Children
+                (fun (x:XamlElement) -> x.CreateAsView())
+                (fun prevChildOpt newChild targetChild -> 
+                    // Adjust the attached properties
+                    match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryGridRow), newChild.TryGridRow with
+                    | Some prev, Some v when prev = v -> ()
+                    | prevOpt, Some value -> Xamarin.Forms.Grid.SetRow(targetChild, value)
+                    | Some _, None -> Xamarin.Forms.Grid.SetRow(targetChild, 0) // TODO: not always perfect, should set back to original default?
+                    | _ -> ()
+                    // Adjust the attached properties
+                    match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryGridRowSpan), newChild.TryGridRowSpan with
+                    | Some prev, Some v when prev = v -> ()
+                    | prevOpt, Some value -> Xamarin.Forms.Grid.SetRowSpan(targetChild, value)
+                    | Some _, None -> Xamarin.Forms.Grid.SetRowSpan(targetChild, 0) // TODO: not always perfect, should set back to original default?
+                    | _ -> ()
+                    // Adjust the attached properties
+                    match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryGridColumn), newChild.TryGridColumn with
+                    | Some prev, Some v when prev = v -> ()
+                    | prevOpt, Some value -> Xamarin.Forms.Grid.SetColumn(targetChild, value)
+                    | Some _, None -> Xamarin.Forms.Grid.SetColumn(targetChild, 0) // TODO: not always perfect, should set back to original default?
+                    | _ -> ()
+                    // Adjust the attached properties
+                    match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryGridColumnSpan), newChild.TryGridColumnSpan with
+                    | Some prev, Some v when prev = v -> ()
+                    | prevOpt, Some value -> Xamarin.Forms.Grid.SetColumnSpan(targetChild, value)
+                    | Some _, None -> Xamarin.Forms.Grid.SetColumnSpan(targetChild, 0) // TODO: not always perfect, should set back to original default?
+                    | _ -> ()
+                    ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsClippedToBounds
-            match prevValueOpt, source.TryIsClippedToBounds with
+            let valueOpt = source.TryIsClippedToBounds
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsClippedToBounds <- value
-            | Some _, None -> target.IsClippedToBounds <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsClippedToBounds <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
-            match prevValueOpt, source.TryPadding with
+            let valueOpt = source.TryPadding
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Padding <- value
-            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
-            match prevValueOpt, source.TryHorizontalOptions with
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalOptions <- value
-            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
-            match prevValueOpt, source.TryVerticalOptions with
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.VerticalOptions <- value
-            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
-            match prevValueOpt, source.TryMargin with
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Margin <- value
-            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
-            match prevCollOpt, source.TryGestureRecognizers with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.GestureRecognizers
-                    (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.GestureRecognizers.Clear()
+            let collOpt = source.TryGestureRecognizers
+            applyToIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.Grid>, create, apply, Map.ofArray attribs)
 
@@ -4903,195 +5154,206 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.AbsoluteLayout)
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryChildren
-            match prevCollOpt, source.TryChildren with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.Children
-                    (fun (x:XamlElement) -> x.CreateAsView())
-                    (fun prevChildOpt newChild targetChild -> 
-                        // Adjust the attached properties
-                        match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryAbsoluteLayoutBounds), newChild.TryAbsoluteLayoutBounds with
-                        | Some prev, Some v when prev = v -> ()
-                        | prevOpt, Some value -> Xamarin.Forms.AbsoluteLayout.SetLayoutBounds(targetChild, value)
-                        | Some _, None -> Xamarin.Forms.AbsoluteLayout.SetLayoutBounds(targetChild, Xamarin.Forms.Rectangle.Zero) // TODO: not always perfect, should set back to original default?
-                        | _ -> ()
-                        // Adjust the attached properties
-                        match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryAbsoluteLayoutFlags), newChild.TryAbsoluteLayoutFlags with
-                        | Some prev, Some v when prev = v -> ()
-                        | prevOpt, Some value -> Xamarin.Forms.AbsoluteLayout.SetLayoutFlags(targetChild, value)
-                        | Some _, None -> Xamarin.Forms.AbsoluteLayout.SetLayoutFlags(targetChild, Xamarin.Forms.AbsoluteLayoutFlags.None) // TODO: not always perfect, should set back to original default?
-                        | _ -> ()
-                        ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.Children.Clear()
+            let collOpt = source.TryChildren
+            applyToIList prevCollOpt collOpt target.Children
+                (fun (x:XamlElement) -> x.CreateAsView())
+                (fun prevChildOpt newChild targetChild -> 
+                    // Adjust the attached properties
+                    match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryAbsoluteLayoutBounds), newChild.TryAbsoluteLayoutBounds with
+                    | Some prev, Some v when prev = v -> ()
+                    | prevOpt, Some value -> Xamarin.Forms.AbsoluteLayout.SetLayoutBounds(targetChild, value)
+                    | Some _, None -> Xamarin.Forms.AbsoluteLayout.SetLayoutBounds(targetChild, Xamarin.Forms.Rectangle.Zero) // TODO: not always perfect, should set back to original default?
+                    | _ -> ()
+                    // Adjust the attached properties
+                    match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryAbsoluteLayoutFlags), newChild.TryAbsoluteLayoutFlags with
+                    | Some prev, Some v when prev = v -> ()
+                    | prevOpt, Some value -> Xamarin.Forms.AbsoluteLayout.SetLayoutFlags(targetChild, value)
+                    | Some _, None -> Xamarin.Forms.AbsoluteLayout.SetLayoutFlags(targetChild, Xamarin.Forms.AbsoluteLayoutFlags.None) // TODO: not always perfect, should set back to original default?
+                    | _ -> ()
+                    ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsClippedToBounds
-            match prevValueOpt, source.TryIsClippedToBounds with
+            let valueOpt = source.TryIsClippedToBounds
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsClippedToBounds <- value
-            | Some _, None -> target.IsClippedToBounds <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsClippedToBounds <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
-            match prevValueOpt, source.TryPadding with
+            let valueOpt = source.TryPadding
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Padding <- value
-            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
-            match prevValueOpt, source.TryHorizontalOptions with
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalOptions <- value
-            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
-            match prevValueOpt, source.TryVerticalOptions with
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.VerticalOptions <- value
-            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
-            match prevValueOpt, source.TryMargin with
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Margin <- value
-            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
-            match prevCollOpt, source.TryGestureRecognizers with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.GestureRecognizers
-                    (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.GestureRecognizers.Clear()
+            let collOpt = source.TryGestureRecognizers
+            applyToIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.AbsoluteLayout>, create, apply, Map.ofArray attribs)
 
@@ -5133,213 +5395,224 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.RelativeLayout)
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryChildren
-            match prevCollOpt, source.TryChildren with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.Children
-                    (fun (x:XamlElement) -> x.CreateAsView())
-                    (fun prevChildOpt newChild targetChild -> 
-                        // Adjust the attached properties
-                        match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryBoundsConstraint), newChild.TryBoundsConstraint with
-                        | Some prev, Some v when prev = v -> ()
-                        | prevOpt, Some value -> Xamarin.Forms.RelativeLayout.SetBoundsConstraint(targetChild, value)
-                        | Some _, None -> Xamarin.Forms.RelativeLayout.SetBoundsConstraint(targetChild, null) // TODO: not always perfect, should set back to original default?
-                        | _ -> ()
-                        // Adjust the attached properties
-                        match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryHeightConstraint), newChild.TryHeightConstraint with
-                        | Some prev, Some v when prev = v -> ()
-                        | prevOpt, Some value -> Xamarin.Forms.RelativeLayout.SetHeightConstraint(targetChild, value)
-                        | Some _, None -> Xamarin.Forms.RelativeLayout.SetHeightConstraint(targetChild, null) // TODO: not always perfect, should set back to original default?
-                        | _ -> ()
-                        // Adjust the attached properties
-                        match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryWidthConstraint), newChild.TryWidthConstraint with
-                        | Some prev, Some v when prev = v -> ()
-                        | prevOpt, Some value -> Xamarin.Forms.RelativeLayout.SetWidthConstraint(targetChild, value)
-                        | Some _, None -> Xamarin.Forms.RelativeLayout.SetWidthConstraint(targetChild, null) // TODO: not always perfect, should set back to original default?
-                        | _ -> ()
-                        // Adjust the attached properties
-                        match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryXConstraint), newChild.TryXConstraint with
-                        | Some prev, Some v when prev = v -> ()
-                        | prevOpt, Some value -> Xamarin.Forms.RelativeLayout.SetXConstraint(targetChild, value)
-                        | Some _, None -> Xamarin.Forms.RelativeLayout.SetXConstraint(targetChild, null) // TODO: not always perfect, should set back to original default?
-                        | _ -> ()
-                        // Adjust the attached properties
-                        match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryYConstraint), newChild.TryYConstraint with
-                        | Some prev, Some v when prev = v -> ()
-                        | prevOpt, Some value -> Xamarin.Forms.RelativeLayout.SetYConstraint(targetChild, value)
-                        | Some _, None -> Xamarin.Forms.RelativeLayout.SetYConstraint(targetChild, null) // TODO: not always perfect, should set back to original default?
-                        | _ -> ()
-                        ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.Children.Clear()
+            let collOpt = source.TryChildren
+            applyToIList prevCollOpt collOpt target.Children
+                (fun (x:XamlElement) -> x.CreateAsView())
+                (fun prevChildOpt newChild targetChild -> 
+                    // Adjust the attached properties
+                    match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryBoundsConstraint), newChild.TryBoundsConstraint with
+                    | Some prev, Some v when prev = v -> ()
+                    | prevOpt, Some value -> Xamarin.Forms.RelativeLayout.SetBoundsConstraint(targetChild, value)
+                    | Some _, None -> Xamarin.Forms.RelativeLayout.SetBoundsConstraint(targetChild, null) // TODO: not always perfect, should set back to original default?
+                    | _ -> ()
+                    // Adjust the attached properties
+                    match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryHeightConstraint), newChild.TryHeightConstraint with
+                    | Some prev, Some v when prev = v -> ()
+                    | prevOpt, Some value -> Xamarin.Forms.RelativeLayout.SetHeightConstraint(targetChild, value)
+                    | Some _, None -> Xamarin.Forms.RelativeLayout.SetHeightConstraint(targetChild, null) // TODO: not always perfect, should set back to original default?
+                    | _ -> ()
+                    // Adjust the attached properties
+                    match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryWidthConstraint), newChild.TryWidthConstraint with
+                    | Some prev, Some v when prev = v -> ()
+                    | prevOpt, Some value -> Xamarin.Forms.RelativeLayout.SetWidthConstraint(targetChild, value)
+                    | Some _, None -> Xamarin.Forms.RelativeLayout.SetWidthConstraint(targetChild, null) // TODO: not always perfect, should set back to original default?
+                    | _ -> ()
+                    // Adjust the attached properties
+                    match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryXConstraint), newChild.TryXConstraint with
+                    | Some prev, Some v when prev = v -> ()
+                    | prevOpt, Some value -> Xamarin.Forms.RelativeLayout.SetXConstraint(targetChild, value)
+                    | Some _, None -> Xamarin.Forms.RelativeLayout.SetXConstraint(targetChild, null) // TODO: not always perfect, should set back to original default?
+                    | _ -> ()
+                    // Adjust the attached properties
+                    match (match prevChildOpt with None -> None | Some prevChild -> prevChild.TryYConstraint), newChild.TryYConstraint with
+                    | Some prev, Some v when prev = v -> ()
+                    | prevOpt, Some value -> Xamarin.Forms.RelativeLayout.SetYConstraint(targetChild, value)
+                    | Some _, None -> Xamarin.Forms.RelativeLayout.SetYConstraint(targetChild, null) // TODO: not always perfect, should set back to original default?
+                    | _ -> ()
+                    ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsClippedToBounds
-            match prevValueOpt, source.TryIsClippedToBounds with
+            let valueOpt = source.TryIsClippedToBounds
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsClippedToBounds <- value
-            | Some _, None -> target.IsClippedToBounds <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsClippedToBounds <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
-            match prevValueOpt, source.TryPadding with
+            let valueOpt = source.TryPadding
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Padding <- value
-            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
-            match prevValueOpt, source.TryHorizontalOptions with
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalOptions <- value
-            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
-            match prevValueOpt, source.TryVerticalOptions with
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.VerticalOptions <- value
-            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
-            match prevValueOpt, source.TryMargin with
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Margin <- value
-            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
-            match prevCollOpt, source.TryGestureRecognizers with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.GestureRecognizers
-                    (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.GestureRecognizers.Clear()
+            let collOpt = source.TryGestureRecognizers
+            applyToIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.RelativeLayout>, create, apply, Map.ofArray attribs)
 
@@ -5355,10 +5628,11 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.RowDefinition)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRowDefinitionHeight
-            match prevValueOpt, source.TryRowDefinitionHeight with
+            let valueOpt = source.TryRowDefinitionHeight
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Height <- value
-            | Some _, None -> target.Height <- Xamarin.Forms.GridLength.Auto // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Height <- Xamarin.Forms.GridLength.Auto
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.RowDefinition>, create, apply, Map.ofArray attribs)
 
@@ -5374,10 +5648,11 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ColumnDefinition)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryColumnDefinitionWidth
-            match prevValueOpt, source.TryColumnDefinitionWidth with
+            let valueOpt = source.TryColumnDefinitionWidth
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Width <- value
-            | Some _, None -> target.Width <- Xamarin.Forms.GridLength.Auto // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Width <- Xamarin.Forms.GridLength.Auto
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.ColumnDefinition>, create, apply, Map.ofArray attribs)
 
@@ -5430,168 +5705,186 @@ type Xaml() =
                 target.Content <- null;
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsClippedToBounds
-            match prevValueOpt, source.TryIsClippedToBounds with
+            let valueOpt = source.TryIsClippedToBounds
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsClippedToBounds <- value
-            | Some _, None -> target.IsClippedToBounds <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsClippedToBounds <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
-            match prevValueOpt, source.TryPadding with
+            let valueOpt = source.TryPadding
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Padding <- value
-            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
-            match prevValueOpt, source.TryHorizontalOptions with
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalOptions <- value
-            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
-            match prevValueOpt, source.TryVerticalOptions with
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.VerticalOptions <- value
-            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
-            match prevValueOpt, source.TryMargin with
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Margin <- value
-            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
-            match prevCollOpt, source.TryGestureRecognizers with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.GestureRecognizers
-                    (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.GestureRecognizers.Clear()
+            let collOpt = source.TryGestureRecognizers
+            applyToIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.ContentView>, create, apply, Map.ofArray attribs)
 
@@ -5632,168 +5925,186 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.TemplatedView)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsClippedToBounds
-            match prevValueOpt, source.TryIsClippedToBounds with
+            let valueOpt = source.TryIsClippedToBounds
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsClippedToBounds <- value
-            | Some _, None -> target.IsClippedToBounds <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsClippedToBounds <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
-            match prevValueOpt, source.TryPadding with
+            let valueOpt = source.TryPadding
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Padding <- value
-            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
-            match prevValueOpt, source.TryHorizontalOptions with
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalOptions <- value
-            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
-            match prevValueOpt, source.TryVerticalOptions with
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.VerticalOptions <- value
-            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
-            match prevValueOpt, source.TryMargin with
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Margin <- value
-            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
-            match prevCollOpt, source.TryGestureRecognizers with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.GestureRecognizers
-                    (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.GestureRecognizers.Clear()
+            let collOpt = source.TryGestureRecognizers
+            applyToIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.TemplatedView>, create, apply, Map.ofArray attribs)
 
@@ -5837,28 +6148,32 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.DatePicker)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryDate
-            match prevValueOpt, source.TryDate with
+            let valueOpt = source.TryDate
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Date <- value
-            | Some _, None -> target.Date <- Unchecked.defaultof<System.DateTime> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Date <- Unchecked.defaultof<System.DateTime>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFormat
-            match prevValueOpt, source.TryFormat with
+            let valueOpt = source.TryFormat
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Format <- value
-            | Some _, None -> target.Format <- "d" // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Format <- "d"
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumDate
-            match prevValueOpt, source.TryMinimumDate with
+            let valueOpt = source.TryMinimumDate
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumDate <- value
-            | Some _, None -> target.MinimumDate <- new System.DateTime(1900, 1, 1) // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumDate <- new System.DateTime(1900, 1, 1)
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMaximumDate
-            match prevValueOpt, source.TryMaximumDate with
+            let valueOpt = source.TryMaximumDate
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MaximumDate <- value
-            | Some _, None -> target.MaximumDate <- new System.DateTime(2100, 12, 31) // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MaximumDate <- new System.DateTime(2100, 12, 31)
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryDateSelected
             match prevValueOpt, source.TryDateSelected with
@@ -5868,156 +6183,172 @@ type Xaml() =
             | Some prevValue, None -> target.DateSelected.RemoveHandler(prevValue)
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
-            match prevValueOpt, source.TryHorizontalOptions with
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalOptions <- value
-            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
-            match prevValueOpt, source.TryVerticalOptions with
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.VerticalOptions <- value
-            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
-            match prevValueOpt, source.TryMargin with
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Margin <- value
-            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
-            match prevCollOpt, source.TryGestureRecognizers with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.GestureRecognizers
-                    (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.GestureRecognizers.Clear()
+            let collOpt = source.TryGestureRecognizers
+            applyToIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.DatePicker>, create, apply, Map.ofArray attribs)
 
@@ -6061,28 +6392,32 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Picker)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPickerItemsSource
-            match prevValueOpt, source.TryPickerItemsSource with
+            let valueOpt = source.TryPickerItemsSource
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ItemsSource <- value
-            | Some _, None -> target.ItemsSource <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ItemsSource <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TrySelectedIndex
-            match prevValueOpt, source.TrySelectedIndex with
+            let valueOpt = source.TrySelectedIndex
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.SelectedIndex <- value
-            | Some _, None -> target.SelectedIndex <- 0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.SelectedIndex <- 0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTitle
-            match prevValueOpt, source.TryTitle with
+            let valueOpt = source.TryTitle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Title <- value
-            | Some _, None -> target.Title <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Title <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTextColor
-            match prevValueOpt, source.TryTextColor with
+            let valueOpt = source.TryTextColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TextColor <- value
-            | Some _, None -> target.TextColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TextColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TrySelectedIndexChanged
             match prevValueOpt, source.TrySelectedIndexChanged with
@@ -6092,156 +6427,172 @@ type Xaml() =
             | Some prevValue, None -> target.SelectedIndexChanged.RemoveHandler(prevValue)
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
-            match prevValueOpt, source.TryHorizontalOptions with
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalOptions <- value
-            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
-            match prevValueOpt, source.TryVerticalOptions with
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.VerticalOptions <- value
-            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
-            match prevValueOpt, source.TryMargin with
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Margin <- value
-            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
-            match prevCollOpt, source.TryGestureRecognizers with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.GestureRecognizers
-                    (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.GestureRecognizers.Clear()
+            let collOpt = source.TryGestureRecognizers
+            applyToIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.Picker>, create, apply, Map.ofArray attribs)
 
@@ -6286,22 +6637,25 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Frame)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOutlineColor
-            match prevValueOpt, source.TryOutlineColor with
+            let valueOpt = source.TryOutlineColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.OutlineColor <- value
-            | Some _, None -> target.OutlineColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.OutlineColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFrameCornerRadius
-            match prevValueOpt, source.TryFrameCornerRadius with
+            let valueOpt = source.TryFrameCornerRadius
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.CornerRadius <- value
-            | Some _, None -> target.CornerRadius <- -1.0f // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.CornerRadius <- -1.0f
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHasShadow
-            match prevValueOpt, source.TryHasShadow with
+            let valueOpt = source.TryHasShadow
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HasShadow <- value
-            | Some _, None -> target.HasShadow <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HasShadow <- true
             | None, None -> ()
             let prevChildOpt = match prevOpt with None -> None | Some prev -> prev.TryContent
             match prevChildOpt, source.TryContent with
@@ -6315,168 +6669,186 @@ type Xaml() =
                 target.Content <- null;
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsClippedToBounds
-            match prevValueOpt, source.TryIsClippedToBounds with
+            let valueOpt = source.TryIsClippedToBounds
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsClippedToBounds <- value
-            | Some _, None -> target.IsClippedToBounds <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsClippedToBounds <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
-            match prevValueOpt, source.TryPadding with
+            let valueOpt = source.TryPadding
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Padding <- value
-            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
-            match prevValueOpt, source.TryHorizontalOptions with
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalOptions <- value
-            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
-            match prevValueOpt, source.TryVerticalOptions with
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.VerticalOptions <- value
-            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
-            match prevValueOpt, source.TryMargin with
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Margin <- value
-            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
-            match prevCollOpt, source.TryGestureRecognizers with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.GestureRecognizers
-                    (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.GestureRecognizers.Clear()
+            let collOpt = source.TryGestureRecognizers
+            applyToIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.Frame>, create, apply, Map.ofArray attribs)
 
@@ -6518,174 +6890,193 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Image)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryImageSource
-            match prevValueOpt, source.TryImageSource with
+            let valueOpt = source.TryImageSource
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Source <- value
-            | Some _, None -> target.Source <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Source <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAspect
-            match prevValueOpt, source.TryAspect with
+            let valueOpt = source.TryAspect
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Aspect <- value
-            | Some _, None -> target.Aspect <- Xamarin.Forms.Aspect.AspectFit // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Aspect <- Xamarin.Forms.Aspect.AspectFit
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsOpaque
-            match prevValueOpt, source.TryIsOpaque with
+            let valueOpt = source.TryIsOpaque
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsOpaque <- value
-            | Some _, None -> target.IsOpaque <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsOpaque <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
-            match prevValueOpt, source.TryHorizontalOptions with
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalOptions <- value
-            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
-            match prevValueOpt, source.TryVerticalOptions with
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.VerticalOptions <- value
-            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
-            match prevValueOpt, source.TryMargin with
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Margin <- value
-            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
-            match prevCollOpt, source.TryGestureRecognizers with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.GestureRecognizers
-                    (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.GestureRecognizers.Clear()
+            let collOpt = source.TryGestureRecognizers
+            applyToIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.Image>, create, apply, Map.ofArray attribs)
 
@@ -6725,162 +7116,179 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.InputView)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryKeyboard
-            match prevValueOpt, source.TryKeyboard with
+            let valueOpt = source.TryKeyboard
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Keyboard <- value
-            | Some _, None -> target.Keyboard <- Xamarin.Forms.Keyboard.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Keyboard <- Xamarin.Forms.Keyboard.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
-            match prevValueOpt, source.TryHorizontalOptions with
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalOptions <- value
-            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
-            match prevValueOpt, source.TryVerticalOptions with
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.VerticalOptions <- value
-            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
-            match prevValueOpt, source.TryMargin with
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Margin <- value
-            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
-            match prevCollOpt, source.TryGestureRecognizers with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.GestureRecognizers
-                    (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.GestureRecognizers.Clear()
+            let collOpt = source.TryGestureRecognizers
+            applyToIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.InputView>, create, apply, Map.ofArray attribs)
 
@@ -6927,34 +7335,39 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Editor)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryText
-            match prevValueOpt, source.TryText with
+            let valueOpt = source.TryText
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Text <- value
-            | Some _, None -> target.Text <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Text <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontSize
-            match prevValueOpt, source.TryFontSize with
+            let valueOpt = source.TryFontSize
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.FontSize <- value
-            | Some _, None -> target.FontSize <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.FontSize <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontFamily
-            match prevValueOpt, source.TryFontFamily with
+            let valueOpt = source.TryFontFamily
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.FontFamily <- value
-            | Some _, None -> target.FontFamily <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.FontFamily <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontAttributes
-            match prevValueOpt, source.TryFontAttributes with
+            let valueOpt = source.TryFontAttributes
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.FontAttributes <- value
-            | Some _, None -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTextColor
-            match prevValueOpt, source.TryTextColor with
+            let valueOpt = source.TryTextColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TextColor <- value
-            | Some _, None -> target.TextColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TextColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryEditorCompleted
             match prevValueOpt, source.TryEditorCompleted with
@@ -6971,162 +7384,179 @@ type Xaml() =
             | Some prevValue, None -> target.TextChanged.RemoveHandler(prevValue)
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryKeyboard
-            match prevValueOpt, source.TryKeyboard with
+            let valueOpt = source.TryKeyboard
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Keyboard <- value
-            | Some _, None -> target.Keyboard <- Xamarin.Forms.Keyboard.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Keyboard <- Xamarin.Forms.Keyboard.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
-            match prevValueOpt, source.TryHorizontalOptions with
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalOptions <- value
-            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
-            match prevValueOpt, source.TryVerticalOptions with
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.VerticalOptions <- value
-            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
-            match prevValueOpt, source.TryMargin with
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Margin <- value
-            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
-            match prevCollOpt, source.TryGestureRecognizers with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.GestureRecognizers
-                    (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.GestureRecognizers.Clear()
+            let collOpt = source.TryGestureRecognizers
+            applyToIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.Editor>, create, apply, Map.ofArray attribs)
 
@@ -7177,58 +7607,67 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Entry)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryText
-            match prevValueOpt, source.TryText with
+            let valueOpt = source.TryText
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Text <- value
-            | Some _, None -> target.Text <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Text <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPlaceholder
-            match prevValueOpt, source.TryPlaceholder with
+            let valueOpt = source.TryPlaceholder
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Placeholder <- value
-            | Some _, None -> target.Placeholder <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Placeholder <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalTextAlignment
-            match prevValueOpt, source.TryHorizontalTextAlignment with
+            let valueOpt = source.TryHorizontalTextAlignment
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalTextAlignment <- value
-            | Some _, None -> target.HorizontalTextAlignment <- Xamarin.Forms.TextAlignment.Start // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalTextAlignment <- Xamarin.Forms.TextAlignment.Start
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontSize
-            match prevValueOpt, source.TryFontSize with
+            let valueOpt = source.TryFontSize
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.FontSize <- value
-            | Some _, None -> target.FontSize <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.FontSize <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontFamily
-            match prevValueOpt, source.TryFontFamily with
+            let valueOpt = source.TryFontFamily
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.FontFamily <- value
-            | Some _, None -> target.FontFamily <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.FontFamily <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontAttributes
-            match prevValueOpt, source.TryFontAttributes with
+            let valueOpt = source.TryFontAttributes
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.FontAttributes <- value
-            | Some _, None -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTextColor
-            match prevValueOpt, source.TryTextColor with
+            let valueOpt = source.TryTextColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TextColor <- value
-            | Some _, None -> target.TextColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TextColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPlaceholderColor
-            match prevValueOpt, source.TryPlaceholderColor with
+            let valueOpt = source.TryPlaceholderColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.PlaceholderColor <- value
-            | Some _, None -> target.PlaceholderColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.PlaceholderColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsPassword
-            match prevValueOpt, source.TryIsPassword with
+            let valueOpt = source.TryIsPassword
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsPassword <- value
-            | Some _, None -> target.IsPassword <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsPassword <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryEntryCompleted
             match prevValueOpt, source.TryEntryCompleted with
@@ -7245,162 +7684,179 @@ type Xaml() =
             | Some prevValue, None -> target.TextChanged.RemoveHandler(prevValue)
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryKeyboard
-            match prevValueOpt, source.TryKeyboard with
+            let valueOpt = source.TryKeyboard
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Keyboard <- value
-            | Some _, None -> target.Keyboard <- Xamarin.Forms.Keyboard.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Keyboard <- Xamarin.Forms.Keyboard.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
-            match prevValueOpt, source.TryHorizontalOptions with
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalOptions <- value
-            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
-            match prevValueOpt, source.TryVerticalOptions with
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.VerticalOptions <- value
-            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
-            match prevValueOpt, source.TryMargin with
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Margin <- value
-            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
-            match prevCollOpt, source.TryGestureRecognizers with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.GestureRecognizers
-                    (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.GestureRecognizers.Clear()
+            let collOpt = source.TryGestureRecognizers
+            applyToIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.Entry>, create, apply, Map.ofArray attribs)
 
@@ -7446,198 +7902,221 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Label)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryText
-            match prevValueOpt, source.TryText with
+            let valueOpt = source.TryText
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Text <- value
-            | Some _, None -> target.Text <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Text <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalTextAlignment
-            match prevValueOpt, source.TryHorizontalTextAlignment with
+            let valueOpt = source.TryHorizontalTextAlignment
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalTextAlignment <- value
-            | Some _, None -> target.HorizontalTextAlignment <- Xamarin.Forms.TextAlignment.Start // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalTextAlignment <- Xamarin.Forms.TextAlignment.Start
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalTextAlignment
-            match prevValueOpt, source.TryVerticalTextAlignment with
+            let valueOpt = source.TryVerticalTextAlignment
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.VerticalTextAlignment <- value
-            | Some _, None -> target.VerticalTextAlignment <- Xamarin.Forms.TextAlignment.Start // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.VerticalTextAlignment <- Xamarin.Forms.TextAlignment.Start
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontSize
-            match prevValueOpt, source.TryFontSize with
+            let valueOpt = source.TryFontSize
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.FontSize <- value
-            | Some _, None -> target.FontSize <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.FontSize <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontFamily
-            match prevValueOpt, source.TryFontFamily with
+            let valueOpt = source.TryFontFamily
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.FontFamily <- value
-            | Some _, None -> target.FontFamily <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.FontFamily <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontAttributes
-            match prevValueOpt, source.TryFontAttributes with
+            let valueOpt = source.TryFontAttributes
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.FontAttributes <- value
-            | Some _, None -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTextColor
-            match prevValueOpt, source.TryTextColor with
+            let valueOpt = source.TryTextColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TextColor <- value
-            | Some _, None -> target.TextColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TextColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
-            match prevValueOpt, source.TryHorizontalOptions with
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalOptions <- value
-            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
-            match prevValueOpt, source.TryVerticalOptions with
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.VerticalOptions <- value
-            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
-            match prevValueOpt, source.TryMargin with
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Margin <- value
-            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
-            match prevCollOpt, source.TryGestureRecognizers with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.GestureRecognizers
-                    (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.GestureRecognizers.Clear()
+            let collOpt = source.TryGestureRecognizers
+            applyToIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.Label>, create, apply, Map.ofArray attribs)
 
@@ -7678,168 +8157,186 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Layout)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsClippedToBounds
-            match prevValueOpt, source.TryIsClippedToBounds with
+            let valueOpt = source.TryIsClippedToBounds
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsClippedToBounds <- value
-            | Some _, None -> target.IsClippedToBounds <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsClippedToBounds <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
-            match prevValueOpt, source.TryPadding with
+            let valueOpt = source.TryPadding
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Padding <- value
-            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
-            match prevValueOpt, source.TryHorizontalOptions with
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalOptions <- value
-            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
-            match prevValueOpt, source.TryVerticalOptions with
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.VerticalOptions <- value
-            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
-            match prevValueOpt, source.TryMargin with
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Margin <- value
-            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
-            match prevCollOpt, source.TryGestureRecognizers with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.GestureRecognizers
-                    (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.GestureRecognizers.Clear()
+            let collOpt = source.TryGestureRecognizers
+            applyToIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.Layout>, create, apply, Map.ofArray attribs)
 
@@ -7883,194 +8380,207 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.StackLayout)
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryChildren
-            match prevCollOpt, source.TryChildren with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.Children
-                    (fun (x:XamlElement) -> x.CreateAsView())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.Children.Clear()
+            let collOpt = source.TryChildren
+            applyToIList prevCollOpt collOpt target.Children
+                (fun (x:XamlElement) -> x.CreateAsView())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStackOrientation
-            match prevValueOpt, source.TryStackOrientation with
+            let valueOpt = source.TryStackOrientation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Orientation <- value
-            | Some _, None -> target.Orientation <- Xamarin.Forms.StackOrientation.Vertical // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Orientation <- Xamarin.Forms.StackOrientation.Vertical
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TrySpacing
-            match prevValueOpt, source.TrySpacing with
+            let valueOpt = source.TrySpacing
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Spacing <- value
-            | Some _, None -> target.Spacing <- 6.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Spacing <- 6.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsClippedToBounds
-            match prevValueOpt, source.TryIsClippedToBounds with
+            let valueOpt = source.TryIsClippedToBounds
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsClippedToBounds <- value
-            | Some _, None -> target.IsClippedToBounds <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsClippedToBounds <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
-            match prevValueOpt, source.TryPadding with
+            let valueOpt = source.TryPadding
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Padding <- value
-            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
-            match prevValueOpt, source.TryHorizontalOptions with
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalOptions <- value
-            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
-            match prevValueOpt, source.TryVerticalOptions with
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.VerticalOptions <- value
-            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
-            match prevValueOpt, source.TryMargin with
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Margin <- value
-            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
-            match prevCollOpt, source.TryGestureRecognizers with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.GestureRecognizers
-                    (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.GestureRecognizers.Clear()
+            let collOpt = source.TryGestureRecognizers
+            applyToIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.StackLayout>, create, apply, Map.ofArray attribs)
 
@@ -8092,40 +8602,46 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Span)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontFamily
-            match prevValueOpt, source.TryFontFamily with
+            let valueOpt = source.TryFontFamily
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.FontFamily <- value
-            | Some _, None -> target.FontFamily <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.FontFamily <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontAttributes
-            match prevValueOpt, source.TryFontAttributes with
+            let valueOpt = source.TryFontAttributes
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.FontAttributes <- value
-            | Some _, None -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFontSize
-            match prevValueOpt, source.TryFontSize with
+            let valueOpt = source.TryFontSize
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.FontSize <- value
-            | Some _, None -> target.FontSize <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.FontSize <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryForegroundColor
-            match prevValueOpt, source.TryForegroundColor with
+            let valueOpt = source.TryForegroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ForegroundColor <- value
-            | Some _, None -> target.ForegroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ForegroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryText
-            match prevValueOpt, source.TryText with
+            let valueOpt = source.TryText
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Text <- value
-            | Some _, None -> target.Text <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Text <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPropertyChanged
             match prevValueOpt, source.TryPropertyChanged with
@@ -8174,174 +8690,193 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.TimePicker)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTime
-            match prevValueOpt, source.TryTime with
+            let valueOpt = source.TryTime
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Time <- value
-            | Some _, None -> target.Time <- new System.TimeSpan() // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Time <- new System.TimeSpan()
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFormat
-            match prevValueOpt, source.TryFormat with
+            let valueOpt = source.TryFormat
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Format <- value
-            | Some _, None -> target.Format <- "t" // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Format <- "t"
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTextColor
-            match prevValueOpt, source.TryTextColor with
+            let valueOpt = source.TryTextColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TextColor <- value
-            | Some _, None -> target.TextColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TextColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
-            match prevValueOpt, source.TryHorizontalOptions with
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalOptions <- value
-            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
-            match prevValueOpt, source.TryVerticalOptions with
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.VerticalOptions <- value
-            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
-            match prevValueOpt, source.TryMargin with
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Margin <- value
-            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
-            match prevCollOpt, source.TryGestureRecognizers with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.GestureRecognizers
-                    (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.GestureRecognizers.Clear()
+            let collOpt = source.TryGestureRecognizers
+            applyToIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.TimePicker>, create, apply, Map.ofArray attribs)
 
@@ -8383,10 +8918,11 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.WebView)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWebSource
-            match prevValueOpt, source.TryWebSource with
+            let valueOpt = source.TryWebSource
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Source <- value
-            | Some _, None -> target.Source <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Source <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryNavigated
             match prevValueOpt, source.TryNavigated with
@@ -8403,156 +8939,172 @@ type Xaml() =
             | Some prevValue, None -> target.Navigating.RemoveHandler(prevValue)
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
-            match prevValueOpt, source.TryHorizontalOptions with
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalOptions <- value
-            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
-            match prevValueOpt, source.TryVerticalOptions with
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.VerticalOptions <- value
-            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
-            match prevValueOpt, source.TryMargin with
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Margin <- value
-            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
-            match prevCollOpt, source.TryGestureRecognizers with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.GestureRecognizers
-                    (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.GestureRecognizers.Clear()
+            let collOpt = source.TryGestureRecognizers
+            applyToIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.WebView>, create, apply, Map.ofArray attribs)
 
@@ -8589,136 +9141,158 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Page)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTitle
-            match prevValueOpt, source.TryTitle with
+            let valueOpt = source.TryTitle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Title <- value
-            | Some _, None -> target.Title <- "" // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Title <- ""
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
-            match prevValueOpt, source.TryPadding with
+            let valueOpt = source.TryPadding
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Padding <- value
-            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.Page>, create, apply, Map.ofArray attribs)
 
@@ -8761,36 +9335,32 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.CarouselPage)
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryChildren
-            match prevCollOpt, source.TryChildren with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.Children
-                    (fun (x:XamlElement) -> x.CreateAsContentPage())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.Children.Clear()
+            let collOpt = source.TryChildren
+            applyToIList prevCollOpt collOpt target.Children
+                (fun (x:XamlElement) -> x.CreateAsContentPage())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryItemsSource
-            match prevValueOpt, source.TryItemsSource with
+            let valueOpt = source.TryItemsSource
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ItemsSource <- value
-            | Some _, None -> target.ItemsSource <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ItemsSource <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryItemTemplate
-            match prevValueOpt, source.TryItemTemplate with
+            let valueOpt = source.TryItemTemplate
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ItemTemplate <- value
-            | Some _, None -> target.ItemTemplate <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ItemTemplate <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryCarouselPage_SelectedItem
-            match prevValueOpt, source.TryCarouselPage_SelectedItem with
+            let valueOpt = source.TryCarouselPage_SelectedItem
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.SelectedItem <- value
-            | Some _, None -> target.SelectedItem <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.SelectedItem <- null
             | None, None -> ()
             let prevChildOpt = match prevOpt with None -> None | Some prev -> prev.TryCurrentPage
             match prevChildOpt, source.TryCurrentPage with
@@ -8811,136 +9381,158 @@ type Xaml() =
             | Some prevValue, None -> target.CurrentPageChanged.RemoveHandler(prevValue)
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTitle
-            match prevValueOpt, source.TryTitle with
+            let valueOpt = source.TryTitle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Title <- value
-            | Some _, None -> target.Title <- "" // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Title <- ""
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
-            match prevValueOpt, source.TryPadding with
+            let valueOpt = source.TryPadding
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Padding <- value
-            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.CarouselPage>, create, apply, Map.ofArray attribs)
 
@@ -8982,16 +9574,18 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.NavigationPage)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBarBackgroundColor
-            match prevValueOpt, source.TryBarBackgroundColor with
+            let valueOpt = source.TryBarBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BarBackgroundColor <- value
-            | Some _, None -> target.BarBackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BarBackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBarTextColor
-            match prevValueOpt, source.TryBarTextColor with
+            let valueOpt = source.TryBarTextColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BarTextColor <- value
-            | Some _, None -> target.BarTextColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BarTextColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPopped
             match prevValueOpt, source.TryPopped with
@@ -9015,136 +9609,158 @@ type Xaml() =
             | Some prevValue, None -> target.Pushed.RemoveHandler(prevValue)
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTitle
-            match prevValueOpt, source.TryTitle with
+            let valueOpt = source.TryTitle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Title <- value
-            | Some _, None -> target.Title <- "" // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Title <- ""
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
-            match prevValueOpt, source.TryPadding with
+            let valueOpt = source.TryPadding
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Padding <- value
-            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.NavigationPage>, create, apply, Map.ofArray attribs)
 
@@ -9184,169 +9800,187 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.TabbedPage)
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryChildren
-            match prevCollOpt, source.TryChildren with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.Children
-                    (fun (x:XamlElement) -> x.CreateAsPage())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.Children.Clear()
+            let collOpt = source.TryChildren
+            applyToIList prevCollOpt collOpt target.Children
+                (fun (x:XamlElement) -> x.CreateAsPage())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBarBackgroundColor
-            match prevValueOpt, source.TryBarBackgroundColor with
+            let valueOpt = source.TryBarBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BarBackgroundColor <- value
-            | Some _, None -> target.BarBackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BarBackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBarTextColor
-            match prevValueOpt, source.TryBarTextColor with
+            let valueOpt = source.TryBarTextColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BarTextColor <- value
-            | Some _, None -> target.BarTextColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BarTextColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTitle
-            match prevValueOpt, source.TryTitle with
+            let valueOpt = source.TryTitle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Title <- value
-            | Some _, None -> target.Title <- "" // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Title <- ""
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
-            match prevValueOpt, source.TryPadding with
+            let valueOpt = source.TryPadding
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Padding <- value
-            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.TabbedPage>, create, apply, Map.ofArray attribs)
 
     /// Describes a ContentPage in the view
-    static member ContentPage(?content: XamlElement, ?title: string, ?padding: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member ContentPage(?content: XamlElement, ?onSizeAllocated: (Xamarin.Forms.View -> (double * double) -> unit), ?title: string, ?padding: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match content with None -> () | Some v -> yield ("Content", box ((v))) 
+            match onSizeAllocated with None -> () | Some v -> yield ("OnSizeAllocatedCallback", box ((v))) 
             match title with None -> () | Some v -> yield ("Title", box ((v))) 
             match padding with None -> () | Some v -> yield ("Padding", box (makeThickness(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
@@ -9372,7 +10006,7 @@ type Xaml() =
           |]
 
         let create () =
-            box (new Xamarin.Forms.ContentPage())
+            box (new Elmish.XamarinForms.DynamicViews.CustomContentPage())
 
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ContentPage)
@@ -9387,137 +10021,162 @@ type Xaml() =
             | Some _, None ->
                 target.Content <- null;
             | None, None -> ()
+            let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOnSizeAllocatedCallback
+            let valueOpt = source.TryOnSizeAllocatedCallback
+            (match valueOpt with None -> () | Some f -> (target :?> Elmish.XamarinForms.DynamicViews.CustomContentPage).OnSizeAllocatedCallback <- Some f)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTitle
-            match prevValueOpt, source.TryTitle with
+            let valueOpt = source.TryTitle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Title <- value
-            | Some _, None -> target.Title <- "" // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Title <- ""
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
-            match prevValueOpt, source.TryPadding with
+            let valueOpt = source.TryPadding
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Padding <- value
-            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.ContentPage>, create, apply, Map.ofArray attribs)
 
@@ -9582,22 +10241,25 @@ type Xaml() =
                 target.Detail <- null;
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsGestureEnabled
-            match prevValueOpt, source.TryIsGestureEnabled with
+            let valueOpt = source.TryIsGestureEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsGestureEnabled <- value
-            | Some _, None -> target.IsGestureEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsGestureEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsPresented
-            match prevValueOpt, source.TryIsPresented with
+            let valueOpt = source.TryIsPresented
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsPresented <- value
-            | Some _, None -> target.IsPresented <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsPresented <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMasterBehavior
-            match prevValueOpt, source.TryMasterBehavior with
+            let valueOpt = source.TryMasterBehavior
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MasterBehavior <- value
-            | Some _, None -> target.MasterBehavior <- Xamarin.Forms.MasterBehavior.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MasterBehavior <- Xamarin.Forms.MasterBehavior.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsPresentedChanged
             match prevValueOpt, source.TryIsPresentedChanged with
@@ -9607,136 +10269,158 @@ type Xaml() =
             | Some prevValue, None -> target.IsPresentedChanged.RemoveHandler(prevValue)
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTitle
-            match prevValueOpt, source.TryTitle with
+            let valueOpt = source.TryTitle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Title <- value
-            | Some _, None -> target.Title <- "" // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Title <- ""
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryPadding
-            match prevValueOpt, source.TryPadding with
+            let valueOpt = source.TryPadding
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Padding <- value
-            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.MasterDetailPage>, create, apply, Map.ofArray attribs)
 
@@ -9755,28 +10439,32 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Cell)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeight
-            match prevValueOpt, source.TryHeight with
+            let valueOpt = source.TryHeight
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Height <- value
-            | Some _, None -> target.Height <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Height <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.Cell>, create, apply, Map.ofArray attribs)
 
@@ -9801,64 +10489,74 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.TextCell)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryText
-            match prevValueOpt, source.TryText with
+            let valueOpt = source.TryText
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Text <- value
-            | Some _, None -> target.Text <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Text <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTextDetail
-            match prevValueOpt, source.TryTextDetail with
+            let valueOpt = source.TryTextDetail
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Detail <- value
-            | Some _, None -> target.Detail <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Detail <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTextColor
-            match prevValueOpt, source.TryTextColor with
+            let valueOpt = source.TryTextColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TextColor <- value
-            | Some _, None -> target.TextColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TextColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTextDetailColor
-            match prevValueOpt, source.TryTextDetailColor with
+            let valueOpt = source.TryTextDetailColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.DetailColor <- value
-            | Some _, None -> target.DetailColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.DetailColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryCommand
-            match prevValueOpt, source.TryCommand with
+            let valueOpt = source.TryCommand
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Command <- value
-            | Some _, None -> target.Command <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Command <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryCommandParameter
-            match prevValueOpt, source.TryCommandParameter with
+            let valueOpt = source.TryCommandParameter
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.CommandParameter <- value
-            | Some _, None -> target.CommandParameter <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.CommandParameter <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeight
-            match prevValueOpt, source.TryHeight with
+            let valueOpt = source.TryHeight
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Height <- value
-            | Some _, None -> target.Height <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Height <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.TextCell>, create, apply, Map.ofArray attribs)
 
@@ -9884,70 +10582,81 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ImageCell)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryImageSource
-            match prevValueOpt, source.TryImageSource with
+            let valueOpt = source.TryImageSource
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ImageSource <- value
-            | Some _, None -> target.ImageSource <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ImageSource <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryText
-            match prevValueOpt, source.TryText with
+            let valueOpt = source.TryText
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Text <- value
-            | Some _, None -> target.Text <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Text <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTextDetail
-            match prevValueOpt, source.TryTextDetail with
+            let valueOpt = source.TryTextDetail
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Detail <- value
-            | Some _, None -> target.Detail <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Detail <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTextColor
-            match prevValueOpt, source.TryTextColor with
+            let valueOpt = source.TryTextColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TextColor <- value
-            | Some _, None -> target.TextColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TextColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTextDetailColor
-            match prevValueOpt, source.TryTextDetailColor with
+            let valueOpt = source.TryTextDetailColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.DetailColor <- value
-            | Some _, None -> target.DetailColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.DetailColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryCommand
-            match prevValueOpt, source.TryCommand with
+            let valueOpt = source.TryCommand
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Command <- value
-            | Some _, None -> target.Command <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Command <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryCommandParameter
-            match prevValueOpt, source.TryCommandParameter with
+            let valueOpt = source.TryCommandParameter
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.CommandParameter <- value
-            | Some _, None -> target.CommandParameter <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.CommandParameter <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeight
-            match prevValueOpt, source.TryHeight with
+            let valueOpt = source.TryHeight
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Height <- value
-            | Some _, None -> target.Height <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Height <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.ImageCell>, create, apply, Map.ofArray attribs)
 
@@ -9978,28 +10687,32 @@ type Xaml() =
                 target.View <- null;
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeight
-            match prevValueOpt, source.TryHeight with
+            let valueOpt = source.TryHeight
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Height <- value
-            | Some _, None -> target.Height <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Height <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.ViewCell>, create, apply, Map.ofArray attribs)
 
@@ -10056,82 +10769,91 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ListView)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryListViewItems
-            match prevValueOpt, source.TryListViewItems with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> applyToListViewItems prevValueOpt value target
-            | Some _, None -> target.ItemsSource <- null // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
+            let valueOpt = source.TryListViewItems
+            applyToListViewItems prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFooter
-            match prevValueOpt, source.TryFooter with
+            let valueOpt = source.TryFooter
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Footer <- value
-            | Some _, None -> target.Footer <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Footer <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHasUnevenRows
-            match prevValueOpt, source.TryHasUnevenRows with
+            let valueOpt = source.TryHasUnevenRows
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HasUnevenRows <- value
-            | Some _, None -> target.HasUnevenRows <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HasUnevenRows <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeader
-            match prevValueOpt, source.TryHeader with
+            let valueOpt = source.TryHeader
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Header <- value
-            | Some _, None -> target.Header <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Header <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeaderTemplate
-            match prevValueOpt, source.TryHeaderTemplate with
+            let valueOpt = source.TryHeaderTemplate
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeaderTemplate <- value
-            | Some _, None -> target.HeaderTemplate <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeaderTemplate <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsGroupingEnabled
-            match prevValueOpt, source.TryIsGroupingEnabled with
+            let valueOpt = source.TryIsGroupingEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsGroupingEnabled <- value
-            | Some _, None -> target.IsGroupingEnabled <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsGroupingEnabled <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsPullToRefreshEnabled
-            match prevValueOpt, source.TryIsPullToRefreshEnabled with
+            let valueOpt = source.TryIsPullToRefreshEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsPullToRefreshEnabled <- value
-            | Some _, None -> target.IsPullToRefreshEnabled <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsPullToRefreshEnabled <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsRefreshing
-            match prevValueOpt, source.TryIsRefreshing with
+            let valueOpt = source.TryIsRefreshing
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsRefreshing <- value
-            | Some _, None -> target.IsRefreshing <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsRefreshing <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRefreshCommand
-            match prevValueOpt, source.TryRefreshCommand with
+            let valueOpt = source.TryRefreshCommand
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RefreshCommand <- value
-            | Some _, None -> target.RefreshCommand <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RefreshCommand <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRowHeight
-            match prevValueOpt, source.TryRowHeight with
+            let valueOpt = source.TryRowHeight
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RowHeight <- value
-            | Some _, None -> target.RowHeight <- -1 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RowHeight <- -1
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryListView_SelectedItem
-            match prevValueOpt, source.TryListView_SelectedItem with
+            let valueOpt = source.TryListView_SelectedItem
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.SelectedItem <- (match value with None -> null | Some i -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListElementData<XamlElement>> in if i >= 0 && i < items.Count then items.[i] else null)
-            | Some _, None -> target.SelectedItem <- null // TODO: not always perfect, should set back to original default?
+            | prevOpt, Some value -> target.SelectedItem <- value
+            | Some _, None -> target.SelectedItem <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TrySeparatorVisibility
-            match prevValueOpt, source.TrySeparatorVisibility with
+            let valueOpt = source.TrySeparatorVisibility
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.SeparatorVisibility <- value
-            | Some _, None -> target.SeparatorVisibility <- Xamarin.Forms.SeparatorVisibility.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.SeparatorVisibility <- Xamarin.Forms.SeparatorVisibility.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TrySeparatorColor
-            match prevValueOpt, source.TrySeparatorColor with
+            let valueOpt = source.TrySeparatorColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.SeparatorColor <- value
-            | Some _, None -> target.SeparatorColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.SeparatorColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryItemAppearing
             match prevValueOpt, source.TryItemAppearing with
@@ -10169,156 +10891,172 @@ type Xaml() =
             | Some prevValue, None -> target.Refreshing.RemoveHandler(prevValue)
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
-            match prevValueOpt, source.TryHorizontalOptions with
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalOptions <- value
-            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
-            match prevValueOpt, source.TryVerticalOptions with
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.VerticalOptions <- value
-            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
-            match prevValueOpt, source.TryMargin with
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Margin <- value
-            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
-            match prevCollOpt, source.TryGestureRecognizers with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.GestureRecognizers
-                    (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.GestureRecognizers.Clear()
+            let collOpt = source.TryGestureRecognizers
+            applyToIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.ListView>, create, apply, Map.ofArray attribs)
 
@@ -10374,76 +11112,84 @@ type Xaml() =
         let apply (prevOpt: XamlElement option) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ListView)
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryGroupListViewItemsSource
-            match prevValueOpt, source.TryGroupListViewItemsSource with
-            | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> applyToListViewGroupedItems prevValueOpt value target
-            | Some _, None -> target.ItemsSource <- null // TODO: not always perfect, should set back to original default?
-            | None, None -> ()
+            let valueOpt = source.TryGroupListViewItemsSource
+            applyToListViewGroupedItems prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryFooter
-            match prevValueOpt, source.TryFooter with
+            let valueOpt = source.TryFooter
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Footer <- value
-            | Some _, None -> target.Footer <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Footer <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHasUnevenRows
-            match prevValueOpt, source.TryHasUnevenRows with
+            let valueOpt = source.TryHasUnevenRows
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HasUnevenRows <- value
-            | Some _, None -> target.HasUnevenRows <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HasUnevenRows <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeader
-            match prevValueOpt, source.TryHeader with
+            let valueOpt = source.TryHeader
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Header <- value
-            | Some _, None -> target.Header <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Header <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsGroupingEnabled
-            match prevValueOpt, source.TryIsGroupingEnabled with
+            let valueOpt = source.TryIsGroupingEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsGroupingEnabled <- value
-            | Some _, None -> target.IsGroupingEnabled <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsGroupingEnabled <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsPullToRefreshEnabled
-            match prevValueOpt, source.TryIsPullToRefreshEnabled with
+            let valueOpt = source.TryIsPullToRefreshEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsPullToRefreshEnabled <- value
-            | Some _, None -> target.IsPullToRefreshEnabled <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsPullToRefreshEnabled <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsRefreshing
-            match prevValueOpt, source.TryIsRefreshing with
+            let valueOpt = source.TryIsRefreshing
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsRefreshing <- value
-            | Some _, None -> target.IsRefreshing <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsRefreshing <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRefreshCommand
-            match prevValueOpt, source.TryRefreshCommand with
+            let valueOpt = source.TryRefreshCommand
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RefreshCommand <- value
-            | Some _, None -> target.RefreshCommand <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RefreshCommand <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRowHeight
-            match prevValueOpt, source.TryRowHeight with
+            let valueOpt = source.TryRowHeight
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RowHeight <- value
-            | Some _, None -> target.RowHeight <- -1 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RowHeight <- -1
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryListViewGrouped_SelectedItem
-            match prevValueOpt, source.TryListViewGrouped_SelectedItem with
+            let valueOpt = source.TryListViewGrouped_SelectedItem
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
-            | prevOpt, Some value -> target.SelectedItem <- (match value with None -> null | Some (i,j) -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListGroupData<XamlElement>> in (if i >= 0 && i < items.Count then (let items2 = items.[i] in if j >= 0 && j < items2.Count then items2.[j] else null) else null))
-            | Some _, None -> target.SelectedItem <- null // TODO: not always perfect, should set back to original default?
+            | prevOpt, Some value -> target.SelectedItem <- value
+            | Some _, None -> target.SelectedItem <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TrySeparatorVisibility
-            match prevValueOpt, source.TrySeparatorVisibility with
+            let valueOpt = source.TrySeparatorVisibility
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.SeparatorVisibility <- value
-            | Some _, None -> target.SeparatorVisibility <- Xamarin.Forms.SeparatorVisibility.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.SeparatorVisibility <- Xamarin.Forms.SeparatorVisibility.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TrySeparatorColor
-            match prevValueOpt, source.TrySeparatorColor with
+            let valueOpt = source.TrySeparatorColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.SeparatorColor <- value
-            | Some _, None -> target.SeparatorColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.SeparatorColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryItemAppearing
             match prevValueOpt, source.TryItemAppearing with
@@ -10481,156 +11227,172 @@ type Xaml() =
             | Some prevValue, None -> target.Refreshing.RemoveHandler(prevValue)
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHorizontalOptions
-            match prevValueOpt, source.TryHorizontalOptions with
+            let valueOpt = source.TryHorizontalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HorizontalOptions <- value
-            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryVerticalOptions
-            match prevValueOpt, source.TryVerticalOptions with
+            let valueOpt = source.TryVerticalOptions
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.VerticalOptions <- value
-            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMargin
-            match prevValueOpt, source.TryMargin with
+            let valueOpt = source.TryMargin
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Margin <- value
-            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness> // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | None, None -> ()
             let prevCollOpt = match prevOpt with None -> None | Some prev -> prev.TryGestureRecognizers
-            match prevCollOpt, source.TryGestureRecognizers with
-            // For structured objects, amortize on reference equality
-            | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-            | _, Some coll when coll <> null && coll.Length > 0 ->
-                applyToIList
-                    prevCollOpt
-                    coll
-                    target.GestureRecognizers
-                    (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
-                    (fun _ _ _ -> ())
-                    (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                    (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
-            | _ -> target.GestureRecognizers.Clear()
+            let collOpt = source.TryGestureRecognizers
+            applyToIList prevCollOpt collOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+                (fun _ _ _ -> ())
+                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
+                (fun prevChild newChild targetChild -> newChild.ApplyIncremental(prevChild, targetChild))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorX
-            match prevValueOpt, source.TryAnchorX with
+            let valueOpt = source.TryAnchorX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorX <- value
-            | Some _, None -> target.AnchorX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryAnchorY
-            match prevValueOpt, source.TryAnchorY with
+            let valueOpt = source.TryAnchorY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.AnchorY <- value
-            | Some _, None -> target.AnchorY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.AnchorY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryBackgroundColor
-            match prevValueOpt, source.TryBackgroundColor with
+            let valueOpt = source.TryBackgroundColor
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.BackgroundColor <- value
-            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryHeightRequest
-            match prevValueOpt, source.TryHeightRequest with
+            let valueOpt = source.TryHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.HeightRequest <- value
-            | Some _, None -> target.HeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.HeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryInputTransparent
-            match prevValueOpt, source.TryInputTransparent with
+            let valueOpt = source.TryInputTransparent
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.InputTransparent <- value
-            | Some _, None -> target.InputTransparent <- false // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.InputTransparent <- false
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsEnabled
-            match prevValueOpt, source.TryIsEnabled with
+            let valueOpt = source.TryIsEnabled
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsEnabled <- value
-            | Some _, None -> target.IsEnabled <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsEnabled <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryIsVisible
-            match prevValueOpt, source.TryIsVisible with
+            let valueOpt = source.TryIsVisible
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.IsVisible <- value
-            | Some _, None -> target.IsVisible <- true // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.IsVisible <- true
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumHeightRequest
-            match prevValueOpt, source.TryMinimumHeightRequest with
+            let valueOpt = source.TryMinimumHeightRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumHeightRequest <- value
-            | Some _, None -> target.MinimumHeightRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumHeightRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryMinimumWidthRequest
-            match prevValueOpt, source.TryMinimumWidthRequest with
+            let valueOpt = source.TryMinimumWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.MinimumWidthRequest <- value
-            | Some _, None -> target.MinimumWidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.MinimumWidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOpacity
-            match prevValueOpt, source.TryOpacity with
+            let valueOpt = source.TryOpacity
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Opacity <- value
-            | Some _, None -> target.Opacity <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Opacity <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotation
-            match prevValueOpt, source.TryRotation with
+            let valueOpt = source.TryRotation
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Rotation <- value
-            | Some _, None -> target.Rotation <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Rotation <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationX
-            match prevValueOpt, source.TryRotationX with
+            let valueOpt = source.TryRotationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationX <- value
-            | Some _, None -> target.RotationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryRotationY
-            match prevValueOpt, source.TryRotationY with
+            let valueOpt = source.TryRotationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.RotationY <- value
-            | Some _, None -> target.RotationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.RotationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryScale
-            match prevValueOpt, source.TryScale with
+            let valueOpt = source.TryScale
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Scale <- value
-            | Some _, None -> target.Scale <- 1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Scale <- 1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyle
-            match prevValueOpt, source.TryStyle with
+            let valueOpt = source.TryStyle
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.Style <- value
-            | Some _, None -> target.Style <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.Style <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationX
-            match prevValueOpt, source.TryTranslationX with
+            let valueOpt = source.TryTranslationX
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationX <- value
-            | Some _, None -> target.TranslationX <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationX <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTranslationY
-            match prevValueOpt, source.TryTranslationY with
+            let valueOpt = source.TryTranslationY
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.TranslationY <- value
-            | Some _, None -> target.TranslationY <- 0.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.TranslationY <- 0.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryWidthRequest
-            match prevValueOpt, source.TryWidthRequest with
+            let valueOpt = source.TryWidthRequest
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.WidthRequest <- value
-            | Some _, None -> target.WidthRequest <- -1.0 // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.WidthRequest <- -1.0
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryClassId
-            match prevValueOpt, source.TryClassId with
+            let valueOpt = source.TryClassId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.ClassId <- value
-            | Some _, None -> target.ClassId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.ClassId <- null
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryStyleId
-            match prevValueOpt, source.TryStyleId with
+            let valueOpt = source.TryStyleId
+            match prevValueOpt, valueOpt with
             | Some prevValue, Some value when prevValue = value -> ()
             | prevOpt, Some value -> target.StyleId <- value
-            | Some _, None -> target.StyleId <- null // TODO: not always perfect, should set back to original default?
+            | Some _, None -> target.StyleId <- null
             | None, None -> ()
         new XamlElement(typeof<Xamarin.Forms.ListView>, create, apply, Map.ofArray attribs)
 [<AutoOpen>]
