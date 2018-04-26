@@ -520,7 +520,7 @@ module XamlElementExtensions =
         member x.TryPushed = match x.Attributes.TryFind("Pushed") with Some v -> Some(unbox<System.EventHandler<Xamarin.Forms.NavigationEventArgs>>(v)) | None -> None
 
         /// Try to get the OnSizeAllocatedCallback property in the visual element
-        member x.TryOnSizeAllocatedCallback = match x.Attributes.TryFind("OnSizeAllocatedCallback") with Some v -> Some(unbox<(Xamarin.Forms.View -> (double * double) -> unit)>(v)) | None -> None
+        member x.TryOnSizeAllocatedCallback = match x.Attributes.TryFind("OnSizeAllocatedCallback") with Some v -> Some(unbox<FSharp.Control.Handler<(double * double)>>(v)) | None -> None
 
         /// Try to get the Master property in the visual element
         member x.TryMaster = match x.Attributes.TryFind("Master") with Some v -> Some(unbox<XamlElement>(v)) | None -> None
@@ -979,7 +979,7 @@ module XamlElementExtensions =
         member x.Pushed(value: Xamarin.Forms.NavigationEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Pushed", box ((fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(value))))
 
         /// Adjusts the OnSizeAllocatedCallback property in the visual element
-        member x.OnSizeAllocatedCallback(value: (Xamarin.Forms.View -> (double * double) -> unit)) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("OnSizeAllocatedCallback", box ((value))))
+        member x.OnSizeAllocatedCallback(value: (double * double) -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("OnSizeAllocatedCallback", box ((fun f -> FSharp.Control.Handler<_>(fun _sender args -> f args))(value))))
 
         /// Adjusts the Master property in the visual element
         member x.Master(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.ApplyMethod, x.Attributes.Add("Master", box ((value))))
@@ -1802,10 +1802,10 @@ module XamlElementExtensions =
     let pushed (value: Xamarin.Forms.NavigationEventArgs -> unit) (x: XamlElement) = x.Pushed(value)
 
     /// Adjusts the OnSizeAllocatedCallback property in the visual element
-    let withOnSizeAllocatedCallback (value: (Xamarin.Forms.View -> (double * double) -> unit)) (x: XamlElement) = x.OnSizeAllocatedCallback(value)
+    let withOnSizeAllocatedCallback (value: (double * double) -> unit) (x: XamlElement) = x.OnSizeAllocatedCallback(value)
 
     /// Adjusts the OnSizeAllocatedCallback property in the visual element
-    let onSizeAllocatedCallback (value: (Xamarin.Forms.View -> (double * double) -> unit)) (x: XamlElement) = x.OnSizeAllocatedCallback(value)
+    let onSizeAllocatedCallback (value: (double * double) -> unit) (x: XamlElement) = x.OnSizeAllocatedCallback(value)
 
     /// Adjusts the Master property in the visual element
     let withMaster (value: XamlElement) (x: XamlElement) = x.Master(value)
@@ -9977,10 +9977,10 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.TabbedPage>, create, apply, Map.ofArray attribs)
 
     /// Describes a ContentPage in the view
-    static member ContentPage(?content: XamlElement, ?onSizeAllocated: (Xamarin.Forms.View -> (double * double) -> unit), ?title: string, ?padding: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member ContentPage(?content: XamlElement, ?onSizeAllocated: (double * double) -> unit, ?title: string, ?padding: double, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match content with None -> () | Some v -> yield ("Content", box ((v))) 
-            match onSizeAllocated with None -> () | Some v -> yield ("OnSizeAllocatedCallback", box ((v))) 
+            match onSizeAllocated with None -> () | Some v -> yield ("OnSizeAllocatedCallback", box ((fun f -> FSharp.Control.Handler<_>(fun _sender args -> f args))(v))) 
             match title with None -> () | Some v -> yield ("Title", box ((v))) 
             match padding with None -> () | Some v -> yield ("Padding", box (makeThickness(v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
@@ -10023,7 +10023,7 @@ type Xaml() =
             | None, None -> ()
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryOnSizeAllocatedCallback
             let valueOpt = source.TryOnSizeAllocatedCallback
-            (match valueOpt with None -> () | Some f -> (target :?> Elmish.XamarinForms.DynamicViews.CustomContentPage).OnSizeAllocatedCallback <- Some f)
+            (let target = (target :?> Elmish.XamarinForms.DynamicViews.CustomContentPage) in (match prevValueOpt with None -> () | Some f -> target.SizeAllocated.RemoveHandler(f)); (match valueOpt with None -> () | Some f -> target.SizeAllocated.AddHandler(f)))
             let prevValueOpt = match prevOpt with None -> None | Some prev -> prev.TryTitle
             let valueOpt = source.TryTitle
             match prevValueOpt, valueOpt with

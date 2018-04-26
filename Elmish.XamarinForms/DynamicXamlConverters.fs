@@ -107,13 +107,13 @@ type CustomGroupListView() =
 type CustomContentPage() as self = 
     inherit ContentPage()
     do Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(self, true)
-    member val OnSizeAllocatedCallback: (View -> (double * double) -> unit) option = None with get,set 
+    let sizeAllocated: Event<double * double> = Event<_>() 
+
+    member __.SizeAllocated = sizeAllocated.Publish
 
     override this.OnSizeAllocated(width, height) =
         base.OnSizeAllocated(width, height)
-        match this.OnSizeAllocatedCallback with 
-        | Some f -> f self.Content (width, height)
-        | None -> ()
+        sizeAllocated.Trigger(width, height)
 
 
 [<AutoOpen>]

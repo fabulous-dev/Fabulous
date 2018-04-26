@@ -184,11 +184,8 @@ module App =
                 Xaml.Button(command=(fun () -> dispatch Restart), text="Restart game", backgroundColor=Color.LightBlue, textColor=Color.Black, fontSize="Large").GridRow(2)
               ]),
 
-        // This requests a square board based on the width we get allocated on the device the first time we layout
-        //
-        // Note: The Xamarin.Forms approach to SizeAllocated events/requests is tricky to factor into an immutable model. It is unfortunately not 
-        // possible to simpy recreate the whole view here, you have to mutate the content in-place.
-        onSizeAllocated=(fun (content: View) (width, height) ->
+        // This requests a square board based on the width we get allocated on the device 
+        onSizeAllocated=(fun (width, height) ->
             if model.VisualBoardSize.IsNone then 
                 let sz = min width height - 80.0
                 dispatch (SetVisualBoardSize sz)))

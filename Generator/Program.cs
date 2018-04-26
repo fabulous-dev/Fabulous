@@ -59,7 +59,7 @@ namespace Generator
         public string InputType { get; set; }
 
         /// The default value when applying to the target
-        public string Default { get; set; }
+        public string ApplyDefault { get; set; }
 
         //public string Equality { get; set; }
 
@@ -208,8 +208,8 @@ namespace Generator
                         else if (FindEvent (m.Name, x.Definition) is EventDefinition e) {
                             m.Definition = e;
                         }
-                        else {
-                            Console.WriteLine($"Could not find member `{m.Name}`");
+                        else if (string.IsNullOrWhiteSpace(m.ApplyCode)) {
+                            Console.WriteLine($"Could not find member '{m.Name}'");
                         }
                     }
                 }
@@ -397,7 +397,7 @@ namespace Generator
                                     w.WriteLine($"                    | Some prev, Some v when prev = v -> ()");
                                     var apApply = string.IsNullOrWhiteSpace(ap.Apply) ? "" : ap.Apply + " ";
                                     w.WriteLine($"                    | prevOpt, Some value -> {tdef.FullName}.Set{ap.Name}(targetChild, {apApply}value)");
-                                    w.WriteLine($"                    | Some _, None -> {tdef.FullName}.Set{ap.Name}(targetChild, {ap.Default}) // TODO: not always perfect, should set back to original default?");
+                                    w.WriteLine($"                    | Some _, None -> {tdef.FullName}.Set{ap.Name}(targetChild, {ap.ApplyDefault}) // TODO: not always perfect, should set back to original default?");
                                     w.WriteLine($"                    | _ -> ()");
                                 }
                                 w.WriteLine($"                    ())");
@@ -463,7 +463,7 @@ namespace Generator
                                     w.WriteLine($"            match prevValueOpt, valueOpt with");
                                     w.WriteLine($"            | Some prevValue, Some value when prevValue = value -> ()");
                                     w.WriteLine($"            | prevOpt, Some value -> target.{m.Name} <- {m.Apply} value");
-                                    w.WriteLine($"            | Some _, None -> target.{m.Name} <- {m.Default}");
+                                    w.WriteLine($"            | Some _, None -> target.{m.Name} <- {m.ApplyDefault}");
                                     w.WriteLine($"            | None, None -> ()");
                                 }
                                 else
@@ -471,7 +471,7 @@ namespace Generator
                                     w.WriteLine($"            match prevValueOpt, valueOpt with");
                                     w.WriteLine($"            | Some prevValue, Some value when prevValue = value -> ()");
                                     w.WriteLine($"            | prevOpt, Some value -> target.{m.Name} <- value");
-                                    w.WriteLine($"            | Some _, None -> target.{m.Name} <- {m.Default}");
+                                    w.WriteLine($"            | Some _, None -> target.{m.Name} <- {m.ApplyDefault}");
                                     w.WriteLine($"            | None, None -> ()");
                                 }
                             }
