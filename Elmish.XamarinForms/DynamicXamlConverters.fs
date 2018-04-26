@@ -20,14 +20,14 @@ type XamlElement(targetType: Type, create: (unit -> obj), update: (XamlElement o
     [<DebuggerBrowsable(DebuggerBrowsableState.RootHidden)>]
     member x.Attributes = attribs
 
-    /// Update the description to a visual element
+    /// Apply initial settings to a freshly created visual element
     member x.Update (target: obj) = update None x target
 
-    /// Update a different description to a similar visual element
+    /// The differential update method implementation
     [<DebuggerBrowsable(DebuggerBrowsableState.Never)>]
     member x.UpdateMethod = update
 
-    /// Incrementally update a description to a visual element
+    /// Differrentially update a visual element given the previous settings
     member x.UpdateIncremental(prev: XamlElement, target: obj) = 
         Debug.WriteLine (sprintf "Update %O" x.TargetType)
         update (Some prev) x target
