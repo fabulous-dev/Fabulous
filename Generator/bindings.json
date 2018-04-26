@@ -1145,7 +1145,7 @@
 					"modelType": "FSharp.Control.Handler<(double * double)>",
 					"inputType": "(double * double) -> unit",
 					"convToModel": "(fun f -> FSharp.Control.Handler<_>(fun _sender args -> f args))",
-					"updateCode": "(let target = (target :?> Elmish.XamarinForms.DynamicViews.CustomContentPage) in (match prevValueOpt with None -> () | Some f -> target.SizeAllocated.RemoveHandler(f)); (match valueOpt with None -> () | Some f -> target.SizeAllocated.AddHandler(f)))"
+					"updateCode": "(let target = (target :?> Elmish.XamarinForms.DynamicViews.CustomContentPage) in (match prevValueOpt with UNone -> () | USome f -> target.SizeAllocated.RemoveHandler(f)); (match valueOpt with UNone -> () | USome f -> target.SizeAllocated.AddHandler(f)))"
 				}
 			]
 		},

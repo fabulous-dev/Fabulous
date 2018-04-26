@@ -9,9 +9,16 @@ open System.Diagnostics
 open System.Windows.Input
 open Xamarin.Forms
 
+[<Struct>]
+type StructOption<'T> = 
+    | USome of 'T | UNone
+    member x.Value = match x with USome v -> v | UNone -> failwith "UNone has no value"
+
+type uoption<'T> = StructOption<'T>
+
 /// A description of a visual element
 [<AllowNullLiteral>]
-type XamlElement(targetType: Type, create: (unit -> obj), update: (XamlElement option -> XamlElement -> obj -> unit), attribs: Map<string, obj>) = 
+type XamlElement(targetType: Type, create: (unit -> obj), update: (XamlElement uoption -> XamlElement -> obj -> unit), attribs: Map<string, obj>) = 
 
     /// Get the type created by the visual element
     member x.TargetType = targetType
@@ -21,7 +28,7 @@ type XamlElement(targetType: Type, create: (unit -> obj), update: (XamlElement o
     member x.Attributes = attribs
 
     /// Apply initial settings to a freshly created visual element
-    member x.Update (target: obj) = update None x target
+    member x.Update (target: obj) = update UNone x target
 
     /// The differential update method implementation
     [<DebuggerBrowsable(DebuggerBrowsableState.Never)>]
@@ -30,7 +37,7 @@ type XamlElement(targetType: Type, create: (unit -> obj), update: (XamlElement o
     /// Differrentially update a visual element given the previous settings
     member x.UpdateIncremental(prev: XamlElement, target: obj) = 
         Debug.WriteLine (sprintf "Update %O" x.TargetType)
-        update (Some prev) x target
+        update (USome prev) x target
 
     /// Update a different description to a similar visual element
     [<DebuggerBrowsable(DebuggerBrowsableState.Never)>]
@@ -156,18 +163,18 @@ module Converters =
     // Incremental list maintenance: given a collection, and a previous version of that collection, perform
     // a reduced number of clear/add/remove/insert operations
     let updateIList
-           (prevCollOpt: 'T[] option) 
-           (collOpt: 'T[] option) 
+           (prevCollOpt: 'T[] uoption) 
+           (collOpt: 'T[] uoption) 
            (targetColl: IList<'TargetT>) 
            (create: 'T -> 'TargetT)
-           (attach: 'T option -> 'T -> 'TargetT -> unit) // adjust attached properties
+           (attach: 'T uoption -> 'T -> 'TargetT -> unit) // adjust attached properties
            (canReuse : 'T -> 'T -> bool) // Used to check if reuse is possible
            (update: 'T -> 'T -> 'TargetT -> unit) // Incremental element-wise update, only if element reuse is allowed
         =
           match prevCollOpt, collOpt with 
-          | Some prevColl, Some newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-          | _, None -> targetColl.Clear()
-          | _, Some coll ->
+          | USome prevColl, USome newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
+          | _, UNone -> targetColl.Clear()
+          | _, USome coll ->
               if (coll = null || coll.Length = 0) then
                 targetColl.Clear()
               else
@@ -181,10 +188,10 @@ module Converters =
                 // Adjust the existing targetColl and create the new targetColl
                 for i in 0 .. coll.Length-1 do
                     let newChild = coll.[i]
-                    let prevChildOpt = match prevCollOpt with None -> None | Some coll when i < coll.Length && i < n -> Some coll.[i] | _ -> None
+                    let prevChildOpt = match prevCollOpt with UNone -> UNone | USome coll when i < coll.Length && i < n -> USome coll.[i] | _ -> UNone
                     let prevChildOpt, targetChild = 
-                        if (match prevChildOpt with None -> true | Some prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
-                            let mustCreate = (i >= n || match prevChildOpt with None -> true | Some prevChild -> not (canReuse prevChild newChild))
+                        if (match prevChildOpt with UNone -> true | USome prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
+                            let mustCreate = (i >= n || match prevChildOpt with UNone -> true | USome prevChild -> not (canReuse prevChild newChild))
                             if mustCreate then
                                 //printfn "Creating child %d, prevChildOpt = %A, newChild = %A" i prevChildOpt newChild
                                 let targetChild = create newChild
@@ -192,7 +199,7 @@ module Converters =
                                     targetColl.Insert(i, targetChild)
                                 else
                                     targetColl.[i] <- targetChild
-                                None, targetChild
+                                UNone, targetChild
                             else
                                 //printfn "Applying child %d, prevChild = %A, newChild = %A, (prevChild == newChild) = %A" i prevChildOpt.Value newChild (obj.ReferenceEquals(prevChildOpt.Value, newChild))
                                 let targetChild = targetColl.[i]
@@ -204,7 +211,7 @@ module Converters =
                     attach prevChildOpt newChild targetChild
 
 
-    let updateListViewItems (prevCollOpt: 'T[] option) (coll: 'T[] option) (target: Xamarin.Forms.ListView) = 
+    let updateListViewItems (prevCollOpt: 'T[] uoption) (coll: 'T[] uoption) (target: Xamarin.Forms.ListView) = 
         let oc = 
             match target.ItemsSource with 
             | :? ObservableCollection<ListElementData<'T>> as oc -> oc
@@ -214,7 +221,7 @@ module Converters =
                 oc
         updateIList prevCollOpt coll oc ListElementData (fun _ _ _ -> ()) (fun _ _ -> false) (fun _ _ _ -> failwith "no element reuse") 
 
-    let updateListViewGroupedItems (prevCollOpt: ('T * 'T[])[] option) (coll: ('T * 'T[])[] option) (target: Xamarin.Forms.ListView) = 
+    let updateListViewGroupedItems (prevCollOpt: ('T * 'T[])[] uoption) (coll: ('T * 'T[])[] uoption) (target: Xamarin.Forms.ListView) = 
         let oc = 
             match target.ItemsSource with 
             | :? ObservableCollection<ListGroupData<'T>> as oc -> oc
@@ -224,7 +231,7 @@ module Converters =
                 oc
         updateIList prevCollOpt coll oc ListGroupData (fun _ _ _ -> ()) (fun _ _ -> false) (fun _ _ _ -> failwith "no element reuse")
 
-    let updateTableViewItems (prevCollOpt: (string * 'T[])[] option) (coll: (string * 'T[])[] option) (target: Xamarin.Forms.TableView) create canReuse update = 
+    let updateTableViewItems (prevCollOpt: (string * 'T[])[] uoption) (coll: (string * 'T[])[] uoption) (target: Xamarin.Forms.TableView) create canReuse update = 
         let root = 
             match target.Root with 
             | null -> 
@@ -237,7 +244,7 @@ module Converters =
             (fun _ _ _ -> ()) // attach
             (fun _ _ -> true) // canReuse
             (fun (prevTitle,prevChild) (newTitle, newChild) target -> 
-                updateIList (Some prevChild) (Some newChild) target create (fun _ _ _ -> ()) canReuse update) 
+                updateIList (USome prevChild) (USome newChild) target create (fun _ _ _ -> ()) canReuse update) 
 
     let equalLayoutOptions (x:Xamarin.Forms.LayoutOptions) (y:Xamarin.Forms.LayoutOptions)  =
         x.Alignment = y.Alignment && x.Expands = y.Expands
