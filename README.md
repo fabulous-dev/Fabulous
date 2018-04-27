@@ -79,7 +79,6 @@ Differential update is used to update the Xamarin.Forms display based ont the pr
 Notes:
 * [The F# DSL is [generated](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms/DynamicXaml.fs) from a declarative model](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Generator/bindings.json).
 * There is only one UI element type (XamlElement, an immutable property bag).
-* All properties [are extension members that access the property bag](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms/DynamicXaml.fs#L185, also https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms/DynamicXaml.fs#L491)
 * Safe creation is done through helpers such as [`Xaml.Button(...)`](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms/DynamicXaml.fs#L1248).
 * There are some additional F# DSL helpers, e.g. [`button |> withText "Hello"`](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms/DynamicXaml.fs#L729) (note: you don't have
 to use these, and the samples don't use them).
