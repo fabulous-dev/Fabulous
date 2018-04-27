@@ -132,8 +132,10 @@ Roadmap
   * Minimize updates where possible
   * Experiment with different approaches to amortization
   * Amortize function closure creation
-  * Consider issues for immutable data structure
   * Use integer atoms for property names
+  * Do better list comparison/diffing
+  * Consider keeping a running identity hash on the immutable objects
+  * Consider implementing equality on the immutable objects
 
 * Handle 3rd party controls.
   * Examples: `Xamarin.Forms.Maps`, `SkiaSharp`
