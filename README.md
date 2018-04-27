@@ -48,14 +48,15 @@ The init function returns your initial state, and each model gets an update func
 
 Your application must be started as follows and assigned to the MainPage of your app:
 ```fsharp
+
+type App () = 
+    inherit Application ()
+
     let page = 
         Program.mkSimple init update view
         |> Program.withConsoleTrace
         |> Program.withDynamicView
         |> Program.run
-
-type App () = 
-    inherit Application ()
 
     do base.MainPage <- page
 ```
