@@ -15,27 +15,24 @@ Getting started with Elmish.XamarinForms
 
 A Basic Example
 ------
-Here is an example of an Elmish model (`Model`) with a composite model inside of it (`ClockModel`) and the corresponding messages:
+Here is a full example of an app:
 ```fsharp
+/// The messages dispatched by the view
 type Msg =
     | Pressed
 
+/// The model from which the view is generated
 type Model = 
     { Pressed: bool }
-```
-The init function returns your initial state, and each model gets an update function for message processing:
-```fsharp
+
+/// Returns the initial state
 let init() = { Pressed=false}
     
+/// The funtion to update the view
 let update (msg:Msg) (model:Model) =
     match msg with
     | Pressed -> { model with Pressed = true }
-```
-Your `view` function computes an immutable Xaml-like description.
-Incremental (differential) update application plus an F# DSL is provided
-for this in ``Elmish.XamarinForms.DynamicViews``.
 
-```fsharp
 /// The dynamic 'view' function giving updated content for the page
 let view (model: Model) dispatch =
     if model.Pressed then 
@@ -43,10 +40,9 @@ let view (model: Model) dispatch =
     else
         Xaml.Button(text="Press Me!", command= (fun () -> dispatch Pressed))
 ```
-Dynamic Views excel in cases where the existence, characteristics and layout of the view depends on information in the model.
-In the above example, the choice between a label and button depends on the `model.Pressed` value.
+The init function returns your initial state, and each model gets an update function for message processing. The `view` function computes an immutable Xaml-like description. In the above example, the choice between a label and button depends on the `model.Pressed` value.
 
-Your application must be started as follows:
+Your application must be started as follows and assigned to the MainPage of your app:
 ```fsharp
     let page = 
         Program.mkSimple init update view
@@ -54,10 +50,6 @@ Your application must be started as follows:
         |> Program.withDynamicView
         |> Program.run
 
-```
-And assign to the MainPage of your app:
-
-```
 type App () = 
     inherit Application ()
 
@@ -75,24 +67,27 @@ Screenshots from Anrdoid (Google Pixel):
 <img src="https://user-images.githubusercontent.com/7204669/39318922-57c95174-4977-11e8-94a9-cc385101ce5d.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318926-59f844e6-4977-11e8-9834-325a6517ced6.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318929-5b66c776-4977-11e8-8317-ee1c121301d4.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318934-5cbe3c3a-4977-11e8-92aa-c3fdf644b01c.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318936-5e2380bc-4977-11e8-8912-f078744a2bde.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318938-5f6ec4f4-4977-11e8-97a9-779edd3594bc.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318941-60c1b0f0-4977-11e8-8a4a-57e17ef8c6ec.png" width="100">
 
 
-More on Dynamic Views
+Dynamic Views
 ------
 
-* The immutable Xaml model is [generated code](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms/DynamicXaml.fs)
-* There is only one UI element type (XamlElement, an immutable property bag).  Fable uses this approach pretty well.
+Dynamic `view` functions are written using an F# DSL, see ``Elmish.XamarinForms.DynamicViews``.
+Dynamic Views excel in cases where the existence, characteristics and layout of the view depends on information in the model.
+
+Differential update is used to update the Xamarin.Forms display based ont the previous and current view descriptions.
+
+Notes:
+* [The F# DSL is [generated](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms/DynamicXaml.fs) from a declarative model](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Generator/bindings.json).
+* There is only one UI element type (XamlElement, an immutable property bag).
 * All properties [are extension members that access the property bag](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms/DynamicXaml.fs#L185, also https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms/DynamicXaml.fs#L491)
-* Safe creation through [`Xaml.Button(...)`](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms/DynamicXaml.fs#L1248) etc.  
-* Some F# DSL helpers, e.g. [`button |> withText "Hello"`](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms/DynamicXaml.fs#L729) etc.
-
-
+* Safe creation is done through helpers such as [`Xaml.Button(...)`](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms/DynamicXaml.fs#L1248).
+* There are some additional F# DSL helpers, e.g. [`button |> withText "Hello"`](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms/DynamicXaml.fs#L729) (note: you don't have
+to use these, and the samples don't use them).
 
 Amortizing Dynamic Views
 ------
 
 Dynamic views are only efficient for large UIs if "unchanging" parts of a UI are "amortized", returning identical
-objects as part of the view description.  You must mark up these parts of your UI description explicitly, using `amortize`.
-
-e.g. for a 6x6 Grid that never changes, use:
+objects on each invocation of the `view` function.  Amortization must be done explicitly and carefully. Here is an example for a 6x6 Grid that never changes:
 ```fsharp
 let view model dispatch =
     ...
@@ -102,20 +97,37 @@ let view model dispatch =
             [ Xaml.Label(text=sprintf "Grid (6x6, auto):")
               Xaml.Grid(rowdefs= [for i in 1 .. 6 -> box "auto"], coldefs=[for i in 1 .. 6 -> box "auto"], 
                         children = [ for i in 1 .. 6 do for j in 1 .. 6 -> Xaml.BoxView(Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0) ).GridRow(i-1).GridColumn(j-1) ] )
-            ]))
+            ])
 ```
+Inside the function passed to `amortize` the `model` is rebound to be inaccessbile.  This helps ensure that this part of the
+view description doesn't depend on captured variables.  You can also extract this part of the view description to a separate function.
+
+Here is an example where some of the model is extracted:
+```fsharp
+let view model dispatch =
+    ...
+    amortize (model.CountForSlider, model.StepForSlider) (fun model (count, step) -> 
+        Xaml.Slider(minimum=0.0, maximum=10.0, value= double step, 
+                    valueChanged=(fun args -> dispatch (SliderValueChanged (int (args.NewValue + 0.5)))), 
+                    horizontalOptions=LayoutOptions.Fill)) 
+    ...
+```
+In the example, we extract properties `CountForSlider` and `StepForSlider` from the model, and bind them to `count` and `step`.  If either of these change, the section of the view will be recomputed and no adjustments will be made to the UI.
+If not, this section of the view will be reused.
 
 Roadmap
 --------
 
-* Not done from `Xamarin.Forms.Core`: 
+* Road test on more apps
+
+* Do these from `Xamarin.Forms.Core`: 
   * Menu, MenuItem
   * NavigationBar
   * RelativeLayout
   * FlexLayout
   * AbsoluteLayout
 
-* Work through perf questions
+* Work through perf questions:
   * Road test differential update
   * Minimize updates where possible
   * Experiment with different approaches to amortization
@@ -123,10 +135,13 @@ Roadmap
   * Consider issues for immutable data structure
   * Use integer atoms for property names
 
-* Work out what to do about 3rd party controls. Examples:
-  * `Xamarin.Forms.Maps`
-  * `SkiaSharp`
-  * Please add more 3rd party controls
+* Handle 3rd party controls.
+  * Examples: `Xamarin.Forms.Maps`, `SkiaSharp`
+  * Please add more examples of 3rd party controls
+  * Consider whether to continue using a code generator or to switch to a type provider
+  * Make any necessary changes/additions to the `bindings.json` format (nothing is set in stone yet)
+
+* Consider allowing explicit static Xaml through a type provider, e.g `xaml<"""<StackLayout Padding="20">...</StackLayout>""">`, evaluating to a `XamlElement`
 
 * Make some small F# langauge improvements to improve code:
   * Remove `yield` in more cases
