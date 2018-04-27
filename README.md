@@ -72,9 +72,7 @@ Dynamic Views
 ------
 
 Dynamic `view` functions are written using an F# DSL, see ``Elmish.XamarinForms.DynamicViews``.
-Dynamic Views excel in cases where the existence, characteristics and layout of the view depends on information in the model.
-
-Differential update is used to update the Xamarin.Forms display based ont the previous and current view descriptions.
+Dynamic Views excel in cases where the existence, characteristics and layout of the view depends on information in the model. React-style differential update is used to update the Xamarin.Forms display based on the previous and current view descriptions.
 
 Notes:
 * The F# DSL is [generated](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms/DynamicXaml.fs) from a declarative model](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Generator/bindings.json) using a [code generator](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Generator) adapted from [@praeclarum](https://github.com/praeclarum)'s [ImmutableUI generator](https://github.com/praeclarum/ImmutableUI).
