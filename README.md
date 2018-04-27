@@ -26,7 +26,7 @@ type Model =
     { Pressed: bool }
 
 /// Returns the initial state
-let init() = { Pressed=false}
+let init() = { Pressed=false }
     
 /// The funtion to update the view
 let update (msg:Msg) (model:Model) =
@@ -38,7 +38,7 @@ let view (model: Model) dispatch =
     if model.Pressed then 
         Xaml.Label(text="I was pressed!")
     else
-        Xaml.Button(text="Press Me!", command= (fun () -> dispatch Pressed))
+        Xaml.Button(text="Press Me!", command=(fun () -> dispatch Pressed))
 ```
 The init function returns your initial state, and each model gets an update function for message processing. The `view` function computes an immutable Xaml-like description. In the above example, the choice between a label and button depends on the `model.Pressed` value.
 
