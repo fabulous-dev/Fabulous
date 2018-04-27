@@ -128,6 +128,7 @@ Roadmap
   * Animation
   * OpenGLView
   * CachingStrategy parameter to ListView
+  * Allow configuration of protected overrides such as OnSleep, OnResume, OnStart etc.
 
 * Programming efficiency
   * Support F# in Xamarin Live Player
