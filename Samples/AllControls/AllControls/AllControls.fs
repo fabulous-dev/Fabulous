@@ -131,6 +131,7 @@ module App =
                
            ]))
 
+
          amortize (model.CountForSlider, model.StepForSlider) (fun model (count, step) -> 
           Xaml.ScrollingContentPage("Slider", 
            [Xaml.Label(text="Label:")
