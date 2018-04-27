@@ -32,10 +32,10 @@ module SimplerHelpers =
     /// Amortize part of a view model computation and prevent the use of the model inside
     /// the amortized computation except where explicitly de-referenced.
     ///
-    /// Usage: "amortize model.Count <| fun model count -> ..."
+    /// Usage: "dependsOn model.Count <| fun model count -> ..."
     ///
     /// Note, this function uses "f.GetType()" to get a unique code location.
-    let amortize key f = 
+    let dependsOn key f = 
         let bkey = (key, f.GetType())
         let mutable res = Unchecked.defaultof<'Value>
         match Amortizations<('Key * System.Type),'Value>.T.TryGetValue(bkey) with 

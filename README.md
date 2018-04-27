@@ -86,15 +86,15 @@ Notes:
 * There are some additional F# DSL helpers, e.g. [`button |> withText "Hello"`](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms/DynamicXaml.fs#L729) (note: you don't have
 to use these, and the samples don't use them).
 
-Amortizing Dynamic Views
+Dynamic Views and Performance
 ------
 
-Dynamic views are only efficient for large UIs if "unchanging" parts of a UI are "amortized", returning identical
+Dynamic views are only efficient for large UIs if the "unchanging" parts of a UI are "memoized", returning identical
 objects on each invocation of the `view` function.  Amortization must be done explicitly and carefully. Here is an example for a 6x6 Grid that never changes:
 ```fsharp
 let view model dispatch =
     ...
-    amortize () (fun model () -> 
+    dependsOn () (fun model () -> 
         Xaml.StackLayout(
           children=
             [ Xaml.Label(text=sprintf "Grid (6x6, auto):")
@@ -105,14 +105,14 @@ let view model dispatch =
                                               .GridRow(i-1).GridColumn(j-1) ] )
             ])
 ```
-Inside the function passed to `amortize` the `model` is rebound to be inaccessbile.  This helps ensure that this part of the
+Inside the function passed to `dependsOn` the `model` is rebound to be inaccessbile.  This helps ensure that this part of the
 view description doesn't depend on captured variables.  You can also extract this part of the view description to a separate function.
 
 Here is an example where some of the model is extracted:
 ```fsharp
 let view model dispatch =
     ...
-    amortize (model.CountForSlider, model.StepForSlider) (fun model (count, step) -> 
+    dependsOn (model.CountForSlider, model.StepForSlider) (fun model (count, step) -> 
         Xaml.Slider(minimum=0.0, maximum=10.0, value= double step, 
                     valueChanged=(fun args -> dispatch (SliderValueChanged (int (args.NewValue + 0.5)))), 
                     horizontalOptions=LayoutOptions.Fill)) 
@@ -175,7 +175,7 @@ Roadmap
 
 * Make some small F# langauge improvements to improve code:
   * Remove `yield` in more cases
-  * Automatically amortize function values that do not capture any arguments and consider making the `dispatch` function global (partly to avoid is being seen as a captured argument)
+  * Automatically dependsOn function values that do not capture any arguments and consider making the `dispatch` function global (partly to avoid is being seen as a captured argument)
   * Allow syntax `Xaml.Foo(prop1=expr1, [ // end of line`
   * `TryGetValue` on F# immutable map
   * Allow a default unnamed argument for `children` so the argument name doesn't have to be given explicitly

@@ -117,8 +117,20 @@ module App =
             Xaml.ContentPage(title=title, content=Xaml.StackLayout(padding=20.0,children=children, ?gestureRecognizers=gestureRecognizers))
 
     let view (model: Model) dispatch =
-      Xaml.TabbedPage 
-       [ amortize model.Count (fun model count -> 
+      Xaml.MasterDetailPage(
+          masterBehavior=MasterBehavior.Popover, 
+          master = 
+            Xaml.ContentPage(padding=Thickness(0.0, 20.0, 0.0, 0.0) (* if iOS *),
+             content = 
+               Xaml.StackLayout(backgroundColor=Color.Gray, 
+                 children=[ Xaml.Button(text="Home", textColor=Color.White, backgroundColor=Color.Green (*, command="GoHomeCommand" *) ) 
+                            Xaml.Button(text="Second Page", textColor=Color.White, backgroundColor=Color.Navy (* , command="GoSecondCommand" *) )]) ),
+          detail = 
+             Xaml.NavigationPage(Xaml.ContentPage( Xaml.Label(Text="Home Page", VerticalOptions="Center", horizontalOptions="Center") )))
+         (*
+      Xaml.CarouselPage //TabbedPage 
+       [ 
+         dependsOn model.Count (fun model count -> 
           Xaml.ScrollingContentPage("Button", 
            [Xaml.Label(text="Label:")
             Xaml.Label(text= sprintf "%d" count, horizontalOptions=LayoutOptions.CenterAndExpand)
@@ -135,7 +147,7 @@ module App =
            ]))
 
 
-         amortize (model.CountForSlider, model.StepForSlider) (fun model (count, step) -> 
+         dependsOn (model.CountForSlider, model.StepForSlider) (fun model (count, step) -> 
           Xaml.ScrollingContentPage("Slider", 
            [Xaml.Label(text="Label:")
             Xaml.Label(text= sprintf "%d" count, horizontalOptions=LayoutOptions.CenterAndExpand)
@@ -152,7 +164,7 @@ module App =
                             horizontalOptions=LayoutOptions.Fill) 
            ]))
 
-         amortize model.CountForActivityIndicator (fun model count -> 
+         dependsOn model.CountForActivityIndicator (fun model count -> 
           Xaml.ScrollingContentPage("ActivityIndicator",
            [Xaml.Label(text="Label:")
             Xaml.Label(text= sprintf "%d" count, horizontalOptions=LayoutOptions.CenterAndExpand)
@@ -168,7 +180,7 @@ module App =
                 
           ]))
 
-         amortize (model.StartDate, model.EndDate) (fun model (startDate, endDate) -> 
+         dependsOn (model.StartDate, model.EndDate) (fun model (startDate, endDate) -> 
           Xaml.ScrollingContentPage("DatePicker",
            [Xaml.Label(text="DatePicker (start):")
             Xaml.DatePicker(minimumDate= System.DateTime.Today, maximumDate=DateTime.Today + TimeSpan.FromDays(365.0), 
@@ -183,7 +195,7 @@ module App =
                             horizontalOptions=LayoutOptions.CenterAndExpand)
           ]))
 
-         amortize model.EditorText (fun model editorText -> 
+         dependsOn model.EditorText (fun model editorText -> 
           Xaml.ScrollingContentPage("Editor",
            [Xaml.Label(text="Editor:")
             Xaml.Editor(text= editorText, horizontalOptions=LayoutOptions.CenterAndExpand, 
@@ -192,7 +204,7 @@ module App =
 
           ]))
 
-         amortize (model.EntryText, model.Password, model.Placeholder) (fun model (entryText, password, placeholder) -> 
+         dependsOn (model.EntryText, model.Password, model.Placeholder) (fun model (entryText, password, placeholder) -> 
           Xaml.ScrollingContentPage("Entry",
            [Xaml.Label(text="Entry:")
             Xaml.Entry(text= entryText, horizontalOptions=LayoutOptions.CenterAndExpand, 
@@ -211,7 +223,7 @@ module App =
 
           ]))
 
-         amortize (model.NumTaps, model.NumTaps2) (fun model (numTaps, numTaps2) -> 
+         dependsOn (model.NumTaps, model.NumTaps2) (fun model (numTaps, numTaps2) -> 
           Xaml.ScrollingContentPage("Frame",
            [Xaml.Label(text="Frame (hasShadow=true):")
             Xaml.Frame(hasShadow=true, backgroundColor=Color.AliceBlue, horizontalOptions=LayoutOptions.CenterAndExpand)
@@ -226,25 +238,25 @@ module App =
 
            ]))
 
-         amortize () (fun model () -> 
+         dependsOn () (fun model () -> 
           Xaml.NonScrollingContentPage("Grid",
            [Xaml.Label(text=sprintf "Grid (6x6, auto):")
             Xaml.Grid(rowdefs= [for i in 1 .. 6 -> box "auto"], coldefs=[for i in 1 .. 6 -> box "auto"], 
                       children = [ for i in 1 .. 6 do for j in 1 .. 6 -> Xaml.BoxView(Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0) ).GridRow(i-1).GridColumn(j-1) ] )
            ]))
 
-         amortize () (fun model () -> 
+         dependsOn () (fun model () -> 
           Xaml.NonScrollingContentPage("Grid",
            [Xaml.Label(text=sprintf "Grid (6x6, *):")
             Xaml.Grid(rowdefs= [for i in 1 .. 6 -> box "*"], coldefs=[for i in 1 .. 6 -> box "*"], 
                       children = [ for i in 1 .. 6 do for j in 1 .. 6 -> Xaml.BoxView(Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0) ).GridRow(i-1).GridColumn(j-1) ] )
            ]))
 
-         amortize (model.GridSize, model.NewGridSize) (fun model (gridSize, newGridSize) -> 
+         dependsOn (model.GridSize, model.NewGridSize) (fun model (gridSize, newGridSize) -> 
           Xaml.NonScrollingContentPage("Grid+Pinch",
            [Xaml.Label(text=sprintf "Grid (nxn, pinch, size = %f):" newGridSize)
             // The Grid doesn't change during the pinch...
-            amortize gridSize (fun _ _ -> 
+            dependsOn gridSize (fun _ _ -> 
               Xaml.Grid(rowdefs= [for i in 1 .. gridSize -> box "*"], coldefs=[for i in 1 .. gridSize -> box "*"], 
                       children = 
                           [ for i in 1 .. gridSize do for j in 1 .. gridSize -> Xaml.BoxView(Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0) ).GridRow(i-1).GridColumn(j-1) ]))
@@ -252,7 +264,7 @@ module App =
            gestureRecognizers=[ Xaml.PinchGestureRecognizer(pinchUpdated=(fun pinchArgs -> 
                                         dispatch (UpdateNewGridSize (pinchArgs.Scale, pinchArgs.Status)))) ] ))
 
-         amortize model.GridPortal (fun model gridPortal -> 
+         dependsOn model.GridPortal (fun model gridPortal -> 
           let dx, dy = gridPortal
           Xaml.NonScrollingContentPage("Grid+Pan",
            [Xaml.Label(text= sprintf "Grid (nxn, auto, edit entries, 1-touch pan, (%d, %d):" dx dy)
@@ -266,18 +278,18 @@ module App =
                                     if panArgs.StatusType = GestureStatus.Running then 
                                         dispatch (UpdateGridPortal (dx - int (panArgs.TotalX/10.0), dy - int (panArgs.TotalY/10.0))))) ] ))
 
-         amortize (model.PickedColorIndex) (fun model (pickedColorIndex) -> 
+         dependsOn (model.PickedColorIndex) (fun model (pickedColorIndex) -> 
           Xaml.NonScrollingContentPage("Image", 
            [Xaml.Label(text="Image:")
             Xaml.Image(source="icon", horizontalOptions=LayoutOptions.CenterAndExpand) ]))
 
-         amortize (model.PickedColorIndex) (fun model (pickedColorIndex) -> 
+         dependsOn (model.PickedColorIndex) (fun model (pickedColorIndex) -> 
           Xaml.ScrollingContentPage("Picker",
            [Xaml.Label(text="Picker:")
             Xaml.Picker(title="Choose Color:", textColor= snd pickerItems.[pickedColorIndex], selectedIndex=pickedColorIndex, itemsSource=(List.map fst pickerItems), horizontalOptions=LayoutOptions.CenterAndExpand,selectedIndexChanged=(fun (i, item) -> dispatch (PickerItemChanged i)))
            ]))
 
-         amortize () (fun model () -> 
+         dependsOn () (fun model () -> 
           Xaml.ScrollingContentPage("ListView",
            [Xaml.Label(text="ListView:")
             Xaml.ListView(items = [ for i in 0 .. 10 do 
@@ -290,7 +302,7 @@ module App =
                           itemSelected=(fun idx -> dispatch (ListViewSelectedItemChanged idx)))
            ]))
 
-         amortize () (fun model () -> 
+         dependsOn () (fun model () -> 
           Xaml.ScrollingContentPage("ListViewGrouped",
            [Xaml.Label(text="ListView (grouped):")
             Xaml.ListViewGrouped(items= 
@@ -303,7 +315,7 @@ module App =
 
               ]))
 
-         amortize () (fun model () -> 
+         dependsOn () (fun model () -> 
           Xaml.ScrollingContentPage("TableView",
            [Xaml.Label(text="TableView:")
             Xaml.TableView(items= [ ("Videos", [ Xaml.SwitchCell(on=true,text="Luca 2008",onChanged=(fun args -> ()) ) 
@@ -315,7 +327,7 @@ module App =
                             horizontalOptions=LayoutOptions.StartAndExpand) 
               ]))
 
-         amortize model.Count (fun model count -> 
+         dependsOn model.Count (fun model count -> 
           Xaml.ContentPage(title="RelativeLayout", 
              padding = new Thickness (10.0, 20.0, 10.0, 5.0),
              content= Xaml.RelativeLayout(
@@ -328,7 +340,7 @@ module App =
                  ])))
 
 
-         amortize model.Count (fun model count -> 
+         dependsOn model.Count (fun model count -> 
           Xaml.ContentPage(title="AbsoluteLayout", 
              padding = new Thickness (10.0, 20.0, 10.0, 5.0),
              content= Xaml.StackLayout(
@@ -346,8 +358,8 @@ module App =
                              .LayoutFlags(AbsoluteLayoutFlags.PositionProportional)
                              .LayoutBounds(Rectangle(1.0, 1.0, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize)) ])
                  ])))
-
         ] 
+                 *)
                 // Xaml.NavigationPage: TODO
                 // Xaml.Menu: TODO
                 // Xaml.MenuItem: TODO
@@ -356,18 +368,12 @@ module App =
                 //
                 // Xaml.MasterDetailPage: TODO
                 //
-                // Xaml.Animation: TODO
-                //
-                // Xaml.OpenGLView: TODO
-                //
                 // ListView: CachingStrategy read-only parameter to ctor
                 //
                 // Xaml.AppLinkEntry: TODO
                 // Xaml.MessagingCenter: TODO
                 // TODO: fix slider where minimum = 1.0 (gets set before maximum..)
                 // TODO: better recovery from exceptions on modifications
-                //
-                // Xaml.CarouselPage: ok, needs sample
                 //
 
 type App () = 
