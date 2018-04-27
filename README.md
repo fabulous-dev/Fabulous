@@ -33,7 +33,7 @@ let update (msg:Msg) (model:Model) =
     match msg with
     | Pressed -> { model with Pressed = true }
 
-/// The dynamic 'view' function giving updated content for the page
+/// The view function giving updated content for the page
 let view (model: Model) dispatch =
     if model.Pressed then 
         Xaml.Label(text="I was pressed!")
