@@ -4,6 +4,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="XamlElement.fs" />
     <Compile Include="DynamicXamlConverters.fs" />
     <Compile Include="DynamicXaml.fs" />
     <Compile Include="ElmishCmd.fs" />
