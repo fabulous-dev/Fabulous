@@ -118,7 +118,13 @@ If not, this section of the view will be reused.
 Roadmap
 --------
 
-* Road test on more apps
+* Road-test on more apps
+  * Multi-page apps with navigation
+  * Apps using charting
+  * Apps using maps
+
+* Add test project
+  * Most testing so far is mostly done through the [AllControls](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Samples/AllControls/AllControls/AllControls.fs) project
 
 * Do these from `Xamarin.Forms.Core`: 
   * Menu, MenuItem
