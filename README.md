@@ -93,8 +93,11 @@ let view model dispatch =
         Xaml.StackLayout(
           children=
             [ Xaml.Label(text=sprintf "Grid (6x6, auto):")
-              Xaml.Grid(rowdefs= [for i in 1 .. 6 -> box "auto"], coldefs=[for i in 1 .. 6 -> box "auto"], 
-                        children = [ for i in 1 .. 6 do for j in 1 .. 6 -> Xaml.BoxView(Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0) ).GridRow(i-1).GridColumn(j-1) ] )
+              Xaml.Grid(rowdefs= [for i in 1 .. 6 -> box "auto"],
+                        coldefs=[for i in 1 .. 6 -> box "auto"], 
+                        children = [ for i in 1 .. 6 do for j in 1 .. 6 -> 
+                                       Xaml.BoxView(Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0) )
+                                              .GridRow(i-1).GridColumn(j-1) ] )
             ])
 ```
 Inside the function passed to `amortize` the `model` is rebound to be inaccessbile.  This helps ensure that this part of the
