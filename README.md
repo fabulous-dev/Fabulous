@@ -124,9 +124,10 @@ Roadmap
 --------
 
 * Programming model: Do these from `Xamarin.Forms.Core`: 
-  * Menu, MenuItem
-  * NavigationBar
-  * FlexLayout
+  * Menu, MenuItem, NavigationBar, Accelerator
+  * Animation
+  * OpenGLView
+  * CachingStrategy parameter to ListView
 
 * Programming efficiency
   * Support F# in Xamarin Live Player
@@ -148,7 +149,7 @@ Roadmap
 * Templates
   * Develop a template pack
 
-* Work through perf questions:
+* Performance:
   * Road test differential update
   * Minimize updates where possible
   * Experiment with different approaches to amortization
@@ -156,7 +157,8 @@ Roadmap
   * Use integer atoms for property names
   * Do better list comparison/diffing
   * Consider keeping a running identity hash on the immutable objects
-  * Consider implementing equality on the immutable objects
+  * Consider implementing equality and hash on the immutable objects
+  * Perf-test on large lists and do resulting perf work
 
 * Handle 3rd party controls.
   * Examples: `Xamarin.Forms.Maps`, `SkiaSharp`
