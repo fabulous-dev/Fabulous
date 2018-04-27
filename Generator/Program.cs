@@ -1,4 +1,4 @@
-﻿// dotnet build Generator\Generator.csproj && dotnet  Generator\bin\Debug\netcoreapp2.0\Generator.dll Generator\bindings.json Elmish.XamarinForms\DynamicXaml.fs && fsc -a -r:packages\androidapp\Xamarin.Forms\lib\netstandard1.0\Xamarin.Forms.Core.dll Elmish.XamarinForms\DynamicXamlConverters.fs Elmish.XamarinForms\DynamicXaml.fs
+﻿// dotnet build Generator\Generator.csproj && dotnet  Generator\bin\Debug\netcoreapp2.0\Generator.dll Generator\bindings.json Elmish.XamarinForms\DynamicXaml.fs && fsc -a -r:packages\androidapp\Xamarin.Forms\lib\netstandard1.0\Xamarin.Forms.Core.dll Elmish.XamarinForms\XamlElement.fs Elmish.XamarinForms\DynamicXamlConverters.fs Elmish.XamarinForms\DynamicXaml.fs
 
 using System;
 using System.Collections.Generic;
@@ -277,14 +277,6 @@ namespace Generator
                 }
             }
             var allMembersInAllTypesGroupedByName = allMembersInAllTypes.GroupBy(y => y.BoundUniqueName);
-            /*            foreach (var ms in allMembersInAllTypesGroupedByName)
-                        {
-                            var m = ms.First();
-                            w.WriteLine();
-                            w.WriteLine($"        /// Get the {m.BoundUniqueName} property in the visual element");
-                            w.WriteLine("        member x." + m.BoundUniqueName + " = match x.Attributes.TryFind(\"" + m.BoundUniqueName + "\") with USome v -> unbox<" + GetModelType(bindings, m.BoundType, null) + ">(v) | UNone -> " + m.Default);
-                        }
-                        */
             foreach (var ms in allMembersInAllTypesGroupedByName)
             {
                 var m = ms.First();

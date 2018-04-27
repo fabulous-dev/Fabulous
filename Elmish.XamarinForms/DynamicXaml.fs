@@ -387,11 +387,11 @@ module XamlElementExtensions =
         /// Try to get the GridColumnSpan property in the visual element
         member x.TryGridColumnSpan = match x.Attributes.TryFind("GridColumnSpan") with Some v -> USome(unbox<int>(v)) | None -> UNone
 
-        /// Try to get the AbsoluteLayoutBounds property in the visual element
-        member x.TryAbsoluteLayoutBounds = match x.Attributes.TryFind("AbsoluteLayoutBounds") with Some v -> USome(unbox<Xamarin.Forms.Rectangle>(v)) | None -> UNone
+        /// Try to get the LayoutBounds property in the visual element
+        member x.TryLayoutBounds = match x.Attributes.TryFind("LayoutBounds") with Some v -> USome(unbox<Xamarin.Forms.Rectangle>(v)) | None -> UNone
 
-        /// Try to get the AbsoluteLayoutFlags property in the visual element
-        member x.TryAbsoluteLayoutFlags = match x.Attributes.TryFind("AbsoluteLayoutFlags") with Some v -> USome(unbox<Xamarin.Forms.AbsoluteLayoutFlags>(v)) | None -> UNone
+        /// Try to get the LayoutFlags property in the visual element
+        member x.TryLayoutFlags = match x.Attributes.TryFind("LayoutFlags") with Some v -> USome(unbox<Xamarin.Forms.AbsoluteLayoutFlags>(v)) | None -> UNone
 
         /// Try to get the BoundsConstraint property in the visual element
         member x.TryBoundsConstraint = match x.Attributes.TryFind("BoundsConstraint") with Some v -> USome(unbox<Xamarin.Forms.BoundsConstraint>(v)) | None -> UNone
@@ -855,11 +855,11 @@ module XamlElementExtensions =
         /// Adjusts the GridColumnSpan property in the visual element
         member x.GridColumnSpan(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("GridColumnSpan", box ((value))))
 
-        /// Adjusts the AbsoluteLayoutBounds property in the visual element
-        member x.AbsoluteLayoutBounds(value: Xamarin.Forms.Rectangle) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("AbsoluteLayoutBounds", box ((value))))
+        /// Adjusts the LayoutBounds property in the visual element
+        member x.LayoutBounds(value: Xamarin.Forms.Rectangle) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("LayoutBounds", box ((value))))
 
-        /// Adjusts the AbsoluteLayoutFlags property in the visual element
-        member x.AbsoluteLayoutFlags(value: Xamarin.Forms.AbsoluteLayoutFlags) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("AbsoluteLayoutFlags", box ((value))))
+        /// Adjusts the LayoutFlags property in the visual element
+        member x.LayoutFlags(value: Xamarin.Forms.AbsoluteLayoutFlags) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("LayoutFlags", box ((value))))
 
         /// Adjusts the BoundsConstraint property in the visual element
         member x.BoundsConstraint(value: Xamarin.Forms.BoundsConstraint) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("BoundsConstraint", box ((value))))
@@ -1549,17 +1549,17 @@ module XamlElementExtensions =
     /// Adjusts the GridColumnSpan property in the visual element
     let gridColumnSpan (value: int) (x: XamlElement) = x.GridColumnSpan(value)
 
-    /// Adjusts the AbsoluteLayoutBounds property in the visual element
-    let withAbsoluteLayoutBounds (value: Xamarin.Forms.Rectangle) (x: XamlElement) = x.AbsoluteLayoutBounds(value)
+    /// Adjusts the LayoutBounds property in the visual element
+    let withLayoutBounds (value: Xamarin.Forms.Rectangle) (x: XamlElement) = x.LayoutBounds(value)
 
-    /// Adjusts the AbsoluteLayoutBounds property in the visual element
-    let absoluteLayoutBounds (value: Xamarin.Forms.Rectangle) (x: XamlElement) = x.AbsoluteLayoutBounds(value)
+    /// Adjusts the LayoutBounds property in the visual element
+    let layoutBounds (value: Xamarin.Forms.Rectangle) (x: XamlElement) = x.LayoutBounds(value)
 
-    /// Adjusts the AbsoluteLayoutFlags property in the visual element
-    let withAbsoluteLayoutFlags (value: Xamarin.Forms.AbsoluteLayoutFlags) (x: XamlElement) = x.AbsoluteLayoutFlags(value)
+    /// Adjusts the LayoutFlags property in the visual element
+    let withLayoutFlags (value: Xamarin.Forms.AbsoluteLayoutFlags) (x: XamlElement) = x.LayoutFlags(value)
 
-    /// Adjusts the AbsoluteLayoutFlags property in the visual element
-    let absoluteLayoutFlags (value: Xamarin.Forms.AbsoluteLayoutFlags) (x: XamlElement) = x.AbsoluteLayoutFlags(value)
+    /// Adjusts the LayoutFlags property in the visual element
+    let layoutFlags (value: Xamarin.Forms.AbsoluteLayoutFlags) (x: XamlElement) = x.LayoutFlags(value)
 
     /// Adjusts the BoundsConstraint property in the visual element
     let withBoundsConstraint (value: Xamarin.Forms.BoundsConstraint) (x: XamlElement) = x.BoundsConstraint(value)
@@ -5433,13 +5433,13 @@ type Xaml() =
                 (fun (x:XamlElement) -> x.CreateAsView())
                 (fun prevChildOpt newChild targetChild -> 
                     // Adjust the attached properties
-                    match (match prevChildOpt with UNone -> UNone | USome prevChild -> prevChild.TryAbsoluteLayoutBounds), newChild.TryAbsoluteLayoutBounds with
+                    match (match prevChildOpt with UNone -> UNone | USome prevChild -> prevChild.TryLayoutBounds), newChild.TryLayoutBounds with
                     | USome prev, USome v when prev = v -> ()
                     | prevOpt, USome value -> Xamarin.Forms.AbsoluteLayout.SetLayoutBounds(targetChild, value)
                     | USome _, UNone -> Xamarin.Forms.AbsoluteLayout.SetLayoutBounds(targetChild, Xamarin.Forms.Rectangle.Zero) // TODO: not always perfect, should set back to original default?
                     | _ -> ()
                     // Adjust the attached properties
-                    match (match prevChildOpt with UNone -> UNone | USome prevChild -> prevChild.TryAbsoluteLayoutFlags), newChild.TryAbsoluteLayoutFlags with
+                    match (match prevChildOpt with UNone -> UNone | USome prevChild -> prevChild.TryLayoutFlags), newChild.TryLayoutFlags with
                     | USome prev, USome v when prev = v -> ()
                     | prevOpt, USome value -> Xamarin.Forms.AbsoluteLayout.SetLayoutFlags(targetChild, value)
                     | USome _, UNone -> Xamarin.Forms.AbsoluteLayout.SetLayoutFlags(targetChild, Xamarin.Forms.AbsoluteLayoutFlags.None) // TODO: not always perfect, should set back to original default?

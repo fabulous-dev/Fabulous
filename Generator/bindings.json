@@ -543,13 +543,13 @@
 					"attached": [
 						{
 							"name": "LayoutBounds",
-							"uniqueName": "AbsoluteLayoutBounds",
+							"uniqueName": "LayoutBounds",
 							"modelType": "Xamarin.Forms.Rectangle",
 							"defaultValue": "Xamarin.Forms.Rectangle.Zero"
 						},
 						{
 							"name": "LayoutFlags",
-							"uniqueName": "AbsoluteLayoutFlags",
+							"uniqueName": "LayoutFlags",
 							"modelType": "Xamarin.Forms.AbsoluteLayoutFlags",
 							"defaultValue": "Xamarin.Forms.AbsoluteLayoutFlags.None"
 						}

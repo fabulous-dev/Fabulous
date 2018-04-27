@@ -129,6 +129,9 @@ module App =
             Xaml.Label(text="Button (cornerRadius=5):")
             Xaml.Button(text="Decrement", cornerRadius=5, command=(fun () -> dispatch Decrement), horizontalOptions=LayoutOptions.CenterAndExpand)
                
+            Xaml.Label(text="Button (relative layout):")
+            Xaml.Button(text="Decrement", cornerRadius=5, command=(fun () -> dispatch Decrement), horizontalOptions=LayoutOptions.CenterAndExpand)
+               
            ]))
 
 
@@ -312,6 +315,38 @@ module App =
                             horizontalOptions=LayoutOptions.StartAndExpand) 
               ]))
 
+         amortize model.Count (fun model count -> 
+          Xaml.ContentPage(title="RelativeLayout", 
+             padding = new Thickness (10.0, 20.0, 10.0, 5.0),
+             content= Xaml.RelativeLayout(
+                 children=[ 
+                     Xaml.Label(text = "RelativeLayout Example",textColor = Color.Red)
+                           .XConstraint(Constraint.RelativeToParent(fun parent -> 0.0))
+                     Xaml.Label(text = "Positioned relative to my parent",textColor = Color.Red)
+                           .XConstraint(Constraint.RelativeToParent(fun parent -> parent.Width / 3.0))
+                           .YConstraint(Constraint.RelativeToParent(fun parent -> parent.Height / 2.0))
+                 ])))
+
+
+         amortize model.Count (fun model count -> 
+          Xaml.ContentPage(title="AbsoluteLayout", 
+             padding = new Thickness (10.0, 20.0, 10.0, 5.0),
+             content= Xaml.StackLayout(
+                 children=[ 
+                    Xaml.Label(text = "AbsoluteLayout Demo", fontSize = Device.GetNamedSize(NamedSize.Large, typeof<Label>), horizontalOptions = LayoutOptions.Center)
+                    Xaml.AbsoluteLayout(backgroundColor = Color.Blue.WithLuminosity(0.9), verticalOptions = LayoutOptions.FillAndExpand,
+                      children = [
+                         Xaml.Label(text = "Top Left", textColor = Color.Black)
+                             .LayoutFlags(AbsoluteLayoutFlags.PositionProportional)
+                             .LayoutBounds(Rectangle(0.0, 0.0, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize))
+                         Xaml.Label(text = "Centered", textColor = Color.Black)
+                             .LayoutFlags(AbsoluteLayoutFlags.PositionProportional)
+                             .LayoutBounds(Rectangle(0.5, 0.5, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize))
+                         Xaml.Label(text = "Bottom Right", textColor = Color.Black)
+                             .LayoutFlags(AbsoluteLayoutFlags.PositionProportional)
+                             .LayoutBounds(Rectangle(1.0, 1.0, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize)) ])
+                 ])))
+
         ] 
                 // Xaml.NavigationPage: TODO
                 // Xaml.Menu: TODO
@@ -333,8 +368,6 @@ module App =
                 // TODO: better recovery from exceptions on modifications
                 //
                 // Xaml.CarouselPage: ok, needs sample
-                //
-                // Xaml.AbsoluteLayout: ok, needs sample
                 //
 
 type App () = 
