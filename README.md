@@ -1,4 +1,4 @@
-Xamarin.Forms done the Elmish Way
+F# Functional-Reactive App Development, using Xamarin.Forms 
 =======
 
 [![NuGet version](https://badge.fury.io/nu/Elmish.XamarinForms.svg)](https://badge.fury.io/nu/Elmish.XamarinForms)
@@ -17,35 +17,31 @@ A Basic Example
 ------
 Here is an example of an Elmish model (`Model`) with a composite model inside of it (`ClockModel`) and the corresponding messages:
 ```fsharp
-    type Msg =
-        | Pressed
+type Msg =
+    | Pressed
 
-    type Model = 
-        { Pressed: bool }
+type Model = 
+    { Pressed: bool }
 ```
 The init function returns your initial state, and each model gets an update function for message processing:
 ```fsharp
-    let init() = { Pressed=false}
+let init() = { Pressed=false}
     
-    let update (msg:Msg) (model:Model) =
-        match msg with
-        | Pressed -> { model with Pressed = true }
+let update (msg:Msg) (model:Model) =
+    match msg with
+    | Pressed -> { model with Pressed = true }
 ```
 Your `view` function computes an immutable Xaml-like description.
 Incremental (differential) update application plus an F# DSL is provided
 for this in ``Elmish.XamarinForms.DynamicViews``.
 
 ```fsharp
-module App = 
-    open Elmish.XamarinForms.DynamicViews
-
-    ...
-    /// The dynamic 'view' function giving updated content for the page
-    let view (model: Model) dispatch =
-        if model.Pressed then 
-            Xaml.Label(text="I was pressed!")
-        else
-            Xaml.Button(text="Press Me!", command= (fun () -> dispatch Pressed))
+/// The dynamic 'view' function giving updated content for the page
+let view (model: Model) dispatch =
+    if model.Pressed then 
+        Xaml.Label(text="I was pressed!")
+    else
+        Xaml.Button(text="Press Me!", command= (fun () -> dispatch Pressed))
 ```
 Dynamic Views excel in cases where the existence, characteristics and layout of the view depends on information in the model.
 In the above example, the choice between a label and button depends on the `model.Pressed` value.
