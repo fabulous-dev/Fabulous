@@ -72,6 +72,7 @@ type CustomContentPage() as self =
 [<AutoOpen>]
 module Converters =
     open System.Collections.ObjectModel
+    open Xamarin.Forms
 
     let makeCommand f =
         let ev = Event<_,_>()
