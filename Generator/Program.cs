@@ -414,7 +414,7 @@ namespace Generator
                                 {
                                     w.WriteLine($"            let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.Try{m.BoundUniqueName}");
                                     w.WriteLine($"            match prevChildOpt, source.Try{m.BoundUniqueName} with");
-                                    w.WriteLine($"            // For structured objects, amortize on reference equality");
+                                    w.WriteLine($"            // For structured objects, dependsOn on reference equality");
                                     w.WriteLine($"            | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()");
                                     w.WriteLine($"            | _, USome newChild ->");
                                     w.WriteLine($"                target.{m.Name} <- newChild.CreateAs{bt.Name}()");
@@ -426,7 +426,7 @@ namespace Generator
                                 {
                                     w.WriteLine($"            let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.Try{m.BoundUniqueName}");
                                     w.WriteLine($"            match prevChildOpt, source.Try{m.BoundUniqueName} with");
-                                    w.WriteLine($"            // For structured objects, amortize on reference equality");
+                                    w.WriteLine($"            // For structured objects, dependsOn on reference equality");
                                     w.WriteLine($"            | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()");
                                     w.WriteLine($"            | USome prevChild, USome newChild ->");
                                     w.WriteLine($"                newChild.UpdateIncremental(prevChild, target.{m.Name})");

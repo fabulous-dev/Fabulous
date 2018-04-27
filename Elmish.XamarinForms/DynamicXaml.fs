@@ -3321,7 +3321,7 @@ type Xaml() =
             let target = (target :?> Xamarin.Forms.ScrollView)
             let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryContent
             match prevChildOpt, source.TryContent with
-            // For structured objects, amortize on reference equality
+            // For structured objects, dependsOn on reference equality
             | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
             | USome prevChild, USome newChild ->
                 newChild.UpdateIncremental(prevChild, target.Content)
@@ -5969,7 +5969,7 @@ type Xaml() =
             let target = (target :?> Xamarin.Forms.ContentView)
             let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryContent
             match prevChildOpt, source.TryContent with
-            // For structured objects, amortize on reference equality
+            // For structured objects, dependsOn on reference equality
             | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
             | USome prevChild, USome newChild ->
                 newChild.UpdateIncremental(prevChild, target.Content)
@@ -6933,7 +6933,7 @@ type Xaml() =
             | UNone, UNone -> ()
             let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryContent
             match prevChildOpt, source.TryContent with
-            // For structured objects, amortize on reference equality
+            // For structured objects, dependsOn on reference equality
             | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
             | USome prevChild, USome newChild ->
                 newChild.UpdateIncremental(prevChild, target.Content)
@@ -9730,7 +9730,7 @@ type Xaml() =
             | UNone, UNone -> ()
             let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryCurrentPage
             match prevChildOpt, source.TryCurrentPage with
-            // For structured objects, amortize on reference equality
+            // For structured objects, dependsOn on reference equality
             | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
             | USome prevChild, USome newChild ->
                 newChild.UpdateIncremental(prevChild, target.CurrentPage)
@@ -10378,7 +10378,7 @@ type Xaml() =
             let target = (target :?> Xamarin.Forms.ContentPage)
             let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryContent
             match prevChildOpt, source.TryContent with
-            // For structured objects, amortize on reference equality
+            // For structured objects, dependsOn on reference equality
             | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
             | USome prevChild, USome newChild ->
                 newChild.UpdateIncremental(prevChild, target.Content)
@@ -10586,7 +10586,7 @@ type Xaml() =
             let target = (target :?> Xamarin.Forms.MasterDetailPage)
             let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMaster
             match prevChildOpt, source.TryMaster with
-            // For structured objects, amortize on reference equality
+            // For structured objects, dependsOn on reference equality
             | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
             | USome prevChild, USome newChild ->
                 newChild.UpdateIncremental(prevChild, target.Master)
@@ -10597,7 +10597,7 @@ type Xaml() =
             | UNone, UNone -> ()
             let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryDetail
             match prevChildOpt, source.TryDetail with
-            // For structured objects, amortize on reference equality
+            // For structured objects, dependsOn on reference equality
             | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
             | USome prevChild, USome newChild ->
                 newChild.UpdateIncremental(prevChild, target.Detail)
@@ -11043,7 +11043,7 @@ type Xaml() =
             let target = (target :?> Xamarin.Forms.ViewCell)
             let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryView
             match prevChildOpt, source.TryView with
-            // For structured objects, amortize on reference equality
+            // For structured objects, dependsOn on reference equality
             | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
             | USome prevChild, USome newChild ->
                 newChild.UpdateIncremental(prevChild, target.View)
