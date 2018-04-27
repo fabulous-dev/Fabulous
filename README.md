@@ -67,8 +67,11 @@ type App () =
 Example Xaml descriptions
 ------
 
+The sample [CounterApp](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Samples/CounterApp/CounterApp/CounterApp.fs) contains a slightly larger example of Button/Label/Slider controls.
+
 The sample [AllControls](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Samples/AllControls/AllControls/AllControls.fs) contains examples of instantiating most controls in `Xamarin.Forms.Core`.
 
+Screenshots from Anrdoid (Google Pixel):
 <img src="https://user-images.githubusercontent.com/7204669/39318922-57c95174-4977-11e8-94a9-cc385101ce5d.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318926-59f844e6-4977-11e8-9834-325a6517ced6.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318929-5b66c776-4977-11e8-8317-ee1c121301d4.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318934-5cbe3c3a-4977-11e8-92aa-c3fdf644b01c.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318936-5e2380bc-4977-11e8-8912-f078744a2bde.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318938-5f6ec4f4-4977-11e8-97a9-779edd3594bc.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318941-60c1b0f0-4977-11e8-8a4a-57e17ef8c6ec.png" width="100">
 
 
@@ -82,7 +85,57 @@ More on Dynamic Views
 * Some F# DSL helpers, e.g. [`button |> withText "Hello"`](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms/DynamicXaml.fs#L729) etc.
 
 
-Binding the Elmish to the XAML (Static Views)
+
+Amortizing Dynamic Views
+------
+
+Dynamic views are only efficient for large UIs if "unchanging" parts of a UI are "amortized", returning identical
+objects as part of the view description.  You must mark up these parts of your UI description explicitly, using `amortize`.
+
+e.g. for a 6x6 Grid that never changes, use:
+```fsharp
+let view model dispatch =
+    ...
+    amortize () (fun model () -> 
+        Xaml.StackLayout(
+          children=
+            [ Xaml.Label(text=sprintf "Grid (6x6, auto):")
+              Xaml.Grid(rowdefs= [for i in 1 .. 6 -> box "auto"], coldefs=[for i in 1 .. 6 -> box "auto"], 
+                        children = [ for i in 1 .. 6 do for j in 1 .. 6 -> Xaml.BoxView(Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0) ).GridRow(i-1).GridColumn(j-1) ] )
+            ]))
+```
+
+Roadmap
+--------
+
+* Not done from `Xamarin.Forms.Core`: 
+  * Menu, MenuItem
+  * NavigationBar
+  * RelativeLayout
+  * FlexLayout
+  * AbsoluteLayout
+
+* Work through perf questions
+  * Road test differential update
+  * Minimize updates where possible
+  * Experiment with different approaches to amortization
+  * Amortize function closure creation
+  * Consider issues for immutable data structure
+  * Use integer atoms for property names
+
+* Work out what to do about 3rd party controls. Examples:
+  * `Xamarin.Forms.Maps`
+  * `SkiaSharp`
+  * Please add more 3rd party controls
+
+* Make some small F# langauge improvements to improve code:
+  * Remove `yield` in more cases
+  * Allow syntax `Xaml.Foo(prop1=expr1, [ // end of line`
+  * `TryGetValue` on F# immutable map
+  * Allow a default unnamed argument for `children` so the argument name doesn't have to be given explicitly
+
+
+Old docs: Static Views
 ------
 If you really want to use static Xaml, then you will need to do bindings to that Xaml.
 
@@ -127,7 +180,7 @@ The last string argument to each binding is the name of the property as referenc
 Note:  A viewBinding created with `Binding.vm` would be bound to the DataContext of a user control.
 
 
-Subscriptions
+Old docs: Subscriptions
 ------
 
 Subscriptions, which are events sent from outside the view or the dispatch loop, are created using `Cmd.ofSub`. For example, dispatching events on a timer:
@@ -144,55 +197,10 @@ Subscriptions, which are events sent from outside the view or the dispatch loop,
 NOTE: we may switch to using the Xamarin `MessagingCenter` that is global to the application.
 
 
-Multiple Pages and Navigation
+Old docs: Multiple Pages and Navigation
 ------
 
 There is some experimental support for multiple-page apps and navigation. See the MasterDetailApp sample.  This currently only supports static views.
-
-
-Amortizing
-------
-
-Dynamic views are only remotely efficient for large UIs if "unchanging" parts of a UI are amortized, returning identical
-objects as part of the view description.  You must mark up these parts of your UI description explicitly, using `amortize`.
-
-e.g. for a 6x6 Grid that never changes, use:
-```
-   amortize () (fun model () -> 
-    Xaml.NonScrollingContentPage("Grid",
-     [Xaml.Label(text=sprintf "Grid (6x6, auto):")
-      Xaml.Grid(rowdefs= [for i in 1 .. 6 -> box "auto"], coldefs=[for i in 1 .. 6 -> box "auto"], 
-                children = [ for i in 1 .. 6 do for j in 1 .. 6 -> Xaml.BoxView(Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0) ).GridRow(i-1).GridColumn(j-1) ] )
-     ]))
-```
-
-Roadmap
---------
-
-* Not done from `Xamarin.Forms.Core`: 
-  * Menu, MenuItem
-  * NavigationBar
-  * RelativeLayout
-  * FlexLayout
-  * AbsoluteLayout
-
-* Work through perf questions
-  * Road test differential update
-  * Minimize updates where possible
-  * Experiment with different approaches to amortization
-  * Amortize function closure creation
-  * Consider issues for immutable data structure
-  * Use integer atoms for property names
-
-* Work out what to do about 3rd party controls. Examples:
-  * `Xamarin.Forms.Maps`
-  * `SkiaSharp`
-  * Please add more 3rd party controls
-
-* Make some small F# langauge improvements
-  * Remove `yield` in more cases
-  * Allow syntax `Xaml.Foo(prop1=expr1, [ // end of line`
-  * `TryGetValue` on F# immutable map
 
 
 Dev Notes - Releasing
