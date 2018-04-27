@@ -89,7 +89,7 @@ to use these, and the samples don't use them).
 Dynamic Views and Performance
 ------
 
-Dynamic views are only efficient for large UIs if the "unchanging" parts of a UI are "memoized", returning identical
+Dynamic views are only efficient for large UIs if the unchanging parts of a UI are "memoized", returning identical
 objects on each invocation of the `view` function.  Amortization must be done explicitly and carefully. Here is an example for a 6x6 Grid that never changes:
 ```fsharp
 let view model dispatch =
