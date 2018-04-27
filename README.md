@@ -151,6 +151,9 @@ Roadmap
 * Templates
   * Develop a template pack
 
+* Docs
+  * Generate `///` docs in code generator
+
 * Performance:
   * Road test differential update
   * Minimize updates where possible
