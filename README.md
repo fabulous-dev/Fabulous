@@ -116,20 +116,32 @@ If not, this section of the view will be reused.
 Roadmap
 --------
 
-* Road-test on more apps
-  * Multi-page apps with navigation
-  * Apps using charting
-  * Apps using maps
-
-* Add test project
-  * Most testing so far is mostly done through the [AllControls](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Samples/AllControls/AllControls/AllControls.fs) project
-
-* Do these from `Xamarin.Forms.Core`: 
+* Programming model: Do these from `Xamarin.Forms.Core`: 
   * Menu, MenuItem
   * NavigationBar
   * RelativeLayout
   * FlexLayout
   * AbsoluteLayout
+
+* Programming efficiency
+  * Support F# in Xamarin Live Player
+  * Support hot-reloading of the saved model, reapplying to the same app where possible
+  * Develop a sample that includes both client and server development, like [this talk](https://skillsmatter.com/skillscasts/11308-safe-apps-with-f-web-stack)
+
+* Testing
+  * Better unit-testing
+  * Add an explicit unit-test project
+  * Test with Visual Studio for Mac
+  * Test with iOS
+  * Most testing so far is done through  [AllControls](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Samples/AllControls/AllControls/AllControls.fs) project
+
+* Real-world road-testing:
+  * Multi-page apps with navigation
+  * Apps using charting
+  * Apps using maps
+
+* Templates
+  * Develop a template pack
 
 * Work through perf questions:
   * Road test differential update
@@ -151,6 +163,7 @@ Roadmap
 
 * Make some small F# langauge improvements to improve code:
   * Remove `yield` in more cases
+  * Automatically amortize function values that do not capture any arguments and consider making the `dispatch` function global (partly to avoid is being seen as a captured argument)
   * Allow syntax `Xaml.Foo(prop1=expr1, [ // end of line`
   * `TryGetValue` on F# immutable map
   * Allow a default unnamed argument for `children` so the argument name doesn't have to be given explicitly
