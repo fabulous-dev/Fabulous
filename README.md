@@ -126,9 +126,7 @@ Roadmap
 * Programming model: Do these from `Xamarin.Forms.Core`: 
   * Menu, MenuItem
   * NavigationBar
-  * RelativeLayout
   * FlexLayout
-  * AbsoluteLayout
 
 * Programming efficiency
   * Support F# in Xamarin Live Player
