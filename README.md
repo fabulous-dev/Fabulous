@@ -152,6 +152,10 @@ Roadmap
 * Docs
   * Generate `///` docs in code generator
 
+* Debugging
+  * Improve diagnostics when property update fails
+  * Fix bug where ranges for locals seem off-by-one in Android debugging
+
 * Performance:
   * Road test differential update
   * Minimize updates where possible
@@ -177,6 +181,7 @@ Roadmap
   * Allow syntax `Xaml.Foo(prop1=expr1, [ // end of line`
   * `TryGetValue` on F# immutable map
   * Allow a default unnamed argument for `children` so the argument name doesn't have to be given explicitly
+  * Allow the use of struct options for optional arguments (to reduce allocations)
 
 
 Static Views and "Half Elmish"
