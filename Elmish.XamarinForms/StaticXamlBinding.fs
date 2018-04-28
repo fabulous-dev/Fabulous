@@ -115,12 +115,13 @@ module Binding =
         name, BindCmd ((fun param _ -> msgf param), canExec)
 
     ///<summary>Sub-view binding</summary>
+    ///<param name="initf">Initializes the sub-model</param>
     ///<param name="getter">Gets the sub-model from the base model</param>
     ///<param name="viewBinding">Set of view bindings for the sub-view</param>
     ///<param name="toMsg">Maps sub-messages to the base message type</param>
     ///<param name="name">Binding name</param>
-    let subView initf (getter: 'model -> '_model) (toMsg: '_msg -> 'msg) (viewBinding: ViewBindings<'_model,'_msg>)  name : ViewBinding<'model,'msg> = 
-        name, BindSubModel (ViewSubModel (initf, name, getter >> box, unbox >> toMsg, viewBinding |> boxBindings))
+    let subView init (getter: 'model -> '_model) (toMsg: '_msg -> 'msg) (viewBindings: ViewBindings<'_model,'_msg>)  name : ViewBinding<'model,'msg> = 
+        name, BindSubModel (ViewSubModel (init, name, getter >> box, unbox >> toMsg, viewBindings |> boxBindings))
         
     ///<summary>One-way binding that applies a map when passing data to the view.
     /// Should be used for data that a view needs wrapped in some view-specific type. 
