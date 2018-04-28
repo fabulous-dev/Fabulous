@@ -179,65 +179,110 @@ Roadmap
   * Allow a default unnamed argument for `children` so the argument name doesn't have to be given explicitly
 
 
-Static Views
+Static Views and "Half Elmish"
 ------
 
-In some circumstances there are advantages to using static views and static bindings from the model to those views. This is called "Half Elmish" and is the primary technique used by `Elmish.WPF` at time of writing. (It was also  the original technique used by this repo and an early prototype called `Elmish.Forms`).   "Half Elmish" is a pragmatic choice to allow, but doesn't provide the same level of cognitive-simplicity.
+In some circumstances there are advantages to using static Xaml, and static bindings from the model to those views. This is called "Half Elmish" and is the primary technique used by [`Elmish.WPF`](https://github.com/Prolucid/Elmish.WPF) at time of writing. (It was also  the original technique used by this repo and the prototype `Elmish.Forms`).   
+
+"Half Elmish" is a pragmatic choice to allow, but doesn't provide the same level of cognitive-simplicity. In the words of Jim Bennett:
+
+> As a C#/XAML dev I really like the half Elmish model. I’m comfortable with XAML so like being able to use the Elmish bits to create a nice immutable model and have clean code, but still using XAML and binding as I’m comfortable there. This feels more like how existing C# Xamarin devs would move to F#. Full elmish is how F# devs will move to Xamarin.
 
 Static Xaml + bindings has signifcant pros:
 * Pro: in some circumstances perf can be better
 * Pro: you can interact with existing xaml assets
-* Pro: you can interact with 3rd party controls more simply
-
-But it also has cons:
-* Con: you have to know a lot more about Xaml (e.g. binding, commands, templating)
+* Pro: you can interact with 3rd party controls relatively easily
+* Con: you have to know a lot more about Xaml (e.g. binding, commands, templating, converters)
 * Con: you get more files in your project (e.g. 3 instead of 1, even for simple examples)
 * Con: you are more reliant on tooling (which is often a bit flakey...)
 * Con: you may end up using more mutable data structures
 * Con: there are  more failure points (e.g. magic strings to link the Xaml to the code through binding etc.).  
+* Con: the Xaml is static, and only made dynamic through the addition of control bindings to turn elements on/off
 
-But the main problem is that the Xaml is static, and is only made dynamic through the addition of either control bindings to turn elements on/off, or through using more program-like features into Xaml itself.
-
-If you really want to use static Xaml, then you will need to do bindings to that Xaml.
+If you want to use static Xaml, then you will need to do bindings to that Xaml.
 Bindings in your XAML code will look like typical bindings, but a bit of extra code is needed to 
 map those bindings to your Elmish model. These are the viewBindings, which expose parts of the model to the view. 
 
+Here is a full example (excluding Xaml):
+```fsharp
+namespace CounterApp
+
+open Elmish
+open Elmish.XamarinForms
+open Elmish.XamarinForms.StaticViews
+open Xamarin.Forms
+
+type Model = 
+  { Count : int
+    Step : int }
+
+type Msg = 
+    | Increment 
+    | Decrement 
+    | Reset
+    | SetStep of int
+
+type CounterApp () = 
+    inherit Application ()
+
+    let init () = { Count = 0; Step = 3 }
+
+    let update msg model =
+        match msg with
+        | Increment -> { model with Count = model.Count + model.Step }
+        | Decrement -> { model with Count = model.Count - model.Step }
+        | Reset -> init ()
+        | SetStep n -> { model with Step = n }
+
+    let view () =
+        CounterPage (),
+        [ "CounterValue" |> Binding.oneWay (fun m -> m.Count)
+          "CounterValue2" |> Binding.oneWay (fun m -> m.Count + 1)
+          "IncrementCommand" |> Binding.msg Increment
+          "DecrementCommand" |> Binding.msg Decrement
+          "ResetCommand" |> Binding.msgIf Reset (fun m -> m <> init ())
+          "ResetVisible" |> Binding.oneWay (fun m ->  m <> init ())
+          "StepValue" |> Binding.twoWay (fun m -> double m.Step) (fun v -> SetStep (int (v + 0.5))) ]
+
+    do
+        let page = 
+            Program.mkSimple init update view
+            |> Program.withConsoleTrace
+            |> Program.withStaticView
+            |> Program.run
+
+        base.MainPage <- page
+```
 There are helper functions to create bindings located in the `Binding` module:
-* `oneWay`
+* `Binding.oneWay getter`
   * Basic source-to-view binding. Maps to `BindingMode.OneWay`.
   * Takes a getter (`'model -> 'a`)
-* `twoWay`
-  * Binding from source to view, or view to source, and usually used for input controls. Maps to `BindingMode.TwoWay` or `BindingMode.OneWayToSource`.
+* `Binding.twoWay getter setter`
+  * Binding from source to view, or view to source, and usually used for input controls. 
   * Takes a getter (`'model -> 'a`) and a setter (`'a -> 'model -> 'msg`) that returns a message.
-* `twoWayValidation`
-  * Binding from source to view, or view to source, and usually used for input controls. Maps to `BindingMode.TwoWay` or `BindingMode.OneWayToSource`. Setter will implement validation which is exposed to the view through typical `INotifyDataErrorInfo` properties.
+* `Binding.oneWayFromView setter`
+  * Binding from view to source, and usually used for input controls. 
+  * Takes a a setter (`'a -> 'model -> 'msg`) that returns a message.
+* `Binding.twoWayValidation getter setter`
+  * Binding from source to view and view to source, and usually used for input controls. Maps to `BindingMode.TwoWay`. Setter will implement validation.
   * Takes a getter (`'model -> 'a`) and a setter (`'a -> 'model -> Result<'msg,string>`) that indicates whether the input is valid or not.
-* `cmd`
-  * Basic command binding
+* `Binding.msg`
+  * Basic command binding to dispatch a message
   * Takes an execute function (`'model -> 'msg`)
-* `cmdIf`
-  * Conditional command binding
+* `Binding.msgIf`
+  * Conditional command binding to dispatch a message
   * Takes an execute function (`'model -> 'msg`) and a canExecute function (`'model -> bool`)
-* `vm`
+* `Binding.msgWithParamIf`
+  * Conditional command binding to dispatch a message, with an additional `CommandParameter`
+  * Takes an execute function (`'model -> 'msg`) and a canExecute function (`'model -> bool`)
+* `Binding.subView initf getter toMsg viewBindings name`
   * Composite model binding
-  * Takes a getter (`'model -> 'a`) and the composite model viewBindings, where `'a` is your composite model member. 
+  * Takes a sub-model initializer sub-model getter (`'model -> '_model`) to fetch part of a model, a message embedder (`'_msg -> 'msg`) to embed sub-component messages into a larger space of messages, and the composite sub-model viewBindings, and a name for the sub-model
 * `oneWayMap`
-  * Basic source-to-view binding with a map function. This should be used for cases where it is desirable to have one type in your model and return a different type to the view. This will be more performant than mapping directly in the getter.
+  * One-way binding that applies a map when passing data to the view.
   * Takes a getter (`'model -> 'a`) and a mapper (`'a -> 'b`).
 
-The last string argument to each binding is the name of the property as referenced in the XAML binding.
-```fsharp
-    let view _ _ = 
-        let clockViewBinding : ViewBindings<ClockModel,ClockMsg> =
-            [ "Time" |> Binding.oneWay (fun m -> m.Time) ]
-
-        [ "Increment" |> Binding.cmd (fun m -> Increment)
-          "Decrement" |> Binding.cmdIf (fun m -> Decrement) (fun m -> m.StepSize = 1)
-          "Count" |> Binding.oneWay (fun m -> m.Count)
-          "StepSize" |> Binding.twoWay (fun m -> (double m.StepSize)) (fun v m -> v |> int |> SetStepSize)
-          "Clock" |> Binding.vm (fun m -> m.Clock) clockViewBinding ClockMsg ]
-```
-Note:  A viewBinding created with `Binding.vm` would be bound to the DataContext of a user control.
+The string piped to each binding is the name of the property as referenced in the XAML binding.
 
 
 Elmish Subscriptions
