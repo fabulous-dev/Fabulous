@@ -174,7 +174,7 @@ module StaticView =
                 initf subModel
             | _ -> ()
 
-    let internal staticPageInitUntyped (page: ContentPage) (bindings: ViewBindings<'model, 'msg>) =
+    let internal staticPageInitUntyped (page: Page) (bindings: ViewBindings<'model, 'msg>) =
         fun (objViewModel: obj) ->
             match objViewModel with
             | :? StaticViewModel<obj, obj> as viewModel -> 
@@ -189,19 +189,19 @@ module StaticView =
         let name = genViewName()
         name, page, bindings
 
-    let subPage (view1: StaticView<_, _, _>) =
+    let subPage (view1: StaticView<'model, 'msg, 'page>) =
         let nm1, page1, bindings1 = apply view1
         page1,
         [ nm1 |> Binding.subView (staticPageInitUntyped page1 bindings1) id id bindings1 ]
 
-    let combo2 (view1: StaticView<_, _, _>) (view2: StaticView<_, _, _>) =
+    let combo2 (view1: StaticView<'model1, 'msg1, 'page1>) (view2: StaticView<'model2, 'msg2, 'page2>) =
         let nm1, page1, bindings1 = apply view1
         let nm2, page2, bindings2 = apply view2
         (page1, page2),
         [ nm1 |> Binding.subView (staticPageInitUntyped page1 bindings1) (fun (a,_) -> a) Choice1Of2 bindings1
           nm2 |> Binding.subView (staticPageInitUntyped page1 bindings2) (fun (_,a) -> a) Choice2Of2 bindings2 ]
 
-    let combo3 (view1: StaticView<_, _, _>) (view2: StaticView<_, _, _>) (view3: StaticView<_, _, _>) = 
+    let combo3 (view1: StaticView<'model1, 'msg1, 'page1>) (view2: StaticView<'model2, 'msg2, 'page2>) (view3: StaticView<'model3, 'msg3, 'page3>) = 
         let nm1, page1, bindings1 = apply view1
         let nm2, page2, bindings2 = apply view2
         let nm3, page3, bindings3 = apply view3
@@ -210,7 +210,7 @@ module StaticView =
           nm2 |> Binding.subView (staticPageInitUntyped page2 bindings2) (fun (_,a,_) -> a) Choice2Of3 bindings2
           nm3 |> Binding.subView (staticPageInitUntyped page3 bindings3) (fun (_,_,a) -> a) Choice3Of3 bindings3 ]
 
-    let combo4 (view1: StaticView<_, _, _>) (view2: StaticView<_, _, _>) (view3: StaticView<_, _, _>) (view4: StaticView<_, _, _>) =
+    let combo4 (view1: StaticView<'model1, 'msg1, 'page1>) (view2: StaticView<'model2, 'msg2, 'page2>) (view3: StaticView<'model3, 'msg3, 'page3>) (view4: StaticView<'model4, 'msg4, 'page4>) =
         let nm1, page1, bindings1 = apply view1
         let nm2, page2, bindings2 = apply view2
         let nm3, page3, bindings3 = apply view3
@@ -245,7 +245,8 @@ module Program =
           onError = onError }
 
     /// Simple program that produces only new state with `init` and `update`.
-    let mkSimple init update view = mkProgram (fun arg -> init arg, Cmd.none) (fun msg model -> update msg model, Cmd.none) view
+    let mkSimple init update view = 
+        mkProgram (fun arg -> init arg, Cmd.none) (fun msg model -> update msg model, Cmd.none) view
 
     /// Subscribe to external source of events.
     /// The subscription is called once - with the initial model, but can dispatch new messages at any time.
@@ -281,7 +282,6 @@ module Program =
     let withErrorHandler onError (program: Program<'model, 'msg, 'view>) =
         { program
             with onError = onError }
-
 
     /// Starts the Elmish dispatch loop for the page with the given Elmish program
     let _run debug  (program: Program<_, _, _>)  = 
@@ -395,7 +395,7 @@ module Program =
               Nav.globalNavMap <- (navMap |> List.map (fun (tg, page) -> ((tg :> System.IComparable), page)) |> Map.ofList)
               page, contents  )}
 
-    let withStaticView (program: Program<_,_,_>) = 
+    let withStaticView (program: Program<'model, 'msg, _>) = 
         { init = program.init
           update = program.update
           subscribe = program.subscribe
@@ -404,7 +404,7 @@ module Program =
               let page, bindings = program.view ()
               Choice1Of2 ((page :> Page), bindings)) }
 
-    let withDynamicView (program: Program<_,_,_>) = 
+    let withDynamicView (program: Program<'model, 'msg, _>) = 
         { init = program.init
           update = program.update
           subscribe = program.subscribe

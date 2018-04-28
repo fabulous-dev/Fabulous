@@ -117,17 +117,6 @@ module App =
             Xaml.ContentPage(title=title, content=Xaml.StackLayout(padding=20.0,children=children, ?gestureRecognizers=gestureRecognizers))
 
     let view (model: Model) dispatch =
-      Xaml.MasterDetailPage(
-          masterBehavior=MasterBehavior.Popover, 
-          master = 
-            Xaml.ContentPage(padding=Thickness(0.0, 20.0, 0.0, 0.0) (* if iOS *),
-             content = 
-               Xaml.StackLayout(backgroundColor=Color.Gray, 
-                 children=[ Xaml.Button(text="Home", textColor=Color.White, backgroundColor=Color.Green (*, command="GoHomeCommand" *) ) 
-                            Xaml.Button(text="Second Page", textColor=Color.White, backgroundColor=Color.Navy (* , command="GoSecondCommand" *) )]) ),
-          detail = 
-             Xaml.NavigationPage(Xaml.ContentPage( Xaml.Label(Text="Home Page", VerticalOptions="Center", horizontalOptions="Center") )))
-         (*
       Xaml.CarouselPage //TabbedPage 
        [ 
          dependsOn model.Count (fun model count -> 
@@ -359,7 +348,19 @@ module App =
                              .LayoutBounds(Rectangle(1.0, 1.0, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize)) ])
                  ])))
         ] 
-                 *)
+(*
+       Xaml.MasterDetailPage(
+          masterBehavior=MasterBehavior.Popover, 
+          master = 
+            Xaml.ContentPage(padding=Thickness(0.0, 20.0, 0.0, 0.0) (* if iOS *),
+             content = 
+               Xaml.StackLayout(backgroundColor=Color.Gray, 
+                 children=[ Xaml.Button(text="Home", textColor=Color.White, backgroundColor=Color.Green (*, command="GoHomeCommand" *) ) 
+                            Xaml.Button(text="Second Page", textColor=Color.White, backgroundColor=Color.Navy (* , command="GoSecondCommand" *) )]) ),
+          detail = 
+             Xaml.NavigationPage(Xaml.ContentPage( Xaml.Label(Text="Home Page", VerticalOptions="Center", horizontalOptions="Center") )))
+*)
+
                 // Xaml.NavigationPage: TODO
                 // Xaml.Menu: TODO
                 // Xaml.MenuItem: TODO
