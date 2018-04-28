@@ -5,7 +5,7 @@ F# Functional-Reactive App Development, using Xamarin.Forms
 
 Never write a ViewModel class again!  Conquer the world with clean dynamic UIs!
 
-This library uses a variation of [elmish](https://fable-elmish.github.io/), an Elm architecture implemented in F#, to build Xamarin.Forms applications. Fable-elmish was originally written for [Fable](https://github.com/fable-compiler) applications, however it is used here for Xamarin.Forms. Have a look at the [elmish docs site](https://fable-elmish.github.io/elmish/) if you are not familiar with the Elm architecture.
+This library uses a variation of [elmish](https://elmish.github.io/), an Elm architecture implemented in F#, to build Xamarin.Forms applications. Fable-elmish was originally written for [Fable](https://github.com/fable-compiler) applications, however it is used here for Xamarin.Forms. This is a sample and may change.
 
 To quote [@dsyme](http://github.com/dsyme):
 
@@ -90,7 +90,7 @@ Dynamic Views and Performance
 ------
 
 Dynamic views are only efficient for large UIs if the unchanging parts of a UI are "memoized", returning identical
-objects on each invocation of the `view` function.  Amortization must be done explicitly and carefully. Here is an example for a 6x6 Grid that never changes:
+objects on each invocation of the `view` function.  This must be done explicitly, currently using `dependsOn`. Here is an example for a 6x6 Grid that depends on nothing, i.e. never changes:
 ```fsharp
 let view model dispatch =
     ...
@@ -105,10 +105,7 @@ let view model dispatch =
                                               .GridRow(i-1).GridColumn(j-1) ] )
             ])
 ```
-Inside the function passed to `dependsOn` the `model` is rebound to be inaccessbile.  This helps ensure that this part of the
-view description doesn't depend on captured variables.  You can also extract this part of the view description to a separate function.
-
-Here is an example where some of the model is extracted:
+Inside the function - the one passed to `dependsOn` - the `model` is rebound to be inaccessbile with a `DoNotUseMe` type so you can't use it. Here is an example where some of the model is extracted:
 ```fsharp
 let view model dispatch =
     ...
@@ -119,13 +116,14 @@ let view model dispatch =
     ...
 ```
 In the example, we extract properties `CountForSlider` and `StepForSlider` from the model, and bind them to `count` and `step`.  If either of these change, the section of the view will be recomputed and no adjustments will be made to the UI.
-If not, this section of the view will be reused.
+If not, this section of the view will be reused. This helps ensure that this part of the view description only depends on the parts of the model extracted.
 
 Roadmap
 --------
 
 * Programming model: Do these from `Xamarin.Forms.Core`: 
   * Menu, MenuItem, NavigationBar, Accelerator
+  * Validation
   * Animation
   * OpenGLView
   * CachingStrategy parameter to ListView
@@ -175,16 +173,32 @@ Roadmap
 
 * Make some small F# langauge improvements to improve code:
   * Remove `yield` in more cases
-  * Automatically dependsOn function values that do not capture any arguments and consider making the `dispatch` function global (partly to avoid is being seen as a captured argument)
+  * Automatically save function values that do not capture any arguments and consider making the `dispatch` function global (partly to avoid is being seen as a captured argument)
   * Allow syntax `Xaml.Foo(prop1=expr1, [ // end of line`
   * `TryGetValue` on F# immutable map
   * Allow a default unnamed argument for `children` so the argument name doesn't have to be given explicitly
 
 
-Old docs: Static Views
+Static Views
 ------
-If you really want to use static Xaml, then you will need to do bindings to that Xaml.
 
+In some circumstances there are advantages to using static views and static bindings from the model to those views. This is called "Half Elmish" and is the primary technique used by `Elmish.WPF` at time of writing. (It was also  the original technique used by this repo and an early prototype called `Elmish.Forms`).   "Half Elmish" is a pragmatic choice to allow, but doesn't provide the same level of cognitive-simplicity.
+
+Static Xaml + bindings has signifcant pros:
+* Pro: in some circumstances perf can be better
+* Pro: you can interact with existing xaml assets
+* Pro: you can interact with 3rd party controls more simply
+
+But it also has cons:
+* Con: you have to know a lot more about Xaml (e.g. binding, commands, templating)
+* Con: you get more files in your project (e.g. 3 instead of 1, even for simple examples)
+* Con: you are more reliant on tooling (which is often a bit flakey...)
+* Con: you may end up using more mutable data structures
+* Con: there are  more failure points (e.g. magic strings to link the Xaml to the code through binding etc.).  
+
+But the main problem is that the Xaml is static, and is only made dynamic through the addition of either control bindings to turn elements on/off, or through using more program-like features into Xaml itself.
+
+If you really want to use static Xaml, then you will need to do bindings to that Xaml.
 Bindings in your XAML code will look like typical bindings, but a bit of extra code is needed to 
 map those bindings to your Elmish model. These are the viewBindings, which expose parts of the model to the view. 
 
@@ -226,10 +240,10 @@ The last string argument to each binding is the name of the property as referenc
 Note:  A viewBinding created with `Binding.vm` would be bound to the DataContext of a user control.
 
 
-Old docs: Subscriptions
+Elmish Subscriptions
 ------
 
-Subscriptions, which are events sent from outside the view or the dispatch loop, are created using `Cmd.ofSub`. For example, dispatching events on a timer:
+Elmish subscriptions are events sent from outside the view or the dispatch loop, are created using `Cmd.ofSub`. For example, dispatching events on a timer:
 ```fsharp
     let timerTick dispatch =
         let timer = new System.Timers.Timer(1.0)
@@ -243,7 +257,7 @@ Subscriptions, which are events sent from outside the view or the dispatch loop,
 NOTE: we may switch to using the Xamarin `MessagingCenter` that is global to the application.
 
 
-Old docs: Multiple Pages and Navigation
+Multiple Pages and Navigation
 ------
 
 There is some experimental support for multiple-page apps and navigation. See the MasterDetailApp sample.  This currently only supports static views.
@@ -261,6 +275,5 @@ Use this:
 
 Credits
 -----
-This library is derived from [Elmish.WPF](https://github.com/Prolucid/Elmish.WPF). In turn that would not have been possible without the elmish engine, [fable-elmish](https://github.com/fable-elmish/elmish), written by [et1975](https://github.com/et1975). This project technically has no tie to [Fable](http://fable.io/), which is an F# to JavaScript transpiler that is definitely worth checking out.
+This library is inspired by [Elmish.WPF](https://github.com/Prolucid/Elmish.WPF), [Elmish.Forms](https://github.com/dboris/elmish-forms) and [elmish](https://github.com/elmish/elmish), written by [et1975](https://github.com/et1975). This project technically has no tie to [Fable](http://fable.io/), which is an F# to JavaScript transpiler that is definitely worth checking out.
 
-An early sample of Elmish for Xamarin Forms adapted from Elmish.WPF was drafted by [github user @dboris](https://github.com/dboris/elmish-forms).
