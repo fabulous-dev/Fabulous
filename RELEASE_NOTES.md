@@ -1,7 +1,16 @@
 #### 0.4.1
 * Updates to README
-* View amortization
-* Use and recycle ObservableCollection for ListView entries
+* Add `dependsOn`
+* Add `RelativeLayout` and `AbsoluteLayout`
+* Use struct options internally
+* Add `TableView` support
+* Fix repeated update of image sources
+* Simplify size requests
+* Add `ListView` and `ListViewGrouped` support
+* Use and recycle `ObservableCollection` for `ListView` entries
+* Updates for accurate `ListViw` selection
+* Updates for more accurate view memoization
+* Include the code generator
 
 #### 0.4.0
 * Lots of updates to dynamic views
