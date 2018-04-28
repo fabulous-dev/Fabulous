@@ -155,8 +155,8 @@ Roadmap
 * Performance:
   * Road test differential update
   * Minimize updates where possible
-  * Experiment with different approaches to amortization
-  * Amortize function closure creation
+  * Experiment with different approaches to memoization
+  * Memoize function closure creation
   * Use integer atoms for property names
   * Do better list comparison/diffing
   * Consider keeping a running identity hash on the immutable objects
