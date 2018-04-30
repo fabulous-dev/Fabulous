@@ -23,7 +23,10 @@ type Model =
     PickedColorIndex: int
     GridSize: int
     NewGridSize: double // used during pinch
-    GridPortal: int * int }
+    GridPortal: int * int 
+    // 
+    IsPresented: bool 
+    PageStack: string list }
 
 type Msg = 
     | Increment 
@@ -49,6 +52,11 @@ type Msg =
     | FrameTapped2 
     | UpdateNewGridSize of double * GestureStatus
     | UpdateGridPortal of int * int
+    // For MasterDetail
+    | IsPresentedChanged of bool
+    | GoHomePage
+    | PopPage
+    | PushPage of string
 
 module App = 
     let init () = 
@@ -67,7 +75,9 @@ module App =
           StartDate=System.DateTime.Today
           EndDate=System.DateTime.Today.AddDays(1.0)
           NumTaps=0
-          NumTaps2=0 }
+          NumTaps2=0
+          IsPresented=false
+          PageStack=["Home"]}
 
     let update msg model =
         match msg with
@@ -99,6 +109,11 @@ module App =
             | GestureStatus.Canceled -> { model with NewGridSize = double model.GridSize }
             | _ -> model
         | UpdateGridPortal (x,y) -> { model with GridPortal = (x,y) }
+        // For NavigationPage
+        | IsPresentedChanged b -> { model with IsPresented = b }
+        | GoHomePage -> { model with PageStack = ["Home"]; IsPresented=false}
+        | PopPage -> { model with PageStack = (match model.PageStack with [] | [_] -> model.PageStack | _ :: t -> t); IsPresented=false }
+        | PushPage page -> { model with PageStack = page :: model.PageStack; IsPresented=false  }
 
     let pickerItems = 
         [ ("Aqua", Color.Aqua); ("Black", Color.Black);
@@ -349,33 +364,84 @@ module App =
                  ])))
         ] 
 (*
-       Xaml.MasterDetailPage(
-          masterBehavior=MasterBehavior.Popover, 
-          master = 
-            Xaml.ContentPage(padding=Thickness(0.0, 20.0, 0.0, 0.0) (* if iOS *),
-             content = 
-               Xaml.StackLayout(backgroundColor=Color.Gray, 
-                 children=[ Xaml.Button(text="Home", textColor=Color.White, backgroundColor=Color.Green (*, command="GoHomeCommand" *) ) 
-                            Xaml.Button(text="Second Page", textColor=Color.White, backgroundColor=Color.Navy (* , command="GoSecondCommand" *) )]) ),
-          detail = 
-             Xaml.NavigationPage(Xaml.ContentPage( Xaml.Label(Text="Home Page", VerticalOptions="Center", horizontalOptions="Center") )))
-*)
+        // NavigationPage example
+         dependsOn (model.IsPresented, model.PageStack) (fun model (isPresented, pageStack) -> 
+           Xaml.NavigationPage(pages=
+                     [ for page in List.rev pageStack do
+                         match page with 
+                         | "Home" -> 
+                             yield 
+                                 Xaml.ContentPage(
+                                   Xaml.StackLayout(
+                                    children=
+                                      [Xaml.Label(text="Home Page", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center)
+                                       Xaml.Button(text="Push Page A", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center,command=(fun () -> dispatch (PushPage "A")))
+                                       Xaml.Button(text="Push Page B", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center,command=(fun () -> dispatch (PushPage "B")))
+                                       ]) ).HasNavigationBar(true).HasBackButton(false)
+                         | "A" -> 
+                             yield 
+                               Xaml.ContentPage(
+                                Xaml.StackLayout(
+                                 children=
+                                  [Xaml.Label(text="Page A", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.Center)
+                                   Xaml.Button(text="Page B", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.Center,command=(fun () -> dispatch (PushPage "B")))
+                                   Xaml.Button(text="Page C", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.Center,command=(fun () -> dispatch (PushPage "C")))
+                                   Xaml.Button(text="Replace by Page B", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.Center,command=(fun () -> dispatch PopPage; dispatch (PushPage "B")))
+                                   Xaml.Button(text="Replace by Page C", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.Center,command=(fun () -> dispatch PopPage; dispatch (PushPage "C")))
+                                   Xaml.Button(text="Back", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.Center,command=(fun () -> dispatch PopPage))
+                                   ]) ).HasNavigationBar(true).HasBackButton(true)
+                         | "B" -> 
+                             yield 
+                               Xaml.ContentPage(
+                                Xaml.StackLayout(
+                                 children=
+                                  [Xaml.Label(text="Page B", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center)
+                                   Xaml.Label(text="(nb. no back button in navbar)", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center)
+                                   Xaml.Button(text="Page A", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center,command=(fun () -> dispatch (PushPage "A")))
+                                   Xaml.Button(text="Page C", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center,command=(fun () -> dispatch (PushPage "C")))
+                                   Xaml.Button(text="Back", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center,command=(fun () -> dispatch PopPage))
+                                   ]) ).HasNavigationBar(true).HasBackButton(false)
+                         | "C" -> 
+                             yield 
+                               Xaml.ContentPage(
+                                Xaml.StackLayout(
+                                 children=
+                                  [Xaml.Label(text="Page C", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center)
+                                   Xaml.Label(text="(nb. no navbar)", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center)
+                                   Xaml.Button(text="Page A", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center,command=(fun () -> dispatch (PushPage "A")))
+                                   Xaml.Button(text="Page B", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center,command=(fun () -> dispatch (PushPage "B")))
+                                   Xaml.Button(text="Back", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center,command=(fun () -> dispatch PopPage))
+                                   ]) ).HasNavigationBar(false).HasBackButton(false)
 
-                // Xaml.NavigationPage: TODO
-                // Xaml.Menu: TODO
-                // Xaml.MenuItem: TODO
-                // Xaml.NavigationMenu: TODO
-                // Xaml.Accelerator: TODO
-                //
-                // Xaml.MasterDetailPage: TODO
-                //
-                // ListView: CachingStrategy read-only parameter to ctor
-                //
-                // Xaml.AppLinkEntry: TODO
-                // Xaml.MessagingCenter: TODO
-                // TODO: fix slider where minimum = 1.0 (gets set before maximum..)
-                // TODO: better recovery from exceptions on modifications
-                //
+                         | _ -> failwith "unknown page" ] (* ,
+                    popped=(fun args -> dispatch PopPage),
+                    poppedToRoot=(fun args -> dispatch GoHomePage) *) ))
+*)
+(*
+        // MasterDetail where the Master acts as a hamburger-style menu
+         dependsOn (model.IsPresented, model.PageStack) (fun model (isPresented, pageStack) -> 
+           Xaml.MasterDetailPage(
+              masterBehavior=MasterBehavior.Popover, 
+              isPresented=isPresented,
+              isPresentedChanged=(fun b -> dispatch (IsPresentedChanged b)),
+              master = 
+                Xaml.ContentPage(title="Master", padding=Thickness(0.0, 20.0, 0.0, 0.0) (* if iOS *),
+                 content = 
+                   Xaml.StackLayout(backgroundColor=Color.Gray, 
+                     children=[ Xaml.Button(text="Home", textColor=Color.White, backgroundColor=Color.Green, command=(fun () -> dispatch GoHomePage)) 
+                                Xaml.Button(text="Page A", textColor=Color.White, backgroundColor=Color.Navy, command=(fun () -> dispatch (PushPage 1)))
+                                Xaml.Button(text="Page B", textColor=Color.White, backgroundColor=Color.Navy, command=(fun () -> dispatch (PushPage 2)))]) ),
+              detail = 
+                 (Xaml.NavigationPage(pages=
+                     [ yield Xaml.ContentPage(Xaml.Label(text="Home Page", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.Center) )
+                       for page in List.rev pageStack do
+                         match page with 
+                         | 1 -> yield Xaml.ContentPage(Xaml.Label(text="Page A", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.Center) )
+                         | _ -> yield Xaml.ContentPage(Xaml.Label(text="Page B", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.Center) )],
+                    popped=(fun args -> dispatch PopPage),
+                    poppedToRoot=(fun args -> dispatch GoHomePage))) ))
+
+*)
 
 type App () = 
     inherit Application ()

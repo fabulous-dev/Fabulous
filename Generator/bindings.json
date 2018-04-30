@@ -459,7 +459,7 @@
 					"modelType": "(string * XamlElement[])[]",
 					"inputType": "(string * XamlElement list) list",
 					"convToModel": "(fun es -> es |> Array.ofList |> Array.map (fun (title, es) -> (title, Array.ofList es)))",
-					"updateCode": "updateTableViewItems prevValueOpt valueOpt target (fun (x:XamlElement) -> x.CreateAsCell()) (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType) (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))"
+					"updateCode": "updateTableViewItems"
 				}
 			]
 		},
@@ -1084,6 +1084,39 @@
 			"name": "Xamarin.Forms.NavigationPage",
 			"members": [
 				{
+					"name": "Pages",
+					"uniqueName": "NavigationPagePages",
+					"inputType": "XamlElement list",
+					"shortName": "pages",
+					"modelType": "XamlElement[]",
+					"convToModel": "Array.ofList",
+					"updateCode": "updateNavigationPages",
+					"attached": [
+						{
+							"name": "BackButtonTitle",
+							"modelType": "string",
+							"defaultValue": "null"
+						},
+						{
+							"name": "HasBackButton",
+							"modelType": "bool",
+							"defaultValue": "true"
+						},
+						{
+							"name": "HasNavigationBar",
+							"modelType": "bool",
+							"defaultValue": "true"
+						},
+						{
+							"name": "TitleIcon",
+    					"inputType": "string",
+		    			"modelType": "string",
+				    	"convToValue": "makeFileImageSource",
+				    	"defaultValue": "null"
+						}
+					]
+				},
+				{
 					"name": "BarBackgroundColor",
 					"defaultValue": "Xamarin.Forms.Color.Default"
 				},
@@ -1145,7 +1178,7 @@
 					"modelType": "FSharp.Control.Handler<(double * double)>",
 					"inputType": "(double * double) -> unit",
 					"convToModel": "(fun f -> FSharp.Control.Handler<_>(fun _sender args -> f args))",
-					"updateCode": "(let target = (target :?> Elmish.XamarinForms.DynamicViews.CustomContentPage) in (match prevValueOpt with UNone -> () | USome f -> target.SizeAllocated.RemoveHandler(f)); (match valueOpt with UNone -> () | USome f -> target.SizeAllocated.AddHandler(f)))"
+					"updateCode": "updateOnSizeAllocated"
 				}
 			]
 		},
@@ -1259,8 +1292,13 @@
 					"inputType": "XamlElement list",
 					"modelType": "XamlElement[]",
 					"convToModel": "Array.ofList",
-					"updateCode": "updateListViewItems prevValueOpt valueOpt target"
+					"updateCode": "updateListViewItems"
 				},
+				//{
+				//	"name": "ListViewCachingStrategy",
+			//		"inputType": "Xamarin.Forms.ListViewCachingStrategy",
+			//		"isParam": true
+			//	},
 				//{
 				//	"name": "ItemTemplate",
 				//	"defaultValue": "null"
@@ -1372,7 +1410,7 @@
 					"inputType": "(XamlElement * XamlElement list) list",
 					"modelType": "(XamlElement * XamlElement[])[]",
 					"convToModel": "(fun es -> es |> Array.ofList |> Array.map (fun (e,l) -> (e, Array.ofList l)))",
-					"updateCode": "updateListViewGroupedItems prevValueOpt valueOpt target"
+					"updateCode": "updateListViewGroupedItems"
 				},
 				//{
 				//	"name": "ItemTemplate",

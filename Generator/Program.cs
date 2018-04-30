@@ -51,7 +51,13 @@ namespace Generator
         
         /// A unique name of the property in the model
         public string UniqueName { get; set; }
-        
+
+        /// Indicates if the "property" is actually passed as a fixed parameter to the constructor
+        public bool IsParam { get; set; }
+
+        /// The bound name of the type of the parameter if it is an element requiring creation
+        public string ParamTypeBoundName { get; set; }
+
         /// The lowercase name used as a parameter in the API
         public string ShortName { get; set; }
         
@@ -257,7 +263,10 @@ namespace Generator
                 if (string.IsNullOrWhiteSpace(type.ModelName))
                 {
                     w.WriteLine($"        /// Create a {tdef.FullName} from the view description");
-                    w.WriteLine($"        member x.CreateAs{tdef.Name}() : {tdef.FullName} = (x.Create() :?> {tdef.FullName})");
+                    w.WriteLine($"        member x.CreateAs{tdef.Name}() : {tdef.FullName} =");
+                    w.WriteLine($"            match x.Create() with");
+                    w.WriteLine($"            | :? {tdef.FullName} as res -> res");
+                    w.WriteLine($"            | obj -> failwithf \"Incorrect element type in view, expected a '{tdef.FullName}' but got a '%s')\" (obj.GetType().ToString()) ");
                 }
             }
             var allMembersInAllTypes = new List<MemberBinding>();
@@ -280,31 +289,40 @@ namespace Generator
             foreach (var ms in allMembersInAllTypesGroupedByName)
             {
                 var m = ms.First();
-                w.WriteLine();
-                w.WriteLine($"        /// Try to get the {m.BoundUniqueName} property in the visual element");
-                var modelType = m.GetModelType(bindings, null);
-                w.WriteLine("        member x.Try" + m.BoundUniqueName + " = match x.Attributes.TryFind(\"" + m.BoundUniqueName + "\") with Some v -> USome(unbox<" + modelType + ">(v)) | None -> UNone");
+                if (!m.IsParam)
+                {
+                    w.WriteLine();
+                    w.WriteLine($"        /// Try to get the {m.BoundUniqueName} property in the visual element");
+                    var modelType = m.GetModelType(bindings, null);
+                    w.WriteLine("        member x._" + m.BoundUniqueName + " = match x.Attributes.TryFind(\"" + m.BoundUniqueName + "\") with Some v -> USome(unbox<" + modelType + ">(v)) | None -> UNone");
+                }
             }
             foreach (var ms in allMembersInAllTypesGroupedByName)
             {
                 var m = ms.First();
-                w.WriteLine();
-                w.WriteLine($"        /// Adjusts the {m.BoundUniqueName} property in the visual element");
-                var conv = string.IsNullOrWhiteSpace(m.ConvToModel) ? "" : m.ConvToModel;
-                var inputType = m.GetInputType(bindings, null);
-                w.WriteLine("        member x." + m.BoundUniqueName + "(value: " + inputType + ") = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add(\"" + m.BoundUniqueName + "\", box (" + conv + "(value))))");
+                if (!m.IsParam)
+                {
+                    w.WriteLine();
+                    w.WriteLine($"        /// Adjusts the {m.BoundUniqueName} property in the visual element");
+                    var conv = string.IsNullOrWhiteSpace(m.ConvToModel) ? "" : m.ConvToModel;
+                    var inputType = m.GetInputType(bindings, null);
+                    w.WriteLine("        member x." + m.BoundUniqueName + "(value: " + inputType + ") = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add(\"" + m.BoundUniqueName + "\", box (" + conv + "(value))))");
+                }
             }
             w.WriteLine();
             foreach (var ms in allMembersInAllTypesGroupedByName)
             {
                 var m = ms.First();
-                var inputType = m.GetInputType(bindings, null);
-                w.WriteLine();
-                w.WriteLine($"    /// Adjusts the {m.BoundUniqueName} property in the visual element");
-                w.WriteLine("    let with" + m.BoundUniqueName + " (value: " + inputType + ") (x: XamlElement) = x." + m.BoundUniqueName + "(value)");
-                w.WriteLine();
-                w.WriteLine($"    /// Adjusts the {m.BoundUniqueName} property in the visual element");
-                w.WriteLine("    let " + m.LowerBoundUniqueName + " (value: " + inputType + ") (x: XamlElement) = x." + m.BoundUniqueName + "(value)");
+                if (!m.IsParam)
+                {
+                    var inputType = m.GetInputType(bindings, null);
+                    w.WriteLine();
+                    w.WriteLine($"    /// Adjusts the {m.BoundUniqueName} property in the visual element");
+                    w.WriteLine("    let with" + m.BoundUniqueName + " (value: " + inputType + ") (x: XamlElement) = x." + m.BoundUniqueName + "(value)");
+                    w.WriteLine();
+                    w.WriteLine($"    /// Adjusts the {m.BoundUniqueName} property in the visual element");
+                    w.WriteLine("    let " + m.LowerBoundUniqueName + " (value: " + inputType + ") (x: XamlElement) = x." + m.BoundUniqueName + "(value)");
+                }
             }
             w.WriteLine();
             w.WriteLine("type Xaml() =");
@@ -356,11 +374,59 @@ namespace Generator
                 w.WriteLine($"        let create () =");
                 if (!tdef.IsAbstract && ctor != null && ctor.Parameters.Count == 0)
                 {
-                    w.WriteLine($"            box (new {customTypeToCreate}())");
+                    if (allMembers.Any(m => m.IsParam))
+                    {
+                        w.Write($"            match ");
+                        head = "";
+                        foreach (var m in allMembers)
+                        {
+                            if (m.IsParam)
+                            {
+                                w.Write($"{head}{m.LowerBoundShortName}");
+                                head = ", ";
+                            }
+                        }
+                        w.WriteLine($" with");
+                        w.Write($"            | ");
+                        head = "";
+                        foreach (var m in allMembers)
+                        {
+                            if (m.IsParam)
+                            {
+                                w.Write($"{head}Some {m.LowerBoundShortName}");
+                                head = ", ";
+                            }
+                        }
+                        w.WriteLine($" ->");
+                        w.Write($"                box (new {customTypeToCreate}(");
+                        head = "";
+                        foreach (var m in allMembers)
+                        {
+                            if (m.IsParam)
+                            {
+                                var bt = m.ParamTypeBoundName;
+                                if (bt != null)
+                                {
+                                    w.Write($"{head}{m.LowerBoundShortName}.CreateAs{bt}()");
+                                }
+                                else
+                                {
+                                    w.Write($"{head}{m.LowerBoundShortName}");
+                                }
+                                head = ", ";
+                            }
+                        }
+                        w.WriteLine($"))");
+                        w.Write($"            | _ -> box (new {customTypeToCreate}())");
+                    }
+                    else
+                    {
+                        w.Write($"            box (new {customTypeToCreate}())");
+                    }
                 }
                 else
                 {
-                    w.WriteLine($"            failwith \"can'tdef create {tdef.FullName}\"");
+                    w.WriteLine($"            failwith \"can't create {tdef.FullName}\"");
                 }
                 w.WriteLine();
                 w.WriteLine($"        let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = ");
@@ -378,10 +444,13 @@ namespace Generator
 
                         var bt = ResolveGenericParameter(m.BoundType, hierarchy);
                         string elementType = m.GetElementType(hierarchy);
-                        if (elementType != null && elementType != "obj" && !hasApply)
+                        if (m.IsParam) 
                         {
-                            w.WriteLine($"            let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.Try{m.BoundUniqueName}");
-                            w.WriteLine($"            let collOpt = source.Try{m.BoundUniqueName}");
+                        }
+                        else if (elementType != null && elementType != "obj" && !hasApply)
+                        {
+                            w.WriteLine($"            let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev._{m.BoundUniqueName}");
+                            w.WriteLine($"            let collOpt = source._{m.BoundUniqueName}");
                             w.WriteLine($"            updateIList prevCollOpt collOpt target.{m.Name}");
                             w.WriteLine($"                (fun (x:XamlElement) -> x.CreateAs{elementType}())");
                             if (m.Attached != null)
@@ -390,7 +459,7 @@ namespace Generator
                                 foreach (var ap in m.Attached)
                                 {
                                     w.WriteLine($"                    // Adjust the attached properties");
-                                    w.WriteLine($"                    match (match prevChildOpt with UNone -> UNone | USome prevChild -> prevChild.Try{ap.BoundUniqueName}), newChild.Try{ap.BoundUniqueName} with");
+                                    w.WriteLine($"                    match (match prevChildOpt with UNone -> UNone | USome prevChild -> prevChild._{ap.BoundUniqueName}), newChild._{ap.BoundUniqueName} with");
                                     w.WriteLine($"                    | USome prev, USome v when prev = v -> ()");
                                     var apApply = string.IsNullOrWhiteSpace(ap.ConvToValue) ? "" : ap.ConvToValue + " ";
                                     w.WriteLine($"                    | prevOpt, USome value -> {tdef.FullName}.Set{ap.Name}(targetChild, {apApply}value)");
@@ -403,8 +472,8 @@ namespace Generator
                             {
                                 w.WriteLine($"                (fun _ _ _ -> ())");
                             }
-                            w.WriteLine($"                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)");
-                            w.WriteLine($"                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))");
+                            w.WriteLine($"                canReuseDefault");
+                            w.WriteLine($"                updateDefault");
                         }
                         else
                         {
@@ -412,8 +481,8 @@ namespace Generator
                             {
                                 if (bt.IsValueType)
                                 {
-                                    w.WriteLine($"            let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.Try{m.BoundUniqueName}");
-                                    w.WriteLine($"            match prevChildOpt, source.Try{m.BoundUniqueName} with");
+                                    w.WriteLine($"            let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev._{m.BoundUniqueName}");
+                                    w.WriteLine($"            match prevChildOpt, source._{m.BoundUniqueName} with");
                                     w.WriteLine($"            // For structured objects, dependsOn on reference equality");
                                     w.WriteLine($"            | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()");
                                     w.WriteLine($"            | _, USome newChild ->");
@@ -424,8 +493,8 @@ namespace Generator
                                 }
                                 else
                                 {
-                                    w.WriteLine($"            let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.Try{m.BoundUniqueName}");
-                                    w.WriteLine($"            match prevChildOpt, source.Try{m.BoundUniqueName} with");
+                                    w.WriteLine($"            let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev._{m.BoundUniqueName}");
+                                    w.WriteLine($"            match prevChildOpt, source._{m.BoundUniqueName} with");
                                     w.WriteLine($"            // For structured objects, dependsOn on reference equality");
                                     w.WriteLine($"            | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()");
                                     w.WriteLine($"            | USome prevChild, USome newChild ->");
@@ -439,8 +508,8 @@ namespace Generator
                             }
                             else if (bt != null && (bt.Name.EndsWith("Handler") || bt.Name.EndsWith("Handler`1") || bt.Name.EndsWith("Handler`2")) &&  !hasApply)
                             {
-                                w.WriteLine($"            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.Try{m.BoundUniqueName}");
-                                w.WriteLine($"            match prevValueOpt, source.Try{m.BoundUniqueName} with");
+                                w.WriteLine($"            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev._{m.BoundUniqueName}");
+                                w.WriteLine($"            match prevValueOpt, source._{m.BoundUniqueName} with");
                                 w.WriteLine($"            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()");
                                 w.WriteLine($"            | USome prevValue, USome value -> target.{m.Name}.RemoveHandler(prevValue); target.{m.Name}.AddHandler(value)");
                                 w.WriteLine($"            | UNone, USome value -> target.{m.Name}.AddHandler(value)");
@@ -449,11 +518,26 @@ namespace Generator
                             }
                             else
                             {
-                                w.WriteLine($"            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.Try{m.BoundUniqueName}");
-                                w.WriteLine($"            let valueOpt = source.Try{m.BoundUniqueName}");
+                                w.WriteLine($"            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev._{m.BoundUniqueName}");
+                                w.WriteLine($"            let valueOpt = source._{m.BoundUniqueName}");
                                 if (!string.IsNullOrWhiteSpace(m.UpdateCode))
                                 {
-                                    w.WriteLine($"            {m.UpdateCode}"); // may reference prevValueOpt, valueOpt, target
+                                    w.WriteLine($"            {m.UpdateCode} prevValueOpt valueOpt target");
+                                    if (m.Attached != null)
+                                    {
+                                        w.WriteLine($"                (fun prevChildOpt newChild targetChild -> ");
+                                        foreach (var ap in m.Attached)
+                                        {
+                                            w.WriteLine($"                    // Adjust the attached properties");
+                                            w.WriteLine($"                    match (match prevChildOpt with UNone -> UNone | USome prevChild -> prevChild._{ap.BoundUniqueName}), newChild._{ap.BoundUniqueName} with");
+                                            w.WriteLine($"                    | USome prev, USome v when prev = v -> ()");
+                                            var apApply = string.IsNullOrWhiteSpace(ap.ConvToValue) ? "" : ap.ConvToValue + " ";
+                                            w.WriteLine($"                    | prevOpt, USome value -> {tdef.FullName}.Set{ap.Name}(targetChild, {apApply}value)");
+                                            w.WriteLine($"                    | USome _, UNone -> {tdef.FullName}.Set{ap.Name}(targetChild, {ap.DefaultValue}) // TODO: not always perfect, should set back to original default?");
+                                            w.WriteLine($"                    | _ -> ()");
+                                        }
+                                        w.WriteLine($"                    ())");
+                                    }
                                 }
                                 else 
                                 {
