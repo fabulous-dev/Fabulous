@@ -134,7 +134,7 @@ module App =
             Xaml.ContentPage(title=title, content=Xaml.StackLayout(padding=20.0,children=children, ?gestureRecognizers=gestureRecognizers))
 
     let view (model: Model) dispatch =
-      Xaml.CarouselPage //TabbedPage 
+      Xaml.TabbedPage 
        [ 
          dependsOn model.Count (fun model count -> 
           Xaml.ScrollingContentPage("Button", 
