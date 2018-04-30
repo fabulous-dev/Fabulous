@@ -126,8 +126,8 @@ Roadmap
   * Validation
   * Animation
   * OpenGLView
-  * CachingStrategy parameter to ListView
   * Allow configuration of protected overrides such as OnSleep, OnResume, OnStart etc.
+  * Fix issue for slider where minimum = 1.0, maximum=10.0 (i.e. when value=0 and minimum gets set before maximum?)
 
 * Programming efficiency
   * Support F# in Xamarin Live Player
