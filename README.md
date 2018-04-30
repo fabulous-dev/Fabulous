@@ -166,6 +166,7 @@ Roadmap
   * Consider keeping a running identity hash on the immutable objects
   * Consider implementing equality and hash on the immutable objects
   * Perf-test on large lists and do resulting perf work
+  * Consider moving 'view' and 'model' computations off the UI thread
 
 * Handle 3rd party controls.
   * Examples: `Xamarin.Forms.Maps`, `SkiaSharp`

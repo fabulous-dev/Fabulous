@@ -303,19 +303,14 @@ module Program =
         let viewInfo = program.view ()
 
         // If the view is dynamic, create the initial page
-        let viewInfo = 
+        let viewInfo, mainPage = 
             match viewInfo with 
-            | Choice1Of2 (mainPage, bindings) -> Choice1Of2 (mainPage, bindings)
-            | Choice2Of2 (contentf: _ -> _ -> XamlElement) -> 
+            | Choice1Of2 (mainPage, bindings) -> Choice1Of2 (mainPage, bindings), mainPage
+            | Choice2Of2 ((app: Application), contentf: _ -> _ -> XamlElement) -> 
                 let pageDescription = contentf model dispatch
                 let mainPage = pageDescription.CreateAsPage()
-                Choice2Of2 (pageDescription, mainPage, contentf)
-
-        // We need a mainPage to return
-        let mainPage = 
-            match viewInfo with 
-            | Choice1Of2 (mainPage, bindings) -> mainPage
-            | Choice2Of2 (_, mainPage, _) -> mainPage
+                app.MainPage <- mainPage
+                Choice2Of2 (pageDescription, app, contentf), mainPage
 
         // Start Elmish dispatch loop  
         let rec processMsg msg = 
@@ -354,10 +349,13 @@ module Program =
                     | Choice1Of2 (page, bindings, viewModel) -> 
                         viewModel.UpdateModel model
                         Choice1Of2 (page, bindings, viewModel)
-                    | Choice2Of2 (prevPageDescription, page, contentf) -> 
+                    | Choice2Of2 (prevPageDescription, app, contentf) -> 
                         let newPageDescription: XamlElement = contentf model dispatch
-                        newPageDescription.UpdateIncremental (prevPageDescription, page)
-                        Choice2Of2 (newPageDescription, page, contentf)
+                        if canReuseDefault prevPageDescription newPageDescription then
+                            newPageDescription.UpdateIncremental (prevPageDescription, app.MainPage)
+                        else
+                            app.MainPage <- newPageDescription.CreateAsPage()
+                        Choice2Of2 (newPageDescription, app, contentf)
                 lastViewData <- Some viewData
                       
         let initialMsgs = initialMessages.ToArray()
@@ -404,10 +402,15 @@ module Program =
               let page, bindings = program.view ()
               Choice1Of2 ((page :> Page), bindings)) }
 
-    let withDynamicView (program: Program<'model, 'msg, _>) = 
+    let withDynamicView app (program: Program<'model, 'msg, _>) = 
         { init = program.init
           update = program.update
           subscribe = program.subscribe
           onError = program.onError
-          view = (fun () -> Choice2Of2 program.view) }
+          view = (fun () -> Choice2Of2 ((app :> Application), program.view)) }
 
+    let runWithDynamicView app (program: Program<'model, 'msg, _>) = 
+        program 
+        |> withDynamicView app
+        |> run
+        |> ignore
