@@ -51,13 +51,15 @@ type MasterDetailApp () as self =
     do self.LoadFromXaml(typeof<MasterDetailApp>) |> ignore
 
     do
-        let mainPage = 
+        let page = 
             Program.mkProgram (fun () -> MainPage.init(), NoCmd) MainPage.update MainPage.view
             |> Program.withConsoleTrace
             |> Program.withNavigation
             |> Program.withStaticView
             |> Program.run
 
+        let mainPage = NavigationPage page
+        do PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea((mainPage:> Page).On<PlatformConfiguration.iOS>(), true) |> ignore
         base.MainPage <- NavigationPage mainPage
 
 (*

@@ -65,4 +65,6 @@ type CounterApp () =
             |> Program.withDynamicView
             |> Program.run
 
+        do PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(page.On<PlatformConfiguration.iOS>(), true) |> ignore
+
         base.MainPage <- page
