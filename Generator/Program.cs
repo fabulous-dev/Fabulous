@@ -546,7 +546,7 @@ namespace Generator
 
                                     w.WriteLine($"            match prevValueOpt, valueOpt with");
                                     w.WriteLine($"            | USome prevValue, USome value when prevValue = value -> ()");
-                                    w.WriteLine($"            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine(\"Setting {nameOfCreator} {m.Name} \"); target.{m.Name} <- {update} value");
+                                    w.WriteLine($"            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine(\"Setting {nameOfCreator}::{m.Name} \"); target.{m.Name} <- {update} value");
                                     w.WriteLine($"            | USome _, UNone -> target.{m.Name} <- {m.DefaultValue}");
                                     w.WriteLine($"            | UNone, UNone -> ()");
                                 }

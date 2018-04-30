@@ -663,6 +663,9 @@ module XamlElementExtensions =
         /// Try to get the Navigating property in the visual element
         member x.TryNavigating = match x.Attributes.TryFind("Navigating") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.WebNavigatingEventArgs>>(v)) | None -> UNone
 
+        /// Try to get the UseSafeArea property in the visual element
+        member x.TryUseSafeArea = match x.Attributes.TryFind("UseSafeArea") with Some v -> USome(unbox<bool>(v)) | None -> UNone
+
         /// Try to get the ItemsSource property in the visual element
         member x.TryItemsSource = match x.Attributes.TryFind("ItemsSource") with Some v -> USome(unbox<System.Collections.Generic.IList<obj>>(v)) | None -> UNone
 
@@ -1145,6 +1148,9 @@ module XamlElementExtensions =
 
         /// Adjusts the Navigating property in the visual element
         member x.Navigating(value: Xamarin.Forms.WebNavigatingEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Navigating", box ((fun f -> System.EventHandler<Xamarin.Forms.WebNavigatingEventArgs>(fun _sender args -> f args))(value))))
+
+        /// Adjusts the UseSafeArea property in the visual element
+        member x.UseSafeArea(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("UseSafeArea", box ((value))))
 
         /// Adjusts the ItemsSource property in the visual element
         member x.ItemsSource(value: 'T list) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ItemsSource", box ((fun es -> es |> Array.ofList |> Array.map box :> System.Collections.Generic.IList<obj>)(value))))
@@ -1977,6 +1983,12 @@ module XamlElementExtensions =
 
     /// Adjusts the Navigating property in the visual element
     let navigating (value: Xamarin.Forms.WebNavigatingEventArgs -> unit) (x: XamlElement) = x.Navigating(value)
+
+    /// Adjusts the UseSafeArea property in the visual element
+    let withUseSafeArea (value: bool) (x: XamlElement) = x.UseSafeArea(value)
+
+    /// Adjusts the UseSafeArea property in the visual element
+    let useSafeArea (value: bool) (x: XamlElement) = x.UseSafeArea(value)
 
     /// Adjusts the ItemsSource property in the visual element
     let withItemsSource (value: 'T list) (x: XamlElement) = x.ItemsSource(value)
@@ -9654,10 +9666,11 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.WebView>, create, update, Map.ofArray attribs)
 
     /// Describes a Page in the view
-    static member Page(?title: string, ?padding: obj, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member Page(?title: string, ?padding: obj, ?useSafeArea: bool, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match title with None -> () | Some v -> yield ("Title", box ((v))) 
             match padding with None -> () | Some v -> yield ("Padding", box (makeThickness(v))) 
+            match useSafeArea with None -> () | Some v -> yield ("UseSafeArea", box ((v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -9698,6 +9711,9 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Page Padding "); target.Padding <-  value
             | USome _, UNone -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
+            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryUseSafeArea
+            let valueOpt = source.TryUseSafeArea
+            (fun _ _ target -> Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea((target :> Xamarin.Forms.Page).On<Xamarin.Forms.PlatformConfiguration.iOS>(), true) |> ignore) prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -9841,7 +9857,7 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.Page>, create, update, Map.ofArray attribs)
 
     /// Describes a CarouselPage in the view
-    static member CarouselPage(?children: XamlElement list, ?itemsSource: 'T list, ?itemTemplate: Xamarin.Forms.DataTemplate, ?selectedItem: System.Object, ?currentPage: XamlElement, ?currentPageChanged: 'T option -> unit, ?title: string, ?padding: obj, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member CarouselPage(?children: XamlElement list, ?itemsSource: 'T list, ?itemTemplate: Xamarin.Forms.DataTemplate, ?selectedItem: System.Object, ?currentPage: XamlElement, ?currentPageChanged: 'T option -> unit, ?title: string, ?padding: obj, ?useSafeArea: bool, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match children with None -> () | Some v -> yield ("Children", box (Array.ofList(v))) 
             match itemsSource with None -> () | Some v -> yield ("ItemsSource", box ((fun es -> es |> Array.ofList |> Array.map box :> System.Collections.Generic.IList<obj>)(v))) 
@@ -9851,6 +9867,7 @@ type Xaml() =
             match currentPageChanged with None -> () | Some v -> yield ("CurrentPageChanged", box ((fun f -> System.EventHandler(fun sender args -> f ((sender :?> Xamarin.Forms.CarouselPage).SelectedItem |> Option.ofObj |> Option.map unbox<'T>)))(v))) 
             match title with None -> () | Some v -> yield ("Title", box ((v))) 
             match padding with None -> () | Some v -> yield ("Padding", box (makeThickness(v))) 
+            match useSafeArea with None -> () | Some v -> yield ("UseSafeArea", box ((v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -9937,6 +9954,9 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage Padding "); target.Padding <-  value
             | USome _, UNone -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
+            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryUseSafeArea
+            let valueOpt = source.TryUseSafeArea
+            (fun _ _ target -> Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea((target :> Xamarin.Forms.Page).On<Xamarin.Forms.PlatformConfiguration.iOS>(), true) |> ignore) prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -10080,7 +10100,7 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.CarouselPage>, create, update, Map.ofArray attribs)
 
     /// Describes a NavigationPage in the view
-    static member NavigationPage(?pages: XamlElement list, ?barBackgroundColor: Xamarin.Forms.Color, ?barTextColor: Xamarin.Forms.Color, ?popped: Xamarin.Forms.NavigationEventArgs -> unit, ?poppedToRoot: Xamarin.Forms.NavigationEventArgs -> unit, ?pushed: Xamarin.Forms.NavigationEventArgs -> unit, ?title: string, ?padding: obj, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member NavigationPage(?pages: XamlElement list, ?barBackgroundColor: Xamarin.Forms.Color, ?barTextColor: Xamarin.Forms.Color, ?popped: Xamarin.Forms.NavigationEventArgs -> unit, ?poppedToRoot: Xamarin.Forms.NavigationEventArgs -> unit, ?pushed: Xamarin.Forms.NavigationEventArgs -> unit, ?title: string, ?padding: obj, ?useSafeArea: bool, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match pages with None -> () | Some v -> yield ("NavigationPagePages", box (Array.ofList(v))) 
             match barBackgroundColor with None -> () | Some v -> yield ("BarBackgroundColor", box ((v))) 
@@ -10090,6 +10110,7 @@ type Xaml() =
             match pushed with None -> () | Some v -> yield ("Pushed", box ((fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(v))) 
             match title with None -> () | Some v -> yield ("Title", box ((v))) 
             match padding with None -> () | Some v -> yield ("Padding", box (makeThickness(v))) 
+            match useSafeArea with None -> () | Some v -> yield ("UseSafeArea", box ((v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -10194,6 +10215,9 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting NavigationPage Padding "); target.Padding <-  value
             | USome _, UNone -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
+            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryUseSafeArea
+            let valueOpt = source.TryUseSafeArea
+            (fun _ _ target -> Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea((target :> Xamarin.Forms.Page).On<Xamarin.Forms.PlatformConfiguration.iOS>(), true) |> ignore) prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -10337,13 +10361,14 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.NavigationPage>, create, update, Map.ofArray attribs)
 
     /// Describes a TabbedPage in the view
-    static member TabbedPage(?children: XamlElement list, ?barBackgroundColor: Xamarin.Forms.Color, ?barTextColor: Xamarin.Forms.Color, ?title: string, ?padding: obj, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member TabbedPage(?children: XamlElement list, ?barBackgroundColor: Xamarin.Forms.Color, ?barTextColor: Xamarin.Forms.Color, ?title: string, ?padding: obj, ?useSafeArea: bool, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match children with None -> () | Some v -> yield ("Children", box (Array.ofList(v))) 
             match barBackgroundColor with None -> () | Some v -> yield ("BarBackgroundColor", box ((v))) 
             match barTextColor with None -> () | Some v -> yield ("BarTextColor", box ((v))) 
             match title with None -> () | Some v -> yield ("Title", box ((v))) 
             match padding with None -> () | Some v -> yield ("Padding", box (makeThickness(v))) 
+            match useSafeArea with None -> () | Some v -> yield ("UseSafeArea", box ((v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -10405,6 +10430,9 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TabbedPage Padding "); target.Padding <-  value
             | USome _, UNone -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
+            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryUseSafeArea
+            let valueOpt = source.TryUseSafeArea
+            (fun _ _ target -> Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea((target :> Xamarin.Forms.Page).On<Xamarin.Forms.PlatformConfiguration.iOS>(), true) |> ignore) prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -10548,12 +10576,13 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.TabbedPage>, create, update, Map.ofArray attribs)
 
     /// Describes a ContentPage in the view
-    static member ContentPage(?content: XamlElement, ?onSizeAllocated: (double * double) -> unit, ?title: string, ?padding: obj, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member ContentPage(?content: XamlElement, ?onSizeAllocated: (double * double) -> unit, ?title: string, ?padding: obj, ?useSafeArea: bool, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match content with None -> () | Some v -> yield ("Content", box ((v))) 
             match onSizeAllocated with None -> () | Some v -> yield ("OnSizeAllocatedCallback", box ((fun f -> FSharp.Control.Handler<_>(fun _sender args -> f args))(v))) 
             match title with None -> () | Some v -> yield ("Title", box ((v))) 
             match padding with None -> () | Some v -> yield ("Padding", box (makeThickness(v))) 
+            match useSafeArea with None -> () | Some v -> yield ("UseSafeArea", box ((v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -10608,6 +10637,9 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentPage Padding "); target.Padding <-  value
             | USome _, UNone -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
+            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryUseSafeArea
+            let valueOpt = source.TryUseSafeArea
+            (fun _ _ target -> Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea((target :> Xamarin.Forms.Page).On<Xamarin.Forms.PlatformConfiguration.iOS>(), true) |> ignore) prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -10751,7 +10783,7 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.ContentPage>, create, update, Map.ofArray attribs)
 
     /// Describes a MasterDetailPage in the view
-    static member MasterDetailPage(?master: XamlElement, ?detail: XamlElement, ?isGestureEnabled: bool, ?isPresented: bool, ?masterBehavior: Xamarin.Forms.MasterBehavior, ?isPresentedChanged: bool -> unit, ?title: string, ?padding: obj, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member MasterDetailPage(?master: XamlElement, ?detail: XamlElement, ?isGestureEnabled: bool, ?isPresented: bool, ?masterBehavior: Xamarin.Forms.MasterBehavior, ?isPresentedChanged: bool -> unit, ?title: string, ?padding: obj, ?useSafeArea: bool, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match master with None -> () | Some v -> yield ("Master", box ((v))) 
             match detail with None -> () | Some v -> yield ("Detail", box ((v))) 
@@ -10761,6 +10793,7 @@ type Xaml() =
             match isPresentedChanged with None -> () | Some v -> yield ("IsPresentedChanged", box ((fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.MasterDetailPage).IsPresented))(v))) 
             match title with None -> () | Some v -> yield ("Title", box ((v))) 
             match padding with None -> () | Some v -> yield ("Padding", box (makeThickness(v))) 
+            match useSafeArea with None -> () | Some v -> yield ("UseSafeArea", box ((v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -10851,6 +10884,9 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MasterDetailPage Padding "); target.Padding <-  value
             | USome _, UNone -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
+            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryUseSafeArea
+            let valueOpt = source.TryUseSafeArea
+            (fun _ _ target -> Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea((target :> Xamarin.Forms.Page).On<Xamarin.Forms.PlatformConfiguration.iOS>(), true) |> ignore) prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with

@@ -151,9 +151,12 @@ module App =
 
     /// The dynamic 'view' function giving the updated content for the view
     let view model dispatch =
-      Xaml.ContentPage(
-        Xaml.Grid(rowdefs=[ "*"; "auto"; "auto" ],
-            children=[
+      Xaml.NavigationPage(barBackgroundColor = Color.LightBlue, 
+        barTextColor = Color.Black,
+        pages=
+          [Xaml.ContentPage(
+            Xaml.Grid(rowdefs=[ "*"; "auto"; "auto" ],
+              children=[
                 Xaml.Grid(rowdefs=[ "*"; 5.0; "*"; 5.0; "*" ], coldefs=[ "*"; 5.0; "*"; 5.0; "*" ],
                     children=[
                         yield Xaml.BoxView(Color.Black).GridRow(1).GridColumnSpan(5)
@@ -180,14 +183,14 @@ module App =
                 Xaml.Button(command=(fun () -> dispatch Restart), text="Restart game", backgroundColor=Color.LightBlue, textColor=Color.Black, fontSize="Large").GridRow(2)
               ]),
 
-        // This requests a square board based on the width we get allocated on the device 
-        onSizeAllocated=(fun (width, height) ->
-            if model.VisualBoardSize.IsNone then 
-                let sz = min width height - 80.0
-                dispatch (SetVisualBoardSize sz)))
+             // This requests a square board based on the width we get allocated on the device 
+             onSizeAllocated=(fun (width, height) ->
+               if model.VisualBoardSize.IsNone then 
+                   let sz = min width height - 80.0
+                   dispatch (SetVisualBoardSize sz)))])
 
 /// Stitch the model, update and view content into a single app.
-type App() =
+type App() as app =
     inherit Application()
 
     // Display a modal message giving the game result. This is doing a UI
@@ -196,12 +199,8 @@ type App() =
     let gameOver msg =
         Application.Current.MainPage.DisplayAlert("Game over", msg, "OK") |> ignore
 
-    let page = 
+    do
         Program.mkSimple App.init (App.update gameOver) App.view
         |> Program.withConsoleTrace
-        |> Program.withDynamicView
-        |> Program.run
+        |> Program.runWithDynamicView app
         
-    let mainPage = NavigationPage(page, BarBackgroundColor = Color.LightBlue, BarTextColor = Color.Black)
-    do PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea((mainPage:> Page).On<PlatformConfiguration.iOS>(), true) |> ignore
-    do base.MainPage <- mainPage
