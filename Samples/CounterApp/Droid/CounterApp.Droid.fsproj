@@ -72,7 +72,6 @@
     <Compile Include="Properties\AssemblyInfo.fs" />
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="Assets\AboutAssets.txt" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Elmish.XamarinForms\Elmish.XamarinForms.fsproj">
@@ -158,10 +157,7 @@
       <HintPath>../../../packages/androidapp/Xamarin.Forms/lib/MonoAndroid10/Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Core">
-      <HintPath>..\..\..\packages\FSharp.Core.4.3.4\lib\netstandard1.6\FSharp.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="FSharp.Control.AsyncSeq">
-      <HintPath>..\..\..\packages\FSharp.Control.AsyncSeq.2.0.21\lib\netstandard2.0\FSharp.Control.AsyncSeq.dll</HintPath>
+      <HintPath>..\..\..\packages\androidapp\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

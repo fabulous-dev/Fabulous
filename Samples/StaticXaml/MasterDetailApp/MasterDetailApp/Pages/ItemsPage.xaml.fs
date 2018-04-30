@@ -18,8 +18,7 @@ module ItemsPage =
 
     type Msg = 
         | UpdateItems
-        | UpdateItemsReceived of Item []
-        | UpdateItemsComplete
+        | UpdateItemsComplete of Item []
         | SelectItem of obj
         | AddItem
         | NewItem
@@ -29,12 +28,10 @@ module ItemsPage =
         { Items = [| firstItem |]; IsUpdating = false }
 
     let getFreshItems =
-        cmd { do! Async.Sleep 500
-              yield UpdateItemsReceived [| { Text = "AsyncLoad1"; Description = "AsyncDescription1"  } |]
-              do! Async.Sleep 500
-              yield UpdateItemsReceived [| { Text = "AsyncLoad2"; Description = "AsyncDescription2"  } |]
-              do! Async.Sleep 500 
-              yield UpdateItemsComplete }
+        async { do! Async.Sleep 500
+                return UpdateItemsComplete [| { Text = "AsyncLoad1"; Description = "AsyncDescription1"  }
+                                              { Text = "AsyncLoad2"; Description = "AsyncDescription2"  } |] }
+         |>  Cmd.ofAsyncMsg                                            
 
     let canon items = items |> Array.sortBy (fun i -> i.Text)
 
@@ -48,10 +45,8 @@ module ItemsPage =
 
     let update msg model =
         match msg with
-        | UpdateItemsReceived newItems ->
-            addItems newItems model, NoCmd, NoNav
-        | UpdateItemsComplete -> 
-            { model with IsUpdating = false }, NoCmd, NoNav
+        | UpdateItemsComplete newItems -> 
+            addItems newItems { model with IsUpdating = false }, NoCmd, NoNav
         | AddItem -> 
             let n = model.Items.Length 
             let newItem = { Text = "Text" + string n; Description = "Description" + string n }

@@ -164,10 +164,7 @@
       <HintPath>../../../packages/androidapp/Xamarin.Forms/lib/MonoAndroid10/Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Core">
-      <HintPath>../../../packages/androidapp/FSharp.Core.4.3.4/lib/netstandard1.6/FSharp.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="FSharp.Control.AsyncSeq">
-      <HintPath>../../../packages/FSharp.Control.AsyncSeq.2.0.21/lib/netstandard2.0/FSharp.Control.AsyncSeq.dll</HintPath>
+      <HintPath>../../../packages/androidapp/FSharp.Core/lib/netstandard1.6/FSharp.Core.dll</HintPath>
     </Reference>
     <ProjectReference Include="..\TicTacToe\TicTacToe.fsproj">
       <Project>{BE9B434E-D5CF-4B21-9C3A-58B79398B088}</Project>
