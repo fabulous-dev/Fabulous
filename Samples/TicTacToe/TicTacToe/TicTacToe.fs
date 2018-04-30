@@ -1,7 +1,5 @@
 ﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
 
-/// NOTE NOTE NOTE - this version of this sample uses "dynamic" view updates which currently 
-/// results in flickering on each update of the UI.  Thus this is not yet appropriate for anything but a sample.
 namespace TicTacToe
 
 open Elmish
