@@ -164,12 +164,10 @@ module App =
                         for ((row,col) as pos) in positions ->
                             let item = 
                                 if canPlay model model.Board.[pos] then 
-                                    Xaml.Button(command=(fun () -> dispatch (Play pos)))
+                                    Xaml.Button(command=(fun () -> dispatch (Play pos)), backgroundColor=Color.LightBlue)
                                 else
-                                    Xaml.Image(source=imageForPos model.Board.[pos])
-                            let item = item.Margin(5.0)
-                            let item = item.GridRow(row*2).GridColumn(col*2) 
-                            item ],
+                                    Xaml.Image(source=imageForPos model.Board.[pos], margin=10.0)
+                            item.GridRow(row*2).GridColumn(col*2) ],
 
                     rowSpacing=0.0,
                     columnSpacing=0.0,

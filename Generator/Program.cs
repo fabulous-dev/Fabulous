@@ -294,7 +294,7 @@ namespace Generator
                     w.WriteLine();
                     w.WriteLine($"        /// Try to get the {m.BoundUniqueName} property in the visual element");
                     var modelType = m.GetModelType(bindings, null);
-                    w.WriteLine("        member x._" + m.BoundUniqueName + " = match x.Attributes.TryFind(\"" + m.BoundUniqueName + "\") with Some v -> USome(unbox<" + modelType + ">(v)) | None -> UNone");
+                    w.WriteLine("        member x.Try" + m.BoundUniqueName + " = match x.Attributes.TryFind(\"" + m.BoundUniqueName + "\") with Some v -> USome(unbox<" + modelType + ">(v)) | None -> UNone");
                 }
             }
             foreach (var ms in allMembersInAllTypesGroupedByName)
@@ -449,8 +449,8 @@ namespace Generator
                         }
                         else if (elementType != null && elementType != "obj" && !hasApply)
                         {
-                            w.WriteLine($"            let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev._{m.BoundUniqueName}");
-                            w.WriteLine($"            let collOpt = source._{m.BoundUniqueName}");
+                            w.WriteLine($"            let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.Try{m.BoundUniqueName}");
+                            w.WriteLine($"            let collOpt = source.Try{m.BoundUniqueName}");
                             w.WriteLine($"            updateIList prevCollOpt collOpt target.{m.Name}");
                             w.WriteLine($"                (fun (x:XamlElement) -> x.CreateAs{elementType}())");
                             if (m.Attached != null)
@@ -459,7 +459,7 @@ namespace Generator
                                 foreach (var ap in m.Attached)
                                 {
                                     w.WriteLine($"                    // Adjust the attached properties");
-                                    w.WriteLine($"                    match (match prevChildOpt with UNone -> UNone | USome prevChild -> prevChild._{ap.BoundUniqueName}), newChild._{ap.BoundUniqueName} with");
+                                    w.WriteLine($"                    match (match prevChildOpt with UNone -> UNone | USome prevChild -> prevChild.Try{ap.BoundUniqueName}), newChild.Try{ap.BoundUniqueName} with");
                                     w.WriteLine($"                    | USome prev, USome v when prev = v -> ()");
                                     var apApply = string.IsNullOrWhiteSpace(ap.ConvToValue) ? "" : ap.ConvToValue + " ";
                                     w.WriteLine($"                    | prevOpt, USome value -> {tdef.FullName}.Set{ap.Name}(targetChild, {apApply}value)");
@@ -481,8 +481,8 @@ namespace Generator
                             {
                                 if (bt.IsValueType)
                                 {
-                                    w.WriteLine($"            let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev._{m.BoundUniqueName}");
-                                    w.WriteLine($"            match prevChildOpt, source._{m.BoundUniqueName} with");
+                                    w.WriteLine($"            let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.Try{m.BoundUniqueName}");
+                                    w.WriteLine($"            match prevChildOpt, source.Try{m.BoundUniqueName} with");
                                     w.WriteLine($"            // For structured objects, dependsOn on reference equality");
                                     w.WriteLine($"            | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()");
                                     w.WriteLine($"            | _, USome newChild ->");
@@ -493,8 +493,8 @@ namespace Generator
                                 }
                                 else
                                 {
-                                    w.WriteLine($"            let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev._{m.BoundUniqueName}");
-                                    w.WriteLine($"            match prevChildOpt, source._{m.BoundUniqueName} with");
+                                    w.WriteLine($"            let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.Try{m.BoundUniqueName}");
+                                    w.WriteLine($"            match prevChildOpt, source.Try{m.BoundUniqueName} with");
                                     w.WriteLine($"            // For structured objects, dependsOn on reference equality");
                                     w.WriteLine($"            | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()");
                                     w.WriteLine($"            | USome prevChild, USome newChild ->");
@@ -508,8 +508,8 @@ namespace Generator
                             }
                             else if (bt != null && (bt.Name.EndsWith("Handler") || bt.Name.EndsWith("Handler`1") || bt.Name.EndsWith("Handler`2")) &&  !hasApply)
                             {
-                                w.WriteLine($"            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev._{m.BoundUniqueName}");
-                                w.WriteLine($"            match prevValueOpt, source._{m.BoundUniqueName} with");
+                                w.WriteLine($"            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.Try{m.BoundUniqueName}");
+                                w.WriteLine($"            match prevValueOpt, source.Try{m.BoundUniqueName} with");
                                 w.WriteLine($"            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()");
                                 w.WriteLine($"            | USome prevValue, USome value -> target.{m.Name}.RemoveHandler(prevValue); target.{m.Name}.AddHandler(value)");
                                 w.WriteLine($"            | UNone, USome value -> target.{m.Name}.AddHandler(value)");
@@ -518,8 +518,8 @@ namespace Generator
                             }
                             else
                             {
-                                w.WriteLine($"            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev._{m.BoundUniqueName}");
-                                w.WriteLine($"            let valueOpt = source._{m.BoundUniqueName}");
+                                w.WriteLine($"            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.Try{m.BoundUniqueName}");
+                                w.WriteLine($"            let valueOpt = source.Try{m.BoundUniqueName}");
                                 if (!string.IsNullOrWhiteSpace(m.UpdateCode))
                                 {
                                     w.WriteLine($"            {m.UpdateCode} prevValueOpt valueOpt target");
@@ -529,7 +529,7 @@ namespace Generator
                                         foreach (var ap in m.Attached)
                                         {
                                             w.WriteLine($"                    // Adjust the attached properties");
-                                            w.WriteLine($"                    match (match prevChildOpt with UNone -> UNone | USome prevChild -> prevChild._{ap.BoundUniqueName}), newChild._{ap.BoundUniqueName} with");
+                                            w.WriteLine($"                    match (match prevChildOpt with UNone -> UNone | USome prevChild -> prevChild.Try{ap.BoundUniqueName}), newChild.Try{ap.BoundUniqueName} with");
                                             w.WriteLine($"                    | USome prev, USome v when prev = v -> ()");
                                             var apApply = string.IsNullOrWhiteSpace(ap.ConvToValue) ? "" : ap.ConvToValue + " ";
                                             w.WriteLine($"                    | prevOpt, USome value -> {tdef.FullName}.Set{ap.Name}(targetChild, {apApply}value)");
@@ -542,11 +542,11 @@ namespace Generator
                                 else 
                                 {
                                     var update = string.IsNullOrWhiteSpace(m.ConvToValue) ? "" : m.ConvToValue + " ";
-                                    var equality = string.IsNullOrWhiteSpace(m.Equality) ? "" : m.Equality + " ";
+                                    //var equality = string.IsNullOrWhiteSpace(m.Equality) ? "" : m.Equality + " ";
 
                                     w.WriteLine($"            match prevValueOpt, valueOpt with");
                                     w.WriteLine($"            | USome prevValue, USome value when prevValue = value -> ()");
-                                    w.WriteLine($"            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine(\"Setting {m.Name} \"); target.{m.Name} <- {update} value");
+                                    w.WriteLine($"            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine(\"Setting {nameOfCreator} {m.Name} \"); target.{m.Name} <- {update} value");
                                     w.WriteLine($"            | USome _, UNone -> target.{m.Name} <- {m.DefaultValue}");
                                     w.WriteLine($"            | UNone, UNone -> ()");
                                 }
