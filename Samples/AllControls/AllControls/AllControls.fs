@@ -6,6 +6,8 @@ open Elmish
 open Elmish.XamarinForms
 open Elmish.XamarinForms.DynamicViews
 open Xamarin.Forms
+open Xamarin.Forms.PlatformConfiguration
+open Xamarin.Forms.PlatformConfiguration.iOSSpecific
 
 type Model = 
   { Count : int
@@ -132,7 +134,7 @@ module App =
             Xaml.ContentPage(title=title, content=Xaml.StackLayout(padding=20.0,children=children, ?gestureRecognizers=gestureRecognizers))
 
     let view (model: Model) dispatch =
-      Xaml.CarouselPage //TabbedPage 
+      Xaml.TabbedPage 
        [ 
          dependsOn model.Count (fun model count -> 
           Xaml.ScrollingContentPage("Button", 
@@ -425,7 +427,7 @@ module App =
               isPresented=isPresented,
               isPresentedChanged=(fun b -> dispatch (IsPresentedChanged b)),
               master = 
-                Xaml.ContentPage(title="Master", padding=Thickness(0.0, 20.0, 0.0, 0.0) (* if iOS *),
+                Xaml.ContentPage(title="Master", 
                  content = 
                    Xaml.StackLayout(backgroundColor=Color.Gray, 
                      children=[ Xaml.Button(text="Home", textColor=Color.White, backgroundColor=Color.Green, command=(fun () -> dispatch GoHomePage)) 
@@ -451,5 +453,6 @@ type App () =
         |> Program.withConsoleTrace
         |> Program.withDynamicView
         |> Program.run
+    do PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(page.On<PlatformConfiguration.iOS>(), true) |> ignore
 
     do base.MainPage <- page

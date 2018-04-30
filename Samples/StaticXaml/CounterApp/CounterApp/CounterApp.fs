@@ -16,6 +16,9 @@ type Msg =
     | Reset
     | SetStep of int
 
+open Xamarin.Forms.PlatformConfiguration
+open Xamarin.Forms.PlatformConfiguration.iOSSpecific
+
 type CounterApp () = 
     inherit Application ()
 
@@ -45,4 +48,5 @@ type CounterApp () =
             |> Program.withStaticView
             |> Program.run
 
+        do PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(page.On<PlatformConfiguration.iOS>(), true) |> ignore
         base.MainPage <- page
