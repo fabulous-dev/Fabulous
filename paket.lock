@@ -1,7 +1,7 @@
 RESTRICTION: == netstandard2.0
 NUGET
   remote: https://www.nuget.org/api/v2
-    FAKE (4.64.6)
+    FAKE (4.64.12)
 
 GROUP androidapp
 RESTRICTION: == monoandroid7.1
@@ -32,7 +32,7 @@ NUGET
       System.Threading.ThreadPool (>= 4.0.10)
       System.Threading.Timer (>= 4.0.1)
     System.Collections (4.3)
-    System.Console (4.3)
+    System.Console (4.3.1)
     System.Diagnostics.Debug (4.3)
     System.Diagnostics.Tools (4.3)
     System.Globalization (4.3)
@@ -113,7 +113,7 @@ NUGET
       Xamarin.Android.Support.Core.UI (25.4.0.2)
     Xamarin.Android.Support.Vector.Drawable (25.4.0.2)
       Xamarin.Android.Support.Compat (25.4.0.2)
-    Xamarin.Forms (2.5.0.280555)
+    Xamarin.Forms (2.5.1.444934)
       Xamarin.Android.Support.Design (>= 25.4.0.2)
       Xamarin.Android.Support.v4 (>= 25.4.0.2)
       Xamarin.Android.Support.v7.AppCompat (>= 25.4.0.2)
@@ -149,7 +149,7 @@ NUGET
       System.Threading.ThreadPool (>= 4.0.10)
       System.Threading.Timer (>= 4.0.1)
     System.Collections (4.3)
-    System.Console (4.3)
+    System.Console (4.3.1)
     System.Diagnostics.Debug (4.3)
     System.Diagnostics.Tools (4.3)
     System.Globalization (4.3)
@@ -171,7 +171,7 @@ NUGET
     System.Threading.Thread (4.3)
     System.Threading.ThreadPool (4.3)
     System.Threading.Timer (4.3)
-    Xamarin.Forms (2.5.0.280555)
+    Xamarin.Forms (2.5.1.444934)
 
 GROUP neutral
 RESTRICTION: == netstandard2.0
