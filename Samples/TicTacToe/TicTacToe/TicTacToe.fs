@@ -140,7 +140,7 @@ module App =
     /// of the Xaml resource for the image for a player
     let imageForPos cell =
         match cell with
-        | Full X -> "icon"
+        | Full X -> "Cross"
         | Full O -> "Nought"
         | Empty -> ""
 
