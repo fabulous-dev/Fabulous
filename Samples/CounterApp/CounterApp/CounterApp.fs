@@ -54,8 +54,9 @@ module App =
                     Xaml.Slider(minimum=0.0, maximum=10.0, value= double model.Step, valueChanged=(fun args -> dispatch (SetStep (int (args.NewValue + 0.5)))))
                     Xaml.Label(text=sprintf "Step size: %d" model.Step, horizontalOptions=LayoutOptions.Center) 
                   ])
-              if model <> initModel then 
-                yield Xaml.Button(text="Reset", horizontalOptions=LayoutOptions.Center, command= (fun () -> dispatch Reset))
+              yield Xaml.Button(text="Reset", horizontalOptions=LayoutOptions.Center, command= stat (fun () -> dispatch Reset), canExecute = (model <> initModel))
+              //if model <> initModel then 
+              //  yield Xaml.Button(text="Reset", horizontalOptions=LayoutOptions.Center, command= stat (fun () -> dispatch Reset))
             ]))
 
 type CounterApp () as app = 

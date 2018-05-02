@@ -260,13 +260,13 @@ module Program =
     let withConsoleTrace (program: Program<'model, 'msg, 'view>) =
         let traceInit () =
             let initModel,cmd = program.init ()
-            Debug.WriteLine (sprintf "Initial state: %A" initModel)
+            Debug.WriteLine (sprintf "Initial state: %0A" initModel)
             initModel,cmd
 
         let traceUpdate msg model =
-            Debug.WriteLine (sprintf "New message: %A" msg)
+            Debug.WriteLine (sprintf "New message: %0A" msg)
             let newModel,cmd = program.update msg model
-            Debug.WriteLine (sprintf "Updated state: %A" newModel)
+            Debug.WriteLine (sprintf "Updated state: %0A" newModel)
             newModel,cmd
 
         { program with

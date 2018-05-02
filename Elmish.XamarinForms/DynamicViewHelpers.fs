@@ -23,28 +23,36 @@ module SimplerHelpers =
         let children = els |> List.mapi (fun i x -> x.GridColumn i)
         Xaml.Grid(coldefs=cds, children=children)
 
-    type internal Amortizations<'Key,'Value when 'Key : equality and 'Value : not struct>() = 
-       static let t = Dictionary<'Key,System.WeakReference<'Value>>(HashIdentity.Structural)
+    type internal Amortizations() = 
+       static let t = Dictionary<obj,System.WeakReference<obj>>(HashIdentity.Structural)
        static member T = t
 
-    type DoNotUseModelInsideAmortize = | DoNotUseModelInsideAmortize
+    type DoNotUseModelInsideDependsOn = | DoNotUseModelInsideDependsOn
 
-    /// Amortize part of a view model computation and prevent the use of the model inside
-    /// the amortized computation except where explicitly de-referenced.
+    /// Memoize part of a view model computation and prevent the use of the model inside
+    /// the computation except where explicitly de-referenced.
     ///
     /// Usage: "dependsOn model.Count <| fun model count -> ..."
     ///
     /// Note, this function uses "f.GetType()" to get a unique code location.
-    let dependsOn key f = 
+    let dependsOn key (f: DoNotUseModelInsideDependsOn -> 'Key -> 'Value) : 'Value = 
         let bkey = (key, f.GetType())
-        let mutable res = Unchecked.defaultof<'Value>
-        match Amortizations<('Key * System.Type),'Value>.T.TryGetValue(bkey) with 
-        | true, weak when weak.TryGetTarget(&res) -> 
-             //printfn "amortized key = %A --> %A" bkey res
-             res
+        let mutable res = null
+        match Amortizations.T.TryGetValue(bkey) with 
+        | true, weak when weak.TryGetTarget(&res) -> unbox res
         | _ ->
-             let res = f DoNotUseModelInsideAmortize key
-             Amortizations<('Key * System.Type),'Value>.T.[bkey] <- System.WeakReference<'Value>(res)
-             //printfn "calculated key = %A --> %A" bkey res
+             let res = f DoNotUseModelInsideDependsOn key
+             Amortizations.T.[bkey] <- System.WeakReference<obj>(box res)
              res
+        
+    /// Memoize part of a view model computation by evaluating the function once only regardless
+    /// of its dependencies.
+    let stat (f: unit -> 'Value) = 
+        let key = f.GetType()
+        let mutable res = null
+        match Amortizations.T.TryGetValue(key) with 
+        | true, weak when weak.TryGetTarget(&res) -> unbox res
+        | _ ->
+             Amortizations.T.[key] <- System.WeakReference<obj>(box f)
+             f
         
