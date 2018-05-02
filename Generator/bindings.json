@@ -273,9 +273,16 @@
 				},
 				{
 					"name": "SearchCommand",
-					"defaultValue": "null",
 					"inputType": "unit -> unit",
-					"convToModel": "makeCommand"
+					"modelType": "unit -> unit",
+					"updateCode": "updateCommand prevValueOpt (match prevOpt with UNone -> UNone | USome prev -> prev.TrySearchBarCanExecute) valueOpt source.TrySearchBarCanExecute (fun cmd -> target.SearchCommand <- cmd)"
+				},
+				{
+					"name": "CanExecute",
+					"uniqueName": "SearchBarCanExecute",
+					"inputType": "bool",
+					"modelType": "bool",
+					"updateCode": "updateCommand (match prevOpt with UNone -> UNone | USome prev -> prev.TrySearchCommand) prevValueOpt source.TrySearchCommand valueOpt (fun cmd -> target.SearchCommand <- cmd)"
 				},
 				{
 					"name": "Text",
@@ -296,9 +303,17 @@
 				},
 				{
 					"name": "Command",
-					"defaultValue": "null",
+					"uniqueName": "ButtonCommand",
 					"inputType": "unit -> unit",
-					"convToModel": "makeCommand"
+					"modelType": "unit -> unit",
+					"updateCode": "updateCommand prevValueOpt (match prevOpt with UNone -> UNone | USome prev -> prev.TryButtonCanExecute) valueOpt source.TryButtonCanExecute (fun cmd -> target.Command <- cmd)"
+				},
+				{
+					"name": "CanExecute",
+					"uniqueName": "ButtonCanExecute",
+					"inputType": "bool",
+					"modelType": "bool",
+					"updateCode": "updateCommand (match prevOpt with UNone -> UNone | USome prev -> prev.TryButtonCommand) prevValueOpt source.TryButtonCommand valueOpt (fun cmd -> target.Command <- cmd)"
 				},
 				{
 					"name": "BorderColor",
@@ -1256,9 +1271,17 @@
 				},
 				{
 					"name": "Command",
-					"defaultValue": "null",
+					"uniqueName": "TextCellCommand",
 					"inputType": "unit -> unit",
-					"convToModel": "makeCommand"
+					"modelType": "unit -> unit",
+					"updateCode": "updateCommand prevValueOpt (match prevOpt with UNone -> UNone | USome prev -> prev.TryTextCellCanExecute) valueOpt source.TryTextCellCanExecute (fun cmd -> target.Command <- cmd)"
+				},
+				{
+					"name": "CanExecute",
+					"uniqueName": "TextCellCanExecute",
+					"inputType": "bool",
+					"modelType": "bool",
+					"updateCode": "updateCommand (match prevOpt with UNone -> UNone | USome prev -> prev.TryTextCellCommand) prevValueOpt source.TryTextCellCommand valueOpt (fun cmd -> target.Command <- cmd)"
 				},
 				{
 					"name": "CommandParameter",

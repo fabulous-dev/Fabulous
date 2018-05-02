@@ -82,6 +82,14 @@ module Converters =
             member x.CanExecute _ = true
             member x.Execute _ = f() }
 
+    let makeCommandCanExecute f k =
+        let ev = Event<_,_>()
+        { new ICommand with
+            member x.add_CanExecuteChanged h = ev.Publish.AddHandler h
+            member x.remove_CanExecuteChanged h = ev.Publish.RemoveHandler h
+            member x.CanExecute _ = k
+            member x.Execute _ = f() }
+
     let makeImageSource (image: string) = ImageSource.op_Implicit image
 
     let makeFileImageSource (image: string) = FileImageSource.op_Implicit image
@@ -254,6 +262,16 @@ module Converters =
         let target = (target :?> CustomContentPage)
         match prevValueOpt with UNone -> () | USome f -> target.SizeAllocated.RemoveHandler(f)
         match valueOpt with UNone -> () | USome f -> target.SizeAllocated.AddHandler(f)
+
+    /// This links the Command and CanExecute properties
+    let inline updateCommand prevCommandValueOpt prevCanExecuteValueOpt commandValueOpt canExecuteValueOpt setter _ _ _ = 
+        match prevCommandValueOpt, prevCanExecuteValueOpt, commandValueOpt, canExecuteValueOpt with 
+        | UNone, UNone, UNone, UNone -> ()
+        | USome prevf, UNone, USome f, UNone when obj.ReferenceEquals(prevf, f) -> ()
+        | USome prevf, USome prevx, USome f, USome x when obj.ReferenceEquals(prevf, f) && prevx = x -> ()
+        | _, _, UNone, _ -> setter null
+        | _, _, USome f, UNone -> setter (makeCommand f)
+        | _, _, USome f, USome k -> setter (makeCommandCanExecute f k)
 
     let equalLayoutOptions (x:Xamarin.Forms.LayoutOptions) (y:Xamarin.Forms.LayoutOptions)  =
         x.Alignment = y.Alignment && x.Expands = y.Expands
