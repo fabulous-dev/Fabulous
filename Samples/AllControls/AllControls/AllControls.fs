@@ -472,7 +472,8 @@ module App =
 type App () as app = 
     inherit Application ()
 
-    do
+    let runner = 
         Program.mkSimple App.init App.update App.view
         |> Program.withConsoleTrace
-        |> Program.runWithDynamicView app
+        |> Program.withDynamicView app
+        |> Program.run

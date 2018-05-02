@@ -199,8 +199,9 @@ type App() as app =
     let gameOver msg =
         Application.Current.MainPage.DisplayAlert("Game over", msg, "OK") |> ignore
 
-    do
+    let runner = 
         Program.mkSimple App.init (App.update gameOver) App.view
         |> Program.withConsoleTrace
-        |> Program.runWithDynamicView app
+        |> Program.withDynamicView app
+        |> Program.run
         

@@ -1,3 +1,11 @@
+#### 0.4.2
+* Add `fix`, `fixf`
+* Add `canExecute` to Button etc.
+* Show how to persist model using JSON
+* Change `run` to return a runner object (used to reset the model on restore)
+* Add docs on validation
+* Remove `Program.runDebug` in favour of `Program.withDebug`
+
 #### 0.4.1
 * Updates to README
 * Add `dependsOn`
