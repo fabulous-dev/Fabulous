@@ -120,45 +120,35 @@ You can also use
 Models and Validation
 ------
 
-Validation is generally done on updataes to the model, storing error messages from validation logic in the model
+Validation is generally done on updates to the model, storing error messages from validation logic in the model
 so they can be correctly and simply displayed to the user.  Here is an example of a typical pattern.
-
-Note that the same validation logic can be used in both your app and a service back-end.
 
 ```fsharp
     type Model = 
-	    { TempF: double
-		  TempC: double
-		  Errors: string list }
+        { TempF: double
+          TempC: double
+          Error: string option }
 
     /// Valdiate a temperature in fareneit
-    let validateF text =
-	    if ... then 
-		    let v = ..
-			Ok v 
-	    else 
-		    Error "..."
+    let validateF text =  ... // return a Result
 
     /// Valdiate a temperature in celcius
-	let validateC text =
-	    if ... then 
-		    let v = ..
-			Ok v 
-	    else 
-		    Error "..."
+    let validateC text = // return a Result 
 
     let update msg model =
         match msg with
         | SetF textF -> 
             match validateF textF with
             | Ok newF -> { model with ... }
-            | Error msg -> { model with Errors = [msg] }
+            | Error msg -> { model with Errors = Some msg }
             
         | SetC textC -> 
             match validateC textC with
             | Ok newC -> { model with ... }
-            | Error msg -> { model with Errors = [msg] }
+            | Error msg -> { model with Errors = Some msg }
 ```
+
+Note that the same validation logic can be used in both your app and a service back-end.
 
 Saving Aplication State
 --------------
