@@ -153,8 +153,8 @@ Note that the same validation logic can be used in both your app and a service b
 Saving Aplication State
 --------------
 
-Application state is very simple to save by serializing the model into `app.Properties`. For example, you can store as JSON as follows:
-```
+Application state is very simple to save by serializing the model into `app.Properties`. For example, you can store as JSON as follows using [`FsPickler` and `FsPickler.Json`](https://github.com/mbraceproject/FsPickler), which use `Json.NET`:
+```fsharp
 open MBrace.FsPickler.Json
 
 type Application() = 
