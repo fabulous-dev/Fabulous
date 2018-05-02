@@ -227,6 +227,7 @@ type Program<'model, 'msg, 'view> =
       update : 'msg -> 'model -> 'model * Cmd<'msg>
       subscribe : 'model -> Cmd<'msg>
       view : 'view
+      debug : bool
       onError : (string*exn) -> unit }
 
 /// Program module - functions to manipulate program instances
@@ -242,6 +243,7 @@ module Program =
           update = update
           view = view
           subscribe = fun _ -> Cmd.none
+          debug = false
           onError = onError }
 
     /// Simple program that produces only new state with `init` and `update`.
@@ -284,20 +286,19 @@ module Program =
             with onError = onError }
 
     /// Starts the Elmish dispatch loop for the page with the given Elmish program
-    let _run debug  (program: Program<_, _, _>)  = 
+    type ProgramRunner<'model, 'msg>(program: Program<'model, 'msg, _>)  = 
 
-        Debug.WriteLine "run: computing initial model"
+        do Debug.WriteLine "run: computing initial model"
 
         // Get the initial model
-        let (model,cmd) = program.init ()
+        let (initialModel,cmd) = program.init ()
 
-        let mutable lastModel = model
+        let mutable lastModel = initialModel
         let mutable lastViewData = None
-        let initialMessages = ResizeArray<_>()
-        let mutable dispatchImpl = (fun msg -> initialMessages.Add(msg))
+        let mutable dispatchImpl = (fun msg -> failwith "do not call dispatch during initialization")
         let dispatch msg = dispatchImpl msg
 
-        Debug.WriteLine "run: computing static components of view"
+        do Debug.WriteLine "run: computing static components of view"
 
         // Extract the static content from the view
         let viewInfo = program.view ()
@@ -307,25 +308,29 @@ module Program =
             match viewInfo with 
             | Choice1Of2 (mainPage, bindings) -> Choice1Of2 (mainPage, bindings), mainPage
             | Choice2Of2 ((app: Application), contentf: _ -> _ -> XamlElement) -> 
-                let pageDescription = contentf model dispatch
+                let pageDescription = contentf initialModel dispatch
                 let mainPage = pageDescription.CreateAsPage()
                 app.MainPage <- mainPage
+                //app.Properties.["model"] <- initialModel
                 Choice2Of2 (pageDescription, app, contentf), mainPage
 
         // Start Elmish dispatch loop  
         let rec processMsg msg = 
             try
                 let (updatedModel,newCommands) = program.update msg lastModel
-                updateView updatedModel 
-                newCommands |> List.iter (fun sub -> sub dispatch)
                 lastModel <- updatedModel
+                try 
+                   updateView updatedModel 
+                with ex ->
+                    program.onError ("Unable to update view:", ex)
+                try 
+                    newCommands |> List.iter (fun sub -> sub dispatch)
+                with ex ->
+                    program.onError ("Error executing commands:", ex)
             with ex ->
-                //System.Diagnostics.Debugger.Log(ex.Message)
-                //System.Diagnostics.Debug.Fail(ex.Message)
-                //System.Diagnostics.Debugger.Break()
                 program.onError ("Unable to process a message:", ex)
 
-        and updateView model = 
+        and updateView updatedModel = 
             match lastViewData with
             | None -> 
 
@@ -334,7 +339,7 @@ module Program =
                 let viewData = 
                     match viewInfo with 
                     | Choice1Of2 (mainPage, bindings) -> 
-                        let viewModel = StaticViewModel (model, dispatch, bindings, debug)
+                        let viewModel = StaticViewModel (updatedModel, dispatch, bindings, program.debug)
                         StaticView.setBindingContexts bindings viewModel
                         mainPage.BindingContext <- box viewModel
                         Choice1Of2 (mainPage, bindings, viewModel)
@@ -347,45 +352,49 @@ module Program =
                 let viewData = 
                     match prevViewData with 
                     | Choice1Of2 (page, bindings, viewModel) -> 
-                        viewModel.UpdateModel model
+                        viewModel.UpdateModel updatedModel
                         Choice1Of2 (page, bindings, viewModel)
                     | Choice2Of2 (prevPageDescription, app, contentf) -> 
-                        let newPageDescription: XamlElement = contentf model dispatch
+                        let newPageDescription: XamlElement = contentf updatedModel dispatch
                         if canReuseDefault prevPageDescription newPageDescription then
                             newPageDescription.UpdateIncremental (prevPageDescription, app.MainPage)
                         else
                             app.MainPage <- newPageDescription.CreateAsPage()
+                        //app.Properties.["model"] <- updatedModel
                         Choice2Of2 (newPageDescription, app, contentf)
                 lastViewData <- Some viewData
                       
-        let initialMsgs = initialMessages.ToArray()
-        initialMessages.Clear()
-        dispatchImpl <- (fun msg -> Device.BeginInvokeOnMainThread(fun () -> processMsg msg))
+        do 
+           dispatchImpl <- (fun msg -> Device.BeginInvokeOnMainThread(fun () -> processMsg msg))
 
-        Debug.WriteLine "updating the initial view"
+           Debug.WriteLine "updating the initial view"
 
-        updateView model 
+           updateView initialModel 
 
-        Debug.WriteLine "dispatching initial commands"
-        for sub in (program.subscribe model @ cmd) do
-            sub dispatch
-        for initialMsg in initialMsgs do 
-            dispatch initialMsg
+           Debug.WriteLine "dispatching initial commands"
+           for sub in (program.subscribe initialModel @ cmd) do
+                sub dispatch
 
-        mainPage
+        member __.InitialMainPage = mainPage
+
+        member __.Model 
+            with get () = lastModel 
+            and set model = 
+                Debug.WriteLine "updating the view after setting the model"
+                lastModel <- model
+                updateView model
 
 
     /// Creates the view model for the given page and starts the Elmish dispatch loop for the matching program
-    let run program = _run false program
+    let run program = ProgramRunner(program)
 
-    /// Creates the view model for the given page and starts the Elmish dispatch loop for the matching program
-    let runDebug program = _run true program
-
+    /// Add navigation to an application, used only for Static Xaml.
     let withNavigation (program: Program<_,_,_>) = 
         { init = program.init
           update = program.update
           subscribe = program.subscribe
           onError = program.onError
+          debug = program.debug
           view = (fun () -> 
               let page, contents, navMap = program.view ()
               Debug.WriteLine "setting global navigation map"
@@ -393,24 +402,32 @@ module Program =
               Nav.globalNavMap <- (navMap |> List.map (fun (tg, page) -> ((tg :> System.IComparable), page)) |> Map.ofList)
               page, contents  )}
 
+    /// Assert that the program uses static views
     let withStaticView (program: Program<'model, 'msg, _>) = 
         { init = program.init
           update = program.update
           subscribe = program.subscribe
           onError = program.onError
+          debug = program.debug
           view = (fun () -> 
               let page, bindings = program.view ()
               Choice1Of2 ((page :> Page), bindings)) }
 
+    /// Set debugging to true
+    let withDebug program = 
+        { program with debug = true }
+
+    /// Add dynamic views associated with a specific application
     let withDynamicView app (program: Program<'model, 'msg, _>) = 
         { init = program.init
           update = program.update
+          debug = program.debug
           subscribe = program.subscribe
           onError = program.onError
           view = (fun () -> Choice2Of2 ((app :> Application), program.view)) }
 
+    /// Run the app with ddynamic views for a specific application
     let runWithDynamicView app (program: Program<'model, 'msg, _>) = 
         program 
         |> withDynamicView app
         |> run
-        |> ignore

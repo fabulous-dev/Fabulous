@@ -42,11 +42,12 @@ type CounterApp () =
           "StepValue" |> Binding.twoWay (fun m -> double m.Step) (fun v -> SetStep (int (v + 0.5))) ]
 
     do
-        let page = 
+        let runner = 
             Program.mkSimple init update view
             |> Program.withConsoleTrace
             |> Program.withStaticView
             |> Program.run
+        let page = runner.InitialMainPage
 
         do PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(page.On<PlatformConfiguration.iOS>(), true) |> ignore
         base.MainPage <- page
