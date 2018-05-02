@@ -117,6 +117,31 @@ You can also use
 * the `fixf` function for command callbacks that have no dependencies at all (besides the "dispatch" function)
 
 
+Saving Application State
+--------------
+
+Application state is very simple to save by serializing the model into `app.Properties`. For example, you can store as JSON as follows using [`FsPickler` and `FsPickler.Json`](https://github.com/mbraceproject/FsPickler), which use `Json.NET`:
+```fsharp
+open MBrace.FsPickler.Json
+
+type Application() = 
+    ....
+    let modelId = "model"
+    override __.OnSleep() = 
+        app.Properties.[modelId] <- FsPickler.CreateJsonSerializer().PickleToString(runner.Model)
+
+    override __.OnResume() = 
+        try 
+            match app.Properties.TryGetValue modelId with
+            | true, (:? string as json) -> 
+                runner.Model <- FsPickler.CreateJsonSerializer().UnPickleOfString(json)
+            | _ -> ()
+        with ex -> 
+            program.onError("Error while restoring model found in app.Properties", ex)
+
+    override this.OnStart() = this.OnResume()
+```
+
 Models and Validation
 ------
 
@@ -150,30 +175,72 @@ so they can be correctly and simply displayed to the user.  Here is an example o
 
 Note that the same validation logic can be used in both your app and a service back-end.
 
-Saving Application State
---------------
+Roadmap
+--------
 
-Application state is very simple to save by serializing the model into `app.Properties`. For example, you can store as JSON as follows using [`FsPickler` and `FsPickler.Json`](https://github.com/mbraceproject/FsPickler), which use `Json.NET`:
-```fsharp
-open MBrace.FsPickler.Json
+* Programming model: Do these from `Xamarin.Forms.Core`: 
+  * Menu, MenuItem, NavigationBar, Accelerator
+  * Animation
+  * OpenGLView
+  * Allow configuration of protected overrides 
+  * Fix issue for slider where minimum = 1.0, maximum=10.0 (i.e. when value=0 and minimum gets set before maximum?)
 
-type Application() = 
-    ....
-    let modelId = "model"
-    override __.OnSleep() = 
-        app.Properties.[modelId] <- FsPickler.CreateJsonSerializer().PickleToString(runner.Model)
+* Programming efficiency
+  * Support F# in Xamarin Live Player
+  * Support hot-reloading of the saved model, reapplying to the same app where possible
 
-    override __.OnResume() = 
-        try 
-            match app.Properties.TryGetValue modelId with
-            | true, (:? string as json) -> 
-                runner.Model <- FsPickler.CreateJsonSerializer().UnPickleOfString(json)
-            | _ -> ()
-        with ex -> 
-            program.onError("Error while restoring model found in app.Properties", ex)
+* Docs
+  * Generate `///` docs in code generator
 
-    override this.OnStart() = this.OnResume()
-```
+* Handle 3rd party controls.
+  * Examples: `Xamarin.Forms.Maps`, `SkiaSharp`
+  * Please add more examples of 3rd party controls
+  * Consider whether to continue using a code generator or to switch to a type provider
+  * Make any necessary changes/additions to the `bindings.json` format (nothing is set in stone yet)
+
+* Templates
+  * Develop a template pack
+
+* Debugging
+  * Improve diagnostics when property update fails
+  * Fix bug where ranges for locals seem off-by-one in Android debugging
+
+* Testing
+  * Better unit-testing
+  * Add an explicit unit-test project
+  * Test with Visual Studio for Mac
+  * Test with iOS
+  * Most testing so far is done through  [AllControls](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Samples/AllControls/AllControls/AllControls.fs) project
+
+* Real-world road-testing:
+  * Multi-page apps with navigation
+  * Apps using charting
+  * Apps using maps
+
+* Performance:
+  * Road test differential update
+  * Minimize updates where possible
+  * Experiment with different approaches to memoization
+  * Memoize function closure creation
+  * Use integer atoms for property names
+  * Do better list comparison/diffing
+  * Consider keeping a running identity hash on the immutable objects
+  * Consider implementing equality and hash on the immutable objects
+  * Perf-test on large lists and do resulting perf work
+  * Consider moving 'view' and 'model' computations off the UI thread
+
+* Communication
+  * Develop a sample that includes both client and server development, like [this talk](https://skillsmatter.com/skillscasts/11308-safe-apps-with-f-web-stack)
+
+* Consider allowing explicit static Xaml through a type provider, e.g `xaml<"""<StackLayout Padding="20">...</StackLayout>""">`, evaluating to a `XamlElement`
+
+* Make some small F# langauge improvements to improve code:
+  * Remove `yield` in more cases
+  * Automatically save function values that do not capture any arguments and consider making the `dispatch` function global (partly to avoid is being seen as a captured argument)
+  * Allow syntax `Xaml.Foo(prop1=expr1, [ // end of line`
+  * `TryGetValue` on F# immutable map
+  * Allow a default unnamed argument for `children` so the argument name doesn't have to be given explicitly
+  * Allow the use of struct options for optional arguments (to reduce allocations)
 
 Static Views and "Half Elmish"
 ------
@@ -301,72 +368,6 @@ Multiple Pages and Navigation
 ------
 
 There is some experimental support for multiple-page apps and navigation. See the MasterDetailApp sample.  This currently only supports static views.
-
-Roadmap
---------
-
-* Programming model: Do these from `Xamarin.Forms.Core`: 
-  * Menu, MenuItem, NavigationBar, Accelerator
-  * Validation
-  * Animation
-  * OpenGLView
-  * Allow configuration of protected overrides such as OnSleep, OnResume, OnStart etc.
-  * Fix issue for slider where minimum = 1.0, maximum=10.0 (i.e. when value=0 and minimum gets set before maximum?)
-
-* Programming efficiency
-  * Support F# in Xamarin Live Player
-  * Support hot-reloading of the saved model, reapplying to the same app where possible
-  * Develop a sample that includes both client and server development, like [this talk](https://skillsmatter.com/skillscasts/11308-safe-apps-with-f-web-stack)
-
-* Testing
-  * Better unit-testing
-  * Add an explicit unit-test project
-  * Test with Visual Studio for Mac
-  * Test with iOS
-  * Most testing so far is done through  [AllControls](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Samples/AllControls/AllControls/AllControls.fs) project
-
-* Real-world road-testing:
-  * Multi-page apps with navigation
-  * Apps using charting
-  * Apps using maps
-
-* Templates
-  * Develop a template pack
-
-* Docs
-  * Generate `///` docs in code generator
-
-* Debugging
-  * Improve diagnostics when property update fails
-  * Fix bug where ranges for locals seem off-by-one in Android debugging
-
-* Performance:
-  * Road test differential update
-  * Minimize updates where possible
-  * Experiment with different approaches to memoization
-  * Memoize function closure creation
-  * Use integer atoms for property names
-  * Do better list comparison/diffing
-  * Consider keeping a running identity hash on the immutable objects
-  * Consider implementing equality and hash on the immutable objects
-  * Perf-test on large lists and do resulting perf work
-  * Consider moving 'view' and 'model' computations off the UI thread
-
-* Handle 3rd party controls.
-  * Examples: `Xamarin.Forms.Maps`, `SkiaSharp`
-  * Please add more examples of 3rd party controls
-  * Consider whether to continue using a code generator or to switch to a type provider
-  * Make any necessary changes/additions to the `bindings.json` format (nothing is set in stone yet)
-
-* Consider allowing explicit static Xaml through a type provider, e.g `xaml<"""<StackLayout Padding="20">...</StackLayout>""">`, evaluating to a `XamlElement`
-
-* Make some small F# langauge improvements to improve code:
-  * Remove `yield` in more cases
-  * Automatically save function values that do not capture any arguments and consider making the `dispatch` function global (partly to avoid is being seen as a captured argument)
-  * Allow syntax `Xaml.Foo(prop1=expr1, [ // end of line`
-  * `TryGetValue` on F# immutable map
-  * Allow a default unnamed argument for `children` so the argument name doesn't have to be given explicitly
-  * Allow the use of struct options for optional arguments (to reduce allocations)
 
 
 Dev Notes - Releasing
