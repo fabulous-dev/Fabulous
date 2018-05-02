@@ -447,8 +447,8 @@ module XamlElementExtensions =
         /// Try to get the PlaceholderColor property in the visual element
         member x.TryPlaceholderColor = match x.Attributes.TryFind("PlaceholderColor") with Some v -> USome(unbox<Xamarin.Forms.Color>(v)) | None -> UNone
 
-        /// Try to get the SearchCommand property in the visual element
-        member x.TrySearchCommand = match x.Attributes.TryFind("SearchCommand") with Some v -> USome(unbox<unit -> unit>(v)) | None -> UNone
+        /// Try to get the SearchBarCommand property in the visual element
+        member x.TrySearchBarCommand = match x.Attributes.TryFind("SearchBarCommand") with Some v -> USome(unbox<unit -> unit>(v)) | None -> UNone
 
         /// Try to get the SearchBarCanExecute property in the visual element
         member x.TrySearchBarCanExecute = match x.Attributes.TryFind("SearchBarCanExecute") with Some v -> USome(unbox<bool>(v)) | None -> UNone
@@ -948,8 +948,8 @@ module XamlElementExtensions =
         /// Adjusts the PlaceholderColor property in the visual element
         member x.PlaceholderColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("PlaceholderColor", box ((value))))
 
-        /// Adjusts the SearchCommand property in the visual element
-        member x.SearchCommand(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("SearchCommand", box ((value))))
+        /// Adjusts the SearchBarCommand property in the visual element
+        member x.SearchBarCommand(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("SearchBarCommand", box ((value))))
 
         /// Adjusts the SearchBarCanExecute property in the visual element
         member x.SearchBarCanExecute(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("SearchBarCanExecute", box ((value))))
@@ -1582,11 +1582,11 @@ module XamlElementExtensions =
     /// Adjusts the PlaceholderColor property in the visual element
     let placeholderColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.PlaceholderColor(value)
 
-    /// Adjusts the SearchCommand property in the visual element
-    let withSearchCommand (value: unit -> unit) (x: XamlElement) = x.SearchCommand(value)
+    /// Adjusts the SearchBarCommand property in the visual element
+    let withSearchBarCommand (value: unit -> unit) (x: XamlElement) = x.SearchBarCommand(value)
 
-    /// Adjusts the SearchCommand property in the visual element
-    let searchCommand (value: unit -> unit) (x: XamlElement) = x.SearchCommand(value)
+    /// Adjusts the SearchBarCommand property in the visual element
+    let searchBarCommand (value: unit -> unit) (x: XamlElement) = x.SearchBarCommand(value)
 
     /// Adjusts the SearchBarCanExecute property in the visual element
     let withSearchBarCanExecute (value: bool) (x: XamlElement) = x.SearchBarCanExecute(value)
@@ -3808,7 +3808,7 @@ type Xaml() =
             match horizontalTextAlignment with None -> () | Some v -> yield ("HorizontalTextAlignment", box ((v))) 
             match placeholder with None -> () | Some v -> yield ("Placeholder", box ((v))) 
             match placeholderColor with None -> () | Some v -> yield ("PlaceholderColor", box ((v))) 
-            match searchCommand with None -> () | Some v -> yield ("SearchCommand", box ((v))) 
+            match searchCommand with None -> () | Some v -> yield ("SearchBarCommand", box ((v))) 
             match canExecute with None -> () | Some v -> yield ("SearchBarCanExecute", box ((v))) 
             match text with None -> () | Some v -> yield ("Text", box ((v))) 
             match textColor with None -> () | Some v -> yield ("TextColor", box ((v))) 
@@ -3891,12 +3891,12 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::PlaceholderColor "); target.PlaceholderColor <-  value
             | USome _, UNone -> target.PlaceholderColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
-            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TrySearchCommand
-            let valueOpt = source.TrySearchCommand
-            updateCommand prevValueOpt (match prevOpt with UNone -> UNone | USome prev -> prev.TrySearchBarCanExecute) valueOpt source.TrySearchBarCanExecute (fun cmd -> target.SearchCommand <- cmd) prevValueOpt valueOpt target
+            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TrySearchBarCommand
+            let valueOpt = source.TrySearchBarCommand
+            (fun _ _ _ -> ()) prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TrySearchBarCanExecute
             let valueOpt = source.TrySearchBarCanExecute
-            updateCommand (match prevOpt with UNone -> UNone | USome prev -> prev.TrySearchCommand) prevValueOpt source.TrySearchCommand valueOpt (fun cmd -> target.SearchCommand <- cmd) prevValueOpt valueOpt target
+            updateCommand (match prevOpt with UNone -> UNone | USome prev -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::Command "); prev.TrySearchBarCommand) prevValueOpt source.TrySearchBarCommand valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::Command "); target.SearchCommand <- cmd) prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryText
             let valueOpt = source.TryText
             match prevValueOpt, valueOpt with
@@ -4136,10 +4136,10 @@ type Xaml() =
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryButtonCommand
             let valueOpt = source.TryButtonCommand
-            updateCommand prevValueOpt (match prevOpt with UNone -> UNone | USome prev -> prev.TryButtonCanExecute) valueOpt source.TryButtonCanExecute (fun cmd -> target.Command <- cmd) prevValueOpt valueOpt target
+            (fun _ _ _ -> ()) prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryButtonCanExecute
             let valueOpt = source.TryButtonCanExecute
-            updateCommand (match prevOpt with UNone -> UNone | USome prev -> prev.TryButtonCommand) prevValueOpt source.TryButtonCommand valueOpt (fun cmd -> target.Command <- cmd) prevValueOpt valueOpt target
+            updateCommand (match prevOpt with UNone -> UNone | USome prev -> prev.TryButtonCommand) prevValueOpt source.TryButtonCommand valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine("Setting Button::Command "); target.Command <- cmd) prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBorderColor
             let valueOpt = source.TryBorderColor
             match prevValueOpt, valueOpt with
@@ -11183,10 +11183,10 @@ type Xaml() =
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTextCellCommand
             let valueOpt = source.TryTextCellCommand
-            updateCommand prevValueOpt (match prevOpt with UNone -> UNone | USome prev -> prev.TryTextCellCanExecute) valueOpt source.TryTextCellCanExecute (fun cmd -> target.Command <- cmd) prevValueOpt valueOpt target
+            (fun _ _ _ -> ()) prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTextCellCanExecute
             let valueOpt = source.TryTextCellCanExecute
-            updateCommand (match prevOpt with UNone -> UNone | USome prev -> prev.TryTextCellCommand) prevValueOpt source.TryTextCellCommand valueOpt (fun cmd -> target.Command <- cmd) prevValueOpt valueOpt target
+            updateCommand (match prevOpt with UNone -> UNone | USome prev -> prev.TryTextCellCommand) prevValueOpt source.TryTextCellCommand valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine("Setting TextCell::Command "); target.Command <- cmd) prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryCommandParameter
             let valueOpt = source.TryCommandParameter
             match prevValueOpt, valueOpt with
@@ -11282,10 +11282,10 @@ type Xaml() =
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTextCellCommand
             let valueOpt = source.TryTextCellCommand
-            updateCommand prevValueOpt (match prevOpt with UNone -> UNone | USome prev -> prev.TryTextCellCanExecute) valueOpt source.TryTextCellCanExecute (fun cmd -> target.Command <- cmd) prevValueOpt valueOpt target
+            (fun _ _ _ -> ()) prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTextCellCanExecute
             let valueOpt = source.TryTextCellCanExecute
-            updateCommand (match prevOpt with UNone -> UNone | USome prev -> prev.TryTextCellCommand) prevValueOpt source.TryTextCellCommand valueOpt (fun cmd -> target.Command <- cmd) prevValueOpt valueOpt target
+            updateCommand (match prevOpt with UNone -> UNone | USome prev -> prev.TryTextCellCommand) prevValueOpt source.TryTextCellCommand valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine("Setting TextCell::Command "); target.Command <- cmd) prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryCommandParameter
             let valueOpt = source.TryCommandParameter
             match prevValueOpt, valueOpt with

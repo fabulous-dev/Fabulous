@@ -46,17 +46,17 @@ module App =
                 Xaml.StackLayout(padding=20.0, verticalOptions=LayoutOptions.Center,
                   children=[
                     Xaml.Label(text= sprintf "%d" model.Count, horizontalOptions=LayoutOptions.Center, fontSize = "Large")
-                    Xaml.Button(text="Increment", command= (fun () -> dispatch Increment))
-                    Xaml.Button(text="Decrement", command= (fun () -> dispatch Decrement))
+                    Xaml.Button(text="Increment", command= fixf (fun () -> dispatch Increment))
+                    Xaml.Button(text="Decrement", command= fixf (fun () -> dispatch Decrement))
                     Xaml.StackLayout(padding=20.0, orientation=StackOrientation.Horizontal, horizontalOptions=LayoutOptions.Center,
                                     children = [ Xaml.Label(text="Timer"); 
-                                                Xaml.Switch(isToggled=model.TimerOn, toggled = (fun on -> dispatch (TimerToggled on.Value))) ])
-                    Xaml.Slider(minimum=0.0, maximum=10.0, value= double model.Step, valueChanged=(fun args -> dispatch (SetStep (int (args.NewValue + 0.5)))))
+                                                Xaml.Switch(isToggled=model.TimerOn, toggled = fixf (fun on -> dispatch (TimerToggled on.Value))) ])
+                    Xaml.Slider(minimum=0.0, maximum=10.0, value= double model.Step, valueChanged=fixf (fun args -> dispatch (SetStep (int (args.NewValue + 0.5)))))
                     Xaml.Label(text=sprintf "Step size: %d" model.Step, horizontalOptions=LayoutOptions.Center) 
                   ])
-              yield Xaml.Button(text="Reset", horizontalOptions=LayoutOptions.Center, command= stat (fun () -> dispatch Reset), canExecute = (model <> initModel))
+              // If you want the button to disappear when in the initial condition then use this:
               //if model <> initModel then 
-              //  yield Xaml.Button(text="Reset", horizontalOptions=LayoutOptions.Center, command= stat (fun () -> dispatch Reset))
+              yield Xaml.Button(text="Reset", horizontalOptions=LayoutOptions.Center, command= fixf (fun () -> dispatch Reset), canExecute = (model <> initModel))
             ]))
 
 type CounterApp () as app = 
