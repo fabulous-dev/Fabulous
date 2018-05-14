@@ -158,10 +158,10 @@ so they can be correctly and simply displayed to the user.  Here is an example o
         { TempF: Temperature
           TempC: Temperature }
 
-    /// Valdiate a temperature in fareneit, can be shared between cliemt/server
+    /// Valdiate a temperature in fareneit, can be shared between client/server
     let validateF text =  ... // return a Result
 
-    /// Valdiate a temperature in celcius, can be shared between cliemt/server
+    /// Valdiate a temperature in celcius, can be shared between client/server
     let validateC text = // return a Result 
 
     let update msg model =
