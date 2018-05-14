@@ -149,28 +149,32 @@ Validation is generally done on updates to the model, storing error messages fro
 so they can be correctly and simply displayed to the user.  Here is an example of a typical pattern.
 
 ```fsharp
-    type Model = 
-        { TempF: double
-          TempC: double
-          Error: string option }
 
-    /// Valdiate a temperature in fareneit
+    type Temperature = 
+       | Value of double
+       | ParseError of string  
+       
+    type Model = 
+        { TempF: Temperature
+          TempC: Temperature }
+
+    /// Valdiate a temperature in fareneit, can be shared between cliemt/server
     let validateF text =  ... // return a Result
 
-    /// Valdiate a temperature in celcius
+    /// Valdiate a temperature in celcius, can be shared between cliemt/server
     let validateC text = // return a Result 
 
     let update msg model =
         match msg with
         | SetF textF -> 
             match validateF textF with
-            | Ok newF -> { model with ... }
-            | Error msg -> { model with Errors = Some msg }
+            | Ok newF -> { model with TempF = Value newF }
+            | Error msg -> { model with TempF = ParseError msg }
             
         | SetC textC -> 
             match validateC textC with
-            | Ok newC -> { model with ... }
-            | Error msg -> { model with Errors = Some msg }
+            | Ok newC -> { model with TempC = Value newC }
+            | Error msg -> { model with TempC = ParseError msg }
 ```
 
 Note that the same validation logic can be used in both your app and a service back-end.
