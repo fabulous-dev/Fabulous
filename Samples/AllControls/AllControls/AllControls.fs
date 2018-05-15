@@ -127,11 +127,11 @@ module App =
             Xaml.Label(text="Button:")
             Xaml.Button(text="Increment", command=(fun () -> dispatch Increment), horizontalOptions=LayoutOptions.CenterAndExpand)
                 
-            Xaml.Label(text="Button (cornerRadius=5):")
-            Xaml.Button(text="Decrement", cornerRadius=5, command=(fun () -> dispatch Decrement), horizontalOptions=LayoutOptions.CenterAndExpand)
+            //Xaml.Label(text="Button (cornerRadius=5):")
+            //Xaml.Button(text="Decrement", cornerRadius=5, command=(fun () -> dispatch Decrement), horizontalOptions=LayoutOptions.CenterAndExpand)
                
-            Xaml.Label(text="Button (relative layout):")
-            Xaml.Button(text="Decrement", cornerRadius=5, command=(fun () -> dispatch Decrement), horizontalOptions=LayoutOptions.CenterAndExpand)
+            Xaml.Label(text="Button:")
+            Xaml.Button(text="Decrement",  command=(fun () -> dispatch Decrement), horizontalOptions=LayoutOptions.CenterAndExpand)
                
            ]))
 

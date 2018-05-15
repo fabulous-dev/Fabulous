@@ -315,9 +315,6 @@ module XamlElementExtensions =
         /// Try to get the ContentLayout property in the visual element
         member x.TryContentLayout = match x.Attributes.TryFind("ContentLayout") with Some v -> USome(unbox<Xamarin.Forms.Button.ButtonContentLayout>(v)) | None -> UNone
 
-        /// Try to get the ButtonCornerRadius property in the visual element
-        member x.TryButtonCornerRadius = match x.Attributes.TryFind("ButtonCornerRadius") with Some v -> USome(unbox<int>(v)) | None -> UNone
-
         /// Try to get the ButtonImageSource property in the visual element
         member x.TryButtonImageSource = match x.Attributes.TryFind("ButtonImageSource") with Some v -> USome(unbox<string>(v)) | None -> UNone
 
@@ -782,9 +779,6 @@ module XamlElementExtensions =
 
         /// Adjusts the ContentLayout property in the visual element
         member x.ContentLayout(value: Xamarin.Forms.Button.ButtonContentLayout) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ContentLayout", box ((value))))
-
-        /// Adjusts the ButtonCornerRadius property in the visual element
-        member x.ButtonCornerRadius(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ButtonCornerRadius", box ((value))))
 
         /// Adjusts the ButtonImageSource property in the visual element
         member x.ButtonImageSource(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ButtonImageSource", box ((value))))
@@ -1404,12 +1398,6 @@ module XamlElementExtensions =
 
     /// Adjusts the ContentLayout property in the visual element
     let contentLayout (value: Xamarin.Forms.Button.ButtonContentLayout) (x: XamlElement) = x.ContentLayout(value)
-
-    /// Adjusts the ButtonCornerRadius property in the visual element
-    let withButtonCornerRadius (value: int) (x: XamlElement) = x.ButtonCornerRadius(value)
-
-    /// Adjusts the ButtonCornerRadius property in the visual element
-    let buttonCornerRadius (value: int) (x: XamlElement) = x.ButtonCornerRadius(value)
 
     /// Adjusts the ButtonImageSource property in the visual element
     let withButtonImageSource (value: string) (x: XamlElement) = x.ButtonImageSource(value)
@@ -3806,7 +3794,7 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.SearchBar>, create, update, Map.ofArray attribs)
 
     /// Describes a Button in the view
-    static member Button(?text: string, ?command: unit -> unit, ?borderColor: Xamarin.Forms.Color, ?borderWidth: double, ?commandParameter: System.Object, ?contentLayout: Xamarin.Forms.Button.ButtonContentLayout, ?cornerRadius: int, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?image: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member Button(?text: string, ?command: unit -> unit, ?borderColor: Xamarin.Forms.Color, ?borderWidth: double, ?commandParameter: System.Object, ?contentLayout: Xamarin.Forms.Button.ButtonContentLayout, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?image: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match text with None -> () | Some v -> yield ("Text", box ((v))) 
             match command with None -> () | Some v -> yield ("Command", box (makeCommand(v))) 
@@ -3814,7 +3802,6 @@ type Xaml() =
             match borderWidth with None -> () | Some v -> yield ("BorderWidth", box ((v))) 
             match commandParameter with None -> () | Some v -> yield ("CommandParameter", box ((v))) 
             match contentLayout with None -> () | Some v -> yield ("ContentLayout", box ((v))) 
-            match cornerRadius with None -> () | Some v -> yield ("ButtonCornerRadius", box ((v))) 
             match fontFamily with None -> () | Some v -> yield ("FontFamily", box ((v))) 
             match fontAttributes with None -> () | Some v -> yield ("FontAttributes", box ((v))) 
             match fontSize with None -> () | Some v -> yield ("FontSize", box (makeFontSize(v))) 
@@ -3892,13 +3879,6 @@ type Xaml() =
             | USome prevValue, USome value when prevValue = value -> ()
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentLayout "); target.ContentLayout <-  value
             | USome _, UNone -> target.ContentLayout <- null
-            | UNone, UNone -> ()
-            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryButtonCornerRadius
-            let valueOpt = source.TryButtonCornerRadius
-            match prevValueOpt, valueOpt with
-            | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CornerRadius "); target.CornerRadius <-  value
-            | USome _, UNone -> target.CornerRadius <- 0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryFontFamily
             let valueOpt = source.TryFontFamily

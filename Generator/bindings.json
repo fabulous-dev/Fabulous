@@ -1,6 +1,6 @@
 {
 	"assemblies": [
-		"packages/xamarin.forms/2.5.1.444934/lib/netstandard1.0/Xamarin.Forms.Core.dll"
+		"packages/neutral/Xamarin.Forms/lib/netstandard1.0/Xamarin.Forms.Core.dll"
 	],
 	"outputNamespace": "Elmish.XamarinForms.DynamicViews",
 	"types": [
@@ -316,11 +316,13 @@
 					"name": "ContentLayout",
 					"defaultValue": "null"
 				},
-				{
-					"name": "CornerRadius",
-					"uniqueName": "ButtonCornerRadius",
-					"defaultValue": "0"
-				},
+				// XF 2.5.1
+				//
+				//{
+				//	"name": "CornerRadius",
+				//		"uniqueName": "ButtonCornerRadius",
+				//		"defaultValue": "0"
+				//	},
 				{
 					"name": "FontFamily",
 					"defaultValue": "null"
