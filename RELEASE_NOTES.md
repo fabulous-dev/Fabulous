@@ -1,3 +1,6 @@
+#### 0.4.3
+* Sync base version of XF to that listed in paket.lock
+
 #### 0.4.2
 * Add `fix`, `fixf`
 * Add `canExecute` to Button etc.

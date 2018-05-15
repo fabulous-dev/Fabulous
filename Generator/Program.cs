@@ -635,10 +635,10 @@ namespace Generator
 
         static AssemblyDefinition LoadAssembly (string path)
         {
-            if (path.StartsWith("packages")) {
-                var user = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                path = Path.Combine (user, ".nuget", path);
-            }
+            //if (path.StartsWith("packages")) {
+            //    var user = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            //    path = Path.Combine (user, ".nuget", path);
+           // }
             return AssemblyDefinition.ReadAssembly(path);
         }
     }
