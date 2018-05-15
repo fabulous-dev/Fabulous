@@ -36,7 +36,7 @@ type XamlElement(targetType: Type, create: (unit -> obj), update: (XamlElement u
 
     /// Differrentially update a visual element given the previous settings
     member x.UpdateIncremental(prev: XamlElement, target: obj) = 
-        Debug.WriteLine (sprintf "Update %O" x.TargetType)
+        //Debug.WriteLine (sprintf "Update %O" x.TargetType)
         update (USome prev) x target
 
     /// Update a different description to a similar visual element

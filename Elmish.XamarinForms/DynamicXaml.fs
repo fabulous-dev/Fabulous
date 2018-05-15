@@ -9,157 +9,310 @@ module XamlElementExtensions =
     type XamlElement with
 
         /// Create a Xamarin.Forms.Element from the view description
-        member x.CreateAsElement() : Xamarin.Forms.Element = (x.Create() :?> Xamarin.Forms.Element)
+        member x.CreateAsElement() : Xamarin.Forms.Element =
+            match x.Create() with
+            | :? Xamarin.Forms.Element as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Element' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.VisualElement from the view description
-        member x.CreateAsVisualElement() : Xamarin.Forms.VisualElement = (x.Create() :?> Xamarin.Forms.VisualElement)
+        member x.CreateAsVisualElement() : Xamarin.Forms.VisualElement =
+            match x.Create() with
+            | :? Xamarin.Forms.VisualElement as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.VisualElement' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.View from the view description
-        member x.CreateAsView() : Xamarin.Forms.View = (x.Create() :?> Xamarin.Forms.View)
+        member x.CreateAsView() : Xamarin.Forms.View =
+            match x.Create() with
+            | :? Xamarin.Forms.View as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.View' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.IGestureRecognizer from the view description
-        member x.CreateAsIGestureRecognizer() : Xamarin.Forms.IGestureRecognizer = (x.Create() :?> Xamarin.Forms.IGestureRecognizer)
+        member x.CreateAsIGestureRecognizer() : Xamarin.Forms.IGestureRecognizer =
+            match x.Create() with
+            | :? Xamarin.Forms.IGestureRecognizer as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.IGestureRecognizer' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.PanGestureRecognizer from the view description
-        member x.CreateAsPanGestureRecognizer() : Xamarin.Forms.PanGestureRecognizer = (x.Create() :?> Xamarin.Forms.PanGestureRecognizer)
+        member x.CreateAsPanGestureRecognizer() : Xamarin.Forms.PanGestureRecognizer =
+            match x.Create() with
+            | :? Xamarin.Forms.PanGestureRecognizer as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.PanGestureRecognizer' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.TapGestureRecognizer from the view description
-        member x.CreateAsTapGestureRecognizer() : Xamarin.Forms.TapGestureRecognizer = (x.Create() :?> Xamarin.Forms.TapGestureRecognizer)
+        member x.CreateAsTapGestureRecognizer() : Xamarin.Forms.TapGestureRecognizer =
+            match x.Create() with
+            | :? Xamarin.Forms.TapGestureRecognizer as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.TapGestureRecognizer' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.ClickGestureRecognizer from the view description
-        member x.CreateAsClickGestureRecognizer() : Xamarin.Forms.ClickGestureRecognizer = (x.Create() :?> Xamarin.Forms.ClickGestureRecognizer)
+        member x.CreateAsClickGestureRecognizer() : Xamarin.Forms.ClickGestureRecognizer =
+            match x.Create() with
+            | :? Xamarin.Forms.ClickGestureRecognizer as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.ClickGestureRecognizer' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.PinchGestureRecognizer from the view description
-        member x.CreateAsPinchGestureRecognizer() : Xamarin.Forms.PinchGestureRecognizer = (x.Create() :?> Xamarin.Forms.PinchGestureRecognizer)
+        member x.CreateAsPinchGestureRecognizer() : Xamarin.Forms.PinchGestureRecognizer =
+            match x.Create() with
+            | :? Xamarin.Forms.PinchGestureRecognizer as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.PinchGestureRecognizer' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.ActivityIndicator from the view description
-        member x.CreateAsActivityIndicator() : Xamarin.Forms.ActivityIndicator = (x.Create() :?> Xamarin.Forms.ActivityIndicator)
+        member x.CreateAsActivityIndicator() : Xamarin.Forms.ActivityIndicator =
+            match x.Create() with
+            | :? Xamarin.Forms.ActivityIndicator as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.ActivityIndicator' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.BoxView from the view description
-        member x.CreateAsBoxView() : Xamarin.Forms.BoxView = (x.Create() :?> Xamarin.Forms.BoxView)
+        member x.CreateAsBoxView() : Xamarin.Forms.BoxView =
+            match x.Create() with
+            | :? Xamarin.Forms.BoxView as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.BoxView' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.ProgressBar from the view description
-        member x.CreateAsProgressBar() : Xamarin.Forms.ProgressBar = (x.Create() :?> Xamarin.Forms.ProgressBar)
+        member x.CreateAsProgressBar() : Xamarin.Forms.ProgressBar =
+            match x.Create() with
+            | :? Xamarin.Forms.ProgressBar as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.ProgressBar' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.ScrollView from the view description
-        member x.CreateAsScrollView() : Xamarin.Forms.ScrollView = (x.Create() :?> Xamarin.Forms.ScrollView)
+        member x.CreateAsScrollView() : Xamarin.Forms.ScrollView =
+            match x.Create() with
+            | :? Xamarin.Forms.ScrollView as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.ScrollView' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.SearchBar from the view description
-        member x.CreateAsSearchBar() : Xamarin.Forms.SearchBar = (x.Create() :?> Xamarin.Forms.SearchBar)
+        member x.CreateAsSearchBar() : Xamarin.Forms.SearchBar =
+            match x.Create() with
+            | :? Xamarin.Forms.SearchBar as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.SearchBar' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.Button from the view description
-        member x.CreateAsButton() : Xamarin.Forms.Button = (x.Create() :?> Xamarin.Forms.Button)
+        member x.CreateAsButton() : Xamarin.Forms.Button =
+            match x.Create() with
+            | :? Xamarin.Forms.Button as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Button' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.Slider from the view description
-        member x.CreateAsSlider() : Xamarin.Forms.Slider = (x.Create() :?> Xamarin.Forms.Slider)
+        member x.CreateAsSlider() : Xamarin.Forms.Slider =
+            match x.Create() with
+            | :? Xamarin.Forms.Slider as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Slider' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.Stepper from the view description
-        member x.CreateAsStepper() : Xamarin.Forms.Stepper = (x.Create() :?> Xamarin.Forms.Stepper)
+        member x.CreateAsStepper() : Xamarin.Forms.Stepper =
+            match x.Create() with
+            | :? Xamarin.Forms.Stepper as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Stepper' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.Switch from the view description
-        member x.CreateAsSwitch() : Xamarin.Forms.Switch = (x.Create() :?> Xamarin.Forms.Switch)
+        member x.CreateAsSwitch() : Xamarin.Forms.Switch =
+            match x.Create() with
+            | :? Xamarin.Forms.Switch as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Switch' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.SwitchCell from the view description
-        member x.CreateAsSwitchCell() : Xamarin.Forms.SwitchCell = (x.Create() :?> Xamarin.Forms.SwitchCell)
+        member x.CreateAsSwitchCell() : Xamarin.Forms.SwitchCell =
+            match x.Create() with
+            | :? Xamarin.Forms.SwitchCell as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.SwitchCell' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.TableView from the view description
-        member x.CreateAsTableView() : Xamarin.Forms.TableView = (x.Create() :?> Xamarin.Forms.TableView)
+        member x.CreateAsTableView() : Xamarin.Forms.TableView =
+            match x.Create() with
+            | :? Xamarin.Forms.TableView as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.TableView' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.Grid from the view description
-        member x.CreateAsGrid() : Xamarin.Forms.Grid = (x.Create() :?> Xamarin.Forms.Grid)
+        member x.CreateAsGrid() : Xamarin.Forms.Grid =
+            match x.Create() with
+            | :? Xamarin.Forms.Grid as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Grid' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.AbsoluteLayout from the view description
-        member x.CreateAsAbsoluteLayout() : Xamarin.Forms.AbsoluteLayout = (x.Create() :?> Xamarin.Forms.AbsoluteLayout)
+        member x.CreateAsAbsoluteLayout() : Xamarin.Forms.AbsoluteLayout =
+            match x.Create() with
+            | :? Xamarin.Forms.AbsoluteLayout as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.AbsoluteLayout' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.RelativeLayout from the view description
-        member x.CreateAsRelativeLayout() : Xamarin.Forms.RelativeLayout = (x.Create() :?> Xamarin.Forms.RelativeLayout)
+        member x.CreateAsRelativeLayout() : Xamarin.Forms.RelativeLayout =
+            match x.Create() with
+            | :? Xamarin.Forms.RelativeLayout as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.RelativeLayout' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.RowDefinition from the view description
-        member x.CreateAsRowDefinition() : Xamarin.Forms.RowDefinition = (x.Create() :?> Xamarin.Forms.RowDefinition)
+        member x.CreateAsRowDefinition() : Xamarin.Forms.RowDefinition =
+            match x.Create() with
+            | :? Xamarin.Forms.RowDefinition as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.RowDefinition' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.ColumnDefinition from the view description
-        member x.CreateAsColumnDefinition() : Xamarin.Forms.ColumnDefinition = (x.Create() :?> Xamarin.Forms.ColumnDefinition)
+        member x.CreateAsColumnDefinition() : Xamarin.Forms.ColumnDefinition =
+            match x.Create() with
+            | :? Xamarin.Forms.ColumnDefinition as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.ColumnDefinition' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.ContentView from the view description
-        member x.CreateAsContentView() : Xamarin.Forms.ContentView = (x.Create() :?> Xamarin.Forms.ContentView)
+        member x.CreateAsContentView() : Xamarin.Forms.ContentView =
+            match x.Create() with
+            | :? Xamarin.Forms.ContentView as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.ContentView' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.TemplatedView from the view description
-        member x.CreateAsTemplatedView() : Xamarin.Forms.TemplatedView = (x.Create() :?> Xamarin.Forms.TemplatedView)
+        member x.CreateAsTemplatedView() : Xamarin.Forms.TemplatedView =
+            match x.Create() with
+            | :? Xamarin.Forms.TemplatedView as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.TemplatedView' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.DatePicker from the view description
-        member x.CreateAsDatePicker() : Xamarin.Forms.DatePicker = (x.Create() :?> Xamarin.Forms.DatePicker)
+        member x.CreateAsDatePicker() : Xamarin.Forms.DatePicker =
+            match x.Create() with
+            | :? Xamarin.Forms.DatePicker as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.DatePicker' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.Picker from the view description
-        member x.CreateAsPicker() : Xamarin.Forms.Picker = (x.Create() :?> Xamarin.Forms.Picker)
+        member x.CreateAsPicker() : Xamarin.Forms.Picker =
+            match x.Create() with
+            | :? Xamarin.Forms.Picker as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Picker' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.Frame from the view description
-        member x.CreateAsFrame() : Xamarin.Forms.Frame = (x.Create() :?> Xamarin.Forms.Frame)
+        member x.CreateAsFrame() : Xamarin.Forms.Frame =
+            match x.Create() with
+            | :? Xamarin.Forms.Frame as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Frame' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.Image from the view description
-        member x.CreateAsImage() : Xamarin.Forms.Image = (x.Create() :?> Xamarin.Forms.Image)
+        member x.CreateAsImage() : Xamarin.Forms.Image =
+            match x.Create() with
+            | :? Xamarin.Forms.Image as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Image' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.InputView from the view description
-        member x.CreateAsInputView() : Xamarin.Forms.InputView = (x.Create() :?> Xamarin.Forms.InputView)
+        member x.CreateAsInputView() : Xamarin.Forms.InputView =
+            match x.Create() with
+            | :? Xamarin.Forms.InputView as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.InputView' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.Editor from the view description
-        member x.CreateAsEditor() : Xamarin.Forms.Editor = (x.Create() :?> Xamarin.Forms.Editor)
+        member x.CreateAsEditor() : Xamarin.Forms.Editor =
+            match x.Create() with
+            | :? Xamarin.Forms.Editor as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Editor' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.Entry from the view description
-        member x.CreateAsEntry() : Xamarin.Forms.Entry = (x.Create() :?> Xamarin.Forms.Entry)
+        member x.CreateAsEntry() : Xamarin.Forms.Entry =
+            match x.Create() with
+            | :? Xamarin.Forms.Entry as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Entry' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.EntryCell from the view description
-        member x.CreateAsEntryCell() : Xamarin.Forms.EntryCell = (x.Create() :?> Xamarin.Forms.EntryCell)
+        member x.CreateAsEntryCell() : Xamarin.Forms.EntryCell =
+            match x.Create() with
+            | :? Xamarin.Forms.EntryCell as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.EntryCell' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.Label from the view description
-        member x.CreateAsLabel() : Xamarin.Forms.Label = (x.Create() :?> Xamarin.Forms.Label)
+        member x.CreateAsLabel() : Xamarin.Forms.Label =
+            match x.Create() with
+            | :? Xamarin.Forms.Label as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Label' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.Layout from the view description
-        member x.CreateAsLayout() : Xamarin.Forms.Layout = (x.Create() :?> Xamarin.Forms.Layout)
+        member x.CreateAsLayout() : Xamarin.Forms.Layout =
+            match x.Create() with
+            | :? Xamarin.Forms.Layout as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Layout' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.StackLayout from the view description
-        member x.CreateAsStackLayout() : Xamarin.Forms.StackLayout = (x.Create() :?> Xamarin.Forms.StackLayout)
+        member x.CreateAsStackLayout() : Xamarin.Forms.StackLayout =
+            match x.Create() with
+            | :? Xamarin.Forms.StackLayout as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.StackLayout' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.Span from the view description
-        member x.CreateAsSpan() : Xamarin.Forms.Span = (x.Create() :?> Xamarin.Forms.Span)
+        member x.CreateAsSpan() : Xamarin.Forms.Span =
+            match x.Create() with
+            | :? Xamarin.Forms.Span as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Span' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.TimePicker from the view description
-        member x.CreateAsTimePicker() : Xamarin.Forms.TimePicker = (x.Create() :?> Xamarin.Forms.TimePicker)
+        member x.CreateAsTimePicker() : Xamarin.Forms.TimePicker =
+            match x.Create() with
+            | :? Xamarin.Forms.TimePicker as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.TimePicker' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.WebView from the view description
-        member x.CreateAsWebView() : Xamarin.Forms.WebView = (x.Create() :?> Xamarin.Forms.WebView)
+        member x.CreateAsWebView() : Xamarin.Forms.WebView =
+            match x.Create() with
+            | :? Xamarin.Forms.WebView as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.WebView' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.Page from the view description
-        member x.CreateAsPage() : Xamarin.Forms.Page = (x.Create() :?> Xamarin.Forms.Page)
+        member x.CreateAsPage() : Xamarin.Forms.Page =
+            match x.Create() with
+            | :? Xamarin.Forms.Page as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Page' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.CarouselPage from the view description
-        member x.CreateAsCarouselPage() : Xamarin.Forms.CarouselPage = (x.Create() :?> Xamarin.Forms.CarouselPage)
+        member x.CreateAsCarouselPage() : Xamarin.Forms.CarouselPage =
+            match x.Create() with
+            | :? Xamarin.Forms.CarouselPage as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.CarouselPage' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.NavigationPage from the view description
-        member x.CreateAsNavigationPage() : Xamarin.Forms.NavigationPage = (x.Create() :?> Xamarin.Forms.NavigationPage)
+        member x.CreateAsNavigationPage() : Xamarin.Forms.NavigationPage =
+            match x.Create() with
+            | :? Xamarin.Forms.NavigationPage as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.NavigationPage' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.TabbedPage from the view description
-        member x.CreateAsTabbedPage() : Xamarin.Forms.TabbedPage = (x.Create() :?> Xamarin.Forms.TabbedPage)
+        member x.CreateAsTabbedPage() : Xamarin.Forms.TabbedPage =
+            match x.Create() with
+            | :? Xamarin.Forms.TabbedPage as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.TabbedPage' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.ContentPage from the view description
-        member x.CreateAsContentPage() : Xamarin.Forms.ContentPage = (x.Create() :?> Xamarin.Forms.ContentPage)
+        member x.CreateAsContentPage() : Xamarin.Forms.ContentPage =
+            match x.Create() with
+            | :? Xamarin.Forms.ContentPage as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.ContentPage' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.MasterDetailPage from the view description
-        member x.CreateAsMasterDetailPage() : Xamarin.Forms.MasterDetailPage = (x.Create() :?> Xamarin.Forms.MasterDetailPage)
+        member x.CreateAsMasterDetailPage() : Xamarin.Forms.MasterDetailPage =
+            match x.Create() with
+            | :? Xamarin.Forms.MasterDetailPage as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.MasterDetailPage' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.Cell from the view description
-        member x.CreateAsCell() : Xamarin.Forms.Cell = (x.Create() :?> Xamarin.Forms.Cell)
+        member x.CreateAsCell() : Xamarin.Forms.Cell =
+            match x.Create() with
+            | :? Xamarin.Forms.Cell as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Cell' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.TextCell from the view description
-        member x.CreateAsTextCell() : Xamarin.Forms.TextCell = (x.Create() :?> Xamarin.Forms.TextCell)
+        member x.CreateAsTextCell() : Xamarin.Forms.TextCell =
+            match x.Create() with
+            | :? Xamarin.Forms.TextCell as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.TextCell' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.ImageCell from the view description
-        member x.CreateAsImageCell() : Xamarin.Forms.ImageCell = (x.Create() :?> Xamarin.Forms.ImageCell)
+        member x.CreateAsImageCell() : Xamarin.Forms.ImageCell =
+            match x.Create() with
+            | :? Xamarin.Forms.ImageCell as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.ImageCell' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.ViewCell from the view description
-        member x.CreateAsViewCell() : Xamarin.Forms.ViewCell = (x.Create() :?> Xamarin.Forms.ViewCell)
+        member x.CreateAsViewCell() : Xamarin.Forms.ViewCell =
+            match x.Create() with
+            | :? Xamarin.Forms.ViewCell as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.ViewCell' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.ListView from the view description
-        member x.CreateAsListView() : Xamarin.Forms.ListView = (x.Create() :?> Xamarin.Forms.ListView)
+        member x.CreateAsListView() : Xamarin.Forms.ListView =
+            match x.Create() with
+            | :? Xamarin.Forms.ListView as res -> res
+            | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.ListView' but got a '%s')" (obj.GetType().ToString()) 
 
 
         /// Try to get the ClassId property in the visual element
@@ -294,14 +447,23 @@ module XamlElementExtensions =
         /// Try to get the PlaceholderColor property in the visual element
         member x.TryPlaceholderColor = match x.Attributes.TryFind("PlaceholderColor") with Some v -> USome(unbox<Xamarin.Forms.Color>(v)) | None -> UNone
 
-        /// Try to get the SearchCommand property in the visual element
-        member x.TrySearchCommand = match x.Attributes.TryFind("SearchCommand") with Some v -> USome(unbox<System.Windows.Input.ICommand>(v)) | None -> UNone
+        /// Try to get the SearchBarCommand property in the visual element
+        member x.TrySearchBarCommand = match x.Attributes.TryFind("SearchBarCommand") with Some v -> USome(unbox<unit -> unit>(v)) | None -> UNone
+
+        /// Try to get the SearchBarCanExecute property in the visual element
+        member x.TrySearchBarCanExecute = match x.Attributes.TryFind("SearchBarCanExecute") with Some v -> USome(unbox<bool>(v)) | None -> UNone
 
         /// Try to get the Text property in the visual element
         member x.TryText = match x.Attributes.TryFind("Text") with Some v -> USome(unbox<string>(v)) | None -> UNone
 
         /// Try to get the TextColor property in the visual element
         member x.TryTextColor = match x.Attributes.TryFind("TextColor") with Some v -> USome(unbox<Xamarin.Forms.Color>(v)) | None -> UNone
+
+        /// Try to get the ButtonCommand property in the visual element
+        member x.TryButtonCommand = match x.Attributes.TryFind("ButtonCommand") with Some v -> USome(unbox<unit -> unit>(v)) | None -> UNone
+
+        /// Try to get the ButtonCanExecute property in the visual element
+        member x.TryButtonCanExecute = match x.Attributes.TryFind("ButtonCanExecute") with Some v -> USome(unbox<bool>(v)) | None -> UNone
 
         /// Try to get the BorderColor property in the visual element
         member x.TryBorderColor = match x.Attributes.TryFind("BorderColor") with Some v -> USome(unbox<Xamarin.Forms.Color>(v)) | None -> UNone
@@ -507,6 +669,9 @@ module XamlElementExtensions =
         /// Try to get the Navigating property in the visual element
         member x.TryNavigating = match x.Attributes.TryFind("Navigating") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.WebNavigatingEventArgs>>(v)) | None -> UNone
 
+        /// Try to get the UseSafeArea property in the visual element
+        member x.TryUseSafeArea = match x.Attributes.TryFind("UseSafeArea") with Some v -> USome(unbox<bool>(v)) | None -> UNone
+
         /// Try to get the ItemsSource property in the visual element
         member x.TryItemsSource = match x.Attributes.TryFind("ItemsSource") with Some v -> USome(unbox<System.Collections.Generic.IList<obj>>(v)) | None -> UNone
 
@@ -521,6 +686,21 @@ module XamlElementExtensions =
 
         /// Try to get the CurrentPageChanged property in the visual element
         member x.TryCurrentPageChanged = match x.Attributes.TryFind("CurrentPageChanged") with Some v -> USome(unbox<System.EventHandler>(v)) | None -> UNone
+
+        /// Try to get the NavigationPagePages property in the visual element
+        member x.TryNavigationPagePages = match x.Attributes.TryFind("NavigationPagePages") with Some v -> USome(unbox<XamlElement[]>(v)) | None -> UNone
+
+        /// Try to get the BackButtonTitle property in the visual element
+        member x.TryBackButtonTitle = match x.Attributes.TryFind("BackButtonTitle") with Some v -> USome(unbox<string>(v)) | None -> UNone
+
+        /// Try to get the HasBackButton property in the visual element
+        member x.TryHasBackButton = match x.Attributes.TryFind("HasBackButton") with Some v -> USome(unbox<bool>(v)) | None -> UNone
+
+        /// Try to get the HasNavigationBar property in the visual element
+        member x.TryHasNavigationBar = match x.Attributes.TryFind("HasNavigationBar") with Some v -> USome(unbox<bool>(v)) | None -> UNone
+
+        /// Try to get the TitleIcon property in the visual element
+        member x.TryTitleIcon = match x.Attributes.TryFind("TitleIcon") with Some v -> USome(unbox<string>(v)) | None -> UNone
 
         /// Try to get the BarBackgroundColor property in the visual element
         member x.TryBarBackgroundColor = match x.Attributes.TryFind("BarBackgroundColor") with Some v -> USome(unbox<Xamarin.Forms.Color>(v)) | None -> UNone
@@ -566,6 +746,12 @@ module XamlElementExtensions =
 
         /// Try to get the TextDetailColor property in the visual element
         member x.TryTextDetailColor = match x.Attributes.TryFind("TextDetailColor") with Some v -> USome(unbox<Xamarin.Forms.Color>(v)) | None -> UNone
+
+        /// Try to get the TextCellCommand property in the visual element
+        member x.TryTextCellCommand = match x.Attributes.TryFind("TextCellCommand") with Some v -> USome(unbox<unit -> unit>(v)) | None -> UNone
+
+        /// Try to get the TextCellCanExecute property in the visual element
+        member x.TryTextCellCanExecute = match x.Attributes.TryFind("TextCellCanExecute") with Some v -> USome(unbox<bool>(v)) | None -> UNone
 
         /// Try to get the View property in the visual element
         member x.TryView = match x.Attributes.TryFind("View") with Some v -> USome(unbox<XamlElement>(v)) | None -> UNone
@@ -759,14 +945,23 @@ module XamlElementExtensions =
         /// Adjusts the PlaceholderColor property in the visual element
         member x.PlaceholderColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("PlaceholderColor", box ((value))))
 
-        /// Adjusts the SearchCommand property in the visual element
-        member x.SearchCommand(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("SearchCommand", box (makeCommand(value))))
+        /// Adjusts the SearchBarCommand property in the visual element
+        member x.SearchBarCommand(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("SearchBarCommand", box ((value))))
+
+        /// Adjusts the SearchBarCanExecute property in the visual element
+        member x.SearchBarCanExecute(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("SearchBarCanExecute", box ((value))))
 
         /// Adjusts the Text property in the visual element
         member x.Text(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Text", box ((value))))
 
         /// Adjusts the TextColor property in the visual element
         member x.TextColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("TextColor", box ((value))))
+
+        /// Adjusts the ButtonCommand property in the visual element
+        member x.ButtonCommand(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ButtonCommand", box ((value))))
+
+        /// Adjusts the ButtonCanExecute property in the visual element
+        member x.ButtonCanExecute(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ButtonCanExecute", box ((value))))
 
         /// Adjusts the BorderColor property in the visual element
         member x.BorderColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("BorderColor", box ((value))))
@@ -972,6 +1167,9 @@ module XamlElementExtensions =
         /// Adjusts the Navigating property in the visual element
         member x.Navigating(value: Xamarin.Forms.WebNavigatingEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Navigating", box ((fun f -> System.EventHandler<Xamarin.Forms.WebNavigatingEventArgs>(fun _sender args -> f args))(value))))
 
+        /// Adjusts the UseSafeArea property in the visual element
+        member x.UseSafeArea(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("UseSafeArea", box ((value))))
+
         /// Adjusts the ItemsSource property in the visual element
         member x.ItemsSource(value: 'T list) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ItemsSource", box ((fun es -> es |> Array.ofList |> Array.map box :> System.Collections.Generic.IList<obj>)(value))))
 
@@ -986,6 +1184,21 @@ module XamlElementExtensions =
 
         /// Adjusts the CurrentPageChanged property in the visual element
         member x.CurrentPageChanged(value: 'T option -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("CurrentPageChanged", box ((fun f -> System.EventHandler(fun sender args -> f ((sender :?> Xamarin.Forms.CarouselPage).SelectedItem |> Option.ofObj |> Option.map unbox<'T>)))(value))))
+
+        /// Adjusts the NavigationPagePages property in the visual element
+        member x.NavigationPagePages(value: XamlElement list) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("NavigationPagePages", box (Array.ofList(value))))
+
+        /// Adjusts the BackButtonTitle property in the visual element
+        member x.BackButtonTitle(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("BackButtonTitle", box ((value))))
+
+        /// Adjusts the HasBackButton property in the visual element
+        member x.HasBackButton(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("HasBackButton", box ((value))))
+
+        /// Adjusts the HasNavigationBar property in the visual element
+        member x.HasNavigationBar(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("HasNavigationBar", box ((value))))
+
+        /// Adjusts the TitleIcon property in the visual element
+        member x.TitleIcon(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("TitleIcon", box ((value))))
 
         /// Adjusts the BarBackgroundColor property in the visual element
         member x.BarBackgroundColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("BarBackgroundColor", box ((value))))
@@ -1031,6 +1244,12 @@ module XamlElementExtensions =
 
         /// Adjusts the TextDetailColor property in the visual element
         member x.TextDetailColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("TextDetailColor", box ((value))))
+
+        /// Adjusts the TextCellCommand property in the visual element
+        member x.TextCellCommand(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("TextCellCommand", box ((value))))
+
+        /// Adjusts the TextCellCanExecute property in the visual element
+        member x.TextCellCanExecute(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("TextCellCanExecute", box ((value))))
 
         /// Adjusts the View property in the visual element
         member x.View(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("View", box ((value))))
@@ -1357,11 +1576,17 @@ module XamlElementExtensions =
     /// Adjusts the PlaceholderColor property in the visual element
     let placeholderColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.PlaceholderColor(value)
 
-    /// Adjusts the SearchCommand property in the visual element
-    let withSearchCommand (value: unit -> unit) (x: XamlElement) = x.SearchCommand(value)
+    /// Adjusts the SearchBarCommand property in the visual element
+    let withSearchBarCommand (value: unit -> unit) (x: XamlElement) = x.SearchBarCommand(value)
 
-    /// Adjusts the SearchCommand property in the visual element
-    let searchCommand (value: unit -> unit) (x: XamlElement) = x.SearchCommand(value)
+    /// Adjusts the SearchBarCommand property in the visual element
+    let searchBarCommand (value: unit -> unit) (x: XamlElement) = x.SearchBarCommand(value)
+
+    /// Adjusts the SearchBarCanExecute property in the visual element
+    let withSearchBarCanExecute (value: bool) (x: XamlElement) = x.SearchBarCanExecute(value)
+
+    /// Adjusts the SearchBarCanExecute property in the visual element
+    let searchBarCanExecute (value: bool) (x: XamlElement) = x.SearchBarCanExecute(value)
 
     /// Adjusts the Text property in the visual element
     let withText (value: string) (x: XamlElement) = x.Text(value)
@@ -1374,6 +1599,18 @@ module XamlElementExtensions =
 
     /// Adjusts the TextColor property in the visual element
     let textColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.TextColor(value)
+
+    /// Adjusts the ButtonCommand property in the visual element
+    let withButtonCommand (value: unit -> unit) (x: XamlElement) = x.ButtonCommand(value)
+
+    /// Adjusts the ButtonCommand property in the visual element
+    let buttonCommand (value: unit -> unit) (x: XamlElement) = x.ButtonCommand(value)
+
+    /// Adjusts the ButtonCanExecute property in the visual element
+    let withButtonCanExecute (value: bool) (x: XamlElement) = x.ButtonCanExecute(value)
+
+    /// Adjusts the ButtonCanExecute property in the visual element
+    let buttonCanExecute (value: bool) (x: XamlElement) = x.ButtonCanExecute(value)
 
     /// Adjusts the BorderColor property in the visual element
     let withBorderColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.BorderColor(value)
@@ -1783,6 +2020,12 @@ module XamlElementExtensions =
     /// Adjusts the Navigating property in the visual element
     let navigating (value: Xamarin.Forms.WebNavigatingEventArgs -> unit) (x: XamlElement) = x.Navigating(value)
 
+    /// Adjusts the UseSafeArea property in the visual element
+    let withUseSafeArea (value: bool) (x: XamlElement) = x.UseSafeArea(value)
+
+    /// Adjusts the UseSafeArea property in the visual element
+    let useSafeArea (value: bool) (x: XamlElement) = x.UseSafeArea(value)
+
     /// Adjusts the ItemsSource property in the visual element
     let withItemsSource (value: 'T list) (x: XamlElement) = x.ItemsSource(value)
 
@@ -1812,6 +2055,36 @@ module XamlElementExtensions =
 
     /// Adjusts the CurrentPageChanged property in the visual element
     let currentPageChanged (value: 'T option -> unit) (x: XamlElement) = x.CurrentPageChanged(value)
+
+    /// Adjusts the NavigationPagePages property in the visual element
+    let withNavigationPagePages (value: XamlElement list) (x: XamlElement) = x.NavigationPagePages(value)
+
+    /// Adjusts the NavigationPagePages property in the visual element
+    let navigationPagePages (value: XamlElement list) (x: XamlElement) = x.NavigationPagePages(value)
+
+    /// Adjusts the BackButtonTitle property in the visual element
+    let withBackButtonTitle (value: string) (x: XamlElement) = x.BackButtonTitle(value)
+
+    /// Adjusts the BackButtonTitle property in the visual element
+    let backButtonTitle (value: string) (x: XamlElement) = x.BackButtonTitle(value)
+
+    /// Adjusts the HasBackButton property in the visual element
+    let withHasBackButton (value: bool) (x: XamlElement) = x.HasBackButton(value)
+
+    /// Adjusts the HasBackButton property in the visual element
+    let hasBackButton (value: bool) (x: XamlElement) = x.HasBackButton(value)
+
+    /// Adjusts the HasNavigationBar property in the visual element
+    let withHasNavigationBar (value: bool) (x: XamlElement) = x.HasNavigationBar(value)
+
+    /// Adjusts the HasNavigationBar property in the visual element
+    let hasNavigationBar (value: bool) (x: XamlElement) = x.HasNavigationBar(value)
+
+    /// Adjusts the TitleIcon property in the visual element
+    let withTitleIcon (value: string) (x: XamlElement) = x.TitleIcon(value)
+
+    /// Adjusts the TitleIcon property in the visual element
+    let titleIcon (value: string) (x: XamlElement) = x.TitleIcon(value)
 
     /// Adjusts the BarBackgroundColor property in the visual element
     let withBarBackgroundColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.BarBackgroundColor(value)
@@ -1902,6 +2175,18 @@ module XamlElementExtensions =
 
     /// Adjusts the TextDetailColor property in the visual element
     let textDetailColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.TextDetailColor(value)
+
+    /// Adjusts the TextCellCommand property in the visual element
+    let withTextCellCommand (value: unit -> unit) (x: XamlElement) = x.TextCellCommand(value)
+
+    /// Adjusts the TextCellCommand property in the visual element
+    let textCellCommand (value: unit -> unit) (x: XamlElement) = x.TextCellCommand(value)
+
+    /// Adjusts the TextCellCanExecute property in the visual element
+    let withTextCellCanExecute (value: bool) (x: XamlElement) = x.TextCellCanExecute(value)
+
+    /// Adjusts the TextCellCanExecute property in the visual element
+    let textCellCanExecute (value: bool) (x: XamlElement) = x.TextCellCanExecute(value)
 
     /// Adjusts the View property in the visual element
     let withView (value: XamlElement) (x: XamlElement) = x.View(value)
@@ -2033,7 +2318,7 @@ type Xaml() =
           |]
 
         let create () =
-            failwith "can'tdef create Xamarin.Forms.Element"
+            failwith "can't create Xamarin.Forms.Element"
 
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Element)
@@ -2041,14 +2326,14 @@ type Xaml() =
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Element::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Element::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.Element>, create, update, Map.ofArray attribs)
@@ -2079,7 +2364,7 @@ type Xaml() =
           |]
 
         let create () =
-            failwith "can'tdef create Xamarin.Forms.VisualElement"
+            failwith "can't create Xamarin.Forms.VisualElement"
 
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.VisualElement)
@@ -2087,140 +2372,140 @@ type Xaml() =
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.VisualElement>, create, update, Map.ofArray attribs)
@@ -2255,7 +2540,7 @@ type Xaml() =
           |]
 
         let create () =
-            failwith "can'tdef create Xamarin.Forms.View"
+            failwith "can't create Xamarin.Forms.View"
 
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.View)
@@ -2263,21 +2548,21 @@ type Xaml() =
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting View::HorizontalOptions "); target.HorizontalOptions <-  value
             | USome _, UNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting View::VerticalOptions "); target.VerticalOptions <-  value
             | USome _, UNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting View::Margin "); target.Margin <-  value
             | USome _, UNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGestureRecognizers
@@ -2285,146 +2570,146 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting View::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting View::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting View::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting View::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting View::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting View::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting View::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting View::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting View::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting View::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting View::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting View::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting View::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting View::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting View::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting View::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting View::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting View::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting View::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting View::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.View>, create, update, Map.ofArray attribs)
@@ -2435,7 +2720,7 @@ type Xaml() =
           |]
 
         let create () =
-            failwith "can'tdef create Xamarin.Forms.IGestureRecognizer"
+            failwith "can't create Xamarin.Forms.IGestureRecognizer"
 
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             ()
@@ -2452,14 +2737,13 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.PanGestureRecognizer())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.PanGestureRecognizer)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTouchPoints
             let valueOpt = source.TryTouchPoints
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TouchPoints "); target.TouchPoints <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting PanGestureRecognizer::TouchPoints "); target.TouchPoints <-  value
             | USome _, UNone -> target.TouchPoints <- 1
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPanUpdated
@@ -2473,14 +2757,14 @@ type Xaml() =
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting PanGestureRecognizer::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting PanGestureRecognizer::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.PanGestureRecognizer>, create, update, Map.ofArray attribs)
@@ -2496,35 +2780,34 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.TapGestureRecognizer())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.TapGestureRecognizer)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryCommand
             let valueOpt = source.TryCommand
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Command "); target.Command <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TapGestureRecognizer::Command "); target.Command <-  value
             | USome _, UNone -> target.Command <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryNumberOfTapsRequired
             let valueOpt = source.TryNumberOfTapsRequired
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting NumberOfTapsRequired "); target.NumberOfTapsRequired <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TapGestureRecognizer::NumberOfTapsRequired "); target.NumberOfTapsRequired <-  value
             | USome _, UNone -> target.NumberOfTapsRequired <- 1
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TapGestureRecognizer::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TapGestureRecognizer::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.TapGestureRecognizer>, create, update, Map.ofArray attribs)
@@ -2541,42 +2824,41 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.ClickGestureRecognizer())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ClickGestureRecognizer)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryCommand
             let valueOpt = source.TryCommand
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Command "); target.Command <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClickGestureRecognizer::Command "); target.Command <-  value
             | USome _, UNone -> target.Command <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryNumberOfClicksRequired
             let valueOpt = source.TryNumberOfClicksRequired
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting NumberOfClicksRequired "); target.NumberOfClicksRequired <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClickGestureRecognizer::NumberOfClicksRequired "); target.NumberOfClicksRequired <-  value
             | USome _, UNone -> target.NumberOfClicksRequired <- 1
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryButtons
             let valueOpt = source.TryButtons
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Buttons "); target.Buttons <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClickGestureRecognizer::Buttons "); target.Buttons <-  value
             | USome _, UNone -> target.Buttons <- Xamarin.Forms.ButtonsMask.Primary
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClickGestureRecognizer::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClickGestureRecognizer::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.ClickGestureRecognizer>, create, update, Map.ofArray attribs)
@@ -2592,14 +2874,13 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.PinchGestureRecognizer())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.PinchGestureRecognizer)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsPinching
             let valueOpt = source.TryIsPinching
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsPinching "); target.IsPinching <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting PinchGestureRecognizer::IsPinching "); target.IsPinching <-  value
             | USome _, UNone -> target.IsPinching <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPinchUpdated
@@ -2613,14 +2894,14 @@ type Xaml() =
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting PinchGestureRecognizer::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting PinchGestureRecognizer::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.PinchGestureRecognizer>, create, update, Map.ofArray attribs)
@@ -2658,42 +2939,41 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.ActivityIndicator())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ActivityIndicator)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryColor
             let valueOpt = source.TryColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Color "); target.Color <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ActivityIndicator::Color "); target.Color <-  value
             | USome _, UNone -> target.Color <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsRunning
             let valueOpt = source.TryIsRunning
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsRunning "); target.IsRunning <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ActivityIndicator::IsRunning "); target.IsRunning <-  value
             | USome _, UNone -> target.IsRunning <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ActivityIndicator::HorizontalOptions "); target.HorizontalOptions <-  value
             | USome _, UNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ActivityIndicator::VerticalOptions "); target.VerticalOptions <-  value
             | USome _, UNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ActivityIndicator::Margin "); target.Margin <-  value
             | USome _, UNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGestureRecognizers
@@ -2701,146 +2981,146 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ActivityIndicator::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ActivityIndicator::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ActivityIndicator::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ActivityIndicator::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ActivityIndicator::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ActivityIndicator::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ActivityIndicator::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ActivityIndicator::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ActivityIndicator::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ActivityIndicator::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ActivityIndicator::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ActivityIndicator::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ActivityIndicator::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ActivityIndicator::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ActivityIndicator::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ActivityIndicator::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ActivityIndicator::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ActivityIndicator::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ActivityIndicator::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ActivityIndicator::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.ActivityIndicator>, create, update, Map.ofArray attribs)
@@ -2877,35 +3157,34 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.BoxView())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.BoxView)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryColor
             let valueOpt = source.TryColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Color "); target.Color <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BoxView::Color "); target.Color <-  value
             | USome _, UNone -> target.Color <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BoxView::HorizontalOptions "); target.HorizontalOptions <-  value
             | USome _, UNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BoxView::VerticalOptions "); target.VerticalOptions <-  value
             | USome _, UNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BoxView::Margin "); target.Margin <-  value
             | USome _, UNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGestureRecognizers
@@ -2913,146 +3192,146 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BoxView::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BoxView::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BoxView::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BoxView::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BoxView::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BoxView::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BoxView::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BoxView::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BoxView::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BoxView::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BoxView::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BoxView::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BoxView::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BoxView::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BoxView::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BoxView::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BoxView::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BoxView::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BoxView::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BoxView::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.BoxView>, create, update, Map.ofArray attribs)
@@ -3089,35 +3368,34 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.ProgressBar())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ProgressBar)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryProgress
             let valueOpt = source.TryProgress
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Progress "); target.Progress <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ProgressBar::Progress "); target.Progress <-  value
             | USome _, UNone -> target.Progress <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ProgressBar::HorizontalOptions "); target.HorizontalOptions <-  value
             | USome _, UNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ProgressBar::VerticalOptions "); target.VerticalOptions <-  value
             | USome _, UNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ProgressBar::Margin "); target.Margin <-  value
             | USome _, UNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGestureRecognizers
@@ -3125,146 +3403,146 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ProgressBar::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ProgressBar::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ProgressBar::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ProgressBar::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ProgressBar::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ProgressBar::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ProgressBar::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ProgressBar::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ProgressBar::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ProgressBar::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ProgressBar::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ProgressBar::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ProgressBar::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ProgressBar::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ProgressBar::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ProgressBar::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ProgressBar::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ProgressBar::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ProgressBar::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ProgressBar::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.ProgressBar>, create, update, Map.ofArray attribs)
@@ -3304,7 +3582,6 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.ScrollView())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ScrollView)
             let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryContent
@@ -3322,42 +3599,42 @@ type Xaml() =
             let valueOpt = source.TryScrollOrientation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Orientation "); target.Orientation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ScrollView::Orientation "); target.Orientation <-  value
             | USome _, UNone -> target.Orientation <- Unchecked.defaultof<Xamarin.Forms.ScrollOrientation>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsClippedToBounds
             let valueOpt = source.TryIsClippedToBounds
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsClippedToBounds "); target.IsClippedToBounds <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ScrollView::IsClippedToBounds "); target.IsClippedToBounds <-  value
             | USome _, UNone -> target.IsClippedToBounds <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPadding
             let valueOpt = source.TryPadding
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Padding "); target.Padding <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ScrollView::Padding "); target.Padding <-  value
             | USome _, UNone -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ScrollView::HorizontalOptions "); target.HorizontalOptions <-  value
             | USome _, UNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ScrollView::VerticalOptions "); target.VerticalOptions <-  value
             | USome _, UNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ScrollView::Margin "); target.Margin <-  value
             | USome _, UNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGestureRecognizers
@@ -3365,152 +3642,152 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ScrollView::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ScrollView::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ScrollView::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ScrollView::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ScrollView::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ScrollView::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ScrollView::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ScrollView::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ScrollView::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ScrollView::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ScrollView::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ScrollView::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ScrollView::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ScrollView::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ScrollView::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ScrollView::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ScrollView::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ScrollView::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ScrollView::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ScrollView::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.ScrollView>, create, update, Map.ofArray attribs)
 
     /// Describes a SearchBar in the view
-    static member SearchBar(?cancelButtonColor: Xamarin.Forms.Color, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?placeholder: string, ?placeholderColor: Xamarin.Forms.Color, ?searchCommand: unit -> unit, ?text: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member SearchBar(?cancelButtonColor: Xamarin.Forms.Color, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?placeholder: string, ?placeholderColor: Xamarin.Forms.Color, ?searchCommand: unit -> unit, ?canExecute: bool, ?text: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match cancelButtonColor with None -> () | Some v -> yield ("CancelButtonColor", box ((v))) 
             match fontFamily with None -> () | Some v -> yield ("FontFamily", box ((v))) 
@@ -3519,7 +3796,8 @@ type Xaml() =
             match horizontalTextAlignment with None -> () | Some v -> yield ("HorizontalTextAlignment", box ((v))) 
             match placeholder with None -> () | Some v -> yield ("Placeholder", box ((v))) 
             match placeholderColor with None -> () | Some v -> yield ("PlaceholderColor", box ((v))) 
-            match searchCommand with None -> () | Some v -> yield ("SearchCommand", box (makeCommand(v))) 
+            match searchCommand with None -> () | Some v -> yield ("SearchBarCommand", box ((v))) 
+            match canExecute with None -> () | Some v -> yield ("SearchBarCanExecute", box ((v))) 
             match text with None -> () | Some v -> yield ("Text", box ((v))) 
             match textColor with None -> () | Some v -> yield ("TextColor", box ((v))) 
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
@@ -3550,98 +3828,96 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.SearchBar())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.SearchBar)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryCancelButtonColor
             let valueOpt = source.TryCancelButtonColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CancelButtonColor "); target.CancelButtonColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::CancelButtonColor "); target.CancelButtonColor <-  value
             | USome _, UNone -> target.CancelButtonColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryFontFamily
             let valueOpt = source.TryFontFamily
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting FontFamily "); target.FontFamily <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::FontFamily "); target.FontFamily <-  value
             | USome _, UNone -> target.FontFamily <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryFontAttributes
             let valueOpt = source.TryFontAttributes
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting FontAttributes "); target.FontAttributes <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::FontAttributes "); target.FontAttributes <-  value
             | USome _, UNone -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryFontSize
             let valueOpt = source.TryFontSize
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting FontSize "); target.FontSize <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::FontSize "); target.FontSize <-  value
             | USome _, UNone -> target.FontSize <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHorizontalTextAlignment
             let valueOpt = source.TryHorizontalTextAlignment
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalTextAlignment "); target.HorizontalTextAlignment <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::HorizontalTextAlignment "); target.HorizontalTextAlignment <-  value
             | USome _, UNone -> target.HorizontalTextAlignment <- Xamarin.Forms.TextAlignment.Start
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPlaceholder
             let valueOpt = source.TryPlaceholder
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Placeholder "); target.Placeholder <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::Placeholder "); target.Placeholder <-  value
             | USome _, UNone -> target.Placeholder <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPlaceholderColor
             let valueOpt = source.TryPlaceholderColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting PlaceholderColor "); target.PlaceholderColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::PlaceholderColor "); target.PlaceholderColor <-  value
             | USome _, UNone -> target.PlaceholderColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
-            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TrySearchCommand
-            let valueOpt = source.TrySearchCommand
-            match prevValueOpt, valueOpt with
-            | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchCommand "); target.SearchCommand <-  value
-            | USome _, UNone -> target.SearchCommand <- null
-            | UNone, UNone -> ()
+            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TrySearchBarCommand
+            let valueOpt = source.TrySearchBarCommand
+            (fun _ _ _ -> ()) prevValueOpt valueOpt target
+            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TrySearchBarCanExecute
+            let valueOpt = source.TrySearchBarCanExecute
+            updateCommand (match prevOpt with UNone -> UNone | USome prev -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::Command "); prev.TrySearchBarCommand) prevValueOpt source.TrySearchBarCommand valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::Command "); target.SearchCommand <- cmd) prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryText
             let valueOpt = source.TryText
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Text "); target.Text <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::Text "); target.Text <-  value
             | USome _, UNone -> target.Text <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTextColor
             let valueOpt = source.TryTextColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TextColor "); target.TextColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::TextColor "); target.TextColor <-  value
             | USome _, UNone -> target.TextColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::HorizontalOptions "); target.HorizontalOptions <-  value
             | USome _, UNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::VerticalOptions "); target.VerticalOptions <-  value
             | USome _, UNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::Margin "); target.Margin <-  value
             | USome _, UNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGestureRecognizers
@@ -3649,155 +3925,156 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.SearchBar>, create, update, Map.ofArray attribs)
 
     /// Describes a Button in the view
-    static member Button(?text: string, ?command: unit -> unit, ?borderColor: Xamarin.Forms.Color, ?borderWidth: double, ?commandParameter: System.Object, ?contentLayout: Xamarin.Forms.Button.ButtonContentLayout, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?image: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member Button(?text: string, ?command: unit -> unit, ?canExecute: bool, ?borderColor: Xamarin.Forms.Color, ?borderWidth: double, ?commandParameter: System.Object, ?contentLayout: Xamarin.Forms.Button.ButtonContentLayout, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?image: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match text with None -> () | Some v -> yield ("Text", box ((v))) 
-            match command with None -> () | Some v -> yield ("Command", box (makeCommand(v))) 
+            match command with None -> () | Some v -> yield ("ButtonCommand", box ((v))) 
+            match canExecute with None -> () | Some v -> yield ("ButtonCanExecute", box ((v))) 
             match borderColor with None -> () | Some v -> yield ("BorderColor", box ((v))) 
             match borderWidth with None -> () | Some v -> yield ("BorderWidth", box ((v))) 
             match commandParameter with None -> () | Some v -> yield ("CommandParameter", box ((v))) 
@@ -3835,105 +4112,103 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.Button())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Button)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryText
             let valueOpt = source.TryText
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Text "); target.Text <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::Text "); target.Text <-  value
             | USome _, UNone -> target.Text <- null
             | UNone, UNone -> ()
-            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryCommand
-            let valueOpt = source.TryCommand
-            match prevValueOpt, valueOpt with
-            | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Command "); target.Command <-  value
-            | USome _, UNone -> target.Command <- null
-            | UNone, UNone -> ()
+            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryButtonCommand
+            let valueOpt = source.TryButtonCommand
+            (fun _ _ _ -> ()) prevValueOpt valueOpt target
+            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryButtonCanExecute
+            let valueOpt = source.TryButtonCanExecute
+            updateCommand (match prevOpt with UNone -> UNone | USome prev -> prev.TryButtonCommand) prevValueOpt source.TryButtonCommand valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine("Setting Button::Command "); target.Command <- cmd) prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBorderColor
             let valueOpt = source.TryBorderColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BorderColor "); target.BorderColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::BorderColor "); target.BorderColor <-  value
             | USome _, UNone -> target.BorderColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBorderWidth
             let valueOpt = source.TryBorderWidth
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BorderWidth "); target.BorderWidth <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::BorderWidth "); target.BorderWidth <-  value
             | USome _, UNone -> target.BorderWidth <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryCommandParameter
             let valueOpt = source.TryCommandParameter
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CommandParameter "); target.CommandParameter <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::CommandParameter "); target.CommandParameter <-  value
             | USome _, UNone -> target.CommandParameter <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryContentLayout
             let valueOpt = source.TryContentLayout
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentLayout "); target.ContentLayout <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::ContentLayout "); target.ContentLayout <-  value
             | USome _, UNone -> target.ContentLayout <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryFontFamily
             let valueOpt = source.TryFontFamily
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting FontFamily "); target.FontFamily <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::FontFamily "); target.FontFamily <-  value
             | USome _, UNone -> target.FontFamily <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryFontAttributes
             let valueOpt = source.TryFontAttributes
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting FontAttributes "); target.FontAttributes <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::FontAttributes "); target.FontAttributes <-  value
             | USome _, UNone -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryFontSize
             let valueOpt = source.TryFontSize
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting FontSize "); target.FontSize <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::FontSize "); target.FontSize <-  value
             | USome _, UNone -> target.FontSize <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryButtonImageSource
             let valueOpt = source.TryButtonImageSource
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Image "); target.Image <- makeFileImageSource  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::Image "); target.Image <- makeFileImageSource  value
             | USome _, UNone -> target.Image <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTextColor
             let valueOpt = source.TryTextColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TextColor "); target.TextColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::TextColor "); target.TextColor <-  value
             | USome _, UNone -> target.TextColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::HorizontalOptions "); target.HorizontalOptions <-  value
             | USome _, UNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::VerticalOptions "); target.VerticalOptions <-  value
             | USome _, UNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::Margin "); target.Margin <-  value
             | USome _, UNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGestureRecognizers
@@ -3941,146 +4216,146 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.Button>, create, update, Map.ofArray attribs)
@@ -4120,28 +4395,27 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.Slider())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Slider)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimum
             let valueOpt = source.TryMinimum
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Minimum "); target.Minimum <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Slider::Minimum "); target.Minimum <-  value
             | USome _, UNone -> target.Minimum <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMaximum
             let valueOpt = source.TryMaximum
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Maximum "); target.Maximum <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Slider::Maximum "); target.Maximum <-  value
             | USome _, UNone -> target.Maximum <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryValue
             let valueOpt = source.TryValue
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Value "); target.Value <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Slider::Value "); target.Value <-  value
             | USome _, UNone -> target.Value <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryValueChanged
@@ -4155,21 +4429,21 @@ type Xaml() =
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Slider::HorizontalOptions "); target.HorizontalOptions <-  value
             | USome _, UNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Slider::VerticalOptions "); target.VerticalOptions <-  value
             | USome _, UNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Slider::Margin "); target.Margin <-  value
             | USome _, UNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGestureRecognizers
@@ -4177,146 +4451,146 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Slider::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Slider::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Slider::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Slider::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Slider::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Slider::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Slider::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Slider::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Slider::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Slider::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Slider::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Slider::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Slider::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Slider::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Slider::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Slider::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Slider::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Slider::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Slider::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Slider::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.Slider>, create, update, Map.ofArray attribs)
@@ -4357,35 +4631,34 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.Stepper())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Stepper)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimum
             let valueOpt = source.TryMinimum
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Minimum "); target.Minimum <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::Minimum "); target.Minimum <-  value
             | USome _, UNone -> target.Minimum <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMaximum
             let valueOpt = source.TryMaximum
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Maximum "); target.Maximum <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::Maximum "); target.Maximum <-  value
             | USome _, UNone -> target.Maximum <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryValue
             let valueOpt = source.TryValue
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Value "); target.Value <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::Value "); target.Value <-  value
             | USome _, UNone -> target.Value <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIncrement
             let valueOpt = source.TryIncrement
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Increment "); target.Increment <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::Increment "); target.Increment <-  value
             | USome _, UNone -> target.Increment <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryValueChanged
@@ -4399,21 +4672,21 @@ type Xaml() =
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::HorizontalOptions "); target.HorizontalOptions <-  value
             | USome _, UNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::VerticalOptions "); target.VerticalOptions <-  value
             | USome _, UNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::Margin "); target.Margin <-  value
             | USome _, UNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGestureRecognizers
@@ -4421,146 +4694,146 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.Stepper>, create, update, Map.ofArray attribs)
@@ -4598,14 +4871,13 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.Switch())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Switch)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsToggled
             let valueOpt = source.TryIsToggled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsToggled "); target.IsToggled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Switch::IsToggled "); target.IsToggled <-  value
             | USome _, UNone -> target.IsToggled <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryToggled
@@ -4619,21 +4891,21 @@ type Xaml() =
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Switch::HorizontalOptions "); target.HorizontalOptions <-  value
             | USome _, UNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Switch::VerticalOptions "); target.VerticalOptions <-  value
             | USome _, UNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Switch::Margin "); target.Margin <-  value
             | USome _, UNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGestureRecognizers
@@ -4641,146 +4913,146 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Switch::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Switch::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Switch::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Switch::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Switch::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Switch::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Switch::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Switch::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Switch::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Switch::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Switch::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Switch::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Switch::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Switch::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Switch::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Switch::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Switch::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Switch::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Switch::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Switch::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.Switch>, create, update, Map.ofArray attribs)
@@ -4799,21 +5071,20 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.SwitchCell())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.SwitchCell)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOn
             let valueOpt = source.TryOn
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting On "); target.On <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SwitchCell::On "); target.On <-  value
             | USome _, UNone -> target.On <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryText
             let valueOpt = source.TryText
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Text "); target.Text <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SwitchCell::Text "); target.Text <-  value
             | USome _, UNone -> target.Text <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOnChanged
@@ -4827,28 +5098,28 @@ type Xaml() =
             let valueOpt = source.TryHeight
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Height "); target.Height <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SwitchCell::Height "); target.Height <-  value
             | USome _, UNone -> target.Height <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SwitchCell::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SwitchCell::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SwitchCell::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.SwitchCell>, create, update, Map.ofArray attribs)
@@ -4888,52 +5159,51 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.TableView())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.TableView)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIntent
             let valueOpt = source.TryIntent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Intent "); target.Intent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TableView::Intent "); target.Intent <-  value
             | USome _, UNone -> target.Intent <- Unchecked.defaultof<Xamarin.Forms.TableIntent>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHasUnevenRows
             let valueOpt = source.TryHasUnevenRows
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HasUnevenRows "); target.HasUnevenRows <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TableView::HasUnevenRows "); target.HasUnevenRows <-  value
             | USome _, UNone -> target.HasUnevenRows <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRowHeight
             let valueOpt = source.TryRowHeight
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RowHeight "); target.RowHeight <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TableView::RowHeight "); target.RowHeight <-  value
             | USome _, UNone -> target.RowHeight <- -1
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTableRoot
             let valueOpt = source.TryTableRoot
-            updateTableViewItems prevValueOpt valueOpt target (fun (x:XamlElement) -> x.CreateAsCell()) (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType) (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+            updateTableViewItems prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TableView::HorizontalOptions "); target.HorizontalOptions <-  value
             | USome _, UNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TableView::VerticalOptions "); target.VerticalOptions <-  value
             | USome _, UNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TableView::Margin "); target.Margin <-  value
             | USome _, UNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGestureRecognizers
@@ -4941,146 +5211,146 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TableView::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TableView::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TableView::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TableView::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TableView::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TableView::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TableView::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TableView::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TableView::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TableView::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TableView::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TableView::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TableView::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TableView::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TableView::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TableView::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TableView::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TableView::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TableView::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TableView::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.TableView>, create, update, Map.ofArray attribs)
@@ -5123,7 +5393,6 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.Grid())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Grid)
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGridRowDefinitions
@@ -5131,27 +5400,27 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.RowDefinitions
                 (fun (x:XamlElement) -> x.CreateAsRowDefinition())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGridColumnDefinitions
             let collOpt = source.TryGridColumnDefinitions
             updateIList prevCollOpt collOpt target.ColumnDefinitions
                 (fun (x:XamlElement) -> x.CreateAsColumnDefinition())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRowSpacing
             let valueOpt = source.TryRowSpacing
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RowSpacing "); target.RowSpacing <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::RowSpacing "); target.RowSpacing <-  value
             | USome _, UNone -> target.RowSpacing <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryColumnSpacing
             let valueOpt = source.TryColumnSpacing
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ColumnSpacing "); target.ColumnSpacing <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::ColumnSpacing "); target.ColumnSpacing <-  value
             | USome _, UNone -> target.ColumnSpacing <- 0.0
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryChildren
@@ -5184,41 +5453,41 @@ type Xaml() =
                     | USome _, UNone -> Xamarin.Forms.Grid.SetColumnSpan(targetChild, 0) // TODO: not always perfect, should set back to original default?
                     | _ -> ()
                     ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsClippedToBounds
             let valueOpt = source.TryIsClippedToBounds
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsClippedToBounds "); target.IsClippedToBounds <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::IsClippedToBounds "); target.IsClippedToBounds <-  value
             | USome _, UNone -> target.IsClippedToBounds <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPadding
             let valueOpt = source.TryPadding
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Padding "); target.Padding <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::Padding "); target.Padding <-  value
             | USome _, UNone -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::HorizontalOptions "); target.HorizontalOptions <-  value
             | USome _, UNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::VerticalOptions "); target.VerticalOptions <-  value
             | USome _, UNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::Margin "); target.Margin <-  value
             | USome _, UNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGestureRecognizers
@@ -5226,146 +5495,146 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.Grid>, create, update, Map.ofArray attribs)
@@ -5404,7 +5673,6 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.AbsoluteLayout())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.AbsoluteLayout)
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryChildren
@@ -5425,41 +5693,41 @@ type Xaml() =
                     | USome _, UNone -> Xamarin.Forms.AbsoluteLayout.SetLayoutFlags(targetChild, Xamarin.Forms.AbsoluteLayoutFlags.None) // TODO: not always perfect, should set back to original default?
                     | _ -> ()
                     ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsClippedToBounds
             let valueOpt = source.TryIsClippedToBounds
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsClippedToBounds "); target.IsClippedToBounds <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AbsoluteLayout::IsClippedToBounds "); target.IsClippedToBounds <-  value
             | USome _, UNone -> target.IsClippedToBounds <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPadding
             let valueOpt = source.TryPadding
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Padding "); target.Padding <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AbsoluteLayout::Padding "); target.Padding <-  value
             | USome _, UNone -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AbsoluteLayout::HorizontalOptions "); target.HorizontalOptions <-  value
             | USome _, UNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AbsoluteLayout::VerticalOptions "); target.VerticalOptions <-  value
             | USome _, UNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AbsoluteLayout::Margin "); target.Margin <-  value
             | USome _, UNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGestureRecognizers
@@ -5467,146 +5735,146 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AbsoluteLayout::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AbsoluteLayout::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AbsoluteLayout::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AbsoluteLayout::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AbsoluteLayout::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AbsoluteLayout::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AbsoluteLayout::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AbsoluteLayout::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AbsoluteLayout::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AbsoluteLayout::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AbsoluteLayout::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AbsoluteLayout::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AbsoluteLayout::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AbsoluteLayout::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AbsoluteLayout::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AbsoluteLayout::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AbsoluteLayout::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AbsoluteLayout::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AbsoluteLayout::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AbsoluteLayout::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.AbsoluteLayout>, create, update, Map.ofArray attribs)
@@ -5645,7 +5913,6 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.RelativeLayout())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.RelativeLayout)
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryChildren
@@ -5684,41 +5951,41 @@ type Xaml() =
                     | USome _, UNone -> Xamarin.Forms.RelativeLayout.SetYConstraint(targetChild, null) // TODO: not always perfect, should set back to original default?
                     | _ -> ()
                     ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsClippedToBounds
             let valueOpt = source.TryIsClippedToBounds
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsClippedToBounds "); target.IsClippedToBounds <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RelativeLayout::IsClippedToBounds "); target.IsClippedToBounds <-  value
             | USome _, UNone -> target.IsClippedToBounds <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPadding
             let valueOpt = source.TryPadding
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Padding "); target.Padding <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RelativeLayout::Padding "); target.Padding <-  value
             | USome _, UNone -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RelativeLayout::HorizontalOptions "); target.HorizontalOptions <-  value
             | USome _, UNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RelativeLayout::VerticalOptions "); target.VerticalOptions <-  value
             | USome _, UNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RelativeLayout::Margin "); target.Margin <-  value
             | USome _, UNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGestureRecognizers
@@ -5726,146 +5993,146 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RelativeLayout::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RelativeLayout::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RelativeLayout::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RelativeLayout::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RelativeLayout::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RelativeLayout::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RelativeLayout::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RelativeLayout::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RelativeLayout::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RelativeLayout::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RelativeLayout::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RelativeLayout::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RelativeLayout::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RelativeLayout::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RelativeLayout::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RelativeLayout::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RelativeLayout::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RelativeLayout::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RelativeLayout::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RelativeLayout::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.RelativeLayout>, create, update, Map.ofArray attribs)
@@ -5878,14 +6145,13 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.RowDefinition())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.RowDefinition)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRowDefinitionHeight
             let valueOpt = source.TryRowDefinitionHeight
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Height "); target.Height <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RowDefinition::Height "); target.Height <-  value
             | USome _, UNone -> target.Height <- Xamarin.Forms.GridLength.Auto
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.RowDefinition>, create, update, Map.ofArray attribs)
@@ -5898,14 +6164,13 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.ColumnDefinition())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ColumnDefinition)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryColumnDefinitionWidth
             let valueOpt = source.TryColumnDefinitionWidth
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Width "); target.Width <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ColumnDefinition::Width "); target.Width <-  value
             | USome _, UNone -> target.Width <- Xamarin.Forms.GridLength.Auto
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.ColumnDefinition>, create, update, Map.ofArray attribs)
@@ -5944,7 +6209,6 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.ContentView())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ContentView)
             let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryContent
@@ -5962,35 +6226,35 @@ type Xaml() =
             let valueOpt = source.TryIsClippedToBounds
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsClippedToBounds "); target.IsClippedToBounds <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentView::IsClippedToBounds "); target.IsClippedToBounds <-  value
             | USome _, UNone -> target.IsClippedToBounds <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPadding
             let valueOpt = source.TryPadding
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Padding "); target.Padding <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentView::Padding "); target.Padding <-  value
             | USome _, UNone -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentView::HorizontalOptions "); target.HorizontalOptions <-  value
             | USome _, UNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentView::VerticalOptions "); target.VerticalOptions <-  value
             | USome _, UNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentView::Margin "); target.Margin <-  value
             | USome _, UNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGestureRecognizers
@@ -5998,146 +6262,146 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentView::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentView::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentView::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentView::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentView::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentView::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentView::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentView::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentView::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentView::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentView::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentView::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentView::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentView::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentView::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentView::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentView::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentView::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentView::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentView::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.ContentView>, create, update, Map.ofArray attribs)
@@ -6175,42 +6439,41 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.TemplatedView())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.TemplatedView)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsClippedToBounds
             let valueOpt = source.TryIsClippedToBounds
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsClippedToBounds "); target.IsClippedToBounds <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TemplatedView::IsClippedToBounds "); target.IsClippedToBounds <-  value
             | USome _, UNone -> target.IsClippedToBounds <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPadding
             let valueOpt = source.TryPadding
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Padding "); target.Padding <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TemplatedView::Padding "); target.Padding <-  value
             | USome _, UNone -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TemplatedView::HorizontalOptions "); target.HorizontalOptions <-  value
             | USome _, UNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TemplatedView::VerticalOptions "); target.VerticalOptions <-  value
             | USome _, UNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TemplatedView::Margin "); target.Margin <-  value
             | USome _, UNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGestureRecognizers
@@ -6218,146 +6481,146 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TemplatedView::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TemplatedView::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TemplatedView::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TemplatedView::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TemplatedView::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TemplatedView::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TemplatedView::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TemplatedView::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TemplatedView::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TemplatedView::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TemplatedView::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TemplatedView::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TemplatedView::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TemplatedView::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TemplatedView::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TemplatedView::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TemplatedView::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TemplatedView::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TemplatedView::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TemplatedView::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.TemplatedView>, create, update, Map.ofArray attribs)
@@ -6398,35 +6661,34 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.DatePicker())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.DatePicker)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryDate
             let valueOpt = source.TryDate
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Date "); target.Date <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::Date "); target.Date <-  value
             | USome _, UNone -> target.Date <- Unchecked.defaultof<System.DateTime>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryFormat
             let valueOpt = source.TryFormat
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Format "); target.Format <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::Format "); target.Format <-  value
             | USome _, UNone -> target.Format <- "d"
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumDate
             let valueOpt = source.TryMinimumDate
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumDate "); target.MinimumDate <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::MinimumDate "); target.MinimumDate <-  value
             | USome _, UNone -> target.MinimumDate <- new System.DateTime(1900, 1, 1)
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMaximumDate
             let valueOpt = source.TryMaximumDate
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MaximumDate "); target.MaximumDate <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::MaximumDate "); target.MaximumDate <-  value
             | USome _, UNone -> target.MaximumDate <- new System.DateTime(2100, 12, 31)
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryDateSelected
@@ -6440,21 +6702,21 @@ type Xaml() =
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::HorizontalOptions "); target.HorizontalOptions <-  value
             | USome _, UNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::VerticalOptions "); target.VerticalOptions <-  value
             | USome _, UNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::Margin "); target.Margin <-  value
             | USome _, UNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGestureRecognizers
@@ -6462,146 +6724,146 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.DatePicker>, create, update, Map.ofArray attribs)
@@ -6642,35 +6904,34 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.Picker())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Picker)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPickerItemsSource
             let valueOpt = source.TryPickerItemsSource
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ItemsSource "); target.ItemsSource <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::ItemsSource "); target.ItemsSource <-  value
             | USome _, UNone -> target.ItemsSource <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TrySelectedIndex
             let valueOpt = source.TrySelectedIndex
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SelectedIndex "); target.SelectedIndex <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::SelectedIndex "); target.SelectedIndex <-  value
             | USome _, UNone -> target.SelectedIndex <- 0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTitle
             let valueOpt = source.TryTitle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Title "); target.Title <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::Title "); target.Title <-  value
             | USome _, UNone -> target.Title <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTextColor
             let valueOpt = source.TryTextColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TextColor "); target.TextColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::TextColor "); target.TextColor <-  value
             | USome _, UNone -> target.TextColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TrySelectedIndexChanged
@@ -6684,21 +6945,21 @@ type Xaml() =
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::HorizontalOptions "); target.HorizontalOptions <-  value
             | USome _, UNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::VerticalOptions "); target.VerticalOptions <-  value
             | USome _, UNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::Margin "); target.Margin <-  value
             | USome _, UNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGestureRecognizers
@@ -6706,146 +6967,146 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.Picker>, create, update, Map.ofArray attribs)
@@ -6887,28 +7148,27 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.Frame())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Frame)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOutlineColor
             let valueOpt = source.TryOutlineColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting OutlineColor "); target.OutlineColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::OutlineColor "); target.OutlineColor <-  value
             | USome _, UNone -> target.OutlineColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryFrameCornerRadius
             let valueOpt = source.TryFrameCornerRadius
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CornerRadius "); target.CornerRadius <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::CornerRadius "); target.CornerRadius <-  value
             | USome _, UNone -> target.CornerRadius <- -1.0f
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHasShadow
             let valueOpt = source.TryHasShadow
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HasShadow "); target.HasShadow <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::HasShadow "); target.HasShadow <-  value
             | USome _, UNone -> target.HasShadow <- true
             | UNone, UNone -> ()
             let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryContent
@@ -6926,35 +7186,35 @@ type Xaml() =
             let valueOpt = source.TryIsClippedToBounds
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsClippedToBounds "); target.IsClippedToBounds <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::IsClippedToBounds "); target.IsClippedToBounds <-  value
             | USome _, UNone -> target.IsClippedToBounds <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPadding
             let valueOpt = source.TryPadding
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Padding "); target.Padding <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::Padding "); target.Padding <-  value
             | USome _, UNone -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::HorizontalOptions "); target.HorizontalOptions <-  value
             | USome _, UNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::VerticalOptions "); target.VerticalOptions <-  value
             | USome _, UNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::Margin "); target.Margin <-  value
             | USome _, UNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGestureRecognizers
@@ -6962,146 +7222,146 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.Frame>, create, update, Map.ofArray attribs)
@@ -7140,49 +7400,48 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.Image())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Image)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryImageSource
             let valueOpt = source.TryImageSource
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Source "); target.Source <- makeImageSource  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Image::Source "); target.Source <- makeImageSource  value
             | USome _, UNone -> target.Source <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAspect
             let valueOpt = source.TryAspect
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Aspect "); target.Aspect <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Image::Aspect "); target.Aspect <-  value
             | USome _, UNone -> target.Aspect <- Xamarin.Forms.Aspect.AspectFit
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsOpaque
             let valueOpt = source.TryIsOpaque
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsOpaque "); target.IsOpaque <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Image::IsOpaque "); target.IsOpaque <-  value
             | USome _, UNone -> target.IsOpaque <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Image::HorizontalOptions "); target.HorizontalOptions <-  value
             | USome _, UNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Image::VerticalOptions "); target.VerticalOptions <-  value
             | USome _, UNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Image::Margin "); target.Margin <-  value
             | USome _, UNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGestureRecognizers
@@ -7190,146 +7449,146 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Image::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Image::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Image::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Image::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Image::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Image::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Image::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Image::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Image::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Image::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Image::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Image::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Image::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Image::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Image::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Image::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Image::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Image::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Image::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Image::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.Image>, create, update, Map.ofArray attribs)
@@ -7365,7 +7624,7 @@ type Xaml() =
           |]
 
         let create () =
-            failwith "can'tdef create Xamarin.Forms.InputView"
+            failwith "can't create Xamarin.Forms.InputView"
 
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.InputView)
@@ -7373,28 +7632,28 @@ type Xaml() =
             let valueOpt = source.TryKeyboard
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Keyboard "); target.Keyboard <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputView::Keyboard "); target.Keyboard <-  value
             | USome _, UNone -> target.Keyboard <- Xamarin.Forms.Keyboard.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputView::HorizontalOptions "); target.HorizontalOptions <-  value
             | USome _, UNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputView::VerticalOptions "); target.VerticalOptions <-  value
             | USome _, UNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputView::Margin "); target.Margin <-  value
             | USome _, UNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGestureRecognizers
@@ -7402,146 +7661,146 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputView::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputView::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputView::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputView::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputView::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputView::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputView::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputView::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputView::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputView::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputView::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputView::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputView::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputView::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputView::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputView::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputView::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputView::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputView::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputView::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.InputView>, create, update, Map.ofArray attribs)
@@ -7585,42 +7844,41 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.Editor())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Editor)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryText
             let valueOpt = source.TryText
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Text "); target.Text <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::Text "); target.Text <-  value
             | USome _, UNone -> target.Text <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryFontSize
             let valueOpt = source.TryFontSize
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting FontSize "); target.FontSize <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::FontSize "); target.FontSize <-  value
             | USome _, UNone -> target.FontSize <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryFontFamily
             let valueOpt = source.TryFontFamily
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting FontFamily "); target.FontFamily <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::FontFamily "); target.FontFamily <-  value
             | USome _, UNone -> target.FontFamily <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryFontAttributes
             let valueOpt = source.TryFontAttributes
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting FontAttributes "); target.FontAttributes <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::FontAttributes "); target.FontAttributes <-  value
             | USome _, UNone -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTextColor
             let valueOpt = source.TryTextColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TextColor "); target.TextColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::TextColor "); target.TextColor <-  value
             | USome _, UNone -> target.TextColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryEditorCompleted
@@ -7641,28 +7899,28 @@ type Xaml() =
             let valueOpt = source.TryKeyboard
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Keyboard "); target.Keyboard <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::Keyboard "); target.Keyboard <-  value
             | USome _, UNone -> target.Keyboard <- Xamarin.Forms.Keyboard.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::HorizontalOptions "); target.HorizontalOptions <-  value
             | USome _, UNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::VerticalOptions "); target.VerticalOptions <-  value
             | USome _, UNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::Margin "); target.Margin <-  value
             | USome _, UNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGestureRecognizers
@@ -7670,146 +7928,146 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.Editor>, create, update, Map.ofArray attribs)
@@ -7857,70 +8115,69 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.Entry())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Entry)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryText
             let valueOpt = source.TryText
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Text "); target.Text <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::Text "); target.Text <-  value
             | USome _, UNone -> target.Text <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPlaceholder
             let valueOpt = source.TryPlaceholder
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Placeholder "); target.Placeholder <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::Placeholder "); target.Placeholder <-  value
             | USome _, UNone -> target.Placeholder <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHorizontalTextAlignment
             let valueOpt = source.TryHorizontalTextAlignment
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalTextAlignment "); target.HorizontalTextAlignment <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::HorizontalTextAlignment "); target.HorizontalTextAlignment <-  value
             | USome _, UNone -> target.HorizontalTextAlignment <- Xamarin.Forms.TextAlignment.Start
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryFontSize
             let valueOpt = source.TryFontSize
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting FontSize "); target.FontSize <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::FontSize "); target.FontSize <-  value
             | USome _, UNone -> target.FontSize <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryFontFamily
             let valueOpt = source.TryFontFamily
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting FontFamily "); target.FontFamily <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::FontFamily "); target.FontFamily <-  value
             | USome _, UNone -> target.FontFamily <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryFontAttributes
             let valueOpt = source.TryFontAttributes
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting FontAttributes "); target.FontAttributes <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::FontAttributes "); target.FontAttributes <-  value
             | USome _, UNone -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTextColor
             let valueOpt = source.TryTextColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TextColor "); target.TextColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::TextColor "); target.TextColor <-  value
             | USome _, UNone -> target.TextColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPlaceholderColor
             let valueOpt = source.TryPlaceholderColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting PlaceholderColor "); target.PlaceholderColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::PlaceholderColor "); target.PlaceholderColor <-  value
             | USome _, UNone -> target.PlaceholderColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsPassword
             let valueOpt = source.TryIsPassword
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsPassword "); target.IsPassword <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::IsPassword "); target.IsPassword <-  value
             | USome _, UNone -> target.IsPassword <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryEntryCompleted
@@ -7941,28 +8198,28 @@ type Xaml() =
             let valueOpt = source.TryKeyboard
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Keyboard "); target.Keyboard <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::Keyboard "); target.Keyboard <-  value
             | USome _, UNone -> target.Keyboard <- Xamarin.Forms.Keyboard.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::HorizontalOptions "); target.HorizontalOptions <-  value
             | USome _, UNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::VerticalOptions "); target.VerticalOptions <-  value
             | USome _, UNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::Margin "); target.Margin <-  value
             | USome _, UNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGestureRecognizers
@@ -7970,146 +8227,146 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.Entry>, create, update, Map.ofArray attribs)
@@ -8131,42 +8388,41 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.EntryCell())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.EntryCell)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryLabel
             let valueOpt = source.TryLabel
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label "); target.Label <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting EntryCell::Label "); target.Label <-  value
             | USome _, UNone -> target.Label <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryText
             let valueOpt = source.TryText
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Text "); target.Text <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting EntryCell::Text "); target.Text <-  value
             | USome _, UNone -> target.Text <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryKeyboard
             let valueOpt = source.TryKeyboard
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Keyboard "); target.Keyboard <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting EntryCell::Keyboard "); target.Keyboard <-  value
             | USome _, UNone -> target.Keyboard <- Xamarin.Forms.Keyboard.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPlaceholder
             let valueOpt = source.TryPlaceholder
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Placeholder "); target.Placeholder <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting EntryCell::Placeholder "); target.Placeholder <-  value
             | USome _, UNone -> target.Placeholder <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHorizontalTextAlignment
             let valueOpt = source.TryHorizontalTextAlignment
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalTextAlignment "); target.HorizontalTextAlignment <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting EntryCell::HorizontalTextAlignment "); target.HorizontalTextAlignment <-  value
             | USome _, UNone -> target.HorizontalTextAlignment <- Xamarin.Forms.TextAlignment.Start
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryEntryCompleted
@@ -8180,28 +8436,28 @@ type Xaml() =
             let valueOpt = source.TryHeight
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Height "); target.Height <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting EntryCell::Height "); target.Height <-  value
             | USome _, UNone -> target.Height <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting EntryCell::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting EntryCell::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting EntryCell::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.EntryCell>, create, update, Map.ofArray attribs)
@@ -8244,77 +8500,76 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.Label())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Label)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryText
             let valueOpt = source.TryText
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Text "); target.Text <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::Text "); target.Text <-  value
             | USome _, UNone -> target.Text <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHorizontalTextAlignment
             let valueOpt = source.TryHorizontalTextAlignment
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalTextAlignment "); target.HorizontalTextAlignment <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::HorizontalTextAlignment "); target.HorizontalTextAlignment <-  value
             | USome _, UNone -> target.HorizontalTextAlignment <- Xamarin.Forms.TextAlignment.Start
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalTextAlignment
             let valueOpt = source.TryVerticalTextAlignment
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalTextAlignment "); target.VerticalTextAlignment <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::VerticalTextAlignment "); target.VerticalTextAlignment <-  value
             | USome _, UNone -> target.VerticalTextAlignment <- Xamarin.Forms.TextAlignment.Start
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryFontSize
             let valueOpt = source.TryFontSize
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting FontSize "); target.FontSize <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::FontSize "); target.FontSize <-  value
             | USome _, UNone -> target.FontSize <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryFontFamily
             let valueOpt = source.TryFontFamily
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting FontFamily "); target.FontFamily <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::FontFamily "); target.FontFamily <-  value
             | USome _, UNone -> target.FontFamily <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryFontAttributes
             let valueOpt = source.TryFontAttributes
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting FontAttributes "); target.FontAttributes <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::FontAttributes "); target.FontAttributes <-  value
             | USome _, UNone -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTextColor
             let valueOpt = source.TryTextColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TextColor "); target.TextColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::TextColor "); target.TextColor <-  value
             | USome _, UNone -> target.TextColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::HorizontalOptions "); target.HorizontalOptions <-  value
             | USome _, UNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::VerticalOptions "); target.VerticalOptions <-  value
             | USome _, UNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::Margin "); target.Margin <-  value
             | USome _, UNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGestureRecognizers
@@ -8322,146 +8577,146 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.Label>, create, update, Map.ofArray attribs)
@@ -8498,7 +8753,7 @@ type Xaml() =
           |]
 
         let create () =
-            failwith "can'tdef create Xamarin.Forms.Layout"
+            failwith "can't create Xamarin.Forms.Layout"
 
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Layout)
@@ -8506,35 +8761,35 @@ type Xaml() =
             let valueOpt = source.TryIsClippedToBounds
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsClippedToBounds "); target.IsClippedToBounds <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Layout::IsClippedToBounds "); target.IsClippedToBounds <-  value
             | USome _, UNone -> target.IsClippedToBounds <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPadding
             let valueOpt = source.TryPadding
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Padding "); target.Padding <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Layout::Padding "); target.Padding <-  value
             | USome _, UNone -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Layout::HorizontalOptions "); target.HorizontalOptions <-  value
             | USome _, UNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Layout::VerticalOptions "); target.VerticalOptions <-  value
             | USome _, UNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Layout::Margin "); target.Margin <-  value
             | USome _, UNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGestureRecognizers
@@ -8542,146 +8797,146 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Layout::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Layout::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Layout::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Layout::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Layout::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Layout::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Layout::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Layout::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Layout::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Layout::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Layout::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Layout::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Layout::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Layout::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Layout::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Layout::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Layout::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Layout::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Layout::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Layout::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.Layout>, create, update, Map.ofArray attribs)
@@ -8722,7 +8977,6 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.StackLayout())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.StackLayout)
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryChildren
@@ -8730,55 +8984,55 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.Children
                 (fun (x:XamlElement) -> x.CreateAsView())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStackOrientation
             let valueOpt = source.TryStackOrientation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Orientation "); target.Orientation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StackLayout::Orientation "); target.Orientation <-  value
             | USome _, UNone -> target.Orientation <- Xamarin.Forms.StackOrientation.Vertical
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TrySpacing
             let valueOpt = source.TrySpacing
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Spacing "); target.Spacing <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StackLayout::Spacing "); target.Spacing <-  value
             | USome _, UNone -> target.Spacing <- 6.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsClippedToBounds
             let valueOpt = source.TryIsClippedToBounds
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsClippedToBounds "); target.IsClippedToBounds <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StackLayout::IsClippedToBounds "); target.IsClippedToBounds <-  value
             | USome _, UNone -> target.IsClippedToBounds <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPadding
             let valueOpt = source.TryPadding
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Padding "); target.Padding <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StackLayout::Padding "); target.Padding <-  value
             | USome _, UNone -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StackLayout::HorizontalOptions "); target.HorizontalOptions <-  value
             | USome _, UNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StackLayout::VerticalOptions "); target.VerticalOptions <-  value
             | USome _, UNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StackLayout::Margin "); target.Margin <-  value
             | USome _, UNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGestureRecognizers
@@ -8786,146 +9040,146 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StackLayout::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StackLayout::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StackLayout::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StackLayout::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StackLayout::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StackLayout::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StackLayout::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StackLayout::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StackLayout::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StackLayout::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StackLayout::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StackLayout::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StackLayout::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StackLayout::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StackLayout::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StackLayout::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StackLayout::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StackLayout::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StackLayout::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StackLayout::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.StackLayout>, create, update, Map.ofArray attribs)
@@ -8944,49 +9198,48 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.Span())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Span)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryFontFamily
             let valueOpt = source.TryFontFamily
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting FontFamily "); target.FontFamily <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Span::FontFamily "); target.FontFamily <-  value
             | USome _, UNone -> target.FontFamily <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryFontAttributes
             let valueOpt = source.TryFontAttributes
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting FontAttributes "); target.FontAttributes <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Span::FontAttributes "); target.FontAttributes <-  value
             | USome _, UNone -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryFontSize
             let valueOpt = source.TryFontSize
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting FontSize "); target.FontSize <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Span::FontSize "); target.FontSize <-  value
             | USome _, UNone -> target.FontSize <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Span::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryForegroundColor
             let valueOpt = source.TryForegroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ForegroundColor "); target.ForegroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Span::ForegroundColor "); target.ForegroundColor <-  value
             | USome _, UNone -> target.ForegroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryText
             let valueOpt = source.TryText
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Text "); target.Text <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Span::Text "); target.Text <-  value
             | USome _, UNone -> target.Text <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPropertyChanged
@@ -9032,49 +9285,48 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.TimePicker())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.TimePicker)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTime
             let valueOpt = source.TryTime
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Time "); target.Time <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TimePicker::Time "); target.Time <-  value
             | USome _, UNone -> target.Time <- new System.TimeSpan()
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryFormat
             let valueOpt = source.TryFormat
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Format "); target.Format <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TimePicker::Format "); target.Format <-  value
             | USome _, UNone -> target.Format <- "t"
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTextColor
             let valueOpt = source.TryTextColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TextColor "); target.TextColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TimePicker::TextColor "); target.TextColor <-  value
             | USome _, UNone -> target.TextColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHorizontalOptions
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TimePicker::HorizontalOptions "); target.HorizontalOptions <-  value
             | USome _, UNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TimePicker::VerticalOptions "); target.VerticalOptions <-  value
             | USome _, UNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TimePicker::Margin "); target.Margin <-  value
             | USome _, UNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGestureRecognizers
@@ -9082,146 +9334,146 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TimePicker::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TimePicker::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TimePicker::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TimePicker::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TimePicker::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TimePicker::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TimePicker::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TimePicker::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TimePicker::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TimePicker::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TimePicker::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TimePicker::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TimePicker::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TimePicker::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TimePicker::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TimePicker::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TimePicker::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TimePicker::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TimePicker::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TimePicker::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.TimePicker>, create, update, Map.ofArray attribs)
@@ -9260,14 +9512,13 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.WebView())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.WebView)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWebSource
             let valueOpt = source.TryWebSource
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Source "); target.Source <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WebView::Source "); target.Source <-  value
             | USome _, UNone -> target.Source <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryNavigated
@@ -9288,21 +9539,21 @@ type Xaml() =
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WebView::HorizontalOptions "); target.HorizontalOptions <-  value
             | USome _, UNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WebView::VerticalOptions "); target.VerticalOptions <-  value
             | USome _, UNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WebView::Margin "); target.Margin <-  value
             | USome _, UNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGestureRecognizers
@@ -9310,155 +9561,156 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WebView::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WebView::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WebView::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WebView::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WebView::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WebView::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WebView::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WebView::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WebView::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WebView::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WebView::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WebView::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WebView::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WebView::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WebView::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WebView::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WebView::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WebView::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WebView::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WebView::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.WebView>, create, update, Map.ofArray attribs)
 
     /// Describes a Page in the view
-    static member Page(?title: string, ?padding: obj, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member Page(?title: string, ?padding: obj, ?useSafeArea: bool, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match title with None -> () | Some v -> yield ("Title", box ((v))) 
             match padding with None -> () | Some v -> yield ("Padding", box (makeThickness(v))) 
+            match useSafeArea with None -> () | Some v -> yield ("UseSafeArea", box ((v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -9483,167 +9735,169 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.Page())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Page)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTitle
             let valueOpt = source.TryTitle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Title "); target.Title <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Page::Title "); target.Title <-  value
             | USome _, UNone -> target.Title <- ""
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPadding
             let valueOpt = source.TryPadding
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Padding "); target.Padding <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Page::Padding "); target.Padding <-  value
             | USome _, UNone -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
+            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryUseSafeArea
+            let valueOpt = source.TryUseSafeArea
+            (fun _ _ target -> Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea((target :> Xamarin.Forms.Page).On<Xamarin.Forms.PlatformConfiguration.iOS>(), true) |> ignore) prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Page::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Page::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Page::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Page::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Page::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Page::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Page::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Page::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Page::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Page::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Page::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Page::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Page::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Page::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Page::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Page::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Page::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Page::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Page::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Page::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.Page>, create, update, Map.ofArray attribs)
 
     /// Describes a CarouselPage in the view
-    static member CarouselPage(?children: XamlElement list, ?itemsSource: 'T list, ?itemTemplate: Xamarin.Forms.DataTemplate, ?selectedItem: System.Object, ?currentPage: XamlElement, ?currentPageChanged: 'T option -> unit, ?title: string, ?padding: obj, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member CarouselPage(?children: XamlElement list, ?itemsSource: 'T list, ?itemTemplate: Xamarin.Forms.DataTemplate, ?selectedItem: System.Object, ?currentPage: XamlElement, ?currentPageChanged: 'T option -> unit, ?title: string, ?padding: obj, ?useSafeArea: bool, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match children with None -> () | Some v -> yield ("Children", box (Array.ofList(v))) 
             match itemsSource with None -> () | Some v -> yield ("ItemsSource", box ((fun es -> es |> Array.ofList |> Array.map box :> System.Collections.Generic.IList<obj>)(v))) 
@@ -9653,6 +9907,7 @@ type Xaml() =
             match currentPageChanged with None -> () | Some v -> yield ("CurrentPageChanged", box ((fun f -> System.EventHandler(fun sender args -> f ((sender :?> Xamarin.Forms.CarouselPage).SelectedItem |> Option.ofObj |> Option.map unbox<'T>)))(v))) 
             match title with None -> () | Some v -> yield ("Title", box ((v))) 
             match padding with None -> () | Some v -> yield ("Padding", box (makeThickness(v))) 
+            match useSafeArea with None -> () | Some v -> yield ("UseSafeArea", box ((v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -9677,7 +9932,6 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.CarouselPage())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.CarouselPage)
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryChildren
@@ -9685,27 +9939,27 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.Children
                 (fun (x:XamlElement) -> x.CreateAsContentPage())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryItemsSource
             let valueOpt = source.TryItemsSource
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ItemsSource "); target.ItemsSource <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage::ItemsSource "); target.ItemsSource <-  value
             | USome _, UNone -> target.ItemsSource <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryItemTemplate
             let valueOpt = source.TryItemTemplate
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ItemTemplate "); target.ItemTemplate <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage::ItemTemplate "); target.ItemTemplate <-  value
             | USome _, UNone -> target.ItemTemplate <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryCarouselPage_SelectedItem
             let valueOpt = source.TryCarouselPage_SelectedItem
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SelectedItem "); target.SelectedItem <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage::SelectedItem "); target.SelectedItem <-  value
             | USome _, UNone -> target.SelectedItem <- null
             | UNone, UNone -> ()
             let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryCurrentPage
@@ -9730,161 +9984,165 @@ type Xaml() =
             let valueOpt = source.TryTitle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Title "); target.Title <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage::Title "); target.Title <-  value
             | USome _, UNone -> target.Title <- ""
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPadding
             let valueOpt = source.TryPadding
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Padding "); target.Padding <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage::Padding "); target.Padding <-  value
             | USome _, UNone -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
+            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryUseSafeArea
+            let valueOpt = source.TryUseSafeArea
+            (fun _ _ target -> Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea((target :> Xamarin.Forms.Page).On<Xamarin.Forms.PlatformConfiguration.iOS>(), true) |> ignore) prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.CarouselPage>, create, update, Map.ofArray attribs)
 
     /// Describes a NavigationPage in the view
-    static member NavigationPage(?barBackgroundColor: Xamarin.Forms.Color, ?barTextColor: Xamarin.Forms.Color, ?popped: Xamarin.Forms.NavigationEventArgs -> unit, ?poppedToRoot: Xamarin.Forms.NavigationEventArgs -> unit, ?pushed: Xamarin.Forms.NavigationEventArgs -> unit, ?title: string, ?padding: obj, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member NavigationPage(?pages: XamlElement list, ?barBackgroundColor: Xamarin.Forms.Color, ?barTextColor: Xamarin.Forms.Color, ?popped: Xamarin.Forms.NavigationEventArgs -> unit, ?poppedToRoot: Xamarin.Forms.NavigationEventArgs -> unit, ?pushed: Xamarin.Forms.NavigationEventArgs -> unit, ?title: string, ?padding: obj, ?useSafeArea: bool, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
+            match pages with None -> () | Some v -> yield ("NavigationPagePages", box (Array.ofList(v))) 
             match barBackgroundColor with None -> () | Some v -> yield ("BarBackgroundColor", box ((v))) 
             match barTextColor with None -> () | Some v -> yield ("BarTextColor", box ((v))) 
             match popped with None -> () | Some v -> yield ("Popped", box ((fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(v))) 
@@ -9892,6 +10150,7 @@ type Xaml() =
             match pushed with None -> () | Some v -> yield ("Pushed", box ((fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(v))) 
             match title with None -> () | Some v -> yield ("Title", box ((v))) 
             match padding with None -> () | Some v -> yield ("Padding", box (makeThickness(v))) 
+            match useSafeArea with None -> () | Some v -> yield ("UseSafeArea", box ((v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -9916,21 +10175,49 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.NavigationPage())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.NavigationPage)
+            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryNavigationPagePages
+            let valueOpt = source.TryNavigationPagePages
+            updateNavigationPages prevValueOpt valueOpt target
+                (fun prevChildOpt newChild targetChild -> 
+                    // Adjust the attached properties
+                    match (match prevChildOpt with UNone -> UNone | USome prevChild -> prevChild.TryBackButtonTitle), newChild.TryBackButtonTitle with
+                    | USome prev, USome v when prev = v -> ()
+                    | prevOpt, USome value -> Xamarin.Forms.NavigationPage.SetBackButtonTitle(targetChild, value)
+                    | USome _, UNone -> Xamarin.Forms.NavigationPage.SetBackButtonTitle(targetChild, null) // TODO: not always perfect, should set back to original default?
+                    | _ -> ()
+                    // Adjust the attached properties
+                    match (match prevChildOpt with UNone -> UNone | USome prevChild -> prevChild.TryHasBackButton), newChild.TryHasBackButton with
+                    | USome prev, USome v when prev = v -> ()
+                    | prevOpt, USome value -> Xamarin.Forms.NavigationPage.SetHasBackButton(targetChild, value)
+                    | USome _, UNone -> Xamarin.Forms.NavigationPage.SetHasBackButton(targetChild, true) // TODO: not always perfect, should set back to original default?
+                    | _ -> ()
+                    // Adjust the attached properties
+                    match (match prevChildOpt with UNone -> UNone | USome prevChild -> prevChild.TryHasNavigationBar), newChild.TryHasNavigationBar with
+                    | USome prev, USome v when prev = v -> ()
+                    | prevOpt, USome value -> Xamarin.Forms.NavigationPage.SetHasNavigationBar(targetChild, value)
+                    | USome _, UNone -> Xamarin.Forms.NavigationPage.SetHasNavigationBar(targetChild, true) // TODO: not always perfect, should set back to original default?
+                    | _ -> ()
+                    // Adjust the attached properties
+                    match (match prevChildOpt with UNone -> UNone | USome prevChild -> prevChild.TryTitleIcon), newChild.TryTitleIcon with
+                    | USome prev, USome v when prev = v -> ()
+                    | prevOpt, USome value -> Xamarin.Forms.NavigationPage.SetTitleIcon(targetChild, makeFileImageSource value)
+                    | USome _, UNone -> Xamarin.Forms.NavigationPage.SetTitleIcon(targetChild, null) // TODO: not always perfect, should set back to original default?
+                    | _ -> ()
+                    ())
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBarBackgroundColor
             let valueOpt = source.TryBarBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BarBackgroundColor "); target.BarBackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting NavigationPage::BarBackgroundColor "); target.BarBackgroundColor <-  value
             | USome _, UNone -> target.BarBackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBarTextColor
             let valueOpt = source.TryBarTextColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BarTextColor "); target.BarTextColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting NavigationPage::BarTextColor "); target.BarTextColor <-  value
             | USome _, UNone -> target.BarTextColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPopped
@@ -9958,166 +10245,170 @@ type Xaml() =
             let valueOpt = source.TryTitle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Title "); target.Title <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting NavigationPage::Title "); target.Title <-  value
             | USome _, UNone -> target.Title <- ""
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPadding
             let valueOpt = source.TryPadding
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Padding "); target.Padding <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting NavigationPage::Padding "); target.Padding <-  value
             | USome _, UNone -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
+            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryUseSafeArea
+            let valueOpt = source.TryUseSafeArea
+            (fun _ _ target -> Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea((target :> Xamarin.Forms.Page).On<Xamarin.Forms.PlatformConfiguration.iOS>(), true) |> ignore) prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting NavigationPage::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting NavigationPage::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting NavigationPage::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting NavigationPage::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting NavigationPage::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting NavigationPage::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting NavigationPage::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting NavigationPage::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting NavigationPage::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting NavigationPage::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting NavigationPage::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting NavigationPage::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting NavigationPage::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting NavigationPage::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting NavigationPage::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting NavigationPage::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting NavigationPage::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting NavigationPage::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting NavigationPage::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting NavigationPage::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.NavigationPage>, create, update, Map.ofArray attribs)
 
     /// Describes a TabbedPage in the view
-    static member TabbedPage(?children: XamlElement list, ?barBackgroundColor: Xamarin.Forms.Color, ?barTextColor: Xamarin.Forms.Color, ?title: string, ?padding: obj, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member TabbedPage(?children: XamlElement list, ?barBackgroundColor: Xamarin.Forms.Color, ?barTextColor: Xamarin.Forms.Color, ?title: string, ?padding: obj, ?useSafeArea: bool, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match children with None -> () | Some v -> yield ("Children", box (Array.ofList(v))) 
             match barBackgroundColor with None -> () | Some v -> yield ("BarBackgroundColor", box ((v))) 
             match barTextColor with None -> () | Some v -> yield ("BarTextColor", box ((v))) 
             match title with None -> () | Some v -> yield ("Title", box ((v))) 
             match padding with None -> () | Some v -> yield ("Padding", box (makeThickness(v))) 
+            match useSafeArea with None -> () | Some v -> yield ("UseSafeArea", box ((v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -10142,7 +10433,6 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.TabbedPage())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.TabbedPage)
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryChildren
@@ -10150,185 +10440,189 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.Children
                 (fun (x:XamlElement) -> x.CreateAsPage())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBarBackgroundColor
             let valueOpt = source.TryBarBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BarBackgroundColor "); target.BarBackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TabbedPage::BarBackgroundColor "); target.BarBackgroundColor <-  value
             | USome _, UNone -> target.BarBackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBarTextColor
             let valueOpt = source.TryBarTextColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BarTextColor "); target.BarTextColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TabbedPage::BarTextColor "); target.BarTextColor <-  value
             | USome _, UNone -> target.BarTextColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTitle
             let valueOpt = source.TryTitle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Title "); target.Title <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TabbedPage::Title "); target.Title <-  value
             | USome _, UNone -> target.Title <- ""
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPadding
             let valueOpt = source.TryPadding
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Padding "); target.Padding <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TabbedPage::Padding "); target.Padding <-  value
             | USome _, UNone -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
+            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryUseSafeArea
+            let valueOpt = source.TryUseSafeArea
+            (fun _ _ target -> Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea((target :> Xamarin.Forms.Page).On<Xamarin.Forms.PlatformConfiguration.iOS>(), true) |> ignore) prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TabbedPage::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TabbedPage::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TabbedPage::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TabbedPage::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TabbedPage::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TabbedPage::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TabbedPage::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TabbedPage::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TabbedPage::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TabbedPage::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TabbedPage::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TabbedPage::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TabbedPage::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TabbedPage::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TabbedPage::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TabbedPage::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TabbedPage::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TabbedPage::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TabbedPage::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TabbedPage::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.TabbedPage>, create, update, Map.ofArray attribs)
 
     /// Describes a ContentPage in the view
-    static member ContentPage(?content: XamlElement, ?onSizeAllocated: (double * double) -> unit, ?title: string, ?padding: obj, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member ContentPage(?content: XamlElement, ?onSizeAllocated: (double * double) -> unit, ?title: string, ?padding: obj, ?useSafeArea: bool, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match content with None -> () | Some v -> yield ("Content", box ((v))) 
             match onSizeAllocated with None -> () | Some v -> yield ("OnSizeAllocatedCallback", box ((fun f -> FSharp.Control.Handler<_>(fun _sender args -> f args))(v))) 
             match title with None -> () | Some v -> yield ("Title", box ((v))) 
             match padding with None -> () | Some v -> yield ("Padding", box (makeThickness(v))) 
+            match useSafeArea with None -> () | Some v -> yield ("UseSafeArea", box ((v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -10353,7 +10647,6 @@ type Xaml() =
 
         let create () =
             box (new Elmish.XamarinForms.DynamicViews.CustomContentPage())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ContentPage)
             let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryContent
@@ -10369,165 +10662,168 @@ type Xaml() =
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOnSizeAllocatedCallback
             let valueOpt = source.TryOnSizeAllocatedCallback
-            (let target = (target :?> Elmish.XamarinForms.DynamicViews.CustomContentPage) in (match prevValueOpt with UNone -> () | USome f -> target.SizeAllocated.RemoveHandler(f)); (match valueOpt with UNone -> () | USome f -> target.SizeAllocated.AddHandler(f)))
+            updateOnSizeAllocated prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTitle
             let valueOpt = source.TryTitle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Title "); target.Title <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentPage::Title "); target.Title <-  value
             | USome _, UNone -> target.Title <- ""
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPadding
             let valueOpt = source.TryPadding
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Padding "); target.Padding <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentPage::Padding "); target.Padding <-  value
             | USome _, UNone -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
+            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryUseSafeArea
+            let valueOpt = source.TryUseSafeArea
+            (fun _ _ target -> Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea((target :> Xamarin.Forms.Page).On<Xamarin.Forms.PlatformConfiguration.iOS>(), true) |> ignore) prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentPage::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentPage::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentPage::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentPage::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentPage::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentPage::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentPage::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentPage::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentPage::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentPage::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentPage::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentPage::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentPage::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentPage::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentPage::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentPage::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentPage::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentPage::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentPage::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentPage::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.ContentPage>, create, update, Map.ofArray attribs)
 
     /// Describes a MasterDetailPage in the view
-    static member MasterDetailPage(?master: XamlElement, ?detail: XamlElement, ?isGestureEnabled: bool, ?isPresented: bool, ?masterBehavior: Xamarin.Forms.MasterBehavior, ?isPresentedChanged: bool -> unit, ?title: string, ?padding: obj, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member MasterDetailPage(?master: XamlElement, ?detail: XamlElement, ?isGestureEnabled: bool, ?isPresented: bool, ?masterBehavior: Xamarin.Forms.MasterBehavior, ?isPresentedChanged: bool -> unit, ?title: string, ?padding: obj, ?useSafeArea: bool, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match master with None -> () | Some v -> yield ("Master", box ((v))) 
             match detail with None -> () | Some v -> yield ("Detail", box ((v))) 
@@ -10537,6 +10833,7 @@ type Xaml() =
             match isPresentedChanged with None -> () | Some v -> yield ("IsPresentedChanged", box ((fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.MasterDetailPage).IsPresented))(v))) 
             match title with None -> () | Some v -> yield ("Title", box ((v))) 
             match padding with None -> () | Some v -> yield ("Padding", box (makeThickness(v))) 
+            match useSafeArea with None -> () | Some v -> yield ("UseSafeArea", box ((v))) 
             match anchorX with None -> () | Some v -> yield ("AnchorX", box ((v))) 
             match anchorY with None -> () | Some v -> yield ("AnchorY", box ((v))) 
             match backgroundColor with None -> () | Some v -> yield ("BackgroundColor", box ((v))) 
@@ -10561,7 +10858,6 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.MasterDetailPage())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.MasterDetailPage)
             let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMaster
@@ -10590,21 +10886,21 @@ type Xaml() =
             let valueOpt = source.TryIsGestureEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsGestureEnabled "); target.IsGestureEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MasterDetailPage::IsGestureEnabled "); target.IsGestureEnabled <-  value
             | USome _, UNone -> target.IsGestureEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsPresented
             let valueOpt = source.TryIsPresented
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsPresented "); target.IsPresented <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MasterDetailPage::IsPresented "); target.IsPresented <-  value
             | USome _, UNone -> target.IsPresented <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMasterBehavior
             let valueOpt = source.TryMasterBehavior
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MasterBehavior "); target.MasterBehavior <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MasterDetailPage::MasterBehavior "); target.MasterBehavior <-  value
             | USome _, UNone -> target.MasterBehavior <- Xamarin.Forms.MasterBehavior.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsPresentedChanged
@@ -10618,154 +10914,157 @@ type Xaml() =
             let valueOpt = source.TryTitle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Title "); target.Title <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MasterDetailPage::Title "); target.Title <-  value
             | USome _, UNone -> target.Title <- ""
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPadding
             let valueOpt = source.TryPadding
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Padding "); target.Padding <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MasterDetailPage::Padding "); target.Padding <-  value
             | USome _, UNone -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
+            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryUseSafeArea
+            let valueOpt = source.TryUseSafeArea
+            (fun _ _ target -> Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea((target :> Xamarin.Forms.Page).On<Xamarin.Forms.PlatformConfiguration.iOS>(), true) |> ignore) prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MasterDetailPage::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MasterDetailPage::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MasterDetailPage::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MasterDetailPage::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MasterDetailPage::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MasterDetailPage::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MasterDetailPage::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MasterDetailPage::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MasterDetailPage::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MasterDetailPage::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MasterDetailPage::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MasterDetailPage::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MasterDetailPage::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MasterDetailPage::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MasterDetailPage::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MasterDetailPage::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MasterDetailPage::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MasterDetailPage::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MasterDetailPage::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MasterDetailPage::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.MasterDetailPage>, create, update, Map.ofArray attribs)
@@ -10780,7 +11079,7 @@ type Xaml() =
           |]
 
         let create () =
-            failwith "can'tdef create Xamarin.Forms.Cell"
+            failwith "can't create Xamarin.Forms.Cell"
 
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.Cell)
@@ -10788,40 +11087,41 @@ type Xaml() =
             let valueOpt = source.TryHeight
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Height "); target.Height <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Cell::Height "); target.Height <-  value
             | USome _, UNone -> target.Height <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Cell::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Cell::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Cell::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.Cell>, create, update, Map.ofArray attribs)
 
     /// Describes a TextCell in the view
-    static member TextCell(?text: string, ?detail: string, ?textColor: Xamarin.Forms.Color, ?detailColor: Xamarin.Forms.Color, ?command: unit -> unit, ?commandParameter: System.Object, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
+    static member TextCell(?text: string, ?detail: string, ?textColor: Xamarin.Forms.Color, ?detailColor: Xamarin.Forms.Color, ?command: unit -> unit, ?canExecute: bool, ?commandParameter: System.Object, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match text with None -> () | Some v -> yield ("Text", box ((v))) 
             match detail with None -> () | Some v -> yield ("TextDetail", box ((v))) 
             match textColor with None -> () | Some v -> yield ("TextColor", box ((v))) 
             match detailColor with None -> () | Some v -> yield ("TextDetailColor", box ((v))) 
-            match command with None -> () | Some v -> yield ("Command", box (makeCommand(v))) 
+            match command with None -> () | Some v -> yield ("TextCellCommand", box ((v))) 
+            match canExecute with None -> () | Some v -> yield ("TextCellCanExecute", box ((v))) 
             match commandParameter with None -> () | Some v -> yield ("CommandParameter", box ((v))) 
             match height with None -> () | Some v -> yield ("Height", box ((v))) 
             match isEnabled with None -> () | Some v -> yield ("IsEnabled", box ((v))) 
@@ -10831,90 +11131,89 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.TextCell())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.TextCell)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryText
             let valueOpt = source.TryText
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Text "); target.Text <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TextCell::Text "); target.Text <-  value
             | USome _, UNone -> target.Text <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTextDetail
             let valueOpt = source.TryTextDetail
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Detail "); target.Detail <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TextCell::Detail "); target.Detail <-  value
             | USome _, UNone -> target.Detail <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTextColor
             let valueOpt = source.TryTextColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TextColor "); target.TextColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TextCell::TextColor "); target.TextColor <-  value
             | USome _, UNone -> target.TextColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTextDetailColor
             let valueOpt = source.TryTextDetailColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting DetailColor "); target.DetailColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TextCell::DetailColor "); target.DetailColor <-  value
             | USome _, UNone -> target.DetailColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
-            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryCommand
-            let valueOpt = source.TryCommand
-            match prevValueOpt, valueOpt with
-            | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Command "); target.Command <-  value
-            | USome _, UNone -> target.Command <- null
-            | UNone, UNone -> ()
+            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTextCellCommand
+            let valueOpt = source.TryTextCellCommand
+            (fun _ _ _ -> ()) prevValueOpt valueOpt target
+            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTextCellCanExecute
+            let valueOpt = source.TryTextCellCanExecute
+            updateCommand (match prevOpt with UNone -> UNone | USome prev -> prev.TryTextCellCommand) prevValueOpt source.TryTextCellCommand valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine("Setting TextCell::Command "); target.Command <- cmd) prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryCommandParameter
             let valueOpt = source.TryCommandParameter
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CommandParameter "); target.CommandParameter <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TextCell::CommandParameter "); target.CommandParameter <-  value
             | USome _, UNone -> target.CommandParameter <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeight
             let valueOpt = source.TryHeight
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Height "); target.Height <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TextCell::Height "); target.Height <-  value
             | USome _, UNone -> target.Height <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TextCell::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TextCell::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TextCell::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.TextCell>, create, update, Map.ofArray attribs)
 
     /// Describes a ImageCell in the view
-    static member ImageCell(?imageSource: string, ?text: string, ?detail: string, ?textColor: Xamarin.Forms.Color, ?detailColor: Xamarin.Forms.Color, ?command: unit -> unit, ?commandParameter: System.Object, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
+    static member ImageCell(?imageSource: string, ?text: string, ?detail: string, ?textColor: Xamarin.Forms.Color, ?detailColor: Xamarin.Forms.Color, ?command: unit -> unit, ?canExecute: bool, ?commandParameter: System.Object, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match imageSource with None -> () | Some v -> yield ("ImageSource", box ((v))) 
             match text with None -> () | Some v -> yield ("Text", box ((v))) 
             match detail with None -> () | Some v -> yield ("TextDetail", box ((v))) 
             match textColor with None -> () | Some v -> yield ("TextColor", box ((v))) 
             match detailColor with None -> () | Some v -> yield ("TextDetailColor", box ((v))) 
-            match command with None -> () | Some v -> yield ("Command", box (makeCommand(v))) 
+            match command with None -> () | Some v -> yield ("TextCellCommand", box ((v))) 
+            match canExecute with None -> () | Some v -> yield ("TextCellCanExecute", box ((v))) 
             match commandParameter with None -> () | Some v -> yield ("CommandParameter", box ((v))) 
             match height with None -> () | Some v -> yield ("Height", box ((v))) 
             match isEnabled with None -> () | Some v -> yield ("IsEnabled", box ((v))) 
@@ -10924,84 +11223,82 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.ImageCell())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ImageCell)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryImageSource
             let valueOpt = source.TryImageSource
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ImageSource "); target.ImageSource <- makeImageSource  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ImageCell::ImageSource "); target.ImageSource <- makeImageSource  value
             | USome _, UNone -> target.ImageSource <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryText
             let valueOpt = source.TryText
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Text "); target.Text <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ImageCell::Text "); target.Text <-  value
             | USome _, UNone -> target.Text <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTextDetail
             let valueOpt = source.TryTextDetail
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Detail "); target.Detail <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ImageCell::Detail "); target.Detail <-  value
             | USome _, UNone -> target.Detail <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTextColor
             let valueOpt = source.TryTextColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TextColor "); target.TextColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ImageCell::TextColor "); target.TextColor <-  value
             | USome _, UNone -> target.TextColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTextDetailColor
             let valueOpt = source.TryTextDetailColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting DetailColor "); target.DetailColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ImageCell::DetailColor "); target.DetailColor <-  value
             | USome _, UNone -> target.DetailColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
-            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryCommand
-            let valueOpt = source.TryCommand
-            match prevValueOpt, valueOpt with
-            | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Command "); target.Command <-  value
-            | USome _, UNone -> target.Command <- null
-            | UNone, UNone -> ()
+            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTextCellCommand
+            let valueOpt = source.TryTextCellCommand
+            (fun _ _ _ -> ()) prevValueOpt valueOpt target
+            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTextCellCanExecute
+            let valueOpt = source.TryTextCellCanExecute
+            updateCommand (match prevOpt with UNone -> UNone | USome prev -> prev.TryTextCellCommand) prevValueOpt source.TryTextCellCommand valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine("Setting TextCell::Command "); target.Command <- cmd) prevValueOpt valueOpt target
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryCommandParameter
             let valueOpt = source.TryCommandParameter
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CommandParameter "); target.CommandParameter <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ImageCell::CommandParameter "); target.CommandParameter <-  value
             | USome _, UNone -> target.CommandParameter <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeight
             let valueOpt = source.TryHeight
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Height "); target.Height <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ImageCell::Height "); target.Height <-  value
             | USome _, UNone -> target.Height <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ImageCell::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ImageCell::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ImageCell::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.ImageCell>, create, update, Map.ofArray attribs)
@@ -11018,7 +11315,6 @@ type Xaml() =
 
         let create () =
             box (new Xamarin.Forms.ViewCell())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ViewCell)
             let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryView
@@ -11036,28 +11332,28 @@ type Xaml() =
             let valueOpt = source.TryHeight
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Height "); target.Height <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ViewCell::Height "); target.Height <-  value
             | USome _, UNone -> target.Height <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ViewCell::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ViewCell::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ViewCell::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.ViewCell>, create, update, Map.ofArray attribs)
@@ -11111,7 +11407,6 @@ type Xaml() =
 
         let create () =
             box (new Elmish.XamarinForms.DynamicViews.CustomListView())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ListView)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryListViewItems
@@ -11121,84 +11416,84 @@ type Xaml() =
             let valueOpt = source.TryFooter
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Footer "); target.Footer <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::Footer "); target.Footer <-  value
             | USome _, UNone -> target.Footer <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHasUnevenRows
             let valueOpt = source.TryHasUnevenRows
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HasUnevenRows "); target.HasUnevenRows <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::HasUnevenRows "); target.HasUnevenRows <-  value
             | USome _, UNone -> target.HasUnevenRows <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeader
             let valueOpt = source.TryHeader
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Header "); target.Header <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::Header "); target.Header <-  value
             | USome _, UNone -> target.Header <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeaderTemplate
             let valueOpt = source.TryHeaderTemplate
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeaderTemplate "); target.HeaderTemplate <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::HeaderTemplate "); target.HeaderTemplate <-  value
             | USome _, UNone -> target.HeaderTemplate <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsGroupingEnabled
             let valueOpt = source.TryIsGroupingEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsGroupingEnabled "); target.IsGroupingEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::IsGroupingEnabled "); target.IsGroupingEnabled <-  value
             | USome _, UNone -> target.IsGroupingEnabled <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsPullToRefreshEnabled
             let valueOpt = source.TryIsPullToRefreshEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsPullToRefreshEnabled "); target.IsPullToRefreshEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::IsPullToRefreshEnabled "); target.IsPullToRefreshEnabled <-  value
             | USome _, UNone -> target.IsPullToRefreshEnabled <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsRefreshing
             let valueOpt = source.TryIsRefreshing
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsRefreshing "); target.IsRefreshing <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::IsRefreshing "); target.IsRefreshing <-  value
             | USome _, UNone -> target.IsRefreshing <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRefreshCommand
             let valueOpt = source.TryRefreshCommand
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RefreshCommand "); target.RefreshCommand <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::RefreshCommand "); target.RefreshCommand <-  value
             | USome _, UNone -> target.RefreshCommand <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRowHeight
             let valueOpt = source.TryRowHeight
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RowHeight "); target.RowHeight <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::RowHeight "); target.RowHeight <-  value
             | USome _, UNone -> target.RowHeight <- -1
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryListView_SelectedItem
             let valueOpt = source.TryListView_SelectedItem
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SelectedItem "); target.SelectedItem <- (function None -> null | Some i -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListElementData<XamlElement>> in if i >= 0 && i < items.Count then items.[i] else null)  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::SelectedItem "); target.SelectedItem <- (function None -> null | Some i -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListElementData<XamlElement>> in if i >= 0 && i < items.Count then items.[i] else null)  value
             | USome _, UNone -> target.SelectedItem <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TrySeparatorVisibility
             let valueOpt = source.TrySeparatorVisibility
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SeparatorVisibility "); target.SeparatorVisibility <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::SeparatorVisibility "); target.SeparatorVisibility <-  value
             | USome _, UNone -> target.SeparatorVisibility <- Xamarin.Forms.SeparatorVisibility.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TrySeparatorColor
             let valueOpt = source.TrySeparatorColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SeparatorColor "); target.SeparatorColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::SeparatorColor "); target.SeparatorColor <-  value
             | USome _, UNone -> target.SeparatorColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryItemAppearing
@@ -11240,21 +11535,21 @@ type Xaml() =
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::HorizontalOptions "); target.HorizontalOptions <-  value
             | USome _, UNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::VerticalOptions "); target.VerticalOptions <-  value
             | USome _, UNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::Margin "); target.Margin <-  value
             | USome _, UNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGestureRecognizers
@@ -11262,146 +11557,146 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.ListView>, create, update, Map.ofArray attribs)
@@ -11454,7 +11749,6 @@ type Xaml() =
 
         let create () =
             box (new Elmish.XamarinForms.DynamicViews.CustomGroupListView())
-
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             let target = (target :?> Xamarin.Forms.ListView)
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGroupListViewItemsSource
@@ -11464,77 +11758,77 @@ type Xaml() =
             let valueOpt = source.TryFooter
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Footer "); target.Footer <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::Footer "); target.Footer <-  value
             | USome _, UNone -> target.Footer <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHasUnevenRows
             let valueOpt = source.TryHasUnevenRows
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HasUnevenRows "); target.HasUnevenRows <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::HasUnevenRows "); target.HasUnevenRows <-  value
             | USome _, UNone -> target.HasUnevenRows <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeader
             let valueOpt = source.TryHeader
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Header "); target.Header <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::Header "); target.Header <-  value
             | USome _, UNone -> target.Header <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsGroupingEnabled
             let valueOpt = source.TryIsGroupingEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsGroupingEnabled "); target.IsGroupingEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::IsGroupingEnabled "); target.IsGroupingEnabled <-  value
             | USome _, UNone -> target.IsGroupingEnabled <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsPullToRefreshEnabled
             let valueOpt = source.TryIsPullToRefreshEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsPullToRefreshEnabled "); target.IsPullToRefreshEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::IsPullToRefreshEnabled "); target.IsPullToRefreshEnabled <-  value
             | USome _, UNone -> target.IsPullToRefreshEnabled <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsRefreshing
             let valueOpt = source.TryIsRefreshing
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsRefreshing "); target.IsRefreshing <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::IsRefreshing "); target.IsRefreshing <-  value
             | USome _, UNone -> target.IsRefreshing <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRefreshCommand
             let valueOpt = source.TryRefreshCommand
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RefreshCommand "); target.RefreshCommand <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::RefreshCommand "); target.RefreshCommand <-  value
             | USome _, UNone -> target.RefreshCommand <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRowHeight
             let valueOpt = source.TryRowHeight
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RowHeight "); target.RowHeight <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::RowHeight "); target.RowHeight <-  value
             | USome _, UNone -> target.RowHeight <- -1
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryListViewGrouped_SelectedItem
             let valueOpt = source.TryListViewGrouped_SelectedItem
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SelectedItem "); target.SelectedItem <- (function None -> null | Some (i,j) -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListGroupData<XamlElement>> in (if i >= 0 && i < items.Count then (let items2 = items.[i] in if j >= 0 && j < items2.Count then items2.[j] else null) else null))  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::SelectedItem "); target.SelectedItem <- (function None -> null | Some (i,j) -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListGroupData<XamlElement>> in (if i >= 0 && i < items.Count then (let items2 = items.[i] in if j >= 0 && j < items2.Count then items2.[j] else null) else null))  value
             | USome _, UNone -> target.SelectedItem <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TrySeparatorVisibility
             let valueOpt = source.TrySeparatorVisibility
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SeparatorVisibility "); target.SeparatorVisibility <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::SeparatorVisibility "); target.SeparatorVisibility <-  value
             | USome _, UNone -> target.SeparatorVisibility <- Xamarin.Forms.SeparatorVisibility.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TrySeparatorColor
             let valueOpt = source.TrySeparatorColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SeparatorColor "); target.SeparatorColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::SeparatorColor "); target.SeparatorColor <-  value
             | USome _, UNone -> target.SeparatorColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryItemAppearing
@@ -11576,21 +11870,21 @@ type Xaml() =
             let valueOpt = source.TryHorizontalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HorizontalOptions "); target.HorizontalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::HorizontalOptions "); target.HorizontalOptions <-  value
             | USome _, UNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryVerticalOptions
             let valueOpt = source.TryVerticalOptions
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VerticalOptions "); target.VerticalOptions <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::VerticalOptions "); target.VerticalOptions <-  value
             | USome _, UNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMargin
             let valueOpt = source.TryMargin
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Margin "); target.Margin <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::Margin "); target.Margin <-  value
             | USome _, UNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | UNone, UNone -> ()
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGestureRecognizers
@@ -11598,146 +11892,146 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType)
-                (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))
+                canReuseDefault
+                updateDefault
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorX "); target.AnchorX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::AnchorX "); target.AnchorX <-  value
             | USome _, UNone -> target.AnchorX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorY
             let valueOpt = source.TryAnchorY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AnchorY "); target.AnchorY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::AnchorY "); target.AnchorY <-  value
             | USome _, UNone -> target.AnchorY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBackgroundColor
             let valueOpt = source.TryBackgroundColor
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BackgroundColor "); target.BackgroundColor <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::BackgroundColor "); target.BackgroundColor <-  value
             | USome _, UNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryHeightRequest
             let valueOpt = source.TryHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting HeightRequest "); target.HeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::HeightRequest "); target.HeightRequest <-  value
             | USome _, UNone -> target.HeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryInputTransparent
             let valueOpt = source.TryInputTransparent
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputTransparent "); target.InputTransparent <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::InputTransparent "); target.InputTransparent <-  value
             | USome _, UNone -> target.InputTransparent <- false
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsEnabled
             let valueOpt = source.TryIsEnabled
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsEnabled "); target.IsEnabled <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::IsEnabled "); target.IsEnabled <-  value
             | USome _, UNone -> target.IsEnabled <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsVisible
             let valueOpt = source.TryIsVisible
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting IsVisible "); target.IsVisible <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::IsVisible "); target.IsVisible <-  value
             | USome _, UNone -> target.IsVisible <- true
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumHeightRequest
             let valueOpt = source.TryMinimumHeightRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumHeightRequest "); target.MinimumHeightRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | USome _, UNone -> target.MinimumHeightRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMinimumWidthRequest
             let valueOpt = source.TryMinimumWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MinimumWidthRequest "); target.MinimumWidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | USome _, UNone -> target.MinimumWidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOpacity
             let valueOpt = source.TryOpacity
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Opacity "); target.Opacity <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::Opacity "); target.Opacity <-  value
             | USome _, UNone -> target.Opacity <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotation
             let valueOpt = source.TryRotation
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Rotation "); target.Rotation <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::Rotation "); target.Rotation <-  value
             | USome _, UNone -> target.Rotation <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationX
             let valueOpt = source.TryRotationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationX "); target.RotationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::RotationX "); target.RotationX <-  value
             | USome _, UNone -> target.RotationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRotationY
             let valueOpt = source.TryRotationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RotationY "); target.RotationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::RotationY "); target.RotationY <-  value
             | USome _, UNone -> target.RotationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryScale
             let valueOpt = source.TryScale
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Scale "); target.Scale <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::Scale "); target.Scale <-  value
             | USome _, UNone -> target.Scale <- 1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyle
             let valueOpt = source.TryStyle
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Style "); target.Style <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::Style "); target.Style <-  value
             | USome _, UNone -> target.Style <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationX
             let valueOpt = source.TryTranslationX
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationX "); target.TranslationX <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::TranslationX "); target.TranslationX <-  value
             | USome _, UNone -> target.TranslationX <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTranslationY
             let valueOpt = source.TryTranslationY
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TranslationY "); target.TranslationY <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::TranslationY "); target.TranslationY <-  value
             | USome _, UNone -> target.TranslationY <- 0.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryWidthRequest
             let valueOpt = source.TryWidthRequest
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WidthRequest "); target.WidthRequest <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::WidthRequest "); target.WidthRequest <-  value
             | USome _, UNone -> target.WidthRequest <- -1.0
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryClassId
             let valueOpt = source.TryClassId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClassId "); target.ClassId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::ClassId "); target.ClassId <-  value
             | USome _, UNone -> target.ClassId <- null
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStyleId
             let valueOpt = source.TryStyleId
             match prevValueOpt, valueOpt with
             | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StyleId "); target.StyleId <-  value
+            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
         new XamlElement(typeof<Xamarin.Forms.ListView>, create, update, Map.ofArray attribs)

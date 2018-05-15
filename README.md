@@ -43,25 +43,19 @@ let view (model: Model) dispatch =
         Xaml.Label(text="I was pressed!")
     else
         Xaml.Button(text="Press Me!", command=(fun () -> dispatch Pressed))
-```
-The init function returns your initial state, and each model gets an update function for message processing. The `view` function computes an immutable Xaml-like description. In the above example, the choice between a label and button depends on the `model.Pressed` value.
-
-Your application must be started as follows and assigned to the MainPage of your app:
-```fsharp
 
 type App () = 
     inherit Application ()
 
-    let page = 
+    let runner = 
         Program.mkSimple init update view
         |> Program.withConsoleTrace
         |> Program.withDynamicView
         |> Program.run
-
-    do base.MainPage <- page
 ```
+The init function returns your initial state, and each model gets an update function for message processing. The `view` function computes an immutable Xaml-like description. In the above example, the choice between a label and button depends on the `model.Pressed` value.
 
-Example Xaml descriptions
+Example Views
 ------
 
 The sample [CounterApp](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Samples/CounterApp/CounterApp/CounterApp.fs) contains a slightly larger example of Button/Label/Slider controls.
@@ -118,21 +112,98 @@ let view model dispatch =
 In the example, we extract properties `CountForSlider` and `StepForSlider` from the model, and bind them to `count` and `step`.  If either of these change, the section of the view will be recomputed and no adjustments will be made to the UI.
 If not, this section of the view will be reused. This helps ensure that this part of the view description only depends on the parts of the model extracted.
 
+You can also use 
+* the `fix` function for portions of a view that have no dependencies at all (besides the "dispatch" function)
+* the `fixf` function for command callbacks that have no dependencies at all (besides the "dispatch" function)
+
+
+Saving Application State
+--------------
+
+Application state is very simple to save by serializing the model into `app.Properties`. For example, you can store as JSON as follows using [`FsPickler` and `FsPickler.Json`](https://github.com/mbraceproject/FsPickler), which use `Json.NET`:
+```fsharp
+open MBrace.FsPickler.Json
+
+type Application() = 
+    ....
+    let modelId = "model"
+    override __.OnSleep() = 
+        app.Properties.[modelId] <- FsPickler.CreateJsonSerializer().PickleToString(runner.Model)
+
+    override __.OnResume() = 
+        try 
+            match app.Properties.TryGetValue modelId with
+            | true, (:? string as json) -> 
+                runner.Model <- FsPickler.CreateJsonSerializer().UnPickleOfString(json)
+            | _ -> ()
+        with ex -> 
+            program.onError("Error while restoring model found in app.Properties", ex)
+
+    override this.OnStart() = this.OnResume()
+```
+
+Models and Validation
+------
+
+Validation is generally done on updates to the model, storing error messages from validation logic in the model
+so they can be correctly and simply displayed to the user.  Here is an example of a typical pattern.
+
+```fsharp
+    type Model = 
+        { TempF: double
+          TempC: double
+          Error: string option }
+
+    /// Valdiate a temperature in fareneit
+    let validateF text =  ... // return a Result
+
+    /// Valdiate a temperature in celcius
+    let validateC text = // return a Result 
+
+    let update msg model =
+        match msg with
+        | SetF textF -> 
+            match validateF textF with
+            | Ok newF -> { model with ... }
+            | Error msg -> { model with Errors = Some msg }
+            
+        | SetC textC -> 
+            match validateC textC with
+            | Ok newC -> { model with ... }
+            | Error msg -> { model with Errors = Some msg }
+```
+
+Note that the same validation logic can be used in both your app and a service back-end.
+
 Roadmap
 --------
 
 * Programming model: Do these from `Xamarin.Forms.Core`: 
   * Menu, MenuItem, NavigationBar, Accelerator
-  * Validation
   * Animation
   * OpenGLView
-  * CachingStrategy parameter to ListView
-  * Allow configuration of protected overrides such as OnSleep, OnResume, OnStart etc.
+  * Allow configuration of protected overrides 
+  * Fix issue for slider where minimum = 1.0, maximum=10.0 (i.e. when value=0 and minimum gets set before maximum?)
 
 * Programming efficiency
   * Support F# in Xamarin Live Player
   * Support hot-reloading of the saved model, reapplying to the same app where possible
-  * Develop a sample that includes both client and server development, like [this talk](https://skillsmatter.com/skillscasts/11308-safe-apps-with-f-web-stack)
+
+* Docs
+  * Generate `///` docs in code generator
+
+* Handle 3rd party controls.
+  * Examples: `Xamarin.Forms.Maps`, `SkiaSharp`
+  * Please add more examples of 3rd party controls
+  * Consider whether to continue using a code generator or to switch to a type provider
+  * Make any necessary changes/additions to the `bindings.json` format (nothing is set in stone yet)
+
+* Templates
+  * Develop a template pack
+
+* Debugging
+  * Improve diagnostics when property update fails
+  * Fix bug where ranges for locals seem off-by-one in Android debugging
 
 * Testing
   * Better unit-testing
@@ -146,12 +217,6 @@ Roadmap
   * Apps using charting
   * Apps using maps
 
-* Templates
-  * Develop a template pack
-
-* Docs
-  * Generate `///` docs in code generator
-
 * Performance:
   * Road test differential update
   * Minimize updates where possible
@@ -162,12 +227,10 @@ Roadmap
   * Consider keeping a running identity hash on the immutable objects
   * Consider implementing equality and hash on the immutable objects
   * Perf-test on large lists and do resulting perf work
+  * Consider moving 'view' and 'model' computations off the UI thread
 
-* Handle 3rd party controls.
-  * Examples: `Xamarin.Forms.Maps`, `SkiaSharp`
-  * Please add more examples of 3rd party controls
-  * Consider whether to continue using a code generator or to switch to a type provider
-  * Make any necessary changes/additions to the `bindings.json` format (nothing is set in stone yet)
+* Communication
+  * Develop a sample that includes both client and server development, like [this talk](https://skillsmatter.com/skillscasts/11308-safe-apps-with-f-web-stack)
 
 * Consider allowing explicit static Xaml through a type provider, e.g `xaml<"""<StackLayout Padding="20">...</StackLayout>""">`, evaluating to a `XamlElement`
 
@@ -175,9 +238,9 @@ Roadmap
   * Remove `yield` in more cases
   * Automatically save function values that do not capture any arguments and consider making the `dispatch` function global (partly to avoid is being seen as a captured argument)
   * Allow syntax `Xaml.Foo(prop1=expr1, [ // end of line`
-  * `TryGetValue` on F# immutable map
+  * [`TryGetValue` on F# immutable map](https://github.com/Microsoft/visualfsharp/pull/4827/)
   * Allow a default unnamed argument for `children` so the argument name doesn't have to be given explicitly
-
+  * Allow the use of struct options for optional arguments (to reduce allocations)
 
 Static Views and "Half Elmish"
 ------
@@ -244,14 +307,13 @@ type CounterApp () =
           "ResetVisible" |> Binding.oneWay (fun m ->  m <> init ())
           "StepValue" |> Binding.twoWay (fun m -> double m.Step) (fun v -> SetStep (int (v + 0.5))) ]
 
-    do
-        let page = 
-            Program.mkSimple init update view
-            |> Program.withConsoleTrace
-            |> Program.withStaticView
-            |> Program.run
+    let runner = 
+        Program.mkSimple init update view
+        |> Program.withConsoleTrace
+        |> Program.withStaticView
+        |> Program.run
 
-        base.MainPage <- page
+    do base.MainPage <- runner.InitialMainPage
 ```
 There are helper functions to create bindings located in the `Binding` module:
 * `Binding.oneWay getter`

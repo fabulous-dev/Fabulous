@@ -39,17 +39,17 @@ module Cmd =
 
     let dispatch d (cmd: Cmd<_>) = for sub in cmd do sub d
 
-    let ofAsyncMsg (p: Async<'msg>) : Cmd<_> =
-        [ fun dispatch -> async { let! msg = p in dispatch p } |> Async.StartImmediate ]
+    let ofAsyncMsg (p: Async<'msg>) : Cmd<'msg> =
+        [ fun dispatch -> async { let! msg = p in dispatch msg } |> Async.StartImmediate ]
  
-    let ofAsyncMsgs p : Cmd<_> =
-        [ fun dispatch -> p |> AsyncSeq.iter dispatch |> Async.StartImmediate ]
+    //let ofAsyncMsgs p : Cmd<_> =
+    //    [ fun dispatch -> p |> AsyncSeq.iter dispatch |> Async.StartImmediate ]
  
-    type CmdBuilder() = 
-        inherit AsyncSeq.AsyncSeqBuilder()
-        member x.Run(p: AsyncSeq<_>) = ofAsyncMsgs p
+    //type CmdBuilder() = 
+    //    inherit AsyncSeq.AsyncSeqBuilder()
+    //    member x.Run(p: AsyncSeq<_>) = ofAsyncMsgs p
  
-[<AutoOpen>]
-module CommandBuilder = 
-    let cmd = Cmd.CmdBuilder()
+//[<AutoOpen>]
+//module CommandBuilder = 
+//    let cmd = Cmd.CmdBuilder()
 

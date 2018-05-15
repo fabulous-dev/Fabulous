@@ -51,82 +51,14 @@ type MasterDetailApp () as self =
     do self.LoadFromXaml(typeof<MasterDetailApp>) |> ignore
 
     do
-        let mainPage = 
+        let runner = 
             Program.mkProgram (fun () -> MainPage.init(), NoCmd) MainPage.update MainPage.view
             |> Program.withConsoleTrace
             |> Program.withNavigation
             |> Program.withStaticView
             |> Program.run
 
-        base.MainPage <- NavigationPage mainPage
-
-(*
-        public static bool UseMockDataStore = true;
-        public static string BackendUrl = "https://localhost:5000";
-
-        public App()
-        {
-            InitializeComponent();
-
-            if (UseMockDataStore)
-                DependencyService.Register<MockDataStore>();
-            else
-                DependencyService.Register<CloudDataStore>();
-
-            if (Device.RuntimePlatform == Device.iOS)
-                MainPage = new MainPage();
-            else
-                MainPage = new NavigationPage(new MainPage());
-        }
-
-    
-            public class MainPage : TabbedPage
-    {
-        public MainPage()
-        {
-            Page itemsPage, aboutPage = null;
-
-            switch (Device.RuntimePlatform)
-            {
-                case Device.iOS:
-                    itemsPage = new NavigationPage(new ItemsPage())
-                    {
-                        Title = "Browse"
-                    };
-
-                    aboutPage = new NavigationPage(new AboutPage())
-                    {
-                        Title = "About"
-                    };
-                    itemsPage.Icon = "tab_feed.png";
-                    aboutPage.Icon = "tab_about.png";
-                    break;
-                default:
-                    itemsPage = new ItemsPage()
-                    {
-                        Title = "Browse"
-                    };
-
-                    aboutPage = new AboutPage()
-                    {
-                        Title = "About"
-                    };
-                    break;
-            }
-
-            Children.Add(itemsPage);
-            Children.Add(aboutPage);
-
-            Title = Children[0].Title;
-        }
-
-        protected override void OnCurrentPageChanged()
-        {
-            base.OnCurrentPageChanged();
-            Title = CurrentPage?.Title ?? string.Empty;
-        }
-    }
-}
-*)
-
-
+        let page = runner.InitialMainPage
+        let mainPage = NavigationPage page
+        do PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea((mainPage:> Page).On<PlatformConfiguration.iOS>(), true) |> ignore
+        base.MainPage <- mainPage

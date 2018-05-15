@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
-    <ProjectGuid>{9031246b-4b08-47c9-a500-30334a245272}</ProjectGuid>
+    <ProjectGuid>{71C30453-89CF-4955-8DFA-F09231DD99EE}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{F2A71F9B-5D33-465A-A702-920D77279786}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>iOS</RootNamespace>
@@ -89,7 +89,6 @@
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
     <Compile Include="AppDelegate.fs" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
@@ -108,19 +107,16 @@
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>../../../packages/iosapp/Xamarin.Forms/lib/Xamarin.iOS10/Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
-    <ProjectReference Include="..\AllControls\AllControls.fsproj">
-      <Project>{4282E90F-2519-46D0-B593-D57CFCA36A28}</Project>
-      <Name>AllControls</Name>
+    <ProjectReference Include="..\MasterDetailApp\MasterDetailApp.fsproj">
+      <Project>{AE045D79-7FF3-45F3-BFD0-305542A1C727}</Project>
+      <Name>MasterDetailApp</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Elmish.XamarinForms\Elmish.XamarinForms.fsproj">
+    <ProjectReference Include="..\..\..\..\Elmish.XamarinForms\Elmish.XamarinForms.fsproj">
       <Project>{AE045D79-7FF3-45F3-BFD0-305542A1C728}</Project>
       <Name>Elmish.XamarinForms</Name>
     </ProjectReference>
     <Reference Include="FSharp.Core">
-      <HintPath>..\..\..\packages\FSharp.Core.4.3.4\lib\netstandard1.6\FSharp.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="FSharp.Control.AsyncSeq">
-      <HintPath>..\..\..\packages\FSharp.Control.AsyncSeq.2.0.21\lib\netstandard2.0\FSharp.Control.AsyncSeq.dll</HintPath>
+      <HintPath>..\..\..\packages\iosapp\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets" Condition="Exists('$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets')" />

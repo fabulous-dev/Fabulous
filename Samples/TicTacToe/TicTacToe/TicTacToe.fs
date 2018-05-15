@@ -1,7 +1,5 @@
 ﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
 
-/// NOTE NOTE NOTE - this version of this sample uses "dynamic" view updates which currently 
-/// results in flickering on each update of the UI.  Thus this is not yet appropriate for anything but a sample.
 namespace TicTacToe
 
 open Elmish
@@ -140,7 +138,7 @@ module App =
     /// of the Xaml resource for the image for a player
     let imageForPos cell =
         match cell with
-        | Full X -> "icon"
+        | Full X -> "Cross"
         | Full O -> "Nought"
         | Empty -> ""
 
@@ -153,9 +151,12 @@ module App =
 
     /// The dynamic 'view' function giving the updated content for the view
     let view model dispatch =
-      Xaml.ContentPage(
-        Xaml.Grid(rowdefs=[ "*"; "auto"; "auto" ],
-            children=[
+      Xaml.NavigationPage(barBackgroundColor = Color.LightBlue, 
+        barTextColor = Color.Black,
+        pages=
+          [Xaml.ContentPage(
+            Xaml.Grid(rowdefs=[ "*"; "auto"; "auto" ],
+              children=[
                 Xaml.Grid(rowdefs=[ "*"; 5.0; "*"; 5.0; "*" ], coldefs=[ "*"; 5.0; "*"; 5.0; "*" ],
                     children=[
                         yield Xaml.BoxView(Color.Black).GridRow(1).GridColumnSpan(5)
@@ -166,12 +167,10 @@ module App =
                         for ((row,col) as pos) in positions ->
                             let item = 
                                 if canPlay model model.Board.[pos] then 
-                                    Xaml.Button(command=(fun () -> dispatch (Play pos)))
+                                    Xaml.Button(command=(fun () -> dispatch (Play pos)), backgroundColor=Color.LightBlue)
                                 else
-                                    Xaml.Image(source=imageForPos model.Board.[pos])
-                            let item = item.Margin(5.0)
-                            let item = item.GridRow(row*2).GridColumn(col*2) 
-                            item ],
+                                    Xaml.Image(source=imageForPos model.Board.[pos], margin=10.0)
+                            item.GridRow(row*2).GridColumn(col*2) ],
 
                     rowSpacing=0.0,
                     columnSpacing=0.0,
@@ -184,14 +183,14 @@ module App =
                 Xaml.Button(command=(fun () -> dispatch Restart), text="Restart game", backgroundColor=Color.LightBlue, textColor=Color.Black, fontSize="Large").GridRow(2)
               ]),
 
-        // This requests a square board based on the width we get allocated on the device 
-        onSizeAllocated=(fun (width, height) ->
-            if model.VisualBoardSize.IsNone then 
-                let sz = min width height - 80.0
-                dispatch (SetVisualBoardSize sz)))
+             // This requests a square board based on the width we get allocated on the device 
+             onSizeAllocated=(fun (width, height) ->
+               if model.VisualBoardSize.IsNone then 
+                   let sz = min width height - 80.0
+                   dispatch (SetVisualBoardSize sz)))])
 
 /// Stitch the model, update and view content into a single app.
-type App() =
+type App() as app =
     inherit Application()
 
     // Display a modal message giving the game result. This is doing a UI
@@ -200,72 +199,9 @@ type App() =
     let gameOver msg =
         Application.Current.MainPage.DisplayAlert("Game over", msg, "OK") |> ignore
 
-    let page = 
+    let runner = 
         Program.mkSimple App.init (App.update gameOver) App.view
         |> Program.withConsoleTrace
-        |> Program.withDynamicView
+        |> Program.withDynamicView app
         |> Program.run
         
-    let mainPage = NavigationPage(page, BarBackgroundColor = Color.LightBlue, BarTextColor = Color.Black)
-    do base.MainPage <- mainPage
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-(*
-module Alternatives = 
-    open App
-    
-    /// The second possible style for the dynamic 'view' function. 
-    let view2 model dispatch =
-        rows 
-            [ "*"; "auto"; "auto" ]
-            [ grid 
-               |> gridRowDefinitions [ "*"; 5.0; "*"; 5.0; "*" ]
-               |> gridColumnDefinitions [ "*"; 5.0; "*"; 5.0; "*" ]
-               |> children [ 
-                  yield boxView |> color Color.Black |> gridRow 1 |> gridColumnSpan 5
-                  yield boxView |> color Color.Black |> gridRow 3 |> gridColumnSpan 5
-                  yield boxView |> color Color.Black |> gridColumn 1 |> gridRowSpan 5
-                  yield boxView |> color Color.Black |> gridColumn 3 |> gridRowSpan 5
-                  for ((row,col) as pos) in positions do 
-                      let item = 
-                          if canPlay model model.Board.[pos] then 
-                              button |> command (fun () -> dispatch (Play pos)) 
-                          else
-                              image |> imageSource (imageForPos model.Board.[pos]) 
-                      yield item |> margin 5.0 |> gridRow (row*2) |> gridColumn (col*2) ]
-
-                |> rowSpacing 0.0
-                |> columnSpacing 0.0
-                |> horizontalOptions LayoutOptions.Center
-                |> verticalOptions LayoutOptions.Center
-
-              label 
-                |> text (getMessage model) 
-                |> margin 10.0
-                |> textColor Color.Black
-                |> horizontalTextAlignment TextAlignment.Center
-                |> fontSize "Large"
-
-              button 
-                |> command (fun () -> dispatch Restart)
-                |> text "Restart game"
-                |> backgroundColor Color.LightBlue
-                |> textColor Color.Black  
-                |> fontSize "Large"]
-
-
-                *)

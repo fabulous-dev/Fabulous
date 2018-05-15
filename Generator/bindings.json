@@ -273,9 +273,17 @@
 				},
 				{
 					"name": "SearchCommand",
-					"defaultValue": "null",
+					"uniqueName": "SearchBarCommand",
 					"inputType": "unit -> unit",
-					"convToModel": "makeCommand"
+					"modelType": "unit -> unit",
+					"updateCode": "(fun _ _ _ -> ())" // set below in CanExecute
+				},
+				{
+					"name": "CanExecute",
+					"uniqueName": "SearchBarCanExecute",
+					"inputType": "bool",
+					"modelType": "bool",
+					"updateCode": "updateCommand (match prevOpt with UNone -> UNone | USome prev -> System.Diagnostics.Debug.WriteLine(\"Setting SearchBar::Command \"); prev.TrySearchBarCommand) prevValueOpt source.TrySearchBarCommand valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine(\"Setting SearchBar::Command \"); target.SearchCommand <- cmd)"
 				},
 				{
 					"name": "Text",
@@ -296,9 +304,17 @@
 				},
 				{
 					"name": "Command",
-					"defaultValue": "null",
+					"uniqueName": "ButtonCommand",
 					"inputType": "unit -> unit",
-					"convToModel": "makeCommand"
+					"modelType": "unit -> unit",
+					"updateCode": "(fun _ _ _ -> ())" //updateCommand prevValueOpt (match prevOpt with UNone -> UNone | USome prev -> prev.TryButtonCanExecute) valueOpt source.TryButtonCanExecute (fun cmd -> System.Diagnostics.Debug.WriteLine(\"Setting Button::Command \"); target.Command <- cmd)"
+				},
+				{
+					"name": "CanExecute",
+					"uniqueName": "ButtonCanExecute",
+					"inputType": "bool",
+					"modelType": "bool",
+					"updateCode": "updateCommand (match prevOpt with UNone -> UNone | USome prev -> prev.TryButtonCommand) prevValueOpt source.TryButtonCommand valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine(\"Setting Button::Command \"); target.Command <- cmd)"
 				},
 				{
 					"name": "BorderColor",
@@ -461,7 +477,7 @@
 					"modelType": "(string * XamlElement[])[]",
 					"inputType": "(string * XamlElement list) list",
 					"convToModel": "(fun es -> es |> Array.ofList |> Array.map (fun (title, es) -> (title, Array.ofList es)))",
-					"updateCode": "updateTableViewItems prevValueOpt valueOpt target (fun (x:XamlElement) -> x.CreateAsCell()) (fun (prevChild:XamlElement) (newChild:XamlElement) -> prevChild.TargetType = newChild.TargetType) (fun prevChild newChild targetChild -> newChild.UpdateIncremental(prevChild, targetChild))"
+					"updateCode": "updateTableViewItems"
 				}
 			]
 		},
@@ -1041,6 +1057,12 @@
 					"convToModel": "makeThickness",
 					"defaultValue": "Unchecked.defaultof<Xamarin.Forms.Thickness>",
 					"equality": "equalThickness"
+				},
+				{
+					"name": "UseSafeArea",
+					"inputType": "bool",
+					"modelType": "bool",
+					"updateCode": "(fun _ _ target -> Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea((target :> Xamarin.Forms.Page).On<Xamarin.Forms.PlatformConfiguration.iOS>(), true) |> ignore)"
 				}
 			]
 		},
@@ -1085,6 +1107,39 @@
 		{
 			"name": "Xamarin.Forms.NavigationPage",
 			"members": [
+				{
+					"name": "Pages",
+					"uniqueName": "NavigationPagePages",
+					"inputType": "XamlElement list",
+					"shortName": "pages",
+					"modelType": "XamlElement[]",
+					"convToModel": "Array.ofList",
+					"updateCode": "updateNavigationPages",
+					"attached": [
+						{
+							"name": "BackButtonTitle",
+							"modelType": "string",
+							"defaultValue": "null"
+						},
+						{
+							"name": "HasBackButton",
+							"modelType": "bool",
+							"defaultValue": "true"
+						},
+						{
+							"name": "HasNavigationBar",
+							"modelType": "bool",
+							"defaultValue": "true"
+						},
+						{
+							"name": "TitleIcon",
+    					"inputType": "string",
+		    			"modelType": "string",
+				    	"convToValue": "makeFileImageSource",
+				    	"defaultValue": "null"
+						}
+					]
+				},
 				{
 					"name": "BarBackgroundColor",
 					"defaultValue": "Xamarin.Forms.Color.Default"
@@ -1147,7 +1202,7 @@
 					"modelType": "FSharp.Control.Handler<(double * double)>",
 					"inputType": "(double * double) -> unit",
 					"convToModel": "(fun f -> FSharp.Control.Handler<_>(fun _sender args -> f args))",
-					"updateCode": "(let target = (target :?> Elmish.XamarinForms.DynamicViews.CustomContentPage) in (match prevValueOpt with UNone -> () | USome f -> target.SizeAllocated.RemoveHandler(f)); (match valueOpt with UNone -> () | USome f -> target.SizeAllocated.AddHandler(f)))"
+					"updateCode": "updateOnSizeAllocated"
 				}
 			]
 		},
@@ -1219,9 +1274,17 @@
 				},
 				{
 					"name": "Command",
-					"defaultValue": "null",
+					"uniqueName": "TextCellCommand",
 					"inputType": "unit -> unit",
-					"convToModel": "makeCommand"
+					"modelType": "unit -> unit",
+					"updateCode": "(fun _ _ _ -> ())" // set below in CanExecute 
+				},
+				{
+					"name": "CanExecute",
+					"uniqueName": "TextCellCanExecute",
+					"inputType": "bool",
+					"modelType": "bool",
+					"updateCode": "updateCommand (match prevOpt with UNone -> UNone | USome prev -> prev.TryTextCellCommand) prevValueOpt source.TryTextCellCommand valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine(\"Setting TextCell::Command \"); target.Command <- cmd)"
 				},
 				{
 					"name": "CommandParameter",
@@ -1261,8 +1324,13 @@
 					"inputType": "XamlElement list",
 					"modelType": "XamlElement[]",
 					"convToModel": "Array.ofList",
-					"updateCode": "updateListViewItems prevValueOpt valueOpt target"
+					"updateCode": "updateListViewItems"
 				},
+				//{
+				//	"name": "ListViewCachingStrategy",
+			//		"inputType": "Xamarin.Forms.ListViewCachingStrategy",
+			//		"isParam": true
+			//	},
 				//{
 				//	"name": "ItemTemplate",
 				//	"defaultValue": "null"
@@ -1374,7 +1442,7 @@
 					"inputType": "(XamlElement * XamlElement list) list",
 					"modelType": "(XamlElement * XamlElement[])[]",
 					"convToModel": "(fun es -> es |> Array.ofList |> Array.map (fun (e,l) -> (e, Array.ofList l)))",
-					"updateCode": "updateListViewGroupedItems prevValueOpt valueOpt target"
+					"updateCode": "updateListViewGroupedItems"
 				},
 				//{
 				//	"name": "ItemTemplate",
