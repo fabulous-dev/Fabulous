@@ -1,11 +1,11 @@
-F# Functional-Reactive App Development, using Xamarin.Forms 
+F# Functional App Development, using Xamarin.Forms 
 =======
 
 [![NuGet version](https://badge.fury.io/nu/Elmish.XamarinForms.svg)](https://badge.fury.io/nu/Elmish.XamarinForms) [![Build status (Windows)](https://ci.appveyor.com/api/projects/status/4qajefd4c6sbjfrt/branch/master?svg=true)](https://ci.appveyor.com/project/dsyme/elmish-xamarinforms/branch/master)  [![Build status (OSX)](https://ci.appveyor.com/api/projects/status/4qajefd4c6sbjfrt/branch/master?svg=true)](https://travis-ci.org/fsprojects/Elmish.XamarinForms.svg?branch=master)
 
 Never write a ViewModel class again!  Conquer the world with clean dynamic UIs!
 
-This library uses a variation of [elmish](https://elmish.github.io/), an Elm architecture implemented in F#, to build Xamarin.Forms applications. Fable-elmish was originally written for [Fable](https://github.com/fable-compiler) applications, however it is used here for Xamarin.Forms. This is a sample and may change.
+This library uses a variation of [elmish](https://elmish.github.io/), an Elm architecture implemented in F#, to build Xamarin.Forms applications. Elmish was originally written for [Fable](https://github.com/fable-compiler) applications, however it is used here for mobile applications using Xamarin.Forms. This is a sample and may change.
 
 To quote [@dsyme](http://github.com/dsyme):
 
