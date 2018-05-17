@@ -245,6 +245,7 @@ Roadmap
   * [`TryGetValue` on F# immutable map](https://github.com/Microsoft/visualfsharp/pull/4827/)
   * Allow a default unnamed argument for `children` so the argument name doesn't have to be given explicitly
   * Allow the use of struct options for optional arguments (to reduce allocations)
+  * Implement the C# 5.0 "open static classes" feature in F# to allow the `Xaml.` prefix to be dropped
 
 Static Views and "Half Elmish"
 ------
