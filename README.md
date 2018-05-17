@@ -117,6 +117,14 @@ You can also use
 * the `fixf` function for command callbacks that have no dependencies at all (besides the "dispatch" function)
 
 
+Advantages of an immutable model
+------
+
+* Easy to unit test your `init`, `update` and `view` functions
+* Can save/restore your model very easily (see below)
+* Makes tracing causality usually very simple
+
+
 Saving Application State
 --------------
 
