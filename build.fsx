@@ -23,11 +23,11 @@ Target "BuildApp" (fun _ ->
        |> MSBuildRelease buildDir "Restore"
        |> Log "AppRestore-Output: "
 
-    // Building apps on CI not yet possible
-    // // build the apps debug
-    //!! "Elmish.XamarinForms.sln"
-    //   |> MSBuildDebug buildDir "Build"
-    //   |> Log "AppBuildDebug-Output: "
+    // build the apps debug
+    !! "Elmish.XamarinForms.sln"
+       |> MSBuildDebug buildDir "Build"
+       |> Log "AppBuildDebug-Output: "
+
     !! "Elmish.XamarinForms/Elmish.XamarinForms.fsproj"
        |> MSBuildRelease buildDir "Build"
        |> Log "AppBuild-Output: "
