@@ -241,10 +241,11 @@ Roadmap
 * Make some small F# langauge improvements to improve code:
   * Remove `yield` in more cases
   * Automatically save function values that do not capture any arguments and consider making the `dispatch` function global (partly to avoid is being seen as a captured argument)
-  * Allow syntax `Xaml.Foo(prop1=expr1, [ // end of line`
+  * [Allow syntax `Xaml.Foo(prop1=expr1, [ // end of line`](https://github.com/Microsoft/visualfsharp/pull/4929)
   * [`TryGetValue` on F# immutable map](https://github.com/Microsoft/visualfsharp/pull/4827/)
   * Allow a default unnamed argument for `children` so the argument name doesn't have to be given explicitly
   * Allow the use of struct options for optional arguments (to reduce allocations)
+  * Implement the C# 5.0 "open static classes" feature in F# to allow the `Xaml.` prefix to be dropped
 
 Static Views and "Half Elmish"
 ------
