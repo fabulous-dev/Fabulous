@@ -54,6 +54,7 @@ NUGET
     System.Threading.Thread (4.3)
     System.Threading.ThreadPool (4.3)
     System.Threading.Timer (4.3)
+    Xamarin.Android.FSharp.ResourceProvider (1.0.0.14)
     Xamarin.Android.Support.Animated.Vector.Drawable (25.4.0.2)
       Xamarin.Android.Support.Vector.Drawable (25.4.0.2)
     Xamarin.Android.Support.Annotations (25.4.0.2)
