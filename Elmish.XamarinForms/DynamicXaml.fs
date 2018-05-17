@@ -3588,8 +3588,9 @@ type Xaml() =
             match prevChildOpt, source.TryContent with
             // For structured objects, dependsOn on reference equality
             | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
-            | USome prevChild, USome newChild ->
+            | USome prevChild, USome newChild when prevChild.TargetType = newChild.TargetType ->
                 newChild.UpdateIncremental(prevChild, target.Content)
+            | USome _, USome newChild
             | UNone, USome newChild ->
                 target.Content <- newChild.CreateAsView()
             | USome _, UNone ->
@@ -6215,8 +6216,9 @@ type Xaml() =
             match prevChildOpt, source.TryContent with
             // For structured objects, dependsOn on reference equality
             | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
-            | USome prevChild, USome newChild ->
+            | USome prevChild, USome newChild when prevChild.TargetType = newChild.TargetType ->
                 newChild.UpdateIncremental(prevChild, target.Content)
+            | USome _, USome newChild
             | UNone, USome newChild ->
                 target.Content <- newChild.CreateAsView()
             | USome _, UNone ->
@@ -7175,8 +7177,9 @@ type Xaml() =
             match prevChildOpt, source.TryContent with
             // For structured objects, dependsOn on reference equality
             | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
-            | USome prevChild, USome newChild ->
+            | USome prevChild, USome newChild when prevChild.TargetType = newChild.TargetType ->
                 newChild.UpdateIncremental(prevChild, target.Content)
+            | USome _, USome newChild
             | UNone, USome newChild ->
                 target.Content <- newChild.CreateAsView()
             | USome _, UNone ->
@@ -9966,8 +9969,9 @@ type Xaml() =
             match prevChildOpt, source.TryCurrentPage with
             // For structured objects, dependsOn on reference equality
             | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
-            | USome prevChild, USome newChild ->
+            | USome prevChild, USome newChild when prevChild.TargetType = newChild.TargetType ->
                 newChild.UpdateIncremental(prevChild, target.CurrentPage)
+            | USome _, USome newChild
             | UNone, USome newChild ->
                 target.CurrentPage <- newChild.CreateAsContentPage()
             | USome _, UNone ->
@@ -10653,8 +10657,9 @@ type Xaml() =
             match prevChildOpt, source.TryContent with
             // For structured objects, dependsOn on reference equality
             | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
-            | USome prevChild, USome newChild ->
+            | USome prevChild, USome newChild when prevChild.TargetType = newChild.TargetType ->
                 newChild.UpdateIncremental(prevChild, target.Content)
+            | USome _, USome newChild
             | UNone, USome newChild ->
                 target.Content <- newChild.CreateAsView()
             | USome _, UNone ->
@@ -10864,8 +10869,9 @@ type Xaml() =
             match prevChildOpt, source.TryMaster with
             // For structured objects, dependsOn on reference equality
             | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
-            | USome prevChild, USome newChild ->
+            | USome prevChild, USome newChild when prevChild.TargetType = newChild.TargetType ->
                 newChild.UpdateIncremental(prevChild, target.Master)
+            | USome _, USome newChild
             | UNone, USome newChild ->
                 target.Master <- newChild.CreateAsPage()
             | USome _, UNone ->
@@ -10875,8 +10881,9 @@ type Xaml() =
             match prevChildOpt, source.TryDetail with
             // For structured objects, dependsOn on reference equality
             | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
-            | USome prevChild, USome newChild ->
+            | USome prevChild, USome newChild when prevChild.TargetType = newChild.TargetType ->
                 newChild.UpdateIncremental(prevChild, target.Detail)
+            | USome _, USome newChild
             | UNone, USome newChild ->
                 target.Detail <- newChild.CreateAsPage()
             | USome _, UNone ->
@@ -11321,8 +11328,9 @@ type Xaml() =
             match prevChildOpt, source.TryView with
             // For structured objects, dependsOn on reference equality
             | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
-            | USome prevChild, USome newChild ->
+            | USome prevChild, USome newChild when prevChild.TargetType = newChild.TargetType ->
                 newChild.UpdateIncremental(prevChild, target.View)
+            | USome _, USome newChild
             | UNone, USome newChild ->
                 target.View <- newChild.CreateAsView()
             | USome _, UNone ->
