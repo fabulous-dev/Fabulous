@@ -97,9 +97,6 @@
     <Reference Include="System.Numerics" />
     <Reference Include="mscorlib" />
     <Reference Include="Mono.Android" />
-    <Reference Include="Xamarin.Android.FSharp.ResourceProvider.Runtime">
-      <HintPath>../../../packages/androidapp/Xamarin.Android.FSharp.ResourceProvider/lib/Xamarin.Android.FSharp.ResourceProvider.Runtime.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Android.Support.Animated.Vector.Drawable">
       <HintPath>../../../packages/androidapp/Xamarin.Android.Support.Animated.Vector.Drawable/lib/MonoAndroid70/Xamarin.Android.Support.Animated.Vector.Drawable.dll</HintPath>
     </Reference>

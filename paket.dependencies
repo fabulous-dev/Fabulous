@@ -18,7 +18,6 @@ group androidapp
   source https://www.nuget.org/api/v2
   nuget FSharp.Core 4.3.3
   nuget Xamarin.Forms
-  nuget Xamarin.Android.FSharp.ResourceProvider 1.0.0.14
   nuget Xamarin.Android.Support.Animated.Vector.Drawable 25.4.0.2
   nuget Xamarin.Android.Support.Annotations 25.4.0.2
   nuget Xamarin.Android.Support.Compat 25.4.0.2
