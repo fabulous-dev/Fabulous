@@ -199,7 +199,7 @@ namespace Generator
             try {
                 if (args.Length < 2)
                 {
-                    Console.Error.WriteLine("usage: generator <outputPath>");
+                    Console.Error.WriteLine("usage: generator <bindingsPath> <outputPath>");
                     Environment.Exit(1);
                 }
                 var bindingsPath = args[0];
@@ -497,8 +497,9 @@ namespace Generator
                                     w.WriteLine($"            match prevChildOpt, source.Try{m.BoundUniqueName} with");
                                     w.WriteLine($"            // For structured objects, dependsOn on reference equality");
                                     w.WriteLine($"            | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()");
-                                    w.WriteLine($"            | USome prevChild, USome newChild ->");
+                                    w.WriteLine($"            | USome prevChild, USome newChild when prevChild.TargetType = newChild.TargetType ->");
                                     w.WriteLine($"                newChild.UpdateIncremental(prevChild, target.{m.Name})");
+                                    w.WriteLine($"            | USome _, USome newChild");
                                     w.WriteLine($"            | UNone, USome newChild ->");
                                     w.WriteLine($"                target.{m.Name} <- newChild.CreateAs{bt.Name}()");
                                     w.WriteLine($"            | USome _, UNone ->");
