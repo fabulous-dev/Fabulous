@@ -7,7 +7,7 @@ group neutral
   framework: netstandard2.0
   source https://www.nuget.org/api/v2
   nuget FSharp.Core 4.3.3
-  nuget Xamarin.Forms 2.5.0.122203
+  nuget Xamarin.Forms 3.0.0.482510
   github fable-elmish/elmish:46f0313c26266c5703d4f7dcf111fb0038393a77 src/cmd.fs 
   github fable-elmish/elmish:46f0313c26266c5703d4f7dcf111fb0038393a77 src/program.fs 
 
@@ -17,7 +17,7 @@ group androidapp
   framework: monoandroid71
   source https://www.nuget.org/api/v2
   nuget FSharp.Core 4.3.3
-  nuget Xamarin.Forms
+  nuget Xamarin.Forms 3.0.0.482510
   nuget Xamarin.Android.Support.Animated.Vector.Drawable 25.4.0.2
   nuget Xamarin.Android.Support.Annotations 25.4.0.2
   nuget Xamarin.Android.Support.Compat 25.4.0.2
@@ -41,4 +41,4 @@ group iosapp
   framework: monotouch
   source https://www.nuget.org/api/v2
   nuget FSharp.Core 4.3.3
-  nuget Xamarin.Forms
+  nuget Xamarin.Forms 3.0.0.482510

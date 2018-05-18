@@ -6,3 +6,4 @@ bin
 packages
 paket-files
 *.dll
+/.paket/paket.bootstrapper.exe
