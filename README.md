@@ -117,6 +117,14 @@ You can also use
 * the `fixf` function for command callbacks that have no dependencies at all (besides the "dispatch" function)
 
 
+Advantages of an immutable model
+------
+
+* Easy to unit test your `init`, `update` and `view` functions
+* Can save/restore your model very easily (see below)
+* Makes tracing causality usually very simple
+
+
 Saving Application State
 --------------
 
@@ -186,8 +194,6 @@ Roadmap
   * Menu, MenuItem, NavigationBar, Accelerator
   * Animation
   * OpenGLView
-  * Allow configuration of protected overrides 
-  * Fix issue for slider where minimum = 1.0, maximum=10.0 (i.e. when value=0 and minimum gets set before maximum?)
 
 * Programming efficiency
   * Support F# in Xamarin Live Player
@@ -198,8 +204,7 @@ Roadmap
 
 * Handle 3rd party controls.
   * Examples: `Xamarin.Forms.Maps`, `SkiaSharp`
-  * Please add more examples of 3rd party controls
-  * Consider whether to continue using a code generator or to switch to a type provider
+  * Consider whether to continue using a code generator or to switch to a type provider (see [this comment](https://github.com/fsprojects/Elmish.XamarinForms/issues/50#issuecomment-390396365))
   * Make any necessary changes/additions to the `bindings.json` format (nothing is set in stone yet)
 
 * Templates
@@ -210,16 +215,16 @@ Roadmap
   * Fix bug where ranges for locals seem off-by-one in Android debugging
 
 * Testing
-  * Better unit-testing
-  * Add an explicit unit-test project
-  * Test with Visual Studio for Mac
-  * Test with iOS
   * Most testing so far is done through  [AllControls](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Samples/AllControls/AllControls/AllControls.fs) project
+  * Add an explicit unit-test project
 
 * Real-world road-testing:
   * Multi-page apps with navigation
   * Apps using charting
   * Apps using maps
+
+* App size:
+  * Check the Xamarin tree-shaker cuts out all unused code from DynamicXaml.fs
 
 * Performance:
   * Road test differential update
@@ -246,6 +251,9 @@ Roadmap
   * Allow a default unnamed argument for `children` so the argument name doesn't have to be given explicitly
   * Allow the use of struct options for optional arguments (to reduce allocations)
   * Implement the C# 5.0 "open static classes" feature in F# to allow the `Xaml.` prefix to be dropped
+
+Bugs:
+  * Fix issue for slider where minimum = 1.0, maximum=10.0 (i.e. when value=0 and minimum gets set before maximum?)
 
 Static Views and "Half Elmish"
 ------

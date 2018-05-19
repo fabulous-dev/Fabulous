@@ -1,7 +1,7 @@
 RESTRICTION: == netstandard2.0
 NUGET
   remote: https://www.nuget.org/api/v2
-    FAKE (4.64.12)
+    FAKE (4.64.13)
 
 GROUP androidapp
 RESTRICTION: == monoandroid7.1
@@ -178,7 +178,3 @@ NUGET
   remote: https://www.nuget.org/api/v2
     FSharp.Core (4.3.3)
     Xamarin.Forms (3.0.0.482510)
-GITHUB
-  remote: fable-elmish/elmish
-    src/cmd.fs (46f0313c26266c5703d4f7dcf111fb0038393a77)
-    src/program.fs (46f0313c26266c5703d4f7dcf111fb0038393a77)

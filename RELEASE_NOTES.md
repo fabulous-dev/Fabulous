@@ -1,3 +1,6 @@
+#### 0.4.4
+* [Fix UpdateIncremental when types of Old and New object differs](https://github.com/fsprojects/Elmish.XamarinForms/pull/53)
+
 #### 0.4.3
 * Sync base version of XF to that listed in paket.lock
 

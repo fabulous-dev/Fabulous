@@ -8,8 +8,9 @@ group neutral
   source https://www.nuget.org/api/v2
   nuget FSharp.Core 4.3.3
   nuget Xamarin.Forms 3.0.0.482510
-  github fable-elmish/elmish:46f0313c26266c5703d4f7dcf111fb0038393a77 src/cmd.fs 
-  github fable-elmish/elmish:46f0313c26266c5703d4f7dcf111fb0038393a77 src/program.fs 
+  nuget Xamarin.Forms 2.5.0.122203
+  nuget FsPickler 5.2
+  nuget FsPickler.Json 5.2
 
 # Dependencies used when compiling and running Android samples. We use the latest FSharp.Core and 
 # latest Xamarin.Forms
