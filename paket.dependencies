@@ -8,7 +8,6 @@ group neutral
   source https://www.nuget.org/api/v2
   nuget FSharp.Core 4.3.3
   nuget Xamarin.Forms 3.0.0.482510
-  nuget Xamarin.Forms 2.5.0.122203
   nuget FsPickler 5.2
   nuget FsPickler.Json 5.2
 
