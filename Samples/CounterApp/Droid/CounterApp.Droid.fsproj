@@ -90,14 +90,14 @@
       <HintPath>..\..\..\packages\FSharp.Core.4.3.2\lib\netstandard1.6\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="FsPickler">
-      <HintPath>..\..\..\packages\FsPickler.5.2\lib\netstandard2.0\FsPickler.dll</HintPath>
+      <HintPath>..\..\..\packages\neutral\FsPickler\lib\netstandard2.0\FsPickler.dll</HintPath>
     </Reference>
     <Reference Include="FsPickler.Json">
-      <HintPath>..\..\..\packages\FsPickler.Json.5.2\lib\netstandard2.0\FsPickler.Json.dll</HintPath>
+      <HintPath>..\..\..\packages\neutral\FsPickler.Json\lib\netstandard2.0\FsPickler.Json.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\packages\Newtonsoft.Json.10.0.1\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\packages\neutral\Newtonsoft.Json\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Runtime.Serialization" />
