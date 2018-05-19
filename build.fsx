@@ -18,16 +18,16 @@ Target "BuildApp" (fun _ ->
     // needed or else 'project.assets.json' not found'
     DotNetCli.Restore (fun p -> { p with Project = "Elmish.XamarinForms/Elmish.XamarinForms.fsproj" })
 
-    // needed or else 'project.assets.json' not found'
+    if EnvironmentHelper.isMacOS then
+        // build the apps debug
+        !! "Elmish.XamarinForms.sln"
+          |> MSBuildDebug buildDir "Build"
+          |> Log "AppBuildDebug-Output: "
+
     !! "Elmish.XamarinForms/Elmish.XamarinForms.fsproj"
        |> MSBuildRelease buildDir "Restore"
        |> Log "AppRestore-Output: "
 
-    // Building apps on CI not yet possible
-    // // build the apps debug
-    //!! "Elmish.XamarinForms.sln"
-    //   |> MSBuildDebug buildDir "Build"
-    //   |> Log "AppBuildDebug-Output: "
     !! "Elmish.XamarinForms/Elmish.XamarinForms.fsproj"
        |> MSBuildRelease buildDir "Build"
        |> Log "AppBuild-Output: "
