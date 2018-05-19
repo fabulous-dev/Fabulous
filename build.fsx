@@ -23,14 +23,26 @@ Target "BuildApp" (fun _ ->
        |> MSBuildRelease buildDir "Restore"
        |> Log "AppRestore-Output: "
 
+    !! "Elmish.XamarinForms/Elmish.XamarinForms.fsproj"
+       |> MSBuildRelease buildDir "Build"
+       |> Log "AppBuild-Output: "
+
+    //DotNetCli.Restore (fun p -> { p with Project = "Elmish.XamarinForms.sln" })
     // Building apps on CI not yet possible
     // // build the apps debug
     //!! "Elmish.XamarinForms.sln"
     //   |> MSBuildDebug buildDir "Build"
     //   |> Log "AppBuildDebug-Output: "
-    !! "Elmish.XamarinForms/Elmish.XamarinForms.fsproj"
-       |> MSBuildRelease buildDir "Build"
-       |> Log "AppBuild-Output: "
+)
+
+// targetsAreOnSameLevel
+Target "EntireProject" (fun _ ->
+
+    // needed or else 'project.assets.json' not found'
+    DotNetCli.Restore (fun p -> { p with Project = "Elmish.XamarinForms.sln" })
+
+    // Building apps on CI not yet possible
+    MSBuildDebug buildDir "Build" "Elmish.XamarinForms.sln" |> Log "AppBuildDebug-Output: "
 )
 
 Target "Clean" (fun _ ->
