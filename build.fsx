@@ -42,7 +42,7 @@ Target "EntireProject" (fun _ ->
     DotNetCli.Restore (fun p -> { p with Project = "Elmish.XamarinForms.sln" })
 
     // Building apps on CI not yet possible
-    MSBuildDebug buildDir "Build" "Elmish.XamarinForms.sln" |> Log "AppBuildDebug-Output: "
+    !! "Elmish.XamarinForms.sln" |> MSBuildDebug buildDir "Build"  |> Log "AppBuildDebug-Output: "
 )
 
 Target "Clean" (fun _ ->
