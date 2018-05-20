@@ -51,6 +51,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CounterApp.iOS", "Samples\C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Generator", "Generator\Generator.csproj", "{10DF5D2F-17FA-43DE-9549-B84E6CF26602}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AllControls.WPF", "Samples\AllControls\AllControls.WPF\AllControls.WPF.fsproj", "{851F51C5-D484-405F-8B6A-3761F078E3E3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -347,6 +349,22 @@ Global
 		{10DF5D2F-17FA-43DE-9549-B84E6CF26602}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{10DF5D2F-17FA-43DE-9549-B84E6CF26602}.Release|x86.ActiveCfg = Release|Any CPU
 		{10DF5D2F-17FA-43DE-9549-B84E6CF26602}.Release|x86.Build.0 = Release|Any CPU
+		{851F51C5-D484-405F-8B6A-3761F078E3E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{851F51C5-D484-405F-8B6A-3761F078E3E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{851F51C5-D484-405F-8B6A-3761F078E3E3}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{851F51C5-D484-405F-8B6A-3761F078E3E3}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{851F51C5-D484-405F-8B6A-3761F078E3E3}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{851F51C5-D484-405F-8B6A-3761F078E3E3}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{851F51C5-D484-405F-8B6A-3761F078E3E3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{851F51C5-D484-405F-8B6A-3761F078E3E3}.Debug|x86.Build.0 = Debug|Any CPU
+		{851F51C5-D484-405F-8B6A-3761F078E3E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{851F51C5-D484-405F-8B6A-3761F078E3E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{851F51C5-D484-405F-8B6A-3761F078E3E3}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{851F51C5-D484-405F-8B6A-3761F078E3E3}.Release|iPhone.Build.0 = Release|Any CPU
+		{851F51C5-D484-405F-8B6A-3761F078E3E3}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{851F51C5-D484-405F-8B6A-3761F078E3E3}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{851F51C5-D484-405F-8B6A-3761F078E3E3}.Release|x86.ActiveCfg = Release|Any CPU
+		{851F51C5-D484-405F-8B6A-3761F078E3E3}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -373,6 +391,7 @@ Global
 		{AC36B11A-383D-45A3-8999-4F6475E9DD13} = {A61655CB-26DF-47E7-BCC0-91FD9A7D83AA}
 		{13181907-1C53-47C1-BDF0-DBECCC2ED92E} = {A61655CB-26DF-47E7-BCC0-91FD9A7D83AA}
 		{F557905B-B099-44AB-939C-AB169499A36E} = {A61655CB-26DF-47E7-BCC0-91FD9A7D83AA}
+		{851F51C5-D484-405F-8B6A-3761F078E3E3} = {12D18417-809C-4CA9-AD3E-474333B181BC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E142F9FB-7EA9-4866-81D4-718660BDCAEB}
