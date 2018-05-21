@@ -689,9 +689,9 @@
 				{
 					"name": "ItemsSource",
 					"uniqueName": "PickerItemsSource",
-					"inputType": "'T list",
+					"inputType": "seq<'T>",
 					"modelType": "System.Collections.IList",
-					"convToModel": "(fun es -> es |> Array.ofList :> System.Collections.IList)",
+					"convToModel": "seqToIList",
 					"defaultValue": "null"
 				},
 				{
@@ -1076,17 +1076,17 @@
 					"modelType": "XamlElement[]",
 					"convToModel": "Array.ofList"
 				},
-				{
-					"name": "ItemsSource",
-					"inputType": "'T list",
-					"modelType": "System.Collections.Generic.IList<obj>",
-					"convToModel": "(fun es -> es |> Array.ofList |> Array.map box :> System.Collections.Generic.IList<obj>)",
-					"defaultValue": "null"
-				},
-				{
-					"name": "ItemTemplate",
-					"defaultValue": "null"
-				},
+				//{
+			//		"name": "ItemsSource",
+			//		"inputType": "'T list",
+		//			"modelType": "System.Collections.Generic.IList<obj>",
+		//			"convToModel": "(fun es -> es |> Array.ofList |> Array.map box :> System.Collections.Generic.IList<obj>)",
+		//			"defaultValue": "null"
+		//		},
+		//		{
+		//			"name": "ItemTemplate",
+		//			"defaultValue": "null"
+		//		},
 				{
 					"name": "SelectedItem",
 					"uniqueName": "CarouselPage_SelectedItem",
@@ -1321,9 +1321,8 @@
 					"name": "ItemsSource",
 					"uniqueName": "ListViewItems",
 					"shortName": "items",
-					"inputType": "XamlElement list",
-					"modelType": "XamlElement[]",
-					"convToModel": "Array.ofList",
+					"inputType": "seq<XamlElement>",
+					"modelType": "seq<XamlElement>",
 					"updateCode": "updateListViewItems"
 				},
 				//{

@@ -7,6 +7,9 @@ open System.Diagnostics
 open System.Windows.Input
 open Xamarin.Forms
 
+module UOption = 
+    let inline map f x = match x with UNone -> UNone | USome v -> USome (f v)
+
 [<AllowNullLiteral>]
 type IListElement = 
     abstract Key : obj
@@ -170,7 +173,17 @@ module Converters =
                     attach prevChildOpt newChild targetChild
 
 
-    let updateListViewItems (prevCollOpt: 'T[] uoption) (coll: 'T[] uoption) (target: Xamarin.Forms.ListView) = 
+    let seqToArray (itemsSource:seq<'T>) =
+        match itemsSource with 
+        | :? ('T []) as arr -> arr 
+        | es -> Array.ofSeq es 
+
+    let seqToIList (itemsSource:seq<'T>) =
+        match itemsSource with 
+        | :? ('T []) as arr -> (arr :> System.Collections.IList) 
+        | es -> (Array.ofSeq es :> System.Collections.IList)
+
+    let updateListViewItems (prevCollOpt: seq<'T> uoption) (coll: seq<'T> uoption) (target: Xamarin.Forms.ListView) = 
         let oc = 
             match target.ItemsSource with 
             | :? ObservableCollection<ListElementData<'T>> as oc -> oc
@@ -178,7 +191,7 @@ module Converters =
                 let oc = ObservableCollection<ListElementData<'T>>()
                 target.ItemsSource <- oc
                 oc
-        updateIList prevCollOpt coll oc ListElementData (fun _ _ _ -> ()) (fun _ _ -> false) (fun _ _ _ -> failwith "no element reuse") 
+        updateIList (UOption.map seqToArray prevCollOpt) (UOption.map seqToArray coll) oc ListElementData (fun _ _ _ -> ()) (fun _ _ -> false) (fun _ _ _ -> failwith "no element reuse") 
 
     let updateListViewGroupedItems (prevCollOpt: ('T * 'T[])[] uoption) (coll: ('T * 'T[])[] uoption) (target: Xamarin.Forms.ListView) = 
         let oc = 
