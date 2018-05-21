@@ -1288,13 +1288,13 @@ module XamlElementExtensions =
         member x.SeparatorColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("SeparatorColor", box ((value))))
 
         /// Adjusts the ItemAppearing property in the visual element
-        member x.ItemAppearing(value: Xamarin.Forms.ItemVisibilityEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ItemAppearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))(value))))
+        member x.ItemAppearing(value: int -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ItemAppearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))(value))))
 
         /// Adjusts the ItemDisappearing property in the visual element
-        member x.ItemDisappearing(value: Xamarin.Forms.ItemVisibilityEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ItemDisappearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))(value))))
+        member x.ItemDisappearing(value: int -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ItemDisappearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))(value))))
 
         /// Adjusts the ListView_ItemSelected property in the visual element
-        member x.ListView_ItemSelected(value: int option -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ListView_ItemSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<ListElementData<XamlElement>> |> Option.bind (fun item -> let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListElementData<XamlElement>> in items |> Seq.tryFindIndex (fun item2 -> System.Object.ReferenceEquals(item.Key, item2.Key))))))(value))))
+        member x.ListView_ItemSelected(value: int option -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ListView_ItemSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (tryFindListViewItem sender args.SelectedItem)))(value))))
 
         /// Adjusts the ItemTapped property in the visual element
         member x.ItemTapped(value: Xamarin.Forms.ItemTappedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ItemTapped", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun _sender args -> f args))(value))))
@@ -1309,7 +1309,7 @@ module XamlElementExtensions =
         member x.ListViewGrouped_SelectedItem(value: (int * int) option) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ListViewGrouped_SelectedItem", box ((value))))
 
         /// Adjusts the ListViewGrouped_ItemSelected property in the visual element
-        member x.ListViewGrouped_ItemSelected(value: (int * int) option -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ListViewGrouped_ItemSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<ListElementData<XamlElement>> |> Option.bind (fun item -> let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData<XamlElement>> in Seq.indexed items |> Seq.tryPick (fun (i,items2) -> Seq.indexed items2 |> Seq.tryPick (fun (j,item2) -> if System.Object.ReferenceEquals(item.Key, item2.Key) then Some (i,j) else None))))))(value))))
+        member x.ListViewGrouped_ItemSelected(value: (int * int) option -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ListViewGrouped_ItemSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.SelectedItem)))(value))))
 
 
     /// Adjusts the ClassId property in the visual element
@@ -2261,16 +2261,16 @@ module XamlElementExtensions =
     let separatorColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.SeparatorColor(value)
 
     /// Adjusts the ItemAppearing property in the visual element
-    let withItemAppearing (value: Xamarin.Forms.ItemVisibilityEventArgs -> unit) (x: XamlElement) = x.ItemAppearing(value)
+    let withItemAppearing (value: int -> unit) (x: XamlElement) = x.ItemAppearing(value)
 
     /// Adjusts the ItemAppearing property in the visual element
-    let itemAppearing (value: Xamarin.Forms.ItemVisibilityEventArgs -> unit) (x: XamlElement) = x.ItemAppearing(value)
+    let itemAppearing (value: int -> unit) (x: XamlElement) = x.ItemAppearing(value)
 
     /// Adjusts the ItemDisappearing property in the visual element
-    let withItemDisappearing (value: Xamarin.Forms.ItemVisibilityEventArgs -> unit) (x: XamlElement) = x.ItemDisappearing(value)
+    let withItemDisappearing (value: int -> unit) (x: XamlElement) = x.ItemDisappearing(value)
 
     /// Adjusts the ItemDisappearing property in the visual element
-    let itemDisappearing (value: Xamarin.Forms.ItemVisibilityEventArgs -> unit) (x: XamlElement) = x.ItemDisappearing(value)
+    let itemDisappearing (value: int -> unit) (x: XamlElement) = x.ItemDisappearing(value)
 
     /// Adjusts the ListView_ItemSelected property in the visual element
     let withListView_ItemSelected (value: int option -> unit) (x: XamlElement) = x.ListView_ItemSelected(value)
@@ -11367,7 +11367,7 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.ViewCell>, create, update, Map.ofArray attribs)
 
     /// Describes a ListView in the view
-    static member ListView(?items: XamlElement list, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?headerTemplate: Xamarin.Forms.DataTemplate, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: int option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: Xamarin.Forms.ItemVisibilityEventArgs -> unit, ?itemDisappearing: Xamarin.Forms.ItemVisibilityEventArgs -> unit, ?itemSelected: int option -> unit, ?itemTapped: Xamarin.Forms.ItemTappedEventArgs -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member ListView(?items: XamlElement list, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?headerTemplate: Xamarin.Forms.DataTemplate, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: int option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: int -> unit, ?itemDisappearing: int -> unit, ?itemSelected: int option -> unit, ?itemTapped: Xamarin.Forms.ItemTappedEventArgs -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match items with None -> () | Some v -> yield ("ListViewItems", box (Array.ofList(v))) 
             match footer with None -> () | Some v -> yield ("Footer", box ((v))) 
@@ -11382,9 +11382,9 @@ type Xaml() =
             match selectedItem with None -> () | Some v -> yield ("ListView_SelectedItem", box ((v))) 
             match separatorVisibility with None -> () | Some v -> yield ("SeparatorVisibility", box ((v))) 
             match separatorColor with None -> () | Some v -> yield ("SeparatorColor", box ((v))) 
-            match itemAppearing with None -> () | Some v -> yield ("ItemAppearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))(v))) 
-            match itemDisappearing with None -> () | Some v -> yield ("ItemDisappearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))(v))) 
-            match itemSelected with None -> () | Some v -> yield ("ListView_ItemSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<ListElementData<XamlElement>> |> Option.bind (fun item -> let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListElementData<XamlElement>> in items |> Seq.tryFindIndex (fun item2 -> System.Object.ReferenceEquals(item.Key, item2.Key))))))(v))) 
+            match itemAppearing with None -> () | Some v -> yield ("ItemAppearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))(v))) 
+            match itemDisappearing with None -> () | Some v -> yield ("ItemDisappearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))(v))) 
+            match itemSelected with None -> () | Some v -> yield ("ListView_ItemSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (tryFindListViewItem sender args.SelectedItem)))(v))) 
             match itemTapped with None -> () | Some v -> yield ("ItemTapped", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun _sender args -> f args))(v))) 
             match refreshing with None -> () | Some v -> yield ("Refreshing", box ((fun f -> System.EventHandler(fun sender args -> f ()))(v))) 
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 
@@ -11710,7 +11710,7 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.ListView>, create, update, Map.ofArray attribs)
 
     /// Describes a ListViewGrouped in the view
-    static member ListViewGrouped(?items: (XamlElement * XamlElement list) list, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: (int * int) option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: Xamarin.Forms.ItemVisibilityEventArgs -> unit, ?itemDisappearing: Xamarin.Forms.ItemVisibilityEventArgs -> unit, ?itemSelected: (int * int) option -> unit, ?itemTapped: Xamarin.Forms.ItemTappedEventArgs -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member ListViewGrouped(?items: (XamlElement * XamlElement list) list, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: (int * int) option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: int * int -> unit, ?itemDisappearing: int * int -> unit, ?itemSelected: (int * int) option -> unit, ?itemTapped: Xamarin.Forms.ItemTappedEventArgs -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match items with None -> () | Some v -> yield ("GroupListViewItemsSource", box ((fun es -> es |> Array.ofList |> Array.map (fun (e,l) -> (e, Array.ofList l)))(v))) 
             match footer with None -> () | Some v -> yield ("Footer", box ((v))) 
@@ -11724,9 +11724,9 @@ type Xaml() =
             match selectedItem with None -> () | Some v -> yield ("ListViewGrouped_SelectedItem", box ((v))) 
             match separatorVisibility with None -> () | Some v -> yield ("SeparatorVisibility", box ((v))) 
             match separatorColor with None -> () | Some v -> yield ("SeparatorColor", box ((v))) 
-            match itemAppearing with None -> () | Some v -> yield ("ItemAppearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))(v))) 
-            match itemDisappearing with None -> () | Some v -> yield ("ItemDisappearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))(v))) 
-            match itemSelected with None -> () | Some v -> yield ("ListViewGrouped_ItemSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<ListElementData<XamlElement>> |> Option.bind (fun item -> let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData<XamlElement>> in Seq.indexed items |> Seq.tryPick (fun (i,items2) -> Seq.indexed items2 |> Seq.tryPick (fun (j,item2) -> if System.Object.ReferenceEquals(item.Key, item2.Key) then Some (i,j) else None))))))(v))) 
+            match itemAppearing with None -> () | Some v -> yield ("ItemAppearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.Item).Value))(v))) 
+            match itemDisappearing with None -> () | Some v -> yield ("ItemDisappearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.Item).Value))(v))) 
+            match itemSelected with None -> () | Some v -> yield ("ListViewGrouped_ItemSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.SelectedItem)))(v))) 
             match itemTapped with None -> () | Some v -> yield ("ItemTapped", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun _sender args -> f args))(v))) 
             match refreshing with None -> () | Some v -> yield ("Refreshing", box ((fun f -> System.EventHandler(fun sender args -> f ()))(v))) 
             match horizontalOptions with None -> () | Some v -> yield ("HorizontalOptions", box ((v))) 

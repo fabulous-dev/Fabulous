@@ -23,6 +23,7 @@ type ListGroupData<'T>(key:'T, coll: 'T[]) =
     member x.Key = key
     member x.Items = coll
 
+
 type XamlElementCell() = 
     inherit ViewCell()
 
@@ -279,3 +280,27 @@ module Converters =
     let equalThickness (x:Xamarin.Forms.Thickness) (y:Xamarin.Forms.Thickness)  =
         x.Bottom = y.Bottom && x.Top = y.Top && x.Left = y.Left && x.Right = y.Right
 
+
+    let tryFindListViewItem (sender: obj) (item: obj) =
+        match item with 
+        | null -> None
+        | :? ListElementData<XamlElement> as item -> 
+            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListElementData<XamlElement>> 
+            // TODO: this linear search is needs improvement
+            items |> Seq.tryFindIndex (fun item2 -> System.Object.ReferenceEquals(item.Key, item2.Key))
+        | _ -> None
+
+    let tryFindGroupedListViewItem (sender: obj) (item: obj) =
+        match item with 
+        | null -> None
+        | :? ListGroupData<XamlElement> as item ->
+            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData<XamlElement>> 
+            // TODO: this linear search is needs improvement
+            items 
+            |> Seq.indexed 
+            |> Seq.tryPick (fun (i,items2) -> 
+                 // TODO: this linear search is needs improvement
+                items2 
+                |> Seq.indexed 
+                |> Seq.tryPick (fun (j,item2) -> if System.Object.ReferenceEquals(item.Key, item2.Key) then Some (i,j) else None))
+        | _ -> None

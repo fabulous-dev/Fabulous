@@ -1133,10 +1133,10 @@
 						},
 						{
 							"name": "TitleIcon",
-    					"inputType": "string",
-		    			"modelType": "string",
-				    	"convToValue": "makeFileImageSource",
-				    	"defaultValue": "null"
+							"inputType": "string",
+							"modelType": "string",
+							"convToValue": "makeFileImageSource",
+							"defaultValue": "null"
 						}
 					]
 				},
@@ -1277,7 +1277,7 @@
 					"uniqueName": "TextCellCommand",
 					"inputType": "unit -> unit",
 					"modelType": "unit -> unit",
-					"updateCode": "(fun _ _ _ -> ())" // set below in CanExecute 
+					"updateCode": "(fun _ _ _ -> ())" // set below in CanExecute
 				},
 				{
 					"name": "CanExecute",
@@ -1328,9 +1328,9 @@
 				},
 				//{
 				//	"name": "ListViewCachingStrategy",
-			//		"inputType": "Xamarin.Forms.ListViewCachingStrategy",
-			//		"isParam": true
-			//	},
+				//		"inputType": "Xamarin.Forms.ListViewCachingStrategy",
+				//		"isParam": true
+				//	},
 				//{
 				//	"name": "ItemTemplate",
 				//	"defaultValue": "null"
@@ -1400,21 +1400,21 @@
 				{
 					"name": "ItemAppearing",
 					"defaultValue": "null",
-					"inputType": "Xamarin.Forms.ItemVisibilityEventArgs -> unit",
-					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))"
+					"inputType": "int -> unit",
+     			"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))"
 				},
 				{
 					"name": "ItemDisappearing",
 					"defaultValue": "null",
-					"inputType": "Xamarin.Forms.ItemVisibilityEventArgs -> unit",
-					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))"
+					"inputType": "int -> unit",
+     			"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))"
 				},
 				{
 					"name": "ItemSelected",
 					"uniqueName": "ListView_ItemSelected",
 					"defaultValue": "null",
 					"inputType": "int option -> unit",
-					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<ListElementData<XamlElement>> |> Option.bind (fun item -> let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListElementData<XamlElement>> in items |> Seq.tryFindIndex (fun item2 -> System.Object.ReferenceEquals(item.Key, item2.Key))))))"
+     			"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (tryFindListViewItem sender args.SelectedItem)))"
 				},
 				{
 					"name": "ItemTapped",
@@ -1513,21 +1513,21 @@
 				{
 					"name": "ItemAppearing",
 					"defaultValue": "null",
-					"inputType": "Xamarin.Forms.ItemVisibilityEventArgs -> unit",
-					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))"
+					"inputType": "int * int -> unit",
+     			"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.Item).Value))"
 				},
 				{
 					"name": "ItemDisappearing",
 					"defaultValue": "null",
-					"inputType": "Xamarin.Forms.ItemVisibilityEventArgs -> unit",
-					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))"
+					"inputType": "int * int -> unit",
+     			"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.Item).Value))"
 				},
 				{
 					"name": "ItemSelected",
 					"uniqueName": "ListViewGrouped_ItemSelected",
 					"defaultValue": "null",
 					"inputType": "(int * int) option -> unit",
-					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<ListElementData<XamlElement>> |> Option.bind (fun item -> let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData<XamlElement>> in Seq.indexed items |> Seq.tryPick (fun (i,items2) -> Seq.indexed items2 |> Seq.tryPick (fun (j,item2) -> if System.Object.ReferenceEquals(item.Key, item2.Key) then Some (i,j) else None))))))"
+					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.SelectedItem)))"
 				},
 				{
 					"name": "ItemTapped",

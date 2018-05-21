@@ -2,14 +2,19 @@
 namespace AllControls
 
 open System
-open Elmish
+open System.Collections.Generic
 open Elmish.XamarinForms
 open Elmish.XamarinForms.DynamicViews
 open Xamarin.Forms
 open Xamarin.Forms.PlatformConfiguration
 open Xamarin.Forms.PlatformConfiguration.iOSSpecific
 
-type RootPageKind = Tabbed | Navigation | Carousel | MasterDetail
+type RootPageKind = 
+    | Tabbed 
+    | Navigation 
+    | Carousel 
+    | MasterDetail
+    | InfiniteScrollList
 
 type Model = 
   { RootPageKind: RootPageKind
@@ -33,7 +38,10 @@ type Model =
     IsMasterPresented: bool 
     DetailPage: string
     // For NavigationPage demo
-    PageStack: string list }
+    PageStack: string list
+    // For InfiniteScroll page demo. It's not really an "infinite" scroll, just an unbounded set of data whose growth is prompted by the need formore of it in the UI
+    InfiniteScrollMaxRequested: int
+    }
 
 type Msg = 
     | Increment 
@@ -67,6 +75,8 @@ type Msg =
     // For MasterDetail page demo
     | IsMasterPresentedChanged of bool
     | SetDetailPage of string
+    // For InfiniteScroll page demo. It's not really an "infinite" scroll, just a growing set of data
+    | SetInfiniteScrollMaxIndex of int
 
 module App = 
     let init () = 
@@ -89,7 +99,8 @@ module App =
           NumTaps=0
           NumTaps2=0
           PageStack=["Home"]
-          DetailPage="A"}
+          DetailPage="A"
+          InfiniteScrollMaxRequested = 10 }
 
     let update msg model =
         match msg with
@@ -128,6 +139,7 @@ module App =
         | SetRootPageKind kind -> { model with RootPageKind = kind }
         | IsMasterPresentedChanged b -> { model with IsMasterPresented = b }
         | SetDetailPage s -> { model with DetailPage = s ; IsMasterPresented=false}
+        | SetInfiniteScrollMaxIndex n -> { model with InfiniteScrollMaxRequested = max n model.InfiniteScrollMaxRequested }
 
     let pickerItems = 
         [ ("Aqua", Color.Aqua); ("Black", Color.Black);
@@ -160,6 +172,7 @@ module App =
                         Xaml.Button(text = "CarouselPage (various controls)", command=(fun () -> dispatch (SetRootPageKind Carousel)),canExecute=(rootPageKind <> Carousel))
                         Xaml.Button(text = "NavigationPage with Push/Pop", command=(fun () -> dispatch (SetRootPageKind Navigation)),canExecute=(rootPageKind <> Navigation))
                         Xaml.Button(text = "MasterDetail Page", command=(fun () -> dispatch (SetRootPageKind MasterDetail)),canExecute=(rootPageKind <> MasterDetail))
+                        Xaml.Button(text = "Infinite scrolling ListView", command=(fun () -> dispatch (SetRootPageKind InfiniteScrollList)),canExecute=(rootPageKind <> InfiniteScrollList))
                      ])))
 
              dependsOn model.Count (fun model count -> 
@@ -479,6 +492,17 @@ module App =
                          ).HasNavigationBar(true).HasBackButton(true) ],
                   //popped=(fun args -> dispatch PopPage) ,
                   poppedToRoot=(fun args -> dispatch (IsMasterPresentedChanged true) ) ) ) )
+
+        | InfiniteScrollList -> 
+             dependsOn (model.InfiniteScrollMaxRequested ) (fun model max -> 
+              Xaml.ScrollingContentPage("ListView (InfiniteScrollList)",
+               [Xaml.Label(text="InfiniteScrollList:")
+                Xaml.ListView(items = [ for i in 1 .. max do 
+                                          yield dependsOn i (fun _ i -> Xaml.Label("Item " + string i, textColor=(if i % 3 = 0 then Color.CadetBlue else Color.LightCyan))) ], 
+                              horizontalOptions=LayoutOptions.CenterAndExpand,
+                              // Every time at an index is needed, grow the set of data to be at least 10 bigger then that index 
+                              itemAppearing=(fun idx -> dispatch (SetInfiniteScrollMaxIndex (idx + 10) ) ) )
+               ]))
 
 
 type App () as app = 
