@@ -29,8 +29,10 @@ type Model =
     GridSize: int
     NewGridSize: double // used during pinch
     GridPortal: int * int 
-    // 
-    IsPresented: bool 
+    // For MasterDetailPage demo
+    IsMasterPresented: bool 
+    DetailPage: string
+    // For NavigationPage demo
     PageStack: string list }
 
 type Msg = 
@@ -57,12 +59,14 @@ type Msg =
     | FrameTapped2 
     | UpdateNewGridSize of double * GestureStatus
     | UpdateGridPortal of int * int
-    // For MasterDetail
-    | IsPresentedChanged of bool
+    // For NavigationPage demo
     | GoHomePage
     | PopPage
     | PushPage of string
     | SetRootPageKind of RootPageKind
+    // For MasterDetail page demo
+    | IsMasterPresentedChanged of bool
+    | SetDetailPage of string
 
 module App = 
     let init () = 
@@ -81,10 +85,11 @@ module App =
           GridPortal=(0,0)
           StartDate=System.DateTime.Today
           EndDate=System.DateTime.Today.AddDays(1.0)
+          IsMasterPresented=false
           NumTaps=0
           NumTaps2=0
-          IsPresented=false
-          PageStack=["Home"]}
+          PageStack=["Home"]
+          DetailPage="A"}
 
     let update msg model =
         match msg with
@@ -117,11 +122,12 @@ module App =
             | _ -> model
         | UpdateGridPortal (x,y) -> { model with GridPortal = (x,y) }
         // For NavigationPage
-        | IsPresentedChanged b -> { model with IsPresented = b }
-        | GoHomePage -> { model with PageStack = ["Home"]; IsPresented=false}
-        | PopPage -> { model with PageStack = (match model.PageStack with [] | [_] -> model.PageStack | _ :: t -> t); IsPresented=false }
-        | PushPage page -> { model with PageStack = page :: model.PageStack; IsPresented=false  }
+        | GoHomePage -> { model with PageStack = ["Home"] }
+        | PopPage -> { model with PageStack = (match model.PageStack with [] | [_] -> model.PageStack | _ :: t -> t) }
+        | PushPage page -> { model with PageStack = page :: model.PageStack}
         | SetRootPageKind kind -> { model with RootPageKind = kind }
+        | IsMasterPresentedChanged b -> { model with IsMasterPresented = b }
+        | SetDetailPage s -> { model with DetailPage = s ; IsMasterPresented=false}
 
     let pickerItems = 
         [ ("Aqua", Color.Aqua); ("Black", Color.Black);
@@ -145,6 +151,17 @@ module App =
        | Carousel -> 
           let children = 
             [ 
+             dependsOn (model.RootPageKind) (fun model rootPageKind -> 
+              Xaml.ContentPage(title="Root Page", 
+                 padding = new Thickness (10.0, 20.0, 10.0, 5.0),
+                 content= Xaml.StackLayout(
+                     children=[ 
+                        Xaml.Button(text = "TabbedPage (various controls)", command=(fun () -> dispatch (SetRootPageKind Tabbed)),canExecute=(rootPageKind <> Tabbed))
+                        Xaml.Button(text = "CarouselPage (various controls)", command=(fun () -> dispatch (SetRootPageKind Carousel)),canExecute=(rootPageKind <> Carousel))
+                        Xaml.Button(text = "NavigationPage with Push/Pop", command=(fun () -> dispatch (SetRootPageKind Navigation)),canExecute=(rootPageKind <> Navigation))
+                        Xaml.Button(text = "MasterDetail Page", command=(fun () -> dispatch (SetRootPageKind MasterDetail)),canExecute=(rootPageKind <> MasterDetail))
+                     ])))
+
              dependsOn model.Count (fun model count -> 
               Xaml.ScrollingContentPage("Button", 
                [Xaml.Label(text="Label:")
@@ -160,7 +177,6 @@ module App =
                 Xaml.Button(text="Decrement",  command=(fun () -> dispatch Decrement), horizontalOptions=LayoutOptions.CenterAndExpand)
                
                ]))
-
 
              dependsOn (model.CountForSlider, model.StepForSlider) (fun model (count, step) -> 
               Xaml.ScrollingContentPage("Slider", 
@@ -237,17 +253,6 @@ module App =
                            completed=(fun text -> dispatch (PlaceholderEntryEditCompleted text)))
 
               ]))
-
-             dependsOn () (fun model () -> 
-              Xaml.ContentPage(title="Root Pages", 
-                 padding = new Thickness (10.0, 20.0, 10.0, 5.0),
-                 content= Xaml.StackLayout(
-                     children=[ 
-                        Xaml.Button(text = "Carousel", command=(fun () -> dispatch (SetRootPageKind Carousel)))
-                        Xaml.Button(text = "Tabbed", command=(fun () -> dispatch (SetRootPageKind Tabbed)))
-                        Xaml.Button(text = "NavigationPage with Push/Pop", command=(fun () -> dispatch (SetRootPageKind Navigation)))
-                        Xaml.Button(text = "MasterDetail Page", command=(fun () -> dispatch (SetRootPageKind MasterDetail)))
-                     ])))
 
              dependsOn (model.NumTaps, model.NumTaps2) (fun model (numTaps, numTaps2) -> 
               Xaml.ScrollingContentPage("Frame",
@@ -384,6 +389,7 @@ module App =
                                  .LayoutFlags(AbsoluteLayoutFlags.PositionProportional)
                                  .LayoutBounds(Rectangle(1.0, 1.0, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize)) ])
                      ])))
+
             ]
           match model.RootPageKind with
           | Tabbed -> Xaml.TabbedPage(useSafeArea=true,children=children)
@@ -392,7 +398,7 @@ module App =
 
         | Navigation -> 
         // NavigationPage example
-         dependsOn (model.IsPresented, model.PageStack) (fun model (isPresented, pageStack) -> 
+         dependsOn model.PageStack (fun model pageStack -> 
            Xaml.NavigationPage(pages=
                      [ for page in List.rev pageStack do
                          match page with 
@@ -401,9 +407,11 @@ module App =
                                  Xaml.ContentPage(
                                    Xaml.StackLayout(
                                     children=
-                                      [Xaml.Label(text="Home Page", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center)
-                                       Xaml.Button(text="Push Page A", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center,command=(fun () -> dispatch (PushPage "A")))
-                                       Xaml.Button(text="Push Page B", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center,command=(fun () -> dispatch (PushPage "B")))
+                                      [ Xaml.Label(text="Home Page", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center)
+                                        Xaml.Button(text="Push Page A", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center,command=(fun () -> dispatch (PushPage "A")))
+                                        Xaml.Button(text="Push Page B", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center,command=(fun () -> dispatch (PushPage "B")))
+                                        Xaml.Button(text="Back to TabbedPage demo", textColor=Color.White, backgroundColor=Color.Navy, command=(fun () -> dispatch (SetRootPageKind Tabbed)))
+                                        Xaml.Button(text="Back to CarouselPage demo", textColor=Color.White, backgroundColor=Color.Navy, command=(fun () -> dispatch (SetRootPageKind Carousel)))
                                        ]) ).HasNavigationBar(true).HasBackButton(false)
                          | "A" -> 
                              yield 
@@ -443,30 +451,34 @@ module App =
                          | _ -> failwith "unknown page" ],
                     //popped=(fun args -> dispatch PopPage) ,
                     poppedToRoot=(fun args -> dispatch GoHomePage)  ))
+
        | MasterDetail -> 
         // MasterDetail where the Master acts as a hamburger-style menu
-         dependsOn (model.IsPresented, model.PageStack) (fun model (isPresented, pageStack) -> 
+         dependsOn (model.DetailPage, model.IsMasterPresented) (fun model (detailPage, isMasterPresented) -> 
            Xaml.MasterDetailPage(
               masterBehavior=MasterBehavior.Popover, 
-              isPresented=isPresented,
-              isPresentedChanged=(fun b -> dispatch (IsPresentedChanged b)),
+              isPresented=isMasterPresented,
+              isPresentedChanged=(fun b -> dispatch (IsMasterPresentedChanged b)),
               master = 
                 Xaml.ContentPage(title="Master", 
                  content = 
                    Xaml.StackLayout(backgroundColor=Color.Gray, 
-                     children=[ Xaml.Button(text="Home", textColor=Color.White, backgroundColor=Color.Green, command=(fun () -> dispatch GoHomePage)) 
-                                Xaml.Button(text="Page A", textColor=Color.White, backgroundColor=Color.Navy, command=(fun () -> dispatch (PushPage "A")))
-                                Xaml.Button(text="Page B", textColor=Color.White, backgroundColor=Color.Navy, command=(fun () -> dispatch (PushPage "B")))]) ),
+                     children=[ Xaml.Button(text="Detail A", textColor=Color.White, backgroundColor=Color.Navy, command=(fun () -> dispatch (SetDetailPage "A")))
+                                Xaml.Button(text="Detail B", textColor=Color.White, backgroundColor=Color.Navy, command=(fun () -> dispatch (SetDetailPage "B")))
+                                Xaml.Button(text="Back to TabbedPage demo", textColor=Color.White, backgroundColor=Color.Navy, command=(fun () -> dispatch (SetRootPageKind Tabbed)))
+                                Xaml.Button(text="Back to CarouselPage demo", textColor=Color.White, backgroundColor=Color.Navy, command=(fun () -> dispatch (SetRootPageKind Carousel)))]) ),
               detail = 
-                 (Xaml.NavigationPage(pages=
-                     [ yield Xaml.ContentPage(Xaml.Label(text="Home Page", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.Center) )
-                       for page in List.rev pageStack do
-                         match page with 
-                         | "A" -> yield Xaml.ContentPage(Xaml.Label(text="Page A", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.Center) )
-                         | "B" -> yield Xaml.ContentPage(Xaml.Label(text="Page B", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.Center) )
-                         | _ -> failwith "unreachable" ],
-                    //popped=(fun args -> dispatch PopPage),
-                    poppedToRoot=(fun args -> dispatch GoHomePage))) ))
+                Xaml.NavigationPage( 
+                  pages=[
+                    Xaml.ContentPage(title="Detail",
+                     content = 
+                       Xaml.StackLayout(backgroundColor=Color.Gray, 
+                         children=[ Xaml.Label(text="Detail " + detailPage, textColor=Color.White, backgroundColor=Color.Navy)
+                                    Xaml.Button(text="Back to TabbedPage demo", textColor=Color.White, backgroundColor=Color.Navy, command=(fun () -> dispatch (SetRootPageKind Tabbed)))
+                                    Xaml.Button(text="Back to CarouselPage demo", textColor=Color.White, backgroundColor=Color.Navy, command=(fun () -> dispatch (SetRootPageKind Carousel))) ]) 
+                         ).HasNavigationBar(true).HasBackButton(true) ],
+                  //popped=(fun args -> dispatch PopPage) ,
+                  poppedToRoot=(fun args -> dispatch (IsMasterPresentedChanged true) ) ) ) )
 
 
 type App () as app = 
