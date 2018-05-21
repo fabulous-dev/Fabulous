@@ -190,7 +190,7 @@ Note that the same validation logic can be used in both your app and a service b
 ListViews
 ------
 
-The programming model supports several more bespoke uses of the underlying `ListView` control from `Xamarin.Forms.Core`.  In the simplest form, the `items` property specifies a collection of `XamlElement`:
+The programming model supports several more bespoke uses of the underlying [`ListView`](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/listview/) control from `Xamarin.Forms.Core`.  In the simplest form, the `items` property specifies a collection of `XamlElement`:
 ```fsharp
     Xaml.ListView(items = [ Xaml.Label "Ionide"
                             Xaml.Label "Visual Studio"
