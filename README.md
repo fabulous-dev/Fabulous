@@ -215,11 +215,9 @@ Roadmap
   * Fix bug where ranges for locals seem off-by-one in Android debugging
 
 * Testing
-  * Most testing so far is done through  [AllControls](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Samples/AllControls/AllControls/AllControls.fs) project
   * Add an explicit unit-test project
 
 * Real-world road-testing:
-  * Multi-page apps with navigation
   * Apps using charting
   * Apps using maps
 
