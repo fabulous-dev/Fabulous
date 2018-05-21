@@ -255,7 +255,9 @@ Asynchronous actions are triggered by having the `update` function return "comma
 
 * Change `Program.mkSimple` to `Program.mkProgram`
 
+```fsharp
     let program = Program.mkProgram App.init App.update App.view
+```
 
 * Change your `update` function to return a pair of a model and a command. For most messages the command will be `Cmd.none` but for basic async actions use `Cmd.ofAsyncMsg`.
 
