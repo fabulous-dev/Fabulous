@@ -75,7 +75,7 @@ type Msg =
     // For MasterDetail page demo
     | IsMasterPresentedChanged of bool
     | SetDetailPage of string
-    // For InfiniteScroll page demo. It's not really an "infinite" scroll, just a growing set of data
+    // For InfiniteScroll page demo. It's not really an "infinite" scroll, just a growing set of "data"
     | SetInfiniteScrollMaxIndex of int
 
 module App = 
@@ -139,17 +139,17 @@ module App =
         | SetRootPageKind kind -> { model with RootPageKind = kind }
         | IsMasterPresentedChanged b -> { model with IsMasterPresented = b }
         | SetDetailPage s -> { model with DetailPage = s ; IsMasterPresented=false}
-        | SetInfiniteScrollMaxIndex n -> { model with InfiniteScrollMaxRequested = max n model.InfiniteScrollMaxRequested }
+        | SetInfiniteScrollMaxIndex n -> if n >= max n model.InfiniteScrollMaxRequested then { model with InfiniteScrollMaxRequested = (n + 10)} else model
 
     let pickerItems = 
-        [ ("Aqua", Color.Aqua); ("Black", Color.Black);
-          ("Blue", Color.Blue); ("Fucshia", Color.Fuchsia);
-          ("Gray", Color.Gray); ("Green", Color.Green);
-          ("Lime", Color.Lime); ("Maroon", Color.Maroon);
-          ("Navy", Color.Navy); ("Olive", Color.Olive);
-          ("Purple", Color.Purple); ("Red", Color.Red);
-          ("Silver", Color.Silver); ("Teal", Color.Teal);
-          ("White", Color.White); ("Yellow", Color.Yellow ) ]
+        [| ("Aqua", Color.Aqua); ("Black", Color.Black);
+           ("Blue", Color.Blue); ("Fucshia", Color.Fuchsia);
+           ("Gray", Color.Gray); ("Green", Color.Green);
+           ("Lime", Color.Lime); ("Maroon", Color.Maroon);
+           ("Navy", Color.Navy); ("Olive", Color.Olive);
+           ("Purple", Color.Purple); ("Red", Color.Red);
+           ("Silver", Color.Silver); ("Teal", Color.Teal);
+           ("White", Color.White); ("Yellow", Color.Yellow ) |]
 
     type Xaml with 
         static member ScrollingContentPage(title, children) =
@@ -158,11 +158,7 @@ module App =
             Xaml.ContentPage(title=title, content=Xaml.StackLayout(padding=20.0,children=children, ?gestureRecognizers=gestureRecognizers))
 
     let view (model: Model) dispatch =
-       match model.RootPageKind with 
-       | Tabbed 
-       | Carousel -> 
-          let children = 
-            [ 
+       let choicePage =
              dependsOn (model.RootPageKind) (fun model rootPageKind -> 
               Xaml.ContentPage(title="Root Page", 
                  padding = new Thickness (10.0, 20.0, 10.0, 5.0),
@@ -174,6 +170,12 @@ module App =
                         Xaml.Button(text = "MasterDetail Page", command=(fun () -> dispatch (SetRootPageKind MasterDetail)),canExecute=(rootPageKind <> MasterDetail))
                         Xaml.Button(text = "Infinite scrolling ListView", command=(fun () -> dispatch (SetRootPageKind InfiniteScrollList)),canExecute=(rootPageKind <> InfiniteScrollList))
                      ])))
+
+       match model.RootPageKind with 
+       | Carousel -> 
+          Xaml.CarouselPage(useSafeArea=true,children=
+            [
+             choicePage
 
              dependsOn model.Count (fun model count -> 
               Xaml.ScrollingContentPage("Button", 
@@ -265,7 +267,13 @@ module App =
                            textChanged=(fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))),
                            completed=(fun text -> dispatch (PlaceholderEntryEditCompleted text)))
 
-              ]))
+              ]) )
+          ])
+
+       | Tabbed ->
+          Xaml.TabbedPage(useSafeArea=true,children=
+            [
+             choicePage
 
              dependsOn (model.NumTaps, model.NumTaps2) (fun model (numTaps, numTaps2) -> 
               Xaml.ScrollingContentPage("Frame",
@@ -330,7 +338,7 @@ module App =
              dependsOn (model.PickedColorIndex) (fun model (pickedColorIndex) -> 
               Xaml.ScrollingContentPage("Picker",
                [Xaml.Label(text="Picker:")
-                Xaml.Picker(title="Choose Color:", textColor= snd pickerItems.[pickedColorIndex], selectedIndex=pickedColorIndex, itemsSource=(List.map fst pickerItems), horizontalOptions=LayoutOptions.CenterAndExpand,selectedIndexChanged=(fun (i, item) -> dispatch (PickerItemChanged i)))
+                Xaml.Picker(title="Choose Color:", textColor= snd pickerItems.[pickedColorIndex], selectedIndex=pickedColorIndex, itemsSource=(Array.map fst pickerItems), horizontalOptions=LayoutOptions.CenterAndExpand,selectedIndexChanged=(fun (i, item) -> dispatch (PickerItemChanged i)))
                ]))
 
              dependsOn () (fun model () -> 
@@ -403,16 +411,13 @@ module App =
                                  .LayoutBounds(Rectangle(1.0, 1.0, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize)) ])
                      ])))
 
-            ]
-          match model.RootPageKind with
-          | Tabbed -> Xaml.TabbedPage(useSafeArea=true,children=children)
-          | Carousel -> Xaml.CarouselPage(useSafeArea=true,children=children)
-          | _ -> failwith "unreachable"
-
+            ])
+        
         | Navigation -> 
+
         // NavigationPage example
-         dependsOn model.PageStack (fun model pageStack -> 
-           Xaml.NavigationPage(pages=
+          dependsOn model.PageStack (fun model pageStack -> 
+             Xaml.NavigationPage(pages=
                      [ for page in List.rev pageStack do
                          match page with 
                          | "Home" -> 
@@ -500,8 +505,8 @@ module App =
                 Xaml.ListView(items = [ for i in 1 .. max do 
                                           yield dependsOn i (fun _ i -> Xaml.Label("Item " + string i, textColor=(if i % 3 = 0 then Color.CadetBlue else Color.LightCyan))) ], 
                               horizontalOptions=LayoutOptions.CenterAndExpand,
-                              // Every time at an index is needed, grow the set of data to be at least 10 bigger then that index 
-                              itemAppearing=(fun idx -> dispatch (SetInfiniteScrollMaxIndex (idx + 10) ) ) )
+                              // Every time the last element is needed, grow the set of data to be at least 10 bigger then that index 
+                              itemAppearing=(fun idx -> if idx >= max - 2 then dispatch (SetInfiniteScrollMaxIndex (idx + 10) ) )  )
                ]))
 
 

@@ -1,9 +1,7 @@
 ﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
 namespace CounterApp
 
-open System
 open System.Diagnostics
-open Elmish
 open Elmish.XamarinForms
 open Elmish.XamarinForms.DynamicViews
 open Xamarin.Forms
@@ -61,8 +59,6 @@ module App =
               yield Xaml.Button(text="Reset", horizontalOptions=LayoutOptions.Center, command=fixf(fun () -> dispatch Reset), canExecute = (model <> initModel))
             ]))
 
-open App
-
 type CounterApp () as app = 
     inherit Application ()
 
@@ -97,30 +93,4 @@ type CounterApp () as app =
 
     override this.OnStart() = this.OnResume()
 
-#endif
-
-#if SAVE_MODEL_BIT_BY_BIT
-    let modelId = "model"
-    override __.OnSleep() = 
-        Debug.WriteLine "OnSleep: saving model into app.Properties"
-        app.Properties.["count"] <- runner.Model.Count
-        app.Properties.["step"] <- runner.Model.Step
-        app.Properties.["timerOn"] <- runner.Model.TimerOn
-
-    override __.OnResume() = 
-        Debug.WriteLine "OnResume: checking for model in app.Properties"
-        try 
-            match app.Properties.TryGetValue("count"),
-                  app.Properties.TryGetValue("step"),
-                  app.Properties.TryGetValue("timerOn") with
-            | (true, (:? int32 as count)), (true, (:? int32 as step)), (true, (:? bool as timerOn)) -> 
-                Debug.WriteLine "OnResume: restored model from app.Properties"
-                runner.Model <- { Count=count; Step=step; TimerOn=timerOn }
-            | _ -> 
-                Debug.WriteLine "OnResume: no model found to restore from app.Properties"
-                ()
-        with ex -> 
-            program.onError("Error while restoring model found in app.Properties", ex)
-
-    override this.OnStart() = this.OnResume()
 #endif

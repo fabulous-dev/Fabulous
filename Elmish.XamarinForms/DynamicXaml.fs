@@ -672,12 +672,6 @@ module XamlElementExtensions =
         /// Try to get the UseSafeArea property in the visual element
         member x.TryUseSafeArea = match x.Attributes.TryFind("UseSafeArea") with Some v -> USome(unbox<bool>(v)) | None -> UNone
 
-        /// Try to get the ItemsSource property in the visual element
-        member x.TryItemsSource = match x.Attributes.TryFind("ItemsSource") with Some v -> USome(unbox<System.Collections.Generic.IList<obj>>(v)) | None -> UNone
-
-        /// Try to get the ItemTemplate property in the visual element
-        member x.TryItemTemplate = match x.Attributes.TryFind("ItemTemplate") with Some v -> USome(unbox<Xamarin.Forms.DataTemplate>(v)) | None -> UNone
-
         /// Try to get the CarouselPage_SelectedItem property in the visual element
         member x.TryCarouselPage_SelectedItem = match x.Attributes.TryFind("CarouselPage_SelectedItem") with Some v -> USome(unbox<System.Object>(v)) | None -> UNone
 
@@ -757,7 +751,7 @@ module XamlElementExtensions =
         member x.TryView = match x.Attributes.TryFind("View") with Some v -> USome(unbox<XamlElement>(v)) | None -> UNone
 
         /// Try to get the ListViewItems property in the visual element
-        member x.TryListViewItems = match x.Attributes.TryFind("ListViewItems") with Some v -> USome(unbox<XamlElement[]>(v)) | None -> UNone
+        member x.TryListViewItems = match x.Attributes.TryFind("ListViewItems") with Some v -> USome(unbox<seq<XamlElement>>(v)) | None -> UNone
 
         /// Try to get the Footer property in the visual element
         member x.TryFooter = match x.Attributes.TryFind("Footer") with Some v -> USome(unbox<System.Object>(v)) | None -> UNone
@@ -1087,7 +1081,7 @@ module XamlElementExtensions =
         member x.DateSelected(value: Xamarin.Forms.DateChangedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("DateSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.DateChangedEventArgs>(fun _sender args -> f args))(value))))
 
         /// Adjusts the PickerItemsSource property in the visual element
-        member x.PickerItemsSource(value: 'T list) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("PickerItemsSource", box ((fun es -> es |> Array.ofList :> System.Collections.IList)(value))))
+        member x.PickerItemsSource(value: seq<'T>) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("PickerItemsSource", box (seqToIList(value))))
 
         /// Adjusts the SelectedIndex property in the visual element
         member x.SelectedIndex(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("SelectedIndex", box ((value))))
@@ -1170,12 +1164,6 @@ module XamlElementExtensions =
         /// Adjusts the UseSafeArea property in the visual element
         member x.UseSafeArea(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("UseSafeArea", box ((value))))
 
-        /// Adjusts the ItemsSource property in the visual element
-        member x.ItemsSource(value: 'T list) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ItemsSource", box ((fun es -> es |> Array.ofList |> Array.map box :> System.Collections.Generic.IList<obj>)(value))))
-
-        /// Adjusts the ItemTemplate property in the visual element
-        member x.ItemTemplate(value: Xamarin.Forms.DataTemplate) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ItemTemplate", box ((value))))
-
         /// Adjusts the CarouselPage_SelectedItem property in the visual element
         member x.CarouselPage_SelectedItem(value: System.Object) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("CarouselPage_SelectedItem", box ((value))))
 
@@ -1255,7 +1243,7 @@ module XamlElementExtensions =
         member x.View(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("View", box ((value))))
 
         /// Adjusts the ListViewItems property in the visual element
-        member x.ListViewItems(value: XamlElement list) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ListViewItems", box (Array.ofList(value))))
+        member x.ListViewItems(value: seq<XamlElement>) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ListViewItems", box ((value))))
 
         /// Adjusts the Footer property in the visual element
         member x.Footer(value: System.Object) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Footer", box ((value))))
@@ -1859,10 +1847,10 @@ module XamlElementExtensions =
     let dateSelected (value: Xamarin.Forms.DateChangedEventArgs -> unit) (x: XamlElement) = x.DateSelected(value)
 
     /// Adjusts the PickerItemsSource property in the visual element
-    let withPickerItemsSource (value: 'T list) (x: XamlElement) = x.PickerItemsSource(value)
+    let withPickerItemsSource (value: seq<'T>) (x: XamlElement) = x.PickerItemsSource(value)
 
     /// Adjusts the PickerItemsSource property in the visual element
-    let pickerItemsSource (value: 'T list) (x: XamlElement) = x.PickerItemsSource(value)
+    let pickerItemsSource (value: seq<'T>) (x: XamlElement) = x.PickerItemsSource(value)
 
     /// Adjusts the SelectedIndex property in the visual element
     let withSelectedIndex (value: int) (x: XamlElement) = x.SelectedIndex(value)
@@ -2026,18 +2014,6 @@ module XamlElementExtensions =
     /// Adjusts the UseSafeArea property in the visual element
     let useSafeArea (value: bool) (x: XamlElement) = x.UseSafeArea(value)
 
-    /// Adjusts the ItemsSource property in the visual element
-    let withItemsSource (value: 'T list) (x: XamlElement) = x.ItemsSource(value)
-
-    /// Adjusts the ItemsSource property in the visual element
-    let itemsSource (value: 'T list) (x: XamlElement) = x.ItemsSource(value)
-
-    /// Adjusts the ItemTemplate property in the visual element
-    let withItemTemplate (value: Xamarin.Forms.DataTemplate) (x: XamlElement) = x.ItemTemplate(value)
-
-    /// Adjusts the ItemTemplate property in the visual element
-    let itemTemplate (value: Xamarin.Forms.DataTemplate) (x: XamlElement) = x.ItemTemplate(value)
-
     /// Adjusts the CarouselPage_SelectedItem property in the visual element
     let withCarouselPage_SelectedItem (value: System.Object) (x: XamlElement) = x.CarouselPage_SelectedItem(value)
 
@@ -2195,10 +2171,10 @@ module XamlElementExtensions =
     let view (value: XamlElement) (x: XamlElement) = x.View(value)
 
     /// Adjusts the ListViewItems property in the visual element
-    let withListViewItems (value: XamlElement list) (x: XamlElement) = x.ListViewItems(value)
+    let withListViewItems (value: seq<XamlElement>) (x: XamlElement) = x.ListViewItems(value)
 
     /// Adjusts the ListViewItems property in the visual element
-    let listViewItems (value: XamlElement list) (x: XamlElement) = x.ListViewItems(value)
+    let listViewItems (value: seq<XamlElement>) (x: XamlElement) = x.ListViewItems(value)
 
     /// Adjusts the Footer property in the visual element
     let withFooter (value: System.Object) (x: XamlElement) = x.Footer(value)
@@ -6871,9 +6847,9 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.DatePicker>, create, update, Map.ofArray attribs)
 
     /// Describes a Picker in the view
-    static member Picker(?itemsSource: 'T list, ?selectedIndex: int, ?title: string, ?textColor: Xamarin.Forms.Color, ?selectedIndexChanged: (int * 'T option) -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member Picker(?itemsSource: seq<'T>, ?selectedIndex: int, ?title: string, ?textColor: Xamarin.Forms.Color, ?selectedIndexChanged: (int * 'T option) -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
-            match itemsSource with None -> () | Some v -> yield ("PickerItemsSource", box ((fun es -> es |> Array.ofList :> System.Collections.IList)(v))) 
+            match itemsSource with None -> () | Some v -> yield ("PickerItemsSource", box (seqToIList(v))) 
             match selectedIndex with None -> () | Some v -> yield ("SelectedIndex", box ((v))) 
             match title with None -> () | Some v -> yield ("Title", box ((v))) 
             match textColor with None -> () | Some v -> yield ("TextColor", box ((v))) 
@@ -9900,11 +9876,9 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.Page>, create, update, Map.ofArray attribs)
 
     /// Describes a CarouselPage in the view
-    static member CarouselPage(?children: XamlElement list, ?itemsSource: 'T list, ?itemTemplate: Xamarin.Forms.DataTemplate, ?selectedItem: System.Object, ?currentPage: XamlElement, ?currentPageChanged: 'T option -> unit, ?title: string, ?padding: obj, ?useSafeArea: bool, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member CarouselPage(?children: XamlElement list, ?selectedItem: System.Object, ?currentPage: XamlElement, ?currentPageChanged: 'T option -> unit, ?title: string, ?padding: obj, ?useSafeArea: bool, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
             match children with None -> () | Some v -> yield ("Children", box (Array.ofList(v))) 
-            match itemsSource with None -> () | Some v -> yield ("ItemsSource", box ((fun es -> es |> Array.ofList |> Array.map box :> System.Collections.Generic.IList<obj>)(v))) 
-            match itemTemplate with None -> () | Some v -> yield ("ItemTemplate", box ((v))) 
             match selectedItem with None -> () | Some v -> yield ("CarouselPage_SelectedItem", box ((v))) 
             match currentPage with None -> () | Some v -> yield ("CurrentPage", box ((v))) 
             match currentPageChanged with None -> () | Some v -> yield ("CurrentPageChanged", box ((fun f -> System.EventHandler(fun sender args -> f ((sender :?> Xamarin.Forms.CarouselPage).SelectedItem |> Option.ofObj |> Option.map unbox<'T>)))(v))) 
@@ -9944,20 +9918,6 @@ type Xaml() =
                 (fun _ _ _ -> ())
                 canReuseDefault
                 updateDefault
-            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryItemsSource
-            let valueOpt = source.TryItemsSource
-            match prevValueOpt, valueOpt with
-            | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage::ItemsSource "); target.ItemsSource <-  value
-            | USome _, UNone -> target.ItemsSource <- null
-            | UNone, UNone -> ()
-            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryItemTemplate
-            let valueOpt = source.TryItemTemplate
-            match prevValueOpt, valueOpt with
-            | USome prevValue, USome value when prevValue = value -> ()
-            | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage::ItemTemplate "); target.ItemTemplate <-  value
-            | USome _, UNone -> target.ItemTemplate <- null
-            | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryCarouselPage_SelectedItem
             let valueOpt = source.TryCarouselPage_SelectedItem
             match prevValueOpt, valueOpt with
@@ -11367,9 +11327,9 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.ViewCell>, create, update, Map.ofArray attribs)
 
     /// Describes a ListView in the view
-    static member ListView(?items: XamlElement list, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?headerTemplate: Xamarin.Forms.DataTemplate, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: int option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: int -> unit, ?itemDisappearing: int -> unit, ?itemSelected: int option -> unit, ?itemTapped: Xamarin.Forms.ItemTappedEventArgs -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member ListView(?items: seq<XamlElement>, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?headerTemplate: Xamarin.Forms.DataTemplate, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: int option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: int -> unit, ?itemDisappearing: int -> unit, ?itemSelected: int option -> unit, ?itemTapped: Xamarin.Forms.ItemTappedEventArgs -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
         let attribs = [| 
-            match items with None -> () | Some v -> yield ("ListViewItems", box (Array.ofList(v))) 
+            match items with None -> () | Some v -> yield ("ListViewItems", box ((v))) 
             match footer with None -> () | Some v -> yield ("Footer", box ((v))) 
             match hasUnevenRows with None -> () | Some v -> yield ("HasUnevenRows", box ((v))) 
             match header with None -> () | Some v -> yield ("Header", box ((v))) 
