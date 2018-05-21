@@ -210,14 +210,31 @@ There is also a `ListViewGrouped` for grouped items of data,
 "Infinite" (really "unbounded") lists are created by using the `itemAppearing` event to prompt a message which nudges the
 underlying model in a direction that will then supply new items to the view. 
 
-For example, consider this:
+For example, consider this pattern:
 ```fsharp
+type Model = 
+    { ...
+      LatestItemAvailable: int 
+    }
+
+type Message = 
+    ...
+    | GetMoreItems of int
+
+let update msg model = 
+    match msg with 
+    | ...
+    | GetMoreItems n -> { model with LatestItemAvailable = n }
+    
+let view model dispatch = 
+    ...
     Xaml.ListView(items = [ for i in 1 .. model.LatestItemAvailable do 
                               yield Xaml.Label("Item " + string i) ], 
                   itemAppearing=(fun idx -> if idx >= max - 2 then dispatch (GetMoreItems (idx + 10) ) )  )
+    ...
 ```
 Note:
-* The underlying data in the model is just an integer `LatestItemAvailable` (normally it would be a list of actual entities drawn from a data source)
+* The underlying data in the model is just an integer `LatestItemAvailable` (normally it would really be a list of actual entities drawn from a data source)
 * On each update to the view we produce all the visual items from `Item 1` onwards
 * The `itemAppearing` event is called for each item, e.g. when item `10` appears
 * When the event triggers we grow the underlying data model by 10
@@ -229,8 +246,51 @@ Surprisingly even this naive technique  is fairly efficient. There are numerous 
                               yield dependsOn i (fun model i -> Xaml.Label("Item " + string i)) ]
 ```
 With that, this simple list views scale to > 10,000 items on a modern phone, though your mileage may vary.
-There are many other techniques (e.g. save the latest collection of visual element descriptions in the model, or to use a ConditionalWeakTable to associate it with the latest model).  We will document further techniques in due course. 
+There are many other techniques (e.g. save the latest collection of visual element descriptions in the model, or to use a `ConditionalWeakTable` to associate it with the latest model).  We will document further techniques in due course. 
 
+Asynchronous actions
+-----
+
+Asynchronous actions are triggered by having the `update` function return "commands", which can trigger later `dispatch` of further messages.
+
+* Change `Program.mkSimple` to `Program.mkProgram`
+
+    let program = Program.mkProgram App.init App.update App.view
+
+* Change your `update` function to return a pair of a model and a command. For most messages the command will be `Cmd.none` but for basic async actions use `Cmd.ofAsyncMsg`.
+
+For example, here is one pattern for a timer loop that can be turned on/off:
+
+```fsharp
+    type Model = 
+        { ...
+          TimerOn: bool 
+        }
+        
+    type Message = 
+        | ...
+        | TimedTick
+        | TimerToggled of bool
+        
+    let timerCmd = 
+        async { do! Async.Sleep 200
+                return TimedTick }
+        |> Cmd.ofAsyncMsg
+
+    let update msg model =
+        match msg with
+        | ...
+        | TimerToggled on -> { model with TimerOn = on }, (if on then timerCmd else Cmd.none)
+        | TimedTick -> if model.TimerOn then { model with Count = model.Count + model.Step }, timerCmd else model, Cmd.none
+```
+The state-resurrection `OnResume` logic of your application (see above) should also be adjusted to restart
+appropriate `async` actions accoring to the state of the application.
+
+You can also set up global subscriptions, see the Elmish documentation for now.  
+
+Making all stages of async computations (and their outcomes, e.g. cancellation and/or exceptions) explicit can add
+additional messages and model states. This comes with pros and cons. Please discuss concrete examples by opening issues
+in this repository.
 
 Differential Update of Lists of Things
 -----
@@ -264,6 +324,8 @@ Roadmap
   * Menu, MenuItem, NavigationBar, Accelerator
   * Animation
   * OpenGLView
+  * Assess further common async patterns
+  * Assess further common incremental update of large data sets, e.g. `chunks { ... }`
 
 * Docs
   * Generate `///` docs in code generator
