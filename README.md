@@ -189,7 +189,7 @@ The programming model supports several more bespoke uses of the underlying [`Lis
                             Xaml.Label "Visual Studio"
                             Xaml.Label "Emacs"
                             Xaml.Label "Visual Studio Code"
-                            Xaml.Label "Jet Brains Rider"], 
+                            Xaml.Label "JetBrains Rider"], 
                   itemSelected=(fun idx -> dispatch (ListViewSelectedItemChanged idx)))
 ```
 In the underlying implementation, each visual item is placed in a `ContentCell`.
@@ -311,10 +311,10 @@ so they can be correctly and simply displayed to the user.  Here is an example o
         { TempF: Temperature
           TempC: Temperature }
 
-    /// Valdiate a temperature in fareneit, can be shared between client/server
+    /// Validate a temperature in Farenheit, can be shared between client/server
     let validateF text =  ... // return a Result
 
-    /// Valdiate a temperature in celcius, can be shared between client/server
+    /// Validate a temperature in celcius, can be shared between client/server
     let validateC text = // return a Result 
 
     let update msg model =
