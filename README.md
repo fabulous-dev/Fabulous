@@ -288,11 +288,28 @@ For example, here is one pattern for a timer loop that can be turned on/off:
 The state-resurrection `OnResume` logic of your application (see above) should also be adjusted to restart
 appropriate `async` actions accoring to the state of the application.
 
-You can also set up global subscriptions, see the Elmish documentation for now.  
-
-Making all stages of async computations (and their outcomes, e.g. cancellation and/or exceptions) explicit can add
+NOTE: Making all stages of async computations (and their outcomes, e.g. cancellation and/or exceptions) explicit can add
 additional messages and model states. This comes with pros and cons. Please discuss concrete examples by opening issues
 in this repository.
+
+Global asynchronous event subscriptions
+-----
+
+You can also set up global subscriptions, which are events sent from outside the view or the dispatch loop. For example, dispatching `ClockMsg` messages on a global timer:
+```fsharp
+    let timerTick dispatch =
+        let timer = new System.Timers.Timer(1.0)
+        timer.Elapsed.Subscribe (fun _ -> dispatch (ClockMsg System.DateTime.Now)) |> ignore
+        timer.Enabled <- true
+        timer.Start()
+
+    ...
+    let runner = 
+        ...
+        |> Program.withSubscription timerTick
+        ...
+        
+```
 
 Differential Update of Lists of Things
 -----
@@ -491,24 +508,7 @@ There are helper functions to create bindings located in the `Binding` module:
 The string piped to each binding is the name of the property as referenced in the XAML binding.
 
 
-Elmish Subscriptions
-------
-
-Elmish subscriptions are events sent from outside the view or the dispatch loop, are created using `Cmd.ofSub`. For example, dispatching events on a timer:
-```fsharp
-    let timerTick dispatch =
-        let timer = new System.Timers.Timer(1.0)
-        timer.Elapsed.Subscribe (fun _ -> dispatch (System.DateTime.Now |> Tick |> ClockMsg)) |> ignore
-        timer.Enabled <- true
-        timer.Start()
-
-    let subscribe model =
-        Cmd.ofSub timerTick
-```
-NOTE: we may switch to using the Xamarin `MessagingCenter` that is global to the application.
-
-
-Multiple Pages and Navigation
+Half Elmish: Multiple Pages and Navigation
 ------
 
 There is some experimental support for multiple-page apps and navigation. See the MasterDetailApp sample.  This currently only supports static views.
