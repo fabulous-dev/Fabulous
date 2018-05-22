@@ -360,15 +360,16 @@ module Program =
                         Choice1Of2 (page, bindings, viewModel)
                     | Choice2Of2 (prevPageDescription, app, contentf) -> 
                         let newPageDescription: XamlElement = contentf updatedModel dispatch
-                        if canReuseDefault prevPageDescription newPageDescription then
+                        if canReuseChild prevPageDescription newPageDescription then
                             newPageDescription.UpdateIncremental (prevPageDescription, app.MainPage)
                         else
                             app.MainPage <- newPageDescription.CreateAsPage()
-                        //app.Properties.["model"] <- updatedModel
+
                         Choice2Of2 (newPageDescription, app, contentf)
                 lastViewData <- Some viewData
                       
         do 
+           // Set up the global dispatch function
            ProgramDispatch<'msg>.Dispatch <- (fun msg -> Device.BeginInvokeOnMainThread(fun () -> processMsg msg))
 
            Debug.WriteLine "updating the initial view"
@@ -392,7 +393,7 @@ module Program =
                 sub dispatch
 
     /// Starts the Elmish dispatch loop for the page with the given Elmish program
-    and ProgramDispatch<'msg>()  = 
+    and internal ProgramDispatch<'msg>()  = 
         /// We store the current dispatch function for the running Elmish progream as a 
         /// static-global because we want old view elements stored in the `dependsOn` global table
         /// to be recyclable on resumption (when a new ProgramRunner gets created).
@@ -405,7 +406,7 @@ module Program =
     /// Creates the view model for the given page and starts the Elmish dispatch loop for the matching program
     let run program = ProgramRunner(program)
 
-    /// Add navigation to an application, used only for Static Xaml.
+    /// Add navigation to an application, used only for Half-Elmish Static Xaml.
     let withNavigation (program: Program<_,_,_>) = 
         { init = program.init
           update = program.update

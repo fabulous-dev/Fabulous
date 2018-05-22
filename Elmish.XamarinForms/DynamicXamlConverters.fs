@@ -8,7 +8,7 @@ open System.Windows.Input
 open Xamarin.Forms
 
 module UOption = 
-    let inline map f x = match x with UNone -> UNone | USome v -> USome (f v)
+    let inline map f x = match x with ValueNone -> ValueNone | ValueSome v -> ValueSome (f v)
 
 [<AllowNullLiteral>]
 type IListElement = 
@@ -123,21 +123,25 @@ module Converters =
     let canReuseChild (prevChild:XamlElement) (newChild:XamlElement) = (prevChild.TargetType = newChild.TargetType)
     let updateChild (prevChild:XamlElement) (newChild:XamlElement) targetChild = newChild.UpdateIncremental(prevChild, targetChild)
 
+    type Chunks<'T> = 
+        | Chunk of 'T[]
+        | Chunks of Chunks<'T> * Chunks<'T>
+
     // Incremental list maintenance: given a collection, and a previous version of that collection, perform
     // a reduced number of clear/add/remove/insert operations
     let updateIList
-           (prevCollOpt: 'T[] uoption) 
-           (collOpt: 'T[] uoption) 
+           (prevCollOpt: 'T[] voption) 
+           (collOpt: 'T[] voption) 
            (targetColl: IList<'TargetT>) 
            (create: 'T -> 'TargetT)
-           (attach: 'T uoption -> 'T -> 'TargetT -> unit) // adjust attached properties
+           (attach: 'T voption -> 'T -> 'TargetT -> unit) // adjust attached properties
            (canReuse : 'T -> 'T -> bool) // Used to check if reuse is possible
            (update: 'T -> 'T -> 'TargetT -> unit) // Incremental element-wise update, only if element reuse is allowed
         =
           match prevCollOpt, collOpt with 
-          | USome prevColl, USome newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-          | _, UNone -> targetColl.Clear()
-          | _, USome coll ->
+          | ValueSome prevColl, ValueSome newColl when identical prevColl newColl -> ()
+          | _, ValueNone -> targetColl.Clear()
+          | _, ValueSome coll ->
               if (coll = null || coll.Length = 0) then
                 targetColl.Clear()
               else
@@ -151,25 +155,22 @@ module Converters =
                 // Adjust the existing targetColl and create the new targetColl
                 for i in 0 .. coll.Length-1 do
                     let newChild = coll.[i]
-                    let prevChildOpt = match prevCollOpt with UNone -> UNone | USome coll when i < coll.Length && i < n -> USome coll.[i] | _ -> UNone
+                    let prevChildOpt = match prevCollOpt with ValueNone -> ValueNone | ValueSome coll when i < coll.Length && i < n -> ValueSome coll.[i] | _ -> ValueNone
                     let prevChildOpt, targetChild = 
-                        if (match prevChildOpt with UNone -> true | USome prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
-                            let mustCreate = (i >= n || match prevChildOpt with UNone -> true | USome prevChild -> not (canReuse prevChild newChild))
+                        if (match prevChildOpt with ValueNone -> true | ValueSome prevChild -> not (identical prevChild newChild)) then
+                            let mustCreate = (i >= n || match prevChildOpt with ValueNone -> true | ValueSome prevChild -> not (canReuse prevChild newChild))
                             if mustCreate then
-                                //printfn "Creating child %d, prevChildOpt = %A, newChild = %A" i prevChildOpt newChild
                                 let targetChild = create newChild
                                 if i >= n then
                                     targetColl.Insert(i, targetChild)
                                 else
                                     targetColl.[i] <- targetChild
-                                UNone, targetChild
+                                ValueNone, targetChild
                             else
-                                //printfn "Applying child %d, prevChild = %A, newChild = %A, (prevChild == newChild) = %A" i prevChildOpt.Value newChild (obj.ReferenceEquals(prevChildOpt.Value, newChild))
                                 let targetChild = targetColl.[i]
                                 update prevChildOpt.Value newChild targetChild
                                 prevChildOpt, targetChild
                         else
-                            //printfn "Skipping child %d" i
                             prevChildOpt, targetColl.[i]
                     attach prevChildOpt newChild targetChild
 
@@ -184,7 +185,7 @@ module Converters =
         | :? ('T []) as arr -> (arr :> System.Collections.IList) 
         | es -> (Array.ofSeq es :> System.Collections.IList)
 
-    let updateListViewItems (prevCollOpt: seq<'T> uoption) (coll: seq<'T> uoption) (target: Xamarin.Forms.ListView) = 
+    let updateListViewItems (prevCollOpt: seq<'T> voption) (coll: seq<'T> voption) (target: Xamarin.Forms.ListView) = 
         let oc = 
             match target.ItemsSource with 
             | :? ObservableCollection<ListElementData<'T>> as oc -> oc
@@ -194,7 +195,7 @@ module Converters =
                 oc
         updateIList (UOption.map seqToArray prevCollOpt) (UOption.map seqToArray coll) oc ListElementData (fun _ _ _ -> ()) (fun _ _ -> false) (fun _ _ _ -> failwith "no element reuse") 
 
-    let updateListViewGroupedItems (prevCollOpt: ('T * 'T[])[] uoption) (coll: ('T * 'T[])[] uoption) (target: Xamarin.Forms.ListView) = 
+    let updateListViewGroupedItems (prevCollOpt: ('T * 'T[])[] voption) (coll: ('T * 'T[])[] voption) (target: Xamarin.Forms.ListView) = 
         let oc = 
             match target.ItemsSource with 
             | :? ObservableCollection<ListGroupData<'T>> as oc -> oc
@@ -204,7 +205,7 @@ module Converters =
                 oc
         updateIList prevCollOpt coll oc ListGroupData (fun _ _ _ -> ()) (fun _ _ -> false) (fun _ _ _ -> failwith "no element reuse")
 
-    let updateTableViewItems (prevCollOpt: (string * 'T[])[] uoption) (coll: (string * 'T[])[] uoption) (target: Xamarin.Forms.TableView) = 
+    let updateTableViewItems (prevCollOpt: (string * 'T[])[] voption) (coll: (string * 'T[])[] voption) (target: Xamarin.Forms.TableView) = 
         let create (desc: XamlElement) = (desc.Create() :?> Cell)
         let root = 
             match target.Root with 
@@ -218,16 +219,16 @@ module Converters =
             (fun _ _ _ -> ()) // attach
             (fun _ _ -> true) // canReuse
             (fun (prevTitle,prevChild) (newTitle, newChild) target -> 
-                updateIList (USome prevChild) (USome newChild) target create (fun _ _ _ -> ()) canReuseChild updateChild) 
+                updateIList (ValueSome prevChild) (ValueSome newChild) target create (fun _ _ _ -> ()) canReuseChild updateChild) 
 
 
     /// Incremental NavigationPage maintenance: push/pop the right pages
-    let updateNavigationPages (prevCollOpt: XamlElement[] uoption)  (collOpt: XamlElement[] uoption) (target: NavigationPage) attach =
+    let updateNavigationPages (prevCollOpt: XamlElement[] voption)  (collOpt: XamlElement[] voption) (target: NavigationPage) attach =
           let create (desc: XamlElement) = (desc.Create() :?> Page)
           match prevCollOpt, collOpt with 
-          | USome prevColl, USome newColl when System.Object.ReferenceEquals(prevColl, newColl) -> ()
-          | _, UNone -> failwith "Error while updating NavigationPage pages: the pages collection should never be empty for a NavigationPage"
-          | _, USome coll ->
+          | ValueSome prevColl, ValueSome newColl when identical prevColl newColl -> ()
+          | _, ValueNone -> failwith "Error while updating NavigationPage pages: the pages collection should never be empty for a NavigationPage"
+          | _, ValueSome coll ->
               if (coll = null || coll.Length = 0) then
                 failwith "Error while updating NavigationPage pages: the pages collection should never be empty for a NavigationPage"
               else
@@ -249,10 +250,10 @@ module Converters =
                 // Push and/or adjust pages
                 for i in 0 .. newCount-1 do
                     let newChild = coll.[i]
-                    let prevChildOpt = match prevCollOpt with UNone -> UNone | USome coll when i < coll.Length && i < n -> USome coll.[i] | _ -> UNone
+                    let prevChildOpt = match prevCollOpt with ValueNone -> ValueNone | ValueSome coll when i < coll.Length && i < n -> ValueSome coll.[i] | _ -> ValueNone
                     let prevChildOpt, targetChild = 
-                        if (match prevChildOpt with UNone -> true | USome prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
-                            let mustCreate = (i >= n || match prevChildOpt with UNone -> true | USome prevChild -> not (canReuseChild prevChild newChild))
+                        if (match prevChildOpt with ValueNone -> true | ValueSome prevChild -> not (identical prevChild newChild)) then
+                            let mustCreate = (i >= n || match prevChildOpt with ValueNone -> true | ValueSome prevChild -> not (canReuseChild prevChild newChild))
                             if mustCreate then
                                 //printfn "Creating child %d, prevChildOpt = %A, newChild = %A" i prevChildOpt newChild
                                 let targetChild = create newChild
@@ -261,7 +262,7 @@ module Converters =
                                     target.PushAsync(targetChild) |> ignore
                                 else
                                     failwith "Error while updating NavigationPage pages: can't change type of one of the pages in the navigation chain during navigation"
-                                UNone, targetChild
+                                ValueNone, targetChild
                             else
                                 printfn "Adjust page number %d" i
                                 let targetChild = target.Pages |> Seq.item i
@@ -275,18 +276,18 @@ module Converters =
 
     let updateOnSizeAllocated prevValueOpt valueOpt (target: obj) = 
         let target = (target :?> CustomContentPage)
-        match prevValueOpt with UNone -> () | USome f -> target.SizeAllocated.RemoveHandler(f)
-        match valueOpt with UNone -> () | USome f -> target.SizeAllocated.AddHandler(f)
+        match prevValueOpt with ValueNone -> () | ValueSome f -> target.SizeAllocated.RemoveHandler(f)
+        match valueOpt with ValueNone -> () | ValueSome f -> target.SizeAllocated.AddHandler(f)
 
     /// This links the Command and CanExecute properties
     let inline updateCommand prevCommandValueOpt prevCanExecuteValueOpt commandValueOpt canExecuteValueOpt setter _ _ _ = 
         match prevCommandValueOpt, prevCanExecuteValueOpt, commandValueOpt, canExecuteValueOpt with 
-        | UNone, UNone, UNone, UNone -> ()
-        | USome prevf, UNone, USome f, UNone when obj.ReferenceEquals(prevf, f) -> ()
-        | USome prevf, USome prevx, USome f, USome x when obj.ReferenceEquals(prevf, f) && prevx = x -> ()
-        | _, _, UNone, _ -> setter null
-        | _, _, USome f, UNone -> setter (makeCommand f)
-        | _, _, USome f, USome k -> setter (makeCommandCanExecute f k)
+        | ValueNone, ValueNone, ValueNone, ValueNone -> ()
+        | ValueSome prevf, ValueNone, ValueSome f, ValueNone when identical prevf f -> ()
+        | ValueSome prevf, ValueSome prevx, ValueSome f, ValueSome x when identical prevf f && prevx = x -> ()
+        | _, _, ValueNone, _ -> setter null
+        | _, _, ValueSome f, ValueNone -> setter (makeCommand f)
+        | _, _, ValueSome f, ValueSome k -> setter (makeCommandCanExecute f k)
 
     let equalLayoutOptions (x:Xamarin.Forms.LayoutOptions) (y:Xamarin.Forms.LayoutOptions)  =
         x.Alignment = y.Alignment && x.Expands = y.Expands
@@ -301,7 +302,7 @@ module Converters =
         | :? ListElementData<XamlElement> as item -> 
             let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListElementData<XamlElement>> 
             // TODO: this linear search is needs improvement
-            items |> Seq.tryFindIndex (fun item2 -> System.Object.ReferenceEquals(item.Key, item2.Key))
+            items |> Seq.tryFindIndex (fun item2 -> identical item.Key item2.Key)
         | _ -> None
 
     let tryFindGroupedListViewItem (sender: obj) (item: obj) =
@@ -316,5 +317,5 @@ module Converters =
                  // TODO: this linear search is needs improvement
                 items2 
                 |> Seq.indexed 
-                |> Seq.tryPick (fun (j,item2) -> if System.Object.ReferenceEquals(item.Key, item2.Key) then Some (i,j) else None))
+                |> Seq.tryPick (fun (j,item2) -> if identical item.Key item2.Key then Some (i,j) else None))
         | _ -> None

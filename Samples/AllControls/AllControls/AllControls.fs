@@ -349,15 +349,15 @@ module App =
                                         if panArgs.StatusType = GestureStatus.Running then 
                                             dispatch (UpdateGridPortal (dx - int (panArgs.TotalX/10.0), dy - int (panArgs.TotalY/10.0))))) ] ))
 
-             dependsOn (model.PickedColorIndex) (fun model (pickedColorIndex) -> 
+             dependsOn () (fun model () -> 
               Xaml.NonScrollingContentPage("Image", 
                [Xaml.Label(text="Image:")
-                Xaml.Image(source="icon", horizontalOptions=LayoutOptions.CenterAndExpand) ]))
+                Xaml.Image(source="http://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg", horizontalOptions=LayoutOptions.CenterAndExpand) ]))
 
              dependsOn (model.PickedColorIndex) (fun model (pickedColorIndex) -> 
               Xaml.ScrollingContentPage("Picker", 
                [Xaml.Label(text="Picker:")
-                Xaml.Picker(title="Choose Color:", textColor= snd pickerItems.[pickedColorIndex], selectedIndex=pickedColorIndex, itemsSource=(Array.map fst pickerItems), horizontalOptions=LayoutOptions.CenterAndExpand, selectedIndexChanged=(fun (i, item) -> dispatch (PickerItemChanged i)))
+                Xaml.Picker(title="Choose Color:", textColor=snd pickerItems.[pickedColorIndex], selectedIndex=pickedColorIndex, itemsSource=(Array.map fst pickerItems), horizontalOptions=LayoutOptions.CenterAndExpand, selectedIndexChanged=(fun (i, item) -> dispatch (PickerItemChanged i)))
                ]))
 
              dependsOn () (fun model () -> 
