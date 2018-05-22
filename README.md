@@ -75,10 +75,6 @@ Screenshots from Anrdoid (Google Pixel):
 <img src="https://user-images.githubusercontent.com/7204669/39318922-57c95174-4977-11e8-94a9-cc385101ce5d.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318926-59f844e6-4977-11e8-9834-325a6517ced6.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318929-5b66c776-4977-11e8-8317-ee1c121301d4.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318934-5cbe3c3a-4977-11e8-92aa-c3fdf644b01c.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318936-5e2380bc-4977-11e8-8912-f078744a2bde.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318938-5f6ec4f4-4977-11e8-97a9-779edd3594bc.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318941-60c1b0f0-4977-11e8-8a4a-57e17ef8c6ec.png" width="100">
 
 
-## Roadmap
-
-See [ROADMAP.md](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/ROADMAP.md), a list of TODOs.
-
 ## Dynamic Views
 
 Dynamic `view` functions are written using an F# DSL, see ``Elmish.XamarinForms.DynamicViews``.
@@ -399,17 +395,24 @@ You can also set up global subscriptions, which are events sent from outside the
         
 ```
 
-
 ## Static Views and "Half Elmish"
 
 In some circumstances there are advantages to using static Xaml, and static bindings from the model to those views. This is called "Half Elmish" and is the primary technique used by [`Elmish.WPF`](https://github.com/Prolucid/Elmish.WPF) at time of writing. (It was also  the original technique used by this repo and the prototype `Elmish.Forms`).   
 
 See [HALF-ELMISH.md](HALF-ELMISH.md)
 
+## Roadmap
 
-# Contributing
+See [ROADMAP.md](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/ROADMAP.md), a list of TODOs.
+
+## Building
+
+See [DEVGUIDE.md](DEVGUIDE.md).
+
+## Contributing
 
 Please contribute to this library through issue reports, pull requests, code reviews and discussion.
+
 
 Credits
 -----
