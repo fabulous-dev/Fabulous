@@ -122,6 +122,31 @@ You can also use
 * the `fix` function for portions of a view that have no dependencies at all (besides the "dispatch" function)
 * the `fixf` function for command callbacks that have no dependencies at all (besides the "dispatch" function)
 
+### Dynamic Views: Resource Dictionaries
+
+In Elmish.XamarinForms, resources dictionaries are just "simple F# programming", e.g.
+```fsharp
+let horzOptions = LayoutOptions.Center
+let vertOptions = LayoutOptions.CenterAndExpand
+```
+is basically the eqivalent of Xaml:
+```xml
+<ContentPage.Resources>
+    <ResourceDictionary>
+        <LayoutOptions x:Key="horzOptions"
+                     Alignment="Center" />
+
+        <LayoutOptions x:Key="vertOptions"
+                     Alignment="Center"
+                     Expands="True" />
+    </ResourceDictionary>
+</ContentPage.Resources>
+```
+In other words, you can normally forget about resource dictionaries and just program as you would normally in F#.
+
+Other kinds of resources like images need a little more attention and you may need to ship multiple versions of images etc. for Android and iOS.  TBD: write a guide on these, in the meantime see the samples.
+
+
 
 ### Dynamic Views: Multiple Pages and Navigation
 
@@ -270,31 +295,68 @@ Basically, incremental update is faster if lists are changing at their beginning
 
 The above is sufficient for many purposes, but care must always be taken with large lists and data sources, see `ListView` above for example.  Care must also be taken whenever data updates very rapidly.
 
-## Models
 
-### Models: Saving Application State
+### Dynamic Views: Styling
 
-Application state is very simple to save by serializing the model into `app.Properties`. For example, you can store as JSON as follows using [`FsPickler` and `FsPickler.Json`](https://github.com/mbraceproject/FsPickler), which use `Json.NET`:
-```fsharp
-open MBrace.FsPickler.Json
+Styling is a significant topic in Xamarin.Forms programming.  See [the extensive Xamarin.Forms documentation on styling](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/styles/).
 
-type Application() = 
-    ....
-    let modelId = "model"
-    override __.OnSleep() = 
-        app.Properties.[modelId] <- FsPickler.CreateJsonSerializer().PickleToString(runner.Model)
 
-    override __.OnResume() = 
-        try 
-            match app.Properties.TryGetValue modelId with
-            | true, (:? string as json) -> 
-                runner.Model <- FsPickler.CreateJsonSerializer().UnPickleOfString(json)
-            | _ -> ()
-        with ex -> 
-            program.onError("Error while restoring model found in app.Properties", ex)
+#### F#-coded styling
 
-    override this.OnStart() = this.OnResume()
+One approach is to manually code up styling simply by using normal F# programming to abstract away commonality between
+various parts of your view logiv.
+
+We do not give a guide here as it is routine application of F# coding.  The [Fulma](https://mangelmaxime.github.io/Fulma/#fulma) approach to styling may also be of interest and provide inspiration.
+
+There are many upsides to this approach. The downsides are:
+* styling is done using F# coding, and some UI designers may prefer to work with CSS or another styling technique
+* there is no easy way to provide default styling base on selectors like "All buttons" (except of course to carefully code your F# to make sure all button creations go through a particular helper)
+* you may end up hand-rolling certain selector queries and patterns from other styling languages.
+
+#### CSS styling with Xamarin.Forms 3.0
+
+1. create a CSS file with appropriate selectors and property specifications, e.g.
+```css
+stacklayout {
+    margin: 20;
+}
+
+.mainPageTitle {
+    font-style: bold;
+    font-size: medium;
+}
+
+.detailPageTitle {
+    font-style: bold;
+    font-size: medium;
+    text-align: center;
+}
+
 ```
+where `stacklayout` referes to all elements of that type, and `.mainPageTitle` refers to a specific element style-class path. 
+
+2. Add the style sheet to your app as an `EmbeddedResource` node
+
+3. Load it into your app:
+```
+type App () as app = 
+    inherit Application ()
+    do app.Resources.Add(StyleSheet.FromAssemblyResource(Assembly.GetExecutingAssembly(),"MyProject.Assets.styles.css"))
+```
+
+4. Set `StyleClass` for named elements, e.g. 
+
+```fsharp
+      Xaml.Label(text="Hello", styleClass=detailPageTitle")
+      ...
+      Xaml.Label(text="Main Page", styleClass="mainPageTitle")
+```
+
+#### "Xaml" coding via explicit `Style` objects
+
+You can also use "Xaml styling" by creating specific `Style` objects using the `Xamarin.Forms` APIs directly
+and attaching them to your application.  See [the Xamarin.Forms documentation](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/styles/xaml/).  We don't go into details here
+## Models
 
 ### Models: Messages and Validation
 
@@ -331,6 +393,30 @@ so they can be correctly and simply displayed to the user.  Here is an example o
 ```
 
 Note that the same validation logic can be used in both your app and a service back-end.
+
+### Models: Saving Application State
+
+Application state is very simple to save by serializing the model into `app.Properties`. For example, you can store as JSON as follows using [`FsPickler` and `FsPickler.Json`](https://github.com/mbraceproject/FsPickler), which use `Json.NET`:
+```fsharp
+open MBrace.FsPickler.Json
+
+type Application() = 
+    ....
+    let modelId = "model"
+    override __.OnSleep() = 
+        app.Properties.[modelId] <- FsPickler.CreateJsonSerializer().PickleToString(runner.Model)
+
+    override __.OnResume() = 
+        try 
+            match app.Properties.TryGetValue modelId with
+            | true, (:? string as json) -> 
+                runner.SetCurrentModel(FsPickler.CreateJsonSerializer().UnPickleOfString(json), Cmd.none)
+            | _ -> ()
+        with ex -> 
+            program.onError("Error while restoring model found in app.Properties", ex)
+
+    override this.OnStart() = this.OnResume()
+```
 
 ## Messages, Commands and Control
 
