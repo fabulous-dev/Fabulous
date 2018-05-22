@@ -13,6 +13,7 @@ To quote [@dsyme](http://github.com/dsyme):
 
 Getting started with Elmish.XamarinForms
 ------
+
 1. Create a blank F# Xamarin Forms app in Visual Studio or Visual Studio Code.  Make sure your shared code is an F# .NET Standard 2.0 Library project. 
 2. Add nuget package `Elmish.XamarinForms` to to your shared code project.
 3. Put the sample code below in your shared app library
@@ -123,7 +124,65 @@ You can also use
 * the `fixf` function for command callbacks that have no dependencies at all (besides the "dispatch" function)
 
 
-## Dynamic Views: ListView, ListGroupedView and friends
+### Dynamic Views: Multiple Pages and Navigation
+
+
+Multiple pages are just generated as part of the overall view.
+
+Four multi-page navigation models are shown in `AllControls`:
+
+* MasterDetail
+* NavigationPage (using push/pop)
+* TabbedPage
+* CarouselPage
+
+#### NavigationPage push/pop
+
+The basic principles are easy:
+1. Keep some information in your model indicating the page stack (e.g. a list of page identifiers or page models)
+2. Return the current visual page stack in the `pages` property of `NavigationPage`.
+3. Set `HasNavigationBar` and `HasBackButton` on each sub-page according to your desire
+4. Dispatch messages in order to navigate, where the corresponding `update` adjusts the page stack in the model 
+
+```fsharp
+let view model dispatch = 
+    Xaml.NavigationPage(pages=
+        [ for page in model.PageStack do
+            match page with 
+            | "Home" -> 
+                yield Xaml.ContentPage(...).HasNavigationBar(true).HasBackButton(true)
+            | "PageA" -> 
+                yield Xaml.ContentPage(...).HasNavigationBar(true).HasBackButton(true)
+            | "PageB" -> 
+                yield Xaml.ContentPage(...).HasNavigationBar(true).HasBackButton(true)
+        ])
+```
+
+#### TabbedPage navigation
+
+Return a `TabbedPage` from your view:
+```fsharp
+let view model dispatch = 
+    Xaml.TabbedPage(children= [ ... ])
+```
+
+#### CarouselPage navigation
+
+Return a `CarouselPage` from your view:
+```fsharp
+let view model dispatch = 
+    Xaml.CarouselPage(children= [ ... ])
+```
+
+#### MasterDetail Page navigation
+
+Principles:
+1. Keep some information in your model indicating the current detail being shown
+2. Return a `MasterDetailPage` from your `view` function
+
+See the `AllControls` sample
+
+### Dynamic Views: ListView, ListGroupedView and friends
 
 The programming model supports several more bespoke uses of the underlying [`ListView`](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/listview/) control from `Xamarin.Forms.Core`.  In the simplest form, just called `ListView`, the `items` property specifies a collection of visual elements:
 ```fsharp
@@ -140,7 +199,7 @@ keys to identify the elements (NOTE: this may change in future updates).
 
 There is also a `ListViewGrouped` for grouped items of data.
 
-### "Infinite" or "unbounded" ListViews 
+#### "Infinite" or "unbounded" ListViews 
 
 "Infinite" (really "unbounded") lists are created by using the `itemAppearing` event to prompt a message which nudges the
 underlying model in a direction that will then supply new items to the view. 
@@ -186,7 +245,7 @@ There are many other techniques (e.g. save the latest collection of visual eleme
 Thre is also an `itemDisappearing` event for `ListView` that can be used to discard data from the underlying model and restrict the
 range of visual items that need to be generated.
 
-## Dynamic Views: Differential Update of Lists of Things
+### Dynamic Views: Differential Update of Lists of Things
 
 There are a few different kinds of list in view descriptions:
 1. lists of raw data (e.g. data for a chart control, though there are no samples like that yet in this library)
@@ -212,10 +271,9 @@ Basically, incremental update is faster if lists are changing at their beginning
 
 The above is sufficient for many purposes, but care must always be taken with large lists and data sources, see `ListView` above for example.  Care must also be taken whenever data updates very rapidly.
 
-Models
-------
+## Models
 
-## Models: Saving Application State
+### Models: Saving Application State
 
 Application state is very simple to save by serializing the model into `app.Properties`. For example, you can store as JSON as follows using [`FsPickler` and `FsPickler.Json`](https://github.com/mbraceproject/FsPickler), which use `Json.NET`:
 ```fsharp
@@ -239,7 +297,7 @@ type Application() =
     override this.OnStart() = this.OnResume()
 ```
 
-## Models: Messages and Validation
+### Models: Messages and Validation
 
 Validation is generally done on updates to the model, storing error messages from validation logic in the model
 so they can be correctly and simply displayed to the user.  Here is an example of a typical pattern.
@@ -275,10 +333,9 @@ so they can be correctly and simply displayed to the user.  Here is an example o
 
 Note that the same validation logic can be used in both your app and a service back-end.
 
-Messages, Commands and Control
------
+## Messages, Commands and Control
 
-## Messages, Commands and Asynchrnous Actions
+### Messages, Commands and Asynchronous Actions
 
 Asynchronous actions are triggered by having the `update` function return "commands", which can trigger later `dispatch` of further messages.
 
@@ -321,7 +378,7 @@ NOTE: Making all stages of async computations (and their outcomes, e.g. cancella
 additional messages and model states. This comes with pros and cons. Please discuss concrete examples by opening issues
 in this repository.
 
-## Messages: Global asynchronous event subscriptions
+### Messages: Global asynchronous event subscriptions
 
 You can also set up global subscriptions, which are events sent from outside the view or the dispatch loop. For example, dispatching `ClockMsg` messages on a global timer:
 ```fsharp
@@ -340,8 +397,9 @@ You can also set up global subscriptions, which are events sent from outside the
 ```
 
 
-Roadmap
---------
+
+
+## Roadmap
 
 * Programming model: Do these from `Xamarin.Forms.Core`: 
   * Move to `seq<_>` as the de-facto model type
@@ -408,8 +466,7 @@ Bugs:
   * Fix issue for slider where minimum = 1.0, maximum=10.0 (i.e. when value=0 and minimum gets set before maximum?)
   * Fix issue with application reload in AllControls.fs
 
-Static Views and "Half Elmish"
-------
+## Static Views and "Half Elmish"
 
 In some circumstances there are advantages to using static Xaml, and static bindings from the model to those views. This is called "Half Elmish" and is the primary technique used by [`Elmish.WPF`](https://github.com/Prolucid/Elmish.WPF) at time of writing. (It was also  the original technique used by this repo and the prototype `Elmish.Forms`).   
 
@@ -513,14 +570,12 @@ There are helper functions to create bindings located in the `Binding` module:
 The string piped to each binding is the name of the property as referenced in the XAML binding.
 
 
-Half Elmish: Multiple Pages and Navigation
-------
+## Half Elmish: Multiple Pages and Navigation
 
 There is some experimental support for multiple-page apps and navigation. See the MasterDetailApp sample.  This currently only supports static views.
 
 
-Dev Notes - Releasing
-------
+# Dev Notes - Releasing
 
 Use this:
 
