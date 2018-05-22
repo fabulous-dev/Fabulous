@@ -55,6 +55,13 @@ type App () =
 ```
 The init function returns your initial state, and each model gets an update function for message processing. The `view` function computes an immutable Xaml-like description. In the above example, the choice between a label and button depends on the `model.Pressed` value.
 
+Some advantages of using an immutable model are:
+
+* It is easy to unit test your `init`, `update` and `view` functions
+* You can save/restore your model relatively easily
+* It makes tracing causality usually very simple
+
+
 Example Views
 ------
 
@@ -80,8 +87,7 @@ Notes:
 * There are some additional F# DSL helpers, e.g. [`button |> withText "Hello"`](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms/DynamicXaml.fs#L729) (note: you don't have
 to use these, and the samples don't use them).
 
-Dynamic Views and Performance
-------
+## Dynamic Views: Performance Hints
 
 Dynamic views are only efficient for large UIs if the unchanging parts of a UI are "memoized", returning identical
 objects on each invocation of the `view` function.  This must be done explicitly, currently using `dependsOn`. Here is an example for a 6x6 Grid that depends on nothing, i.e. never changes:
@@ -117,80 +123,9 @@ You can also use
 * the `fixf` function for command callbacks that have no dependencies at all (besides the "dispatch" function)
 
 
-Advantages of an immutable model
-------
+## Dynamic Views: ListView, ListGroupedView and friends
 
-* Easy to unit test your `init`, `update` and `view` functions
-* Can save/restore your model very easily (see below)
-* Makes tracing causality usually very simple
-
-
-Saving Application State
---------------
-
-Application state is very simple to save by serializing the model into `app.Properties`. For example, you can store as JSON as follows using [`FsPickler` and `FsPickler.Json`](https://github.com/mbraceproject/FsPickler), which use `Json.NET`:
-```fsharp
-open MBrace.FsPickler.Json
-
-type Application() = 
-    ....
-    let modelId = "model"
-    override __.OnSleep() = 
-        app.Properties.[modelId] <- FsPickler.CreateJsonSerializer().PickleToString(runner.Model)
-
-    override __.OnResume() = 
-        try 
-            match app.Properties.TryGetValue modelId with
-            | true, (:? string as json) -> 
-                runner.Model <- FsPickler.CreateJsonSerializer().UnPickleOfString(json)
-            | _ -> ()
-        with ex -> 
-            program.onError("Error while restoring model found in app.Properties", ex)
-
-    override this.OnStart() = this.OnResume()
-```
-
-Models and Validation
-------
-
-Validation is generally done on updates to the model, storing error messages from validation logic in the model
-so they can be correctly and simply displayed to the user.  Here is an example of a typical pattern.
-
-```fsharp
-
-    type Temperature = 
-       | Value of double
-       | ParseError of string  
-       
-    type Model = 
-        { TempF: Temperature
-          TempC: Temperature }
-
-    /// Valdiate a temperature in fareneit, can be shared between client/server
-    let validateF text =  ... // return a Result
-
-    /// Valdiate a temperature in celcius, can be shared between client/server
-    let validateC text = // return a Result 
-
-    let update msg model =
-        match msg with
-        | SetF textF -> 
-            match validateF textF with
-            | Ok newF -> { model with TempF = Value newF }
-            | Error msg -> { model with TempF = ParseError msg }
-            
-        | SetC textC -> 
-            match validateC textC with
-            | Ok newC -> { model with TempC = Value newC }
-            | Error msg -> { model with TempC = ParseError msg }
-```
-
-Note that the same validation logic can be used in both your app and a service back-end.
-
-ListViews
-------
-
-The programming model supports several more bespoke uses of the underlying [`ListView`](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/listview/) control from `Xamarin.Forms.Core`.  In the simplest form, the `items` property specifies a collection of `XamlElement`:
+The programming model supports several more bespoke uses of the underlying [`ListView`](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/listview/) control from `Xamarin.Forms.Core`.  In the simplest form, just called `ListView`, the `items` property specifies a collection of visual elements:
 ```fsharp
     Xaml.ListView(items = [ Xaml.Label "Ionide"
                             Xaml.Label "Visual Studio"
@@ -199,13 +134,13 @@ The programming model supports several more bespoke uses of the underlying [`Lis
                             Xaml.Label "Jet Brains Rider"], 
                   itemSelected=(fun idx -> dispatch (ListViewSelectedItemChanged idx)))
 ```
-Each item becomes a `ContentCell`.  Currently the `itemSelected` callback uses integers indexes for
-keys to identify the elements, this may change in future updates.
+In the underlying implementation, each visual item is placed in a `ContentCell`.
+Currently the `itemSelected` callback uses integers indexes for
+keys to identify the elements (NOTE: this may change in future updates).
 
-There is also a `ListViewGrouped` for grouped items of data,
+There is also a `ListViewGrouped` for grouped items of data.
 
-"Infinite" or "unbounded" ListViews 
--------
+### "Infinite" or "unbounded" ListViews 
 
 "Infinite" (really "unbounded") lists are created by using the `itemAppearing` event to prompt a message which nudges the
 underlying model in a direction that will then supply new items to the view. 
@@ -248,8 +183,102 @@ Surprisingly even this naive technique  is fairly efficient. There are numerous 
 With that, this simple list views scale to > 10,000 items on a modern phone, though your mileage may vary.
 There are many other techniques (e.g. save the latest collection of visual element descriptions in the model, or to use a `ConditionalWeakTable` to associate it with the latest model).  We will document further techniques in due course. 
 
-Asynchronous actions
+Thre is also an `itemDisappearing` event for `ListView` that can be used to discard data from the underlying model and restrict the
+range of visual items that need to be generated.
+
+## Dynamic Views: Differential Update of Lists of Things
+
+There are a few different kinds of list in view descriptions:
+1. lists of raw data (e.g. data for a chart control, though there are no samples like that yet in this library)
+2. long lists of UI elements that are used to produce cells (e.g. `ListView`, see above)
+3. short lists of UI elements (e.g. StackLayout `children`)
+4. short lists of pages (e.g. NavigationPages `pages`)
+
+The perf of incremental update to these is progressively less important as you go down that list above.  
+
+For all of the above, the typical, naive implementation of the `view` function returns a new list
+instance on each invocation. The incremental update of dynamic views maintains a corresponding mutable target
+(e.g. the `Children` property of a `Xamarin.Forms.StackLayout`, or an `ObservableCollection` to use as an `ItemsSource` to a `ListView`) based on the previous (PREV) list and the new (NEW) list.  The list diffing currently does the following:
+1. trims of excess elements from TARGET down to size LIM = min(NEW.Count, PREV.Count)
+2. incrementally updates existing elements 0..MIN-1 in TARGET (skips this if PREV.[i] is reference-equal to NEW.[i])
+3. creates elements LIM..NEW.Count-1
+
+This means
+1. Incremental update costs minimally one transition of the whole list.
+2. Incremental update recycles visual elements at the start of the list and handles add/remove at end of list relatively efficiently
+3. Returning a new list that inserts an element at the beginning will recreate all elements down the way.
+
+Basically, incremental update is faster if lists are changing at their beginning, rather than their end.
+
+The above is sufficient for many purposes, but care must always be taken with large lists and data sources, see `ListView` above for example.  Care must also be taken whenever data updates very rapidly.
+
+Models
+------
+
+## Models: Saving Application State
+
+Application state is very simple to save by serializing the model into `app.Properties`. For example, you can store as JSON as follows using [`FsPickler` and `FsPickler.Json`](https://github.com/mbraceproject/FsPickler), which use `Json.NET`:
+```fsharp
+open MBrace.FsPickler.Json
+
+type Application() = 
+    ....
+    let modelId = "model"
+    override __.OnSleep() = 
+        app.Properties.[modelId] <- FsPickler.CreateJsonSerializer().PickleToString(runner.Model)
+
+    override __.OnResume() = 
+        try 
+            match app.Properties.TryGetValue modelId with
+            | true, (:? string as json) -> 
+                runner.Model <- FsPickler.CreateJsonSerializer().UnPickleOfString(json)
+            | _ -> ()
+        with ex -> 
+            program.onError("Error while restoring model found in app.Properties", ex)
+
+    override this.OnStart() = this.OnResume()
+```
+
+## Models: Messages and Validation
+
+Validation is generally done on updates to the model, storing error messages from validation logic in the model
+so they can be correctly and simply displayed to the user.  Here is an example of a typical pattern.
+
+```fsharp
+
+    type Temperature = 
+       | Value of double
+       | ParseError of string  
+       
+    type Model = 
+        { TempF: Temperature
+          TempC: Temperature }
+
+    /// Valdiate a temperature in fareneit, can be shared between client/server
+    let validateF text =  ... // return a Result
+
+    /// Valdiate a temperature in celcius, can be shared between client/server
+    let validateC text = // return a Result 
+
+    let update msg model =
+        match msg with
+        | SetF textF -> 
+            match validateF textF with
+            | Ok newF -> { model with TempF = Value newF }
+            | Error msg -> { model with TempF = ParseError msg }
+            
+        | SetC textC -> 
+            match validateC textC with
+            | Ok newC -> { model with TempC = Value newC }
+            | Error msg -> { model with TempC = ParseError msg }
+```
+
+Note that the same validation logic can be used in both your app and a service back-end.
+
+Messages, Commands and Control
 -----
+
+## Messages, Commands and Asynchrnous Actions
 
 Asynchronous actions are triggered by having the `update` function return "commands", which can trigger later `dispatch` of further messages.
 
@@ -292,8 +321,7 @@ NOTE: Making all stages of async computations (and their outcomes, e.g. cancella
 additional messages and model states. This comes with pros and cons. Please discuss concrete examples by opening issues
 in this repository.
 
-Global asynchronous event subscriptions
------
+## Messages: Global asynchronous event subscriptions
 
 You can also set up global subscriptions, which are events sent from outside the view or the dispatch loop. For example, dispatching `ClockMsg` messages on a global timer:
 ```fsharp
@@ -311,29 +339,6 @@ You can also set up global subscriptions, which are events sent from outside the
         
 ```
 
-Differential Update of Lists of Things
------
-
-There are a few different kinds of list in Xamarin.Forms - basically 
-1. lists of raw data (e.g. data for a chart control, though there are no samples like that yet in this library)
-2. lists of XamlElement that are used to produce cells (e.g. ListView)
-3. lists of UI elements (e.g. StackLayout `children`)
-4. lists of pages (e.g. NavigationPages `pages`)
-
-The perf of incremental update to these is progressively less important as you go down that list above.  
-
-For (1) - (4) the `view` function returns a new list instance on each invocation. The incremental update process
-maintains a target (e.g. the `Children` property of a `Xamarin.Forms.StackLayout`, or an `ObservableCollection` to use as an `ItemsSource`) based on the previous (P) list and the new (N) list.  The list diffing currenly does the following:
-1. trims of excess elements from TARGET down to size LIM = min(NEW.Count, PREV.Count)
-2. incrementally updates existing elements 0..MIN-1 in TARGET (skips this if PREV.[i] is reference-equal to NEW.[i])
-3. creates elements LIM..NEW.Count-1
-
-This means
-1. Incremental update costs minimally one transition of the whole list.
-2. Incremental update recycles visual elements at the start of the list and handles add/remove at end of list relatively efficiently
-3. Returning a new list that inserts an element at the beginning will recreate all elements down the way.
-
-The above is sufficient for many purposes, but care must always be taken with large lists and data sources, see `ListView` above for example.
 
 Roadmap
 --------
