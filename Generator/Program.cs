@@ -263,7 +263,7 @@ namespace Generator
                 if (string.IsNullOrWhiteSpace(type.ModelName))
                 {
                     w.WriteLine($"        /// Create a {tdef.FullName} from the view description");
-                    w.WriteLine($"        member x.CreateAs{tdef.Name}() : {tdef.FullName} =");
+                    w.WriteLine($"        member internal x.CreateAs{tdef.Name}() : {tdef.FullName} =");
                     w.WriteLine($"            match x.Create() with");
                     w.WriteLine($"            | :? {tdef.FullName} as res -> res");
                     w.WriteLine($"            | obj -> failwithf \"Incorrect element type in view, expected a '{tdef.FullName}' but got a '%s')\" (obj.GetType().ToString()) ");
@@ -294,7 +294,7 @@ namespace Generator
                     w.WriteLine();
                     w.WriteLine($"        /// Try to get the {m.BoundUniqueName} property in the visual element");
                     var modelType = m.GetModelType(bindings, null);
-                    w.WriteLine("        member x.Try" + m.BoundUniqueName + " = match x.Attributes.TryFind(\"" + m.BoundUniqueName + "\") with Some v -> USome(unbox<" + modelType + ">(v)) | None -> UNone");
+                    w.WriteLine("        member internal x.Try" + m.BoundUniqueName + " = match x.Attributes.TryFind(\"" + m.BoundUniqueName + "\") with Some v -> USome(unbox<" + modelType + ">(v)) | None -> UNone");
                 }
             }
             foreach (var ms in allMembersInAllTypesGroupedByName)
@@ -306,7 +306,7 @@ namespace Generator
                     w.WriteLine($"        /// Adjusts the {m.BoundUniqueName} property in the visual element");
                     var conv = string.IsNullOrWhiteSpace(m.ConvToModel) ? "" : m.ConvToModel;
                     var inputType = m.GetInputType(bindings, null);
-                    w.WriteLine("        member x." + m.BoundUniqueName + "(value: " + inputType + ") = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add(\"" + m.BoundUniqueName + "\", box (" + conv + "(value))))");
+                    w.WriteLine("        member x." + m.BoundUniqueName + "(value: " + inputType + ") = x.WithAttribute(\"" + m.BoundUniqueName + "\", box (" + conv + "(value)))");
                 }
             }
             w.WriteLine();
@@ -317,8 +317,8 @@ namespace Generator
                 {
                     var inputType = m.GetInputType(bindings, null);
                     w.WriteLine();
-                    w.WriteLine($"    /// Adjusts the {m.BoundUniqueName} property in the visual element");
-                    w.WriteLine("    let with" + m.BoundUniqueName + " (value: " + inputType + ") (x: XamlElement) = x." + m.BoundUniqueName + "(value)");
+                    //w.WriteLine($"    /// Adjusts the {m.BoundUniqueName} property in the visual element");
+                    //w.WriteLine("    let with" + m.BoundUniqueName + " (value: " + inputType + ") (x: XamlElement) = x." + m.BoundUniqueName + "(value)");
                     w.WriteLine();
                     w.WriteLine($"    /// Adjusts the {m.BoundUniqueName} property in the visual element");
                     w.WriteLine("    let " + m.LowerBoundUniqueName + " (value: " + inputType + ") (x: XamlElement) = x." + m.BoundUniqueName + "(value)");
@@ -472,8 +472,8 @@ namespace Generator
                             {
                                 w.WriteLine($"                (fun _ _ _ -> ())");
                             }
-                            w.WriteLine($"                canReuseDefault");
-                            w.WriteLine($"                updateDefault");
+                            w.WriteLine($"                canReuseChild");
+                            w.WriteLine($"                updateChild");
                         }
                         else
                         {
@@ -484,7 +484,7 @@ namespace Generator
                                     w.WriteLine($"            let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.Try{m.BoundUniqueName}");
                                     w.WriteLine($"            match prevChildOpt, source.Try{m.BoundUniqueName} with");
                                     w.WriteLine($"            // For structured objects, dependsOn on reference equality");
-                                    w.WriteLine($"            | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()");
+                                    w.WriteLine($"            | USome prevChild, USome newChild when identical prevChild newChild -> ()");
                                     w.WriteLine($"            | _, USome newChild ->");
                                     w.WriteLine($"                target.{m.Name} <- newChild.CreateAs{bt.Name}()");
                                     w.WriteLine($"            | USome _, UNone ->");
@@ -496,8 +496,8 @@ namespace Generator
                                     w.WriteLine($"            let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.Try{m.BoundUniqueName}");
                                     w.WriteLine($"            match prevChildOpt, source.Try{m.BoundUniqueName} with");
                                     w.WriteLine($"            // For structured objects, dependsOn on reference equality");
-                                    w.WriteLine($"            | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()");
-                                    w.WriteLine($"            | USome prevChild, USome newChild when prevChild.TargetType = newChild.TargetType ->");
+                                    w.WriteLine($"            | USome prevChild, USome newChild when identical prevChild newChild -> ()");
+                                    w.WriteLine($"            | USome prevChild, USome newChild when canReuseChild prevChild newChild ->");
                                     w.WriteLine($"                newChild.UpdateIncremental(prevChild, target.{m.Name})");
                                     w.WriteLine($"            | USome _, USome newChild");
                                     w.WriteLine($"            | UNone, USome newChild ->");
@@ -511,7 +511,7 @@ namespace Generator
                             {
                                 w.WriteLine($"            let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.Try{m.BoundUniqueName}");
                                 w.WriteLine($"            match prevValueOpt, source.Try{m.BoundUniqueName} with");
-                                w.WriteLine($"            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()");
+                                w.WriteLine($"            | USome prevValue, USome value when identical prevValue value -> ()");
                                 w.WriteLine($"            | USome prevValue, USome value -> target.{m.Name}.RemoveHandler(prevValue); target.{m.Name}.AddHandler(value)");
                                 w.WriteLine($"            | UNone, USome value -> target.{m.Name}.AddHandler(value)");
                                 w.WriteLine($"            | USome prevValue, UNone -> target.{m.Name}.RemoveHandler(prevValue)");
@@ -556,7 +556,7 @@ namespace Generator
                     }
                 }
                                 
-                w.WriteLine($"        new XamlElement(typeof<{tdef.FullName}>, create, update, Map.ofArray attribs)");
+                w.WriteLine($"        new XamlElement(typeof<{tdef.FullName}>, create, update, attribs)");
 
             }
             w.WriteLine($"[<AutoOpen>]");

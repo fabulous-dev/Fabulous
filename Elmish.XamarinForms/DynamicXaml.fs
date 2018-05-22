@@ -9,2277 +9,1949 @@ module XamlElementExtensions =
     type XamlElement with
 
         /// Create a Xamarin.Forms.Element from the view description
-        member x.CreateAsElement() : Xamarin.Forms.Element =
+        member internal x.CreateAsElement() : Xamarin.Forms.Element =
             match x.Create() with
             | :? Xamarin.Forms.Element as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Element' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.VisualElement from the view description
-        member x.CreateAsVisualElement() : Xamarin.Forms.VisualElement =
+        member internal x.CreateAsVisualElement() : Xamarin.Forms.VisualElement =
             match x.Create() with
             | :? Xamarin.Forms.VisualElement as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.VisualElement' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.View from the view description
-        member x.CreateAsView() : Xamarin.Forms.View =
+        member internal x.CreateAsView() : Xamarin.Forms.View =
             match x.Create() with
             | :? Xamarin.Forms.View as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.View' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.IGestureRecognizer from the view description
-        member x.CreateAsIGestureRecognizer() : Xamarin.Forms.IGestureRecognizer =
+        member internal x.CreateAsIGestureRecognizer() : Xamarin.Forms.IGestureRecognizer =
             match x.Create() with
             | :? Xamarin.Forms.IGestureRecognizer as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.IGestureRecognizer' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.PanGestureRecognizer from the view description
-        member x.CreateAsPanGestureRecognizer() : Xamarin.Forms.PanGestureRecognizer =
+        member internal x.CreateAsPanGestureRecognizer() : Xamarin.Forms.PanGestureRecognizer =
             match x.Create() with
             | :? Xamarin.Forms.PanGestureRecognizer as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.PanGestureRecognizer' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.TapGestureRecognizer from the view description
-        member x.CreateAsTapGestureRecognizer() : Xamarin.Forms.TapGestureRecognizer =
+        member internal x.CreateAsTapGestureRecognizer() : Xamarin.Forms.TapGestureRecognizer =
             match x.Create() with
             | :? Xamarin.Forms.TapGestureRecognizer as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.TapGestureRecognizer' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.ClickGestureRecognizer from the view description
-        member x.CreateAsClickGestureRecognizer() : Xamarin.Forms.ClickGestureRecognizer =
+        member internal x.CreateAsClickGestureRecognizer() : Xamarin.Forms.ClickGestureRecognizer =
             match x.Create() with
             | :? Xamarin.Forms.ClickGestureRecognizer as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.ClickGestureRecognizer' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.PinchGestureRecognizer from the view description
-        member x.CreateAsPinchGestureRecognizer() : Xamarin.Forms.PinchGestureRecognizer =
+        member internal x.CreateAsPinchGestureRecognizer() : Xamarin.Forms.PinchGestureRecognizer =
             match x.Create() with
             | :? Xamarin.Forms.PinchGestureRecognizer as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.PinchGestureRecognizer' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.ActivityIndicator from the view description
-        member x.CreateAsActivityIndicator() : Xamarin.Forms.ActivityIndicator =
+        member internal x.CreateAsActivityIndicator() : Xamarin.Forms.ActivityIndicator =
             match x.Create() with
             | :? Xamarin.Forms.ActivityIndicator as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.ActivityIndicator' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.BoxView from the view description
-        member x.CreateAsBoxView() : Xamarin.Forms.BoxView =
+        member internal x.CreateAsBoxView() : Xamarin.Forms.BoxView =
             match x.Create() with
             | :? Xamarin.Forms.BoxView as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.BoxView' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.ProgressBar from the view description
-        member x.CreateAsProgressBar() : Xamarin.Forms.ProgressBar =
+        member internal x.CreateAsProgressBar() : Xamarin.Forms.ProgressBar =
             match x.Create() with
             | :? Xamarin.Forms.ProgressBar as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.ProgressBar' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.ScrollView from the view description
-        member x.CreateAsScrollView() : Xamarin.Forms.ScrollView =
+        member internal x.CreateAsScrollView() : Xamarin.Forms.ScrollView =
             match x.Create() with
             | :? Xamarin.Forms.ScrollView as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.ScrollView' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.SearchBar from the view description
-        member x.CreateAsSearchBar() : Xamarin.Forms.SearchBar =
+        member internal x.CreateAsSearchBar() : Xamarin.Forms.SearchBar =
             match x.Create() with
             | :? Xamarin.Forms.SearchBar as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.SearchBar' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.Button from the view description
-        member x.CreateAsButton() : Xamarin.Forms.Button =
+        member internal x.CreateAsButton() : Xamarin.Forms.Button =
             match x.Create() with
             | :? Xamarin.Forms.Button as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Button' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.Slider from the view description
-        member x.CreateAsSlider() : Xamarin.Forms.Slider =
+        member internal x.CreateAsSlider() : Xamarin.Forms.Slider =
             match x.Create() with
             | :? Xamarin.Forms.Slider as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Slider' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.Stepper from the view description
-        member x.CreateAsStepper() : Xamarin.Forms.Stepper =
+        member internal x.CreateAsStepper() : Xamarin.Forms.Stepper =
             match x.Create() with
             | :? Xamarin.Forms.Stepper as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Stepper' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.Switch from the view description
-        member x.CreateAsSwitch() : Xamarin.Forms.Switch =
+        member internal x.CreateAsSwitch() : Xamarin.Forms.Switch =
             match x.Create() with
             | :? Xamarin.Forms.Switch as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Switch' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.SwitchCell from the view description
-        member x.CreateAsSwitchCell() : Xamarin.Forms.SwitchCell =
+        member internal x.CreateAsSwitchCell() : Xamarin.Forms.SwitchCell =
             match x.Create() with
             | :? Xamarin.Forms.SwitchCell as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.SwitchCell' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.TableView from the view description
-        member x.CreateAsTableView() : Xamarin.Forms.TableView =
+        member internal x.CreateAsTableView() : Xamarin.Forms.TableView =
             match x.Create() with
             | :? Xamarin.Forms.TableView as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.TableView' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.Grid from the view description
-        member x.CreateAsGrid() : Xamarin.Forms.Grid =
+        member internal x.CreateAsGrid() : Xamarin.Forms.Grid =
             match x.Create() with
             | :? Xamarin.Forms.Grid as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Grid' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.AbsoluteLayout from the view description
-        member x.CreateAsAbsoluteLayout() : Xamarin.Forms.AbsoluteLayout =
+        member internal x.CreateAsAbsoluteLayout() : Xamarin.Forms.AbsoluteLayout =
             match x.Create() with
             | :? Xamarin.Forms.AbsoluteLayout as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.AbsoluteLayout' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.RelativeLayout from the view description
-        member x.CreateAsRelativeLayout() : Xamarin.Forms.RelativeLayout =
+        member internal x.CreateAsRelativeLayout() : Xamarin.Forms.RelativeLayout =
             match x.Create() with
             | :? Xamarin.Forms.RelativeLayout as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.RelativeLayout' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.RowDefinition from the view description
-        member x.CreateAsRowDefinition() : Xamarin.Forms.RowDefinition =
+        member internal x.CreateAsRowDefinition() : Xamarin.Forms.RowDefinition =
             match x.Create() with
             | :? Xamarin.Forms.RowDefinition as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.RowDefinition' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.ColumnDefinition from the view description
-        member x.CreateAsColumnDefinition() : Xamarin.Forms.ColumnDefinition =
+        member internal x.CreateAsColumnDefinition() : Xamarin.Forms.ColumnDefinition =
             match x.Create() with
             | :? Xamarin.Forms.ColumnDefinition as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.ColumnDefinition' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.ContentView from the view description
-        member x.CreateAsContentView() : Xamarin.Forms.ContentView =
+        member internal x.CreateAsContentView() : Xamarin.Forms.ContentView =
             match x.Create() with
             | :? Xamarin.Forms.ContentView as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.ContentView' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.TemplatedView from the view description
-        member x.CreateAsTemplatedView() : Xamarin.Forms.TemplatedView =
+        member internal x.CreateAsTemplatedView() : Xamarin.Forms.TemplatedView =
             match x.Create() with
             | :? Xamarin.Forms.TemplatedView as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.TemplatedView' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.DatePicker from the view description
-        member x.CreateAsDatePicker() : Xamarin.Forms.DatePicker =
+        member internal x.CreateAsDatePicker() : Xamarin.Forms.DatePicker =
             match x.Create() with
             | :? Xamarin.Forms.DatePicker as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.DatePicker' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.Picker from the view description
-        member x.CreateAsPicker() : Xamarin.Forms.Picker =
+        member internal x.CreateAsPicker() : Xamarin.Forms.Picker =
             match x.Create() with
             | :? Xamarin.Forms.Picker as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Picker' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.Frame from the view description
-        member x.CreateAsFrame() : Xamarin.Forms.Frame =
+        member internal x.CreateAsFrame() : Xamarin.Forms.Frame =
             match x.Create() with
             | :? Xamarin.Forms.Frame as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Frame' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.Image from the view description
-        member x.CreateAsImage() : Xamarin.Forms.Image =
+        member internal x.CreateAsImage() : Xamarin.Forms.Image =
             match x.Create() with
             | :? Xamarin.Forms.Image as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Image' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.InputView from the view description
-        member x.CreateAsInputView() : Xamarin.Forms.InputView =
+        member internal x.CreateAsInputView() : Xamarin.Forms.InputView =
             match x.Create() with
             | :? Xamarin.Forms.InputView as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.InputView' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.Editor from the view description
-        member x.CreateAsEditor() : Xamarin.Forms.Editor =
+        member internal x.CreateAsEditor() : Xamarin.Forms.Editor =
             match x.Create() with
             | :? Xamarin.Forms.Editor as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Editor' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.Entry from the view description
-        member x.CreateAsEntry() : Xamarin.Forms.Entry =
+        member internal x.CreateAsEntry() : Xamarin.Forms.Entry =
             match x.Create() with
             | :? Xamarin.Forms.Entry as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Entry' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.EntryCell from the view description
-        member x.CreateAsEntryCell() : Xamarin.Forms.EntryCell =
+        member internal x.CreateAsEntryCell() : Xamarin.Forms.EntryCell =
             match x.Create() with
             | :? Xamarin.Forms.EntryCell as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.EntryCell' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.Label from the view description
-        member x.CreateAsLabel() : Xamarin.Forms.Label =
+        member internal x.CreateAsLabel() : Xamarin.Forms.Label =
             match x.Create() with
             | :? Xamarin.Forms.Label as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Label' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.Layout from the view description
-        member x.CreateAsLayout() : Xamarin.Forms.Layout =
+        member internal x.CreateAsLayout() : Xamarin.Forms.Layout =
             match x.Create() with
             | :? Xamarin.Forms.Layout as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Layout' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.StackLayout from the view description
-        member x.CreateAsStackLayout() : Xamarin.Forms.StackLayout =
+        member internal x.CreateAsStackLayout() : Xamarin.Forms.StackLayout =
             match x.Create() with
             | :? Xamarin.Forms.StackLayout as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.StackLayout' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.Span from the view description
-        member x.CreateAsSpan() : Xamarin.Forms.Span =
+        member internal x.CreateAsSpan() : Xamarin.Forms.Span =
             match x.Create() with
             | :? Xamarin.Forms.Span as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Span' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.TimePicker from the view description
-        member x.CreateAsTimePicker() : Xamarin.Forms.TimePicker =
+        member internal x.CreateAsTimePicker() : Xamarin.Forms.TimePicker =
             match x.Create() with
             | :? Xamarin.Forms.TimePicker as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.TimePicker' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.WebView from the view description
-        member x.CreateAsWebView() : Xamarin.Forms.WebView =
+        member internal x.CreateAsWebView() : Xamarin.Forms.WebView =
             match x.Create() with
             | :? Xamarin.Forms.WebView as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.WebView' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.Page from the view description
-        member x.CreateAsPage() : Xamarin.Forms.Page =
+        member internal x.CreateAsPage() : Xamarin.Forms.Page =
             match x.Create() with
             | :? Xamarin.Forms.Page as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Page' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.CarouselPage from the view description
-        member x.CreateAsCarouselPage() : Xamarin.Forms.CarouselPage =
+        member internal x.CreateAsCarouselPage() : Xamarin.Forms.CarouselPage =
             match x.Create() with
             | :? Xamarin.Forms.CarouselPage as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.CarouselPage' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.NavigationPage from the view description
-        member x.CreateAsNavigationPage() : Xamarin.Forms.NavigationPage =
+        member internal x.CreateAsNavigationPage() : Xamarin.Forms.NavigationPage =
             match x.Create() with
             | :? Xamarin.Forms.NavigationPage as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.NavigationPage' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.TabbedPage from the view description
-        member x.CreateAsTabbedPage() : Xamarin.Forms.TabbedPage =
+        member internal x.CreateAsTabbedPage() : Xamarin.Forms.TabbedPage =
             match x.Create() with
             | :? Xamarin.Forms.TabbedPage as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.TabbedPage' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.ContentPage from the view description
-        member x.CreateAsContentPage() : Xamarin.Forms.ContentPage =
+        member internal x.CreateAsContentPage() : Xamarin.Forms.ContentPage =
             match x.Create() with
             | :? Xamarin.Forms.ContentPage as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.ContentPage' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.MasterDetailPage from the view description
-        member x.CreateAsMasterDetailPage() : Xamarin.Forms.MasterDetailPage =
+        member internal x.CreateAsMasterDetailPage() : Xamarin.Forms.MasterDetailPage =
             match x.Create() with
             | :? Xamarin.Forms.MasterDetailPage as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.MasterDetailPage' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.Cell from the view description
-        member x.CreateAsCell() : Xamarin.Forms.Cell =
+        member internal x.CreateAsCell() : Xamarin.Forms.Cell =
             match x.Create() with
             | :? Xamarin.Forms.Cell as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.Cell' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.TextCell from the view description
-        member x.CreateAsTextCell() : Xamarin.Forms.TextCell =
+        member internal x.CreateAsTextCell() : Xamarin.Forms.TextCell =
             match x.Create() with
             | :? Xamarin.Forms.TextCell as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.TextCell' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.ImageCell from the view description
-        member x.CreateAsImageCell() : Xamarin.Forms.ImageCell =
+        member internal x.CreateAsImageCell() : Xamarin.Forms.ImageCell =
             match x.Create() with
             | :? Xamarin.Forms.ImageCell as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.ImageCell' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.ViewCell from the view description
-        member x.CreateAsViewCell() : Xamarin.Forms.ViewCell =
+        member internal x.CreateAsViewCell() : Xamarin.Forms.ViewCell =
             match x.Create() with
             | :? Xamarin.Forms.ViewCell as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.ViewCell' but got a '%s')" (obj.GetType().ToString()) 
 
         /// Create a Xamarin.Forms.ListView from the view description
-        member x.CreateAsListView() : Xamarin.Forms.ListView =
+        member internal x.CreateAsListView() : Xamarin.Forms.ListView =
             match x.Create() with
             | :? Xamarin.Forms.ListView as res -> res
             | obj -> failwithf "Incorrect element type in view, expected a 'Xamarin.Forms.ListView' but got a '%s')" (obj.GetType().ToString()) 
 
 
         /// Try to get the ClassId property in the visual element
-        member x.TryClassId = match x.Attributes.TryFind("ClassId") with Some v -> USome(unbox<string>(v)) | None -> UNone
+        member internal x.TryClassId = match x.Attributes.TryFind("ClassId") with Some v -> USome(unbox<string>(v)) | None -> UNone
 
         /// Try to get the StyleId property in the visual element
-        member x.TryStyleId = match x.Attributes.TryFind("StyleId") with Some v -> USome(unbox<string>(v)) | None -> UNone
+        member internal x.TryStyleId = match x.Attributes.TryFind("StyleId") with Some v -> USome(unbox<string>(v)) | None -> UNone
 
         /// Try to get the AnchorX property in the visual element
-        member x.TryAnchorX = match x.Attributes.TryFind("AnchorX") with Some v -> USome(unbox<double>(v)) | None -> UNone
+        member internal x.TryAnchorX = match x.Attributes.TryFind("AnchorX") with Some v -> USome(unbox<double>(v)) | None -> UNone
 
         /// Try to get the AnchorY property in the visual element
-        member x.TryAnchorY = match x.Attributes.TryFind("AnchorY") with Some v -> USome(unbox<double>(v)) | None -> UNone
+        member internal x.TryAnchorY = match x.Attributes.TryFind("AnchorY") with Some v -> USome(unbox<double>(v)) | None -> UNone
 
         /// Try to get the BackgroundColor property in the visual element
-        member x.TryBackgroundColor = match x.Attributes.TryFind("BackgroundColor") with Some v -> USome(unbox<Xamarin.Forms.Color>(v)) | None -> UNone
+        member internal x.TryBackgroundColor = match x.Attributes.TryFind("BackgroundColor") with Some v -> USome(unbox<Xamarin.Forms.Color>(v)) | None -> UNone
 
         /// Try to get the HeightRequest property in the visual element
-        member x.TryHeightRequest = match x.Attributes.TryFind("HeightRequest") with Some v -> USome(unbox<double>(v)) | None -> UNone
+        member internal x.TryHeightRequest = match x.Attributes.TryFind("HeightRequest") with Some v -> USome(unbox<double>(v)) | None -> UNone
 
         /// Try to get the InputTransparent property in the visual element
-        member x.TryInputTransparent = match x.Attributes.TryFind("InputTransparent") with Some v -> USome(unbox<bool>(v)) | None -> UNone
+        member internal x.TryInputTransparent = match x.Attributes.TryFind("InputTransparent") with Some v -> USome(unbox<bool>(v)) | None -> UNone
 
         /// Try to get the IsEnabled property in the visual element
-        member x.TryIsEnabled = match x.Attributes.TryFind("IsEnabled") with Some v -> USome(unbox<bool>(v)) | None -> UNone
+        member internal x.TryIsEnabled = match x.Attributes.TryFind("IsEnabled") with Some v -> USome(unbox<bool>(v)) | None -> UNone
 
         /// Try to get the IsVisible property in the visual element
-        member x.TryIsVisible = match x.Attributes.TryFind("IsVisible") with Some v -> USome(unbox<bool>(v)) | None -> UNone
+        member internal x.TryIsVisible = match x.Attributes.TryFind("IsVisible") with Some v -> USome(unbox<bool>(v)) | None -> UNone
 
         /// Try to get the MinimumHeightRequest property in the visual element
-        member x.TryMinimumHeightRequest = match x.Attributes.TryFind("MinimumHeightRequest") with Some v -> USome(unbox<double>(v)) | None -> UNone
+        member internal x.TryMinimumHeightRequest = match x.Attributes.TryFind("MinimumHeightRequest") with Some v -> USome(unbox<double>(v)) | None -> UNone
 
         /// Try to get the MinimumWidthRequest property in the visual element
-        member x.TryMinimumWidthRequest = match x.Attributes.TryFind("MinimumWidthRequest") with Some v -> USome(unbox<double>(v)) | None -> UNone
+        member internal x.TryMinimumWidthRequest = match x.Attributes.TryFind("MinimumWidthRequest") with Some v -> USome(unbox<double>(v)) | None -> UNone
 
         /// Try to get the Opacity property in the visual element
-        member x.TryOpacity = match x.Attributes.TryFind("Opacity") with Some v -> USome(unbox<double>(v)) | None -> UNone
+        member internal x.TryOpacity = match x.Attributes.TryFind("Opacity") with Some v -> USome(unbox<double>(v)) | None -> UNone
 
         /// Try to get the Rotation property in the visual element
-        member x.TryRotation = match x.Attributes.TryFind("Rotation") with Some v -> USome(unbox<double>(v)) | None -> UNone
+        member internal x.TryRotation = match x.Attributes.TryFind("Rotation") with Some v -> USome(unbox<double>(v)) | None -> UNone
 
         /// Try to get the RotationX property in the visual element
-        member x.TryRotationX = match x.Attributes.TryFind("RotationX") with Some v -> USome(unbox<double>(v)) | None -> UNone
+        member internal x.TryRotationX = match x.Attributes.TryFind("RotationX") with Some v -> USome(unbox<double>(v)) | None -> UNone
 
         /// Try to get the RotationY property in the visual element
-        member x.TryRotationY = match x.Attributes.TryFind("RotationY") with Some v -> USome(unbox<double>(v)) | None -> UNone
+        member internal x.TryRotationY = match x.Attributes.TryFind("RotationY") with Some v -> USome(unbox<double>(v)) | None -> UNone
 
         /// Try to get the Scale property in the visual element
-        member x.TryScale = match x.Attributes.TryFind("Scale") with Some v -> USome(unbox<double>(v)) | None -> UNone
+        member internal x.TryScale = match x.Attributes.TryFind("Scale") with Some v -> USome(unbox<double>(v)) | None -> UNone
 
         /// Try to get the Style property in the visual element
-        member x.TryStyle = match x.Attributes.TryFind("Style") with Some v -> USome(unbox<Xamarin.Forms.Style>(v)) | None -> UNone
+        member internal x.TryStyle = match x.Attributes.TryFind("Style") with Some v -> USome(unbox<Xamarin.Forms.Style>(v)) | None -> UNone
 
         /// Try to get the TranslationX property in the visual element
-        member x.TryTranslationX = match x.Attributes.TryFind("TranslationX") with Some v -> USome(unbox<double>(v)) | None -> UNone
+        member internal x.TryTranslationX = match x.Attributes.TryFind("TranslationX") with Some v -> USome(unbox<double>(v)) | None -> UNone
 
         /// Try to get the TranslationY property in the visual element
-        member x.TryTranslationY = match x.Attributes.TryFind("TranslationY") with Some v -> USome(unbox<double>(v)) | None -> UNone
+        member internal x.TryTranslationY = match x.Attributes.TryFind("TranslationY") with Some v -> USome(unbox<double>(v)) | None -> UNone
 
         /// Try to get the WidthRequest property in the visual element
-        member x.TryWidthRequest = match x.Attributes.TryFind("WidthRequest") with Some v -> USome(unbox<double>(v)) | None -> UNone
+        member internal x.TryWidthRequest = match x.Attributes.TryFind("WidthRequest") with Some v -> USome(unbox<double>(v)) | None -> UNone
 
         /// Try to get the HorizontalOptions property in the visual element
-        member x.TryHorizontalOptions = match x.Attributes.TryFind("HorizontalOptions") with Some v -> USome(unbox<Xamarin.Forms.LayoutOptions>(v)) | None -> UNone
+        member internal x.TryHorizontalOptions = match x.Attributes.TryFind("HorizontalOptions") with Some v -> USome(unbox<Xamarin.Forms.LayoutOptions>(v)) | None -> UNone
 
         /// Try to get the VerticalOptions property in the visual element
-        member x.TryVerticalOptions = match x.Attributes.TryFind("VerticalOptions") with Some v -> USome(unbox<Xamarin.Forms.LayoutOptions>(v)) | None -> UNone
+        member internal x.TryVerticalOptions = match x.Attributes.TryFind("VerticalOptions") with Some v -> USome(unbox<Xamarin.Forms.LayoutOptions>(v)) | None -> UNone
 
         /// Try to get the Margin property in the visual element
-        member x.TryMargin = match x.Attributes.TryFind("Margin") with Some v -> USome(unbox<Xamarin.Forms.Thickness>(v)) | None -> UNone
+        member internal x.TryMargin = match x.Attributes.TryFind("Margin") with Some v -> USome(unbox<Xamarin.Forms.Thickness>(v)) | None -> UNone
 
         /// Try to get the GestureRecognizers property in the visual element
-        member x.TryGestureRecognizers = match x.Attributes.TryFind("GestureRecognizers") with Some v -> USome(unbox<XamlElement[]>(v)) | None -> UNone
+        member internal x.TryGestureRecognizers = match x.Attributes.TryFind("GestureRecognizers") with Some v -> USome(unbox<XamlElement[]>(v)) | None -> UNone
 
         /// Try to get the TouchPoints property in the visual element
-        member x.TryTouchPoints = match x.Attributes.TryFind("TouchPoints") with Some v -> USome(unbox<int>(v)) | None -> UNone
+        member internal x.TryTouchPoints = match x.Attributes.TryFind("TouchPoints") with Some v -> USome(unbox<int>(v)) | None -> UNone
 
         /// Try to get the PanUpdated property in the visual element
-        member x.TryPanUpdated = match x.Attributes.TryFind("PanUpdated") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.PanUpdatedEventArgs>>(v)) | None -> UNone
+        member internal x.TryPanUpdated = match x.Attributes.TryFind("PanUpdated") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.PanUpdatedEventArgs>>(v)) | None -> UNone
 
         /// Try to get the Command property in the visual element
-        member x.TryCommand = match x.Attributes.TryFind("Command") with Some v -> USome(unbox<System.Windows.Input.ICommand>(v)) | None -> UNone
+        member internal x.TryCommand = match x.Attributes.TryFind("Command") with Some v -> USome(unbox<System.Windows.Input.ICommand>(v)) | None -> UNone
 
         /// Try to get the NumberOfTapsRequired property in the visual element
-        member x.TryNumberOfTapsRequired = match x.Attributes.TryFind("NumberOfTapsRequired") with Some v -> USome(unbox<int>(v)) | None -> UNone
+        member internal x.TryNumberOfTapsRequired = match x.Attributes.TryFind("NumberOfTapsRequired") with Some v -> USome(unbox<int>(v)) | None -> UNone
 
         /// Try to get the NumberOfClicksRequired property in the visual element
-        member x.TryNumberOfClicksRequired = match x.Attributes.TryFind("NumberOfClicksRequired") with Some v -> USome(unbox<int>(v)) | None -> UNone
+        member internal x.TryNumberOfClicksRequired = match x.Attributes.TryFind("NumberOfClicksRequired") with Some v -> USome(unbox<int>(v)) | None -> UNone
 
         /// Try to get the Buttons property in the visual element
-        member x.TryButtons = match x.Attributes.TryFind("Buttons") with Some v -> USome(unbox<Xamarin.Forms.ButtonsMask>(v)) | None -> UNone
+        member internal x.TryButtons = match x.Attributes.TryFind("Buttons") with Some v -> USome(unbox<Xamarin.Forms.ButtonsMask>(v)) | None -> UNone
 
         /// Try to get the IsPinching property in the visual element
-        member x.TryIsPinching = match x.Attributes.TryFind("IsPinching") with Some v -> USome(unbox<bool>(v)) | None -> UNone
+        member internal x.TryIsPinching = match x.Attributes.TryFind("IsPinching") with Some v -> USome(unbox<bool>(v)) | None -> UNone
 
         /// Try to get the PinchUpdated property in the visual element
-        member x.TryPinchUpdated = match x.Attributes.TryFind("PinchUpdated") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.PinchGestureUpdatedEventArgs>>(v)) | None -> UNone
+        member internal x.TryPinchUpdated = match x.Attributes.TryFind("PinchUpdated") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.PinchGestureUpdatedEventArgs>>(v)) | None -> UNone
 
         /// Try to get the Color property in the visual element
-        member x.TryColor = match x.Attributes.TryFind("Color") with Some v -> USome(unbox<Xamarin.Forms.Color>(v)) | None -> UNone
+        member internal x.TryColor = match x.Attributes.TryFind("Color") with Some v -> USome(unbox<Xamarin.Forms.Color>(v)) | None -> UNone
 
         /// Try to get the IsRunning property in the visual element
-        member x.TryIsRunning = match x.Attributes.TryFind("IsRunning") with Some v -> USome(unbox<bool>(v)) | None -> UNone
+        member internal x.TryIsRunning = match x.Attributes.TryFind("IsRunning") with Some v -> USome(unbox<bool>(v)) | None -> UNone
 
         /// Try to get the Progress property in the visual element
-        member x.TryProgress = match x.Attributes.TryFind("Progress") with Some v -> USome(unbox<double>(v)) | None -> UNone
+        member internal x.TryProgress = match x.Attributes.TryFind("Progress") with Some v -> USome(unbox<double>(v)) | None -> UNone
 
         /// Try to get the Content property in the visual element
-        member x.TryContent = match x.Attributes.TryFind("Content") with Some v -> USome(unbox<XamlElement>(v)) | None -> UNone
+        member internal x.TryContent = match x.Attributes.TryFind("Content") with Some v -> USome(unbox<XamlElement>(v)) | None -> UNone
 
         /// Try to get the ScrollOrientation property in the visual element
-        member x.TryScrollOrientation = match x.Attributes.TryFind("ScrollOrientation") with Some v -> USome(unbox<Xamarin.Forms.ScrollOrientation>(v)) | None -> UNone
+        member internal x.TryScrollOrientation = match x.Attributes.TryFind("ScrollOrientation") with Some v -> USome(unbox<Xamarin.Forms.ScrollOrientation>(v)) | None -> UNone
 
         /// Try to get the CancelButtonColor property in the visual element
-        member x.TryCancelButtonColor = match x.Attributes.TryFind("CancelButtonColor") with Some v -> USome(unbox<Xamarin.Forms.Color>(v)) | None -> UNone
+        member internal x.TryCancelButtonColor = match x.Attributes.TryFind("CancelButtonColor") with Some v -> USome(unbox<Xamarin.Forms.Color>(v)) | None -> UNone
 
         /// Try to get the FontFamily property in the visual element
-        member x.TryFontFamily = match x.Attributes.TryFind("FontFamily") with Some v -> USome(unbox<string>(v)) | None -> UNone
+        member internal x.TryFontFamily = match x.Attributes.TryFind("FontFamily") with Some v -> USome(unbox<string>(v)) | None -> UNone
 
         /// Try to get the FontAttributes property in the visual element
-        member x.TryFontAttributes = match x.Attributes.TryFind("FontAttributes") with Some v -> USome(unbox<Xamarin.Forms.FontAttributes>(v)) | None -> UNone
+        member internal x.TryFontAttributes = match x.Attributes.TryFind("FontAttributes") with Some v -> USome(unbox<Xamarin.Forms.FontAttributes>(v)) | None -> UNone
 
         /// Try to get the FontSize property in the visual element
-        member x.TryFontSize = match x.Attributes.TryFind("FontSize") with Some v -> USome(unbox<double>(v)) | None -> UNone
+        member internal x.TryFontSize = match x.Attributes.TryFind("FontSize") with Some v -> USome(unbox<double>(v)) | None -> UNone
 
         /// Try to get the HorizontalTextAlignment property in the visual element
-        member x.TryHorizontalTextAlignment = match x.Attributes.TryFind("HorizontalTextAlignment") with Some v -> USome(unbox<Xamarin.Forms.TextAlignment>(v)) | None -> UNone
+        member internal x.TryHorizontalTextAlignment = match x.Attributes.TryFind("HorizontalTextAlignment") with Some v -> USome(unbox<Xamarin.Forms.TextAlignment>(v)) | None -> UNone
 
         /// Try to get the Placeholder property in the visual element
-        member x.TryPlaceholder = match x.Attributes.TryFind("Placeholder") with Some v -> USome(unbox<string>(v)) | None -> UNone
+        member internal x.TryPlaceholder = match x.Attributes.TryFind("Placeholder") with Some v -> USome(unbox<string>(v)) | None -> UNone
 
         /// Try to get the PlaceholderColor property in the visual element
-        member x.TryPlaceholderColor = match x.Attributes.TryFind("PlaceholderColor") with Some v -> USome(unbox<Xamarin.Forms.Color>(v)) | None -> UNone
+        member internal x.TryPlaceholderColor = match x.Attributes.TryFind("PlaceholderColor") with Some v -> USome(unbox<Xamarin.Forms.Color>(v)) | None -> UNone
 
         /// Try to get the SearchBarCommand property in the visual element
-        member x.TrySearchBarCommand = match x.Attributes.TryFind("SearchBarCommand") with Some v -> USome(unbox<unit -> unit>(v)) | None -> UNone
+        member internal x.TrySearchBarCommand = match x.Attributes.TryFind("SearchBarCommand") with Some v -> USome(unbox<unit -> unit>(v)) | None -> UNone
 
         /// Try to get the SearchBarCanExecute property in the visual element
-        member x.TrySearchBarCanExecute = match x.Attributes.TryFind("SearchBarCanExecute") with Some v -> USome(unbox<bool>(v)) | None -> UNone
+        member internal x.TrySearchBarCanExecute = match x.Attributes.TryFind("SearchBarCanExecute") with Some v -> USome(unbox<bool>(v)) | None -> UNone
 
         /// Try to get the Text property in the visual element
-        member x.TryText = match x.Attributes.TryFind("Text") with Some v -> USome(unbox<string>(v)) | None -> UNone
+        member internal x.TryText = match x.Attributes.TryFind("Text") with Some v -> USome(unbox<string>(v)) | None -> UNone
 
         /// Try to get the TextColor property in the visual element
-        member x.TryTextColor = match x.Attributes.TryFind("TextColor") with Some v -> USome(unbox<Xamarin.Forms.Color>(v)) | None -> UNone
+        member internal x.TryTextColor = match x.Attributes.TryFind("TextColor") with Some v -> USome(unbox<Xamarin.Forms.Color>(v)) | None -> UNone
 
         /// Try to get the ButtonCommand property in the visual element
-        member x.TryButtonCommand = match x.Attributes.TryFind("ButtonCommand") with Some v -> USome(unbox<unit -> unit>(v)) | None -> UNone
+        member internal x.TryButtonCommand = match x.Attributes.TryFind("ButtonCommand") with Some v -> USome(unbox<unit -> unit>(v)) | None -> UNone
 
         /// Try to get the ButtonCanExecute property in the visual element
-        member x.TryButtonCanExecute = match x.Attributes.TryFind("ButtonCanExecute") with Some v -> USome(unbox<bool>(v)) | None -> UNone
+        member internal x.TryButtonCanExecute = match x.Attributes.TryFind("ButtonCanExecute") with Some v -> USome(unbox<bool>(v)) | None -> UNone
 
         /// Try to get the BorderColor property in the visual element
-        member x.TryBorderColor = match x.Attributes.TryFind("BorderColor") with Some v -> USome(unbox<Xamarin.Forms.Color>(v)) | None -> UNone
+        member internal x.TryBorderColor = match x.Attributes.TryFind("BorderColor") with Some v -> USome(unbox<Xamarin.Forms.Color>(v)) | None -> UNone
 
         /// Try to get the BorderWidth property in the visual element
-        member x.TryBorderWidth = match x.Attributes.TryFind("BorderWidth") with Some v -> USome(unbox<double>(v)) | None -> UNone
+        member internal x.TryBorderWidth = match x.Attributes.TryFind("BorderWidth") with Some v -> USome(unbox<double>(v)) | None -> UNone
 
         /// Try to get the CommandParameter property in the visual element
-        member x.TryCommandParameter = match x.Attributes.TryFind("CommandParameter") with Some v -> USome(unbox<System.Object>(v)) | None -> UNone
+        member internal x.TryCommandParameter = match x.Attributes.TryFind("CommandParameter") with Some v -> USome(unbox<System.Object>(v)) | None -> UNone
 
         /// Try to get the ContentLayout property in the visual element
-        member x.TryContentLayout = match x.Attributes.TryFind("ContentLayout") with Some v -> USome(unbox<Xamarin.Forms.Button.ButtonContentLayout>(v)) | None -> UNone
+        member internal x.TryContentLayout = match x.Attributes.TryFind("ContentLayout") with Some v -> USome(unbox<Xamarin.Forms.Button.ButtonContentLayout>(v)) | None -> UNone
 
         /// Try to get the ButtonImageSource property in the visual element
-        member x.TryButtonImageSource = match x.Attributes.TryFind("ButtonImageSource") with Some v -> USome(unbox<string>(v)) | None -> UNone
+        member internal x.TryButtonImageSource = match x.Attributes.TryFind("ButtonImageSource") with Some v -> USome(unbox<string>(v)) | None -> UNone
 
         /// Try to get the Minimum property in the visual element
-        member x.TryMinimum = match x.Attributes.TryFind("Minimum") with Some v -> USome(unbox<double>(v)) | None -> UNone
+        member internal x.TryMinimum = match x.Attributes.TryFind("Minimum") with Some v -> USome(unbox<double>(v)) | None -> UNone
 
         /// Try to get the Maximum property in the visual element
-        member x.TryMaximum = match x.Attributes.TryFind("Maximum") with Some v -> USome(unbox<double>(v)) | None -> UNone
+        member internal x.TryMaximum = match x.Attributes.TryFind("Maximum") with Some v -> USome(unbox<double>(v)) | None -> UNone
 
         /// Try to get the Value property in the visual element
-        member x.TryValue = match x.Attributes.TryFind("Value") with Some v -> USome(unbox<double>(v)) | None -> UNone
+        member internal x.TryValue = match x.Attributes.TryFind("Value") with Some v -> USome(unbox<double>(v)) | None -> UNone
 
         /// Try to get the ValueChanged property in the visual element
-        member x.TryValueChanged = match x.Attributes.TryFind("ValueChanged") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>>(v)) | None -> UNone
+        member internal x.TryValueChanged = match x.Attributes.TryFind("ValueChanged") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>>(v)) | None -> UNone
 
         /// Try to get the Increment property in the visual element
-        member x.TryIncrement = match x.Attributes.TryFind("Increment") with Some v -> USome(unbox<double>(v)) | None -> UNone
+        member internal x.TryIncrement = match x.Attributes.TryFind("Increment") with Some v -> USome(unbox<double>(v)) | None -> UNone
 
         /// Try to get the IsToggled property in the visual element
-        member x.TryIsToggled = match x.Attributes.TryFind("IsToggled") with Some v -> USome(unbox<bool>(v)) | None -> UNone
+        member internal x.TryIsToggled = match x.Attributes.TryFind("IsToggled") with Some v -> USome(unbox<bool>(v)) | None -> UNone
 
         /// Try to get the Toggled property in the visual element
-        member x.TryToggled = match x.Attributes.TryFind("Toggled") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.ToggledEventArgs>>(v)) | None -> UNone
+        member internal x.TryToggled = match x.Attributes.TryFind("Toggled") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.ToggledEventArgs>>(v)) | None -> UNone
 
         /// Try to get the On property in the visual element
-        member x.TryOn = match x.Attributes.TryFind("On") with Some v -> USome(unbox<bool>(v)) | None -> UNone
+        member internal x.TryOn = match x.Attributes.TryFind("On") with Some v -> USome(unbox<bool>(v)) | None -> UNone
 
         /// Try to get the OnChanged property in the visual element
-        member x.TryOnChanged = match x.Attributes.TryFind("OnChanged") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.ToggledEventArgs>>(v)) | None -> UNone
+        member internal x.TryOnChanged = match x.Attributes.TryFind("OnChanged") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.ToggledEventArgs>>(v)) | None -> UNone
 
         /// Try to get the Intent property in the visual element
-        member x.TryIntent = match x.Attributes.TryFind("Intent") with Some v -> USome(unbox<Xamarin.Forms.TableIntent>(v)) | None -> UNone
+        member internal x.TryIntent = match x.Attributes.TryFind("Intent") with Some v -> USome(unbox<Xamarin.Forms.TableIntent>(v)) | None -> UNone
 
         /// Try to get the HasUnevenRows property in the visual element
-        member x.TryHasUnevenRows = match x.Attributes.TryFind("HasUnevenRows") with Some v -> USome(unbox<bool>(v)) | None -> UNone
+        member internal x.TryHasUnevenRows = match x.Attributes.TryFind("HasUnevenRows") with Some v -> USome(unbox<bool>(v)) | None -> UNone
 
         /// Try to get the RowHeight property in the visual element
-        member x.TryRowHeight = match x.Attributes.TryFind("RowHeight") with Some v -> USome(unbox<int>(v)) | None -> UNone
+        member internal x.TryRowHeight = match x.Attributes.TryFind("RowHeight") with Some v -> USome(unbox<int>(v)) | None -> UNone
 
         /// Try to get the TableRoot property in the visual element
-        member x.TryTableRoot = match x.Attributes.TryFind("TableRoot") with Some v -> USome(unbox<(string * XamlElement[])[]>(v)) | None -> UNone
+        member internal x.TryTableRoot = match x.Attributes.TryFind("TableRoot") with Some v -> USome(unbox<(string * XamlElement[])[]>(v)) | None -> UNone
 
         /// Try to get the GridRowDefinitions property in the visual element
-        member x.TryGridRowDefinitions = match x.Attributes.TryFind("GridRowDefinitions") with Some v -> USome(unbox<XamlElement[]>(v)) | None -> UNone
+        member internal x.TryGridRowDefinitions = match x.Attributes.TryFind("GridRowDefinitions") with Some v -> USome(unbox<XamlElement[]>(v)) | None -> UNone
 
         /// Try to get the GridColumnDefinitions property in the visual element
-        member x.TryGridColumnDefinitions = match x.Attributes.TryFind("GridColumnDefinitions") with Some v -> USome(unbox<XamlElement[]>(v)) | None -> UNone
+        member internal x.TryGridColumnDefinitions = match x.Attributes.TryFind("GridColumnDefinitions") with Some v -> USome(unbox<XamlElement[]>(v)) | None -> UNone
 
         /// Try to get the RowSpacing property in the visual element
-        member x.TryRowSpacing = match x.Attributes.TryFind("RowSpacing") with Some v -> USome(unbox<double>(v)) | None -> UNone
+        member internal x.TryRowSpacing = match x.Attributes.TryFind("RowSpacing") with Some v -> USome(unbox<double>(v)) | None -> UNone
 
         /// Try to get the ColumnSpacing property in the visual element
-        member x.TryColumnSpacing = match x.Attributes.TryFind("ColumnSpacing") with Some v -> USome(unbox<double>(v)) | None -> UNone
+        member internal x.TryColumnSpacing = match x.Attributes.TryFind("ColumnSpacing") with Some v -> USome(unbox<double>(v)) | None -> UNone
 
         /// Try to get the Children property in the visual element
-        member x.TryChildren = match x.Attributes.TryFind("Children") with Some v -> USome(unbox<XamlElement[]>(v)) | None -> UNone
+        member internal x.TryChildren = match x.Attributes.TryFind("Children") with Some v -> USome(unbox<XamlElement[]>(v)) | None -> UNone
 
         /// Try to get the GridRow property in the visual element
-        member x.TryGridRow = match x.Attributes.TryFind("GridRow") with Some v -> USome(unbox<int>(v)) | None -> UNone
+        member internal x.TryGridRow = match x.Attributes.TryFind("GridRow") with Some v -> USome(unbox<int>(v)) | None -> UNone
 
         /// Try to get the GridRowSpan property in the visual element
-        member x.TryGridRowSpan = match x.Attributes.TryFind("GridRowSpan") with Some v -> USome(unbox<int>(v)) | None -> UNone
+        member internal x.TryGridRowSpan = match x.Attributes.TryFind("GridRowSpan") with Some v -> USome(unbox<int>(v)) | None -> UNone
 
         /// Try to get the GridColumn property in the visual element
-        member x.TryGridColumn = match x.Attributes.TryFind("GridColumn") with Some v -> USome(unbox<int>(v)) | None -> UNone
+        member internal x.TryGridColumn = match x.Attributes.TryFind("GridColumn") with Some v -> USome(unbox<int>(v)) | None -> UNone
 
         /// Try to get the GridColumnSpan property in the visual element
-        member x.TryGridColumnSpan = match x.Attributes.TryFind("GridColumnSpan") with Some v -> USome(unbox<int>(v)) | None -> UNone
+        member internal x.TryGridColumnSpan = match x.Attributes.TryFind("GridColumnSpan") with Some v -> USome(unbox<int>(v)) | None -> UNone
 
         /// Try to get the LayoutBounds property in the visual element
-        member x.TryLayoutBounds = match x.Attributes.TryFind("LayoutBounds") with Some v -> USome(unbox<Xamarin.Forms.Rectangle>(v)) | None -> UNone
+        member internal x.TryLayoutBounds = match x.Attributes.TryFind("LayoutBounds") with Some v -> USome(unbox<Xamarin.Forms.Rectangle>(v)) | None -> UNone
 
         /// Try to get the LayoutFlags property in the visual element
-        member x.TryLayoutFlags = match x.Attributes.TryFind("LayoutFlags") with Some v -> USome(unbox<Xamarin.Forms.AbsoluteLayoutFlags>(v)) | None -> UNone
+        member internal x.TryLayoutFlags = match x.Attributes.TryFind("LayoutFlags") with Some v -> USome(unbox<Xamarin.Forms.AbsoluteLayoutFlags>(v)) | None -> UNone
 
         /// Try to get the BoundsConstraint property in the visual element
-        member x.TryBoundsConstraint = match x.Attributes.TryFind("BoundsConstraint") with Some v -> USome(unbox<Xamarin.Forms.BoundsConstraint>(v)) | None -> UNone
+        member internal x.TryBoundsConstraint = match x.Attributes.TryFind("BoundsConstraint") with Some v -> USome(unbox<Xamarin.Forms.BoundsConstraint>(v)) | None -> UNone
 
         /// Try to get the HeightConstraint property in the visual element
-        member x.TryHeightConstraint = match x.Attributes.TryFind("HeightConstraint") with Some v -> USome(unbox<Xamarin.Forms.Constraint>(v)) | None -> UNone
+        member internal x.TryHeightConstraint = match x.Attributes.TryFind("HeightConstraint") with Some v -> USome(unbox<Xamarin.Forms.Constraint>(v)) | None -> UNone
 
         /// Try to get the WidthConstraint property in the visual element
-        member x.TryWidthConstraint = match x.Attributes.TryFind("WidthConstraint") with Some v -> USome(unbox<Xamarin.Forms.Constraint>(v)) | None -> UNone
+        member internal x.TryWidthConstraint = match x.Attributes.TryFind("WidthConstraint") with Some v -> USome(unbox<Xamarin.Forms.Constraint>(v)) | None -> UNone
 
         /// Try to get the XConstraint property in the visual element
-        member x.TryXConstraint = match x.Attributes.TryFind("XConstraint") with Some v -> USome(unbox<Xamarin.Forms.Constraint>(v)) | None -> UNone
+        member internal x.TryXConstraint = match x.Attributes.TryFind("XConstraint") with Some v -> USome(unbox<Xamarin.Forms.Constraint>(v)) | None -> UNone
 
         /// Try to get the YConstraint property in the visual element
-        member x.TryYConstraint = match x.Attributes.TryFind("YConstraint") with Some v -> USome(unbox<Xamarin.Forms.Constraint>(v)) | None -> UNone
+        member internal x.TryYConstraint = match x.Attributes.TryFind("YConstraint") with Some v -> USome(unbox<Xamarin.Forms.Constraint>(v)) | None -> UNone
 
         /// Try to get the RowDefinitionHeight property in the visual element
-        member x.TryRowDefinitionHeight = match x.Attributes.TryFind("RowDefinitionHeight") with Some v -> USome(unbox<Xamarin.Forms.GridLength>(v)) | None -> UNone
+        member internal x.TryRowDefinitionHeight = match x.Attributes.TryFind("RowDefinitionHeight") with Some v -> USome(unbox<Xamarin.Forms.GridLength>(v)) | None -> UNone
 
         /// Try to get the ColumnDefinitionWidth property in the visual element
-        member x.TryColumnDefinitionWidth = match x.Attributes.TryFind("ColumnDefinitionWidth") with Some v -> USome(unbox<Xamarin.Forms.GridLength>(v)) | None -> UNone
+        member internal x.TryColumnDefinitionWidth = match x.Attributes.TryFind("ColumnDefinitionWidth") with Some v -> USome(unbox<Xamarin.Forms.GridLength>(v)) | None -> UNone
 
         /// Try to get the Date property in the visual element
-        member x.TryDate = match x.Attributes.TryFind("Date") with Some v -> USome(unbox<System.DateTime>(v)) | None -> UNone
+        member internal x.TryDate = match x.Attributes.TryFind("Date") with Some v -> USome(unbox<System.DateTime>(v)) | None -> UNone
 
         /// Try to get the Format property in the visual element
-        member x.TryFormat = match x.Attributes.TryFind("Format") with Some v -> USome(unbox<string>(v)) | None -> UNone
+        member internal x.TryFormat = match x.Attributes.TryFind("Format") with Some v -> USome(unbox<string>(v)) | None -> UNone
 
         /// Try to get the MinimumDate property in the visual element
-        member x.TryMinimumDate = match x.Attributes.TryFind("MinimumDate") with Some v -> USome(unbox<System.DateTime>(v)) | None -> UNone
+        member internal x.TryMinimumDate = match x.Attributes.TryFind("MinimumDate") with Some v -> USome(unbox<System.DateTime>(v)) | None -> UNone
 
         /// Try to get the MaximumDate property in the visual element
-        member x.TryMaximumDate = match x.Attributes.TryFind("MaximumDate") with Some v -> USome(unbox<System.DateTime>(v)) | None -> UNone
+        member internal x.TryMaximumDate = match x.Attributes.TryFind("MaximumDate") with Some v -> USome(unbox<System.DateTime>(v)) | None -> UNone
 
         /// Try to get the DateSelected property in the visual element
-        member x.TryDateSelected = match x.Attributes.TryFind("DateSelected") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.DateChangedEventArgs>>(v)) | None -> UNone
+        member internal x.TryDateSelected = match x.Attributes.TryFind("DateSelected") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.DateChangedEventArgs>>(v)) | None -> UNone
 
         /// Try to get the PickerItemsSource property in the visual element
-        member x.TryPickerItemsSource = match x.Attributes.TryFind("PickerItemsSource") with Some v -> USome(unbox<System.Collections.IList>(v)) | None -> UNone
+        member internal x.TryPickerItemsSource = match x.Attributes.TryFind("PickerItemsSource") with Some v -> USome(unbox<System.Collections.IList>(v)) | None -> UNone
 
         /// Try to get the SelectedIndex property in the visual element
-        member x.TrySelectedIndex = match x.Attributes.TryFind("SelectedIndex") with Some v -> USome(unbox<int>(v)) | None -> UNone
+        member internal x.TrySelectedIndex = match x.Attributes.TryFind("SelectedIndex") with Some v -> USome(unbox<int>(v)) | None -> UNone
 
         /// Try to get the Title property in the visual element
-        member x.TryTitle = match x.Attributes.TryFind("Title") with Some v -> USome(unbox<string>(v)) | None -> UNone
+        member internal x.TryTitle = match x.Attributes.TryFind("Title") with Some v -> USome(unbox<string>(v)) | None -> UNone
 
         /// Try to get the SelectedIndexChanged property in the visual element
-        member x.TrySelectedIndexChanged = match x.Attributes.TryFind("SelectedIndexChanged") with Some v -> USome(unbox<System.EventHandler>(v)) | None -> UNone
+        member internal x.TrySelectedIndexChanged = match x.Attributes.TryFind("SelectedIndexChanged") with Some v -> USome(unbox<System.EventHandler>(v)) | None -> UNone
 
         /// Try to get the OutlineColor property in the visual element
-        member x.TryOutlineColor = match x.Attributes.TryFind("OutlineColor") with Some v -> USome(unbox<Xamarin.Forms.Color>(v)) | None -> UNone
+        member internal x.TryOutlineColor = match x.Attributes.TryFind("OutlineColor") with Some v -> USome(unbox<Xamarin.Forms.Color>(v)) | None -> UNone
 
         /// Try to get the FrameCornerRadius property in the visual element
-        member x.TryFrameCornerRadius = match x.Attributes.TryFind("FrameCornerRadius") with Some v -> USome(unbox<single>(v)) | None -> UNone
+        member internal x.TryFrameCornerRadius = match x.Attributes.TryFind("FrameCornerRadius") with Some v -> USome(unbox<single>(v)) | None -> UNone
 
         /// Try to get the HasShadow property in the visual element
-        member x.TryHasShadow = match x.Attributes.TryFind("HasShadow") with Some v -> USome(unbox<bool>(v)) | None -> UNone
+        member internal x.TryHasShadow = match x.Attributes.TryFind("HasShadow") with Some v -> USome(unbox<bool>(v)) | None -> UNone
 
         /// Try to get the ImageSource property in the visual element
-        member x.TryImageSource = match x.Attributes.TryFind("ImageSource") with Some v -> USome(unbox<string>(v)) | None -> UNone
+        member internal x.TryImageSource = match x.Attributes.TryFind("ImageSource") with Some v -> USome(unbox<string>(v)) | None -> UNone
 
         /// Try to get the Aspect property in the visual element
-        member x.TryAspect = match x.Attributes.TryFind("Aspect") with Some v -> USome(unbox<Xamarin.Forms.Aspect>(v)) | None -> UNone
+        member internal x.TryAspect = match x.Attributes.TryFind("Aspect") with Some v -> USome(unbox<Xamarin.Forms.Aspect>(v)) | None -> UNone
 
         /// Try to get the IsOpaque property in the visual element
-        member x.TryIsOpaque = match x.Attributes.TryFind("IsOpaque") with Some v -> USome(unbox<bool>(v)) | None -> UNone
+        member internal x.TryIsOpaque = match x.Attributes.TryFind("IsOpaque") with Some v -> USome(unbox<bool>(v)) | None -> UNone
 
         /// Try to get the Keyboard property in the visual element
-        member x.TryKeyboard = match x.Attributes.TryFind("Keyboard") with Some v -> USome(unbox<Xamarin.Forms.Keyboard>(v)) | None -> UNone
+        member internal x.TryKeyboard = match x.Attributes.TryFind("Keyboard") with Some v -> USome(unbox<Xamarin.Forms.Keyboard>(v)) | None -> UNone
 
         /// Try to get the EditorCompleted property in the visual element
-        member x.TryEditorCompleted = match x.Attributes.TryFind("EditorCompleted") with Some v -> USome(unbox<System.EventHandler>(v)) | None -> UNone
+        member internal x.TryEditorCompleted = match x.Attributes.TryFind("EditorCompleted") with Some v -> USome(unbox<System.EventHandler>(v)) | None -> UNone
 
         /// Try to get the TextChanged property in the visual element
-        member x.TryTextChanged = match x.Attributes.TryFind("TextChanged") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.TextChangedEventArgs>>(v)) | None -> UNone
+        member internal x.TryTextChanged = match x.Attributes.TryFind("TextChanged") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.TextChangedEventArgs>>(v)) | None -> UNone
 
         /// Try to get the IsPassword property in the visual element
-        member x.TryIsPassword = match x.Attributes.TryFind("IsPassword") with Some v -> USome(unbox<bool>(v)) | None -> UNone
+        member internal x.TryIsPassword = match x.Attributes.TryFind("IsPassword") with Some v -> USome(unbox<bool>(v)) | None -> UNone
 
         /// Try to get the EntryCompleted property in the visual element
-        member x.TryEntryCompleted = match x.Attributes.TryFind("EntryCompleted") with Some v -> USome(unbox<System.EventHandler>(v)) | None -> UNone
+        member internal x.TryEntryCompleted = match x.Attributes.TryFind("EntryCompleted") with Some v -> USome(unbox<System.EventHandler>(v)) | None -> UNone
 
         /// Try to get the Label property in the visual element
-        member x.TryLabel = match x.Attributes.TryFind("Label") with Some v -> USome(unbox<string>(v)) | None -> UNone
+        member internal x.TryLabel = match x.Attributes.TryFind("Label") with Some v -> USome(unbox<string>(v)) | None -> UNone
 
         /// Try to get the VerticalTextAlignment property in the visual element
-        member x.TryVerticalTextAlignment = match x.Attributes.TryFind("VerticalTextAlignment") with Some v -> USome(unbox<Xamarin.Forms.TextAlignment>(v)) | None -> UNone
+        member internal x.TryVerticalTextAlignment = match x.Attributes.TryFind("VerticalTextAlignment") with Some v -> USome(unbox<Xamarin.Forms.TextAlignment>(v)) | None -> UNone
 
         /// Try to get the IsClippedToBounds property in the visual element
-        member x.TryIsClippedToBounds = match x.Attributes.TryFind("IsClippedToBounds") with Some v -> USome(unbox<bool>(v)) | None -> UNone
+        member internal x.TryIsClippedToBounds = match x.Attributes.TryFind("IsClippedToBounds") with Some v -> USome(unbox<bool>(v)) | None -> UNone
 
         /// Try to get the Padding property in the visual element
-        member x.TryPadding = match x.Attributes.TryFind("Padding") with Some v -> USome(unbox<Xamarin.Forms.Thickness>(v)) | None -> UNone
+        member internal x.TryPadding = match x.Attributes.TryFind("Padding") with Some v -> USome(unbox<Xamarin.Forms.Thickness>(v)) | None -> UNone
 
         /// Try to get the StackOrientation property in the visual element
-        member x.TryStackOrientation = match x.Attributes.TryFind("StackOrientation") with Some v -> USome(unbox<Xamarin.Forms.StackOrientation>(v)) | None -> UNone
+        member internal x.TryStackOrientation = match x.Attributes.TryFind("StackOrientation") with Some v -> USome(unbox<Xamarin.Forms.StackOrientation>(v)) | None -> UNone
 
         /// Try to get the Spacing property in the visual element
-        member x.TrySpacing = match x.Attributes.TryFind("Spacing") with Some v -> USome(unbox<double>(v)) | None -> UNone
+        member internal x.TrySpacing = match x.Attributes.TryFind("Spacing") with Some v -> USome(unbox<double>(v)) | None -> UNone
 
         /// Try to get the ForegroundColor property in the visual element
-        member x.TryForegroundColor = match x.Attributes.TryFind("ForegroundColor") with Some v -> USome(unbox<Xamarin.Forms.Color>(v)) | None -> UNone
+        member internal x.TryForegroundColor = match x.Attributes.TryFind("ForegroundColor") with Some v -> USome(unbox<Xamarin.Forms.Color>(v)) | None -> UNone
 
         /// Try to get the PropertyChanged property in the visual element
-        member x.TryPropertyChanged = match x.Attributes.TryFind("PropertyChanged") with Some v -> USome(unbox<System.ComponentModel.PropertyChangedEventHandler>(v)) | None -> UNone
+        member internal x.TryPropertyChanged = match x.Attributes.TryFind("PropertyChanged") with Some v -> USome(unbox<System.ComponentModel.PropertyChangedEventHandler>(v)) | None -> UNone
 
         /// Try to get the Time property in the visual element
-        member x.TryTime = match x.Attributes.TryFind("Time") with Some v -> USome(unbox<System.TimeSpan>(v)) | None -> UNone
+        member internal x.TryTime = match x.Attributes.TryFind("Time") with Some v -> USome(unbox<System.TimeSpan>(v)) | None -> UNone
 
         /// Try to get the WebSource property in the visual element
-        member x.TryWebSource = match x.Attributes.TryFind("WebSource") with Some v -> USome(unbox<Xamarin.Forms.WebViewSource>(v)) | None -> UNone
+        member internal x.TryWebSource = match x.Attributes.TryFind("WebSource") with Some v -> USome(unbox<Xamarin.Forms.WebViewSource>(v)) | None -> UNone
 
         /// Try to get the Navigated property in the visual element
-        member x.TryNavigated = match x.Attributes.TryFind("Navigated") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.WebNavigatedEventArgs>>(v)) | None -> UNone
+        member internal x.TryNavigated = match x.Attributes.TryFind("Navigated") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.WebNavigatedEventArgs>>(v)) | None -> UNone
 
         /// Try to get the Navigating property in the visual element
-        member x.TryNavigating = match x.Attributes.TryFind("Navigating") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.WebNavigatingEventArgs>>(v)) | None -> UNone
+        member internal x.TryNavigating = match x.Attributes.TryFind("Navigating") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.WebNavigatingEventArgs>>(v)) | None -> UNone
 
         /// Try to get the UseSafeArea property in the visual element
-        member x.TryUseSafeArea = match x.Attributes.TryFind("UseSafeArea") with Some v -> USome(unbox<bool>(v)) | None -> UNone
+        member internal x.TryUseSafeArea = match x.Attributes.TryFind("UseSafeArea") with Some v -> USome(unbox<bool>(v)) | None -> UNone
 
         /// Try to get the CarouselPage_SelectedItem property in the visual element
-        member x.TryCarouselPage_SelectedItem = match x.Attributes.TryFind("CarouselPage_SelectedItem") with Some v -> USome(unbox<System.Object>(v)) | None -> UNone
+        member internal x.TryCarouselPage_SelectedItem = match x.Attributes.TryFind("CarouselPage_SelectedItem") with Some v -> USome(unbox<System.Object>(v)) | None -> UNone
 
         /// Try to get the CurrentPage property in the visual element
-        member x.TryCurrentPage = match x.Attributes.TryFind("CurrentPage") with Some v -> USome(unbox<XamlElement>(v)) | None -> UNone
+        member internal x.TryCurrentPage = match x.Attributes.TryFind("CurrentPage") with Some v -> USome(unbox<XamlElement>(v)) | None -> UNone
 
         /// Try to get the CurrentPageChanged property in the visual element
-        member x.TryCurrentPageChanged = match x.Attributes.TryFind("CurrentPageChanged") with Some v -> USome(unbox<System.EventHandler>(v)) | None -> UNone
+        member internal x.TryCurrentPageChanged = match x.Attributes.TryFind("CurrentPageChanged") with Some v -> USome(unbox<System.EventHandler>(v)) | None -> UNone
 
         /// Try to get the NavigationPagePages property in the visual element
-        member x.TryNavigationPagePages = match x.Attributes.TryFind("NavigationPagePages") with Some v -> USome(unbox<XamlElement[]>(v)) | None -> UNone
+        member internal x.TryNavigationPagePages = match x.Attributes.TryFind("NavigationPagePages") with Some v -> USome(unbox<XamlElement[]>(v)) | None -> UNone
 
         /// Try to get the BackButtonTitle property in the visual element
-        member x.TryBackButtonTitle = match x.Attributes.TryFind("BackButtonTitle") with Some v -> USome(unbox<string>(v)) | None -> UNone
+        member internal x.TryBackButtonTitle = match x.Attributes.TryFind("BackButtonTitle") with Some v -> USome(unbox<string>(v)) | None -> UNone
 
         /// Try to get the HasBackButton property in the visual element
-        member x.TryHasBackButton = match x.Attributes.TryFind("HasBackButton") with Some v -> USome(unbox<bool>(v)) | None -> UNone
+        member internal x.TryHasBackButton = match x.Attributes.TryFind("HasBackButton") with Some v -> USome(unbox<bool>(v)) | None -> UNone
 
         /// Try to get the HasNavigationBar property in the visual element
-        member x.TryHasNavigationBar = match x.Attributes.TryFind("HasNavigationBar") with Some v -> USome(unbox<bool>(v)) | None -> UNone
+        member internal x.TryHasNavigationBar = match x.Attributes.TryFind("HasNavigationBar") with Some v -> USome(unbox<bool>(v)) | None -> UNone
 
         /// Try to get the TitleIcon property in the visual element
-        member x.TryTitleIcon = match x.Attributes.TryFind("TitleIcon") with Some v -> USome(unbox<string>(v)) | None -> UNone
+        member internal x.TryTitleIcon = match x.Attributes.TryFind("TitleIcon") with Some v -> USome(unbox<string>(v)) | None -> UNone
 
         /// Try to get the BarBackgroundColor property in the visual element
-        member x.TryBarBackgroundColor = match x.Attributes.TryFind("BarBackgroundColor") with Some v -> USome(unbox<Xamarin.Forms.Color>(v)) | None -> UNone
+        member internal x.TryBarBackgroundColor = match x.Attributes.TryFind("BarBackgroundColor") with Some v -> USome(unbox<Xamarin.Forms.Color>(v)) | None -> UNone
 
         /// Try to get the BarTextColor property in the visual element
-        member x.TryBarTextColor = match x.Attributes.TryFind("BarTextColor") with Some v -> USome(unbox<Xamarin.Forms.Color>(v)) | None -> UNone
+        member internal x.TryBarTextColor = match x.Attributes.TryFind("BarTextColor") with Some v -> USome(unbox<Xamarin.Forms.Color>(v)) | None -> UNone
 
         /// Try to get the Popped property in the visual element
-        member x.TryPopped = match x.Attributes.TryFind("Popped") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.NavigationEventArgs>>(v)) | None -> UNone
+        member internal x.TryPopped = match x.Attributes.TryFind("Popped") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.NavigationEventArgs>>(v)) | None -> UNone
 
         /// Try to get the PoppedToRoot property in the visual element
-        member x.TryPoppedToRoot = match x.Attributes.TryFind("PoppedToRoot") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.NavigationEventArgs>>(v)) | None -> UNone
+        member internal x.TryPoppedToRoot = match x.Attributes.TryFind("PoppedToRoot") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.NavigationEventArgs>>(v)) | None -> UNone
 
         /// Try to get the Pushed property in the visual element
-        member x.TryPushed = match x.Attributes.TryFind("Pushed") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.NavigationEventArgs>>(v)) | None -> UNone
+        member internal x.TryPushed = match x.Attributes.TryFind("Pushed") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.NavigationEventArgs>>(v)) | None -> UNone
 
         /// Try to get the OnSizeAllocatedCallback property in the visual element
-        member x.TryOnSizeAllocatedCallback = match x.Attributes.TryFind("OnSizeAllocatedCallback") with Some v -> USome(unbox<FSharp.Control.Handler<(double * double)>>(v)) | None -> UNone
+        member internal x.TryOnSizeAllocatedCallback = match x.Attributes.TryFind("OnSizeAllocatedCallback") with Some v -> USome(unbox<FSharp.Control.Handler<(double * double)>>(v)) | None -> UNone
 
         /// Try to get the Master property in the visual element
-        member x.TryMaster = match x.Attributes.TryFind("Master") with Some v -> USome(unbox<XamlElement>(v)) | None -> UNone
+        member internal x.TryMaster = match x.Attributes.TryFind("Master") with Some v -> USome(unbox<XamlElement>(v)) | None -> UNone
 
         /// Try to get the Detail property in the visual element
-        member x.TryDetail = match x.Attributes.TryFind("Detail") with Some v -> USome(unbox<XamlElement>(v)) | None -> UNone
+        member internal x.TryDetail = match x.Attributes.TryFind("Detail") with Some v -> USome(unbox<XamlElement>(v)) | None -> UNone
 
         /// Try to get the IsGestureEnabled property in the visual element
-        member x.TryIsGestureEnabled = match x.Attributes.TryFind("IsGestureEnabled") with Some v -> USome(unbox<bool>(v)) | None -> UNone
+        member internal x.TryIsGestureEnabled = match x.Attributes.TryFind("IsGestureEnabled") with Some v -> USome(unbox<bool>(v)) | None -> UNone
 
         /// Try to get the IsPresented property in the visual element
-        member x.TryIsPresented = match x.Attributes.TryFind("IsPresented") with Some v -> USome(unbox<bool>(v)) | None -> UNone
+        member internal x.TryIsPresented = match x.Attributes.TryFind("IsPresented") with Some v -> USome(unbox<bool>(v)) | None -> UNone
 
         /// Try to get the MasterBehavior property in the visual element
-        member x.TryMasterBehavior = match x.Attributes.TryFind("MasterBehavior") with Some v -> USome(unbox<Xamarin.Forms.MasterBehavior>(v)) | None -> UNone
+        member internal x.TryMasterBehavior = match x.Attributes.TryFind("MasterBehavior") with Some v -> USome(unbox<Xamarin.Forms.MasterBehavior>(v)) | None -> UNone
 
         /// Try to get the IsPresentedChanged property in the visual element
-        member x.TryIsPresentedChanged = match x.Attributes.TryFind("IsPresentedChanged") with Some v -> USome(unbox<System.EventHandler>(v)) | None -> UNone
+        member internal x.TryIsPresentedChanged = match x.Attributes.TryFind("IsPresentedChanged") with Some v -> USome(unbox<System.EventHandler>(v)) | None -> UNone
 
         /// Try to get the Height property in the visual element
-        member x.TryHeight = match x.Attributes.TryFind("Height") with Some v -> USome(unbox<double>(v)) | None -> UNone
+        member internal x.TryHeight = match x.Attributes.TryFind("Height") with Some v -> USome(unbox<double>(v)) | None -> UNone
 
         /// Try to get the TextDetail property in the visual element
-        member x.TryTextDetail = match x.Attributes.TryFind("TextDetail") with Some v -> USome(unbox<string>(v)) | None -> UNone
+        member internal x.TryTextDetail = match x.Attributes.TryFind("TextDetail") with Some v -> USome(unbox<string>(v)) | None -> UNone
 
         /// Try to get the TextDetailColor property in the visual element
-        member x.TryTextDetailColor = match x.Attributes.TryFind("TextDetailColor") with Some v -> USome(unbox<Xamarin.Forms.Color>(v)) | None -> UNone
+        member internal x.TryTextDetailColor = match x.Attributes.TryFind("TextDetailColor") with Some v -> USome(unbox<Xamarin.Forms.Color>(v)) | None -> UNone
 
         /// Try to get the TextCellCommand property in the visual element
-        member x.TryTextCellCommand = match x.Attributes.TryFind("TextCellCommand") with Some v -> USome(unbox<unit -> unit>(v)) | None -> UNone
+        member internal x.TryTextCellCommand = match x.Attributes.TryFind("TextCellCommand") with Some v -> USome(unbox<unit -> unit>(v)) | None -> UNone
 
         /// Try to get the TextCellCanExecute property in the visual element
-        member x.TryTextCellCanExecute = match x.Attributes.TryFind("TextCellCanExecute") with Some v -> USome(unbox<bool>(v)) | None -> UNone
+        member internal x.TryTextCellCanExecute = match x.Attributes.TryFind("TextCellCanExecute") with Some v -> USome(unbox<bool>(v)) | None -> UNone
 
         /// Try to get the View property in the visual element
-        member x.TryView = match x.Attributes.TryFind("View") with Some v -> USome(unbox<XamlElement>(v)) | None -> UNone
+        member internal x.TryView = match x.Attributes.TryFind("View") with Some v -> USome(unbox<XamlElement>(v)) | None -> UNone
 
         /// Try to get the ListViewItems property in the visual element
-        member x.TryListViewItems = match x.Attributes.TryFind("ListViewItems") with Some v -> USome(unbox<seq<XamlElement>>(v)) | None -> UNone
+        member internal x.TryListViewItems = match x.Attributes.TryFind("ListViewItems") with Some v -> USome(unbox<seq<XamlElement>>(v)) | None -> UNone
 
         /// Try to get the Footer property in the visual element
-        member x.TryFooter = match x.Attributes.TryFind("Footer") with Some v -> USome(unbox<System.Object>(v)) | None -> UNone
+        member internal x.TryFooter = match x.Attributes.TryFind("Footer") with Some v -> USome(unbox<System.Object>(v)) | None -> UNone
 
         /// Try to get the Header property in the visual element
-        member x.TryHeader = match x.Attributes.TryFind("Header") with Some v -> USome(unbox<System.Object>(v)) | None -> UNone
+        member internal x.TryHeader = match x.Attributes.TryFind("Header") with Some v -> USome(unbox<System.Object>(v)) | None -> UNone
 
         /// Try to get the HeaderTemplate property in the visual element
-        member x.TryHeaderTemplate = match x.Attributes.TryFind("HeaderTemplate") with Some v -> USome(unbox<Xamarin.Forms.DataTemplate>(v)) | None -> UNone
+        member internal x.TryHeaderTemplate = match x.Attributes.TryFind("HeaderTemplate") with Some v -> USome(unbox<Xamarin.Forms.DataTemplate>(v)) | None -> UNone
 
         /// Try to get the IsGroupingEnabled property in the visual element
-        member x.TryIsGroupingEnabled = match x.Attributes.TryFind("IsGroupingEnabled") with Some v -> USome(unbox<bool>(v)) | None -> UNone
+        member internal x.TryIsGroupingEnabled = match x.Attributes.TryFind("IsGroupingEnabled") with Some v -> USome(unbox<bool>(v)) | None -> UNone
 
         /// Try to get the IsPullToRefreshEnabled property in the visual element
-        member x.TryIsPullToRefreshEnabled = match x.Attributes.TryFind("IsPullToRefreshEnabled") with Some v -> USome(unbox<bool>(v)) | None -> UNone
+        member internal x.TryIsPullToRefreshEnabled = match x.Attributes.TryFind("IsPullToRefreshEnabled") with Some v -> USome(unbox<bool>(v)) | None -> UNone
 
         /// Try to get the IsRefreshing property in the visual element
-        member x.TryIsRefreshing = match x.Attributes.TryFind("IsRefreshing") with Some v -> USome(unbox<bool>(v)) | None -> UNone
+        member internal x.TryIsRefreshing = match x.Attributes.TryFind("IsRefreshing") with Some v -> USome(unbox<bool>(v)) | None -> UNone
 
         /// Try to get the RefreshCommand property in the visual element
-        member x.TryRefreshCommand = match x.Attributes.TryFind("RefreshCommand") with Some v -> USome(unbox<System.Windows.Input.ICommand>(v)) | None -> UNone
+        member internal x.TryRefreshCommand = match x.Attributes.TryFind("RefreshCommand") with Some v -> USome(unbox<System.Windows.Input.ICommand>(v)) | None -> UNone
 
         /// Try to get the ListView_SelectedItem property in the visual element
-        member x.TryListView_SelectedItem = match x.Attributes.TryFind("ListView_SelectedItem") with Some v -> USome(unbox<int option>(v)) | None -> UNone
+        member internal x.TryListView_SelectedItem = match x.Attributes.TryFind("ListView_SelectedItem") with Some v -> USome(unbox<int option>(v)) | None -> UNone
 
         /// Try to get the SeparatorVisibility property in the visual element
-        member x.TrySeparatorVisibility = match x.Attributes.TryFind("SeparatorVisibility") with Some v -> USome(unbox<Xamarin.Forms.SeparatorVisibility>(v)) | None -> UNone
+        member internal x.TrySeparatorVisibility = match x.Attributes.TryFind("SeparatorVisibility") with Some v -> USome(unbox<Xamarin.Forms.SeparatorVisibility>(v)) | None -> UNone
 
         /// Try to get the SeparatorColor property in the visual element
-        member x.TrySeparatorColor = match x.Attributes.TryFind("SeparatorColor") with Some v -> USome(unbox<Xamarin.Forms.Color>(v)) | None -> UNone
+        member internal x.TrySeparatorColor = match x.Attributes.TryFind("SeparatorColor") with Some v -> USome(unbox<Xamarin.Forms.Color>(v)) | None -> UNone
 
         /// Try to get the ItemAppearing property in the visual element
-        member x.TryItemAppearing = match x.Attributes.TryFind("ItemAppearing") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>>(v)) | None -> UNone
+        member internal x.TryItemAppearing = match x.Attributes.TryFind("ItemAppearing") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>>(v)) | None -> UNone
 
         /// Try to get the ItemDisappearing property in the visual element
-        member x.TryItemDisappearing = match x.Attributes.TryFind("ItemDisappearing") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>>(v)) | None -> UNone
+        member internal x.TryItemDisappearing = match x.Attributes.TryFind("ItemDisappearing") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>>(v)) | None -> UNone
 
         /// Try to get the ListView_ItemSelected property in the visual element
-        member x.TryListView_ItemSelected = match x.Attributes.TryFind("ListView_ItemSelected") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>>(v)) | None -> UNone
+        member internal x.TryListView_ItemSelected = match x.Attributes.TryFind("ListView_ItemSelected") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>>(v)) | None -> UNone
 
         /// Try to get the ItemTapped property in the visual element
-        member x.TryItemTapped = match x.Attributes.TryFind("ItemTapped") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>>(v)) | None -> UNone
+        member internal x.TryItemTapped = match x.Attributes.TryFind("ItemTapped") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>>(v)) | None -> UNone
 
         /// Try to get the Refreshing property in the visual element
-        member x.TryRefreshing = match x.Attributes.TryFind("Refreshing") with Some v -> USome(unbox<System.EventHandler>(v)) | None -> UNone
+        member internal x.TryRefreshing = match x.Attributes.TryFind("Refreshing") with Some v -> USome(unbox<System.EventHandler>(v)) | None -> UNone
 
         /// Try to get the GroupListViewItemsSource property in the visual element
-        member x.TryGroupListViewItemsSource = match x.Attributes.TryFind("GroupListViewItemsSource") with Some v -> USome(unbox<(XamlElement * XamlElement[])[]>(v)) | None -> UNone
+        member internal x.TryGroupListViewItemsSource = match x.Attributes.TryFind("GroupListViewItemsSource") with Some v -> USome(unbox<(XamlElement * XamlElement[])[]>(v)) | None -> UNone
 
         /// Try to get the ListViewGrouped_SelectedItem property in the visual element
-        member x.TryListViewGrouped_SelectedItem = match x.Attributes.TryFind("ListViewGrouped_SelectedItem") with Some v -> USome(unbox<(int * int) option>(v)) | None -> UNone
+        member internal x.TryListViewGrouped_SelectedItem = match x.Attributes.TryFind("ListViewGrouped_SelectedItem") with Some v -> USome(unbox<(int * int) option>(v)) | None -> UNone
 
         /// Try to get the ListViewGrouped_ItemSelected property in the visual element
-        member x.TryListViewGrouped_ItemSelected = match x.Attributes.TryFind("ListViewGrouped_ItemSelected") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>>(v)) | None -> UNone
+        member internal x.TryListViewGrouped_ItemSelected = match x.Attributes.TryFind("ListViewGrouped_ItemSelected") with Some v -> USome(unbox<System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>>(v)) | None -> UNone
 
         /// Adjusts the ClassId property in the visual element
-        member x.ClassId(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ClassId", box ((value))))
+        member x.ClassId(value: string) = x.WithAttribute("ClassId", box ((value)))
 
         /// Adjusts the StyleId property in the visual element
-        member x.StyleId(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("StyleId", box ((value))))
+        member x.StyleId(value: string) = x.WithAttribute("StyleId", box ((value)))
 
         /// Adjusts the AnchorX property in the visual element
-        member x.AnchorX(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("AnchorX", box ((value))))
+        member x.AnchorX(value: double) = x.WithAttribute("AnchorX", box ((value)))
 
         /// Adjusts the AnchorY property in the visual element
-        member x.AnchorY(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("AnchorY", box ((value))))
+        member x.AnchorY(value: double) = x.WithAttribute("AnchorY", box ((value)))
 
         /// Adjusts the BackgroundColor property in the visual element
-        member x.BackgroundColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("BackgroundColor", box ((value))))
+        member x.BackgroundColor(value: Xamarin.Forms.Color) = x.WithAttribute("BackgroundColor", box ((value)))
 
         /// Adjusts the HeightRequest property in the visual element
-        member x.HeightRequest(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("HeightRequest", box ((value))))
+        member x.HeightRequest(value: double) = x.WithAttribute("HeightRequest", box ((value)))
 
         /// Adjusts the InputTransparent property in the visual element
-        member x.InputTransparent(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("InputTransparent", box ((value))))
+        member x.InputTransparent(value: bool) = x.WithAttribute("InputTransparent", box ((value)))
 
         /// Adjusts the IsEnabled property in the visual element
-        member x.IsEnabled(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("IsEnabled", box ((value))))
+        member x.IsEnabled(value: bool) = x.WithAttribute("IsEnabled", box ((value)))
 
         /// Adjusts the IsVisible property in the visual element
-        member x.IsVisible(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("IsVisible", box ((value))))
+        member x.IsVisible(value: bool) = x.WithAttribute("IsVisible", box ((value)))
 
         /// Adjusts the MinimumHeightRequest property in the visual element
-        member x.MinimumHeightRequest(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("MinimumHeightRequest", box ((value))))
+        member x.MinimumHeightRequest(value: double) = x.WithAttribute("MinimumHeightRequest", box ((value)))
 
         /// Adjusts the MinimumWidthRequest property in the visual element
-        member x.MinimumWidthRequest(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("MinimumWidthRequest", box ((value))))
+        member x.MinimumWidthRequest(value: double) = x.WithAttribute("MinimumWidthRequest", box ((value)))
 
         /// Adjusts the Opacity property in the visual element
-        member x.Opacity(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Opacity", box ((value))))
+        member x.Opacity(value: double) = x.WithAttribute("Opacity", box ((value)))
 
         /// Adjusts the Rotation property in the visual element
-        member x.Rotation(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Rotation", box ((value))))
+        member x.Rotation(value: double) = x.WithAttribute("Rotation", box ((value)))
 
         /// Adjusts the RotationX property in the visual element
-        member x.RotationX(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("RotationX", box ((value))))
+        member x.RotationX(value: double) = x.WithAttribute("RotationX", box ((value)))
 
         /// Adjusts the RotationY property in the visual element
-        member x.RotationY(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("RotationY", box ((value))))
+        member x.RotationY(value: double) = x.WithAttribute("RotationY", box ((value)))
 
         /// Adjusts the Scale property in the visual element
-        member x.Scale(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Scale", box ((value))))
+        member x.Scale(value: double) = x.WithAttribute("Scale", box ((value)))
 
         /// Adjusts the Style property in the visual element
-        member x.Style(value: Xamarin.Forms.Style) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Style", box ((value))))
+        member x.Style(value: Xamarin.Forms.Style) = x.WithAttribute("Style", box ((value)))
 
         /// Adjusts the TranslationX property in the visual element
-        member x.TranslationX(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("TranslationX", box ((value))))
+        member x.TranslationX(value: double) = x.WithAttribute("TranslationX", box ((value)))
 
         /// Adjusts the TranslationY property in the visual element
-        member x.TranslationY(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("TranslationY", box ((value))))
+        member x.TranslationY(value: double) = x.WithAttribute("TranslationY", box ((value)))
 
         /// Adjusts the WidthRequest property in the visual element
-        member x.WidthRequest(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("WidthRequest", box ((value))))
+        member x.WidthRequest(value: double) = x.WithAttribute("WidthRequest", box ((value)))
 
         /// Adjusts the HorizontalOptions property in the visual element
-        member x.HorizontalOptions(value: Xamarin.Forms.LayoutOptions) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("HorizontalOptions", box ((value))))
+        member x.HorizontalOptions(value: Xamarin.Forms.LayoutOptions) = x.WithAttribute("HorizontalOptions", box ((value)))
 
         /// Adjusts the VerticalOptions property in the visual element
-        member x.VerticalOptions(value: Xamarin.Forms.LayoutOptions) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("VerticalOptions", box ((value))))
+        member x.VerticalOptions(value: Xamarin.Forms.LayoutOptions) = x.WithAttribute("VerticalOptions", box ((value)))
 
         /// Adjusts the Margin property in the visual element
-        member x.Margin(value: obj) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Margin", box (makeThickness(value))))
+        member x.Margin(value: obj) = x.WithAttribute("Margin", box (makeThickness(value)))
 
         /// Adjusts the GestureRecognizers property in the visual element
-        member x.GestureRecognizers(value: XamlElement list) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("GestureRecognizers", box (Array.ofList(value))))
+        member x.GestureRecognizers(value: XamlElement list) = x.WithAttribute("GestureRecognizers", box (Array.ofList(value)))
 
         /// Adjusts the TouchPoints property in the visual element
-        member x.TouchPoints(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("TouchPoints", box ((value))))
+        member x.TouchPoints(value: int) = x.WithAttribute("TouchPoints", box ((value)))
 
         /// Adjusts the PanUpdated property in the visual element
-        member x.PanUpdated(value: Xamarin.Forms.PanUpdatedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("PanUpdated", box ((fun f -> System.EventHandler<Xamarin.Forms.PanUpdatedEventArgs>(fun _sender args -> f args))(value))))
+        member x.PanUpdated(value: Xamarin.Forms.PanUpdatedEventArgs -> unit) = x.WithAttribute("PanUpdated", box ((fun f -> System.EventHandler<Xamarin.Forms.PanUpdatedEventArgs>(fun _sender args -> f args))(value)))
 
         /// Adjusts the Command property in the visual element
-        member x.Command(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Command", box (makeCommand(value))))
+        member x.Command(value: unit -> unit) = x.WithAttribute("Command", box (makeCommand(value)))
 
         /// Adjusts the NumberOfTapsRequired property in the visual element
-        member x.NumberOfTapsRequired(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("NumberOfTapsRequired", box ((value))))
+        member x.NumberOfTapsRequired(value: int) = x.WithAttribute("NumberOfTapsRequired", box ((value)))
 
         /// Adjusts the NumberOfClicksRequired property in the visual element
-        member x.NumberOfClicksRequired(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("NumberOfClicksRequired", box ((value))))
+        member x.NumberOfClicksRequired(value: int) = x.WithAttribute("NumberOfClicksRequired", box ((value)))
 
         /// Adjusts the Buttons property in the visual element
-        member x.Buttons(value: Xamarin.Forms.ButtonsMask) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Buttons", box ((value))))
+        member x.Buttons(value: Xamarin.Forms.ButtonsMask) = x.WithAttribute("Buttons", box ((value)))
 
         /// Adjusts the IsPinching property in the visual element
-        member x.IsPinching(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("IsPinching", box ((value))))
+        member x.IsPinching(value: bool) = x.WithAttribute("IsPinching", box ((value)))
 
         /// Adjusts the PinchUpdated property in the visual element
-        member x.PinchUpdated(value: Xamarin.Forms.PinchGestureUpdatedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("PinchUpdated", box ((fun f -> System.EventHandler<Xamarin.Forms.PinchGestureUpdatedEventArgs>(fun _sender args -> f args))(value))))
+        member x.PinchUpdated(value: Xamarin.Forms.PinchGestureUpdatedEventArgs -> unit) = x.WithAttribute("PinchUpdated", box ((fun f -> System.EventHandler<Xamarin.Forms.PinchGestureUpdatedEventArgs>(fun _sender args -> f args))(value)))
 
         /// Adjusts the Color property in the visual element
-        member x.Color(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Color", box ((value))))
+        member x.Color(value: Xamarin.Forms.Color) = x.WithAttribute("Color", box ((value)))
 
         /// Adjusts the IsRunning property in the visual element
-        member x.IsRunning(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("IsRunning", box ((value))))
+        member x.IsRunning(value: bool) = x.WithAttribute("IsRunning", box ((value)))
 
         /// Adjusts the Progress property in the visual element
-        member x.Progress(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Progress", box ((value))))
+        member x.Progress(value: double) = x.WithAttribute("Progress", box ((value)))
 
         /// Adjusts the Content property in the visual element
-        member x.Content(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Content", box ((value))))
+        member x.Content(value: XamlElement) = x.WithAttribute("Content", box ((value)))
 
         /// Adjusts the ScrollOrientation property in the visual element
-        member x.ScrollOrientation(value: Xamarin.Forms.ScrollOrientation) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ScrollOrientation", box ((value))))
+        member x.ScrollOrientation(value: Xamarin.Forms.ScrollOrientation) = x.WithAttribute("ScrollOrientation", box ((value)))
 
         /// Adjusts the CancelButtonColor property in the visual element
-        member x.CancelButtonColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("CancelButtonColor", box ((value))))
+        member x.CancelButtonColor(value: Xamarin.Forms.Color) = x.WithAttribute("CancelButtonColor", box ((value)))
 
         /// Adjusts the FontFamily property in the visual element
-        member x.FontFamily(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("FontFamily", box ((value))))
+        member x.FontFamily(value: string) = x.WithAttribute("FontFamily", box ((value)))
 
         /// Adjusts the FontAttributes property in the visual element
-        member x.FontAttributes(value: Xamarin.Forms.FontAttributes) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("FontAttributes", box ((value))))
+        member x.FontAttributes(value: Xamarin.Forms.FontAttributes) = x.WithAttribute("FontAttributes", box ((value)))
 
         /// Adjusts the FontSize property in the visual element
-        member x.FontSize(value: obj) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("FontSize", box (makeFontSize(value))))
+        member x.FontSize(value: obj) = x.WithAttribute("FontSize", box (makeFontSize(value)))
 
         /// Adjusts the HorizontalTextAlignment property in the visual element
-        member x.HorizontalTextAlignment(value: Xamarin.Forms.TextAlignment) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("HorizontalTextAlignment", box ((value))))
+        member x.HorizontalTextAlignment(value: Xamarin.Forms.TextAlignment) = x.WithAttribute("HorizontalTextAlignment", box ((value)))
 
         /// Adjusts the Placeholder property in the visual element
-        member x.Placeholder(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Placeholder", box ((value))))
+        member x.Placeholder(value: string) = x.WithAttribute("Placeholder", box ((value)))
 
         /// Adjusts the PlaceholderColor property in the visual element
-        member x.PlaceholderColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("PlaceholderColor", box ((value))))
+        member x.PlaceholderColor(value: Xamarin.Forms.Color) = x.WithAttribute("PlaceholderColor", box ((value)))
 
         /// Adjusts the SearchBarCommand property in the visual element
-        member x.SearchBarCommand(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("SearchBarCommand", box ((value))))
+        member x.SearchBarCommand(value: unit -> unit) = x.WithAttribute("SearchBarCommand", box ((value)))
 
         /// Adjusts the SearchBarCanExecute property in the visual element
-        member x.SearchBarCanExecute(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("SearchBarCanExecute", box ((value))))
+        member x.SearchBarCanExecute(value: bool) = x.WithAttribute("SearchBarCanExecute", box ((value)))
 
         /// Adjusts the Text property in the visual element
-        member x.Text(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Text", box ((value))))
+        member x.Text(value: string) = x.WithAttribute("Text", box ((value)))
 
         /// Adjusts the TextColor property in the visual element
-        member x.TextColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("TextColor", box ((value))))
+        member x.TextColor(value: Xamarin.Forms.Color) = x.WithAttribute("TextColor", box ((value)))
 
         /// Adjusts the ButtonCommand property in the visual element
-        member x.ButtonCommand(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ButtonCommand", box ((value))))
+        member x.ButtonCommand(value: unit -> unit) = x.WithAttribute("ButtonCommand", box ((value)))
 
         /// Adjusts the ButtonCanExecute property in the visual element
-        member x.ButtonCanExecute(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ButtonCanExecute", box ((value))))
+        member x.ButtonCanExecute(value: bool) = x.WithAttribute("ButtonCanExecute", box ((value)))
 
         /// Adjusts the BorderColor property in the visual element
-        member x.BorderColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("BorderColor", box ((value))))
+        member x.BorderColor(value: Xamarin.Forms.Color) = x.WithAttribute("BorderColor", box ((value)))
 
         /// Adjusts the BorderWidth property in the visual element
-        member x.BorderWidth(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("BorderWidth", box ((value))))
+        member x.BorderWidth(value: double) = x.WithAttribute("BorderWidth", box ((value)))
 
         /// Adjusts the CommandParameter property in the visual element
-        member x.CommandParameter(value: System.Object) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("CommandParameter", box ((value))))
+        member x.CommandParameter(value: System.Object) = x.WithAttribute("CommandParameter", box ((value)))
 
         /// Adjusts the ContentLayout property in the visual element
-        member x.ContentLayout(value: Xamarin.Forms.Button.ButtonContentLayout) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ContentLayout", box ((value))))
+        member x.ContentLayout(value: Xamarin.Forms.Button.ButtonContentLayout) = x.WithAttribute("ContentLayout", box ((value)))
 
         /// Adjusts the ButtonImageSource property in the visual element
-        member x.ButtonImageSource(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ButtonImageSource", box ((value))))
+        member x.ButtonImageSource(value: string) = x.WithAttribute("ButtonImageSource", box ((value)))
 
         /// Adjusts the Minimum property in the visual element
-        member x.Minimum(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Minimum", box ((value))))
+        member x.Minimum(value: double) = x.WithAttribute("Minimum", box ((value)))
 
         /// Adjusts the Maximum property in the visual element
-        member x.Maximum(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Maximum", box ((value))))
+        member x.Maximum(value: double) = x.WithAttribute("Maximum", box ((value)))
 
         /// Adjusts the Value property in the visual element
-        member x.Value(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Value", box ((value))))
+        member x.Value(value: double) = x.WithAttribute("Value", box ((value)))
 
         /// Adjusts the ValueChanged property in the visual element
-        member x.ValueChanged(value: Xamarin.Forms.ValueChangedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ValueChanged", box ((fun f -> System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>(fun _sender args -> f args))(value))))
+        member x.ValueChanged(value: Xamarin.Forms.ValueChangedEventArgs -> unit) = x.WithAttribute("ValueChanged", box ((fun f -> System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>(fun _sender args -> f args))(value)))
 
         /// Adjusts the Increment property in the visual element
-        member x.Increment(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Increment", box ((value))))
+        member x.Increment(value: double) = x.WithAttribute("Increment", box ((value)))
 
         /// Adjusts the IsToggled property in the visual element
-        member x.IsToggled(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("IsToggled", box ((value))))
+        member x.IsToggled(value: bool) = x.WithAttribute("IsToggled", box ((value)))
 
         /// Adjusts the Toggled property in the visual element
-        member x.Toggled(value: Xamarin.Forms.ToggledEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Toggled", box ((fun f -> System.EventHandler<Xamarin.Forms.ToggledEventArgs>(fun _sender args -> f args))(value))))
+        member x.Toggled(value: Xamarin.Forms.ToggledEventArgs -> unit) = x.WithAttribute("Toggled", box ((fun f -> System.EventHandler<Xamarin.Forms.ToggledEventArgs>(fun _sender args -> f args))(value)))
 
         /// Adjusts the On property in the visual element
-        member x.On(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("On", box ((value))))
+        member x.On(value: bool) = x.WithAttribute("On", box ((value)))
 
         /// Adjusts the OnChanged property in the visual element
-        member x.OnChanged(value: Xamarin.Forms.ToggledEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("OnChanged", box ((fun f -> System.EventHandler<Xamarin.Forms.ToggledEventArgs>(fun _sender args -> f args))(value))))
+        member x.OnChanged(value: Xamarin.Forms.ToggledEventArgs -> unit) = x.WithAttribute("OnChanged", box ((fun f -> System.EventHandler<Xamarin.Forms.ToggledEventArgs>(fun _sender args -> f args))(value)))
 
         /// Adjusts the Intent property in the visual element
-        member x.Intent(value: Xamarin.Forms.TableIntent) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Intent", box ((value))))
+        member x.Intent(value: Xamarin.Forms.TableIntent) = x.WithAttribute("Intent", box ((value)))
 
         /// Adjusts the HasUnevenRows property in the visual element
-        member x.HasUnevenRows(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("HasUnevenRows", box ((value))))
+        member x.HasUnevenRows(value: bool) = x.WithAttribute("HasUnevenRows", box ((value)))
 
         /// Adjusts the RowHeight property in the visual element
-        member x.RowHeight(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("RowHeight", box ((value))))
+        member x.RowHeight(value: int) = x.WithAttribute("RowHeight", box ((value)))
 
         /// Adjusts the TableRoot property in the visual element
-        member x.TableRoot(value: (string * XamlElement list) list) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("TableRoot", box ((fun es -> es |> Array.ofList |> Array.map (fun (title, es) -> (title, Array.ofList es)))(value))))
+        member x.TableRoot(value: (string * XamlElement list) list) = x.WithAttribute("TableRoot", box ((fun es -> es |> Array.ofList |> Array.map (fun (title, es) -> (title, Array.ofList es)))(value)))
 
         /// Adjusts the GridRowDefinitions property in the visual element
-        member x.GridRowDefinitions(value: obj list) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("GridRowDefinitions", box ((fun es -> es |> Array.ofList |> Array.map (fun h -> Xaml.RowDefinition(height=h)))(value))))
+        member x.GridRowDefinitions(value: obj list) = x.WithAttribute("GridRowDefinitions", box ((fun es -> es |> Array.ofList |> Array.map (fun h -> Xaml.RowDefinition(height=h)))(value)))
 
         /// Adjusts the GridColumnDefinitions property in the visual element
-        member x.GridColumnDefinitions(value: obj list) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("GridColumnDefinitions", box ((fun es -> es |> Array.ofList |> Array.map (fun h -> Xaml.ColumnDefinition(width=h)))(value))))
+        member x.GridColumnDefinitions(value: obj list) = x.WithAttribute("GridColumnDefinitions", box ((fun es -> es |> Array.ofList |> Array.map (fun h -> Xaml.ColumnDefinition(width=h)))(value)))
 
         /// Adjusts the RowSpacing property in the visual element
-        member x.RowSpacing(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("RowSpacing", box ((value))))
+        member x.RowSpacing(value: double) = x.WithAttribute("RowSpacing", box ((value)))
 
         /// Adjusts the ColumnSpacing property in the visual element
-        member x.ColumnSpacing(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ColumnSpacing", box ((value))))
+        member x.ColumnSpacing(value: double) = x.WithAttribute("ColumnSpacing", box ((value)))
 
         /// Adjusts the Children property in the visual element
-        member x.Children(value: XamlElement list) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Children", box (Array.ofList(value))))
+        member x.Children(value: XamlElement list) = x.WithAttribute("Children", box (Array.ofList(value)))
 
         /// Adjusts the GridRow property in the visual element
-        member x.GridRow(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("GridRow", box ((value))))
+        member x.GridRow(value: int) = x.WithAttribute("GridRow", box ((value)))
 
         /// Adjusts the GridRowSpan property in the visual element
-        member x.GridRowSpan(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("GridRowSpan", box ((value))))
+        member x.GridRowSpan(value: int) = x.WithAttribute("GridRowSpan", box ((value)))
 
         /// Adjusts the GridColumn property in the visual element
-        member x.GridColumn(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("GridColumn", box ((value))))
+        member x.GridColumn(value: int) = x.WithAttribute("GridColumn", box ((value)))
 
         /// Adjusts the GridColumnSpan property in the visual element
-        member x.GridColumnSpan(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("GridColumnSpan", box ((value))))
+        member x.GridColumnSpan(value: int) = x.WithAttribute("GridColumnSpan", box ((value)))
 
         /// Adjusts the LayoutBounds property in the visual element
-        member x.LayoutBounds(value: Xamarin.Forms.Rectangle) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("LayoutBounds", box ((value))))
+        member x.LayoutBounds(value: Xamarin.Forms.Rectangle) = x.WithAttribute("LayoutBounds", box ((value)))
 
         /// Adjusts the LayoutFlags property in the visual element
-        member x.LayoutFlags(value: Xamarin.Forms.AbsoluteLayoutFlags) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("LayoutFlags", box ((value))))
+        member x.LayoutFlags(value: Xamarin.Forms.AbsoluteLayoutFlags) = x.WithAttribute("LayoutFlags", box ((value)))
 
         /// Adjusts the BoundsConstraint property in the visual element
-        member x.BoundsConstraint(value: Xamarin.Forms.BoundsConstraint) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("BoundsConstraint", box ((value))))
+        member x.BoundsConstraint(value: Xamarin.Forms.BoundsConstraint) = x.WithAttribute("BoundsConstraint", box ((value)))
 
         /// Adjusts the HeightConstraint property in the visual element
-        member x.HeightConstraint(value: Xamarin.Forms.Constraint) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("HeightConstraint", box ((value))))
+        member x.HeightConstraint(value: Xamarin.Forms.Constraint) = x.WithAttribute("HeightConstraint", box ((value)))
 
         /// Adjusts the WidthConstraint property in the visual element
-        member x.WidthConstraint(value: Xamarin.Forms.Constraint) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("WidthConstraint", box ((value))))
+        member x.WidthConstraint(value: Xamarin.Forms.Constraint) = x.WithAttribute("WidthConstraint", box ((value)))
 
         /// Adjusts the XConstraint property in the visual element
-        member x.XConstraint(value: Xamarin.Forms.Constraint) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("XConstraint", box ((value))))
+        member x.XConstraint(value: Xamarin.Forms.Constraint) = x.WithAttribute("XConstraint", box ((value)))
 
         /// Adjusts the YConstraint property in the visual element
-        member x.YConstraint(value: Xamarin.Forms.Constraint) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("YConstraint", box ((value))))
+        member x.YConstraint(value: Xamarin.Forms.Constraint) = x.WithAttribute("YConstraint", box ((value)))
 
         /// Adjusts the RowDefinitionHeight property in the visual element
-        member x.RowDefinitionHeight(value: obj) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("RowDefinitionHeight", box (makeGridLength(value))))
+        member x.RowDefinitionHeight(value: obj) = x.WithAttribute("RowDefinitionHeight", box (makeGridLength(value)))
 
         /// Adjusts the ColumnDefinitionWidth property in the visual element
-        member x.ColumnDefinitionWidth(value: obj) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ColumnDefinitionWidth", box (makeGridLength(value))))
+        member x.ColumnDefinitionWidth(value: obj) = x.WithAttribute("ColumnDefinitionWidth", box (makeGridLength(value)))
 
         /// Adjusts the Date property in the visual element
-        member x.Date(value: System.DateTime) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Date", box ((value))))
+        member x.Date(value: System.DateTime) = x.WithAttribute("Date", box ((value)))
 
         /// Adjusts the Format property in the visual element
-        member x.Format(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Format", box ((value))))
+        member x.Format(value: string) = x.WithAttribute("Format", box ((value)))
 
         /// Adjusts the MinimumDate property in the visual element
-        member x.MinimumDate(value: System.DateTime) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("MinimumDate", box ((value))))
+        member x.MinimumDate(value: System.DateTime) = x.WithAttribute("MinimumDate", box ((value)))
 
         /// Adjusts the MaximumDate property in the visual element
-        member x.MaximumDate(value: System.DateTime) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("MaximumDate", box ((value))))
+        member x.MaximumDate(value: System.DateTime) = x.WithAttribute("MaximumDate", box ((value)))
 
         /// Adjusts the DateSelected property in the visual element
-        member x.DateSelected(value: Xamarin.Forms.DateChangedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("DateSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.DateChangedEventArgs>(fun _sender args -> f args))(value))))
+        member x.DateSelected(value: Xamarin.Forms.DateChangedEventArgs -> unit) = x.WithAttribute("DateSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.DateChangedEventArgs>(fun _sender args -> f args))(value)))
 
         /// Adjusts the PickerItemsSource property in the visual element
-        member x.PickerItemsSource(value: seq<'T>) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("PickerItemsSource", box (seqToIList(value))))
+        member x.PickerItemsSource(value: seq<'T>) = x.WithAttribute("PickerItemsSource", box (seqToIList(value)))
 
         /// Adjusts the SelectedIndex property in the visual element
-        member x.SelectedIndex(value: int) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("SelectedIndex", box ((value))))
+        member x.SelectedIndex(value: int) = x.WithAttribute("SelectedIndex", box ((value)))
 
         /// Adjusts the Title property in the visual element
-        member x.Title(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Title", box ((value))))
+        member x.Title(value: string) = x.WithAttribute("Title", box ((value)))
 
         /// Adjusts the SelectedIndexChanged property in the visual element
-        member x.SelectedIndexChanged(value: (int * 'T option) -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("SelectedIndexChanged", box ((fun f -> System.EventHandler(fun sender args -> let picker = (sender :?> Xamarin.Forms.Picker) in f (picker.SelectedIndex, (picker.SelectedItem |> Option.ofObj |> Option.map unbox<'T>))))(value))))
+        member x.SelectedIndexChanged(value: (int * 'T option) -> unit) = x.WithAttribute("SelectedIndexChanged", box ((fun f -> System.EventHandler(fun sender args -> let picker = (sender :?> Xamarin.Forms.Picker) in f (picker.SelectedIndex, (picker.SelectedItem |> Option.ofObj |> Option.map unbox<'T>))))(value)))
 
         /// Adjusts the OutlineColor property in the visual element
-        member x.OutlineColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("OutlineColor", box ((value))))
+        member x.OutlineColor(value: Xamarin.Forms.Color) = x.WithAttribute("OutlineColor", box ((value)))
 
         /// Adjusts the FrameCornerRadius property in the visual element
-        member x.FrameCornerRadius(value: single) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("FrameCornerRadius", box ((value))))
+        member x.FrameCornerRadius(value: single) = x.WithAttribute("FrameCornerRadius", box ((value)))
 
         /// Adjusts the HasShadow property in the visual element
-        member x.HasShadow(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("HasShadow", box ((value))))
+        member x.HasShadow(value: bool) = x.WithAttribute("HasShadow", box ((value)))
 
         /// Adjusts the ImageSource property in the visual element
-        member x.ImageSource(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ImageSource", box ((value))))
+        member x.ImageSource(value: string) = x.WithAttribute("ImageSource", box ((value)))
 
         /// Adjusts the Aspect property in the visual element
-        member x.Aspect(value: Xamarin.Forms.Aspect) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Aspect", box ((value))))
+        member x.Aspect(value: Xamarin.Forms.Aspect) = x.WithAttribute("Aspect", box ((value)))
 
         /// Adjusts the IsOpaque property in the visual element
-        member x.IsOpaque(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("IsOpaque", box ((value))))
+        member x.IsOpaque(value: bool) = x.WithAttribute("IsOpaque", box ((value)))
 
         /// Adjusts the Keyboard property in the visual element
-        member x.Keyboard(value: Xamarin.Forms.Keyboard) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Keyboard", box ((value))))
+        member x.Keyboard(value: Xamarin.Forms.Keyboard) = x.WithAttribute("Keyboard", box ((value)))
 
         /// Adjusts the EditorCompleted property in the visual element
-        member x.EditorCompleted(value: string -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("EditorCompleted", box ((fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.Editor).Text))(value))))
+        member x.EditorCompleted(value: string -> unit) = x.WithAttribute("EditorCompleted", box ((fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.Editor).Text))(value)))
 
         /// Adjusts the TextChanged property in the visual element
-        member x.TextChanged(value: Xamarin.Forms.TextChangedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("TextChanged", box ((fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))(value))))
+        member x.TextChanged(value: Xamarin.Forms.TextChangedEventArgs -> unit) = x.WithAttribute("TextChanged", box ((fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))(value)))
 
         /// Adjusts the IsPassword property in the visual element
-        member x.IsPassword(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("IsPassword", box ((value))))
+        member x.IsPassword(value: bool) = x.WithAttribute("IsPassword", box ((value)))
 
         /// Adjusts the EntryCompleted property in the visual element
-        member x.EntryCompleted(value: string -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("EntryCompleted", box ((fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.Entry).Text))(value))))
+        member x.EntryCompleted(value: string -> unit) = x.WithAttribute("EntryCompleted", box ((fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.Entry).Text))(value)))
 
         /// Adjusts the Label property in the visual element
-        member x.Label(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Label", box ((value))))
+        member x.Label(value: string) = x.WithAttribute("Label", box ((value)))
 
         /// Adjusts the VerticalTextAlignment property in the visual element
-        member x.VerticalTextAlignment(value: Xamarin.Forms.TextAlignment) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("VerticalTextAlignment", box ((value))))
+        member x.VerticalTextAlignment(value: Xamarin.Forms.TextAlignment) = x.WithAttribute("VerticalTextAlignment", box ((value)))
 
         /// Adjusts the IsClippedToBounds property in the visual element
-        member x.IsClippedToBounds(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("IsClippedToBounds", box ((value))))
+        member x.IsClippedToBounds(value: bool) = x.WithAttribute("IsClippedToBounds", box ((value)))
 
         /// Adjusts the Padding property in the visual element
-        member x.Padding(value: obj) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Padding", box (makeThickness(value))))
+        member x.Padding(value: obj) = x.WithAttribute("Padding", box (makeThickness(value)))
 
         /// Adjusts the StackOrientation property in the visual element
-        member x.StackOrientation(value: Xamarin.Forms.StackOrientation) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("StackOrientation", box ((value))))
+        member x.StackOrientation(value: Xamarin.Forms.StackOrientation) = x.WithAttribute("StackOrientation", box ((value)))
 
         /// Adjusts the Spacing property in the visual element
-        member x.Spacing(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Spacing", box ((value))))
+        member x.Spacing(value: double) = x.WithAttribute("Spacing", box ((value)))
 
         /// Adjusts the ForegroundColor property in the visual element
-        member x.ForegroundColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ForegroundColor", box ((value))))
+        member x.ForegroundColor(value: Xamarin.Forms.Color) = x.WithAttribute("ForegroundColor", box ((value)))
 
         /// Adjusts the PropertyChanged property in the visual element
-        member x.PropertyChanged(value: System.ComponentModel.PropertyChangedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("PropertyChanged", box ((fun f -> System.EventHandler<System.ComponentModel.PropertyChangedEventArgs>(fun _sender args -> f args))(value))))
+        member x.PropertyChanged(value: System.ComponentModel.PropertyChangedEventArgs -> unit) = x.WithAttribute("PropertyChanged", box ((fun f -> System.EventHandler<System.ComponentModel.PropertyChangedEventArgs>(fun _sender args -> f args))(value)))
 
         /// Adjusts the Time property in the visual element
-        member x.Time(value: System.TimeSpan) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Time", box ((value))))
+        member x.Time(value: System.TimeSpan) = x.WithAttribute("Time", box ((value)))
 
         /// Adjusts the WebSource property in the visual element
-        member x.WebSource(value: Xamarin.Forms.WebViewSource) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("WebSource", box ((value))))
+        member x.WebSource(value: Xamarin.Forms.WebViewSource) = x.WithAttribute("WebSource", box ((value)))
 
         /// Adjusts the Navigated property in the visual element
-        member x.Navigated(value: Xamarin.Forms.WebNavigatedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Navigated", box ((fun f -> System.EventHandler<Xamarin.Forms.WebNavigatedEventArgs>(fun _sender args -> f args))(value))))
+        member x.Navigated(value: Xamarin.Forms.WebNavigatedEventArgs -> unit) = x.WithAttribute("Navigated", box ((fun f -> System.EventHandler<Xamarin.Forms.WebNavigatedEventArgs>(fun _sender args -> f args))(value)))
 
         /// Adjusts the Navigating property in the visual element
-        member x.Navigating(value: Xamarin.Forms.WebNavigatingEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Navigating", box ((fun f -> System.EventHandler<Xamarin.Forms.WebNavigatingEventArgs>(fun _sender args -> f args))(value))))
+        member x.Navigating(value: Xamarin.Forms.WebNavigatingEventArgs -> unit) = x.WithAttribute("Navigating", box ((fun f -> System.EventHandler<Xamarin.Forms.WebNavigatingEventArgs>(fun _sender args -> f args))(value)))
 
         /// Adjusts the UseSafeArea property in the visual element
-        member x.UseSafeArea(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("UseSafeArea", box ((value))))
+        member x.UseSafeArea(value: bool) = x.WithAttribute("UseSafeArea", box ((value)))
 
         /// Adjusts the CarouselPage_SelectedItem property in the visual element
-        member x.CarouselPage_SelectedItem(value: System.Object) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("CarouselPage_SelectedItem", box ((value))))
+        member x.CarouselPage_SelectedItem(value: System.Object) = x.WithAttribute("CarouselPage_SelectedItem", box ((value)))
 
         /// Adjusts the CurrentPage property in the visual element
-        member x.CurrentPage(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("CurrentPage", box ((value))))
+        member x.CurrentPage(value: XamlElement) = x.WithAttribute("CurrentPage", box ((value)))
 
         /// Adjusts the CurrentPageChanged property in the visual element
-        member x.CurrentPageChanged(value: 'T option -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("CurrentPageChanged", box ((fun f -> System.EventHandler(fun sender args -> f ((sender :?> Xamarin.Forms.CarouselPage).SelectedItem |> Option.ofObj |> Option.map unbox<'T>)))(value))))
+        member x.CurrentPageChanged(value: 'T option -> unit) = x.WithAttribute("CurrentPageChanged", box ((fun f -> System.EventHandler(fun sender args -> f ((sender :?> Xamarin.Forms.CarouselPage).SelectedItem |> Option.ofObj |> Option.map unbox<'T>)))(value)))
 
         /// Adjusts the NavigationPagePages property in the visual element
-        member x.NavigationPagePages(value: XamlElement list) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("NavigationPagePages", box (Array.ofList(value))))
+        member x.NavigationPagePages(value: XamlElement list) = x.WithAttribute("NavigationPagePages", box (Array.ofList(value)))
 
         /// Adjusts the BackButtonTitle property in the visual element
-        member x.BackButtonTitle(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("BackButtonTitle", box ((value))))
+        member x.BackButtonTitle(value: string) = x.WithAttribute("BackButtonTitle", box ((value)))
 
         /// Adjusts the HasBackButton property in the visual element
-        member x.HasBackButton(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("HasBackButton", box ((value))))
+        member x.HasBackButton(value: bool) = x.WithAttribute("HasBackButton", box ((value)))
 
         /// Adjusts the HasNavigationBar property in the visual element
-        member x.HasNavigationBar(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("HasNavigationBar", box ((value))))
+        member x.HasNavigationBar(value: bool) = x.WithAttribute("HasNavigationBar", box ((value)))
 
         /// Adjusts the TitleIcon property in the visual element
-        member x.TitleIcon(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("TitleIcon", box ((value))))
+        member x.TitleIcon(value: string) = x.WithAttribute("TitleIcon", box ((value)))
 
         /// Adjusts the BarBackgroundColor property in the visual element
-        member x.BarBackgroundColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("BarBackgroundColor", box ((value))))
+        member x.BarBackgroundColor(value: Xamarin.Forms.Color) = x.WithAttribute("BarBackgroundColor", box ((value)))
 
         /// Adjusts the BarTextColor property in the visual element
-        member x.BarTextColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("BarTextColor", box ((value))))
+        member x.BarTextColor(value: Xamarin.Forms.Color) = x.WithAttribute("BarTextColor", box ((value)))
 
         /// Adjusts the Popped property in the visual element
-        member x.Popped(value: Xamarin.Forms.NavigationEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Popped", box ((fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(value))))
+        member x.Popped(value: Xamarin.Forms.NavigationEventArgs -> unit) = x.WithAttribute("Popped", box ((fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(value)))
 
         /// Adjusts the PoppedToRoot property in the visual element
-        member x.PoppedToRoot(value: Xamarin.Forms.NavigationEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("PoppedToRoot", box ((fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(value))))
+        member x.PoppedToRoot(value: Xamarin.Forms.NavigationEventArgs -> unit) = x.WithAttribute("PoppedToRoot", box ((fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(value)))
 
         /// Adjusts the Pushed property in the visual element
-        member x.Pushed(value: Xamarin.Forms.NavigationEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Pushed", box ((fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(value))))
+        member x.Pushed(value: Xamarin.Forms.NavigationEventArgs -> unit) = x.WithAttribute("Pushed", box ((fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(value)))
 
         /// Adjusts the OnSizeAllocatedCallback property in the visual element
-        member x.OnSizeAllocatedCallback(value: (double * double) -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("OnSizeAllocatedCallback", box ((fun f -> FSharp.Control.Handler<_>(fun _sender args -> f args))(value))))
+        member x.OnSizeAllocatedCallback(value: (double * double) -> unit) = x.WithAttribute("OnSizeAllocatedCallback", box ((fun f -> FSharp.Control.Handler<_>(fun _sender args -> f args))(value)))
 
         /// Adjusts the Master property in the visual element
-        member x.Master(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Master", box ((value))))
+        member x.Master(value: XamlElement) = x.WithAttribute("Master", box ((value)))
 
         /// Adjusts the Detail property in the visual element
-        member x.Detail(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Detail", box ((value))))
+        member x.Detail(value: XamlElement) = x.WithAttribute("Detail", box ((value)))
 
         /// Adjusts the IsGestureEnabled property in the visual element
-        member x.IsGestureEnabled(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("IsGestureEnabled", box ((value))))
+        member x.IsGestureEnabled(value: bool) = x.WithAttribute("IsGestureEnabled", box ((value)))
 
         /// Adjusts the IsPresented property in the visual element
-        member x.IsPresented(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("IsPresented", box ((value))))
+        member x.IsPresented(value: bool) = x.WithAttribute("IsPresented", box ((value)))
 
         /// Adjusts the MasterBehavior property in the visual element
-        member x.MasterBehavior(value: Xamarin.Forms.MasterBehavior) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("MasterBehavior", box ((value))))
+        member x.MasterBehavior(value: Xamarin.Forms.MasterBehavior) = x.WithAttribute("MasterBehavior", box ((value)))
 
         /// Adjusts the IsPresentedChanged property in the visual element
-        member x.IsPresentedChanged(value: bool -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("IsPresentedChanged", box ((fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.MasterDetailPage).IsPresented))(value))))
+        member x.IsPresentedChanged(value: bool -> unit) = x.WithAttribute("IsPresentedChanged", box ((fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.MasterDetailPage).IsPresented))(value)))
 
         /// Adjusts the Height property in the visual element
-        member x.Height(value: double) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Height", box ((value))))
+        member x.Height(value: double) = x.WithAttribute("Height", box ((value)))
 
         /// Adjusts the TextDetail property in the visual element
-        member x.TextDetail(value: string) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("TextDetail", box ((value))))
+        member x.TextDetail(value: string) = x.WithAttribute("TextDetail", box ((value)))
 
         /// Adjusts the TextDetailColor property in the visual element
-        member x.TextDetailColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("TextDetailColor", box ((value))))
+        member x.TextDetailColor(value: Xamarin.Forms.Color) = x.WithAttribute("TextDetailColor", box ((value)))
 
         /// Adjusts the TextCellCommand property in the visual element
-        member x.TextCellCommand(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("TextCellCommand", box ((value))))
+        member x.TextCellCommand(value: unit -> unit) = x.WithAttribute("TextCellCommand", box ((value)))
 
         /// Adjusts the TextCellCanExecute property in the visual element
-        member x.TextCellCanExecute(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("TextCellCanExecute", box ((value))))
+        member x.TextCellCanExecute(value: bool) = x.WithAttribute("TextCellCanExecute", box ((value)))
 
         /// Adjusts the View property in the visual element
-        member x.View(value: XamlElement) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("View", box ((value))))
+        member x.View(value: XamlElement) = x.WithAttribute("View", box ((value)))
 
         /// Adjusts the ListViewItems property in the visual element
-        member x.ListViewItems(value: seq<XamlElement>) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ListViewItems", box ((value))))
+        member x.ListViewItems(value: seq<XamlElement>) = x.WithAttribute("ListViewItems", box ((value)))
 
         /// Adjusts the Footer property in the visual element
-        member x.Footer(value: System.Object) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Footer", box ((value))))
+        member x.Footer(value: System.Object) = x.WithAttribute("Footer", box ((value)))
 
         /// Adjusts the Header property in the visual element
-        member x.Header(value: System.Object) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Header", box ((value))))
+        member x.Header(value: System.Object) = x.WithAttribute("Header", box ((value)))
 
         /// Adjusts the HeaderTemplate property in the visual element
-        member x.HeaderTemplate(value: Xamarin.Forms.DataTemplate) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("HeaderTemplate", box ((value))))
+        member x.HeaderTemplate(value: Xamarin.Forms.DataTemplate) = x.WithAttribute("HeaderTemplate", box ((value)))
 
         /// Adjusts the IsGroupingEnabled property in the visual element
-        member x.IsGroupingEnabled(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("IsGroupingEnabled", box ((value))))
+        member x.IsGroupingEnabled(value: bool) = x.WithAttribute("IsGroupingEnabled", box ((value)))
 
         /// Adjusts the IsPullToRefreshEnabled property in the visual element
-        member x.IsPullToRefreshEnabled(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("IsPullToRefreshEnabled", box ((value))))
+        member x.IsPullToRefreshEnabled(value: bool) = x.WithAttribute("IsPullToRefreshEnabled", box ((value)))
 
         /// Adjusts the IsRefreshing property in the visual element
-        member x.IsRefreshing(value: bool) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("IsRefreshing", box ((value))))
+        member x.IsRefreshing(value: bool) = x.WithAttribute("IsRefreshing", box ((value)))
 
         /// Adjusts the RefreshCommand property in the visual element
-        member x.RefreshCommand(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("RefreshCommand", box (makeCommand(value))))
+        member x.RefreshCommand(value: unit -> unit) = x.WithAttribute("RefreshCommand", box (makeCommand(value)))
 
         /// Adjusts the ListView_SelectedItem property in the visual element
-        member x.ListView_SelectedItem(value: int option) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ListView_SelectedItem", box ((value))))
+        member x.ListView_SelectedItem(value: int option) = x.WithAttribute("ListView_SelectedItem", box ((value)))
 
         /// Adjusts the SeparatorVisibility property in the visual element
-        member x.SeparatorVisibility(value: Xamarin.Forms.SeparatorVisibility) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("SeparatorVisibility", box ((value))))
+        member x.SeparatorVisibility(value: Xamarin.Forms.SeparatorVisibility) = x.WithAttribute("SeparatorVisibility", box ((value)))
 
         /// Adjusts the SeparatorColor property in the visual element
-        member x.SeparatorColor(value: Xamarin.Forms.Color) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("SeparatorColor", box ((value))))
+        member x.SeparatorColor(value: Xamarin.Forms.Color) = x.WithAttribute("SeparatorColor", box ((value)))
 
         /// Adjusts the ItemAppearing property in the visual element
-        member x.ItemAppearing(value: int -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ItemAppearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))(value))))
+        member x.ItemAppearing(value: int -> unit) = x.WithAttribute("ItemAppearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))(value)))
 
         /// Adjusts the ItemDisappearing property in the visual element
-        member x.ItemDisappearing(value: int -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ItemDisappearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))(value))))
+        member x.ItemDisappearing(value: int -> unit) = x.WithAttribute("ItemDisappearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))(value)))
 
         /// Adjusts the ListView_ItemSelected property in the visual element
-        member x.ListView_ItemSelected(value: int option -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ListView_ItemSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (tryFindListViewItem sender args.SelectedItem)))(value))))
+        member x.ListView_ItemSelected(value: int option -> unit) = x.WithAttribute("ListView_ItemSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (tryFindListViewItem sender args.SelectedItem)))(value)))
 
         /// Adjusts the ItemTapped property in the visual element
-        member x.ItemTapped(value: Xamarin.Forms.ItemTappedEventArgs -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ItemTapped", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun _sender args -> f args))(value))))
+        member x.ItemTapped(value: Xamarin.Forms.ItemTappedEventArgs -> unit) = x.WithAttribute("ItemTapped", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun _sender args -> f args))(value)))
 
         /// Adjusts the Refreshing property in the visual element
-        member x.Refreshing(value: unit -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("Refreshing", box ((fun f -> System.EventHandler(fun sender args -> f ()))(value))))
+        member x.Refreshing(value: unit -> unit) = x.WithAttribute("Refreshing", box ((fun f -> System.EventHandler(fun sender args -> f ()))(value)))
 
         /// Adjusts the GroupListViewItemsSource property in the visual element
-        member x.GroupListViewItemsSource(value: (XamlElement * XamlElement list) list) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("GroupListViewItemsSource", box ((fun es -> es |> Array.ofList |> Array.map (fun (e,l) -> (e, Array.ofList l)))(value))))
+        member x.GroupListViewItemsSource(value: (XamlElement * XamlElement list) list) = x.WithAttribute("GroupListViewItemsSource", box ((fun es -> es |> Array.ofList |> Array.map (fun (e,l) -> (e, Array.ofList l)))(value)))
 
         /// Adjusts the ListViewGrouped_SelectedItem property in the visual element
-        member x.ListViewGrouped_SelectedItem(value: (int * int) option) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ListViewGrouped_SelectedItem", box ((value))))
+        member x.ListViewGrouped_SelectedItem(value: (int * int) option) = x.WithAttribute("ListViewGrouped_SelectedItem", box ((value)))
 
         /// Adjusts the ListViewGrouped_ItemSelected property in the visual element
-        member x.ListViewGrouped_ItemSelected(value: (int * int) option -> unit) = XamlElement(x.TargetType, x.CreateMethod, x.UpdateMethod, x.Attributes.Add("ListViewGrouped_ItemSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.SelectedItem)))(value))))
+        member x.ListViewGrouped_ItemSelected(value: (int * int) option -> unit) = x.WithAttribute("ListViewGrouped_ItemSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.SelectedItem)))(value)))
 
 
-    /// Adjusts the ClassId property in the visual element
-    let withClassId (value: string) (x: XamlElement) = x.ClassId(value)
 
     /// Adjusts the ClassId property in the visual element
     let classId (value: string) (x: XamlElement) = x.ClassId(value)
 
-    /// Adjusts the StyleId property in the visual element
-    let withStyleId (value: string) (x: XamlElement) = x.StyleId(value)
 
     /// Adjusts the StyleId property in the visual element
     let styleId (value: string) (x: XamlElement) = x.StyleId(value)
 
-    /// Adjusts the AnchorX property in the visual element
-    let withAnchorX (value: double) (x: XamlElement) = x.AnchorX(value)
 
     /// Adjusts the AnchorX property in the visual element
     let anchorX (value: double) (x: XamlElement) = x.AnchorX(value)
 
-    /// Adjusts the AnchorY property in the visual element
-    let withAnchorY (value: double) (x: XamlElement) = x.AnchorY(value)
 
     /// Adjusts the AnchorY property in the visual element
     let anchorY (value: double) (x: XamlElement) = x.AnchorY(value)
 
-    /// Adjusts the BackgroundColor property in the visual element
-    let withBackgroundColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.BackgroundColor(value)
 
     /// Adjusts the BackgroundColor property in the visual element
     let backgroundColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.BackgroundColor(value)
 
-    /// Adjusts the HeightRequest property in the visual element
-    let withHeightRequest (value: double) (x: XamlElement) = x.HeightRequest(value)
 
     /// Adjusts the HeightRequest property in the visual element
     let heightRequest (value: double) (x: XamlElement) = x.HeightRequest(value)
 
-    /// Adjusts the InputTransparent property in the visual element
-    let withInputTransparent (value: bool) (x: XamlElement) = x.InputTransparent(value)
 
     /// Adjusts the InputTransparent property in the visual element
     let inputTransparent (value: bool) (x: XamlElement) = x.InputTransparent(value)
 
-    /// Adjusts the IsEnabled property in the visual element
-    let withIsEnabled (value: bool) (x: XamlElement) = x.IsEnabled(value)
 
     /// Adjusts the IsEnabled property in the visual element
     let isEnabled (value: bool) (x: XamlElement) = x.IsEnabled(value)
 
-    /// Adjusts the IsVisible property in the visual element
-    let withIsVisible (value: bool) (x: XamlElement) = x.IsVisible(value)
 
     /// Adjusts the IsVisible property in the visual element
     let isVisible (value: bool) (x: XamlElement) = x.IsVisible(value)
 
-    /// Adjusts the MinimumHeightRequest property in the visual element
-    let withMinimumHeightRequest (value: double) (x: XamlElement) = x.MinimumHeightRequest(value)
 
     /// Adjusts the MinimumHeightRequest property in the visual element
     let minimumHeightRequest (value: double) (x: XamlElement) = x.MinimumHeightRequest(value)
 
-    /// Adjusts the MinimumWidthRequest property in the visual element
-    let withMinimumWidthRequest (value: double) (x: XamlElement) = x.MinimumWidthRequest(value)
 
     /// Adjusts the MinimumWidthRequest property in the visual element
     let minimumWidthRequest (value: double) (x: XamlElement) = x.MinimumWidthRequest(value)
 
-    /// Adjusts the Opacity property in the visual element
-    let withOpacity (value: double) (x: XamlElement) = x.Opacity(value)
 
     /// Adjusts the Opacity property in the visual element
     let opacity (value: double) (x: XamlElement) = x.Opacity(value)
 
-    /// Adjusts the Rotation property in the visual element
-    let withRotation (value: double) (x: XamlElement) = x.Rotation(value)
 
     /// Adjusts the Rotation property in the visual element
     let rotation (value: double) (x: XamlElement) = x.Rotation(value)
 
-    /// Adjusts the RotationX property in the visual element
-    let withRotationX (value: double) (x: XamlElement) = x.RotationX(value)
 
     /// Adjusts the RotationX property in the visual element
     let rotationX (value: double) (x: XamlElement) = x.RotationX(value)
 
-    /// Adjusts the RotationY property in the visual element
-    let withRotationY (value: double) (x: XamlElement) = x.RotationY(value)
 
     /// Adjusts the RotationY property in the visual element
     let rotationY (value: double) (x: XamlElement) = x.RotationY(value)
 
-    /// Adjusts the Scale property in the visual element
-    let withScale (value: double) (x: XamlElement) = x.Scale(value)
 
     /// Adjusts the Scale property in the visual element
     let scale (value: double) (x: XamlElement) = x.Scale(value)
 
-    /// Adjusts the Style property in the visual element
-    let withStyle (value: Xamarin.Forms.Style) (x: XamlElement) = x.Style(value)
 
     /// Adjusts the Style property in the visual element
     let style (value: Xamarin.Forms.Style) (x: XamlElement) = x.Style(value)
 
-    /// Adjusts the TranslationX property in the visual element
-    let withTranslationX (value: double) (x: XamlElement) = x.TranslationX(value)
 
     /// Adjusts the TranslationX property in the visual element
     let translationX (value: double) (x: XamlElement) = x.TranslationX(value)
 
-    /// Adjusts the TranslationY property in the visual element
-    let withTranslationY (value: double) (x: XamlElement) = x.TranslationY(value)
 
     /// Adjusts the TranslationY property in the visual element
     let translationY (value: double) (x: XamlElement) = x.TranslationY(value)
 
-    /// Adjusts the WidthRequest property in the visual element
-    let withWidthRequest (value: double) (x: XamlElement) = x.WidthRequest(value)
 
     /// Adjusts the WidthRequest property in the visual element
     let widthRequest (value: double) (x: XamlElement) = x.WidthRequest(value)
 
-    /// Adjusts the HorizontalOptions property in the visual element
-    let withHorizontalOptions (value: Xamarin.Forms.LayoutOptions) (x: XamlElement) = x.HorizontalOptions(value)
 
     /// Adjusts the HorizontalOptions property in the visual element
     let horizontalOptions (value: Xamarin.Forms.LayoutOptions) (x: XamlElement) = x.HorizontalOptions(value)
 
-    /// Adjusts the VerticalOptions property in the visual element
-    let withVerticalOptions (value: Xamarin.Forms.LayoutOptions) (x: XamlElement) = x.VerticalOptions(value)
 
     /// Adjusts the VerticalOptions property in the visual element
     let verticalOptions (value: Xamarin.Forms.LayoutOptions) (x: XamlElement) = x.VerticalOptions(value)
 
-    /// Adjusts the Margin property in the visual element
-    let withMargin (value: obj) (x: XamlElement) = x.Margin(value)
 
     /// Adjusts the Margin property in the visual element
     let margin (value: obj) (x: XamlElement) = x.Margin(value)
 
-    /// Adjusts the GestureRecognizers property in the visual element
-    let withGestureRecognizers (value: XamlElement list) (x: XamlElement) = x.GestureRecognizers(value)
 
     /// Adjusts the GestureRecognizers property in the visual element
     let gestureRecognizers (value: XamlElement list) (x: XamlElement) = x.GestureRecognizers(value)
 
-    /// Adjusts the TouchPoints property in the visual element
-    let withTouchPoints (value: int) (x: XamlElement) = x.TouchPoints(value)
 
     /// Adjusts the TouchPoints property in the visual element
     let touchPoints (value: int) (x: XamlElement) = x.TouchPoints(value)
 
-    /// Adjusts the PanUpdated property in the visual element
-    let withPanUpdated (value: Xamarin.Forms.PanUpdatedEventArgs -> unit) (x: XamlElement) = x.PanUpdated(value)
 
     /// Adjusts the PanUpdated property in the visual element
     let panUpdated (value: Xamarin.Forms.PanUpdatedEventArgs -> unit) (x: XamlElement) = x.PanUpdated(value)
 
-    /// Adjusts the Command property in the visual element
-    let withCommand (value: unit -> unit) (x: XamlElement) = x.Command(value)
 
     /// Adjusts the Command property in the visual element
     let command (value: unit -> unit) (x: XamlElement) = x.Command(value)
 
-    /// Adjusts the NumberOfTapsRequired property in the visual element
-    let withNumberOfTapsRequired (value: int) (x: XamlElement) = x.NumberOfTapsRequired(value)
 
     /// Adjusts the NumberOfTapsRequired property in the visual element
     let numberOfTapsRequired (value: int) (x: XamlElement) = x.NumberOfTapsRequired(value)
 
-    /// Adjusts the NumberOfClicksRequired property in the visual element
-    let withNumberOfClicksRequired (value: int) (x: XamlElement) = x.NumberOfClicksRequired(value)
 
     /// Adjusts the NumberOfClicksRequired property in the visual element
     let numberOfClicksRequired (value: int) (x: XamlElement) = x.NumberOfClicksRequired(value)
 
-    /// Adjusts the Buttons property in the visual element
-    let withButtons (value: Xamarin.Forms.ButtonsMask) (x: XamlElement) = x.Buttons(value)
 
     /// Adjusts the Buttons property in the visual element
     let buttons (value: Xamarin.Forms.ButtonsMask) (x: XamlElement) = x.Buttons(value)
 
-    /// Adjusts the IsPinching property in the visual element
-    let withIsPinching (value: bool) (x: XamlElement) = x.IsPinching(value)
 
     /// Adjusts the IsPinching property in the visual element
     let isPinching (value: bool) (x: XamlElement) = x.IsPinching(value)
 
-    /// Adjusts the PinchUpdated property in the visual element
-    let withPinchUpdated (value: Xamarin.Forms.PinchGestureUpdatedEventArgs -> unit) (x: XamlElement) = x.PinchUpdated(value)
 
     /// Adjusts the PinchUpdated property in the visual element
     let pinchUpdated (value: Xamarin.Forms.PinchGestureUpdatedEventArgs -> unit) (x: XamlElement) = x.PinchUpdated(value)
 
-    /// Adjusts the Color property in the visual element
-    let withColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.Color(value)
 
     /// Adjusts the Color property in the visual element
     let color (value: Xamarin.Forms.Color) (x: XamlElement) = x.Color(value)
 
-    /// Adjusts the IsRunning property in the visual element
-    let withIsRunning (value: bool) (x: XamlElement) = x.IsRunning(value)
 
     /// Adjusts the IsRunning property in the visual element
     let isRunning (value: bool) (x: XamlElement) = x.IsRunning(value)
 
-    /// Adjusts the Progress property in the visual element
-    let withProgress (value: double) (x: XamlElement) = x.Progress(value)
 
     /// Adjusts the Progress property in the visual element
     let progress (value: double) (x: XamlElement) = x.Progress(value)
 
-    /// Adjusts the Content property in the visual element
-    let withContent (value: XamlElement) (x: XamlElement) = x.Content(value)
 
     /// Adjusts the Content property in the visual element
     let content (value: XamlElement) (x: XamlElement) = x.Content(value)
 
-    /// Adjusts the ScrollOrientation property in the visual element
-    let withScrollOrientation (value: Xamarin.Forms.ScrollOrientation) (x: XamlElement) = x.ScrollOrientation(value)
 
     /// Adjusts the ScrollOrientation property in the visual element
     let scrollOrientation (value: Xamarin.Forms.ScrollOrientation) (x: XamlElement) = x.ScrollOrientation(value)
 
-    /// Adjusts the CancelButtonColor property in the visual element
-    let withCancelButtonColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.CancelButtonColor(value)
 
     /// Adjusts the CancelButtonColor property in the visual element
     let cancelButtonColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.CancelButtonColor(value)
 
-    /// Adjusts the FontFamily property in the visual element
-    let withFontFamily (value: string) (x: XamlElement) = x.FontFamily(value)
 
     /// Adjusts the FontFamily property in the visual element
     let fontFamily (value: string) (x: XamlElement) = x.FontFamily(value)
 
-    /// Adjusts the FontAttributes property in the visual element
-    let withFontAttributes (value: Xamarin.Forms.FontAttributes) (x: XamlElement) = x.FontAttributes(value)
 
     /// Adjusts the FontAttributes property in the visual element
     let fontAttributes (value: Xamarin.Forms.FontAttributes) (x: XamlElement) = x.FontAttributes(value)
 
-    /// Adjusts the FontSize property in the visual element
-    let withFontSize (value: obj) (x: XamlElement) = x.FontSize(value)
 
     /// Adjusts the FontSize property in the visual element
     let fontSize (value: obj) (x: XamlElement) = x.FontSize(value)
 
-    /// Adjusts the HorizontalTextAlignment property in the visual element
-    let withHorizontalTextAlignment (value: Xamarin.Forms.TextAlignment) (x: XamlElement) = x.HorizontalTextAlignment(value)
 
     /// Adjusts the HorizontalTextAlignment property in the visual element
     let horizontalTextAlignment (value: Xamarin.Forms.TextAlignment) (x: XamlElement) = x.HorizontalTextAlignment(value)
 
-    /// Adjusts the Placeholder property in the visual element
-    let withPlaceholder (value: string) (x: XamlElement) = x.Placeholder(value)
 
     /// Adjusts the Placeholder property in the visual element
     let placeholder (value: string) (x: XamlElement) = x.Placeholder(value)
 
-    /// Adjusts the PlaceholderColor property in the visual element
-    let withPlaceholderColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.PlaceholderColor(value)
 
     /// Adjusts the PlaceholderColor property in the visual element
     let placeholderColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.PlaceholderColor(value)
 
-    /// Adjusts the SearchBarCommand property in the visual element
-    let withSearchBarCommand (value: unit -> unit) (x: XamlElement) = x.SearchBarCommand(value)
 
     /// Adjusts the SearchBarCommand property in the visual element
     let searchBarCommand (value: unit -> unit) (x: XamlElement) = x.SearchBarCommand(value)
 
-    /// Adjusts the SearchBarCanExecute property in the visual element
-    let withSearchBarCanExecute (value: bool) (x: XamlElement) = x.SearchBarCanExecute(value)
 
     /// Adjusts the SearchBarCanExecute property in the visual element
     let searchBarCanExecute (value: bool) (x: XamlElement) = x.SearchBarCanExecute(value)
 
-    /// Adjusts the Text property in the visual element
-    let withText (value: string) (x: XamlElement) = x.Text(value)
 
     /// Adjusts the Text property in the visual element
     let text (value: string) (x: XamlElement) = x.Text(value)
 
-    /// Adjusts the TextColor property in the visual element
-    let withTextColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.TextColor(value)
 
     /// Adjusts the TextColor property in the visual element
     let textColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.TextColor(value)
 
-    /// Adjusts the ButtonCommand property in the visual element
-    let withButtonCommand (value: unit -> unit) (x: XamlElement) = x.ButtonCommand(value)
 
     /// Adjusts the ButtonCommand property in the visual element
     let buttonCommand (value: unit -> unit) (x: XamlElement) = x.ButtonCommand(value)
 
-    /// Adjusts the ButtonCanExecute property in the visual element
-    let withButtonCanExecute (value: bool) (x: XamlElement) = x.ButtonCanExecute(value)
 
     /// Adjusts the ButtonCanExecute property in the visual element
     let buttonCanExecute (value: bool) (x: XamlElement) = x.ButtonCanExecute(value)
 
-    /// Adjusts the BorderColor property in the visual element
-    let withBorderColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.BorderColor(value)
 
     /// Adjusts the BorderColor property in the visual element
     let borderColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.BorderColor(value)
 
-    /// Adjusts the BorderWidth property in the visual element
-    let withBorderWidth (value: double) (x: XamlElement) = x.BorderWidth(value)
 
     /// Adjusts the BorderWidth property in the visual element
     let borderWidth (value: double) (x: XamlElement) = x.BorderWidth(value)
 
-    /// Adjusts the CommandParameter property in the visual element
-    let withCommandParameter (value: System.Object) (x: XamlElement) = x.CommandParameter(value)
 
     /// Adjusts the CommandParameter property in the visual element
     let commandParameter (value: System.Object) (x: XamlElement) = x.CommandParameter(value)
 
-    /// Adjusts the ContentLayout property in the visual element
-    let withContentLayout (value: Xamarin.Forms.Button.ButtonContentLayout) (x: XamlElement) = x.ContentLayout(value)
 
     /// Adjusts the ContentLayout property in the visual element
     let contentLayout (value: Xamarin.Forms.Button.ButtonContentLayout) (x: XamlElement) = x.ContentLayout(value)
 
-    /// Adjusts the ButtonImageSource property in the visual element
-    let withButtonImageSource (value: string) (x: XamlElement) = x.ButtonImageSource(value)
 
     /// Adjusts the ButtonImageSource property in the visual element
     let buttonImageSource (value: string) (x: XamlElement) = x.ButtonImageSource(value)
 
-    /// Adjusts the Minimum property in the visual element
-    let withMinimum (value: double) (x: XamlElement) = x.Minimum(value)
 
     /// Adjusts the Minimum property in the visual element
     let minimum (value: double) (x: XamlElement) = x.Minimum(value)
 
-    /// Adjusts the Maximum property in the visual element
-    let withMaximum (value: double) (x: XamlElement) = x.Maximum(value)
 
     /// Adjusts the Maximum property in the visual element
     let maximum (value: double) (x: XamlElement) = x.Maximum(value)
 
-    /// Adjusts the Value property in the visual element
-    let withValue (value: double) (x: XamlElement) = x.Value(value)
 
     /// Adjusts the Value property in the visual element
     let value (value: double) (x: XamlElement) = x.Value(value)
 
-    /// Adjusts the ValueChanged property in the visual element
-    let withValueChanged (value: Xamarin.Forms.ValueChangedEventArgs -> unit) (x: XamlElement) = x.ValueChanged(value)
 
     /// Adjusts the ValueChanged property in the visual element
     let valueChanged (value: Xamarin.Forms.ValueChangedEventArgs -> unit) (x: XamlElement) = x.ValueChanged(value)
 
-    /// Adjusts the Increment property in the visual element
-    let withIncrement (value: double) (x: XamlElement) = x.Increment(value)
 
     /// Adjusts the Increment property in the visual element
     let increment (value: double) (x: XamlElement) = x.Increment(value)
 
-    /// Adjusts the IsToggled property in the visual element
-    let withIsToggled (value: bool) (x: XamlElement) = x.IsToggled(value)
 
     /// Adjusts the IsToggled property in the visual element
     let isToggled (value: bool) (x: XamlElement) = x.IsToggled(value)
 
-    /// Adjusts the Toggled property in the visual element
-    let withToggled (value: Xamarin.Forms.ToggledEventArgs -> unit) (x: XamlElement) = x.Toggled(value)
 
     /// Adjusts the Toggled property in the visual element
     let toggled (value: Xamarin.Forms.ToggledEventArgs -> unit) (x: XamlElement) = x.Toggled(value)
 
-    /// Adjusts the On property in the visual element
-    let withOn (value: bool) (x: XamlElement) = x.On(value)
 
     /// Adjusts the On property in the visual element
     let on (value: bool) (x: XamlElement) = x.On(value)
 
-    /// Adjusts the OnChanged property in the visual element
-    let withOnChanged (value: Xamarin.Forms.ToggledEventArgs -> unit) (x: XamlElement) = x.OnChanged(value)
 
     /// Adjusts the OnChanged property in the visual element
     let onChanged (value: Xamarin.Forms.ToggledEventArgs -> unit) (x: XamlElement) = x.OnChanged(value)
 
-    /// Adjusts the Intent property in the visual element
-    let withIntent (value: Xamarin.Forms.TableIntent) (x: XamlElement) = x.Intent(value)
 
     /// Adjusts the Intent property in the visual element
     let intent (value: Xamarin.Forms.TableIntent) (x: XamlElement) = x.Intent(value)
 
-    /// Adjusts the HasUnevenRows property in the visual element
-    let withHasUnevenRows (value: bool) (x: XamlElement) = x.HasUnevenRows(value)
 
     /// Adjusts the HasUnevenRows property in the visual element
     let hasUnevenRows (value: bool) (x: XamlElement) = x.HasUnevenRows(value)
 
-    /// Adjusts the RowHeight property in the visual element
-    let withRowHeight (value: int) (x: XamlElement) = x.RowHeight(value)
 
     /// Adjusts the RowHeight property in the visual element
     let rowHeight (value: int) (x: XamlElement) = x.RowHeight(value)
 
-    /// Adjusts the TableRoot property in the visual element
-    let withTableRoot (value: (string * XamlElement list) list) (x: XamlElement) = x.TableRoot(value)
 
     /// Adjusts the TableRoot property in the visual element
     let tableRoot (value: (string * XamlElement list) list) (x: XamlElement) = x.TableRoot(value)
 
-    /// Adjusts the GridRowDefinitions property in the visual element
-    let withGridRowDefinitions (value: obj list) (x: XamlElement) = x.GridRowDefinitions(value)
 
     /// Adjusts the GridRowDefinitions property in the visual element
     let gridRowDefinitions (value: obj list) (x: XamlElement) = x.GridRowDefinitions(value)
 
-    /// Adjusts the GridColumnDefinitions property in the visual element
-    let withGridColumnDefinitions (value: obj list) (x: XamlElement) = x.GridColumnDefinitions(value)
 
     /// Adjusts the GridColumnDefinitions property in the visual element
     let gridColumnDefinitions (value: obj list) (x: XamlElement) = x.GridColumnDefinitions(value)
 
-    /// Adjusts the RowSpacing property in the visual element
-    let withRowSpacing (value: double) (x: XamlElement) = x.RowSpacing(value)
 
     /// Adjusts the RowSpacing property in the visual element
     let rowSpacing (value: double) (x: XamlElement) = x.RowSpacing(value)
 
-    /// Adjusts the ColumnSpacing property in the visual element
-    let withColumnSpacing (value: double) (x: XamlElement) = x.ColumnSpacing(value)
 
     /// Adjusts the ColumnSpacing property in the visual element
     let columnSpacing (value: double) (x: XamlElement) = x.ColumnSpacing(value)
 
-    /// Adjusts the Children property in the visual element
-    let withChildren (value: XamlElement list) (x: XamlElement) = x.Children(value)
 
     /// Adjusts the Children property in the visual element
     let children (value: XamlElement list) (x: XamlElement) = x.Children(value)
 
-    /// Adjusts the GridRow property in the visual element
-    let withGridRow (value: int) (x: XamlElement) = x.GridRow(value)
 
     /// Adjusts the GridRow property in the visual element
     let gridRow (value: int) (x: XamlElement) = x.GridRow(value)
 
-    /// Adjusts the GridRowSpan property in the visual element
-    let withGridRowSpan (value: int) (x: XamlElement) = x.GridRowSpan(value)
 
     /// Adjusts the GridRowSpan property in the visual element
     let gridRowSpan (value: int) (x: XamlElement) = x.GridRowSpan(value)
 
-    /// Adjusts the GridColumn property in the visual element
-    let withGridColumn (value: int) (x: XamlElement) = x.GridColumn(value)
 
     /// Adjusts the GridColumn property in the visual element
     let gridColumn (value: int) (x: XamlElement) = x.GridColumn(value)
 
-    /// Adjusts the GridColumnSpan property in the visual element
-    let withGridColumnSpan (value: int) (x: XamlElement) = x.GridColumnSpan(value)
 
     /// Adjusts the GridColumnSpan property in the visual element
     let gridColumnSpan (value: int) (x: XamlElement) = x.GridColumnSpan(value)
 
-    /// Adjusts the LayoutBounds property in the visual element
-    let withLayoutBounds (value: Xamarin.Forms.Rectangle) (x: XamlElement) = x.LayoutBounds(value)
 
     /// Adjusts the LayoutBounds property in the visual element
     let layoutBounds (value: Xamarin.Forms.Rectangle) (x: XamlElement) = x.LayoutBounds(value)
 
-    /// Adjusts the LayoutFlags property in the visual element
-    let withLayoutFlags (value: Xamarin.Forms.AbsoluteLayoutFlags) (x: XamlElement) = x.LayoutFlags(value)
 
     /// Adjusts the LayoutFlags property in the visual element
     let layoutFlags (value: Xamarin.Forms.AbsoluteLayoutFlags) (x: XamlElement) = x.LayoutFlags(value)
 
-    /// Adjusts the BoundsConstraint property in the visual element
-    let withBoundsConstraint (value: Xamarin.Forms.BoundsConstraint) (x: XamlElement) = x.BoundsConstraint(value)
 
     /// Adjusts the BoundsConstraint property in the visual element
     let boundsConstraint (value: Xamarin.Forms.BoundsConstraint) (x: XamlElement) = x.BoundsConstraint(value)
 
-    /// Adjusts the HeightConstraint property in the visual element
-    let withHeightConstraint (value: Xamarin.Forms.Constraint) (x: XamlElement) = x.HeightConstraint(value)
 
     /// Adjusts the HeightConstraint property in the visual element
     let heightConstraint (value: Xamarin.Forms.Constraint) (x: XamlElement) = x.HeightConstraint(value)
 
-    /// Adjusts the WidthConstraint property in the visual element
-    let withWidthConstraint (value: Xamarin.Forms.Constraint) (x: XamlElement) = x.WidthConstraint(value)
 
     /// Adjusts the WidthConstraint property in the visual element
     let widthConstraint (value: Xamarin.Forms.Constraint) (x: XamlElement) = x.WidthConstraint(value)
 
-    /// Adjusts the XConstraint property in the visual element
-    let withXConstraint (value: Xamarin.Forms.Constraint) (x: XamlElement) = x.XConstraint(value)
 
     /// Adjusts the XConstraint property in the visual element
     let xConstraint (value: Xamarin.Forms.Constraint) (x: XamlElement) = x.XConstraint(value)
 
-    /// Adjusts the YConstraint property in the visual element
-    let withYConstraint (value: Xamarin.Forms.Constraint) (x: XamlElement) = x.YConstraint(value)
 
     /// Adjusts the YConstraint property in the visual element
     let yConstraint (value: Xamarin.Forms.Constraint) (x: XamlElement) = x.YConstraint(value)
 
-    /// Adjusts the RowDefinitionHeight property in the visual element
-    let withRowDefinitionHeight (value: obj) (x: XamlElement) = x.RowDefinitionHeight(value)
 
     /// Adjusts the RowDefinitionHeight property in the visual element
     let rowDefinitionHeight (value: obj) (x: XamlElement) = x.RowDefinitionHeight(value)
 
-    /// Adjusts the ColumnDefinitionWidth property in the visual element
-    let withColumnDefinitionWidth (value: obj) (x: XamlElement) = x.ColumnDefinitionWidth(value)
 
     /// Adjusts the ColumnDefinitionWidth property in the visual element
     let columnDefinitionWidth (value: obj) (x: XamlElement) = x.ColumnDefinitionWidth(value)
 
-    /// Adjusts the Date property in the visual element
-    let withDate (value: System.DateTime) (x: XamlElement) = x.Date(value)
 
     /// Adjusts the Date property in the visual element
     let date (value: System.DateTime) (x: XamlElement) = x.Date(value)
 
-    /// Adjusts the Format property in the visual element
-    let withFormat (value: string) (x: XamlElement) = x.Format(value)
 
     /// Adjusts the Format property in the visual element
     let format (value: string) (x: XamlElement) = x.Format(value)
 
-    /// Adjusts the MinimumDate property in the visual element
-    let withMinimumDate (value: System.DateTime) (x: XamlElement) = x.MinimumDate(value)
 
     /// Adjusts the MinimumDate property in the visual element
     let minimumDate (value: System.DateTime) (x: XamlElement) = x.MinimumDate(value)
 
-    /// Adjusts the MaximumDate property in the visual element
-    let withMaximumDate (value: System.DateTime) (x: XamlElement) = x.MaximumDate(value)
 
     /// Adjusts the MaximumDate property in the visual element
     let maximumDate (value: System.DateTime) (x: XamlElement) = x.MaximumDate(value)
 
-    /// Adjusts the DateSelected property in the visual element
-    let withDateSelected (value: Xamarin.Forms.DateChangedEventArgs -> unit) (x: XamlElement) = x.DateSelected(value)
 
     /// Adjusts the DateSelected property in the visual element
     let dateSelected (value: Xamarin.Forms.DateChangedEventArgs -> unit) (x: XamlElement) = x.DateSelected(value)
 
-    /// Adjusts the PickerItemsSource property in the visual element
-    let withPickerItemsSource (value: seq<'T>) (x: XamlElement) = x.PickerItemsSource(value)
 
     /// Adjusts the PickerItemsSource property in the visual element
     let pickerItemsSource (value: seq<'T>) (x: XamlElement) = x.PickerItemsSource(value)
 
-    /// Adjusts the SelectedIndex property in the visual element
-    let withSelectedIndex (value: int) (x: XamlElement) = x.SelectedIndex(value)
 
     /// Adjusts the SelectedIndex property in the visual element
     let selectedIndex (value: int) (x: XamlElement) = x.SelectedIndex(value)
 
-    /// Adjusts the Title property in the visual element
-    let withTitle (value: string) (x: XamlElement) = x.Title(value)
 
     /// Adjusts the Title property in the visual element
     let title (value: string) (x: XamlElement) = x.Title(value)
 
-    /// Adjusts the SelectedIndexChanged property in the visual element
-    let withSelectedIndexChanged (value: (int * 'T option) -> unit) (x: XamlElement) = x.SelectedIndexChanged(value)
 
     /// Adjusts the SelectedIndexChanged property in the visual element
     let selectedIndexChanged (value: (int * 'T option) -> unit) (x: XamlElement) = x.SelectedIndexChanged(value)
 
-    /// Adjusts the OutlineColor property in the visual element
-    let withOutlineColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.OutlineColor(value)
 
     /// Adjusts the OutlineColor property in the visual element
     let outlineColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.OutlineColor(value)
 
-    /// Adjusts the FrameCornerRadius property in the visual element
-    let withFrameCornerRadius (value: single) (x: XamlElement) = x.FrameCornerRadius(value)
 
     /// Adjusts the FrameCornerRadius property in the visual element
     let frameCornerRadius (value: single) (x: XamlElement) = x.FrameCornerRadius(value)
 
-    /// Adjusts the HasShadow property in the visual element
-    let withHasShadow (value: bool) (x: XamlElement) = x.HasShadow(value)
 
     /// Adjusts the HasShadow property in the visual element
     let hasShadow (value: bool) (x: XamlElement) = x.HasShadow(value)
 
-    /// Adjusts the ImageSource property in the visual element
-    let withImageSource (value: string) (x: XamlElement) = x.ImageSource(value)
 
     /// Adjusts the ImageSource property in the visual element
     let imageSource (value: string) (x: XamlElement) = x.ImageSource(value)
 
-    /// Adjusts the Aspect property in the visual element
-    let withAspect (value: Xamarin.Forms.Aspect) (x: XamlElement) = x.Aspect(value)
 
     /// Adjusts the Aspect property in the visual element
     let aspect (value: Xamarin.Forms.Aspect) (x: XamlElement) = x.Aspect(value)
 
-    /// Adjusts the IsOpaque property in the visual element
-    let withIsOpaque (value: bool) (x: XamlElement) = x.IsOpaque(value)
 
     /// Adjusts the IsOpaque property in the visual element
     let isOpaque (value: bool) (x: XamlElement) = x.IsOpaque(value)
 
-    /// Adjusts the Keyboard property in the visual element
-    let withKeyboard (value: Xamarin.Forms.Keyboard) (x: XamlElement) = x.Keyboard(value)
 
     /// Adjusts the Keyboard property in the visual element
     let keyboard (value: Xamarin.Forms.Keyboard) (x: XamlElement) = x.Keyboard(value)
 
-    /// Adjusts the EditorCompleted property in the visual element
-    let withEditorCompleted (value: string -> unit) (x: XamlElement) = x.EditorCompleted(value)
 
     /// Adjusts the EditorCompleted property in the visual element
     let editorCompleted (value: string -> unit) (x: XamlElement) = x.EditorCompleted(value)
 
-    /// Adjusts the TextChanged property in the visual element
-    let withTextChanged (value: Xamarin.Forms.TextChangedEventArgs -> unit) (x: XamlElement) = x.TextChanged(value)
 
     /// Adjusts the TextChanged property in the visual element
     let textChanged (value: Xamarin.Forms.TextChangedEventArgs -> unit) (x: XamlElement) = x.TextChanged(value)
 
-    /// Adjusts the IsPassword property in the visual element
-    let withIsPassword (value: bool) (x: XamlElement) = x.IsPassword(value)
 
     /// Adjusts the IsPassword property in the visual element
     let isPassword (value: bool) (x: XamlElement) = x.IsPassword(value)
 
-    /// Adjusts the EntryCompleted property in the visual element
-    let withEntryCompleted (value: string -> unit) (x: XamlElement) = x.EntryCompleted(value)
 
     /// Adjusts the EntryCompleted property in the visual element
     let entryCompleted (value: string -> unit) (x: XamlElement) = x.EntryCompleted(value)
 
-    /// Adjusts the Label property in the visual element
-    let withLabel (value: string) (x: XamlElement) = x.Label(value)
 
     /// Adjusts the Label property in the visual element
     let label (value: string) (x: XamlElement) = x.Label(value)
 
-    /// Adjusts the VerticalTextAlignment property in the visual element
-    let withVerticalTextAlignment (value: Xamarin.Forms.TextAlignment) (x: XamlElement) = x.VerticalTextAlignment(value)
 
     /// Adjusts the VerticalTextAlignment property in the visual element
     let verticalTextAlignment (value: Xamarin.Forms.TextAlignment) (x: XamlElement) = x.VerticalTextAlignment(value)
 
-    /// Adjusts the IsClippedToBounds property in the visual element
-    let withIsClippedToBounds (value: bool) (x: XamlElement) = x.IsClippedToBounds(value)
 
     /// Adjusts the IsClippedToBounds property in the visual element
     let isClippedToBounds (value: bool) (x: XamlElement) = x.IsClippedToBounds(value)
 
-    /// Adjusts the Padding property in the visual element
-    let withPadding (value: obj) (x: XamlElement) = x.Padding(value)
 
     /// Adjusts the Padding property in the visual element
     let padding (value: obj) (x: XamlElement) = x.Padding(value)
 
-    /// Adjusts the StackOrientation property in the visual element
-    let withStackOrientation (value: Xamarin.Forms.StackOrientation) (x: XamlElement) = x.StackOrientation(value)
 
     /// Adjusts the StackOrientation property in the visual element
     let stackOrientation (value: Xamarin.Forms.StackOrientation) (x: XamlElement) = x.StackOrientation(value)
 
-    /// Adjusts the Spacing property in the visual element
-    let withSpacing (value: double) (x: XamlElement) = x.Spacing(value)
 
     /// Adjusts the Spacing property in the visual element
     let spacing (value: double) (x: XamlElement) = x.Spacing(value)
 
-    /// Adjusts the ForegroundColor property in the visual element
-    let withForegroundColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.ForegroundColor(value)
 
     /// Adjusts the ForegroundColor property in the visual element
     let foregroundColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.ForegroundColor(value)
 
-    /// Adjusts the PropertyChanged property in the visual element
-    let withPropertyChanged (value: System.ComponentModel.PropertyChangedEventArgs -> unit) (x: XamlElement) = x.PropertyChanged(value)
 
     /// Adjusts the PropertyChanged property in the visual element
     let propertyChanged (value: System.ComponentModel.PropertyChangedEventArgs -> unit) (x: XamlElement) = x.PropertyChanged(value)
 
-    /// Adjusts the Time property in the visual element
-    let withTime (value: System.TimeSpan) (x: XamlElement) = x.Time(value)
 
     /// Adjusts the Time property in the visual element
     let time (value: System.TimeSpan) (x: XamlElement) = x.Time(value)
 
-    /// Adjusts the WebSource property in the visual element
-    let withWebSource (value: Xamarin.Forms.WebViewSource) (x: XamlElement) = x.WebSource(value)
 
     /// Adjusts the WebSource property in the visual element
     let webSource (value: Xamarin.Forms.WebViewSource) (x: XamlElement) = x.WebSource(value)
 
-    /// Adjusts the Navigated property in the visual element
-    let withNavigated (value: Xamarin.Forms.WebNavigatedEventArgs -> unit) (x: XamlElement) = x.Navigated(value)
 
     /// Adjusts the Navigated property in the visual element
     let navigated (value: Xamarin.Forms.WebNavigatedEventArgs -> unit) (x: XamlElement) = x.Navigated(value)
 
-    /// Adjusts the Navigating property in the visual element
-    let withNavigating (value: Xamarin.Forms.WebNavigatingEventArgs -> unit) (x: XamlElement) = x.Navigating(value)
 
     /// Adjusts the Navigating property in the visual element
     let navigating (value: Xamarin.Forms.WebNavigatingEventArgs -> unit) (x: XamlElement) = x.Navigating(value)
 
-    /// Adjusts the UseSafeArea property in the visual element
-    let withUseSafeArea (value: bool) (x: XamlElement) = x.UseSafeArea(value)
 
     /// Adjusts the UseSafeArea property in the visual element
     let useSafeArea (value: bool) (x: XamlElement) = x.UseSafeArea(value)
 
-    /// Adjusts the CarouselPage_SelectedItem property in the visual element
-    let withCarouselPage_SelectedItem (value: System.Object) (x: XamlElement) = x.CarouselPage_SelectedItem(value)
 
     /// Adjusts the CarouselPage_SelectedItem property in the visual element
     let carouselPage_SelectedItem (value: System.Object) (x: XamlElement) = x.CarouselPage_SelectedItem(value)
 
-    /// Adjusts the CurrentPage property in the visual element
-    let withCurrentPage (value: XamlElement) (x: XamlElement) = x.CurrentPage(value)
 
     /// Adjusts the CurrentPage property in the visual element
     let currentPage (value: XamlElement) (x: XamlElement) = x.CurrentPage(value)
 
-    /// Adjusts the CurrentPageChanged property in the visual element
-    let withCurrentPageChanged (value: 'T option -> unit) (x: XamlElement) = x.CurrentPageChanged(value)
 
     /// Adjusts the CurrentPageChanged property in the visual element
     let currentPageChanged (value: 'T option -> unit) (x: XamlElement) = x.CurrentPageChanged(value)
 
-    /// Adjusts the NavigationPagePages property in the visual element
-    let withNavigationPagePages (value: XamlElement list) (x: XamlElement) = x.NavigationPagePages(value)
 
     /// Adjusts the NavigationPagePages property in the visual element
     let navigationPagePages (value: XamlElement list) (x: XamlElement) = x.NavigationPagePages(value)
 
-    /// Adjusts the BackButtonTitle property in the visual element
-    let withBackButtonTitle (value: string) (x: XamlElement) = x.BackButtonTitle(value)
 
     /// Adjusts the BackButtonTitle property in the visual element
     let backButtonTitle (value: string) (x: XamlElement) = x.BackButtonTitle(value)
 
-    /// Adjusts the HasBackButton property in the visual element
-    let withHasBackButton (value: bool) (x: XamlElement) = x.HasBackButton(value)
 
     /// Adjusts the HasBackButton property in the visual element
     let hasBackButton (value: bool) (x: XamlElement) = x.HasBackButton(value)
 
-    /// Adjusts the HasNavigationBar property in the visual element
-    let withHasNavigationBar (value: bool) (x: XamlElement) = x.HasNavigationBar(value)
 
     /// Adjusts the HasNavigationBar property in the visual element
     let hasNavigationBar (value: bool) (x: XamlElement) = x.HasNavigationBar(value)
 
-    /// Adjusts the TitleIcon property in the visual element
-    let withTitleIcon (value: string) (x: XamlElement) = x.TitleIcon(value)
 
     /// Adjusts the TitleIcon property in the visual element
     let titleIcon (value: string) (x: XamlElement) = x.TitleIcon(value)
 
-    /// Adjusts the BarBackgroundColor property in the visual element
-    let withBarBackgroundColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.BarBackgroundColor(value)
 
     /// Adjusts the BarBackgroundColor property in the visual element
     let barBackgroundColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.BarBackgroundColor(value)
 
-    /// Adjusts the BarTextColor property in the visual element
-    let withBarTextColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.BarTextColor(value)
 
     /// Adjusts the BarTextColor property in the visual element
     let barTextColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.BarTextColor(value)
 
-    /// Adjusts the Popped property in the visual element
-    let withPopped (value: Xamarin.Forms.NavigationEventArgs -> unit) (x: XamlElement) = x.Popped(value)
 
     /// Adjusts the Popped property in the visual element
     let popped (value: Xamarin.Forms.NavigationEventArgs -> unit) (x: XamlElement) = x.Popped(value)
 
-    /// Adjusts the PoppedToRoot property in the visual element
-    let withPoppedToRoot (value: Xamarin.Forms.NavigationEventArgs -> unit) (x: XamlElement) = x.PoppedToRoot(value)
 
     /// Adjusts the PoppedToRoot property in the visual element
     let poppedToRoot (value: Xamarin.Forms.NavigationEventArgs -> unit) (x: XamlElement) = x.PoppedToRoot(value)
 
-    /// Adjusts the Pushed property in the visual element
-    let withPushed (value: Xamarin.Forms.NavigationEventArgs -> unit) (x: XamlElement) = x.Pushed(value)
 
     /// Adjusts the Pushed property in the visual element
     let pushed (value: Xamarin.Forms.NavigationEventArgs -> unit) (x: XamlElement) = x.Pushed(value)
 
-    /// Adjusts the OnSizeAllocatedCallback property in the visual element
-    let withOnSizeAllocatedCallback (value: (double * double) -> unit) (x: XamlElement) = x.OnSizeAllocatedCallback(value)
 
     /// Adjusts the OnSizeAllocatedCallback property in the visual element
     let onSizeAllocatedCallback (value: (double * double) -> unit) (x: XamlElement) = x.OnSizeAllocatedCallback(value)
 
-    /// Adjusts the Master property in the visual element
-    let withMaster (value: XamlElement) (x: XamlElement) = x.Master(value)
 
     /// Adjusts the Master property in the visual element
     let master (value: XamlElement) (x: XamlElement) = x.Master(value)
 
-    /// Adjusts the Detail property in the visual element
-    let withDetail (value: XamlElement) (x: XamlElement) = x.Detail(value)
 
     /// Adjusts the Detail property in the visual element
     let detail (value: XamlElement) (x: XamlElement) = x.Detail(value)
 
-    /// Adjusts the IsGestureEnabled property in the visual element
-    let withIsGestureEnabled (value: bool) (x: XamlElement) = x.IsGestureEnabled(value)
 
     /// Adjusts the IsGestureEnabled property in the visual element
     let isGestureEnabled (value: bool) (x: XamlElement) = x.IsGestureEnabled(value)
 
-    /// Adjusts the IsPresented property in the visual element
-    let withIsPresented (value: bool) (x: XamlElement) = x.IsPresented(value)
 
     /// Adjusts the IsPresented property in the visual element
     let isPresented (value: bool) (x: XamlElement) = x.IsPresented(value)
 
-    /// Adjusts the MasterBehavior property in the visual element
-    let withMasterBehavior (value: Xamarin.Forms.MasterBehavior) (x: XamlElement) = x.MasterBehavior(value)
 
     /// Adjusts the MasterBehavior property in the visual element
     let masterBehavior (value: Xamarin.Forms.MasterBehavior) (x: XamlElement) = x.MasterBehavior(value)
 
-    /// Adjusts the IsPresentedChanged property in the visual element
-    let withIsPresentedChanged (value: bool -> unit) (x: XamlElement) = x.IsPresentedChanged(value)
 
     /// Adjusts the IsPresentedChanged property in the visual element
     let isPresentedChanged (value: bool -> unit) (x: XamlElement) = x.IsPresentedChanged(value)
 
-    /// Adjusts the Height property in the visual element
-    let withHeight (value: double) (x: XamlElement) = x.Height(value)
 
     /// Adjusts the Height property in the visual element
     let height (value: double) (x: XamlElement) = x.Height(value)
 
-    /// Adjusts the TextDetail property in the visual element
-    let withTextDetail (value: string) (x: XamlElement) = x.TextDetail(value)
 
     /// Adjusts the TextDetail property in the visual element
     let textDetail (value: string) (x: XamlElement) = x.TextDetail(value)
 
-    /// Adjusts the TextDetailColor property in the visual element
-    let withTextDetailColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.TextDetailColor(value)
 
     /// Adjusts the TextDetailColor property in the visual element
     let textDetailColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.TextDetailColor(value)
 
-    /// Adjusts the TextCellCommand property in the visual element
-    let withTextCellCommand (value: unit -> unit) (x: XamlElement) = x.TextCellCommand(value)
 
     /// Adjusts the TextCellCommand property in the visual element
     let textCellCommand (value: unit -> unit) (x: XamlElement) = x.TextCellCommand(value)
 
-    /// Adjusts the TextCellCanExecute property in the visual element
-    let withTextCellCanExecute (value: bool) (x: XamlElement) = x.TextCellCanExecute(value)
 
     /// Adjusts the TextCellCanExecute property in the visual element
     let textCellCanExecute (value: bool) (x: XamlElement) = x.TextCellCanExecute(value)
 
-    /// Adjusts the View property in the visual element
-    let withView (value: XamlElement) (x: XamlElement) = x.View(value)
 
     /// Adjusts the View property in the visual element
     let view (value: XamlElement) (x: XamlElement) = x.View(value)
 
-    /// Adjusts the ListViewItems property in the visual element
-    let withListViewItems (value: seq<XamlElement>) (x: XamlElement) = x.ListViewItems(value)
 
     /// Adjusts the ListViewItems property in the visual element
     let listViewItems (value: seq<XamlElement>) (x: XamlElement) = x.ListViewItems(value)
 
-    /// Adjusts the Footer property in the visual element
-    let withFooter (value: System.Object) (x: XamlElement) = x.Footer(value)
 
     /// Adjusts the Footer property in the visual element
     let footer (value: System.Object) (x: XamlElement) = x.Footer(value)
 
-    /// Adjusts the Header property in the visual element
-    let withHeader (value: System.Object) (x: XamlElement) = x.Header(value)
 
     /// Adjusts the Header property in the visual element
     let header (value: System.Object) (x: XamlElement) = x.Header(value)
 
-    /// Adjusts the HeaderTemplate property in the visual element
-    let withHeaderTemplate (value: Xamarin.Forms.DataTemplate) (x: XamlElement) = x.HeaderTemplate(value)
 
     /// Adjusts the HeaderTemplate property in the visual element
     let headerTemplate (value: Xamarin.Forms.DataTemplate) (x: XamlElement) = x.HeaderTemplate(value)
 
-    /// Adjusts the IsGroupingEnabled property in the visual element
-    let withIsGroupingEnabled (value: bool) (x: XamlElement) = x.IsGroupingEnabled(value)
 
     /// Adjusts the IsGroupingEnabled property in the visual element
     let isGroupingEnabled (value: bool) (x: XamlElement) = x.IsGroupingEnabled(value)
 
-    /// Adjusts the IsPullToRefreshEnabled property in the visual element
-    let withIsPullToRefreshEnabled (value: bool) (x: XamlElement) = x.IsPullToRefreshEnabled(value)
 
     /// Adjusts the IsPullToRefreshEnabled property in the visual element
     let isPullToRefreshEnabled (value: bool) (x: XamlElement) = x.IsPullToRefreshEnabled(value)
 
-    /// Adjusts the IsRefreshing property in the visual element
-    let withIsRefreshing (value: bool) (x: XamlElement) = x.IsRefreshing(value)
 
     /// Adjusts the IsRefreshing property in the visual element
     let isRefreshing (value: bool) (x: XamlElement) = x.IsRefreshing(value)
 
-    /// Adjusts the RefreshCommand property in the visual element
-    let withRefreshCommand (value: unit -> unit) (x: XamlElement) = x.RefreshCommand(value)
 
     /// Adjusts the RefreshCommand property in the visual element
     let refreshCommand (value: unit -> unit) (x: XamlElement) = x.RefreshCommand(value)
 
-    /// Adjusts the ListView_SelectedItem property in the visual element
-    let withListView_SelectedItem (value: int option) (x: XamlElement) = x.ListView_SelectedItem(value)
 
     /// Adjusts the ListView_SelectedItem property in the visual element
     let listView_SelectedItem (value: int option) (x: XamlElement) = x.ListView_SelectedItem(value)
 
-    /// Adjusts the SeparatorVisibility property in the visual element
-    let withSeparatorVisibility (value: Xamarin.Forms.SeparatorVisibility) (x: XamlElement) = x.SeparatorVisibility(value)
 
     /// Adjusts the SeparatorVisibility property in the visual element
     let separatorVisibility (value: Xamarin.Forms.SeparatorVisibility) (x: XamlElement) = x.SeparatorVisibility(value)
 
-    /// Adjusts the SeparatorColor property in the visual element
-    let withSeparatorColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.SeparatorColor(value)
 
     /// Adjusts the SeparatorColor property in the visual element
     let separatorColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.SeparatorColor(value)
 
-    /// Adjusts the ItemAppearing property in the visual element
-    let withItemAppearing (value: int -> unit) (x: XamlElement) = x.ItemAppearing(value)
 
     /// Adjusts the ItemAppearing property in the visual element
     let itemAppearing (value: int -> unit) (x: XamlElement) = x.ItemAppearing(value)
 
-    /// Adjusts the ItemDisappearing property in the visual element
-    let withItemDisappearing (value: int -> unit) (x: XamlElement) = x.ItemDisappearing(value)
 
     /// Adjusts the ItemDisappearing property in the visual element
     let itemDisappearing (value: int -> unit) (x: XamlElement) = x.ItemDisappearing(value)
 
-    /// Adjusts the ListView_ItemSelected property in the visual element
-    let withListView_ItemSelected (value: int option -> unit) (x: XamlElement) = x.ListView_ItemSelected(value)
 
     /// Adjusts the ListView_ItemSelected property in the visual element
     let listView_ItemSelected (value: int option -> unit) (x: XamlElement) = x.ListView_ItemSelected(value)
 
-    /// Adjusts the ItemTapped property in the visual element
-    let withItemTapped (value: Xamarin.Forms.ItemTappedEventArgs -> unit) (x: XamlElement) = x.ItemTapped(value)
 
     /// Adjusts the ItemTapped property in the visual element
     let itemTapped (value: Xamarin.Forms.ItemTappedEventArgs -> unit) (x: XamlElement) = x.ItemTapped(value)
 
-    /// Adjusts the Refreshing property in the visual element
-    let withRefreshing (value: unit -> unit) (x: XamlElement) = x.Refreshing(value)
 
     /// Adjusts the Refreshing property in the visual element
     let refreshing (value: unit -> unit) (x: XamlElement) = x.Refreshing(value)
 
-    /// Adjusts the GroupListViewItemsSource property in the visual element
-    let withGroupListViewItemsSource (value: (XamlElement * XamlElement list) list) (x: XamlElement) = x.GroupListViewItemsSource(value)
 
     /// Adjusts the GroupListViewItemsSource property in the visual element
     let groupListViewItemsSource (value: (XamlElement * XamlElement list) list) (x: XamlElement) = x.GroupListViewItemsSource(value)
 
-    /// Adjusts the ListViewGrouped_SelectedItem property in the visual element
-    let withListViewGrouped_SelectedItem (value: (int * int) option) (x: XamlElement) = x.ListViewGrouped_SelectedItem(value)
 
     /// Adjusts the ListViewGrouped_SelectedItem property in the visual element
     let listViewGrouped_SelectedItem (value: (int * int) option) (x: XamlElement) = x.ListViewGrouped_SelectedItem(value)
 
-    /// Adjusts the ListViewGrouped_ItemSelected property in the visual element
-    let withListViewGrouped_ItemSelected (value: (int * int) option -> unit) (x: XamlElement) = x.ListViewGrouped_ItemSelected(value)
 
     /// Adjusts the ListViewGrouped_ItemSelected property in the visual element
     let listViewGrouped_ItemSelected (value: (int * int) option -> unit) (x: XamlElement) = x.ListViewGrouped_ItemSelected(value)
@@ -2312,7 +1984,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Element::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.Element>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Element>, create, update, attribs)
 
     /// Describes a VisualElement in the view
     static member VisualElement(?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -2484,7 +2156,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.VisualElement>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.VisualElement>, create, update, attribs)
 
     /// Describes a View in the view
     static member View(?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -2546,8 +2218,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -2688,7 +2360,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting View::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.View>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.View>, create, update, attribs)
 
     /// Describes a IGestureRecognizer in the view
     static member IGestureRecognizer() = 
@@ -2700,7 +2372,7 @@ type Xaml() =
 
         let update (prevOpt: XamlElement uoption) (source: XamlElement) (target:obj) = 
             ()
-        new XamlElement(typeof<Xamarin.Forms.IGestureRecognizer>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.IGestureRecognizer>, create, update, attribs)
 
     /// Describes a PanGestureRecognizer in the view
     static member PanGestureRecognizer(?touchPoints: int, ?panUpdated: Xamarin.Forms.PanUpdatedEventArgs -> unit, ?classId: string, ?styleId: string) = 
@@ -2724,7 +2396,7 @@ type Xaml() =
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPanUpdated
             match prevValueOpt, source.TryPanUpdated with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.PanUpdated.RemoveHandler(prevValue); target.PanUpdated.AddHandler(value)
             | UNone, USome value -> target.PanUpdated.AddHandler(value)
             | USome prevValue, UNone -> target.PanUpdated.RemoveHandler(prevValue)
@@ -2743,7 +2415,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting PanGestureRecognizer::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.PanGestureRecognizer>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.PanGestureRecognizer>, create, update, attribs)
 
     /// Describes a TapGestureRecognizer in the view
     static member TapGestureRecognizer(?command: unit -> unit, ?numberOfTapsRequired: int, ?classId: string, ?styleId: string) = 
@@ -2786,7 +2458,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TapGestureRecognizer::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.TapGestureRecognizer>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.TapGestureRecognizer>, create, update, attribs)
 
     /// Describes a ClickGestureRecognizer in the view
     static member ClickGestureRecognizer(?command: unit -> unit, ?numberOfClicksRequired: int, ?buttons: Xamarin.Forms.ButtonsMask, ?classId: string, ?styleId: string) = 
@@ -2837,7 +2509,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ClickGestureRecognizer::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.ClickGestureRecognizer>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.ClickGestureRecognizer>, create, update, attribs)
 
     /// Describes a PinchGestureRecognizer in the view
     static member PinchGestureRecognizer(?isPinching: bool, ?pinchUpdated: Xamarin.Forms.PinchGestureUpdatedEventArgs -> unit, ?classId: string, ?styleId: string) = 
@@ -2861,7 +2533,7 @@ type Xaml() =
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPinchUpdated
             match prevValueOpt, source.TryPinchUpdated with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.PinchUpdated.RemoveHandler(prevValue); target.PinchUpdated.AddHandler(value)
             | UNone, USome value -> target.PinchUpdated.AddHandler(value)
             | USome prevValue, UNone -> target.PinchUpdated.RemoveHandler(prevValue)
@@ -2880,7 +2552,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting PinchGestureRecognizer::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.PinchGestureRecognizer>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.PinchGestureRecognizer>, create, update, attribs)
 
     /// Describes a ActivityIndicator in the view
     static member ActivityIndicator(?color: Xamarin.Forms.Color, ?isRunning: bool, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -2957,8 +2629,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -3099,7 +2771,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ActivityIndicator::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.ActivityIndicator>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.ActivityIndicator>, create, update, attribs)
 
     /// Describes a BoxView in the view
     static member BoxView(?color: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -3168,8 +2840,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -3310,7 +2982,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting BoxView::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.BoxView>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.BoxView>, create, update, attribs)
 
     /// Describes a ProgressBar in the view
     static member ProgressBar(?progress: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -3379,8 +3051,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -3521,7 +3193,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ProgressBar::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.ProgressBar>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.ProgressBar>, create, update, attribs)
 
     /// Describes a ScrollView in the view
     static member ScrollView(?content: XamlElement, ?orientation: Xamarin.Forms.ScrollOrientation, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -3563,8 +3235,8 @@ type Xaml() =
             let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryContent
             match prevChildOpt, source.TryContent with
             // For structured objects, dependsOn on reference equality
-            | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
-            | USome prevChild, USome newChild when prevChild.TargetType = newChild.TargetType ->
+            | USome prevChild, USome newChild when identical prevChild newChild -> ()
+            | USome prevChild, USome newChild when canReuseChild prevChild newChild ->
                 newChild.UpdateIncremental(prevChild, target.Content)
             | USome _, USome newChild
             | UNone, USome newChild ->
@@ -3619,8 +3291,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -3761,7 +3433,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ScrollView::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.ScrollView>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.ScrollView>, create, update, attribs)
 
     /// Describes a SearchBar in the view
     static member SearchBar(?cancelButtonColor: Xamarin.Forms.Color, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?placeholder: string, ?placeholderColor: Xamarin.Forms.Color, ?searchCommand: unit -> unit, ?canExecute: bool, ?text: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -3902,8 +3574,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -4044,7 +3716,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.SearchBar>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.SearchBar>, create, update, attribs)
 
     /// Describes a Button in the view
     static member Button(?text: string, ?command: unit -> unit, ?canExecute: bool, ?borderColor: Xamarin.Forms.Color, ?borderWidth: double, ?commandParameter: System.Object, ?contentLayout: Xamarin.Forms.Button.ButtonContentLayout, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?image: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -4193,8 +3865,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -4335,7 +4007,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Button::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.Button>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Button>, create, update, attribs)
 
     /// Describes a Slider in the view
     static member Slider(?minimum: double, ?maximum: double, ?value: double, ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -4397,7 +4069,7 @@ type Xaml() =
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryValueChanged
             match prevValueOpt, source.TryValueChanged with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.ValueChanged.RemoveHandler(prevValue); target.ValueChanged.AddHandler(value)
             | UNone, USome value -> target.ValueChanged.AddHandler(value)
             | USome prevValue, UNone -> target.ValueChanged.RemoveHandler(prevValue)
@@ -4428,8 +4100,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -4570,7 +4242,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Slider::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.Slider>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Slider>, create, update, attribs)
 
     /// Describes a Stepper in the view
     static member Stepper(?minimum: double, ?maximum: double, ?value: double, ?increment: double, ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -4640,7 +4312,7 @@ type Xaml() =
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryValueChanged
             match prevValueOpt, source.TryValueChanged with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.ValueChanged.RemoveHandler(prevValue); target.ValueChanged.AddHandler(value)
             | UNone, USome value -> target.ValueChanged.AddHandler(value)
             | USome prevValue, UNone -> target.ValueChanged.RemoveHandler(prevValue)
@@ -4671,8 +4343,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -4813,7 +4485,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.Stepper>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Stepper>, create, update, attribs)
 
     /// Describes a Switch in the view
     static member Switch(?isToggled: bool, ?toggled: Xamarin.Forms.ToggledEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -4859,7 +4531,7 @@ type Xaml() =
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryToggled
             match prevValueOpt, source.TryToggled with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.Toggled.RemoveHandler(prevValue); target.Toggled.AddHandler(value)
             | UNone, USome value -> target.Toggled.AddHandler(value)
             | USome prevValue, UNone -> target.Toggled.RemoveHandler(prevValue)
@@ -4890,8 +4562,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -5032,7 +4704,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Switch::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.Switch>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Switch>, create, update, attribs)
 
     /// Describes a SwitchCell in the view
     static member SwitchCell(?on: bool, ?text: string, ?onChanged: Xamarin.Forms.ToggledEventArgs -> unit, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
@@ -5066,7 +4738,7 @@ type Xaml() =
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryOnChanged
             match prevValueOpt, source.TryOnChanged with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.OnChanged.RemoveHandler(prevValue); target.OnChanged.AddHandler(value)
             | UNone, USome value -> target.OnChanged.AddHandler(value)
             | USome prevValue, UNone -> target.OnChanged.RemoveHandler(prevValue)
@@ -5099,7 +4771,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting SwitchCell::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.SwitchCell>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.SwitchCell>, create, update, attribs)
 
     /// Describes a TableView in the view
     static member TableView(?intent: Xamarin.Forms.TableIntent, ?hasUnevenRows: bool, ?rowHeight: int, ?items: (string * XamlElement list) list, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -5188,8 +4860,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -5330,7 +5002,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TableView::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.TableView>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.TableView>, create, update, attribs)
 
     /// Describes a Grid in the view
     static member Grid(?rowdefs: obj list, ?coldefs: obj list, ?rowSpacing: double, ?columnSpacing: double, ?children: XamlElement list, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -5377,15 +5049,15 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.RowDefinitions
                 (fun (x:XamlElement) -> x.CreateAsRowDefinition())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevCollOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryGridColumnDefinitions
             let collOpt = source.TryGridColumnDefinitions
             updateIList prevCollOpt collOpt target.ColumnDefinitions
                 (fun (x:XamlElement) -> x.CreateAsColumnDefinition())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRowSpacing
             let valueOpt = source.TryRowSpacing
             match prevValueOpt, valueOpt with
@@ -5430,8 +5102,8 @@ type Xaml() =
                     | USome _, UNone -> Xamarin.Forms.Grid.SetColumnSpan(targetChild, 0) // TODO: not always perfect, should set back to original default?
                     | _ -> ()
                     ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsClippedToBounds
             let valueOpt = source.TryIsClippedToBounds
             match prevValueOpt, valueOpt with
@@ -5472,8 +5144,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -5614,7 +5286,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.Grid>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Grid>, create, update, attribs)
 
     /// Describes a AbsoluteLayout in the view
     static member AbsoluteLayout(?children: XamlElement list, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -5670,8 +5342,8 @@ type Xaml() =
                     | USome _, UNone -> Xamarin.Forms.AbsoluteLayout.SetLayoutFlags(targetChild, Xamarin.Forms.AbsoluteLayoutFlags.None) // TODO: not always perfect, should set back to original default?
                     | _ -> ()
                     ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsClippedToBounds
             let valueOpt = source.TryIsClippedToBounds
             match prevValueOpt, valueOpt with
@@ -5712,8 +5384,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -5854,7 +5526,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting AbsoluteLayout::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.AbsoluteLayout>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.AbsoluteLayout>, create, update, attribs)
 
     /// Describes a RelativeLayout in the view
     static member RelativeLayout(?children: XamlElement list, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -5928,8 +5600,8 @@ type Xaml() =
                     | USome _, UNone -> Xamarin.Forms.RelativeLayout.SetYConstraint(targetChild, null) // TODO: not always perfect, should set back to original default?
                     | _ -> ()
                     ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsClippedToBounds
             let valueOpt = source.TryIsClippedToBounds
             match prevValueOpt, valueOpt with
@@ -5970,8 +5642,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -6112,7 +5784,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RelativeLayout::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.RelativeLayout>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.RelativeLayout>, create, update, attribs)
 
     /// Describes a RowDefinition in the view
     static member RowDefinition(?height: obj) = 
@@ -6131,7 +5803,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting RowDefinition::Height "); target.Height <-  value
             | USome _, UNone -> target.Height <- Xamarin.Forms.GridLength.Auto
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.RowDefinition>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.RowDefinition>, create, update, attribs)
 
     /// Describes a ColumnDefinition in the view
     static member ColumnDefinition(?width: obj) = 
@@ -6150,7 +5822,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ColumnDefinition::Width "); target.Width <-  value
             | USome _, UNone -> target.Width <- Xamarin.Forms.GridLength.Auto
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.ColumnDefinition>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.ColumnDefinition>, create, update, attribs)
 
     /// Describes a ContentView in the view
     static member ContentView(?content: XamlElement, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -6191,8 +5863,8 @@ type Xaml() =
             let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryContent
             match prevChildOpt, source.TryContent with
             // For structured objects, dependsOn on reference equality
-            | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
-            | USome prevChild, USome newChild when prevChild.TargetType = newChild.TargetType ->
+            | USome prevChild, USome newChild when identical prevChild newChild -> ()
+            | USome prevChild, USome newChild when canReuseChild prevChild newChild ->
                 newChild.UpdateIncremental(prevChild, target.Content)
             | USome _, USome newChild
             | UNone, USome newChild ->
@@ -6240,8 +5912,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -6382,7 +6054,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentView::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.ContentView>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.ContentView>, create, update, attribs)
 
     /// Describes a TemplatedView in the view
     static member TemplatedView(?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -6459,8 +6131,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -6601,7 +6273,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TemplatedView::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.TemplatedView>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.TemplatedView>, create, update, attribs)
 
     /// Describes a DatePicker in the view
     static member DatePicker(?date: System.DateTime, ?format: string, ?minimumDate: System.DateTime, ?maximumDate: System.DateTime, ?dateSelected: Xamarin.Forms.DateChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -6671,7 +6343,7 @@ type Xaml() =
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryDateSelected
             match prevValueOpt, source.TryDateSelected with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.DateSelected.RemoveHandler(prevValue); target.DateSelected.AddHandler(value)
             | UNone, USome value -> target.DateSelected.AddHandler(value)
             | USome prevValue, UNone -> target.DateSelected.RemoveHandler(prevValue)
@@ -6702,8 +6374,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -6844,7 +6516,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.DatePicker>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.DatePicker>, create, update, attribs)
 
     /// Describes a Picker in the view
     static member Picker(?itemsSource: seq<'T>, ?selectedIndex: int, ?title: string, ?textColor: Xamarin.Forms.Color, ?selectedIndexChanged: (int * 'T option) -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -6914,7 +6586,7 @@ type Xaml() =
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TrySelectedIndexChanged
             match prevValueOpt, source.TrySelectedIndexChanged with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.SelectedIndexChanged.RemoveHandler(prevValue); target.SelectedIndexChanged.AddHandler(value)
             | UNone, USome value -> target.SelectedIndexChanged.AddHandler(value)
             | USome prevValue, UNone -> target.SelectedIndexChanged.RemoveHandler(prevValue)
@@ -6945,8 +6617,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -7087,7 +6759,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.Picker>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Picker>, create, update, attribs)
 
     /// Describes a Frame in the view
     static member Frame(?outlineColor: Xamarin.Forms.Color, ?cornerRadius: single, ?hasShadow: bool, ?content: XamlElement, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -7152,8 +6824,8 @@ type Xaml() =
             let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryContent
             match prevChildOpt, source.TryContent with
             // For structured objects, dependsOn on reference equality
-            | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
-            | USome prevChild, USome newChild when prevChild.TargetType = newChild.TargetType ->
+            | USome prevChild, USome newChild when identical prevChild newChild -> ()
+            | USome prevChild, USome newChild when canReuseChild prevChild newChild ->
                 newChild.UpdateIncremental(prevChild, target.Content)
             | USome _, USome newChild
             | UNone, USome newChild ->
@@ -7201,8 +6873,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -7343,7 +7015,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.Frame>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Frame>, create, update, attribs)
 
     /// Describes a Image in the view
     static member Image(?source: string, ?aspect: Xamarin.Forms.Aspect, ?isOpaque: bool, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -7428,8 +7100,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -7570,7 +7242,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Image::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.Image>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Image>, create, update, attribs)
 
     /// Describes a InputView in the view
     static member InputView(?keyboard: Xamarin.Forms.Keyboard, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -7640,8 +7312,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -7782,7 +7454,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting InputView::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.InputView>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.InputView>, create, update, attribs)
 
     /// Describes a Editor in the view
     static member Editor(?text: string, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?completed: string -> unit, ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?keyboard: Xamarin.Forms.Keyboard, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -7862,14 +7534,14 @@ type Xaml() =
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryEditorCompleted
             match prevValueOpt, source.TryEditorCompleted with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.Completed.RemoveHandler(prevValue); target.Completed.AddHandler(value)
             | UNone, USome value -> target.Completed.AddHandler(value)
             | USome prevValue, UNone -> target.Completed.RemoveHandler(prevValue)
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTextChanged
             match prevValueOpt, source.TryTextChanged with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.TextChanged.RemoveHandler(prevValue); target.TextChanged.AddHandler(value)
             | UNone, USome value -> target.TextChanged.AddHandler(value)
             | USome prevValue, UNone -> target.TextChanged.RemoveHandler(prevValue)
@@ -7907,8 +7579,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -8049,7 +7721,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.Editor>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Editor>, create, update, attribs)
 
     /// Describes a Entry in the view
     static member Entry(?text: string, ?placeholder: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?placeholderColor: Xamarin.Forms.Color, ?isPassword: bool, ?completed: string -> unit, ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?keyboard: Xamarin.Forms.Keyboard, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -8161,14 +7833,14 @@ type Xaml() =
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryEntryCompleted
             match prevValueOpt, source.TryEntryCompleted with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.Completed.RemoveHandler(prevValue); target.Completed.AddHandler(value)
             | UNone, USome value -> target.Completed.AddHandler(value)
             | USome prevValue, UNone -> target.Completed.RemoveHandler(prevValue)
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryTextChanged
             match prevValueOpt, source.TryTextChanged with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.TextChanged.RemoveHandler(prevValue); target.TextChanged.AddHandler(value)
             | UNone, USome value -> target.TextChanged.AddHandler(value)
             | USome prevValue, UNone -> target.TextChanged.RemoveHandler(prevValue)
@@ -8206,8 +7878,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -8348,7 +8020,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.Entry>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Entry>, create, update, attribs)
 
     /// Describes a EntryCell in the view
     static member EntryCell(?label: string, ?text: string, ?keyboard: Xamarin.Forms.Keyboard, ?placeholder: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?completed: string -> unit, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
@@ -8406,7 +8078,7 @@ type Xaml() =
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryEntryCompleted
             match prevValueOpt, source.TryEntryCompleted with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.Completed.RemoveHandler(prevValue); target.Completed.AddHandler(value)
             | UNone, USome value -> target.Completed.AddHandler(value)
             | USome prevValue, UNone -> target.Completed.RemoveHandler(prevValue)
@@ -8439,7 +8111,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting EntryCell::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.EntryCell>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.EntryCell>, create, update, attribs)
 
     /// Describes a Label in the view
     static member Label(?text: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?verticalTextAlignment: Xamarin.Forms.TextAlignment, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -8556,8 +8228,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -8698,7 +8370,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Label::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.Label>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Label>, create, update, attribs)
 
     /// Describes a Layout in the view
     static member Layout(?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -8776,8 +8448,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -8918,7 +8590,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Layout::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.Layout>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Layout>, create, update, attribs)
 
     /// Describes a StackLayout in the view
     static member StackLayout(?children: XamlElement list, ?orientation: Xamarin.Forms.StackOrientation, ?spacing: double, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -8963,8 +8635,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.Children
                 (fun (x:XamlElement) -> x.CreateAsView())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryStackOrientation
             let valueOpt = source.TryStackOrientation
             match prevValueOpt, valueOpt with
@@ -9019,8 +8691,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -9161,7 +8833,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting StackLayout::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.StackLayout>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.StackLayout>, create, update, attribs)
 
     /// Describes a Span in the view
     static member Span(?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?backgroundColor: Xamarin.Forms.Color, ?foregroundColor: Xamarin.Forms.Color, ?text: string, ?propertyChanged: System.ComponentModel.PropertyChangedEventArgs -> unit) = 
@@ -9223,12 +8895,12 @@ type Xaml() =
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPropertyChanged
             match prevValueOpt, source.TryPropertyChanged with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.PropertyChanged.RemoveHandler(prevValue); target.PropertyChanged.AddHandler(value)
             | UNone, USome value -> target.PropertyChanged.AddHandler(value)
             | USome prevValue, UNone -> target.PropertyChanged.RemoveHandler(prevValue)
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.Span>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Span>, create, update, attribs)
 
     /// Describes a TimePicker in the view
     static member TimePicker(?time: System.TimeSpan, ?format: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -9313,8 +8985,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -9455,7 +9127,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TimePicker::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.TimePicker>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.TimePicker>, create, update, attribs)
 
     /// Describes a WebView in the view
     static member WebView(?source: Xamarin.Forms.WebViewSource, ?navigated: Xamarin.Forms.WebNavigatedEventArgs -> unit, ?navigating: Xamarin.Forms.WebNavigatingEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -9502,14 +9174,14 @@ type Xaml() =
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryNavigated
             match prevValueOpt, source.TryNavigated with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.Navigated.RemoveHandler(prevValue); target.Navigated.AddHandler(value)
             | UNone, USome value -> target.Navigated.AddHandler(value)
             | USome prevValue, UNone -> target.Navigated.RemoveHandler(prevValue)
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryNavigating
             match prevValueOpt, source.TryNavigating with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.Navigating.RemoveHandler(prevValue); target.Navigating.AddHandler(value)
             | UNone, USome value -> target.Navigating.AddHandler(value)
             | USome prevValue, UNone -> target.Navigating.RemoveHandler(prevValue)
@@ -9540,8 +9212,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -9682,7 +9354,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting WebView::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.WebView>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.WebView>, create, update, attribs)
 
     /// Describes a Page in the view
     static member Page(?title: string, ?padding: obj, ?useSafeArea: bool, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -9873,7 +9545,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Page::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.Page>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Page>, create, update, attribs)
 
     /// Describes a CarouselPage in the view
     static member CarouselPage(?children: XamlElement list, ?selectedItem: System.Object, ?currentPage: XamlElement, ?currentPageChanged: 'T option -> unit, ?title: string, ?padding: obj, ?useSafeArea: bool, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -9916,8 +9588,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.Children
                 (fun (x:XamlElement) -> x.CreateAsContentPage())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryCarouselPage_SelectedItem
             let valueOpt = source.TryCarouselPage_SelectedItem
             match prevValueOpt, valueOpt with
@@ -9928,8 +9600,8 @@ type Xaml() =
             let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryCurrentPage
             match prevChildOpt, source.TryCurrentPage with
             // For structured objects, dependsOn on reference equality
-            | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
-            | USome prevChild, USome newChild when prevChild.TargetType = newChild.TargetType ->
+            | USome prevChild, USome newChild when identical prevChild newChild -> ()
+            | USome prevChild, USome newChild when canReuseChild prevChild newChild ->
                 newChild.UpdateIncremental(prevChild, target.CurrentPage)
             | USome _, USome newChild
             | UNone, USome newChild ->
@@ -9939,7 +9611,7 @@ type Xaml() =
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryCurrentPageChanged
             match prevValueOpt, source.TryCurrentPageChanged with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.CurrentPageChanged.RemoveHandler(prevValue); target.CurrentPageChanged.AddHandler(value)
             | UNone, USome value -> target.CurrentPageChanged.AddHandler(value)
             | USome prevValue, UNone -> target.CurrentPageChanged.RemoveHandler(prevValue)
@@ -10101,7 +9773,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.CarouselPage>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.CarouselPage>, create, update, attribs)
 
     /// Describes a NavigationPage in the view
     static member NavigationPage(?pages: XamlElement list, ?barBackgroundColor: Xamarin.Forms.Color, ?barTextColor: Xamarin.Forms.Color, ?popped: Xamarin.Forms.NavigationEventArgs -> unit, ?poppedToRoot: Xamarin.Forms.NavigationEventArgs -> unit, ?pushed: Xamarin.Forms.NavigationEventArgs -> unit, ?title: string, ?padding: obj, ?useSafeArea: bool, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -10186,21 +9858,21 @@ type Xaml() =
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPopped
             match prevValueOpt, source.TryPopped with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.Popped.RemoveHandler(prevValue); target.Popped.AddHandler(value)
             | UNone, USome value -> target.Popped.AddHandler(value)
             | USome prevValue, UNone -> target.Popped.RemoveHandler(prevValue)
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPoppedToRoot
             match prevValueOpt, source.TryPoppedToRoot with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.PoppedToRoot.RemoveHandler(prevValue); target.PoppedToRoot.AddHandler(value)
             | UNone, USome value -> target.PoppedToRoot.AddHandler(value)
             | USome prevValue, UNone -> target.PoppedToRoot.RemoveHandler(prevValue)
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryPushed
             match prevValueOpt, source.TryPushed with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.Pushed.RemoveHandler(prevValue); target.Pushed.AddHandler(value)
             | UNone, USome value -> target.Pushed.AddHandler(value)
             | USome prevValue, UNone -> target.Pushed.RemoveHandler(prevValue)
@@ -10362,7 +10034,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting NavigationPage::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.NavigationPage>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.NavigationPage>, create, update, attribs)
 
     /// Describes a TabbedPage in the view
     static member TabbedPage(?children: XamlElement list, ?barBackgroundColor: Xamarin.Forms.Color, ?barTextColor: Xamarin.Forms.Color, ?title: string, ?padding: obj, ?useSafeArea: bool, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -10404,8 +10076,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.Children
                 (fun (x:XamlElement) -> x.CreateAsPage())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryBarBackgroundColor
             let valueOpt = source.TryBarBackgroundColor
             match prevValueOpt, valueOpt with
@@ -10577,7 +10249,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TabbedPage::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.TabbedPage>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.TabbedPage>, create, update, attribs)
 
     /// Describes a ContentPage in the view
     static member ContentPage(?content: XamlElement, ?onSizeAllocated: (double * double) -> unit, ?title: string, ?padding: obj, ?useSafeArea: bool, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -10616,8 +10288,8 @@ type Xaml() =
             let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryContent
             match prevChildOpt, source.TryContent with
             // For structured objects, dependsOn on reference equality
-            | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
-            | USome prevChild, USome newChild when prevChild.TargetType = newChild.TargetType ->
+            | USome prevChild, USome newChild when identical prevChild newChild -> ()
+            | USome prevChild, USome newChild when canReuseChild prevChild newChild ->
                 newChild.UpdateIncremental(prevChild, target.Content)
             | USome _, USome newChild
             | UNone, USome newChild ->
@@ -10785,7 +10457,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ContentPage::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.ContentPage>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.ContentPage>, create, update, attribs)
 
     /// Describes a MasterDetailPage in the view
     static member MasterDetailPage(?master: XamlElement, ?detail: XamlElement, ?isGestureEnabled: bool, ?isPresented: bool, ?masterBehavior: Xamarin.Forms.MasterBehavior, ?isPresentedChanged: bool -> unit, ?title: string, ?padding: obj, ?useSafeArea: bool, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -10828,8 +10500,8 @@ type Xaml() =
             let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryMaster
             match prevChildOpt, source.TryMaster with
             // For structured objects, dependsOn on reference equality
-            | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
-            | USome prevChild, USome newChild when prevChild.TargetType = newChild.TargetType ->
+            | USome prevChild, USome newChild when identical prevChild newChild -> ()
+            | USome prevChild, USome newChild when canReuseChild prevChild newChild ->
                 newChild.UpdateIncremental(prevChild, target.Master)
             | USome _, USome newChild
             | UNone, USome newChild ->
@@ -10840,8 +10512,8 @@ type Xaml() =
             let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryDetail
             match prevChildOpt, source.TryDetail with
             // For structured objects, dependsOn on reference equality
-            | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
-            | USome prevChild, USome newChild when prevChild.TargetType = newChild.TargetType ->
+            | USome prevChild, USome newChild when identical prevChild newChild -> ()
+            | USome prevChild, USome newChild when canReuseChild prevChild newChild ->
                 newChild.UpdateIncremental(prevChild, target.Detail)
             | USome _, USome newChild
             | UNone, USome newChild ->
@@ -10872,7 +10544,7 @@ type Xaml() =
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryIsPresentedChanged
             match prevValueOpt, source.TryIsPresentedChanged with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.IsPresentedChanged.RemoveHandler(prevValue); target.IsPresentedChanged.AddHandler(value)
             | UNone, USome value -> target.IsPresentedChanged.AddHandler(value)
             | USome prevValue, UNone -> target.IsPresentedChanged.RemoveHandler(prevValue)
@@ -11034,7 +10706,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting MasterDetailPage::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.MasterDetailPage>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.MasterDetailPage>, create, update, attribs)
 
     /// Describes a Cell in the view
     static member Cell(?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
@@ -11078,7 +10750,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting Cell::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.Cell>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.Cell>, create, update, attribs)
 
     /// Describes a TextCell in the view
     static member TextCell(?text: string, ?detail: string, ?textColor: Xamarin.Forms.Color, ?detailColor: Xamarin.Forms.Color, ?command: unit -> unit, ?canExecute: bool, ?commandParameter: System.Object, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
@@ -11169,7 +10841,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting TextCell::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.TextCell>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.TextCell>, create, update, attribs)
 
     /// Describes a ImageCell in the view
     static member ImageCell(?imageSource: string, ?text: string, ?detail: string, ?textColor: Xamarin.Forms.Color, ?detailColor: Xamarin.Forms.Color, ?command: unit -> unit, ?canExecute: bool, ?commandParameter: System.Object, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
@@ -11268,7 +10940,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ImageCell::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.ImageCell>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.ImageCell>, create, update, attribs)
 
     /// Describes a ViewCell in the view
     static member ViewCell(?view: XamlElement, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
@@ -11287,8 +10959,8 @@ type Xaml() =
             let prevChildOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryView
             match prevChildOpt, source.TryView with
             // For structured objects, dependsOn on reference equality
-            | USome prevChild, USome newChild when System.Object.ReferenceEquals(prevChild, newChild) -> ()
-            | USome prevChild, USome newChild when prevChild.TargetType = newChild.TargetType ->
+            | USome prevChild, USome newChild when identical prevChild newChild -> ()
+            | USome prevChild, USome newChild when canReuseChild prevChild newChild ->
                 newChild.UpdateIncremental(prevChild, target.View)
             | USome _, USome newChild
             | UNone, USome newChild ->
@@ -11324,7 +10996,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ViewCell::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.ViewCell>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.ViewCell>, create, update, attribs)
 
     /// Describes a ListView in the view
     static member ListView(?items: seq<XamlElement>, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?headerTemplate: Xamarin.Forms.DataTemplate, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: int option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: int -> unit, ?itemDisappearing: int -> unit, ?itemSelected: int option -> unit, ?itemTapped: Xamarin.Forms.ItemTappedEventArgs -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -11466,35 +11138,35 @@ type Xaml() =
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryItemAppearing
             match prevValueOpt, source.TryItemAppearing with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.ItemAppearing.RemoveHandler(prevValue); target.ItemAppearing.AddHandler(value)
             | UNone, USome value -> target.ItemAppearing.AddHandler(value)
             | USome prevValue, UNone -> target.ItemAppearing.RemoveHandler(prevValue)
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryItemDisappearing
             match prevValueOpt, source.TryItemDisappearing with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.ItemDisappearing.RemoveHandler(prevValue); target.ItemDisappearing.AddHandler(value)
             | UNone, USome value -> target.ItemDisappearing.AddHandler(value)
             | USome prevValue, UNone -> target.ItemDisappearing.RemoveHandler(prevValue)
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryListView_ItemSelected
             match prevValueOpt, source.TryListView_ItemSelected with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.ItemSelected.RemoveHandler(prevValue); target.ItemSelected.AddHandler(value)
             | UNone, USome value -> target.ItemSelected.AddHandler(value)
             | USome prevValue, UNone -> target.ItemSelected.RemoveHandler(prevValue)
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryItemTapped
             match prevValueOpt, source.TryItemTapped with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.ItemTapped.RemoveHandler(prevValue); target.ItemTapped.AddHandler(value)
             | UNone, USome value -> target.ItemTapped.AddHandler(value)
             | USome prevValue, UNone -> target.ItemTapped.RemoveHandler(prevValue)
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRefreshing
             match prevValueOpt, source.TryRefreshing with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.Refreshing.RemoveHandler(prevValue); target.Refreshing.AddHandler(value)
             | UNone, USome value -> target.Refreshing.AddHandler(value)
             | USome prevValue, UNone -> target.Refreshing.RemoveHandler(prevValue)
@@ -11525,8 +11197,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -11667,7 +11339,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.ListView>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.ListView>, create, update, attribs)
 
     /// Describes a ListViewGrouped in the view
     static member ListViewGrouped(?items: (XamlElement * XamlElement list) list, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: (int * int) option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: int * int -> unit, ?itemDisappearing: int * int -> unit, ?itemSelected: (int * int) option -> unit, ?itemTapped: Xamarin.Forms.ItemTappedEventArgs -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
@@ -11801,35 +11473,35 @@ type Xaml() =
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryItemAppearing
             match prevValueOpt, source.TryItemAppearing with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.ItemAppearing.RemoveHandler(prevValue); target.ItemAppearing.AddHandler(value)
             | UNone, USome value -> target.ItemAppearing.AddHandler(value)
             | USome prevValue, UNone -> target.ItemAppearing.RemoveHandler(prevValue)
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryItemDisappearing
             match prevValueOpt, source.TryItemDisappearing with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.ItemDisappearing.RemoveHandler(prevValue); target.ItemDisappearing.AddHandler(value)
             | UNone, USome value -> target.ItemDisappearing.AddHandler(value)
             | USome prevValue, UNone -> target.ItemDisappearing.RemoveHandler(prevValue)
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryListViewGrouped_ItemSelected
             match prevValueOpt, source.TryListViewGrouped_ItemSelected with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.ItemSelected.RemoveHandler(prevValue); target.ItemSelected.AddHandler(value)
             | UNone, USome value -> target.ItemSelected.AddHandler(value)
             | USome prevValue, UNone -> target.ItemSelected.RemoveHandler(prevValue)
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryItemTapped
             match prevValueOpt, source.TryItemTapped with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.ItemTapped.RemoveHandler(prevValue); target.ItemTapped.AddHandler(value)
             | UNone, USome value -> target.ItemTapped.AddHandler(value)
             | USome prevValue, UNone -> target.ItemTapped.RemoveHandler(prevValue)
             | UNone, UNone -> ()
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryRefreshing
             match prevValueOpt, source.TryRefreshing with
-            | USome prevValue, USome value when System.Object.ReferenceEquals(prevValue, value) -> ()
+            | USome prevValue, USome value when identical prevValue value -> ()
             | USome prevValue, USome value -> target.Refreshing.RemoveHandler(prevValue); target.Refreshing.AddHandler(value)
             | UNone, USome value -> target.Refreshing.AddHandler(value)
             | USome prevValue, UNone -> target.Refreshing.RemoveHandler(prevValue)
@@ -11860,8 +11532,8 @@ type Xaml() =
             updateIList prevCollOpt collOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
                 (fun _ _ _ -> ())
-                canReuseDefault
-                updateDefault
+                canReuseChild
+                updateChild
             let prevValueOpt = match prevOpt with UNone -> UNone | USome prev -> prev.TryAnchorX
             let valueOpt = source.TryAnchorX
             match prevValueOpt, valueOpt with
@@ -12002,7 +11674,7 @@ type Xaml() =
             | prevOpt, USome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::StyleId "); target.StyleId <-  value
             | USome _, UNone -> target.StyleId <- null
             | UNone, UNone -> ()
-        new XamlElement(typeof<Xamarin.Forms.ListView>, create, update, Map.ofArray attribs)
+        new XamlElement(typeof<Xamarin.Forms.ListView>, create, update, attribs)
 [<AutoOpen>]
 module XamlCreateExtensions = 
 

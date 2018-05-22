@@ -119,8 +119,9 @@ module Converters =
         | :? double as v -> v
         | _ -> System.Convert.ToDouble(v)
 
-    let canReuseDefault (prevChild:XamlElement) (newChild:XamlElement) = (prevChild.TargetType = newChild.TargetType)
-    let updateDefault (prevChild:XamlElement) (newChild:XamlElement) targetChild = newChild.UpdateIncremental(prevChild, targetChild)
+    let identical (x: 'T) (y:'T) = System.Object.ReferenceEquals(x, y)
+    let canReuseChild (prevChild:XamlElement) (newChild:XamlElement) = (prevChild.TargetType = newChild.TargetType)
+    let updateChild (prevChild:XamlElement) (newChild:XamlElement) targetChild = newChild.UpdateIncremental(prevChild, targetChild)
 
     // Incremental list maintenance: given a collection, and a previous version of that collection, perform
     // a reduced number of clear/add/remove/insert operations
@@ -217,7 +218,7 @@ module Converters =
             (fun _ _ _ -> ()) // attach
             (fun _ _ -> true) // canReuse
             (fun (prevTitle,prevChild) (newTitle, newChild) target -> 
-                updateIList (USome prevChild) (USome newChild) target create (fun _ _ _ -> ()) canReuseDefault updateDefault) 
+                updateIList (USome prevChild) (USome newChild) target create (fun _ _ _ -> ()) canReuseChild updateChild) 
 
 
     /// Incremental NavigationPage maintenance: push/pop the right pages
@@ -251,7 +252,7 @@ module Converters =
                     let prevChildOpt = match prevCollOpt with UNone -> UNone | USome coll when i < coll.Length && i < n -> USome coll.[i] | _ -> UNone
                     let prevChildOpt, targetChild = 
                         if (match prevChildOpt with UNone -> true | USome prevChild -> not (obj.ReferenceEquals(prevChild, newChild))) then
-                            let mustCreate = (i >= n || match prevChildOpt with UNone -> true | USome prevChild -> not (canReuseDefault prevChild newChild))
+                            let mustCreate = (i >= n || match prevChildOpt with UNone -> true | USome prevChild -> not (canReuseChild prevChild newChild))
                             if mustCreate then
                                 //printfn "Creating child %d, prevChildOpt = %A, newChild = %A" i prevChildOpt newChild
                                 let targetChild = create newChild
@@ -264,7 +265,7 @@ module Converters =
                             else
                                 printfn "Adjust page number %d" i
                                 let targetChild = target.Pages |> Seq.item i
-                                updateDefault prevChildOpt.Value newChild targetChild
+                                updateChild prevChildOpt.Value newChild targetChild
                                 prevChildOpt, targetChild
                         else
                             //printfn "Skipping child %d" i

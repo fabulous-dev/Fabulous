@@ -23,6 +23,7 @@ module Values =
     let mutable currentPage : Page = null
 
 [<RequireQualifiedAccess>]
+/// For navigation in the half-elmish model
 module Nav =
 
     // TODO: modify the Elmish framework we use to remove this global state and pass it into all commands??
@@ -64,6 +65,7 @@ module Nav =
 
 
 [<RequireQualifiedAccess>]
+/// For combining init functions in the half-elmish model
 module Init =
     let combo2 init1 init2 () = 
         let model1 = init1()
@@ -92,6 +94,7 @@ module Init =
         (model1, model2, model3, model4, model5)
 
 [<RequireQualifiedAccess>]
+/// For combining init+cmd functions in the half-elmish model
 module InitCmd =
     let combo2 init1 init2 () = 
         let model1, cmd1 = init1()
@@ -121,6 +124,7 @@ module InitCmd =
 
 
 [<RequireQualifiedAccess>]
+/// For combining update functions in the half-elmish model
 module Update =
 
     let combo2 (update1: Update<_, _, _>) (update2: Update<_, _, _>) : Update<_,_,_> = fun msg (model1, model2) ->
@@ -156,6 +160,7 @@ module Update =
         newModel2, Cmd.batch [cmds; cmds2]
 
 [<RequireQualifiedAccess>]
+/// For combining static view functions in the half-elmish model
 module StaticView =
 
     let internal setBindingContextsUntyped (bindings: ViewBindings<'model, 'msg>) (viewModel: StaticViewModel<obj, obj>) = 
@@ -251,7 +256,7 @@ module Program =
         mkProgram (fun arg -> init arg, Cmd.none) (fun msg model -> update msg model, Cmd.none) view
 
     /// Subscribe to external source of events.
-    /// The subscription is called once - with the initial model, but can dispatch new messages at any time.
+    /// The subscription is called once - with the initial (or resumed) model, but can dispatch new messages at any time.
     let withSubscription (subscribe : 'model -> Cmd<'msg>) (program: Program<'model, 'msg, 'view>) =
         let sub model =
             Cmd.batch [ program.subscribe model
@@ -295,8 +300,7 @@ module Program =
 
         let mutable lastModel = initialModel
         let mutable lastViewData = None
-        let mutable dispatchImpl = (fun msg -> failwith "do not call dispatch during initialization")
-        let dispatch msg = dispatchImpl msg
+        let dispatch = ProgramDispatch<'msg>.Dispatch
 
         do Debug.WriteLine "run: computing static components of view"
 
@@ -365,7 +369,7 @@ module Program =
                 lastViewData <- Some viewData
                       
         do 
-           dispatchImpl <- (fun msg -> Device.BeginInvokeOnMainThread(fun () -> processMsg msg))
+           ProgramDispatch<'msg>.Dispatch <- (fun msg -> Device.BeginInvokeOnMainThread(fun () -> processMsg msg))
 
            Debug.WriteLine "updating the initial view"
 
@@ -377,13 +381,26 @@ module Program =
 
         member __.InitialMainPage = mainPage
 
-        member __.Model 
-            with get () = lastModel 
-            and set model = 
-                Debug.WriteLine "updating the view after setting the model"
-                lastModel <- model
-                updateView model
+        member __.CurrentModel = lastModel 
 
+        /// Set the current model, e.g. on resume
+        member __.SetCurrentModel(model, cmd: Cmd<_>) =
+            Debug.WriteLine "updating the view after setting the model"
+            lastModel <- model
+            updateView model
+            for sub in program.subscribe model @ cmd do
+                sub dispatch
+
+    /// Starts the Elmish dispatch loop for the page with the given Elmish program
+    and ProgramDispatch<'msg>()  = 
+        /// We store the current dispatch function for the running Elmish progream as a 
+        /// static-global because we want old view elements stored in the `dependsOn` global table
+        /// to be recyclable on resumption (when a new ProgramRunner gets created).
+        static let mutable dispatchImpl = (fun (msg: 'msg) -> failwith "do not call dispatch during initialization" : unit)
+
+        static let dispatch = id (fun msg -> dispatchImpl msg)
+
+        static member Dispatch with get () = dispatch and set v = dispatchImpl <- v
 
     /// Creates the view model for the given page and starts the Elmish dispatch loop for the matching program
     let run program = ProgramRunner(program)

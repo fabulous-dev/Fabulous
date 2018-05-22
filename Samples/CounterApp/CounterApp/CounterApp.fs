@@ -68,12 +68,14 @@ type CounterApp () as app =
         |> Program.withConsoleTrace
         |> Program.withDynamicView app
         |> Program.run
-    
 
 #if !NO_SAVE_MODEL_WITH_JSON
     let modelId = "model"
+    let serializer = MBrace.FsPickler.Json.FsPickler.CreateJsonSerializer()
+
     override __.OnSleep() = 
-        let json = MBrace.FsPickler.Json.FsPickler.CreateJsonSerializer().PickleToString(runner.Model)
+
+        let json = serializer.PickleToString(runner.CurrentModel)
         Debug.WriteLine("OnSleep: saving model into app.Properties, json = {0}", json)
 
         app.Properties.[modelId] <- json
@@ -83,10 +85,13 @@ type CounterApp () as app =
         try 
             match app.Properties.TryGetValue modelId with
             | true, (:? string as json) -> 
+
                 Debug.WriteLine("OnResume: restoring model from app.Properties, json = {0}", json)
-                let model = MBrace.FsPickler.Json.FsPickler.CreateJsonSerializer().UnPickleOfString(json)
+                let model = serializer.UnPickleOfString<App.Model>(json)
+
                 Debug.WriteLine("OnResume: restoring model from app.Properties, model = {0}", (sprintf "%0A" model))
-                runner.Model <- model
+                runner.SetCurrentModel (model, Cmd.none)
+
             | _ -> ()
         with ex -> 
             program.onError("Error while restoring model found in app.Properties", ex)
