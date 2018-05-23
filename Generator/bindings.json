@@ -283,7 +283,7 @@
 					"uniqueName": "SearchBarCanExecute",
 					"inputType": "bool",
 					"modelType": "bool",
-					"updateCode": "updateCommand (match prevOpt with UNone -> UNone | USome prev -> System.Diagnostics.Debug.WriteLine(\"Setting SearchBar::Command \"); prev.TrySearchBarCommand) prevValueOpt source.TrySearchBarCommand valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine(\"Setting SearchBar::Command \"); target.SearchCommand <- cmd)"
+					"updateCode": "updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> System.Diagnostics.Debug.WriteLine(\"Setting SearchBar::Command \"); prev.TrySearchBarCommand) prevValueOpt source.TrySearchBarCommand valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine(\"Setting SearchBar::Command \"); target.SearchCommand <- cmd)"
 				},
 				{
 					"name": "Text",
@@ -307,14 +307,14 @@
 					"uniqueName": "ButtonCommand",
 					"inputType": "unit -> unit",
 					"modelType": "unit -> unit",
-					"updateCode": "(fun _ _ _ -> ())" //updateCommand prevValueOpt (match prevOpt with UNone -> UNone | USome prev -> prev.TryButtonCanExecute) valueOpt source.TryButtonCanExecute (fun cmd -> System.Diagnostics.Debug.WriteLine(\"Setting Button::Command \"); target.Command <- cmd)"
+					"updateCode": "(fun _ _ _ -> ())" //updateCommand prevValueOpt (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryButtonCanExecute) valueOpt source.TryButtonCanExecute (fun cmd -> System.Diagnostics.Debug.WriteLine(\"Setting Button::Command \"); target.Command <- cmd)"
 				},
 				{
 					"name": "CanExecute",
 					"uniqueName": "ButtonCanExecute",
 					"inputType": "bool",
 					"modelType": "bool",
-					"updateCode": "updateCommand (match prevOpt with UNone -> UNone | USome prev -> prev.TryButtonCommand) prevValueOpt source.TryButtonCommand valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine(\"Setting Button::Command \"); target.Command <- cmd)"
+					"updateCode": "updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryButtonCommand) prevValueOpt source.TryButtonCommand valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine(\"Setting Button::Command \"); target.Command <- cmd)"
 				},
 				{
 					"name": "BorderColor",
@@ -1284,7 +1284,7 @@
 					"uniqueName": "TextCellCanExecute",
 					"inputType": "bool",
 					"modelType": "bool",
-					"updateCode": "updateCommand (match prevOpt with UNone -> UNone | USome prev -> prev.TryTextCellCommand) prevValueOpt source.TryTextCellCommand valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine(\"Setting TextCell::Command \"); target.Command <- cmd)"
+					"updateCode": "updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryTextCellCommand) prevValueOpt source.TryTextCellCommand valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine(\"Setting TextCell::Command \"); target.Command <- cmd)"
 				},
 				{
 					"name": "CommandParameter",
@@ -1398,12 +1398,14 @@
 				},
 				{
 					"name": "ItemAppearing",
+					"uniqueName": "ListView_ItemAppearing",
 					"defaultValue": "null",
 					"inputType": "int -> unit",
      			"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))"
 				},
 				{
 					"name": "ItemDisappearing",
+					"uniqueName": "ListView_ItemDisappearing",
 					"defaultValue": "null",
 					"inputType": "int -> unit",
      			"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))"
@@ -1417,9 +1419,10 @@
 				},
 				{
 					"name": "ItemTapped",
+					"uniqueName": "ListView_ItemTapped",
 					"defaultValue": "null",
-					"inputType": "Xamarin.Forms.ItemTappedEventArgs -> unit",
-					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun _sender args -> f args))"
+					"inputType": "int -> unit",
+					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))"
 				},
 				{
 					"name": "Refreshing",
@@ -1511,12 +1514,14 @@
 				},
 				{
 					"name": "ItemAppearing",
+					"uniqueName": "ListViewGrouped_ItemAppearing",
 					"defaultValue": "null",
 					"inputType": "int * int -> unit",
      			"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.Item).Value))"
 				},
 				{
 					"name": "ItemDisappearing",
+					"uniqueName": "ListViewGrouped_ItemDisappearing",
 					"defaultValue": "null",
 					"inputType": "int * int -> unit",
      			"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.Item).Value))"
@@ -1530,9 +1535,10 @@
 				},
 				{
 					"name": "ItemTapped",
+					"uniqueName": "ListViewGrouped_ItemTapped",
 					"defaultValue": "null",
-					"inputType": "Xamarin.Forms.ItemTappedEventArgs -> unit",
-					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun _sender args -> f args))"
+					"inputType": "int * int -> unit",
+					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.Item).Value))"
 				},
 				{
 					"name": "Refreshing",

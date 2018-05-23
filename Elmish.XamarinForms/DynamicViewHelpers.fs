@@ -45,6 +45,9 @@ module SimplerHelpers =
              Memoizations.T.[bkey] <- System.WeakReference<obj>(box res)
              res
         
+    /// Dispatch a message via the currently running Elmish program
+    let dispatch msg = Program.ProgramDispatch<'msg>.Dispatch msg 
+
     /// Memoize a callback that has no interesting dependencies.
     /// NOTE: use with caution. The function must not capture any values.
     let fix (f: unit -> 'Value) = 

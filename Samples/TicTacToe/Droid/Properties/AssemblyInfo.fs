@@ -3,6 +3,8 @@
 open System.Reflection
 open System.Runtime.CompilerServices
 
+[<assembly: Android.Runtime.ResourceDesigner("TicTacToe.Droid.Resources", IsApplication=true)>]
+
 [<assembly: AssemblyTitle("TicTacToe.Droid")>]
 [<assembly: AssemblyDescription("")>]
 [<assembly: AssemblyConfiguration("")>]
