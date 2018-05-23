@@ -283,7 +283,7 @@
 					"uniqueName": "SearchBarCanExecute",
 					"inputType": "bool",
 					"modelType": "bool",
-					"updateCode": "updateCommand (match prevOpt with UNone -> UNone | USome prev -> System.Diagnostics.Debug.WriteLine(\"Setting SearchBar::Command \"); prev.TrySearchBarCommand) prevValueOpt source.TrySearchBarCommand valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine(\"Setting SearchBar::Command \"); target.SearchCommand <- cmd)"
+					"updateCode": "updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> System.Diagnostics.Debug.WriteLine(\"Setting SearchBar::Command \"); prev.TrySearchBarCommand) prevValueOpt source.TrySearchBarCommand valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine(\"Setting SearchBar::Command \"); target.SearchCommand <- cmd)"
 				},
 				{
 					"name": "Text",
@@ -307,14 +307,14 @@
 					"uniqueName": "ButtonCommand",
 					"inputType": "unit -> unit",
 					"modelType": "unit -> unit",
-					"updateCode": "(fun _ _ _ -> ())" //updateCommand prevValueOpt (match prevOpt with UNone -> UNone | USome prev -> prev.TryButtonCanExecute) valueOpt source.TryButtonCanExecute (fun cmd -> System.Diagnostics.Debug.WriteLine(\"Setting Button::Command \"); target.Command <- cmd)"
+					"updateCode": "(fun _ _ _ -> ())" //updateCommand prevValueOpt (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryButtonCanExecute) valueOpt source.TryButtonCanExecute (fun cmd -> System.Diagnostics.Debug.WriteLine(\"Setting Button::Command \"); target.Command <- cmd)"
 				},
 				{
 					"name": "CanExecute",
 					"uniqueName": "ButtonCanExecute",
 					"inputType": "bool",
 					"modelType": "bool",
-					"updateCode": "updateCommand (match prevOpt with UNone -> UNone | USome prev -> prev.TryButtonCommand) prevValueOpt source.TryButtonCommand valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine(\"Setting Button::Command \"); target.Command <- cmd)"
+					"updateCode": "updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryButtonCommand) prevValueOpt source.TryButtonCommand valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine(\"Setting Button::Command \"); target.Command <- cmd)"
 				},
 				{
 					"name": "BorderColor",
@@ -689,9 +689,9 @@
 				{
 					"name": "ItemsSource",
 					"uniqueName": "PickerItemsSource",
-					"inputType": "'T list",
+					"inputType": "seq<'T>",
 					"modelType": "System.Collections.IList",
-					"convToModel": "(fun es -> es |> Array.ofList :> System.Collections.IList)",
+					"convToModel": "seqToIList",
 					"defaultValue": "null"
 				},
 				{
@@ -1076,17 +1076,17 @@
 					"modelType": "XamlElement[]",
 					"convToModel": "Array.ofList"
 				},
-				{
-					"name": "ItemsSource",
-					"inputType": "'T list",
-					"modelType": "System.Collections.Generic.IList<obj>",
-					"convToModel": "(fun es -> es |> Array.ofList |> Array.map box :> System.Collections.Generic.IList<obj>)",
-					"defaultValue": "null"
-				},
-				{
-					"name": "ItemTemplate",
-					"defaultValue": "null"
-				},
+				//{
+			//		"name": "ItemsSource",
+			//		"inputType": "'T list",
+		//			"modelType": "System.Collections.Generic.IList<obj>",
+		//			"convToModel": "(fun es -> es |> Array.ofList |> Array.map box :> System.Collections.Generic.IList<obj>)",
+		//			"defaultValue": "null"
+		//		},
+		//		{
+		//			"name": "ItemTemplate",
+		//			"defaultValue": "null"
+		//		},
 				{
 					"name": "SelectedItem",
 					"uniqueName": "CarouselPage_SelectedItem",
@@ -1133,10 +1133,10 @@
 						},
 						{
 							"name": "TitleIcon",
-    					"inputType": "string",
-		    			"modelType": "string",
-				    	"convToValue": "makeFileImageSource",
-				    	"defaultValue": "null"
+							"inputType": "string",
+							"modelType": "string",
+							"convToValue": "makeFileImageSource",
+							"defaultValue": "null"
 						}
 					]
 				},
@@ -1277,14 +1277,14 @@
 					"uniqueName": "TextCellCommand",
 					"inputType": "unit -> unit",
 					"modelType": "unit -> unit",
-					"updateCode": "(fun _ _ _ -> ())" // set below in CanExecute 
+					"updateCode": "(fun _ _ _ -> ())" // set below in CanExecute
 				},
 				{
 					"name": "CanExecute",
 					"uniqueName": "TextCellCanExecute",
 					"inputType": "bool",
 					"modelType": "bool",
-					"updateCode": "updateCommand (match prevOpt with UNone -> UNone | USome prev -> prev.TryTextCellCommand) prevValueOpt source.TryTextCellCommand valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine(\"Setting TextCell::Command \"); target.Command <- cmd)"
+					"updateCode": "updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryTextCellCommand) prevValueOpt source.TryTextCellCommand valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine(\"Setting TextCell::Command \"); target.Command <- cmd)"
 				},
 				{
 					"name": "CommandParameter",
@@ -1321,16 +1321,15 @@
 					"name": "ItemsSource",
 					"uniqueName": "ListViewItems",
 					"shortName": "items",
-					"inputType": "XamlElement list",
-					"modelType": "XamlElement[]",
-					"convToModel": "Array.ofList",
+					"inputType": "seq<XamlElement>",
+					"modelType": "seq<XamlElement>",
 					"updateCode": "updateListViewItems"
 				},
 				//{
 				//	"name": "ListViewCachingStrategy",
-			//		"inputType": "Xamarin.Forms.ListViewCachingStrategy",
-			//		"isParam": true
-			//	},
+				//		"inputType": "Xamarin.Forms.ListViewCachingStrategy",
+				//		"isParam": true
+				//	},
 				//{
 				//	"name": "ItemTemplate",
 				//	"defaultValue": "null"
@@ -1399,28 +1398,31 @@
 				},
 				{
 					"name": "ItemAppearing",
+					"uniqueName": "ListView_ItemAppearing",
 					"defaultValue": "null",
-					"inputType": "Xamarin.Forms.ItemVisibilityEventArgs -> unit",
-					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))"
+					"inputType": "int -> unit",
+     			"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))"
 				},
 				{
 					"name": "ItemDisappearing",
+					"uniqueName": "ListView_ItemDisappearing",
 					"defaultValue": "null",
-					"inputType": "Xamarin.Forms.ItemVisibilityEventArgs -> unit",
-					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))"
+					"inputType": "int -> unit",
+     			"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))"
 				},
 				{
 					"name": "ItemSelected",
 					"uniqueName": "ListView_ItemSelected",
 					"defaultValue": "null",
 					"inputType": "int option -> unit",
-					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<ListElementData<XamlElement>> |> Option.bind (fun item -> let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListElementData<XamlElement>> in items |> Seq.tryFindIndex (fun item2 -> System.Object.ReferenceEquals(item.Key, item2.Key))))))"
+     			"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (tryFindListViewItem sender args.SelectedItem)))"
 				},
 				{
 					"name": "ItemTapped",
+					"uniqueName": "ListView_ItemTapped",
 					"defaultValue": "null",
-					"inputType": "Xamarin.Forms.ItemTappedEventArgs -> unit",
-					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun _sender args -> f args))"
+					"inputType": "int -> unit",
+					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))"
 				},
 				{
 					"name": "Refreshing",
@@ -1512,28 +1514,31 @@
 				},
 				{
 					"name": "ItemAppearing",
+					"uniqueName": "ListViewGrouped_ItemAppearing",
 					"defaultValue": "null",
-					"inputType": "Xamarin.Forms.ItemVisibilityEventArgs -> unit",
-					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))"
+					"inputType": "int * int -> unit",
+     			"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.Item).Value))"
 				},
 				{
 					"name": "ItemDisappearing",
+					"uniqueName": "ListViewGrouped_ItemDisappearing",
 					"defaultValue": "null",
-					"inputType": "Xamarin.Forms.ItemVisibilityEventArgs -> unit",
-					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun _sender args -> f args))"
+					"inputType": "int * int -> unit",
+     			"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.Item).Value))"
 				},
 				{
 					"name": "ItemSelected",
 					"uniqueName": "ListViewGrouped_ItemSelected",
 					"defaultValue": "null",
 					"inputType": "(int * int) option -> unit",
-					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (args.SelectedItem |> Option.ofObj |> Option.map unbox<ListElementData<XamlElement>> |> Option.bind (fun item -> let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData<XamlElement>> in Seq.indexed items |> Seq.tryPick (fun (i,items2) -> Seq.indexed items2 |> Seq.tryPick (fun (j,item2) -> if System.Object.ReferenceEquals(item.Key, item2.Key) then Some (i,j) else None))))))"
+					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.SelectedItem)))"
 				},
 				{
 					"name": "ItemTapped",
+					"uniqueName": "ListViewGrouped_ItemTapped",
 					"defaultValue": "null",
-					"inputType": "Xamarin.Forms.ItemTappedEventArgs -> unit",
-					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun _sender args -> f args))"
+					"inputType": "int * int -> unit",
+					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.Item).Value))"
 				},
 				{
 					"name": "Refreshing",

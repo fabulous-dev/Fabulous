@@ -47,7 +47,7 @@
     <PlatformTarget>
     </PlatformTarget>
   </PropertyGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.FSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.FSharp.targets" Condition="Exists('$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.FSharp.targets')" />
   <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Compat\build\MonoAndroid81\Xamarin.Android.Support.Compat.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Compat\build\MonoAndroid81\Xamarin.Android.Support.Compat.targets')" />
   <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Annotations\build\MonoAndroid81\Xamarin.Android.Support.Annotations.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Annotations\build\MonoAndroid81\Xamarin.Android.Support.Annotations.targets')" />
   <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Arch.Core.Common.1.0.0\build\MonoAndroid80\Xamarin.Android.Arch.Core.Common.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Arch.Core.Common.1.0.0\build\MonoAndroid80\Xamarin.Android.Arch.Core.Common.targets')" />

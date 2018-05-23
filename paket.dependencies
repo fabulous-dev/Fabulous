@@ -8,8 +8,8 @@ group neutral
   source https://www.nuget.org/api/v2
   nuget FSharp.Core 4.3.3
   nuget Xamarin.Forms 2.5.0.122203
-  github fable-elmish/elmish:46f0313c26266c5703d4f7dcf111fb0038393a77 src/cmd.fs 
-  github fable-elmish/elmish:46f0313c26266c5703d4f7dcf111fb0038393a77 src/program.fs 
+  nuget FsPickler 5.2
+  nuget FsPickler.Json 5.2
 
 # Dependencies used when compiling and running Android samples. We use the latest FSharp.Core and 
 # latest Xamarin.Forms
@@ -17,7 +17,7 @@ group androidapp
   framework: monoandroid71
   source https://www.nuget.org/api/v2
   nuget FSharp.Core 4.3.3
-  nuget Xamarin.Forms
+  nuget Xamarin.Forms 2.5.1.444934
   nuget Xamarin.Android.FSharp.ResourceProvider 1.0.0.14
   nuget Xamarin.Android.Support.Animated.Vector.Drawable 25.4.0.2
   nuget Xamarin.Android.Support.Annotations 25.4.0.2
@@ -42,4 +42,4 @@ group iosapp
   framework: monotouch
   source https://www.nuget.org/api/v2
   nuget FSharp.Core 4.3.3
-  nuget Xamarin.Forms
+  nuget Xamarin.Forms 2.5.1.444934
