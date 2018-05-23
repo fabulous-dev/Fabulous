@@ -352,7 +352,9 @@ module App =
              dependsOn () (fun model () -> 
               Xaml.NonScrollingContentPage("Image", 
                [Xaml.Label(text="Image:")
-                Xaml.Image(source="http://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg", horizontalOptions=LayoutOptions.CenterAndExpand) ]))
+                Xaml.Image(source="http://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg", 
+                           horizontalOptions=LayoutOptions.CenterAndExpand,
+                           verticalOptions=LayoutOptions.CenterAndExpand) ]))
 
              dependsOn (model.PickedColorIndex) (fun model (pickedColorIndex) -> 
               Xaml.ScrollingContentPage("Picker", 
