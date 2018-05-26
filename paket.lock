@@ -112,7 +112,7 @@ NUGET
       Xamarin.Android.Support.Core.UI (25.4.0.2)
     Xamarin.Android.Support.Vector.Drawable (25.4.0.2)
       Xamarin.Android.Support.Compat (25.4.0.2)
-    Xamarin.Forms (2.5.1.444934)
+    Xamarin.Forms (3.0.0.482510)
       Xamarin.Android.Support.Design (>= 25.4.0.2)
       Xamarin.Android.Support.v4 (>= 25.4.0.2)
       Xamarin.Android.Support.v7.AppCompat (>= 25.4.0.2)
@@ -170,7 +170,7 @@ NUGET
     System.Threading.Thread (4.3)
     System.Threading.ThreadPool (4.3)
     System.Threading.Timer (4.3)
-    Xamarin.Forms (2.5.1.444934)
+    Xamarin.Forms (3.0.0.482510)
 
 GROUP neutral
 RESTRICTION: == netstandard2.0
@@ -222,4 +222,4 @@ NUGET
       Microsoft.NETCore.Platforms (>= 1.1)
       Microsoft.NETCore.Targets (>= 1.1)
       System.Runtime (>= 4.3)
-    Xamarin.Forms (2.5.0.122203)
+    Xamarin.Forms (3.0.0.482510)
