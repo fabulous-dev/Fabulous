@@ -473,7 +473,7 @@
 					"uniqueName": "TableRoot",
 					"shortName": "items",
 					"defaultValue": "null",
-					"elementType": "TableSection",
+					"elementType": "Xamarin.Forms.TableSection",
 					"modelType": "(string * XamlElement[])[]",
 					"inputType": "(string * XamlElement list) list",
 					"convToModel": "(fun es -> es |> Array.ofList |> Array.map (fun (title, es) -> (title, Array.ofList es)))",
@@ -489,7 +489,7 @@
 					"uniqueName": "GridRowDefinitions",
 					"shortName": "rowdefs",
 					"defaultValue": "null",
-					"elementType": "RowDefinition",
+					"elementType": "Xamarin.Forms.RowDefinition",
 					"modelType": "XamlElement[]",
 					"inputType": "obj list",
 					"convToModel": "(fun es -> es |> Array.ofList |> Array.map (fun h -> Xaml.RowDefinition(height=h)))"
@@ -499,7 +499,7 @@
 					"uniqueName": "GridColumnDefinitions",
 					"shortName": "coldefs",
 					"defaultValue": "null",
-					"elementType": "ColumnDefinition",
+					"elementType": "Xamarin.Forms.ColumnDefinition",
 					"modelType": "XamlElement[]",
 					"inputType": "obj list",
 					"convToModel": "(fun es -> es |> Array.ofList |> Array.map (fun h -> Xaml.ColumnDefinition(width=h)))"

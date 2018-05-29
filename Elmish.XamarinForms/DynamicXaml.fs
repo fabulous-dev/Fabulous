@@ -7,313 +7,6 @@ module XamlElementExtensions =
 
     type XamlElement with
 
-        /// Create a Xamarin.Forms.Element from the view description
-        member internal x.CreateAsElement() : Xamarin.Forms.Element =
-            match x.Create() with
-            | :? Xamarin.Forms.Element as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.Element' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.VisualElement from the view description
-        member internal x.CreateAsVisualElement() : Xamarin.Forms.VisualElement =
-            match x.Create() with
-            | :? Xamarin.Forms.VisualElement as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.VisualElement' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.View from the view description
-        member internal x.CreateAsView() : Xamarin.Forms.View =
-            match x.Create() with
-            | :? Xamarin.Forms.View as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.View' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.IGestureRecognizer from the view description
-        member internal x.CreateAsIGestureRecognizer() : Xamarin.Forms.IGestureRecognizer =
-            match x.Create() with
-            | :? Xamarin.Forms.IGestureRecognizer as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.IGestureRecognizer' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.PanGestureRecognizer from the view description
-        member internal x.CreateAsPanGestureRecognizer() : Xamarin.Forms.PanGestureRecognizer =
-            match x.Create() with
-            | :? Xamarin.Forms.PanGestureRecognizer as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.PanGestureRecognizer' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.TapGestureRecognizer from the view description
-        member internal x.CreateAsTapGestureRecognizer() : Xamarin.Forms.TapGestureRecognizer =
-            match x.Create() with
-            | :? Xamarin.Forms.TapGestureRecognizer as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.TapGestureRecognizer' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.ClickGestureRecognizer from the view description
-        member internal x.CreateAsClickGestureRecognizer() : Xamarin.Forms.ClickGestureRecognizer =
-            match x.Create() with
-            | :? Xamarin.Forms.ClickGestureRecognizer as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.ClickGestureRecognizer' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.PinchGestureRecognizer from the view description
-        member internal x.CreateAsPinchGestureRecognizer() : Xamarin.Forms.PinchGestureRecognizer =
-            match x.Create() with
-            | :? Xamarin.Forms.PinchGestureRecognizer as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.PinchGestureRecognizer' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.ActivityIndicator from the view description
-        member internal x.CreateAsActivityIndicator() : Xamarin.Forms.ActivityIndicator =
-            match x.Create() with
-            | :? Xamarin.Forms.ActivityIndicator as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.ActivityIndicator' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.BoxView from the view description
-        member internal x.CreateAsBoxView() : Xamarin.Forms.BoxView =
-            match x.Create() with
-            | :? Xamarin.Forms.BoxView as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.BoxView' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.ProgressBar from the view description
-        member internal x.CreateAsProgressBar() : Xamarin.Forms.ProgressBar =
-            match x.Create() with
-            | :? Xamarin.Forms.ProgressBar as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.ProgressBar' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.ScrollView from the view description
-        member internal x.CreateAsScrollView() : Xamarin.Forms.ScrollView =
-            match x.Create() with
-            | :? Xamarin.Forms.ScrollView as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.ScrollView' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.SearchBar from the view description
-        member internal x.CreateAsSearchBar() : Xamarin.Forms.SearchBar =
-            match x.Create() with
-            | :? Xamarin.Forms.SearchBar as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.SearchBar' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.Button from the view description
-        member internal x.CreateAsButton() : Xamarin.Forms.Button =
-            match x.Create() with
-            | :? Xamarin.Forms.Button as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.Button' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.Slider from the view description
-        member internal x.CreateAsSlider() : Xamarin.Forms.Slider =
-            match x.Create() with
-            | :? Xamarin.Forms.Slider as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.Slider' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.Stepper from the view description
-        member internal x.CreateAsStepper() : Xamarin.Forms.Stepper =
-            match x.Create() with
-            | :? Xamarin.Forms.Stepper as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.Stepper' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.Switch from the view description
-        member internal x.CreateAsSwitch() : Xamarin.Forms.Switch =
-            match x.Create() with
-            | :? Xamarin.Forms.Switch as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.Switch' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.SwitchCell from the view description
-        member internal x.CreateAsSwitchCell() : Xamarin.Forms.SwitchCell =
-            match x.Create() with
-            | :? Xamarin.Forms.SwitchCell as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.SwitchCell' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.TableView from the view description
-        member internal x.CreateAsTableView() : Xamarin.Forms.TableView =
-            match x.Create() with
-            | :? Xamarin.Forms.TableView as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.TableView' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.Grid from the view description
-        member internal x.CreateAsGrid() : Xamarin.Forms.Grid =
-            match x.Create() with
-            | :? Xamarin.Forms.Grid as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.Grid' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.AbsoluteLayout from the view description
-        member internal x.CreateAsAbsoluteLayout() : Xamarin.Forms.AbsoluteLayout =
-            match x.Create() with
-            | :? Xamarin.Forms.AbsoluteLayout as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.AbsoluteLayout' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.RelativeLayout from the view description
-        member internal x.CreateAsRelativeLayout() : Xamarin.Forms.RelativeLayout =
-            match x.Create() with
-            | :? Xamarin.Forms.RelativeLayout as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.RelativeLayout' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.RowDefinition from the view description
-        member internal x.CreateAsRowDefinition() : Xamarin.Forms.RowDefinition =
-            match x.Create() with
-            | :? Xamarin.Forms.RowDefinition as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.RowDefinition' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.ColumnDefinition from the view description
-        member internal x.CreateAsColumnDefinition() : Xamarin.Forms.ColumnDefinition =
-            match x.Create() with
-            | :? Xamarin.Forms.ColumnDefinition as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.ColumnDefinition' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.ContentView from the view description
-        member internal x.CreateAsContentView() : Xamarin.Forms.ContentView =
-            match x.Create() with
-            | :? Xamarin.Forms.ContentView as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.ContentView' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.TemplatedView from the view description
-        member internal x.CreateAsTemplatedView() : Xamarin.Forms.TemplatedView =
-            match x.Create() with
-            | :? Xamarin.Forms.TemplatedView as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.TemplatedView' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.DatePicker from the view description
-        member internal x.CreateAsDatePicker() : Xamarin.Forms.DatePicker =
-            match x.Create() with
-            | :? Xamarin.Forms.DatePicker as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.DatePicker' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.Picker from the view description
-        member internal x.CreateAsPicker() : Xamarin.Forms.Picker =
-            match x.Create() with
-            | :? Xamarin.Forms.Picker as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.Picker' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.Frame from the view description
-        member internal x.CreateAsFrame() : Xamarin.Forms.Frame =
-            match x.Create() with
-            | :? Xamarin.Forms.Frame as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.Frame' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.Image from the view description
-        member internal x.CreateAsImage() : Xamarin.Forms.Image =
-            match x.Create() with
-            | :? Xamarin.Forms.Image as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.Image' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.InputView from the view description
-        member internal x.CreateAsInputView() : Xamarin.Forms.InputView =
-            match x.Create() with
-            | :? Xamarin.Forms.InputView as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.InputView' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.Editor from the view description
-        member internal x.CreateAsEditor() : Xamarin.Forms.Editor =
-            match x.Create() with
-            | :? Xamarin.Forms.Editor as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.Editor' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.Entry from the view description
-        member internal x.CreateAsEntry() : Xamarin.Forms.Entry =
-            match x.Create() with
-            | :? Xamarin.Forms.Entry as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.Entry' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.EntryCell from the view description
-        member internal x.CreateAsEntryCell() : Xamarin.Forms.EntryCell =
-            match x.Create() with
-            | :? Xamarin.Forms.EntryCell as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.EntryCell' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.Label from the view description
-        member internal x.CreateAsLabel() : Xamarin.Forms.Label =
-            match x.Create() with
-            | :? Xamarin.Forms.Label as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.Label' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.Layout from the view description
-        member internal x.CreateAsLayout() : Xamarin.Forms.Layout =
-            match x.Create() with
-            | :? Xamarin.Forms.Layout as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.Layout' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.StackLayout from the view description
-        member internal x.CreateAsStackLayout() : Xamarin.Forms.StackLayout =
-            match x.Create() with
-            | :? Xamarin.Forms.StackLayout as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.StackLayout' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.Span from the view description
-        member internal x.CreateAsSpan() : Xamarin.Forms.Span =
-            match x.Create() with
-            | :? Xamarin.Forms.Span as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.Span' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.TimePicker from the view description
-        member internal x.CreateAsTimePicker() : Xamarin.Forms.TimePicker =
-            match x.Create() with
-            | :? Xamarin.Forms.TimePicker as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.TimePicker' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.WebView from the view description
-        member internal x.CreateAsWebView() : Xamarin.Forms.WebView =
-            match x.Create() with
-            | :? Xamarin.Forms.WebView as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.WebView' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.Page from the view description
-        member internal x.CreateAsPage() : Xamarin.Forms.Page =
-            match x.Create() with
-            | :? Xamarin.Forms.Page as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.Page' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.CarouselPage from the view description
-        member internal x.CreateAsCarouselPage() : Xamarin.Forms.CarouselPage =
-            match x.Create() with
-            | :? Xamarin.Forms.CarouselPage as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.CarouselPage' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.NavigationPage from the view description
-        member internal x.CreateAsNavigationPage() : Xamarin.Forms.NavigationPage =
-            match x.Create() with
-            | :? Xamarin.Forms.NavigationPage as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.NavigationPage' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.TabbedPage from the view description
-        member internal x.CreateAsTabbedPage() : Xamarin.Forms.TabbedPage =
-            match x.Create() with
-            | :? Xamarin.Forms.TabbedPage as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.TabbedPage' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.ContentPage from the view description
-        member internal x.CreateAsContentPage() : Xamarin.Forms.ContentPage =
-            match x.Create() with
-            | :? Xamarin.Forms.ContentPage as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.ContentPage' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.MasterDetailPage from the view description
-        member internal x.CreateAsMasterDetailPage() : Xamarin.Forms.MasterDetailPage =
-            match x.Create() with
-            | :? Xamarin.Forms.MasterDetailPage as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.MasterDetailPage' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.Cell from the view description
-        member internal x.CreateAsCell() : Xamarin.Forms.Cell =
-            match x.Create() with
-            | :? Xamarin.Forms.Cell as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.Cell' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.TextCell from the view description
-        member internal x.CreateAsTextCell() : Xamarin.Forms.TextCell =
-            match x.Create() with
-            | :? Xamarin.Forms.TextCell as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.TextCell' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.ImageCell from the view description
-        member internal x.CreateAsImageCell() : Xamarin.Forms.ImageCell =
-            match x.Create() with
-            | :? Xamarin.Forms.ImageCell as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.ImageCell' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.ViewCell from the view description
-        member internal x.CreateAsViewCell() : Xamarin.Forms.ViewCell =
-            match x.Create() with
-            | :? Xamarin.Forms.ViewCell as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.ViewCell' but got a '%s')" (obj.GetType().ToString()) 
-
-        /// Create a Xamarin.Forms.ListView from the view description
-        member internal x.CreateAsListView() : Xamarin.Forms.ListView =
-            match x.Create() with
-            | :? Xamarin.Forms.ListView as res -> res
-            | obj -> failwithf "Incorrect element type in view (expected a 'Xamarin.Forms.ListView' but got a '%s')" (obj.GetType().ToString()) 
-
-
         /// Try to get the ClassId property in the visual element
         member internal x.TryClassId = match x.Attributes.TryFind("ClassId") with Some v -> ValueSome(unbox<string>(v)) | None -> ValueNone
 
@@ -1316,508 +1009,6 @@ module XamlElementExtensions =
         /// Adjusts the ListViewGrouped_ItemTapped property in the visual element
         member x.ListViewGrouped_ItemTapped(value: int * int -> unit) = x.WithAttribute("ListViewGrouped_ItemTapped", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.Item).Value))(value)))
 
-
-    /// Adjusts the ClassId property in the visual element
-    let classId (value: string) (x: XamlElement) = x.ClassId(value)
-
-    /// Adjusts the StyleId property in the visual element
-    let styleId (value: string) (x: XamlElement) = x.StyleId(value)
-
-    /// Adjusts the AnchorX property in the visual element
-    let anchorX (value: double) (x: XamlElement) = x.AnchorX(value)
-
-    /// Adjusts the AnchorY property in the visual element
-    let anchorY (value: double) (x: XamlElement) = x.AnchorY(value)
-
-    /// Adjusts the BackgroundColor property in the visual element
-    let backgroundColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.BackgroundColor(value)
-
-    /// Adjusts the HeightRequest property in the visual element
-    let heightRequest (value: double) (x: XamlElement) = x.HeightRequest(value)
-
-    /// Adjusts the InputTransparent property in the visual element
-    let inputTransparent (value: bool) (x: XamlElement) = x.InputTransparent(value)
-
-    /// Adjusts the IsEnabled property in the visual element
-    let isEnabled (value: bool) (x: XamlElement) = x.IsEnabled(value)
-
-    /// Adjusts the IsVisible property in the visual element
-    let isVisible (value: bool) (x: XamlElement) = x.IsVisible(value)
-
-    /// Adjusts the MinimumHeightRequest property in the visual element
-    let minimumHeightRequest (value: double) (x: XamlElement) = x.MinimumHeightRequest(value)
-
-    /// Adjusts the MinimumWidthRequest property in the visual element
-    let minimumWidthRequest (value: double) (x: XamlElement) = x.MinimumWidthRequest(value)
-
-    /// Adjusts the Opacity property in the visual element
-    let opacity (value: double) (x: XamlElement) = x.Opacity(value)
-
-    /// Adjusts the Rotation property in the visual element
-    let rotation (value: double) (x: XamlElement) = x.Rotation(value)
-
-    /// Adjusts the RotationX property in the visual element
-    let rotationX (value: double) (x: XamlElement) = x.RotationX(value)
-
-    /// Adjusts the RotationY property in the visual element
-    let rotationY (value: double) (x: XamlElement) = x.RotationY(value)
-
-    /// Adjusts the Scale property in the visual element
-    let scale (value: double) (x: XamlElement) = x.Scale(value)
-
-    /// Adjusts the Style property in the visual element
-    let style (value: Xamarin.Forms.Style) (x: XamlElement) = x.Style(value)
-
-    /// Adjusts the TranslationX property in the visual element
-    let translationX (value: double) (x: XamlElement) = x.TranslationX(value)
-
-    /// Adjusts the TranslationY property in the visual element
-    let translationY (value: double) (x: XamlElement) = x.TranslationY(value)
-
-    /// Adjusts the WidthRequest property in the visual element
-    let widthRequest (value: double) (x: XamlElement) = x.WidthRequest(value)
-
-    /// Adjusts the HorizontalOptions property in the visual element
-    let horizontalOptions (value: Xamarin.Forms.LayoutOptions) (x: XamlElement) = x.HorizontalOptions(value)
-
-    /// Adjusts the VerticalOptions property in the visual element
-    let verticalOptions (value: Xamarin.Forms.LayoutOptions) (x: XamlElement) = x.VerticalOptions(value)
-
-    /// Adjusts the Margin property in the visual element
-    let margin (value: obj) (x: XamlElement) = x.Margin(value)
-
-    /// Adjusts the GestureRecognizers property in the visual element
-    let gestureRecognizers (value: XamlElement list) (x: XamlElement) = x.GestureRecognizers(value)
-
-    /// Adjusts the TouchPoints property in the visual element
-    let touchPoints (value: int) (x: XamlElement) = x.TouchPoints(value)
-
-    /// Adjusts the PanUpdated property in the visual element
-    let panUpdated (value: Xamarin.Forms.PanUpdatedEventArgs -> unit) (x: XamlElement) = x.PanUpdated(value)
-
-    /// Adjusts the Command property in the visual element
-    let command (value: unit -> unit) (x: XamlElement) = x.Command(value)
-
-    /// Adjusts the NumberOfTapsRequired property in the visual element
-    let numberOfTapsRequired (value: int) (x: XamlElement) = x.NumberOfTapsRequired(value)
-
-    /// Adjusts the NumberOfClicksRequired property in the visual element
-    let numberOfClicksRequired (value: int) (x: XamlElement) = x.NumberOfClicksRequired(value)
-
-    /// Adjusts the Buttons property in the visual element
-    let buttons (value: Xamarin.Forms.ButtonsMask) (x: XamlElement) = x.Buttons(value)
-
-    /// Adjusts the IsPinching property in the visual element
-    let isPinching (value: bool) (x: XamlElement) = x.IsPinching(value)
-
-    /// Adjusts the PinchUpdated property in the visual element
-    let pinchUpdated (value: Xamarin.Forms.PinchGestureUpdatedEventArgs -> unit) (x: XamlElement) = x.PinchUpdated(value)
-
-    /// Adjusts the Color property in the visual element
-    let color (value: Xamarin.Forms.Color) (x: XamlElement) = x.Color(value)
-
-    /// Adjusts the IsRunning property in the visual element
-    let isRunning (value: bool) (x: XamlElement) = x.IsRunning(value)
-
-    /// Adjusts the Progress property in the visual element
-    let progress (value: double) (x: XamlElement) = x.Progress(value)
-
-    /// Adjusts the Content property in the visual element
-    let content (value: XamlElement) (x: XamlElement) = x.Content(value)
-
-    /// Adjusts the ScrollOrientation property in the visual element
-    let scrollOrientation (value: Xamarin.Forms.ScrollOrientation) (x: XamlElement) = x.ScrollOrientation(value)
-
-    /// Adjusts the CancelButtonColor property in the visual element
-    let cancelButtonColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.CancelButtonColor(value)
-
-    /// Adjusts the FontFamily property in the visual element
-    let fontFamily (value: string) (x: XamlElement) = x.FontFamily(value)
-
-    /// Adjusts the FontAttributes property in the visual element
-    let fontAttributes (value: Xamarin.Forms.FontAttributes) (x: XamlElement) = x.FontAttributes(value)
-
-    /// Adjusts the FontSize property in the visual element
-    let fontSize (value: obj) (x: XamlElement) = x.FontSize(value)
-
-    /// Adjusts the HorizontalTextAlignment property in the visual element
-    let horizontalTextAlignment (value: Xamarin.Forms.TextAlignment) (x: XamlElement) = x.HorizontalTextAlignment(value)
-
-    /// Adjusts the Placeholder property in the visual element
-    let placeholder (value: string) (x: XamlElement) = x.Placeholder(value)
-
-    /// Adjusts the PlaceholderColor property in the visual element
-    let placeholderColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.PlaceholderColor(value)
-
-    /// Adjusts the SearchBarCommand property in the visual element
-    let searchBarCommand (value: unit -> unit) (x: XamlElement) = x.SearchBarCommand(value)
-
-    /// Adjusts the SearchBarCanExecute property in the visual element
-    let searchBarCanExecute (value: bool) (x: XamlElement) = x.SearchBarCanExecute(value)
-
-    /// Adjusts the Text property in the visual element
-    let text (value: string) (x: XamlElement) = x.Text(value)
-
-    /// Adjusts the TextColor property in the visual element
-    let textColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.TextColor(value)
-
-    /// Adjusts the ButtonCommand property in the visual element
-    let buttonCommand (value: unit -> unit) (x: XamlElement) = x.ButtonCommand(value)
-
-    /// Adjusts the ButtonCanExecute property in the visual element
-    let buttonCanExecute (value: bool) (x: XamlElement) = x.ButtonCanExecute(value)
-
-    /// Adjusts the BorderColor property in the visual element
-    let borderColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.BorderColor(value)
-
-    /// Adjusts the BorderWidth property in the visual element
-    let borderWidth (value: double) (x: XamlElement) = x.BorderWidth(value)
-
-    /// Adjusts the CommandParameter property in the visual element
-    let commandParameter (value: System.Object) (x: XamlElement) = x.CommandParameter(value)
-
-    /// Adjusts the ContentLayout property in the visual element
-    let contentLayout (value: Xamarin.Forms.Button.ButtonContentLayout) (x: XamlElement) = x.ContentLayout(value)
-
-    /// Adjusts the ButtonImageSource property in the visual element
-    let buttonImageSource (value: string) (x: XamlElement) = x.ButtonImageSource(value)
-
-    /// Adjusts the Minimum property in the visual element
-    let minimum (value: double) (x: XamlElement) = x.Minimum(value)
-
-    /// Adjusts the Maximum property in the visual element
-    let maximum (value: double) (x: XamlElement) = x.Maximum(value)
-
-    /// Adjusts the Value property in the visual element
-    let value (value: double) (x: XamlElement) = x.Value(value)
-
-    /// Adjusts the ValueChanged property in the visual element
-    let valueChanged (value: Xamarin.Forms.ValueChangedEventArgs -> unit) (x: XamlElement) = x.ValueChanged(value)
-
-    /// Adjusts the Increment property in the visual element
-    let increment (value: double) (x: XamlElement) = x.Increment(value)
-
-    /// Adjusts the IsToggled property in the visual element
-    let isToggled (value: bool) (x: XamlElement) = x.IsToggled(value)
-
-    /// Adjusts the Toggled property in the visual element
-    let toggled (value: Xamarin.Forms.ToggledEventArgs -> unit) (x: XamlElement) = x.Toggled(value)
-
-    /// Adjusts the On property in the visual element
-    let on (value: bool) (x: XamlElement) = x.On(value)
-
-    /// Adjusts the OnChanged property in the visual element
-    let onChanged (value: Xamarin.Forms.ToggledEventArgs -> unit) (x: XamlElement) = x.OnChanged(value)
-
-    /// Adjusts the Intent property in the visual element
-    let intent (value: Xamarin.Forms.TableIntent) (x: XamlElement) = x.Intent(value)
-
-    /// Adjusts the HasUnevenRows property in the visual element
-    let hasUnevenRows (value: bool) (x: XamlElement) = x.HasUnevenRows(value)
-
-    /// Adjusts the RowHeight property in the visual element
-    let rowHeight (value: int) (x: XamlElement) = x.RowHeight(value)
-
-    /// Adjusts the TableRoot property in the visual element
-    let tableRoot (value: (string * XamlElement list) list) (x: XamlElement) = x.TableRoot(value)
-
-    /// Adjusts the GridRowDefinitions property in the visual element
-    let gridRowDefinitions (value: obj list) (x: XamlElement) = x.GridRowDefinitions(value)
-
-    /// Adjusts the GridColumnDefinitions property in the visual element
-    let gridColumnDefinitions (value: obj list) (x: XamlElement) = x.GridColumnDefinitions(value)
-
-    /// Adjusts the RowSpacing property in the visual element
-    let rowSpacing (value: double) (x: XamlElement) = x.RowSpacing(value)
-
-    /// Adjusts the ColumnSpacing property in the visual element
-    let columnSpacing (value: double) (x: XamlElement) = x.ColumnSpacing(value)
-
-    /// Adjusts the Children property in the visual element
-    let children (value: XamlElement list) (x: XamlElement) = x.Children(value)
-
-    /// Adjusts the GridRow property in the visual element
-    let gridRow (value: int) (x: XamlElement) = x.GridRow(value)
-
-    /// Adjusts the GridRowSpan property in the visual element
-    let gridRowSpan (value: int) (x: XamlElement) = x.GridRowSpan(value)
-
-    /// Adjusts the GridColumn property in the visual element
-    let gridColumn (value: int) (x: XamlElement) = x.GridColumn(value)
-
-    /// Adjusts the GridColumnSpan property in the visual element
-    let gridColumnSpan (value: int) (x: XamlElement) = x.GridColumnSpan(value)
-
-    /// Adjusts the LayoutBounds property in the visual element
-    let layoutBounds (value: Xamarin.Forms.Rectangle) (x: XamlElement) = x.LayoutBounds(value)
-
-    /// Adjusts the LayoutFlags property in the visual element
-    let layoutFlags (value: Xamarin.Forms.AbsoluteLayoutFlags) (x: XamlElement) = x.LayoutFlags(value)
-
-    /// Adjusts the BoundsConstraint property in the visual element
-    let boundsConstraint (value: Xamarin.Forms.BoundsConstraint) (x: XamlElement) = x.BoundsConstraint(value)
-
-    /// Adjusts the HeightConstraint property in the visual element
-    let heightConstraint (value: Xamarin.Forms.Constraint) (x: XamlElement) = x.HeightConstraint(value)
-
-    /// Adjusts the WidthConstraint property in the visual element
-    let widthConstraint (value: Xamarin.Forms.Constraint) (x: XamlElement) = x.WidthConstraint(value)
-
-    /// Adjusts the XConstraint property in the visual element
-    let xConstraint (value: Xamarin.Forms.Constraint) (x: XamlElement) = x.XConstraint(value)
-
-    /// Adjusts the YConstraint property in the visual element
-    let yConstraint (value: Xamarin.Forms.Constraint) (x: XamlElement) = x.YConstraint(value)
-
-    /// Adjusts the RowDefinitionHeight property in the visual element
-    let rowDefinitionHeight (value: obj) (x: XamlElement) = x.RowDefinitionHeight(value)
-
-    /// Adjusts the ColumnDefinitionWidth property in the visual element
-    let columnDefinitionWidth (value: obj) (x: XamlElement) = x.ColumnDefinitionWidth(value)
-
-    /// Adjusts the Date property in the visual element
-    let date (value: System.DateTime) (x: XamlElement) = x.Date(value)
-
-    /// Adjusts the Format property in the visual element
-    let format (value: string) (x: XamlElement) = x.Format(value)
-
-    /// Adjusts the MinimumDate property in the visual element
-    let minimumDate (value: System.DateTime) (x: XamlElement) = x.MinimumDate(value)
-
-    /// Adjusts the MaximumDate property in the visual element
-    let maximumDate (value: System.DateTime) (x: XamlElement) = x.MaximumDate(value)
-
-    /// Adjusts the DateSelected property in the visual element
-    let dateSelected (value: Xamarin.Forms.DateChangedEventArgs -> unit) (x: XamlElement) = x.DateSelected(value)
-
-    /// Adjusts the PickerItemsSource property in the visual element
-    let pickerItemsSource (value: seq<'T>) (x: XamlElement) = x.PickerItemsSource(value)
-
-    /// Adjusts the SelectedIndex property in the visual element
-    let selectedIndex (value: int) (x: XamlElement) = x.SelectedIndex(value)
-
-    /// Adjusts the Title property in the visual element
-    let title (value: string) (x: XamlElement) = x.Title(value)
-
-    /// Adjusts the SelectedIndexChanged property in the visual element
-    let selectedIndexChanged (value: (int * 'T option) -> unit) (x: XamlElement) = x.SelectedIndexChanged(value)
-
-    /// Adjusts the OutlineColor property in the visual element
-    let outlineColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.OutlineColor(value)
-
-    /// Adjusts the FrameCornerRadius property in the visual element
-    let frameCornerRadius (value: single) (x: XamlElement) = x.FrameCornerRadius(value)
-
-    /// Adjusts the HasShadow property in the visual element
-    let hasShadow (value: bool) (x: XamlElement) = x.HasShadow(value)
-
-    /// Adjusts the ImageSource property in the visual element
-    let imageSource (value: string) (x: XamlElement) = x.ImageSource(value)
-
-    /// Adjusts the Aspect property in the visual element
-    let aspect (value: Xamarin.Forms.Aspect) (x: XamlElement) = x.Aspect(value)
-
-    /// Adjusts the IsOpaque property in the visual element
-    let isOpaque (value: bool) (x: XamlElement) = x.IsOpaque(value)
-
-    /// Adjusts the Keyboard property in the visual element
-    let keyboard (value: Xamarin.Forms.Keyboard) (x: XamlElement) = x.Keyboard(value)
-
-    /// Adjusts the EditorCompleted property in the visual element
-    let editorCompleted (value: string -> unit) (x: XamlElement) = x.EditorCompleted(value)
-
-    /// Adjusts the TextChanged property in the visual element
-    let textChanged (value: Xamarin.Forms.TextChangedEventArgs -> unit) (x: XamlElement) = x.TextChanged(value)
-
-    /// Adjusts the IsPassword property in the visual element
-    let isPassword (value: bool) (x: XamlElement) = x.IsPassword(value)
-
-    /// Adjusts the EntryCompleted property in the visual element
-    let entryCompleted (value: string -> unit) (x: XamlElement) = x.EntryCompleted(value)
-
-    /// Adjusts the Label property in the visual element
-    let label (value: string) (x: XamlElement) = x.Label(value)
-
-    /// Adjusts the VerticalTextAlignment property in the visual element
-    let verticalTextAlignment (value: Xamarin.Forms.TextAlignment) (x: XamlElement) = x.VerticalTextAlignment(value)
-
-    /// Adjusts the IsClippedToBounds property in the visual element
-    let isClippedToBounds (value: bool) (x: XamlElement) = x.IsClippedToBounds(value)
-
-    /// Adjusts the Padding property in the visual element
-    let padding (value: obj) (x: XamlElement) = x.Padding(value)
-
-    /// Adjusts the StackOrientation property in the visual element
-    let stackOrientation (value: Xamarin.Forms.StackOrientation) (x: XamlElement) = x.StackOrientation(value)
-
-    /// Adjusts the Spacing property in the visual element
-    let spacing (value: double) (x: XamlElement) = x.Spacing(value)
-
-    /// Adjusts the ForegroundColor property in the visual element
-    let foregroundColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.ForegroundColor(value)
-
-    /// Adjusts the PropertyChanged property in the visual element
-    let propertyChanged (value: System.ComponentModel.PropertyChangedEventArgs -> unit) (x: XamlElement) = x.PropertyChanged(value)
-
-    /// Adjusts the Time property in the visual element
-    let time (value: System.TimeSpan) (x: XamlElement) = x.Time(value)
-
-    /// Adjusts the WebSource property in the visual element
-    let webSource (value: Xamarin.Forms.WebViewSource) (x: XamlElement) = x.WebSource(value)
-
-    /// Adjusts the Navigated property in the visual element
-    let navigated (value: Xamarin.Forms.WebNavigatedEventArgs -> unit) (x: XamlElement) = x.Navigated(value)
-
-    /// Adjusts the Navigating property in the visual element
-    let navigating (value: Xamarin.Forms.WebNavigatingEventArgs -> unit) (x: XamlElement) = x.Navigating(value)
-
-    /// Adjusts the UseSafeArea property in the visual element
-    let useSafeArea (value: bool) (x: XamlElement) = x.UseSafeArea(value)
-
-    /// Adjusts the CarouselPage_SelectedItem property in the visual element
-    let carouselPage_SelectedItem (value: System.Object) (x: XamlElement) = x.CarouselPage_SelectedItem(value)
-
-    /// Adjusts the CurrentPage property in the visual element
-    let currentPage (value: XamlElement) (x: XamlElement) = x.CurrentPage(value)
-
-    /// Adjusts the CurrentPageChanged property in the visual element
-    let currentPageChanged (value: 'T option -> unit) (x: XamlElement) = x.CurrentPageChanged(value)
-
-    /// Adjusts the NavigationPagePages property in the visual element
-    let navigationPagePages (value: XamlElement list) (x: XamlElement) = x.NavigationPagePages(value)
-
-    /// Adjusts the BackButtonTitle property in the visual element
-    let backButtonTitle (value: string) (x: XamlElement) = x.BackButtonTitle(value)
-
-    /// Adjusts the HasBackButton property in the visual element
-    let hasBackButton (value: bool) (x: XamlElement) = x.HasBackButton(value)
-
-    /// Adjusts the HasNavigationBar property in the visual element
-    let hasNavigationBar (value: bool) (x: XamlElement) = x.HasNavigationBar(value)
-
-    /// Adjusts the TitleIcon property in the visual element
-    let titleIcon (value: string) (x: XamlElement) = x.TitleIcon(value)
-
-    /// Adjusts the BarBackgroundColor property in the visual element
-    let barBackgroundColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.BarBackgroundColor(value)
-
-    /// Adjusts the BarTextColor property in the visual element
-    let barTextColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.BarTextColor(value)
-
-    /// Adjusts the Popped property in the visual element
-    let popped (value: Xamarin.Forms.NavigationEventArgs -> unit) (x: XamlElement) = x.Popped(value)
-
-    /// Adjusts the PoppedToRoot property in the visual element
-    let poppedToRoot (value: Xamarin.Forms.NavigationEventArgs -> unit) (x: XamlElement) = x.PoppedToRoot(value)
-
-    /// Adjusts the Pushed property in the visual element
-    let pushed (value: Xamarin.Forms.NavigationEventArgs -> unit) (x: XamlElement) = x.Pushed(value)
-
-    /// Adjusts the OnSizeAllocatedCallback property in the visual element
-    let onSizeAllocatedCallback (value: (double * double) -> unit) (x: XamlElement) = x.OnSizeAllocatedCallback(value)
-
-    /// Adjusts the Master property in the visual element
-    let master (value: XamlElement) (x: XamlElement) = x.Master(value)
-
-    /// Adjusts the Detail property in the visual element
-    let detail (value: XamlElement) (x: XamlElement) = x.Detail(value)
-
-    /// Adjusts the IsGestureEnabled property in the visual element
-    let isGestureEnabled (value: bool) (x: XamlElement) = x.IsGestureEnabled(value)
-
-    /// Adjusts the IsPresented property in the visual element
-    let isPresented (value: bool) (x: XamlElement) = x.IsPresented(value)
-
-    /// Adjusts the MasterBehavior property in the visual element
-    let masterBehavior (value: Xamarin.Forms.MasterBehavior) (x: XamlElement) = x.MasterBehavior(value)
-
-    /// Adjusts the IsPresentedChanged property in the visual element
-    let isPresentedChanged (value: bool -> unit) (x: XamlElement) = x.IsPresentedChanged(value)
-
-    /// Adjusts the Height property in the visual element
-    let height (value: double) (x: XamlElement) = x.Height(value)
-
-    /// Adjusts the TextDetail property in the visual element
-    let textDetail (value: string) (x: XamlElement) = x.TextDetail(value)
-
-    /// Adjusts the TextDetailColor property in the visual element
-    let textDetailColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.TextDetailColor(value)
-
-    /// Adjusts the TextCellCommand property in the visual element
-    let textCellCommand (value: unit -> unit) (x: XamlElement) = x.TextCellCommand(value)
-
-    /// Adjusts the TextCellCanExecute property in the visual element
-    let textCellCanExecute (value: bool) (x: XamlElement) = x.TextCellCanExecute(value)
-
-    /// Adjusts the View property in the visual element
-    let view (value: XamlElement) (x: XamlElement) = x.View(value)
-
-    /// Adjusts the ListViewItems property in the visual element
-    let listViewItems (value: seq<XamlElement>) (x: XamlElement) = x.ListViewItems(value)
-
-    /// Adjusts the Footer property in the visual element
-    let footer (value: System.Object) (x: XamlElement) = x.Footer(value)
-
-    /// Adjusts the Header property in the visual element
-    let header (value: System.Object) (x: XamlElement) = x.Header(value)
-
-    /// Adjusts the HeaderTemplate property in the visual element
-    let headerTemplate (value: Xamarin.Forms.DataTemplate) (x: XamlElement) = x.HeaderTemplate(value)
-
-    /// Adjusts the IsGroupingEnabled property in the visual element
-    let isGroupingEnabled (value: bool) (x: XamlElement) = x.IsGroupingEnabled(value)
-
-    /// Adjusts the IsPullToRefreshEnabled property in the visual element
-    let isPullToRefreshEnabled (value: bool) (x: XamlElement) = x.IsPullToRefreshEnabled(value)
-
-    /// Adjusts the IsRefreshing property in the visual element
-    let isRefreshing (value: bool) (x: XamlElement) = x.IsRefreshing(value)
-
-    /// Adjusts the RefreshCommand property in the visual element
-    let refreshCommand (value: unit -> unit) (x: XamlElement) = x.RefreshCommand(value)
-
-    /// Adjusts the ListView_SelectedItem property in the visual element
-    let listView_SelectedItem (value: int option) (x: XamlElement) = x.ListView_SelectedItem(value)
-
-    /// Adjusts the SeparatorVisibility property in the visual element
-    let separatorVisibility (value: Xamarin.Forms.SeparatorVisibility) (x: XamlElement) = x.SeparatorVisibility(value)
-
-    /// Adjusts the SeparatorColor property in the visual element
-    let separatorColor (value: Xamarin.Forms.Color) (x: XamlElement) = x.SeparatorColor(value)
-
-    /// Adjusts the ListView_ItemAppearing property in the visual element
-    let listView_ItemAppearing (value: int -> unit) (x: XamlElement) = x.ListView_ItemAppearing(value)
-
-    /// Adjusts the ListView_ItemDisappearing property in the visual element
-    let listView_ItemDisappearing (value: int -> unit) (x: XamlElement) = x.ListView_ItemDisappearing(value)
-
-    /// Adjusts the ListView_ItemSelected property in the visual element
-    let listView_ItemSelected (value: int option -> unit) (x: XamlElement) = x.ListView_ItemSelected(value)
-
-    /// Adjusts the ListView_ItemTapped property in the visual element
-    let listView_ItemTapped (value: int -> unit) (x: XamlElement) = x.ListView_ItemTapped(value)
-
-    /// Adjusts the Refreshing property in the visual element
-    let refreshing (value: unit -> unit) (x: XamlElement) = x.Refreshing(value)
-
-    /// Adjusts the GroupListViewItemsSource property in the visual element
-    let groupListViewItemsSource (value: (XamlElement * XamlElement list) list) (x: XamlElement) = x.GroupListViewItemsSource(value)
-
-    /// Adjusts the ListViewGrouped_SelectedItem property in the visual element
-    let listViewGrouped_SelectedItem (value: (int * int) option) (x: XamlElement) = x.ListViewGrouped_SelectedItem(value)
-
-    /// Adjusts the ListViewGrouped_ItemAppearing property in the visual element
-    let listViewGrouped_ItemAppearing (value: int * int -> unit) (x: XamlElement) = x.ListViewGrouped_ItemAppearing(value)
-
-    /// Adjusts the ListViewGrouped_ItemDisappearing property in the visual element
-    let listViewGrouped_ItemDisappearing (value: int * int -> unit) (x: XamlElement) = x.ListViewGrouped_ItemDisappearing(value)
-
-    /// Adjusts the ListViewGrouped_ItemSelected property in the visual element
-    let listViewGrouped_ItemSelected (value: (int * int) option -> unit) (x: XamlElement) = x.ListViewGrouped_ItemSelected(value)
-
-    /// Adjusts the ListViewGrouped_ItemTapped property in the visual element
-    let listViewGrouped_ItemTapped (value: int * int -> unit) (x: XamlElement) = x.ListViewGrouped_ItemTapped(value)
-
 type Xaml() =
 
     /// Describes a Element in the view
@@ -2045,10 +1236,10 @@ type Xaml() =
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting View::Margin "); target.Margin <-  value
             | ValueSome _, ValueNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | ValueNone, ValueNone -> ()
-            let prevCollOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGestureRecognizers
-            let collOpt = source.TryGestureRecognizers
-            updateIList prevCollOpt collOpt target.GestureRecognizers
-                (fun (x:XamlElement) -> x.CreateAsIGestureRecognizer())
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGestureRecognizers
+            let valueOpt = source.TryGestureRecognizers
+            updateIList prevValueOpt valueOpt target.GestureRecognizers
+                (fun (x:XamlElement) -> x.Create() :?> Xamarin.Forms.IGestureRecognizer)
                 (fun _ _ _ -> ())
                 canReuseChild
                 updateChild
@@ -2088,7 +1279,8 @@ type Xaml() =
             | ValueSome _, ValueNone -> target.TouchPoints <- 1
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryPanUpdated
-            match prevValueOpt, source.TryPanUpdated with
+            let valueOpt = source.TryPanUpdated
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.PanUpdated.RemoveHandler(prevValue); target.PanUpdated.AddHandler(value)
             | ValueNone, ValueSome value -> target.PanUpdated.AddHandler(value)
@@ -2186,7 +1378,8 @@ type Xaml() =
             | ValueSome _, ValueNone -> target.IsPinching <- false
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryPinchUpdated
-            match prevValueOpt, source.TryPinchUpdated with
+            let valueOpt = source.TryPinchUpdated
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.PinchUpdated.RemoveHandler(prevValue); target.PinchUpdated.AddHandler(value)
             | ValueNone, ValueSome value -> target.PinchUpdated.AddHandler(value)
@@ -2282,15 +1475,15 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.ScrollView)
-            let prevChildOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryContent
-            match prevChildOpt, source.TryContent with
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryContent
+            let valueOpt = source.TryContent
+            match prevValueOpt, valueOpt with
             // For structured objects, dependsOn on reference equality
             | ValueSome prevChild, ValueSome newChild when identical prevChild newChild -> ()
             | ValueSome prevChild, ValueSome newChild when canReuseChild prevChild newChild ->
                 newChild.UpdateIncremental(prevChild, target.Content)
-            | ValueSome _, ValueSome newChild
-            | ValueNone, ValueSome newChild ->
-                target.Content <- newChild.CreateAsView()
+            | _, ValueSome newChild ->
+                target.Content <- (newChild.Create() :?> Xamarin.Forms.View)
             | ValueSome _, ValueNone ->
                 target.Content <- null
             | ValueNone, ValueNone -> ()
@@ -2537,7 +1730,8 @@ type Xaml() =
             | ValueSome _, ValueNone -> target.Value <- 0.0
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryValueChanged
-            match prevValueOpt, source.TryValueChanged with
+            let valueOpt = source.TryValueChanged
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.ValueChanged.RemoveHandler(prevValue); target.ValueChanged.AddHandler(value)
             | ValueNone, ValueSome value -> target.ValueChanged.AddHandler(value)
@@ -2591,7 +1785,8 @@ type Xaml() =
             | ValueSome _, ValueNone -> target.Increment <- 1.0
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryValueChanged
-            match prevValueOpt, source.TryValueChanged with
+            let valueOpt = source.TryValueChanged
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.ValueChanged.RemoveHandler(prevValue); target.ValueChanged.AddHandler(value)
             | ValueNone, ValueSome value -> target.ValueChanged.AddHandler(value)
@@ -2621,7 +1816,8 @@ type Xaml() =
             | ValueSome _, ValueNone -> target.IsToggled <- false
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryToggled
-            match prevValueOpt, source.TryToggled with
+            let valueOpt = source.TryToggled
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.Toggled.RemoveHandler(prevValue); target.Toggled.AddHandler(value)
             | ValueNone, ValueSome value -> target.Toggled.AddHandler(value)
@@ -2659,7 +1855,8 @@ type Xaml() =
             | ValueSome _, ValueNone -> target.Text <- null
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryOnChanged
-            match prevValueOpt, source.TryOnChanged with
+            let valueOpt = source.TryOnChanged
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.OnChanged.RemoveHandler(prevValue); target.OnChanged.AddHandler(value)
             | ValueNone, ValueSome value -> target.OnChanged.AddHandler(value)
@@ -2726,17 +1923,17 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.Grid)
-            let prevCollOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGridRowDefinitions
-            let collOpt = source.TryGridRowDefinitions
-            updateIList prevCollOpt collOpt target.RowDefinitions
-                (fun (x:XamlElement) -> x.CreateAsRowDefinition())
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGridRowDefinitions
+            let valueOpt = source.TryGridRowDefinitions
+            updateIList prevValueOpt valueOpt target.RowDefinitions
+                (fun (x:XamlElement) -> x.Create() :?> Xamarin.Forms.RowDefinition)
                 (fun _ _ _ -> ())
                 canReuseChild
                 updateChild
-            let prevCollOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGridColumnDefinitions
-            let collOpt = source.TryGridColumnDefinitions
-            updateIList prevCollOpt collOpt target.ColumnDefinitions
-                (fun (x:XamlElement) -> x.CreateAsColumnDefinition())
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGridColumnDefinitions
+            let valueOpt = source.TryGridColumnDefinitions
+            updateIList prevValueOpt valueOpt target.ColumnDefinitions
+                (fun (x:XamlElement) -> x.Create() :?> Xamarin.Forms.ColumnDefinition)
                 (fun _ _ _ -> ())
                 canReuseChild
                 updateChild
@@ -2754,10 +1951,10 @@ type Xaml() =
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::ColumnSpacing "); target.ColumnSpacing <-  value
             | ValueSome _, ValueNone -> target.ColumnSpacing <- 0.0
             | ValueNone, ValueNone -> ()
-            let prevCollOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryChildren
-            let collOpt = source.TryChildren
-            updateIList prevCollOpt collOpt target.Children
-                (fun (x:XamlElement) -> x.CreateAsView())
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryChildren
+            let valueOpt = source.TryChildren
+            updateIList prevValueOpt valueOpt target.Children
+                (fun (x:XamlElement) -> x.Create() :?> Xamarin.Forms.View)
                 (fun prevChildOpt newChild targetChild -> 
                     // Adjust the attached properties
                     match (match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGridRow), newChild.TryGridRow with
@@ -2801,10 +1998,10 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.AbsoluteLayout)
-            let prevCollOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryChildren
-            let collOpt = source.TryChildren
-            updateIList prevCollOpt collOpt target.Children
-                (fun (x:XamlElement) -> x.CreateAsView())
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryChildren
+            let valueOpt = source.TryChildren
+            updateIList prevValueOpt valueOpt target.Children
+                (fun (x:XamlElement) -> x.Create() :?> Xamarin.Forms.View)
                 (fun prevChildOpt newChild targetChild -> 
                     // Adjust the attached properties
                     match (match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryLayoutBounds), newChild.TryLayoutBounds with
@@ -2836,10 +2033,10 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.RelativeLayout)
-            let prevCollOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryChildren
-            let collOpt = source.TryChildren
-            updateIList prevCollOpt collOpt target.Children
-                (fun (x:XamlElement) -> x.CreateAsView())
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryChildren
+            let valueOpt = source.TryChildren
+            updateIList prevValueOpt valueOpt target.Children
+                (fun (x:XamlElement) -> x.Create() :?> Xamarin.Forms.View)
                 (fun prevChildOpt newChild targetChild -> 
                     // Adjust the attached properties
                     match (match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryBoundsConstraint), newChild.TryBoundsConstraint with
@@ -2927,15 +2124,15 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.ContentView)
-            let prevChildOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryContent
-            match prevChildOpt, source.TryContent with
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryContent
+            let valueOpt = source.TryContent
+            match prevValueOpt, valueOpt with
             // For structured objects, dependsOn on reference equality
             | ValueSome prevChild, ValueSome newChild when identical prevChild newChild -> ()
             | ValueSome prevChild, ValueSome newChild when canReuseChild prevChild newChild ->
                 newChild.UpdateIncremental(prevChild, target.Content)
-            | ValueSome _, ValueSome newChild
-            | ValueNone, ValueSome newChild ->
-                target.Content <- newChild.CreateAsView()
+            | _, ValueSome newChild ->
+                target.Content <- (newChild.Create() :?> Xamarin.Forms.View)
             | ValueSome _, ValueNone ->
                 target.Content <- null
             | ValueNone, ValueNone -> ()
@@ -3001,7 +2198,8 @@ type Xaml() =
             | ValueSome _, ValueNone -> target.MaximumDate <- new System.DateTime(2100, 12, 31)
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryDateSelected
-            match prevValueOpt, source.TryDateSelected with
+            let valueOpt = source.TryDateSelected
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.DateSelected.RemoveHandler(prevValue); target.DateSelected.AddHandler(value)
             | ValueNone, ValueSome value -> target.DateSelected.AddHandler(value)
@@ -3055,7 +2253,8 @@ type Xaml() =
             | ValueSome _, ValueNone -> target.TextColor <- Xamarin.Forms.Color.Default
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TrySelectedIndexChanged
-            match prevValueOpt, source.TrySelectedIndexChanged with
+            let valueOpt = source.TrySelectedIndexChanged
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.SelectedIndexChanged.RemoveHandler(prevValue); target.SelectedIndexChanged.AddHandler(value)
             | ValueNone, ValueSome value -> target.SelectedIndexChanged.AddHandler(value)
@@ -3217,14 +2416,16 @@ type Xaml() =
             | ValueSome _, ValueNone -> target.TextColor <- Xamarin.Forms.Color.Default
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryEditorCompleted
-            match prevValueOpt, source.TryEditorCompleted with
+            let valueOpt = source.TryEditorCompleted
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.Completed.RemoveHandler(prevValue); target.Completed.AddHandler(value)
             | ValueNone, ValueSome value -> target.Completed.AddHandler(value)
             | ValueSome prevValue, ValueNone -> target.Completed.RemoveHandler(prevValue)
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryTextChanged
-            match prevValueOpt, source.TryTextChanged with
+            let valueOpt = source.TryTextChanged
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.TextChanged.RemoveHandler(prevValue); target.TextChanged.AddHandler(value)
             | ValueNone, ValueSome value -> target.TextChanged.AddHandler(value)
@@ -3319,14 +2520,16 @@ type Xaml() =
             | ValueSome _, ValueNone -> target.IsPassword <- false
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryEntryCompleted
-            match prevValueOpt, source.TryEntryCompleted with
+            let valueOpt = source.TryEntryCompleted
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.Completed.RemoveHandler(prevValue); target.Completed.AddHandler(value)
             | ValueNone, ValueSome value -> target.Completed.AddHandler(value)
             | ValueSome prevValue, ValueNone -> target.Completed.RemoveHandler(prevValue)
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryTextChanged
-            match prevValueOpt, source.TryTextChanged with
+            let valueOpt = source.TryTextChanged
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.TextChanged.RemoveHandler(prevValue); target.TextChanged.AddHandler(value)
             | ValueNone, ValueSome value -> target.TextChanged.AddHandler(value)
@@ -3388,7 +2591,8 @@ type Xaml() =
             | ValueSome _, ValueNone -> target.HorizontalTextAlignment <- Xamarin.Forms.TextAlignment.Start
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryEntryCompleted
-            match prevValueOpt, source.TryEntryCompleted with
+            let valueOpt = source.TryEntryCompleted
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.Completed.RemoveHandler(prevValue); target.Completed.AddHandler(value)
             | ValueNone, ValueSome value -> target.Completed.AddHandler(value)
@@ -3512,10 +2716,10 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.StackLayout)
-            let prevCollOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryChildren
-            let collOpt = source.TryChildren
-            updateIList prevCollOpt collOpt target.Children
-                (fun (x:XamlElement) -> x.CreateAsView())
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryChildren
+            let valueOpt = source.TryChildren
+            updateIList prevValueOpt valueOpt target.Children
+                (fun (x:XamlElement) -> x.Create() :?> Xamarin.Forms.View)
                 (fun _ _ _ -> ())
                 canReuseChild
                 updateChild
@@ -3594,7 +2798,8 @@ type Xaml() =
             | ValueSome _, ValueNone -> target.Text <- null
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryPropertyChanged
-            match prevValueOpt, source.TryPropertyChanged with
+            let valueOpt = source.TryPropertyChanged
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.PropertyChanged.RemoveHandler(prevValue); target.PropertyChanged.AddHandler(value)
             | ValueNone, ValueSome value -> target.PropertyChanged.AddHandler(value)
@@ -3663,14 +2868,16 @@ type Xaml() =
             | ValueSome _, ValueNone -> target.Source <- null
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryNavigated
-            match prevValueOpt, source.TryNavigated with
+            let valueOpt = source.TryNavigated
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.Navigated.RemoveHandler(prevValue); target.Navigated.AddHandler(value)
             | ValueNone, ValueSome value -> target.Navigated.AddHandler(value)
             | ValueSome prevValue, ValueNone -> target.Navigated.RemoveHandler(prevValue)
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryNavigating
-            match prevValueOpt, source.TryNavigating with
+            let valueOpt = source.TryNavigating
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.Navigating.RemoveHandler(prevValue); target.Navigating.AddHandler(value)
             | ValueNone, ValueSome value -> target.Navigating.AddHandler(value)
@@ -3728,10 +2935,10 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.CarouselPage)
-            let prevCollOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryChildren
-            let collOpt = source.TryChildren
-            updateIList prevCollOpt collOpt target.Children
-                (fun (x:XamlElement) -> x.CreateAsContentPage())
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryChildren
+            let valueOpt = source.TryChildren
+            updateIList prevValueOpt valueOpt target.Children
+                (fun (x:XamlElement) -> x.Create() :?> Xamarin.Forms.ContentPage)
                 (fun _ _ _ -> ())
                 canReuseChild
                 updateChild
@@ -3742,20 +2949,21 @@ type Xaml() =
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage::SelectedItem "); target.SelectedItem <-  value
             | ValueSome _, ValueNone -> target.SelectedItem <- null
             | ValueNone, ValueNone -> ()
-            let prevChildOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryCurrentPage
-            match prevChildOpt, source.TryCurrentPage with
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryCurrentPage
+            let valueOpt = source.TryCurrentPage
+            match prevValueOpt, valueOpt with
             // For structured objects, dependsOn on reference equality
             | ValueSome prevChild, ValueSome newChild when identical prevChild newChild -> ()
             | ValueSome prevChild, ValueSome newChild when canReuseChild prevChild newChild ->
                 newChild.UpdateIncremental(prevChild, target.CurrentPage)
-            | ValueSome _, ValueSome newChild
-            | ValueNone, ValueSome newChild ->
-                target.CurrentPage <- newChild.CreateAsContentPage()
+            | _, ValueSome newChild ->
+                target.CurrentPage <- (newChild.Create() :?> Xamarin.Forms.ContentPage)
             | ValueSome _, ValueNone ->
                 target.CurrentPage <- null
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryCurrentPageChanged
-            match prevValueOpt, source.TryCurrentPageChanged with
+            let valueOpt = source.TryCurrentPageChanged
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.CurrentPageChanged.RemoveHandler(prevValue); target.CurrentPageChanged.AddHandler(value)
             | ValueNone, ValueSome value -> target.CurrentPageChanged.AddHandler(value)
@@ -3825,21 +3033,24 @@ type Xaml() =
             | ValueSome _, ValueNone -> target.BarTextColor <- Xamarin.Forms.Color.Default
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryPopped
-            match prevValueOpt, source.TryPopped with
+            let valueOpt = source.TryPopped
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.Popped.RemoveHandler(prevValue); target.Popped.AddHandler(value)
             | ValueNone, ValueSome value -> target.Popped.AddHandler(value)
             | ValueSome prevValue, ValueNone -> target.Popped.RemoveHandler(prevValue)
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryPoppedToRoot
-            match prevValueOpt, source.TryPoppedToRoot with
+            let valueOpt = source.TryPoppedToRoot
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.PoppedToRoot.RemoveHandler(prevValue); target.PoppedToRoot.AddHandler(value)
             | ValueNone, ValueSome value -> target.PoppedToRoot.AddHandler(value)
             | ValueSome prevValue, ValueNone -> target.PoppedToRoot.RemoveHandler(prevValue)
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryPushed
-            match prevValueOpt, source.TryPushed with
+            let valueOpt = source.TryPushed
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.Pushed.RemoveHandler(prevValue); target.Pushed.AddHandler(value)
             | ValueNone, ValueSome value -> target.Pushed.AddHandler(value)
@@ -3862,10 +3073,10 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.TabbedPage)
-            let prevCollOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryChildren
-            let collOpt = source.TryChildren
-            updateIList prevCollOpt collOpt target.Children
-                (fun (x:XamlElement) -> x.CreateAsPage())
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryChildren
+            let valueOpt = source.TryChildren
+            updateIList prevValueOpt valueOpt target.Children
+                (fun (x:XamlElement) -> x.Create() :?> Xamarin.Forms.Page)
                 (fun _ _ _ -> ())
                 canReuseChild
                 updateChild
@@ -3899,15 +3110,15 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.ContentPage)
-            let prevChildOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryContent
-            match prevChildOpt, source.TryContent with
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryContent
+            let valueOpt = source.TryContent
+            match prevValueOpt, valueOpt with
             // For structured objects, dependsOn on reference equality
             | ValueSome prevChild, ValueSome newChild when identical prevChild newChild -> ()
             | ValueSome prevChild, ValueSome newChild when canReuseChild prevChild newChild ->
                 newChild.UpdateIncremental(prevChild, target.Content)
-            | ValueSome _, ValueSome newChild
-            | ValueNone, ValueSome newChild ->
-                target.Content <- newChild.CreateAsView()
+            | _, ValueSome newChild ->
+                target.Content <- (newChild.Create() :?> Xamarin.Forms.View)
             | ValueSome _, ValueNone ->
                 target.Content <- null
             | ValueNone, ValueNone -> ()
@@ -3934,27 +3145,27 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.MasterDetailPage)
-            let prevChildOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryMaster
-            match prevChildOpt, source.TryMaster with
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryMaster
+            let valueOpt = source.TryMaster
+            match prevValueOpt, valueOpt with
             // For structured objects, dependsOn on reference equality
             | ValueSome prevChild, ValueSome newChild when identical prevChild newChild -> ()
             | ValueSome prevChild, ValueSome newChild when canReuseChild prevChild newChild ->
                 newChild.UpdateIncremental(prevChild, target.Master)
-            | ValueSome _, ValueSome newChild
-            | ValueNone, ValueSome newChild ->
-                target.Master <- newChild.CreateAsPage()
+            | _, ValueSome newChild ->
+                target.Master <- (newChild.Create() :?> Xamarin.Forms.Page)
             | ValueSome _, ValueNone ->
                 target.Master <- null
             | ValueNone, ValueNone -> ()
-            let prevChildOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryDetail
-            match prevChildOpt, source.TryDetail with
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryDetail
+            let valueOpt = source.TryDetail
+            match prevValueOpt, valueOpt with
             // For structured objects, dependsOn on reference equality
             | ValueSome prevChild, ValueSome newChild when identical prevChild newChild -> ()
             | ValueSome prevChild, ValueSome newChild when canReuseChild prevChild newChild ->
                 newChild.UpdateIncremental(prevChild, target.Detail)
-            | ValueSome _, ValueSome newChild
-            | ValueNone, ValueSome newChild ->
-                target.Detail <- newChild.CreateAsPage()
+            | _, ValueSome newChild ->
+                target.Detail <- (newChild.Create() :?> Xamarin.Forms.Page)
             | ValueSome _, ValueNone ->
                 target.Detail <- null
             | ValueNone, ValueNone -> ()
@@ -3980,7 +3191,8 @@ type Xaml() =
             | ValueSome _, ValueNone -> target.MasterBehavior <- Xamarin.Forms.MasterBehavior.Default
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryIsPresentedChanged
-            match prevValueOpt, source.TryIsPresentedChanged with
+            let valueOpt = source.TryIsPresentedChanged
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.IsPresentedChanged.RemoveHandler(prevValue); target.IsPresentedChanged.AddHandler(value)
             | ValueNone, ValueSome value -> target.IsPresentedChanged.AddHandler(value)
@@ -4116,15 +3328,15 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.ViewCell)
-            let prevChildOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryView
-            match prevChildOpt, source.TryView with
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryView
+            let valueOpt = source.TryView
+            match prevValueOpt, valueOpt with
             // For structured objects, dependsOn on reference equality
             | ValueSome prevChild, ValueSome newChild when identical prevChild newChild -> ()
             | ValueSome prevChild, ValueSome newChild when canReuseChild prevChild newChild ->
                 newChild.UpdateIncremental(prevChild, target.View)
-            | ValueSome _, ValueSome newChild
-            | ValueNone, ValueSome newChild ->
-                target.View <- newChild.CreateAsView()
+            | _, ValueSome newChild ->
+                target.View <- (newChild.Create() :?> Xamarin.Forms.View)
             | ValueSome _, ValueNone ->
                 target.View <- null
             | ValueNone, ValueNone -> ()
@@ -4248,35 +3460,40 @@ type Xaml() =
             | ValueSome _, ValueNone -> target.SeparatorColor <- Xamarin.Forms.Color.Default
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryListView_ItemAppearing
-            match prevValueOpt, source.TryListView_ItemAppearing with
+            let valueOpt = source.TryListView_ItemAppearing
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.ItemAppearing.RemoveHandler(prevValue); target.ItemAppearing.AddHandler(value)
             | ValueNone, ValueSome value -> target.ItemAppearing.AddHandler(value)
             | ValueSome prevValue, ValueNone -> target.ItemAppearing.RemoveHandler(prevValue)
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryListView_ItemDisappearing
-            match prevValueOpt, source.TryListView_ItemDisappearing with
+            let valueOpt = source.TryListView_ItemDisappearing
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.ItemDisappearing.RemoveHandler(prevValue); target.ItemDisappearing.AddHandler(value)
             | ValueNone, ValueSome value -> target.ItemDisappearing.AddHandler(value)
             | ValueSome prevValue, ValueNone -> target.ItemDisappearing.RemoveHandler(prevValue)
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryListView_ItemSelected
-            match prevValueOpt, source.TryListView_ItemSelected with
+            let valueOpt = source.TryListView_ItemSelected
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.ItemSelected.RemoveHandler(prevValue); target.ItemSelected.AddHandler(value)
             | ValueNone, ValueSome value -> target.ItemSelected.AddHandler(value)
             | ValueSome prevValue, ValueNone -> target.ItemSelected.RemoveHandler(prevValue)
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryListView_ItemTapped
-            match prevValueOpt, source.TryListView_ItemTapped with
+            let valueOpt = source.TryListView_ItemTapped
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.ItemTapped.RemoveHandler(prevValue); target.ItemTapped.AddHandler(value)
             | ValueNone, ValueSome value -> target.ItemTapped.AddHandler(value)
             | ValueSome prevValue, ValueNone -> target.ItemTapped.RemoveHandler(prevValue)
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryRefreshing
-            match prevValueOpt, source.TryRefreshing with
+            let valueOpt = source.TryRefreshing
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.Refreshing.RemoveHandler(prevValue); target.Refreshing.AddHandler(value)
             | ValueNone, ValueSome value -> target.Refreshing.AddHandler(value)
@@ -4394,35 +3611,40 @@ type Xaml() =
             | ValueSome _, ValueNone -> target.SeparatorColor <- Xamarin.Forms.Color.Default
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryListViewGrouped_ItemAppearing
-            match prevValueOpt, source.TryListViewGrouped_ItemAppearing with
+            let valueOpt = source.TryListViewGrouped_ItemAppearing
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.ItemAppearing.RemoveHandler(prevValue); target.ItemAppearing.AddHandler(value)
             | ValueNone, ValueSome value -> target.ItemAppearing.AddHandler(value)
             | ValueSome prevValue, ValueNone -> target.ItemAppearing.RemoveHandler(prevValue)
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryListViewGrouped_ItemDisappearing
-            match prevValueOpt, source.TryListViewGrouped_ItemDisappearing with
+            let valueOpt = source.TryListViewGrouped_ItemDisappearing
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.ItemDisappearing.RemoveHandler(prevValue); target.ItemDisappearing.AddHandler(value)
             | ValueNone, ValueSome value -> target.ItemDisappearing.AddHandler(value)
             | ValueSome prevValue, ValueNone -> target.ItemDisappearing.RemoveHandler(prevValue)
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryListViewGrouped_ItemSelected
-            match prevValueOpt, source.TryListViewGrouped_ItemSelected with
+            let valueOpt = source.TryListViewGrouped_ItemSelected
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.ItemSelected.RemoveHandler(prevValue); target.ItemSelected.AddHandler(value)
             | ValueNone, ValueSome value -> target.ItemSelected.AddHandler(value)
             | ValueSome prevValue, ValueNone -> target.ItemSelected.RemoveHandler(prevValue)
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryListViewGrouped_ItemTapped
-            match prevValueOpt, source.TryListViewGrouped_ItemTapped with
+            let valueOpt = source.TryListViewGrouped_ItemTapped
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.ItemTapped.RemoveHandler(prevValue); target.ItemTapped.AddHandler(value)
             | ValueNone, ValueSome value -> target.ItemTapped.AddHandler(value)
             | ValueSome prevValue, ValueNone -> target.ItemTapped.RemoveHandler(prevValue)
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryRefreshing
-            match prevValueOpt, source.TryRefreshing with
+            let valueOpt = source.TryRefreshing
+            match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.Refreshing.RemoveHandler(prevValue); target.Refreshing.AddHandler(value)
             | ValueNone, ValueSome value -> target.Refreshing.AddHandler(value)
