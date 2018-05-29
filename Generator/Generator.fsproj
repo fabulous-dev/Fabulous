@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -8,6 +8,10 @@
   <ItemGroup>
     <PackageReference Include="Mono.Cecil" Version="0.10.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bindings.json" />
+    <Compile Include="Program.fs" />
   </ItemGroup>
 
 </Project>

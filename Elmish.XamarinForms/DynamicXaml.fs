@@ -1,4 +1,4 @@
-namespace rec Elmish.XamarinForms.DynamicViews
+namespace rec Elmish.XamarinForms.DynamicViews 
 
 #nowarn "67" // cast always holds
 
@@ -2292,7 +2292,7 @@ type Xaml() =
             | ValueNone, ValueSome newChild ->
                 target.Content <- newChild.CreateAsView()
             | ValueSome _, ValueNone ->
-                target.Content <- null;
+                target.Content <- null
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryScrollOrientation
             let valueOpt = source.TryScrollOrientation
@@ -2937,7 +2937,7 @@ type Xaml() =
             | ValueNone, ValueSome newChild ->
                 target.Content <- newChild.CreateAsView()
             | ValueSome _, ValueNone ->
-                target.Content <- null;
+                target.Content <- null
             | ValueNone, ValueNone -> ()
         new XamlElement(typeof<Xamarin.Forms.ContentView>, create, update, attribs)
 
@@ -3752,7 +3752,7 @@ type Xaml() =
             | ValueNone, ValueSome newChild ->
                 target.CurrentPage <- newChild.CreateAsContentPage()
             | ValueSome _, ValueNone ->
-                target.CurrentPage <- null;
+                target.CurrentPage <- null
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryCurrentPageChanged
             match prevValueOpt, source.TryCurrentPageChanged with
@@ -3909,7 +3909,7 @@ type Xaml() =
             | ValueNone, ValueSome newChild ->
                 target.Content <- newChild.CreateAsView()
             | ValueSome _, ValueNone ->
-                target.Content <- null;
+                target.Content <- null
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryOnSizeAllocatedCallback
             let valueOpt = source.TryOnSizeAllocatedCallback
@@ -3944,7 +3944,7 @@ type Xaml() =
             | ValueNone, ValueSome newChild ->
                 target.Master <- newChild.CreateAsPage()
             | ValueSome _, ValueNone ->
-                target.Master <- null;
+                target.Master <- null
             | ValueNone, ValueNone -> ()
             let prevChildOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryDetail
             match prevChildOpt, source.TryDetail with
@@ -3956,7 +3956,7 @@ type Xaml() =
             | ValueNone, ValueSome newChild ->
                 target.Detail <- newChild.CreateAsPage()
             | ValueSome _, ValueNone ->
-                target.Detail <- null;
+                target.Detail <- null
             | ValueNone, ValueNone -> ()
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryIsGestureEnabled
             let valueOpt = source.TryIsGestureEnabled
@@ -4126,7 +4126,7 @@ type Xaml() =
             | ValueNone, ValueSome newChild ->
                 target.View <- newChild.CreateAsView()
             | ValueSome _, ValueNone ->
-                target.View <- null;
+                target.View <- null
             | ValueNone, ValueNone -> ()
         new XamlElement(typeof<Xamarin.Forms.ViewCell>, create, update, attribs)
 
