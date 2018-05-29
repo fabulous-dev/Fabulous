@@ -1,6 +1,7 @@
 ## Roadmap
 
 * Programming model: Do these from `Xamarin.Forms.Core`: 
+  * FlexLayout and XF 3.0 additions
   * Move to `seq<_>` as the de-facto model type
   * Menu, MenuItem, NavigationBar, Accelerator
   * Animation
