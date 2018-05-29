@@ -3,6 +3,8 @@
 open System.Reflection
 open System.Runtime.CompilerServices
 
+// the name of the type here needs to match the name inside the ResourceDesigner attribute
+type Resources = TicTacToe.Droid.Resource
 [<assembly: Android.Runtime.ResourceDesigner("TicTacToe.Droid.Resources", IsApplication=true)>]
 
 [<assembly: AssemblyTitle("TicTacToe.Droid")>]

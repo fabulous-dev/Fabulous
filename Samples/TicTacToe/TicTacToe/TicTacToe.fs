@@ -139,8 +139,8 @@ module App =
     let imageForPos cell =
         match cell with
         // Revert this once https://github.com/fsprojects/Elmish.XamarinForms/pull/51 is reverted
-        | Full X -> "http://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg"
-        | Full O -> "http://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Proboscis_Monkey_in_Borneo.jpg/250px-Proboscis_Monkey_in_Borneo.jpg"
+        | Full X -> "icon"
+        | Full O -> "Nought"
         | Empty -> ""
 
     /// A helper to get the suffix used in the Xaml for a position on the board.
