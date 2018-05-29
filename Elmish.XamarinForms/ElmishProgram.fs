@@ -313,7 +313,11 @@ module Program =
             | Choice1Of2 (mainPage, bindings) -> Choice1Of2 (mainPage, bindings), mainPage
             | Choice2Of2 ((app: Application), contentf: _ -> _ -> XamlElement) -> 
                 let pageDescription = contentf initialModel dispatch
-                let mainPage = pageDescription.CreateAsPage()
+                let pageObj = pageDescription.Create()
+                let mainPage = 
+                    match pageObj with 
+                    | :? Page as page -> page
+                    | _ -> failwithf "Incorrect model type: expected a page but got a %O" (pageObj.GetType())
                 app.MainPage <- mainPage
                 //app.Properties.["model"] <- initialModel
                 Choice2Of2 (pageDescription, app, contentf), mainPage
@@ -363,7 +367,10 @@ module Program =
                         if canReuseChild prevPageDescription newPageDescription then
                             newPageDescription.UpdateIncremental (prevPageDescription, app.MainPage)
                         else
-                            app.MainPage <- newPageDescription.CreateAsPage()
+                            let pageObj = newPageDescription.Create()
+                            match pageObj with 
+                            | :? Page as page -> app.MainPage <- page
+                            | _ -> failwithf "Incorrect model type: expected a page but got a %O" (pageObj.GetType())
 
                         Choice2Of2 (newPageDescription, app, contentf)
                 lastViewData <- Some viewData
