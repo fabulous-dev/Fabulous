@@ -99,21 +99,18 @@
 			"members": [
 				{
 					"name": "HorizontalOptions",
-					"defaultValue": "Unchecked.defaultof<Xamarin.Forms.LayoutOptions>",
-					"equality": "equalLayoutOptions"
+					"defaultValue": "Unchecked.defaultof<Xamarin.Forms.LayoutOptions>"
 				},
 				{
 					"name": "VerticalOptions",
-					"defaultValue": "Unchecked.defaultof<Xamarin.Forms.LayoutOptions>",
-					"equality": "equalLayoutOptions"
+					"defaultValue": "Unchecked.defaultof<Xamarin.Forms.LayoutOptions>"
 				},
 				{
 					"name": "Margin",
 					"inputType": "obj",
 					"modelType": "Xamarin.Forms.Thickness",
 					"convToModel": "makeThickness",
-					"defaultValue": "Unchecked.defaultof<Xamarin.Forms.Thickness>",
-					"equality": "equalThickness"
+					"defaultValue": "Unchecked.defaultof<Xamarin.Forms.Thickness>"
 				},
 				{
 					"name": "GestureRecognizers",
@@ -283,7 +280,7 @@
 					"uniqueName": "SearchBarCanExecute",
 					"inputType": "bool",
 					"modelType": "bool",
-					"updateCode": "updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> System.Diagnostics.Debug.WriteLine(\"Setting SearchBar::Command \"); prev.TrySearchBarCommand) prevValueOpt source.TrySearchBarCommand valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine(\"Setting SearchBar::Command \"); target.SearchCommand <- cmd)"
+					"updateCode": "updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<_>(\"SearchBarCommand\")) prevValueOpt (source.TryGetAttribute<_>(\"SearchBarCommand\")) valueOpt (fun cmd -> target.SearchCommand <- cmd)"
 				},
 				{
 					"name": "Text",
@@ -307,14 +304,14 @@
 					"uniqueName": "ButtonCommand",
 					"inputType": "unit -> unit",
 					"modelType": "unit -> unit",
-					"updateCode": "(fun _ _ _ -> ())" //updateCommand prevValueOpt (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryButtonCanExecute) valueOpt source.TryButtonCanExecute (fun cmd -> System.Diagnostics.Debug.WriteLine(\"Setting Button::Command \"); target.Command <- cmd)"
+					"updateCode": "(fun _ _ _ -> ())" // set below in CanExecute
 				},
 				{
 					"name": "CanExecute",
 					"uniqueName": "ButtonCanExecute",
 					"inputType": "bool",
 					"modelType": "bool",
-					"updateCode": "updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryButtonCommand) prevValueOpt source.TryButtonCommand valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine(\"Setting Button::Command \"); target.Command <- cmd)"
+					"updateCode": "updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<_>(\"ButtonCommand\")) prevValueOpt (source.TryGetAttribute<_>(\"ButtonCommand\")) valueOpt (fun cmd -> target.Command <- cmd)"
 				},
 				{
 					"name": "BorderColor",
@@ -941,8 +938,7 @@
 					"inputType": "obj",
 					"modelType": "Xamarin.Forms.Thickness",
 					"convToModel": "makeThickness",
-					"defaultValue": "Unchecked.defaultof<Xamarin.Forms.Thickness>",
-					"equality": "equalThickness"
+					"defaultValue": "Unchecked.defaultof<Xamarin.Forms.Thickness>"
 				}
 			]
 		},
@@ -1055,8 +1051,7 @@
 					"inputType": "obj",
 					"modelType": "Xamarin.Forms.Thickness",
 					"convToModel": "makeThickness",
-					"defaultValue": "Unchecked.defaultof<Xamarin.Forms.Thickness>",
-					"equality": "equalThickness"
+					"defaultValue": "Unchecked.defaultof<Xamarin.Forms.Thickness>"
 				},
 				{
 					"name": "UseSafeArea",
@@ -1109,7 +1104,6 @@
 			"members": [
 				{
 					"name": "Pages",
-					"uniqueName": "NavigationPagePages",
 					"inputType": "XamlElement list",
 					"shortName": "pages",
 					"modelType": "XamlElement[]",
@@ -1284,7 +1278,7 @@
 					"uniqueName": "TextCellCanExecute",
 					"inputType": "bool",
 					"modelType": "bool",
-					"updateCode": "updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryTextCellCommand) prevValueOpt source.TryTextCellCommand valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine(\"Setting TextCell::Command \"); target.Command <- cmd)"
+					"updateCode": "updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<_>(\"TextCellCommand\")) prevValueOpt (source.TryGetAttribute<_>(\"TextCellCommand\")) valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine(\"Setting TextCell::Command \"); target.Command <- cmd)"
 				},
 				{
 					"name": "CommandParameter",
@@ -1390,10 +1384,12 @@
 				},
 				{
 					"name": "SeparatorVisibility",
+					"uniqueName": "ListView_SeparatorVisibility",
 					"defaultValue": "Xamarin.Forms.SeparatorVisibility.Default"
 				},
 				{
 					"name": "SeparatorColor",
+					"uniqueName": "ListView_SeparatorColor",
 					"defaultValue": "Xamarin.Forms.Color.Default"
 				},
 				{
@@ -1426,6 +1422,7 @@
 				},
 				{
 					"name": "Refreshing",
+					"uniqueName": "ListView_Refreshing",
 					"defaultValue": "null",
 					"inputType": "unit -> unit",
 					"convToModel": "(fun f -> System.EventHandler(fun sender args -> f ()))"
@@ -1439,7 +1436,7 @@
 			"members": [
 				{
 					"name": "ItemsSource",
-					"uniqueName": "GroupListViewItemsSource",
+					"uniqueName": "ListViewGrouped_ItemsSource",
 					"shortName": "items",
 					"inputType": "(XamlElement * XamlElement list) list",
 					"modelType": "(XamlElement * XamlElement[])[]",

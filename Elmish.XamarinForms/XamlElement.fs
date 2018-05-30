@@ -33,6 +33,9 @@ type XamlElement internal (targetType: Type, create: (unit -> obj), update: (Xam
     [<DebuggerBrowsable(DebuggerBrowsableState.RootHidden)>]
     member x.Attributes = attribsMap
 
+    /// Get an attribute of the visual element
+    member inline x.TryGetAttribute<'T>(name: string) = match x.Attributes.TryFind(name) with Some v -> ValueSome(unbox<'T>(v)) | None -> ValueNone
+
     /// Get the attributes of the visual element
     [<DebuggerBrowsable(DebuggerBrowsableState.Never)>]
     member x.AttributesArray = (match attribsArray with null -> Map.toArray attribsMap | arr -> arr)
@@ -44,7 +47,7 @@ type XamlElement internal (targetType: Type, create: (unit -> obj), update: (Xam
     [<DebuggerBrowsable(DebuggerBrowsableState.Never)>]
     member x.UpdateMethod = update
 
-    /// Differrentially update a visual element given the previous settings
+    /// Differentially update a visual element given the previous settings
     member x.UpdateIncremental(prev: XamlElement, target: obj) = update (ValueSome prev) x target
 
     /// Update a different description to a similar visual element

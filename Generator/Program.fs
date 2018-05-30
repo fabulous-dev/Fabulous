@@ -28,9 +28,6 @@ type MemberBinding() =
     /// The default value when applying to the target
     member val DefaultValue : string = null with get, set
 
-    /// The function used to compute equality between previous and subsequent values
-    member val Equality : string = null with get, set
-
     /// Converts the input type to the model type
     member val ConvToModel : string = null with get, set
 
@@ -41,7 +38,6 @@ type MemberBinding() =
     member val UpdateCode : string = null with get, set
 
     /// The type as stored in the model
-    /// 
     member val ModelType : string = null with get, set 
 
     /// The element type of the collection property
@@ -70,26 +66,26 @@ type MemberBinding() =
 
 type TypeBinding() = 
 
-    member val  Name : string = null with get, set
+    member val Name : string = null with get, set
 
-    member val  ModelName : string = null with get, set
+    member val ModelName : string = null with get, set
 
-    member val  CustomType : string = null with get, set
+    member val CustomType : string = null with get, set
 
-    member val  Members: List<MemberBinding> = null with get, set
+    member val Members: List<MemberBinding> = null with get, set
 
     member __.BoundName = "XamlElement" // Definition.Name + "Description"
 
 
 type Bindings() = 
 
-    member val  Assemblies : List<string> = null with get, set 
+    member val Assemblies : List<string> = null with get, set 
 
-    member val  Types : List<TypeBinding> = null with get, set 
+    member val Types : List<TypeBinding> = null with get, set 
 
-    member val  OutputNamespace : string = null with get, set 
+    member val OutputNamespace : string = null with get, set 
 
-    member val  AssemblyDefinitions : List<AssemblyDefinition> = null with get, set 
+    member val AssemblyDefinitions : List<AssemblyDefinition> = null with get, set 
 
     member this.FindType (name: string) = this.Types |> Seq.tryFind (fun x -> x.Name = name)
 
@@ -110,7 +106,7 @@ let ResolveType(this: Bindings, name: string) =
 let rec ResolveGenericParameter (tref: TypeReference, hierarchy: seq<TypeReference * TypeDefinition>) : TypeReference option =
     if (tref = null) then
         None
-    elif not (tref.IsGenericParameter) then
+    elif not tref.IsGenericParameter then
         Some tref
     else
         seq { 
@@ -237,9 +233,14 @@ let FindEvent(name: string , typ: TypeDefinition) : EventDefinition option =
                      yield p }
     q |> Seq.tryHead
 
+let iterSep sep f xs = 
+    let mutable head = ""
+    for x in xs do
+        f head x
+        head <- sep
+
 let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDefinition>, memberResolutions) =
     let w = new StringWriter()
-    let mutable head = "" // TODO: remove this horror
 
     w.printfn "namespace rec %s " bindings.OutputNamespace
     w.printfn ""
@@ -261,17 +262,18 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
                         allMembersInAllTypes.Add(ap)
 
     let allMembersInAllTypesGroupedByName = allMembersInAllTypes.GroupBy(fun y -> y.BoundUniqueName)
+    //for ms in allMembersInAllTypesGroupedByName do
+    //    let m = ms.First()
+    //    if not m.IsParam then
+    //        w.printfn ""
+    //        w.printfn "        /// Try to get the %s property in the visual element" m.BoundUniqueName
+    //        w.printfn "%s" ("        member internal x.Try" + m.BoundUniqueName + " = x.TryGetAttribute<" + modelType + ">(\"" + m.BoundUniqueName + "\")")
+    let tryGetCode (m: MemberBinding) = 
+        let modelType = m.GetModelType(bindings, memberResolutions, null)
+        "TryGetAttribute<" + modelType + ">(\"" + m.BoundUniqueName + "\")"
     for ms in allMembersInAllTypesGroupedByName do
         let m = ms.First()
-        if not (m.IsParam) then
-            w.printfn ""
-            w.printfn "        /// Try to get the %s property in the visual element" m.BoundUniqueName
-            let modelType = m.GetModelType(bindings, memberResolutions, null)
-            w.printfn "%s" ("        member internal x.Try" + m.BoundUniqueName + " = match x.Attributes.TryFind(\"" + m.BoundUniqueName + "\") with Some v -> ValueSome(unbox<" + modelType + ">(v)) | None -> ValueNone")
-
-    for ms in allMembersInAllTypesGroupedByName do
-        let m = ms.First()
-        if not (m.IsParam) then
+        if not m.IsParam then
             w.printfn ""
             w.printfn "        /// Adjusts the %s property in the visual element" m.BoundUniqueName
             let conv = if String.IsNullOrWhiteSpace(m.ConvToModel) then "" else m.ConvToModel
@@ -281,7 +283,7 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
     //w.printfn ""
     //for ms in allMembersInAllTypesGroupedByName do
     //    let m = ms.First()
-    //    if not (m.IsParam) then
+    //    if not m.IsParam then
     //        let inputType = m.GetInputType(bindings, memberResolutions, null)
     //        w.printfn ""
     //        w.printfn "    /// Adjusts the %s property in the visual element" m.BoundUniqueName
@@ -317,12 +319,10 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
         w.printfn "    /// Describes a %s in the view" nameOfCreator
         let qual = if hasCreate then "internal " else ""
         w.printf "    static member %s%s(" qual nameOfCreator
-        head <- ""
-        for m in allMembers do
+        allMembers |> iterSep ", " (fun head m -> 
             let inputType = m.GetInputType(bindings, memberResolutions, null)
 
-            w.printf "%s?%s: %s" head m.LowerBoundShortName inputType
-            head <- ", "
+            w.printf "%s?%s: %s" head m.LowerBoundShortName inputType)
 
         w.printfn ") = "
         match baseTypeOpt with 
@@ -330,12 +330,10 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
         | Some baseType ->
             let nameOfBaseCreator = if String.IsNullOrWhiteSpace(baseType.ModelName) then resolutions.[baseType].Name else baseType.ModelName
             w.printf "        let baseElement : XamlElement = Xaml.%s(" nameOfBaseCreator
-            head <- ""
-            for m in allBaseMembers do
+            allBaseMembers |> iterSep ", " (fun head m -> 
                 let inputType = m.GetInputType(bindings, memberResolutions, null)
 
-                w.printf "%s?%s=%s" head m.LowerBoundShortName m.LowerBoundShortName
-                head <- ", "
+                w.printf "%s?%s=%s" head m.LowerBoundShortName m.LowerBoundShortName)
             w.printfn ")"
 
         w.printfn "        let attribs = [| "
@@ -352,31 +350,25 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
 
         w.printfn ""
         w.printfn "        let create () ="
-        if not (hasCreate) then
+        if not hasCreate then
             if (allMembers.Any(fun m -> m.IsParam)) then
                 w.printf "            match "
-                head <- ""
-                for m in allImmediateMembers do 
-                    if (m.IsParam) then
-                        w.printf "%s%s" head m.LowerBoundShortName
-                        head <- ", "
+                allImmediateMembers |> iterSep ", " (fun head m -> 
+                    if m.IsParam then
+                        w.printf "%s%s" head m.LowerBoundShortName)
                 w.printfn " with"
                 w.printf "            | "
-                head <- ""
-                for m in allImmediateMembers do
-                    if (m.IsParam) then
-                        w.printf "%sSome %s" head m.LowerBoundShortName
-                        head <- ", "
+                allImmediateMembers |> iterSep ", " (fun head m -> 
+                    if m.IsParam then
+                        w.printf "%sSome %s" head m.LowerBoundShortName)
                 w.printfn " ->"
                 w.printf "                box (new %s(" customTypeToCreate
-                head <- ""
-                for m in allImmediateMembers do
-                    if (m.IsParam) then
+                allImmediateMembers |> iterSep ", " (fun head m -> 
+                    if m.IsParam then
                         //if (bt <> null) then
                         //    w.printf "%s%s.CreateAs%s()" head m.LowerBoundShortName bt
                         //else
-                        w.printf "%s%s" head m.LowerBoundShortName
-                        head <- ", "
+                        w.printf "%s%s" head m.LowerBoundShortName)
                 w.printfn "))"
                 w.printf "            | _ -> box (new %s())" customTypeToCreate
             else
@@ -399,93 +391,93 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
             for m in allImmediateMembers do
                 let hasApply = not (String.IsNullOrWhiteSpace(m.ConvToValue)) || not (String.IsNullOrWhiteSpace(m.UpdateCode))
 
-                let boundType = 
-                    match m.BoundType(memberResolutions) with 
-                    | None -> None
-                    | Some boundType -> ResolveGenericParameter(boundType, hierarchy)
-                   
-                let elementType = m.GetElementTypeFullName(memberResolutions, hierarchy)
-
-                match m, elementType, boundType with 
 
                 // Check if "member" is actually a parameter to the constructor
-                | _ when m.IsParam -> ()
+                if not m.IsParam then
 
-                // Check if the member is a collection
-                | _, Some elementType, _ when not hasApply ->
-                    w.printfn "            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.Try%s" m.BoundUniqueName
-                    w.printfn "            let valueOpt = source.Try%s" m.BoundUniqueName
-                    w.printfn "            updateIList prevValueOpt valueOpt target.%s" m.Name
-                    w.printfn "                (fun (x:XamlElement) -> x.Create() :?> %s)" elementType
-                    if (m.Attached <> null) then
-                        w.printfn "                (fun prevChildOpt newChild targetChild -> "
-                        for ap in m.Attached do
-                            w.printfn "                    // Adjust the attached properties"
-                            w.printfn "                    match (match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.Try%s), newChild.Try%s with" ap.BoundUniqueName ap.BoundUniqueName
-                            w.printfn "                    | ValueSome prev, ValueSome v when prev = v -> ()"
-                            let apApply = if String.IsNullOrWhiteSpace(ap.ConvToValue) then "" else ap.ConvToValue + " "
-                            w.printfn "                    | prevOpt, ValueSome value -> %s.Set%s(targetChild, %svalue)" tdef.FullName ap.Name apApply
-                            w.printfn "                    | ValueSome _, ValueNone -> %s.Set%s(targetChild, %s) // TODO: not always perfect, should set back to original default?" tdef.FullName ap.Name ap.DefaultValue
-                            w.printfn "                    | _ -> ()"
-                        w.printfn "                    ())"
-                    else
-                        w.printfn "                (fun _ _ _ -> ())"
-                    w.printfn "                canReuseChild"
-                    w.printfn "                updateChild"
+                    w.printfn "            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.%s" (tryGetCode m)
+                    w.printfn "            let valueOpt = source.%s" (tryGetCode m)
 
-                // Check if the type of the member is in the model, if so issue recursive calls to "Create" and "UpdateIncremental"
-                | _, _, Some bt when bindings.FindType(bt.FullName).IsSome && not hasApply ->
+                    // Check if the member is a collection
+                    let elementTypeOpt = m.GetElementTypeFullName(memberResolutions, hierarchy)
 
-                    w.printfn "            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.Try%s" m.BoundUniqueName
-                    w.printfn "            let valueOpt = source.Try%s" m.BoundUniqueName
-                    w.printfn "            match prevValueOpt, valueOpt with"
-                    w.printfn "            // For structured objects, dependsOn on reference equality"
-                    w.printfn "            | ValueSome prevChild, ValueSome newChild when identical prevChild newChild -> ()"
-                    w.printfn "            | ValueSome prevChild, ValueSome newChild when canReuseChild prevChild newChild ->"
-                    w.printfn "                newChild.UpdateIncremental(prevChild, target.%s)" m.Name
-                    w.printfn "            | _, ValueSome newChild ->"
-                    w.printfn "                target.%s <- (newChild.Create() :?> %s)" m.Name bt.FullName
-                    w.printfn "            | ValueSome _, ValueNone ->"
-                    w.printfn "                target.%s <- null"  m.Name
-                    w.printfn "            | ValueNone, ValueNone -> ()"
-
-                // Default for delegate-typed things
-                | _, _, Some bt when (bt.Name.EndsWith("Handler") || bt.Name.EndsWith("Handler`1") || bt.Name.EndsWith("Handler`2")) && not hasApply ->
-                    w.printfn "            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.Try%s" m.BoundUniqueName
-                    w.printfn "            let valueOpt = source.Try%s" m.BoundUniqueName
-                    w.printfn "            match prevValueOpt, valueOpt with"
-                    w.printfn "            | ValueSome prevValue, ValueSome value when identical prevValue value -> ()"
-                    w.printfn "            | ValueSome prevValue, ValueSome value -> target.%s.RemoveHandler(prevValue); target.%s.AddHandler(value)" m.Name m.Name
-                    w.printfn "            | ValueNone, ValueSome value -> target.%s.AddHandler(value)" m.Name
-                    w.printfn "            | ValueSome prevValue, ValueNone -> target.%s.RemoveHandler(prevValue)" m.Name
-                    w.printfn "            | ValueNone, ValueNone -> ()"
-
-                | _ -> 
-                    w.printfn "            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.Try%s" m.BoundUniqueName
-                    w.printfn "            let valueOpt = source.Try%s" m.BoundUniqueName
-
-                    // Explicit update code
-                    if not (String.IsNullOrWhiteSpace(m.UpdateCode)) then
-                        w.printfn "            %s prevValueOpt valueOpt target" m.UpdateCode
+                    match elementTypeOpt with 
+                    | Some elementType when not hasApply ->
+                        w.printfn "            updateIList prevValueOpt valueOpt target.%s" m.Name
+                        w.printfn "                (fun (x:XamlElement) -> x.Create() :?> %s)" elementType
                         if (m.Attached <> null) then
                             w.printfn "                (fun prevChildOpt newChild targetChild -> "
                             for ap in m.Attached do
                                 w.printfn "                    // Adjust the attached properties"
-                                w.printfn "                    match (match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.Try%s), newChild.Try%s with" ap.BoundUniqueName ap.BoundUniqueName
+                                w.printfn "                    let prevChildValueOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.%s" (tryGetCode ap)
+                                w.printfn "                    let childValueOpt = newChild.%s" (tryGetCode ap)
+                                w.printfn "                    match prevChildValueOpt, childValueOpt with"
                                 w.printfn "                    | ValueSome prev, ValueSome v when prev = v -> ()"
                                 let apApply = if String.IsNullOrWhiteSpace(ap.ConvToValue) then "" else ap.ConvToValue + " "
                                 w.printfn "                    | prevOpt, ValueSome value -> %s.Set%s(targetChild, %svalue)" tdef.FullName ap.Name apApply
                                 w.printfn "                    | ValueSome _, ValueNone -> %s.Set%s(targetChild, %s) // TODO: not always perfect, should set back to original default?" tdef.FullName ap.Name ap.DefaultValue
                                 w.printfn "                    | _ -> ()"
                             w.printfn "                    ())"
-                    else
-                        let update = if String.IsNullOrWhiteSpace(m.ConvToValue) then "" else m.ConvToValue + " "
+                        else
+                            w.printfn "                (fun _ _ _ -> ())"
+                        w.printfn "                canReuseChild"
+                        w.printfn "                updateChild"
 
-                        w.printfn "            match prevValueOpt, valueOpt with"
-                        w.printfn "            | ValueSome prevValue, ValueSome value when prevValue = value -> ()"
-                        w.printfn "            | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine(\"Setting %s::%s \"); target.%s <- %s value" nameOfCreator m.Name m.Name update
-                        w.printfn "            | ValueSome _, ValueNone -> target.%s <- %s"  m.Name m.DefaultValue
-                        w.printfn "            | ValueNone, ValueNone -> ()"
+                    | _ -> 
+                        let boundType = 
+                            match m.BoundType(memberResolutions) with 
+                            | None -> None
+                            | Some boundType -> ResolveGenericParameter(boundType, hierarchy)
+                   
+                        match boundType with 
+
+                        // Check if the type of the member is in the model, if so issue recursive calls to "Create" and "UpdateIncremental"
+                        | Some bt when bindings.FindType(bt.FullName).IsSome && not hasApply ->
+
+                            w.printfn "            match prevValueOpt, valueOpt with"
+                            w.printfn "            // For structured objects, dependsOn on reference equality"
+                            w.printfn "            | ValueSome prevChild, ValueSome newChild when identical prevChild newChild -> ()"
+                            w.printfn "            | ValueSome prevChild, ValueSome newChild when canReuseChild prevChild newChild ->"
+                            w.printfn "                newChild.UpdateIncremental(prevChild, target.%s)" m.Name
+                            w.printfn "            | _, ValueSome newChild ->"
+                            w.printfn "                target.%s <- (newChild.Create() :?> %s)" m.Name bt.FullName
+                            w.printfn "            | ValueSome _, ValueNone ->"
+                            w.printfn "                target.%s <- null"  m.Name
+                            w.printfn "            | ValueNone, ValueNone -> ()"
+
+                        // Default for delegate-typed things
+                        | Some bt when (bt.Name.EndsWith("Handler") || bt.Name.EndsWith("Handler`1") || bt.Name.EndsWith("Handler`2")) && not hasApply ->
+                            w.printfn "            match prevValueOpt, valueOpt with"
+                            w.printfn "            | ValueSome prevValue, ValueSome value when identical prevValue value -> ()"
+                            w.printfn "            | ValueSome prevValue, ValueSome value -> target.%s.RemoveHandler(prevValue); target.%s.AddHandler(value)" m.Name m.Name
+                            w.printfn "            | ValueNone, ValueSome value -> target.%s.AddHandler(value)" m.Name
+                            w.printfn "            | ValueSome prevValue, ValueNone -> target.%s.RemoveHandler(prevValue)" m.Name
+                            w.printfn "            | ValueNone, ValueNone -> ()"
+
+                        // Explicit update code
+                        | _ when not (String.IsNullOrWhiteSpace(m.UpdateCode))  -> 
+                            w.printfn "            %s prevValueOpt valueOpt target" m.UpdateCode
+                            if (m.Attached <> null) then
+                                w.printfn "                (fun prevChildOpt newChild targetChild -> "
+                                for ap in m.Attached do
+                                    w.printfn "                    // Adjust the attached properties"
+                                    w.printfn "                    let prevChildValueOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.%s" (tryGetCode ap)
+                                    w.printfn "                    let childValueOpt = newChild.%s" (tryGetCode ap)
+                                    w.printfn "                    match prevChildValueOpt, childValueOpt with"
+                                    w.printfn "                    | ValueSome prev, ValueSome v when prev = v -> ()"
+                                    let apApply = if String.IsNullOrWhiteSpace(ap.ConvToValue) then "" else ap.ConvToValue + " "
+                                    w.printfn "                    | prevOpt, ValueSome value -> %s.Set%s(targetChild, %svalue)" tdef.FullName ap.Name apApply
+                                    w.printfn "                    | ValueSome _, ValueNone -> %s.Set%s(targetChild, %s) // TODO: not always perfect, should set back to original default?" tdef.FullName ap.Name ap.DefaultValue
+                                    w.printfn "                    | _ -> ()"
+                                w.printfn "                    ())"
+                        | _ -> 
+                            let update = if String.IsNullOrWhiteSpace(m.ConvToValue) then "" else m.ConvToValue + " "
+
+                            w.printfn "            match prevValueOpt, valueOpt with"
+                            w.printfn "            | ValueSome prevValue, ValueSome value when prevValue = value -> ()"
+                            w.printfn "            | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine(\"Setting %s::%s \"); target.%s <- %s value" nameOfCreator m.Name m.Name update
+                            w.printfn "            | ValueSome _, ValueNone -> target.%s <- %s"  m.Name m.DefaultValue
+                            w.printfn "            | ValueNone, ValueNone -> ()"
                                 
         w.printfn "        new XamlElement(typeof<%s>, create, update, attribs)" tdef.FullName
 

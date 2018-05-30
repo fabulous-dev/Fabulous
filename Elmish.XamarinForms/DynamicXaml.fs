@@ -7,507 +7,6 @@ module XamlElementExtensions =
 
     type XamlElement with
 
-        /// Try to get the ClassId property in the visual element
-        member internal x.TryClassId = match x.Attributes.TryFind("ClassId") with Some v -> ValueSome(unbox<string>(v)) | None -> ValueNone
-
-        /// Try to get the StyleId property in the visual element
-        member internal x.TryStyleId = match x.Attributes.TryFind("StyleId") with Some v -> ValueSome(unbox<string>(v)) | None -> ValueNone
-
-        /// Try to get the AnchorX property in the visual element
-        member internal x.TryAnchorX = match x.Attributes.TryFind("AnchorX") with Some v -> ValueSome(unbox<double>(v)) | None -> ValueNone
-
-        /// Try to get the AnchorY property in the visual element
-        member internal x.TryAnchorY = match x.Attributes.TryFind("AnchorY") with Some v -> ValueSome(unbox<double>(v)) | None -> ValueNone
-
-        /// Try to get the BackgroundColor property in the visual element
-        member internal x.TryBackgroundColor = match x.Attributes.TryFind("BackgroundColor") with Some v -> ValueSome(unbox<Xamarin.Forms.Color>(v)) | None -> ValueNone
-
-        /// Try to get the HeightRequest property in the visual element
-        member internal x.TryHeightRequest = match x.Attributes.TryFind("HeightRequest") with Some v -> ValueSome(unbox<double>(v)) | None -> ValueNone
-
-        /// Try to get the InputTransparent property in the visual element
-        member internal x.TryInputTransparent = match x.Attributes.TryFind("InputTransparent") with Some v -> ValueSome(unbox<bool>(v)) | None -> ValueNone
-
-        /// Try to get the IsEnabled property in the visual element
-        member internal x.TryIsEnabled = match x.Attributes.TryFind("IsEnabled") with Some v -> ValueSome(unbox<bool>(v)) | None -> ValueNone
-
-        /// Try to get the IsVisible property in the visual element
-        member internal x.TryIsVisible = match x.Attributes.TryFind("IsVisible") with Some v -> ValueSome(unbox<bool>(v)) | None -> ValueNone
-
-        /// Try to get the MinimumHeightRequest property in the visual element
-        member internal x.TryMinimumHeightRequest = match x.Attributes.TryFind("MinimumHeightRequest") with Some v -> ValueSome(unbox<double>(v)) | None -> ValueNone
-
-        /// Try to get the MinimumWidthRequest property in the visual element
-        member internal x.TryMinimumWidthRequest = match x.Attributes.TryFind("MinimumWidthRequest") with Some v -> ValueSome(unbox<double>(v)) | None -> ValueNone
-
-        /// Try to get the Opacity property in the visual element
-        member internal x.TryOpacity = match x.Attributes.TryFind("Opacity") with Some v -> ValueSome(unbox<double>(v)) | None -> ValueNone
-
-        /// Try to get the Rotation property in the visual element
-        member internal x.TryRotation = match x.Attributes.TryFind("Rotation") with Some v -> ValueSome(unbox<double>(v)) | None -> ValueNone
-
-        /// Try to get the RotationX property in the visual element
-        member internal x.TryRotationX = match x.Attributes.TryFind("RotationX") with Some v -> ValueSome(unbox<double>(v)) | None -> ValueNone
-
-        /// Try to get the RotationY property in the visual element
-        member internal x.TryRotationY = match x.Attributes.TryFind("RotationY") with Some v -> ValueSome(unbox<double>(v)) | None -> ValueNone
-
-        /// Try to get the Scale property in the visual element
-        member internal x.TryScale = match x.Attributes.TryFind("Scale") with Some v -> ValueSome(unbox<double>(v)) | None -> ValueNone
-
-        /// Try to get the Style property in the visual element
-        member internal x.TryStyle = match x.Attributes.TryFind("Style") with Some v -> ValueSome(unbox<Xamarin.Forms.Style>(v)) | None -> ValueNone
-
-        /// Try to get the TranslationX property in the visual element
-        member internal x.TryTranslationX = match x.Attributes.TryFind("TranslationX") with Some v -> ValueSome(unbox<double>(v)) | None -> ValueNone
-
-        /// Try to get the TranslationY property in the visual element
-        member internal x.TryTranslationY = match x.Attributes.TryFind("TranslationY") with Some v -> ValueSome(unbox<double>(v)) | None -> ValueNone
-
-        /// Try to get the WidthRequest property in the visual element
-        member internal x.TryWidthRequest = match x.Attributes.TryFind("WidthRequest") with Some v -> ValueSome(unbox<double>(v)) | None -> ValueNone
-
-        /// Try to get the HorizontalOptions property in the visual element
-        member internal x.TryHorizontalOptions = match x.Attributes.TryFind("HorizontalOptions") with Some v -> ValueSome(unbox<Xamarin.Forms.LayoutOptions>(v)) | None -> ValueNone
-
-        /// Try to get the VerticalOptions property in the visual element
-        member internal x.TryVerticalOptions = match x.Attributes.TryFind("VerticalOptions") with Some v -> ValueSome(unbox<Xamarin.Forms.LayoutOptions>(v)) | None -> ValueNone
-
-        /// Try to get the Margin property in the visual element
-        member internal x.TryMargin = match x.Attributes.TryFind("Margin") with Some v -> ValueSome(unbox<Xamarin.Forms.Thickness>(v)) | None -> ValueNone
-
-        /// Try to get the GestureRecognizers property in the visual element
-        member internal x.TryGestureRecognizers = match x.Attributes.TryFind("GestureRecognizers") with Some v -> ValueSome(unbox<XamlElement[]>(v)) | None -> ValueNone
-
-        /// Try to get the TouchPoints property in the visual element
-        member internal x.TryTouchPoints = match x.Attributes.TryFind("TouchPoints") with Some v -> ValueSome(unbox<int>(v)) | None -> ValueNone
-
-        /// Try to get the PanUpdated property in the visual element
-        member internal x.TryPanUpdated = match x.Attributes.TryFind("PanUpdated") with Some v -> ValueSome(unbox<System.EventHandler<Xamarin.Forms.PanUpdatedEventArgs>>(v)) | None -> ValueNone
-
-        /// Try to get the Command property in the visual element
-        member internal x.TryCommand = match x.Attributes.TryFind("Command") with Some v -> ValueSome(unbox<System.Windows.Input.ICommand>(v)) | None -> ValueNone
-
-        /// Try to get the NumberOfTapsRequired property in the visual element
-        member internal x.TryNumberOfTapsRequired = match x.Attributes.TryFind("NumberOfTapsRequired") with Some v -> ValueSome(unbox<int>(v)) | None -> ValueNone
-
-        /// Try to get the NumberOfClicksRequired property in the visual element
-        member internal x.TryNumberOfClicksRequired = match x.Attributes.TryFind("NumberOfClicksRequired") with Some v -> ValueSome(unbox<int>(v)) | None -> ValueNone
-
-        /// Try to get the Buttons property in the visual element
-        member internal x.TryButtons = match x.Attributes.TryFind("Buttons") with Some v -> ValueSome(unbox<Xamarin.Forms.ButtonsMask>(v)) | None -> ValueNone
-
-        /// Try to get the IsPinching property in the visual element
-        member internal x.TryIsPinching = match x.Attributes.TryFind("IsPinching") with Some v -> ValueSome(unbox<bool>(v)) | None -> ValueNone
-
-        /// Try to get the PinchUpdated property in the visual element
-        member internal x.TryPinchUpdated = match x.Attributes.TryFind("PinchUpdated") with Some v -> ValueSome(unbox<System.EventHandler<Xamarin.Forms.PinchGestureUpdatedEventArgs>>(v)) | None -> ValueNone
-
-        /// Try to get the Color property in the visual element
-        member internal x.TryColor = match x.Attributes.TryFind("Color") with Some v -> ValueSome(unbox<Xamarin.Forms.Color>(v)) | None -> ValueNone
-
-        /// Try to get the IsRunning property in the visual element
-        member internal x.TryIsRunning = match x.Attributes.TryFind("IsRunning") with Some v -> ValueSome(unbox<bool>(v)) | None -> ValueNone
-
-        /// Try to get the Progress property in the visual element
-        member internal x.TryProgress = match x.Attributes.TryFind("Progress") with Some v -> ValueSome(unbox<double>(v)) | None -> ValueNone
-
-        /// Try to get the Content property in the visual element
-        member internal x.TryContent = match x.Attributes.TryFind("Content") with Some v -> ValueSome(unbox<XamlElement>(v)) | None -> ValueNone
-
-        /// Try to get the ScrollOrientation property in the visual element
-        member internal x.TryScrollOrientation = match x.Attributes.TryFind("ScrollOrientation") with Some v -> ValueSome(unbox<Xamarin.Forms.ScrollOrientation>(v)) | None -> ValueNone
-
-        /// Try to get the CancelButtonColor property in the visual element
-        member internal x.TryCancelButtonColor = match x.Attributes.TryFind("CancelButtonColor") with Some v -> ValueSome(unbox<Xamarin.Forms.Color>(v)) | None -> ValueNone
-
-        /// Try to get the FontFamily property in the visual element
-        member internal x.TryFontFamily = match x.Attributes.TryFind("FontFamily") with Some v -> ValueSome(unbox<string>(v)) | None -> ValueNone
-
-        /// Try to get the FontAttributes property in the visual element
-        member internal x.TryFontAttributes = match x.Attributes.TryFind("FontAttributes") with Some v -> ValueSome(unbox<Xamarin.Forms.FontAttributes>(v)) | None -> ValueNone
-
-        /// Try to get the FontSize property in the visual element
-        member internal x.TryFontSize = match x.Attributes.TryFind("FontSize") with Some v -> ValueSome(unbox<double>(v)) | None -> ValueNone
-
-        /// Try to get the HorizontalTextAlignment property in the visual element
-        member internal x.TryHorizontalTextAlignment = match x.Attributes.TryFind("HorizontalTextAlignment") with Some v -> ValueSome(unbox<Xamarin.Forms.TextAlignment>(v)) | None -> ValueNone
-
-        /// Try to get the Placeholder property in the visual element
-        member internal x.TryPlaceholder = match x.Attributes.TryFind("Placeholder") with Some v -> ValueSome(unbox<string>(v)) | None -> ValueNone
-
-        /// Try to get the PlaceholderColor property in the visual element
-        member internal x.TryPlaceholderColor = match x.Attributes.TryFind("PlaceholderColor") with Some v -> ValueSome(unbox<Xamarin.Forms.Color>(v)) | None -> ValueNone
-
-        /// Try to get the SearchBarCommand property in the visual element
-        member internal x.TrySearchBarCommand = match x.Attributes.TryFind("SearchBarCommand") with Some v -> ValueSome(unbox<unit -> unit>(v)) | None -> ValueNone
-
-        /// Try to get the SearchBarCanExecute property in the visual element
-        member internal x.TrySearchBarCanExecute = match x.Attributes.TryFind("SearchBarCanExecute") with Some v -> ValueSome(unbox<bool>(v)) | None -> ValueNone
-
-        /// Try to get the Text property in the visual element
-        member internal x.TryText = match x.Attributes.TryFind("Text") with Some v -> ValueSome(unbox<string>(v)) | None -> ValueNone
-
-        /// Try to get the TextColor property in the visual element
-        member internal x.TryTextColor = match x.Attributes.TryFind("TextColor") with Some v -> ValueSome(unbox<Xamarin.Forms.Color>(v)) | None -> ValueNone
-
-        /// Try to get the ButtonCommand property in the visual element
-        member internal x.TryButtonCommand = match x.Attributes.TryFind("ButtonCommand") with Some v -> ValueSome(unbox<unit -> unit>(v)) | None -> ValueNone
-
-        /// Try to get the ButtonCanExecute property in the visual element
-        member internal x.TryButtonCanExecute = match x.Attributes.TryFind("ButtonCanExecute") with Some v -> ValueSome(unbox<bool>(v)) | None -> ValueNone
-
-        /// Try to get the BorderColor property in the visual element
-        member internal x.TryBorderColor = match x.Attributes.TryFind("BorderColor") with Some v -> ValueSome(unbox<Xamarin.Forms.Color>(v)) | None -> ValueNone
-
-        /// Try to get the BorderWidth property in the visual element
-        member internal x.TryBorderWidth = match x.Attributes.TryFind("BorderWidth") with Some v -> ValueSome(unbox<double>(v)) | None -> ValueNone
-
-        /// Try to get the CommandParameter property in the visual element
-        member internal x.TryCommandParameter = match x.Attributes.TryFind("CommandParameter") with Some v -> ValueSome(unbox<System.Object>(v)) | None -> ValueNone
-
-        /// Try to get the ContentLayout property in the visual element
-        member internal x.TryContentLayout = match x.Attributes.TryFind("ContentLayout") with Some v -> ValueSome(unbox<Xamarin.Forms.Button.ButtonContentLayout>(v)) | None -> ValueNone
-
-        /// Try to get the ButtonImageSource property in the visual element
-        member internal x.TryButtonImageSource = match x.Attributes.TryFind("ButtonImageSource") with Some v -> ValueSome(unbox<string>(v)) | None -> ValueNone
-
-        /// Try to get the Minimum property in the visual element
-        member internal x.TryMinimum = match x.Attributes.TryFind("Minimum") with Some v -> ValueSome(unbox<double>(v)) | None -> ValueNone
-
-        /// Try to get the Maximum property in the visual element
-        member internal x.TryMaximum = match x.Attributes.TryFind("Maximum") with Some v -> ValueSome(unbox<double>(v)) | None -> ValueNone
-
-        /// Try to get the Value property in the visual element
-        member internal x.TryValue = match x.Attributes.TryFind("Value") with Some v -> ValueSome(unbox<double>(v)) | None -> ValueNone
-
-        /// Try to get the ValueChanged property in the visual element
-        member internal x.TryValueChanged = match x.Attributes.TryFind("ValueChanged") with Some v -> ValueSome(unbox<System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>>(v)) | None -> ValueNone
-
-        /// Try to get the Increment property in the visual element
-        member internal x.TryIncrement = match x.Attributes.TryFind("Increment") with Some v -> ValueSome(unbox<double>(v)) | None -> ValueNone
-
-        /// Try to get the IsToggled property in the visual element
-        member internal x.TryIsToggled = match x.Attributes.TryFind("IsToggled") with Some v -> ValueSome(unbox<bool>(v)) | None -> ValueNone
-
-        /// Try to get the Toggled property in the visual element
-        member internal x.TryToggled = match x.Attributes.TryFind("Toggled") with Some v -> ValueSome(unbox<System.EventHandler<Xamarin.Forms.ToggledEventArgs>>(v)) | None -> ValueNone
-
-        /// Try to get the On property in the visual element
-        member internal x.TryOn = match x.Attributes.TryFind("On") with Some v -> ValueSome(unbox<bool>(v)) | None -> ValueNone
-
-        /// Try to get the OnChanged property in the visual element
-        member internal x.TryOnChanged = match x.Attributes.TryFind("OnChanged") with Some v -> ValueSome(unbox<System.EventHandler<Xamarin.Forms.ToggledEventArgs>>(v)) | None -> ValueNone
-
-        /// Try to get the Intent property in the visual element
-        member internal x.TryIntent = match x.Attributes.TryFind("Intent") with Some v -> ValueSome(unbox<Xamarin.Forms.TableIntent>(v)) | None -> ValueNone
-
-        /// Try to get the HasUnevenRows property in the visual element
-        member internal x.TryHasUnevenRows = match x.Attributes.TryFind("HasUnevenRows") with Some v -> ValueSome(unbox<bool>(v)) | None -> ValueNone
-
-        /// Try to get the RowHeight property in the visual element
-        member internal x.TryRowHeight = match x.Attributes.TryFind("RowHeight") with Some v -> ValueSome(unbox<int>(v)) | None -> ValueNone
-
-        /// Try to get the TableRoot property in the visual element
-        member internal x.TryTableRoot = match x.Attributes.TryFind("TableRoot") with Some v -> ValueSome(unbox<(string * XamlElement[])[]>(v)) | None -> ValueNone
-
-        /// Try to get the GridRowDefinitions property in the visual element
-        member internal x.TryGridRowDefinitions = match x.Attributes.TryFind("GridRowDefinitions") with Some v -> ValueSome(unbox<XamlElement[]>(v)) | None -> ValueNone
-
-        /// Try to get the GridColumnDefinitions property in the visual element
-        member internal x.TryGridColumnDefinitions = match x.Attributes.TryFind("GridColumnDefinitions") with Some v -> ValueSome(unbox<XamlElement[]>(v)) | None -> ValueNone
-
-        /// Try to get the RowSpacing property in the visual element
-        member internal x.TryRowSpacing = match x.Attributes.TryFind("RowSpacing") with Some v -> ValueSome(unbox<double>(v)) | None -> ValueNone
-
-        /// Try to get the ColumnSpacing property in the visual element
-        member internal x.TryColumnSpacing = match x.Attributes.TryFind("ColumnSpacing") with Some v -> ValueSome(unbox<double>(v)) | None -> ValueNone
-
-        /// Try to get the Children property in the visual element
-        member internal x.TryChildren = match x.Attributes.TryFind("Children") with Some v -> ValueSome(unbox<XamlElement[]>(v)) | None -> ValueNone
-
-        /// Try to get the GridRow property in the visual element
-        member internal x.TryGridRow = match x.Attributes.TryFind("GridRow") with Some v -> ValueSome(unbox<int>(v)) | None -> ValueNone
-
-        /// Try to get the GridRowSpan property in the visual element
-        member internal x.TryGridRowSpan = match x.Attributes.TryFind("GridRowSpan") with Some v -> ValueSome(unbox<int>(v)) | None -> ValueNone
-
-        /// Try to get the GridColumn property in the visual element
-        member internal x.TryGridColumn = match x.Attributes.TryFind("GridColumn") with Some v -> ValueSome(unbox<int>(v)) | None -> ValueNone
-
-        /// Try to get the GridColumnSpan property in the visual element
-        member internal x.TryGridColumnSpan = match x.Attributes.TryFind("GridColumnSpan") with Some v -> ValueSome(unbox<int>(v)) | None -> ValueNone
-
-        /// Try to get the LayoutBounds property in the visual element
-        member internal x.TryLayoutBounds = match x.Attributes.TryFind("LayoutBounds") with Some v -> ValueSome(unbox<Xamarin.Forms.Rectangle>(v)) | None -> ValueNone
-
-        /// Try to get the LayoutFlags property in the visual element
-        member internal x.TryLayoutFlags = match x.Attributes.TryFind("LayoutFlags") with Some v -> ValueSome(unbox<Xamarin.Forms.AbsoluteLayoutFlags>(v)) | None -> ValueNone
-
-        /// Try to get the BoundsConstraint property in the visual element
-        member internal x.TryBoundsConstraint = match x.Attributes.TryFind("BoundsConstraint") with Some v -> ValueSome(unbox<Xamarin.Forms.BoundsConstraint>(v)) | None -> ValueNone
-
-        /// Try to get the HeightConstraint property in the visual element
-        member internal x.TryHeightConstraint = match x.Attributes.TryFind("HeightConstraint") with Some v -> ValueSome(unbox<Xamarin.Forms.Constraint>(v)) | None -> ValueNone
-
-        /// Try to get the WidthConstraint property in the visual element
-        member internal x.TryWidthConstraint = match x.Attributes.TryFind("WidthConstraint") with Some v -> ValueSome(unbox<Xamarin.Forms.Constraint>(v)) | None -> ValueNone
-
-        /// Try to get the XConstraint property in the visual element
-        member internal x.TryXConstraint = match x.Attributes.TryFind("XConstraint") with Some v -> ValueSome(unbox<Xamarin.Forms.Constraint>(v)) | None -> ValueNone
-
-        /// Try to get the YConstraint property in the visual element
-        member internal x.TryYConstraint = match x.Attributes.TryFind("YConstraint") with Some v -> ValueSome(unbox<Xamarin.Forms.Constraint>(v)) | None -> ValueNone
-
-        /// Try to get the RowDefinitionHeight property in the visual element
-        member internal x.TryRowDefinitionHeight = match x.Attributes.TryFind("RowDefinitionHeight") with Some v -> ValueSome(unbox<Xamarin.Forms.GridLength>(v)) | None -> ValueNone
-
-        /// Try to get the ColumnDefinitionWidth property in the visual element
-        member internal x.TryColumnDefinitionWidth = match x.Attributes.TryFind("ColumnDefinitionWidth") with Some v -> ValueSome(unbox<Xamarin.Forms.GridLength>(v)) | None -> ValueNone
-
-        /// Try to get the Date property in the visual element
-        member internal x.TryDate = match x.Attributes.TryFind("Date") with Some v -> ValueSome(unbox<System.DateTime>(v)) | None -> ValueNone
-
-        /// Try to get the Format property in the visual element
-        member internal x.TryFormat = match x.Attributes.TryFind("Format") with Some v -> ValueSome(unbox<string>(v)) | None -> ValueNone
-
-        /// Try to get the MinimumDate property in the visual element
-        member internal x.TryMinimumDate = match x.Attributes.TryFind("MinimumDate") with Some v -> ValueSome(unbox<System.DateTime>(v)) | None -> ValueNone
-
-        /// Try to get the MaximumDate property in the visual element
-        member internal x.TryMaximumDate = match x.Attributes.TryFind("MaximumDate") with Some v -> ValueSome(unbox<System.DateTime>(v)) | None -> ValueNone
-
-        /// Try to get the DateSelected property in the visual element
-        member internal x.TryDateSelected = match x.Attributes.TryFind("DateSelected") with Some v -> ValueSome(unbox<System.EventHandler<Xamarin.Forms.DateChangedEventArgs>>(v)) | None -> ValueNone
-
-        /// Try to get the PickerItemsSource property in the visual element
-        member internal x.TryPickerItemsSource = match x.Attributes.TryFind("PickerItemsSource") with Some v -> ValueSome(unbox<System.Collections.IList>(v)) | None -> ValueNone
-
-        /// Try to get the SelectedIndex property in the visual element
-        member internal x.TrySelectedIndex = match x.Attributes.TryFind("SelectedIndex") with Some v -> ValueSome(unbox<int>(v)) | None -> ValueNone
-
-        /// Try to get the Title property in the visual element
-        member internal x.TryTitle = match x.Attributes.TryFind("Title") with Some v -> ValueSome(unbox<string>(v)) | None -> ValueNone
-
-        /// Try to get the SelectedIndexChanged property in the visual element
-        member internal x.TrySelectedIndexChanged = match x.Attributes.TryFind("SelectedIndexChanged") with Some v -> ValueSome(unbox<System.EventHandler>(v)) | None -> ValueNone
-
-        /// Try to get the OutlineColor property in the visual element
-        member internal x.TryOutlineColor = match x.Attributes.TryFind("OutlineColor") with Some v -> ValueSome(unbox<Xamarin.Forms.Color>(v)) | None -> ValueNone
-
-        /// Try to get the FrameCornerRadius property in the visual element
-        member internal x.TryFrameCornerRadius = match x.Attributes.TryFind("FrameCornerRadius") with Some v -> ValueSome(unbox<single>(v)) | None -> ValueNone
-
-        /// Try to get the HasShadow property in the visual element
-        member internal x.TryHasShadow = match x.Attributes.TryFind("HasShadow") with Some v -> ValueSome(unbox<bool>(v)) | None -> ValueNone
-
-        /// Try to get the ImageSource property in the visual element
-        member internal x.TryImageSource = match x.Attributes.TryFind("ImageSource") with Some v -> ValueSome(unbox<string>(v)) | None -> ValueNone
-
-        /// Try to get the Aspect property in the visual element
-        member internal x.TryAspect = match x.Attributes.TryFind("Aspect") with Some v -> ValueSome(unbox<Xamarin.Forms.Aspect>(v)) | None -> ValueNone
-
-        /// Try to get the IsOpaque property in the visual element
-        member internal x.TryIsOpaque = match x.Attributes.TryFind("IsOpaque") with Some v -> ValueSome(unbox<bool>(v)) | None -> ValueNone
-
-        /// Try to get the Keyboard property in the visual element
-        member internal x.TryKeyboard = match x.Attributes.TryFind("Keyboard") with Some v -> ValueSome(unbox<Xamarin.Forms.Keyboard>(v)) | None -> ValueNone
-
-        /// Try to get the EditorCompleted property in the visual element
-        member internal x.TryEditorCompleted = match x.Attributes.TryFind("EditorCompleted") with Some v -> ValueSome(unbox<System.EventHandler>(v)) | None -> ValueNone
-
-        /// Try to get the TextChanged property in the visual element
-        member internal x.TryTextChanged = match x.Attributes.TryFind("TextChanged") with Some v -> ValueSome(unbox<System.EventHandler<Xamarin.Forms.TextChangedEventArgs>>(v)) | None -> ValueNone
-
-        /// Try to get the IsPassword property in the visual element
-        member internal x.TryIsPassword = match x.Attributes.TryFind("IsPassword") with Some v -> ValueSome(unbox<bool>(v)) | None -> ValueNone
-
-        /// Try to get the EntryCompleted property in the visual element
-        member internal x.TryEntryCompleted = match x.Attributes.TryFind("EntryCompleted") with Some v -> ValueSome(unbox<System.EventHandler>(v)) | None -> ValueNone
-
-        /// Try to get the Label property in the visual element
-        member internal x.TryLabel = match x.Attributes.TryFind("Label") with Some v -> ValueSome(unbox<string>(v)) | None -> ValueNone
-
-        /// Try to get the VerticalTextAlignment property in the visual element
-        member internal x.TryVerticalTextAlignment = match x.Attributes.TryFind("VerticalTextAlignment") with Some v -> ValueSome(unbox<Xamarin.Forms.TextAlignment>(v)) | None -> ValueNone
-
-        /// Try to get the IsClippedToBounds property in the visual element
-        member internal x.TryIsClippedToBounds = match x.Attributes.TryFind("IsClippedToBounds") with Some v -> ValueSome(unbox<bool>(v)) | None -> ValueNone
-
-        /// Try to get the Padding property in the visual element
-        member internal x.TryPadding = match x.Attributes.TryFind("Padding") with Some v -> ValueSome(unbox<Xamarin.Forms.Thickness>(v)) | None -> ValueNone
-
-        /// Try to get the StackOrientation property in the visual element
-        member internal x.TryStackOrientation = match x.Attributes.TryFind("StackOrientation") with Some v -> ValueSome(unbox<Xamarin.Forms.StackOrientation>(v)) | None -> ValueNone
-
-        /// Try to get the Spacing property in the visual element
-        member internal x.TrySpacing = match x.Attributes.TryFind("Spacing") with Some v -> ValueSome(unbox<double>(v)) | None -> ValueNone
-
-        /// Try to get the ForegroundColor property in the visual element
-        member internal x.TryForegroundColor = match x.Attributes.TryFind("ForegroundColor") with Some v -> ValueSome(unbox<Xamarin.Forms.Color>(v)) | None -> ValueNone
-
-        /// Try to get the PropertyChanged property in the visual element
-        member internal x.TryPropertyChanged = match x.Attributes.TryFind("PropertyChanged") with Some v -> ValueSome(unbox<System.ComponentModel.PropertyChangedEventHandler>(v)) | None -> ValueNone
-
-        /// Try to get the Time property in the visual element
-        member internal x.TryTime = match x.Attributes.TryFind("Time") with Some v -> ValueSome(unbox<System.TimeSpan>(v)) | None -> ValueNone
-
-        /// Try to get the WebSource property in the visual element
-        member internal x.TryWebSource = match x.Attributes.TryFind("WebSource") with Some v -> ValueSome(unbox<Xamarin.Forms.WebViewSource>(v)) | None -> ValueNone
-
-        /// Try to get the Navigated property in the visual element
-        member internal x.TryNavigated = match x.Attributes.TryFind("Navigated") with Some v -> ValueSome(unbox<System.EventHandler<Xamarin.Forms.WebNavigatedEventArgs>>(v)) | None -> ValueNone
-
-        /// Try to get the Navigating property in the visual element
-        member internal x.TryNavigating = match x.Attributes.TryFind("Navigating") with Some v -> ValueSome(unbox<System.EventHandler<Xamarin.Forms.WebNavigatingEventArgs>>(v)) | None -> ValueNone
-
-        /// Try to get the UseSafeArea property in the visual element
-        member internal x.TryUseSafeArea = match x.Attributes.TryFind("UseSafeArea") with Some v -> ValueSome(unbox<bool>(v)) | None -> ValueNone
-
-        /// Try to get the CarouselPage_SelectedItem property in the visual element
-        member internal x.TryCarouselPage_SelectedItem = match x.Attributes.TryFind("CarouselPage_SelectedItem") with Some v -> ValueSome(unbox<System.Object>(v)) | None -> ValueNone
-
-        /// Try to get the CurrentPage property in the visual element
-        member internal x.TryCurrentPage = match x.Attributes.TryFind("CurrentPage") with Some v -> ValueSome(unbox<XamlElement>(v)) | None -> ValueNone
-
-        /// Try to get the CurrentPageChanged property in the visual element
-        member internal x.TryCurrentPageChanged = match x.Attributes.TryFind("CurrentPageChanged") with Some v -> ValueSome(unbox<System.EventHandler>(v)) | None -> ValueNone
-
-        /// Try to get the NavigationPagePages property in the visual element
-        member internal x.TryNavigationPagePages = match x.Attributes.TryFind("NavigationPagePages") with Some v -> ValueSome(unbox<XamlElement[]>(v)) | None -> ValueNone
-
-        /// Try to get the BackButtonTitle property in the visual element
-        member internal x.TryBackButtonTitle = match x.Attributes.TryFind("BackButtonTitle") with Some v -> ValueSome(unbox<string>(v)) | None -> ValueNone
-
-        /// Try to get the HasBackButton property in the visual element
-        member internal x.TryHasBackButton = match x.Attributes.TryFind("HasBackButton") with Some v -> ValueSome(unbox<bool>(v)) | None -> ValueNone
-
-        /// Try to get the HasNavigationBar property in the visual element
-        member internal x.TryHasNavigationBar = match x.Attributes.TryFind("HasNavigationBar") with Some v -> ValueSome(unbox<bool>(v)) | None -> ValueNone
-
-        /// Try to get the TitleIcon property in the visual element
-        member internal x.TryTitleIcon = match x.Attributes.TryFind("TitleIcon") with Some v -> ValueSome(unbox<string>(v)) | None -> ValueNone
-
-        /// Try to get the BarBackgroundColor property in the visual element
-        member internal x.TryBarBackgroundColor = match x.Attributes.TryFind("BarBackgroundColor") with Some v -> ValueSome(unbox<Xamarin.Forms.Color>(v)) | None -> ValueNone
-
-        /// Try to get the BarTextColor property in the visual element
-        member internal x.TryBarTextColor = match x.Attributes.TryFind("BarTextColor") with Some v -> ValueSome(unbox<Xamarin.Forms.Color>(v)) | None -> ValueNone
-
-        /// Try to get the Popped property in the visual element
-        member internal x.TryPopped = match x.Attributes.TryFind("Popped") with Some v -> ValueSome(unbox<System.EventHandler<Xamarin.Forms.NavigationEventArgs>>(v)) | None -> ValueNone
-
-        /// Try to get the PoppedToRoot property in the visual element
-        member internal x.TryPoppedToRoot = match x.Attributes.TryFind("PoppedToRoot") with Some v -> ValueSome(unbox<System.EventHandler<Xamarin.Forms.NavigationEventArgs>>(v)) | None -> ValueNone
-
-        /// Try to get the Pushed property in the visual element
-        member internal x.TryPushed = match x.Attributes.TryFind("Pushed") with Some v -> ValueSome(unbox<System.EventHandler<Xamarin.Forms.NavigationEventArgs>>(v)) | None -> ValueNone
-
-        /// Try to get the OnSizeAllocatedCallback property in the visual element
-        member internal x.TryOnSizeAllocatedCallback = match x.Attributes.TryFind("OnSizeAllocatedCallback") with Some v -> ValueSome(unbox<FSharp.Control.Handler<(double * double)>>(v)) | None -> ValueNone
-
-        /// Try to get the Master property in the visual element
-        member internal x.TryMaster = match x.Attributes.TryFind("Master") with Some v -> ValueSome(unbox<XamlElement>(v)) | None -> ValueNone
-
-        /// Try to get the Detail property in the visual element
-        member internal x.TryDetail = match x.Attributes.TryFind("Detail") with Some v -> ValueSome(unbox<XamlElement>(v)) | None -> ValueNone
-
-        /// Try to get the IsGestureEnabled property in the visual element
-        member internal x.TryIsGestureEnabled = match x.Attributes.TryFind("IsGestureEnabled") with Some v -> ValueSome(unbox<bool>(v)) | None -> ValueNone
-
-        /// Try to get the IsPresented property in the visual element
-        member internal x.TryIsPresented = match x.Attributes.TryFind("IsPresented") with Some v -> ValueSome(unbox<bool>(v)) | None -> ValueNone
-
-        /// Try to get the MasterBehavior property in the visual element
-        member internal x.TryMasterBehavior = match x.Attributes.TryFind("MasterBehavior") with Some v -> ValueSome(unbox<Xamarin.Forms.MasterBehavior>(v)) | None -> ValueNone
-
-        /// Try to get the IsPresentedChanged property in the visual element
-        member internal x.TryIsPresentedChanged = match x.Attributes.TryFind("IsPresentedChanged") with Some v -> ValueSome(unbox<System.EventHandler>(v)) | None -> ValueNone
-
-        /// Try to get the Height property in the visual element
-        member internal x.TryHeight = match x.Attributes.TryFind("Height") with Some v -> ValueSome(unbox<double>(v)) | None -> ValueNone
-
-        /// Try to get the TextDetail property in the visual element
-        member internal x.TryTextDetail = match x.Attributes.TryFind("TextDetail") with Some v -> ValueSome(unbox<string>(v)) | None -> ValueNone
-
-        /// Try to get the TextDetailColor property in the visual element
-        member internal x.TryTextDetailColor = match x.Attributes.TryFind("TextDetailColor") with Some v -> ValueSome(unbox<Xamarin.Forms.Color>(v)) | None -> ValueNone
-
-        /// Try to get the TextCellCommand property in the visual element
-        member internal x.TryTextCellCommand = match x.Attributes.TryFind("TextCellCommand") with Some v -> ValueSome(unbox<unit -> unit>(v)) | None -> ValueNone
-
-        /// Try to get the TextCellCanExecute property in the visual element
-        member internal x.TryTextCellCanExecute = match x.Attributes.TryFind("TextCellCanExecute") with Some v -> ValueSome(unbox<bool>(v)) | None -> ValueNone
-
-        /// Try to get the View property in the visual element
-        member internal x.TryView = match x.Attributes.TryFind("View") with Some v -> ValueSome(unbox<XamlElement>(v)) | None -> ValueNone
-
-        /// Try to get the ListViewItems property in the visual element
-        member internal x.TryListViewItems = match x.Attributes.TryFind("ListViewItems") with Some v -> ValueSome(unbox<seq<XamlElement>>(v)) | None -> ValueNone
-
-        /// Try to get the Footer property in the visual element
-        member internal x.TryFooter = match x.Attributes.TryFind("Footer") with Some v -> ValueSome(unbox<System.Object>(v)) | None -> ValueNone
-
-        /// Try to get the Header property in the visual element
-        member internal x.TryHeader = match x.Attributes.TryFind("Header") with Some v -> ValueSome(unbox<System.Object>(v)) | None -> ValueNone
-
-        /// Try to get the HeaderTemplate property in the visual element
-        member internal x.TryHeaderTemplate = match x.Attributes.TryFind("HeaderTemplate") with Some v -> ValueSome(unbox<Xamarin.Forms.DataTemplate>(v)) | None -> ValueNone
-
-        /// Try to get the IsGroupingEnabled property in the visual element
-        member internal x.TryIsGroupingEnabled = match x.Attributes.TryFind("IsGroupingEnabled") with Some v -> ValueSome(unbox<bool>(v)) | None -> ValueNone
-
-        /// Try to get the IsPullToRefreshEnabled property in the visual element
-        member internal x.TryIsPullToRefreshEnabled = match x.Attributes.TryFind("IsPullToRefreshEnabled") with Some v -> ValueSome(unbox<bool>(v)) | None -> ValueNone
-
-        /// Try to get the IsRefreshing property in the visual element
-        member internal x.TryIsRefreshing = match x.Attributes.TryFind("IsRefreshing") with Some v -> ValueSome(unbox<bool>(v)) | None -> ValueNone
-
-        /// Try to get the RefreshCommand property in the visual element
-        member internal x.TryRefreshCommand = match x.Attributes.TryFind("RefreshCommand") with Some v -> ValueSome(unbox<System.Windows.Input.ICommand>(v)) | None -> ValueNone
-
-        /// Try to get the ListView_SelectedItem property in the visual element
-        member internal x.TryListView_SelectedItem = match x.Attributes.TryFind("ListView_SelectedItem") with Some v -> ValueSome(unbox<int option>(v)) | None -> ValueNone
-
-        /// Try to get the SeparatorVisibility property in the visual element
-        member internal x.TrySeparatorVisibility = match x.Attributes.TryFind("SeparatorVisibility") with Some v -> ValueSome(unbox<Xamarin.Forms.SeparatorVisibility>(v)) | None -> ValueNone
-
-        /// Try to get the SeparatorColor property in the visual element
-        member internal x.TrySeparatorColor = match x.Attributes.TryFind("SeparatorColor") with Some v -> ValueSome(unbox<Xamarin.Forms.Color>(v)) | None -> ValueNone
-
-        /// Try to get the ListView_ItemAppearing property in the visual element
-        member internal x.TryListView_ItemAppearing = match x.Attributes.TryFind("ListView_ItemAppearing") with Some v -> ValueSome(unbox<System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>>(v)) | None -> ValueNone
-
-        /// Try to get the ListView_ItemDisappearing property in the visual element
-        member internal x.TryListView_ItemDisappearing = match x.Attributes.TryFind("ListView_ItemDisappearing") with Some v -> ValueSome(unbox<System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>>(v)) | None -> ValueNone
-
-        /// Try to get the ListView_ItemSelected property in the visual element
-        member internal x.TryListView_ItemSelected = match x.Attributes.TryFind("ListView_ItemSelected") with Some v -> ValueSome(unbox<System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>>(v)) | None -> ValueNone
-
-        /// Try to get the ListView_ItemTapped property in the visual element
-        member internal x.TryListView_ItemTapped = match x.Attributes.TryFind("ListView_ItemTapped") with Some v -> ValueSome(unbox<System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>>(v)) | None -> ValueNone
-
-        /// Try to get the Refreshing property in the visual element
-        member internal x.TryRefreshing = match x.Attributes.TryFind("Refreshing") with Some v -> ValueSome(unbox<System.EventHandler>(v)) | None -> ValueNone
-
-        /// Try to get the GroupListViewItemsSource property in the visual element
-        member internal x.TryGroupListViewItemsSource = match x.Attributes.TryFind("GroupListViewItemsSource") with Some v -> ValueSome(unbox<(XamlElement * XamlElement[])[]>(v)) | None -> ValueNone
-
-        /// Try to get the ListViewGrouped_SelectedItem property in the visual element
-        member internal x.TryListViewGrouped_SelectedItem = match x.Attributes.TryFind("ListViewGrouped_SelectedItem") with Some v -> ValueSome(unbox<(int * int) option>(v)) | None -> ValueNone
-
-        /// Try to get the ListViewGrouped_ItemAppearing property in the visual element
-        member internal x.TryListViewGrouped_ItemAppearing = match x.Attributes.TryFind("ListViewGrouped_ItemAppearing") with Some v -> ValueSome(unbox<System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>>(v)) | None -> ValueNone
-
-        /// Try to get the ListViewGrouped_ItemDisappearing property in the visual element
-        member internal x.TryListViewGrouped_ItemDisappearing = match x.Attributes.TryFind("ListViewGrouped_ItemDisappearing") with Some v -> ValueSome(unbox<System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>>(v)) | None -> ValueNone
-
-        /// Try to get the ListViewGrouped_ItemSelected property in the visual element
-        member internal x.TryListViewGrouped_ItemSelected = match x.Attributes.TryFind("ListViewGrouped_ItemSelected") with Some v -> ValueSome(unbox<System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>>(v)) | None -> ValueNone
-
-        /// Try to get the ListViewGrouped_ItemTapped property in the visual element
-        member internal x.TryListViewGrouped_ItemTapped = match x.Attributes.TryFind("ListViewGrouped_ItemTapped") with Some v -> ValueSome(unbox<System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>>(v)) | None -> ValueNone
-
         /// Adjusts the ClassId property in the visual element
         member x.ClassId(value: string) = x.WithAttribute("ClassId", box ((value)))
 
@@ -874,8 +373,8 @@ module XamlElementExtensions =
         /// Adjusts the CurrentPageChanged property in the visual element
         member x.CurrentPageChanged(value: 'T option -> unit) = x.WithAttribute("CurrentPageChanged", box ((fun f -> System.EventHandler(fun sender args -> f ((sender :?> Xamarin.Forms.CarouselPage).SelectedItem |> Option.ofObj |> Option.map unbox<'T>)))(value)))
 
-        /// Adjusts the NavigationPagePages property in the visual element
-        member x.NavigationPagePages(value: XamlElement list) = x.WithAttribute("NavigationPagePages", box (Array.ofList(value)))
+        /// Adjusts the Pages property in the visual element
+        member x.Pages(value: XamlElement list) = x.WithAttribute("Pages", box (Array.ofList(value)))
 
         /// Adjusts the BackButtonTitle property in the visual element
         member x.BackButtonTitle(value: string) = x.WithAttribute("BackButtonTitle", box ((value)))
@@ -970,11 +469,11 @@ module XamlElementExtensions =
         /// Adjusts the ListView_SelectedItem property in the visual element
         member x.ListView_SelectedItem(value: int option) = x.WithAttribute("ListView_SelectedItem", box ((value)))
 
-        /// Adjusts the SeparatorVisibility property in the visual element
-        member x.SeparatorVisibility(value: Xamarin.Forms.SeparatorVisibility) = x.WithAttribute("SeparatorVisibility", box ((value)))
+        /// Adjusts the ListView_SeparatorVisibility property in the visual element
+        member x.ListView_SeparatorVisibility(value: Xamarin.Forms.SeparatorVisibility) = x.WithAttribute("ListView_SeparatorVisibility", box ((value)))
 
-        /// Adjusts the SeparatorColor property in the visual element
-        member x.SeparatorColor(value: Xamarin.Forms.Color) = x.WithAttribute("SeparatorColor", box ((value)))
+        /// Adjusts the ListView_SeparatorColor property in the visual element
+        member x.ListView_SeparatorColor(value: Xamarin.Forms.Color) = x.WithAttribute("ListView_SeparatorColor", box ((value)))
 
         /// Adjusts the ListView_ItemAppearing property in the visual element
         member x.ListView_ItemAppearing(value: int -> unit) = x.WithAttribute("ListView_ItemAppearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))(value)))
@@ -988,14 +487,20 @@ module XamlElementExtensions =
         /// Adjusts the ListView_ItemTapped property in the visual element
         member x.ListView_ItemTapped(value: int -> unit) = x.WithAttribute("ListView_ItemTapped", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))(value)))
 
-        /// Adjusts the Refreshing property in the visual element
-        member x.Refreshing(value: unit -> unit) = x.WithAttribute("Refreshing", box ((fun f -> System.EventHandler(fun sender args -> f ()))(value)))
+        /// Adjusts the ListView_Refreshing property in the visual element
+        member x.ListView_Refreshing(value: unit -> unit) = x.WithAttribute("ListView_Refreshing", box ((fun f -> System.EventHandler(fun sender args -> f ()))(value)))
 
-        /// Adjusts the GroupListViewItemsSource property in the visual element
-        member x.GroupListViewItemsSource(value: (XamlElement * XamlElement list) list) = x.WithAttribute("GroupListViewItemsSource", box ((fun es -> es |> Array.ofList |> Array.map (fun (e,l) -> (e, Array.ofList l)))(value)))
+        /// Adjusts the ListViewGrouped_ItemsSource property in the visual element
+        member x.ListViewGrouped_ItemsSource(value: (XamlElement * XamlElement list) list) = x.WithAttribute("ListViewGrouped_ItemsSource", box ((fun es -> es |> Array.ofList |> Array.map (fun (e,l) -> (e, Array.ofList l)))(value)))
 
         /// Adjusts the ListViewGrouped_SelectedItem property in the visual element
         member x.ListViewGrouped_SelectedItem(value: (int * int) option) = x.WithAttribute("ListViewGrouped_SelectedItem", box ((value)))
+
+        /// Adjusts the SeparatorVisibility property in the visual element
+        member x.SeparatorVisibility(value: Xamarin.Forms.SeparatorVisibility) = x.WithAttribute("SeparatorVisibility", box ((value)))
+
+        /// Adjusts the SeparatorColor property in the visual element
+        member x.SeparatorColor(value: Xamarin.Forms.Color) = x.WithAttribute("SeparatorColor", box ((value)))
 
         /// Adjusts the ListViewGrouped_ItemAppearing property in the visual element
         member x.ListViewGrouped_ItemAppearing(value: int * int -> unit) = x.WithAttribute("ListViewGrouped_ItemAppearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.Item).Value))(value)))
@@ -1008,6 +513,9 @@ module XamlElementExtensions =
 
         /// Adjusts the ListViewGrouped_ItemTapped property in the visual element
         member x.ListViewGrouped_ItemTapped(value: int * int -> unit) = x.WithAttribute("ListViewGrouped_ItemTapped", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.Item).Value))(value)))
+
+        /// Adjusts the Refreshing property in the visual element
+        member x.Refreshing(value: unit -> unit) = x.WithAttribute("Refreshing", box ((fun f -> System.EventHandler(fun sender args -> f ()))(value)))
 
 type Xaml() =
 
@@ -1023,15 +531,15 @@ type Xaml() =
 
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             let target = (targetObj :?> Xamarin.Forms.Element)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryClassId
-            let valueOpt = source.TryClassId
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<string>("ClassId")
+            let valueOpt = source.TryGetAttribute<string>("ClassId")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Element::ClassId "); target.ClassId <-  value
             | ValueSome _, ValueNone -> target.ClassId <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryStyleId
-            let valueOpt = source.TryStyleId
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<string>("StyleId")
+            let valueOpt = source.TryGetAttribute<string>("StyleId")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Element::StyleId "); target.StyleId <-  value
@@ -1070,127 +578,127 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.VisualElement)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryAnchorX
-            let valueOpt = source.TryAnchorX
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("AnchorX")
+            let valueOpt = source.TryGetAttribute<double>("AnchorX")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::AnchorX "); target.AnchorX <-  value
             | ValueSome _, ValueNone -> target.AnchorX <- 0.0
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryAnchorY
-            let valueOpt = source.TryAnchorY
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("AnchorY")
+            let valueOpt = source.TryGetAttribute<double>("AnchorY")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::AnchorY "); target.AnchorY <-  value
             | ValueSome _, ValueNone -> target.AnchorY <- 0.0
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryBackgroundColor
-            let valueOpt = source.TryBackgroundColor
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Color>("BackgroundColor")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Color>("BackgroundColor")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::BackgroundColor "); target.BackgroundColor <-  value
             | ValueSome _, ValueNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryHeightRequest
-            let valueOpt = source.TryHeightRequest
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("HeightRequest")
+            let valueOpt = source.TryGetAttribute<double>("HeightRequest")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::HeightRequest "); target.HeightRequest <-  value
             | ValueSome _, ValueNone -> target.HeightRequest <- -1.0
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryInputTransparent
-            let valueOpt = source.TryInputTransparent
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<bool>("InputTransparent")
+            let valueOpt = source.TryGetAttribute<bool>("InputTransparent")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::InputTransparent "); target.InputTransparent <-  value
             | ValueSome _, ValueNone -> target.InputTransparent <- false
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryIsEnabled
-            let valueOpt = source.TryIsEnabled
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<bool>("IsEnabled")
+            let valueOpt = source.TryGetAttribute<bool>("IsEnabled")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::IsEnabled "); target.IsEnabled <-  value
             | ValueSome _, ValueNone -> target.IsEnabled <- true
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryIsVisible
-            let valueOpt = source.TryIsVisible
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<bool>("IsVisible")
+            let valueOpt = source.TryGetAttribute<bool>("IsVisible")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::IsVisible "); target.IsVisible <-  value
             | ValueSome _, ValueNone -> target.IsVisible <- true
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryMinimumHeightRequest
-            let valueOpt = source.TryMinimumHeightRequest
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("MinimumHeightRequest")
+            let valueOpt = source.TryGetAttribute<double>("MinimumHeightRequest")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::MinimumHeightRequest "); target.MinimumHeightRequest <-  value
             | ValueSome _, ValueNone -> target.MinimumHeightRequest <- -1.0
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryMinimumWidthRequest
-            let valueOpt = source.TryMinimumWidthRequest
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("MinimumWidthRequest")
+            let valueOpt = source.TryGetAttribute<double>("MinimumWidthRequest")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::MinimumWidthRequest "); target.MinimumWidthRequest <-  value
             | ValueSome _, ValueNone -> target.MinimumWidthRequest <- -1.0
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryOpacity
-            let valueOpt = source.TryOpacity
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("Opacity")
+            let valueOpt = source.TryGetAttribute<double>("Opacity")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::Opacity "); target.Opacity <-  value
             | ValueSome _, ValueNone -> target.Opacity <- 1.0
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryRotation
-            let valueOpt = source.TryRotation
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("Rotation")
+            let valueOpt = source.TryGetAttribute<double>("Rotation")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::Rotation "); target.Rotation <-  value
             | ValueSome _, ValueNone -> target.Rotation <- 0.0
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryRotationX
-            let valueOpt = source.TryRotationX
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("RotationX")
+            let valueOpt = source.TryGetAttribute<double>("RotationX")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::RotationX "); target.RotationX <-  value
             | ValueSome _, ValueNone -> target.RotationX <- 0.0
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryRotationY
-            let valueOpt = source.TryRotationY
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("RotationY")
+            let valueOpt = source.TryGetAttribute<double>("RotationY")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::RotationY "); target.RotationY <-  value
             | ValueSome _, ValueNone -> target.RotationY <- 0.0
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryScale
-            let valueOpt = source.TryScale
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("Scale")
+            let valueOpt = source.TryGetAttribute<double>("Scale")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::Scale "); target.Scale <-  value
             | ValueSome _, ValueNone -> target.Scale <- 1.0
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryStyle
-            let valueOpt = source.TryStyle
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Style>("Style")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Style>("Style")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::Style "); target.Style <-  value
             | ValueSome _, ValueNone -> target.Style <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryTranslationX
-            let valueOpt = source.TryTranslationX
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("TranslationX")
+            let valueOpt = source.TryGetAttribute<double>("TranslationX")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::TranslationX "); target.TranslationX <-  value
             | ValueSome _, ValueNone -> target.TranslationX <- 0.0
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryTranslationY
-            let valueOpt = source.TryTranslationY
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("TranslationY")
+            let valueOpt = source.TryGetAttribute<double>("TranslationY")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::TranslationY "); target.TranslationY <-  value
             | ValueSome _, ValueNone -> target.TranslationY <- 0.0
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryWidthRequest
-            let valueOpt = source.TryWidthRequest
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("WidthRequest")
+            let valueOpt = source.TryGetAttribute<double>("WidthRequest")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting VisualElement::WidthRequest "); target.WidthRequest <-  value
@@ -1215,29 +723,29 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.View)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryHorizontalOptions
-            let valueOpt = source.TryHorizontalOptions
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.LayoutOptions>("HorizontalOptions")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.LayoutOptions>("HorizontalOptions")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting View::HorizontalOptions "); target.HorizontalOptions <-  value
             | ValueSome _, ValueNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryVerticalOptions
-            let valueOpt = source.TryVerticalOptions
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.LayoutOptions>("VerticalOptions")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.LayoutOptions>("VerticalOptions")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting View::VerticalOptions "); target.VerticalOptions <-  value
             | ValueSome _, ValueNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryMargin
-            let valueOpt = source.TryMargin
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Thickness>("Margin")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Thickness>("Margin")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting View::Margin "); target.Margin <-  value
             | ValueSome _, ValueNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGestureRecognizers
-            let valueOpt = source.TryGestureRecognizers
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<XamlElement[]>("GestureRecognizers")
+            let valueOpt = source.TryGetAttribute<XamlElement[]>("GestureRecognizers")
             updateIList prevValueOpt valueOpt target.GestureRecognizers
                 (fun (x:XamlElement) -> x.Create() :?> Xamarin.Forms.IGestureRecognizer)
                 (fun _ _ _ -> ())
@@ -1271,15 +779,15 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.PanGestureRecognizer)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryTouchPoints
-            let valueOpt = source.TryTouchPoints
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<int>("TouchPoints")
+            let valueOpt = source.TryGetAttribute<int>("TouchPoints")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting PanGestureRecognizer::TouchPoints "); target.TouchPoints <-  value
             | ValueSome _, ValueNone -> target.TouchPoints <- 1
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryPanUpdated
-            let valueOpt = source.TryPanUpdated
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.EventHandler<Xamarin.Forms.PanUpdatedEventArgs>>("PanUpdated")
+            let valueOpt = source.TryGetAttribute<System.EventHandler<Xamarin.Forms.PanUpdatedEventArgs>>("PanUpdated")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.PanUpdated.RemoveHandler(prevValue); target.PanUpdated.AddHandler(value)
@@ -1302,15 +810,15 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.TapGestureRecognizer)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryCommand
-            let valueOpt = source.TryCommand
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.Windows.Input.ICommand>("Command")
+            let valueOpt = source.TryGetAttribute<System.Windows.Input.ICommand>("Command")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting TapGestureRecognizer::Command "); target.Command <-  value
             | ValueSome _, ValueNone -> target.Command <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryNumberOfTapsRequired
-            let valueOpt = source.TryNumberOfTapsRequired
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<int>("NumberOfTapsRequired")
+            let valueOpt = source.TryGetAttribute<int>("NumberOfTapsRequired")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting TapGestureRecognizer::NumberOfTapsRequired "); target.NumberOfTapsRequired <-  value
@@ -1333,22 +841,22 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.ClickGestureRecognizer)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryCommand
-            let valueOpt = source.TryCommand
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.Windows.Input.ICommand>("Command")
+            let valueOpt = source.TryGetAttribute<System.Windows.Input.ICommand>("Command")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ClickGestureRecognizer::Command "); target.Command <-  value
             | ValueSome _, ValueNone -> target.Command <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryNumberOfClicksRequired
-            let valueOpt = source.TryNumberOfClicksRequired
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<int>("NumberOfClicksRequired")
+            let valueOpt = source.TryGetAttribute<int>("NumberOfClicksRequired")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ClickGestureRecognizer::NumberOfClicksRequired "); target.NumberOfClicksRequired <-  value
             | ValueSome _, ValueNone -> target.NumberOfClicksRequired <- 1
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryButtons
-            let valueOpt = source.TryButtons
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.ButtonsMask>("Buttons")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.ButtonsMask>("Buttons")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ClickGestureRecognizer::Buttons "); target.Buttons <-  value
@@ -1370,15 +878,15 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.PinchGestureRecognizer)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryIsPinching
-            let valueOpt = source.TryIsPinching
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<bool>("IsPinching")
+            let valueOpt = source.TryGetAttribute<bool>("IsPinching")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting PinchGestureRecognizer::IsPinching "); target.IsPinching <-  value
             | ValueSome _, ValueNone -> target.IsPinching <- false
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryPinchUpdated
-            let valueOpt = source.TryPinchUpdated
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.EventHandler<Xamarin.Forms.PinchGestureUpdatedEventArgs>>("PinchUpdated")
+            let valueOpt = source.TryGetAttribute<System.EventHandler<Xamarin.Forms.PinchGestureUpdatedEventArgs>>("PinchUpdated")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.PinchUpdated.RemoveHandler(prevValue); target.PinchUpdated.AddHandler(value)
@@ -1401,15 +909,15 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.ActivityIndicator)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryColor
-            let valueOpt = source.TryColor
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Color>("Color")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Color>("Color")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ActivityIndicator::Color "); target.Color <-  value
             | ValueSome _, ValueNone -> target.Color <- Xamarin.Forms.Color.Default
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryIsRunning
-            let valueOpt = source.TryIsRunning
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<bool>("IsRunning")
+            let valueOpt = source.TryGetAttribute<bool>("IsRunning")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ActivityIndicator::IsRunning "); target.IsRunning <-  value
@@ -1430,8 +938,8 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.BoxView)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryColor
-            let valueOpt = source.TryColor
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Color>("Color")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Color>("Color")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting BoxView::Color "); target.Color <-  value
@@ -1452,8 +960,8 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.ProgressBar)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryProgress
-            let valueOpt = source.TryProgress
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("Progress")
+            let valueOpt = source.TryGetAttribute<double>("Progress")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ProgressBar::Progress "); target.Progress <-  value
@@ -1475,8 +983,8 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.ScrollView)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryContent
-            let valueOpt = source.TryContent
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<XamlElement>("Content")
+            let valueOpt = source.TryGetAttribute<XamlElement>("Content")
             match prevValueOpt, valueOpt with
             // For structured objects, dependsOn on reference equality
             | ValueSome prevChild, ValueSome newChild when identical prevChild newChild -> ()
@@ -1487,8 +995,8 @@ type Xaml() =
             | ValueSome _, ValueNone ->
                 target.Content <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryScrollOrientation
-            let valueOpt = source.TryScrollOrientation
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.ScrollOrientation>("ScrollOrientation")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.ScrollOrientation>("ScrollOrientation")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ScrollView::Orientation "); target.Orientation <-  value
@@ -1519,70 +1027,70 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.SearchBar)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryCancelButtonColor
-            let valueOpt = source.TryCancelButtonColor
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Color>("CancelButtonColor")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Color>("CancelButtonColor")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::CancelButtonColor "); target.CancelButtonColor <-  value
             | ValueSome _, ValueNone -> target.CancelButtonColor <- Xamarin.Forms.Color.Default
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryFontFamily
-            let valueOpt = source.TryFontFamily
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<string>("FontFamily")
+            let valueOpt = source.TryGetAttribute<string>("FontFamily")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::FontFamily "); target.FontFamily <-  value
             | ValueSome _, ValueNone -> target.FontFamily <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryFontAttributes
-            let valueOpt = source.TryFontAttributes
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.FontAttributes>("FontAttributes")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.FontAttributes>("FontAttributes")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::FontAttributes "); target.FontAttributes <-  value
             | ValueSome _, ValueNone -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryFontSize
-            let valueOpt = source.TryFontSize
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("FontSize")
+            let valueOpt = source.TryGetAttribute<double>("FontSize")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::FontSize "); target.FontSize <-  value
             | ValueSome _, ValueNone -> target.FontSize <- -1.0
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryHorizontalTextAlignment
-            let valueOpt = source.TryHorizontalTextAlignment
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.TextAlignment>("HorizontalTextAlignment")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.TextAlignment>("HorizontalTextAlignment")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::HorizontalTextAlignment "); target.HorizontalTextAlignment <-  value
             | ValueSome _, ValueNone -> target.HorizontalTextAlignment <- Xamarin.Forms.TextAlignment.Start
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryPlaceholder
-            let valueOpt = source.TryPlaceholder
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<string>("Placeholder")
+            let valueOpt = source.TryGetAttribute<string>("Placeholder")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::Placeholder "); target.Placeholder <-  value
             | ValueSome _, ValueNone -> target.Placeholder <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryPlaceholderColor
-            let valueOpt = source.TryPlaceholderColor
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Color>("PlaceholderColor")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Color>("PlaceholderColor")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::PlaceholderColor "); target.PlaceholderColor <-  value
             | ValueSome _, ValueNone -> target.PlaceholderColor <- Xamarin.Forms.Color.Default
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TrySearchBarCommand
-            let valueOpt = source.TrySearchBarCommand
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<unit -> unit>("SearchBarCommand")
+            let valueOpt = source.TryGetAttribute<unit -> unit>("SearchBarCommand")
             (fun _ _ _ -> ()) prevValueOpt valueOpt target
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TrySearchBarCanExecute
-            let valueOpt = source.TrySearchBarCanExecute
-            updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::Command "); prev.TrySearchBarCommand) prevValueOpt source.TrySearchBarCommand valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::Command "); target.SearchCommand <- cmd) prevValueOpt valueOpt target
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryText
-            let valueOpt = source.TryText
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<bool>("SearchBarCanExecute")
+            let valueOpt = source.TryGetAttribute<bool>("SearchBarCanExecute")
+            updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<_>("SearchBarCommand")) prevValueOpt (source.TryGetAttribute<_>("SearchBarCommand")) valueOpt (fun cmd -> target.SearchCommand <- cmd) prevValueOpt valueOpt target
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<string>("Text")
+            let valueOpt = source.TryGetAttribute<string>("Text")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::Text "); target.Text <-  value
             | ValueSome _, ValueNone -> target.Text <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryTextColor
-            let valueOpt = source.TryTextColor
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Color>("TextColor")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Color>("TextColor")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting SearchBar::TextColor "); target.TextColor <-  value
@@ -1614,77 +1122,77 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.Button)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryText
-            let valueOpt = source.TryText
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<string>("Text")
+            let valueOpt = source.TryGetAttribute<string>("Text")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Button::Text "); target.Text <-  value
             | ValueSome _, ValueNone -> target.Text <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryButtonCommand
-            let valueOpt = source.TryButtonCommand
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<unit -> unit>("ButtonCommand")
+            let valueOpt = source.TryGetAttribute<unit -> unit>("ButtonCommand")
             (fun _ _ _ -> ()) prevValueOpt valueOpt target
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryButtonCanExecute
-            let valueOpt = source.TryButtonCanExecute
-            updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryButtonCommand) prevValueOpt source.TryButtonCommand valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine("Setting Button::Command "); target.Command <- cmd) prevValueOpt valueOpt target
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryBorderColor
-            let valueOpt = source.TryBorderColor
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<bool>("ButtonCanExecute")
+            let valueOpt = source.TryGetAttribute<bool>("ButtonCanExecute")
+            updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<_>("ButtonCommand")) prevValueOpt (source.TryGetAttribute<_>("ButtonCommand")) valueOpt (fun cmd -> target.Command <- cmd) prevValueOpt valueOpt target
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Color>("BorderColor")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Color>("BorderColor")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Button::BorderColor "); target.BorderColor <-  value
             | ValueSome _, ValueNone -> target.BorderColor <- Xamarin.Forms.Color.Default
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryBorderWidth
-            let valueOpt = source.TryBorderWidth
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("BorderWidth")
+            let valueOpt = source.TryGetAttribute<double>("BorderWidth")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Button::BorderWidth "); target.BorderWidth <-  value
             | ValueSome _, ValueNone -> target.BorderWidth <- -1.0
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryCommandParameter
-            let valueOpt = source.TryCommandParameter
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.Object>("CommandParameter")
+            let valueOpt = source.TryGetAttribute<System.Object>("CommandParameter")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Button::CommandParameter "); target.CommandParameter <-  value
             | ValueSome _, ValueNone -> target.CommandParameter <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryContentLayout
-            let valueOpt = source.TryContentLayout
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Button.ButtonContentLayout>("ContentLayout")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Button.ButtonContentLayout>("ContentLayout")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Button::ContentLayout "); target.ContentLayout <-  value
             | ValueSome _, ValueNone -> target.ContentLayout <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryFontFamily
-            let valueOpt = source.TryFontFamily
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<string>("FontFamily")
+            let valueOpt = source.TryGetAttribute<string>("FontFamily")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Button::FontFamily "); target.FontFamily <-  value
             | ValueSome _, ValueNone -> target.FontFamily <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryFontAttributes
-            let valueOpt = source.TryFontAttributes
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.FontAttributes>("FontAttributes")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.FontAttributes>("FontAttributes")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Button::FontAttributes "); target.FontAttributes <-  value
             | ValueSome _, ValueNone -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryFontSize
-            let valueOpt = source.TryFontSize
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("FontSize")
+            let valueOpt = source.TryGetAttribute<double>("FontSize")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Button::FontSize "); target.FontSize <-  value
             | ValueSome _, ValueNone -> target.FontSize <- -1.0
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryButtonImageSource
-            let valueOpt = source.TryButtonImageSource
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<string>("ButtonImageSource")
+            let valueOpt = source.TryGetAttribute<string>("ButtonImageSource")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Button::Image "); target.Image <- makeFileImageSource  value
             | ValueSome _, ValueNone -> target.Image <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryTextColor
-            let valueOpt = source.TryTextColor
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Color>("TextColor")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Color>("TextColor")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Button::TextColor "); target.TextColor <-  value
@@ -1708,29 +1216,29 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.Slider)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryMinimum
-            let valueOpt = source.TryMinimum
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("Minimum")
+            let valueOpt = source.TryGetAttribute<double>("Minimum")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Slider::Minimum "); target.Minimum <-  value
             | ValueSome _, ValueNone -> target.Minimum <- 0.0
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryMaximum
-            let valueOpt = source.TryMaximum
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("Maximum")
+            let valueOpt = source.TryGetAttribute<double>("Maximum")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Slider::Maximum "); target.Maximum <-  value
             | ValueSome _, ValueNone -> target.Maximum <- 1.0
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryValue
-            let valueOpt = source.TryValue
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("Value")
+            let valueOpt = source.TryGetAttribute<double>("Value")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Slider::Value "); target.Value <-  value
             | ValueSome _, ValueNone -> target.Value <- 0.0
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryValueChanged
-            let valueOpt = source.TryValueChanged
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>>("ValueChanged")
+            let valueOpt = source.TryGetAttribute<System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>>("ValueChanged")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.ValueChanged.RemoveHandler(prevValue); target.ValueChanged.AddHandler(value)
@@ -1756,36 +1264,36 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.Stepper)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryMinimum
-            let valueOpt = source.TryMinimum
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("Minimum")
+            let valueOpt = source.TryGetAttribute<double>("Minimum")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::Minimum "); target.Minimum <-  value
             | ValueSome _, ValueNone -> target.Minimum <- 0.0
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryMaximum
-            let valueOpt = source.TryMaximum
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("Maximum")
+            let valueOpt = source.TryGetAttribute<double>("Maximum")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::Maximum "); target.Maximum <-  value
             | ValueSome _, ValueNone -> target.Maximum <- 1.0
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryValue
-            let valueOpt = source.TryValue
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("Value")
+            let valueOpt = source.TryGetAttribute<double>("Value")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::Value "); target.Value <-  value
             | ValueSome _, ValueNone -> target.Value <- 0.0
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryIncrement
-            let valueOpt = source.TryIncrement
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("Increment")
+            let valueOpt = source.TryGetAttribute<double>("Increment")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Stepper::Increment "); target.Increment <-  value
             | ValueSome _, ValueNone -> target.Increment <- 1.0
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryValueChanged
-            let valueOpt = source.TryValueChanged
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>>("ValueChanged")
+            let valueOpt = source.TryGetAttribute<System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>>("ValueChanged")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.ValueChanged.RemoveHandler(prevValue); target.ValueChanged.AddHandler(value)
@@ -1808,15 +1316,15 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.Switch)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryIsToggled
-            let valueOpt = source.TryIsToggled
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<bool>("IsToggled")
+            let valueOpt = source.TryGetAttribute<bool>("IsToggled")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Switch::IsToggled "); target.IsToggled <-  value
             | ValueSome _, ValueNone -> target.IsToggled <- false
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryToggled
-            let valueOpt = source.TryToggled
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.EventHandler<Xamarin.Forms.ToggledEventArgs>>("Toggled")
+            let valueOpt = source.TryGetAttribute<System.EventHandler<Xamarin.Forms.ToggledEventArgs>>("Toggled")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.Toggled.RemoveHandler(prevValue); target.Toggled.AddHandler(value)
@@ -1840,22 +1348,22 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.SwitchCell)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryOn
-            let valueOpt = source.TryOn
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<bool>("On")
+            let valueOpt = source.TryGetAttribute<bool>("On")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting SwitchCell::On "); target.On <-  value
             | ValueSome _, ValueNone -> target.On <- false
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryText
-            let valueOpt = source.TryText
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<string>("Text")
+            let valueOpt = source.TryGetAttribute<string>("Text")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting SwitchCell::Text "); target.Text <-  value
             | ValueSome _, ValueNone -> target.Text <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryOnChanged
-            let valueOpt = source.TryOnChanged
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.EventHandler<Xamarin.Forms.ToggledEventArgs>>("OnChanged")
+            let valueOpt = source.TryGetAttribute<System.EventHandler<Xamarin.Forms.ToggledEventArgs>>("OnChanged")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.OnChanged.RemoveHandler(prevValue); target.OnChanged.AddHandler(value)
@@ -1880,29 +1388,29 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.TableView)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryIntent
-            let valueOpt = source.TryIntent
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.TableIntent>("Intent")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.TableIntent>("Intent")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting TableView::Intent "); target.Intent <-  value
             | ValueSome _, ValueNone -> target.Intent <- Unchecked.defaultof<Xamarin.Forms.TableIntent>
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryHasUnevenRows
-            let valueOpt = source.TryHasUnevenRows
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<bool>("HasUnevenRows")
+            let valueOpt = source.TryGetAttribute<bool>("HasUnevenRows")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting TableView::HasUnevenRows "); target.HasUnevenRows <-  value
             | ValueSome _, ValueNone -> target.HasUnevenRows <- false
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryRowHeight
-            let valueOpt = source.TryRowHeight
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<int>("RowHeight")
+            let valueOpt = source.TryGetAttribute<int>("RowHeight")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting TableView::RowHeight "); target.RowHeight <-  value
             | ValueSome _, ValueNone -> target.RowHeight <- -1
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryTableRoot
-            let valueOpt = source.TryTableRoot
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<(string * XamlElement[])[]>("TableRoot")
+            let valueOpt = source.TryGetAttribute<(string * XamlElement[])[]>("TableRoot")
             updateTableViewItems prevValueOpt valueOpt target
         new XamlElement(typeof<Xamarin.Forms.TableView>, create, update, attribs)
 
@@ -1923,59 +1431,67 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.Grid)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGridRowDefinitions
-            let valueOpt = source.TryGridRowDefinitions
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<XamlElement[]>("GridRowDefinitions")
+            let valueOpt = source.TryGetAttribute<XamlElement[]>("GridRowDefinitions")
             updateIList prevValueOpt valueOpt target.RowDefinitions
                 (fun (x:XamlElement) -> x.Create() :?> Xamarin.Forms.RowDefinition)
                 (fun _ _ _ -> ())
                 canReuseChild
                 updateChild
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGridColumnDefinitions
-            let valueOpt = source.TryGridColumnDefinitions
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<XamlElement[]>("GridColumnDefinitions")
+            let valueOpt = source.TryGetAttribute<XamlElement[]>("GridColumnDefinitions")
             updateIList prevValueOpt valueOpt target.ColumnDefinitions
                 (fun (x:XamlElement) -> x.Create() :?> Xamarin.Forms.ColumnDefinition)
                 (fun _ _ _ -> ())
                 canReuseChild
                 updateChild
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryRowSpacing
-            let valueOpt = source.TryRowSpacing
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("RowSpacing")
+            let valueOpt = source.TryGetAttribute<double>("RowSpacing")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::RowSpacing "); target.RowSpacing <-  value
             | ValueSome _, ValueNone -> target.RowSpacing <- 0.0
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryColumnSpacing
-            let valueOpt = source.TryColumnSpacing
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("ColumnSpacing")
+            let valueOpt = source.TryGetAttribute<double>("ColumnSpacing")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Grid::ColumnSpacing "); target.ColumnSpacing <-  value
             | ValueSome _, ValueNone -> target.ColumnSpacing <- 0.0
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryChildren
-            let valueOpt = source.TryChildren
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<XamlElement[]>("Children")
+            let valueOpt = source.TryGetAttribute<XamlElement[]>("Children")
             updateIList prevValueOpt valueOpt target.Children
                 (fun (x:XamlElement) -> x.Create() :?> Xamarin.Forms.View)
                 (fun prevChildOpt newChild targetChild -> 
                     // Adjust the attached properties
-                    match (match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGridRow), newChild.TryGridRow with
+                    let prevChildValueOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttribute<int>("GridRow")
+                    let childValueOpt = newChild.TryGetAttribute<int>("GridRow")
+                    match prevChildValueOpt, childValueOpt with
                     | ValueSome prev, ValueSome v when prev = v -> ()
                     | prevOpt, ValueSome value -> Xamarin.Forms.Grid.SetRow(targetChild, value)
                     | ValueSome _, ValueNone -> Xamarin.Forms.Grid.SetRow(targetChild, 0) // TODO: not always perfect, should set back to original default?
                     | _ -> ()
                     // Adjust the attached properties
-                    match (match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGridRowSpan), newChild.TryGridRowSpan with
+                    let prevChildValueOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttribute<int>("GridRowSpan")
+                    let childValueOpt = newChild.TryGetAttribute<int>("GridRowSpan")
+                    match prevChildValueOpt, childValueOpt with
                     | ValueSome prev, ValueSome v when prev = v -> ()
                     | prevOpt, ValueSome value -> Xamarin.Forms.Grid.SetRowSpan(targetChild, value)
                     | ValueSome _, ValueNone -> Xamarin.Forms.Grid.SetRowSpan(targetChild, 0) // TODO: not always perfect, should set back to original default?
                     | _ -> ()
                     // Adjust the attached properties
-                    match (match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGridColumn), newChild.TryGridColumn with
+                    let prevChildValueOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttribute<int>("GridColumn")
+                    let childValueOpt = newChild.TryGetAttribute<int>("GridColumn")
+                    match prevChildValueOpt, childValueOpt with
                     | ValueSome prev, ValueSome v when prev = v -> ()
                     | prevOpt, ValueSome value -> Xamarin.Forms.Grid.SetColumn(targetChild, value)
                     | ValueSome _, ValueNone -> Xamarin.Forms.Grid.SetColumn(targetChild, 0) // TODO: not always perfect, should set back to original default?
                     | _ -> ()
                     // Adjust the attached properties
-                    match (match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGridColumnSpan), newChild.TryGridColumnSpan with
+                    let prevChildValueOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttribute<int>("GridColumnSpan")
+                    let childValueOpt = newChild.TryGetAttribute<int>("GridColumnSpan")
+                    match prevChildValueOpt, childValueOpt with
                     | ValueSome prev, ValueSome v when prev = v -> ()
                     | prevOpt, ValueSome value -> Xamarin.Forms.Grid.SetColumnSpan(targetChild, value)
                     | ValueSome _, ValueNone -> Xamarin.Forms.Grid.SetColumnSpan(targetChild, 0) // TODO: not always perfect, should set back to original default?
@@ -1998,19 +1514,23 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.AbsoluteLayout)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryChildren
-            let valueOpt = source.TryChildren
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<XamlElement[]>("Children")
+            let valueOpt = source.TryGetAttribute<XamlElement[]>("Children")
             updateIList prevValueOpt valueOpt target.Children
                 (fun (x:XamlElement) -> x.Create() :?> Xamarin.Forms.View)
                 (fun prevChildOpt newChild targetChild -> 
                     // Adjust the attached properties
-                    match (match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryLayoutBounds), newChild.TryLayoutBounds with
+                    let prevChildValueOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttribute<Xamarin.Forms.Rectangle>("LayoutBounds")
+                    let childValueOpt = newChild.TryGetAttribute<Xamarin.Forms.Rectangle>("LayoutBounds")
+                    match prevChildValueOpt, childValueOpt with
                     | ValueSome prev, ValueSome v when prev = v -> ()
                     | prevOpt, ValueSome value -> Xamarin.Forms.AbsoluteLayout.SetLayoutBounds(targetChild, value)
                     | ValueSome _, ValueNone -> Xamarin.Forms.AbsoluteLayout.SetLayoutBounds(targetChild, Xamarin.Forms.Rectangle.Zero) // TODO: not always perfect, should set back to original default?
                     | _ -> ()
                     // Adjust the attached properties
-                    match (match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryLayoutFlags), newChild.TryLayoutFlags with
+                    let prevChildValueOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttribute<Xamarin.Forms.AbsoluteLayoutFlags>("LayoutFlags")
+                    let childValueOpt = newChild.TryGetAttribute<Xamarin.Forms.AbsoluteLayoutFlags>("LayoutFlags")
+                    match prevChildValueOpt, childValueOpt with
                     | ValueSome prev, ValueSome v when prev = v -> ()
                     | prevOpt, ValueSome value -> Xamarin.Forms.AbsoluteLayout.SetLayoutFlags(targetChild, value)
                     | ValueSome _, ValueNone -> Xamarin.Forms.AbsoluteLayout.SetLayoutFlags(targetChild, Xamarin.Forms.AbsoluteLayoutFlags.None) // TODO: not always perfect, should set back to original default?
@@ -2033,37 +1553,47 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.RelativeLayout)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryChildren
-            let valueOpt = source.TryChildren
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<XamlElement[]>("Children")
+            let valueOpt = source.TryGetAttribute<XamlElement[]>("Children")
             updateIList prevValueOpt valueOpt target.Children
                 (fun (x:XamlElement) -> x.Create() :?> Xamarin.Forms.View)
                 (fun prevChildOpt newChild targetChild -> 
                     // Adjust the attached properties
-                    match (match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryBoundsConstraint), newChild.TryBoundsConstraint with
+                    let prevChildValueOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttribute<Xamarin.Forms.BoundsConstraint>("BoundsConstraint")
+                    let childValueOpt = newChild.TryGetAttribute<Xamarin.Forms.BoundsConstraint>("BoundsConstraint")
+                    match prevChildValueOpt, childValueOpt with
                     | ValueSome prev, ValueSome v when prev = v -> ()
                     | prevOpt, ValueSome value -> Xamarin.Forms.RelativeLayout.SetBoundsConstraint(targetChild, value)
                     | ValueSome _, ValueNone -> Xamarin.Forms.RelativeLayout.SetBoundsConstraint(targetChild, null) // TODO: not always perfect, should set back to original default?
                     | _ -> ()
                     // Adjust the attached properties
-                    match (match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryHeightConstraint), newChild.TryHeightConstraint with
+                    let prevChildValueOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttribute<Xamarin.Forms.Constraint>("HeightConstraint")
+                    let childValueOpt = newChild.TryGetAttribute<Xamarin.Forms.Constraint>("HeightConstraint")
+                    match prevChildValueOpt, childValueOpt with
                     | ValueSome prev, ValueSome v when prev = v -> ()
                     | prevOpt, ValueSome value -> Xamarin.Forms.RelativeLayout.SetHeightConstraint(targetChild, value)
                     | ValueSome _, ValueNone -> Xamarin.Forms.RelativeLayout.SetHeightConstraint(targetChild, null) // TODO: not always perfect, should set back to original default?
                     | _ -> ()
                     // Adjust the attached properties
-                    match (match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryWidthConstraint), newChild.TryWidthConstraint with
+                    let prevChildValueOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttribute<Xamarin.Forms.Constraint>("WidthConstraint")
+                    let childValueOpt = newChild.TryGetAttribute<Xamarin.Forms.Constraint>("WidthConstraint")
+                    match prevChildValueOpt, childValueOpt with
                     | ValueSome prev, ValueSome v when prev = v -> ()
                     | prevOpt, ValueSome value -> Xamarin.Forms.RelativeLayout.SetWidthConstraint(targetChild, value)
                     | ValueSome _, ValueNone -> Xamarin.Forms.RelativeLayout.SetWidthConstraint(targetChild, null) // TODO: not always perfect, should set back to original default?
                     | _ -> ()
                     // Adjust the attached properties
-                    match (match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryXConstraint), newChild.TryXConstraint with
+                    let prevChildValueOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttribute<Xamarin.Forms.Constraint>("XConstraint")
+                    let childValueOpt = newChild.TryGetAttribute<Xamarin.Forms.Constraint>("XConstraint")
+                    match prevChildValueOpt, childValueOpt with
                     | ValueSome prev, ValueSome v when prev = v -> ()
                     | prevOpt, ValueSome value -> Xamarin.Forms.RelativeLayout.SetXConstraint(targetChild, value)
                     | ValueSome _, ValueNone -> Xamarin.Forms.RelativeLayout.SetXConstraint(targetChild, null) // TODO: not always perfect, should set back to original default?
                     | _ -> ()
                     // Adjust the attached properties
-                    match (match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryYConstraint), newChild.TryYConstraint with
+                    let prevChildValueOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttribute<Xamarin.Forms.Constraint>("YConstraint")
+                    let childValueOpt = newChild.TryGetAttribute<Xamarin.Forms.Constraint>("YConstraint")
+                    match prevChildValueOpt, childValueOpt with
                     | ValueSome prev, ValueSome v when prev = v -> ()
                     | prevOpt, ValueSome value -> Xamarin.Forms.RelativeLayout.SetYConstraint(targetChild, value)
                     | ValueSome _, ValueNone -> Xamarin.Forms.RelativeLayout.SetYConstraint(targetChild, null) // TODO: not always perfect, should set back to original default?
@@ -2083,8 +1613,8 @@ type Xaml() =
             box (new Xamarin.Forms.RowDefinition())
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             let target = (targetObj :?> Xamarin.Forms.RowDefinition)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryRowDefinitionHeight
-            let valueOpt = source.TryRowDefinitionHeight
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.GridLength>("RowDefinitionHeight")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.GridLength>("RowDefinitionHeight")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting RowDefinition::Height "); target.Height <-  value
@@ -2102,8 +1632,8 @@ type Xaml() =
             box (new Xamarin.Forms.ColumnDefinition())
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             let target = (targetObj :?> Xamarin.Forms.ColumnDefinition)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryColumnDefinitionWidth
-            let valueOpt = source.TryColumnDefinitionWidth
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.GridLength>("ColumnDefinitionWidth")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.GridLength>("ColumnDefinitionWidth")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ColumnDefinition::Width "); target.Width <-  value
@@ -2124,8 +1654,8 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.ContentView)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryContent
-            let valueOpt = source.TryContent
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<XamlElement>("Content")
+            let valueOpt = source.TryGetAttribute<XamlElement>("Content")
             match prevValueOpt, valueOpt with
             // For structured objects, dependsOn on reference equality
             | ValueSome prevChild, ValueSome newChild when identical prevChild newChild -> ()
@@ -2169,36 +1699,36 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.DatePicker)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryDate
-            let valueOpt = source.TryDate
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.DateTime>("Date")
+            let valueOpt = source.TryGetAttribute<System.DateTime>("Date")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::Date "); target.Date <-  value
             | ValueSome _, ValueNone -> target.Date <- Unchecked.defaultof<System.DateTime>
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryFormat
-            let valueOpt = source.TryFormat
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<string>("Format")
+            let valueOpt = source.TryGetAttribute<string>("Format")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::Format "); target.Format <-  value
             | ValueSome _, ValueNone -> target.Format <- "d"
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryMinimumDate
-            let valueOpt = source.TryMinimumDate
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.DateTime>("MinimumDate")
+            let valueOpt = source.TryGetAttribute<System.DateTime>("MinimumDate")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::MinimumDate "); target.MinimumDate <-  value
             | ValueSome _, ValueNone -> target.MinimumDate <- new System.DateTime(1900, 1, 1)
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryMaximumDate
-            let valueOpt = source.TryMaximumDate
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.DateTime>("MaximumDate")
+            let valueOpt = source.TryGetAttribute<System.DateTime>("MaximumDate")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting DatePicker::MaximumDate "); target.MaximumDate <-  value
             | ValueSome _, ValueNone -> target.MaximumDate <- new System.DateTime(2100, 12, 31)
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryDateSelected
-            let valueOpt = source.TryDateSelected
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.EventHandler<Xamarin.Forms.DateChangedEventArgs>>("DateSelected")
+            let valueOpt = source.TryGetAttribute<System.EventHandler<Xamarin.Forms.DateChangedEventArgs>>("DateSelected")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.DateSelected.RemoveHandler(prevValue); target.DateSelected.AddHandler(value)
@@ -2224,36 +1754,36 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.Picker)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryPickerItemsSource
-            let valueOpt = source.TryPickerItemsSource
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.Collections.IList>("PickerItemsSource")
+            let valueOpt = source.TryGetAttribute<System.Collections.IList>("PickerItemsSource")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::ItemsSource "); target.ItemsSource <-  value
             | ValueSome _, ValueNone -> target.ItemsSource <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TrySelectedIndex
-            let valueOpt = source.TrySelectedIndex
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<int>("SelectedIndex")
+            let valueOpt = source.TryGetAttribute<int>("SelectedIndex")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::SelectedIndex "); target.SelectedIndex <-  value
             | ValueSome _, ValueNone -> target.SelectedIndex <- 0
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryTitle
-            let valueOpt = source.TryTitle
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<string>("Title")
+            let valueOpt = source.TryGetAttribute<string>("Title")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::Title "); target.Title <-  value
             | ValueSome _, ValueNone -> target.Title <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryTextColor
-            let valueOpt = source.TryTextColor
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Color>("TextColor")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Color>("TextColor")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Picker::TextColor "); target.TextColor <-  value
             | ValueSome _, ValueNone -> target.TextColor <- Xamarin.Forms.Color.Default
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TrySelectedIndexChanged
-            let valueOpt = source.TrySelectedIndexChanged
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.EventHandler>("SelectedIndexChanged")
+            let valueOpt = source.TryGetAttribute<System.EventHandler>("SelectedIndexChanged")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.SelectedIndexChanged.RemoveHandler(prevValue); target.SelectedIndexChanged.AddHandler(value)
@@ -2277,22 +1807,22 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.Frame)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryOutlineColor
-            let valueOpt = source.TryOutlineColor
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Color>("OutlineColor")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Color>("OutlineColor")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::OutlineColor "); target.OutlineColor <-  value
             | ValueSome _, ValueNone -> target.OutlineColor <- Xamarin.Forms.Color.Default
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryFrameCornerRadius
-            let valueOpt = source.TryFrameCornerRadius
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<single>("FrameCornerRadius")
+            let valueOpt = source.TryGetAttribute<single>("FrameCornerRadius")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::CornerRadius "); target.CornerRadius <-  value
             | ValueSome _, ValueNone -> target.CornerRadius <- -1.0f
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryHasShadow
-            let valueOpt = source.TryHasShadow
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<bool>("HasShadow")
+            let valueOpt = source.TryGetAttribute<bool>("HasShadow")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Frame::HasShadow "); target.HasShadow <-  value
@@ -2315,22 +1845,22 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.Image)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryImageSource
-            let valueOpt = source.TryImageSource
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<string>("ImageSource")
+            let valueOpt = source.TryGetAttribute<string>("ImageSource")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Image::Source "); target.Source <- makeImageSource  value
             | ValueSome _, ValueNone -> target.Source <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryAspect
-            let valueOpt = source.TryAspect
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Aspect>("Aspect")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Aspect>("Aspect")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Image::Aspect "); target.Aspect <-  value
             | ValueSome _, ValueNone -> target.Aspect <- Xamarin.Forms.Aspect.AspectFit
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryIsOpaque
-            let valueOpt = source.TryIsOpaque
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<bool>("IsOpaque")
+            let valueOpt = source.TryGetAttribute<bool>("IsOpaque")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Image::IsOpaque "); target.IsOpaque <-  value
@@ -2352,8 +1882,8 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.InputView)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryKeyboard
-            let valueOpt = source.TryKeyboard
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Keyboard>("Keyboard")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Keyboard>("Keyboard")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting InputView::Keyboard "); target.Keyboard <-  value
@@ -2380,51 +1910,51 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.Editor)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryText
-            let valueOpt = source.TryText
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<string>("Text")
+            let valueOpt = source.TryGetAttribute<string>("Text")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::Text "); target.Text <-  value
             | ValueSome _, ValueNone -> target.Text <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryFontSize
-            let valueOpt = source.TryFontSize
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("FontSize")
+            let valueOpt = source.TryGetAttribute<double>("FontSize")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::FontSize "); target.FontSize <-  value
             | ValueSome _, ValueNone -> target.FontSize <- -1.0
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryFontFamily
-            let valueOpt = source.TryFontFamily
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<string>("FontFamily")
+            let valueOpt = source.TryGetAttribute<string>("FontFamily")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::FontFamily "); target.FontFamily <-  value
             | ValueSome _, ValueNone -> target.FontFamily <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryFontAttributes
-            let valueOpt = source.TryFontAttributes
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.FontAttributes>("FontAttributes")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.FontAttributes>("FontAttributes")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::FontAttributes "); target.FontAttributes <-  value
             | ValueSome _, ValueNone -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryTextColor
-            let valueOpt = source.TryTextColor
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Color>("TextColor")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Color>("TextColor")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Editor::TextColor "); target.TextColor <-  value
             | ValueSome _, ValueNone -> target.TextColor <- Xamarin.Forms.Color.Default
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryEditorCompleted
-            let valueOpt = source.TryEditorCompleted
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.EventHandler>("EditorCompleted")
+            let valueOpt = source.TryGetAttribute<System.EventHandler>("EditorCompleted")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.Completed.RemoveHandler(prevValue); target.Completed.AddHandler(value)
             | ValueNone, ValueSome value -> target.Completed.AddHandler(value)
             | ValueSome prevValue, ValueNone -> target.Completed.RemoveHandler(prevValue)
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryTextChanged
-            let valueOpt = source.TryTextChanged
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.EventHandler<Xamarin.Forms.TextChangedEventArgs>>("TextChanged")
+            let valueOpt = source.TryGetAttribute<System.EventHandler<Xamarin.Forms.TextChangedEventArgs>>("TextChanged")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.TextChanged.RemoveHandler(prevValue); target.TextChanged.AddHandler(value)
@@ -2456,79 +1986,79 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.Entry)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryText
-            let valueOpt = source.TryText
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<string>("Text")
+            let valueOpt = source.TryGetAttribute<string>("Text")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::Text "); target.Text <-  value
             | ValueSome _, ValueNone -> target.Text <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryPlaceholder
-            let valueOpt = source.TryPlaceholder
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<string>("Placeholder")
+            let valueOpt = source.TryGetAttribute<string>("Placeholder")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::Placeholder "); target.Placeholder <-  value
             | ValueSome _, ValueNone -> target.Placeholder <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryHorizontalTextAlignment
-            let valueOpt = source.TryHorizontalTextAlignment
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.TextAlignment>("HorizontalTextAlignment")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.TextAlignment>("HorizontalTextAlignment")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::HorizontalTextAlignment "); target.HorizontalTextAlignment <-  value
             | ValueSome _, ValueNone -> target.HorizontalTextAlignment <- Xamarin.Forms.TextAlignment.Start
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryFontSize
-            let valueOpt = source.TryFontSize
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("FontSize")
+            let valueOpt = source.TryGetAttribute<double>("FontSize")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::FontSize "); target.FontSize <-  value
             | ValueSome _, ValueNone -> target.FontSize <- -1.0
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryFontFamily
-            let valueOpt = source.TryFontFamily
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<string>("FontFamily")
+            let valueOpt = source.TryGetAttribute<string>("FontFamily")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::FontFamily "); target.FontFamily <-  value
             | ValueSome _, ValueNone -> target.FontFamily <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryFontAttributes
-            let valueOpt = source.TryFontAttributes
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.FontAttributes>("FontAttributes")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.FontAttributes>("FontAttributes")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::FontAttributes "); target.FontAttributes <-  value
             | ValueSome _, ValueNone -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryTextColor
-            let valueOpt = source.TryTextColor
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Color>("TextColor")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Color>("TextColor")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::TextColor "); target.TextColor <-  value
             | ValueSome _, ValueNone -> target.TextColor <- Xamarin.Forms.Color.Default
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryPlaceholderColor
-            let valueOpt = source.TryPlaceholderColor
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Color>("PlaceholderColor")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Color>("PlaceholderColor")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::PlaceholderColor "); target.PlaceholderColor <-  value
             | ValueSome _, ValueNone -> target.PlaceholderColor <- Xamarin.Forms.Color.Default
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryIsPassword
-            let valueOpt = source.TryIsPassword
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<bool>("IsPassword")
+            let valueOpt = source.TryGetAttribute<bool>("IsPassword")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Entry::IsPassword "); target.IsPassword <-  value
             | ValueSome _, ValueNone -> target.IsPassword <- false
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryEntryCompleted
-            let valueOpt = source.TryEntryCompleted
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.EventHandler>("EntryCompleted")
+            let valueOpt = source.TryGetAttribute<System.EventHandler>("EntryCompleted")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.Completed.RemoveHandler(prevValue); target.Completed.AddHandler(value)
             | ValueNone, ValueSome value -> target.Completed.AddHandler(value)
             | ValueSome prevValue, ValueNone -> target.Completed.RemoveHandler(prevValue)
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryTextChanged
-            let valueOpt = source.TryTextChanged
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.EventHandler<Xamarin.Forms.TextChangedEventArgs>>("TextChanged")
+            let valueOpt = source.TryGetAttribute<System.EventHandler<Xamarin.Forms.TextChangedEventArgs>>("TextChanged")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.TextChanged.RemoveHandler(prevValue); target.TextChanged.AddHandler(value)
@@ -2555,43 +2085,43 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.EntryCell)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryLabel
-            let valueOpt = source.TryLabel
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<string>("Label")
+            let valueOpt = source.TryGetAttribute<string>("Label")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting EntryCell::Label "); target.Label <-  value
             | ValueSome _, ValueNone -> target.Label <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryText
-            let valueOpt = source.TryText
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<string>("Text")
+            let valueOpt = source.TryGetAttribute<string>("Text")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting EntryCell::Text "); target.Text <-  value
             | ValueSome _, ValueNone -> target.Text <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryKeyboard
-            let valueOpt = source.TryKeyboard
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Keyboard>("Keyboard")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Keyboard>("Keyboard")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting EntryCell::Keyboard "); target.Keyboard <-  value
             | ValueSome _, ValueNone -> target.Keyboard <- Xamarin.Forms.Keyboard.Default
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryPlaceholder
-            let valueOpt = source.TryPlaceholder
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<string>("Placeholder")
+            let valueOpt = source.TryGetAttribute<string>("Placeholder")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting EntryCell::Placeholder "); target.Placeholder <-  value
             | ValueSome _, ValueNone -> target.Placeholder <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryHorizontalTextAlignment
-            let valueOpt = source.TryHorizontalTextAlignment
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.TextAlignment>("HorizontalTextAlignment")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.TextAlignment>("HorizontalTextAlignment")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting EntryCell::HorizontalTextAlignment "); target.HorizontalTextAlignment <-  value
             | ValueSome _, ValueNone -> target.HorizontalTextAlignment <- Xamarin.Forms.TextAlignment.Start
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryEntryCompleted
-            let valueOpt = source.TryEntryCompleted
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.EventHandler>("EntryCompleted")
+            let valueOpt = source.TryGetAttribute<System.EventHandler>("EntryCompleted")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.Completed.RemoveHandler(prevValue); target.Completed.AddHandler(value)
@@ -2619,50 +2149,50 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.Label)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryText
-            let valueOpt = source.TryText
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<string>("Text")
+            let valueOpt = source.TryGetAttribute<string>("Text")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Label::Text "); target.Text <-  value
             | ValueSome _, ValueNone -> target.Text <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryHorizontalTextAlignment
-            let valueOpt = source.TryHorizontalTextAlignment
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.TextAlignment>("HorizontalTextAlignment")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.TextAlignment>("HorizontalTextAlignment")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Label::HorizontalTextAlignment "); target.HorizontalTextAlignment <-  value
             | ValueSome _, ValueNone -> target.HorizontalTextAlignment <- Xamarin.Forms.TextAlignment.Start
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryVerticalTextAlignment
-            let valueOpt = source.TryVerticalTextAlignment
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.TextAlignment>("VerticalTextAlignment")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.TextAlignment>("VerticalTextAlignment")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Label::VerticalTextAlignment "); target.VerticalTextAlignment <-  value
             | ValueSome _, ValueNone -> target.VerticalTextAlignment <- Xamarin.Forms.TextAlignment.Start
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryFontSize
-            let valueOpt = source.TryFontSize
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("FontSize")
+            let valueOpt = source.TryGetAttribute<double>("FontSize")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Label::FontSize "); target.FontSize <-  value
             | ValueSome _, ValueNone -> target.FontSize <- -1.0
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryFontFamily
-            let valueOpt = source.TryFontFamily
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<string>("FontFamily")
+            let valueOpt = source.TryGetAttribute<string>("FontFamily")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Label::FontFamily "); target.FontFamily <-  value
             | ValueSome _, ValueNone -> target.FontFamily <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryFontAttributes
-            let valueOpt = source.TryFontAttributes
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.FontAttributes>("FontAttributes")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.FontAttributes>("FontAttributes")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Label::FontAttributes "); target.FontAttributes <-  value
             | ValueSome _, ValueNone -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryTextColor
-            let valueOpt = source.TryTextColor
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Color>("TextColor")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Color>("TextColor")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Label::TextColor "); target.TextColor <-  value
@@ -2685,15 +2215,15 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.Layout)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryIsClippedToBounds
-            let valueOpt = source.TryIsClippedToBounds
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<bool>("IsClippedToBounds")
+            let valueOpt = source.TryGetAttribute<bool>("IsClippedToBounds")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Layout::IsClippedToBounds "); target.IsClippedToBounds <-  value
             | ValueSome _, ValueNone -> target.IsClippedToBounds <- false
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryPadding
-            let valueOpt = source.TryPadding
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Thickness>("Padding")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Thickness>("Padding")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Layout::Padding "); target.Padding <-  value
@@ -2716,22 +2246,22 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.StackLayout)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryChildren
-            let valueOpt = source.TryChildren
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<XamlElement[]>("Children")
+            let valueOpt = source.TryGetAttribute<XamlElement[]>("Children")
             updateIList prevValueOpt valueOpt target.Children
                 (fun (x:XamlElement) -> x.Create() :?> Xamarin.Forms.View)
                 (fun _ _ _ -> ())
                 canReuseChild
                 updateChild
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryStackOrientation
-            let valueOpt = source.TryStackOrientation
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.StackOrientation>("StackOrientation")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.StackOrientation>("StackOrientation")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting StackLayout::Orientation "); target.Orientation <-  value
             | ValueSome _, ValueNone -> target.Orientation <- Xamarin.Forms.StackOrientation.Vertical
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TrySpacing
-            let valueOpt = source.TrySpacing
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("Spacing")
+            let valueOpt = source.TryGetAttribute<double>("Spacing")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting StackLayout::Spacing "); target.Spacing <-  value
@@ -2755,50 +2285,50 @@ type Xaml() =
             box (new Xamarin.Forms.Span())
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             let target = (targetObj :?> Xamarin.Forms.Span)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryFontFamily
-            let valueOpt = source.TryFontFamily
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<string>("FontFamily")
+            let valueOpt = source.TryGetAttribute<string>("FontFamily")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Span::FontFamily "); target.FontFamily <-  value
             | ValueSome _, ValueNone -> target.FontFamily <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryFontAttributes
-            let valueOpt = source.TryFontAttributes
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.FontAttributes>("FontAttributes")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.FontAttributes>("FontAttributes")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Span::FontAttributes "); target.FontAttributes <-  value
             | ValueSome _, ValueNone -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryFontSize
-            let valueOpt = source.TryFontSize
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("FontSize")
+            let valueOpt = source.TryGetAttribute<double>("FontSize")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Span::FontSize "); target.FontSize <-  value
             | ValueSome _, ValueNone -> target.FontSize <- -1.0
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryBackgroundColor
-            let valueOpt = source.TryBackgroundColor
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Color>("BackgroundColor")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Color>("BackgroundColor")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Span::BackgroundColor "); target.BackgroundColor <-  value
             | ValueSome _, ValueNone -> target.BackgroundColor <- Xamarin.Forms.Color.Default
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryForegroundColor
-            let valueOpt = source.TryForegroundColor
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Color>("ForegroundColor")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Color>("ForegroundColor")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Span::ForegroundColor "); target.ForegroundColor <-  value
             | ValueSome _, ValueNone -> target.ForegroundColor <- Xamarin.Forms.Color.Default
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryText
-            let valueOpt = source.TryText
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<string>("Text")
+            let valueOpt = source.TryGetAttribute<string>("Text")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Span::Text "); target.Text <-  value
             | ValueSome _, ValueNone -> target.Text <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryPropertyChanged
-            let valueOpt = source.TryPropertyChanged
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.ComponentModel.PropertyChangedEventHandler>("PropertyChanged")
+            let valueOpt = source.TryGetAttribute<System.ComponentModel.PropertyChangedEventHandler>("PropertyChanged")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.PropertyChanged.RemoveHandler(prevValue); target.PropertyChanged.AddHandler(value)
@@ -2822,22 +2352,22 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.TimePicker)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryTime
-            let valueOpt = source.TryTime
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.TimeSpan>("Time")
+            let valueOpt = source.TryGetAttribute<System.TimeSpan>("Time")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting TimePicker::Time "); target.Time <-  value
             | ValueSome _, ValueNone -> target.Time <- new System.TimeSpan()
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryFormat
-            let valueOpt = source.TryFormat
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<string>("Format")
+            let valueOpt = source.TryGetAttribute<string>("Format")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting TimePicker::Format "); target.Format <-  value
             | ValueSome _, ValueNone -> target.Format <- "t"
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryTextColor
-            let valueOpt = source.TryTextColor
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Color>("TextColor")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Color>("TextColor")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting TimePicker::TextColor "); target.TextColor <-  value
@@ -2860,23 +2390,23 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.WebView)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryWebSource
-            let valueOpt = source.TryWebSource
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.WebViewSource>("WebSource")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.WebViewSource>("WebSource")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting WebView::Source "); target.Source <-  value
             | ValueSome _, ValueNone -> target.Source <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryNavigated
-            let valueOpt = source.TryNavigated
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.EventHandler<Xamarin.Forms.WebNavigatedEventArgs>>("Navigated")
+            let valueOpt = source.TryGetAttribute<System.EventHandler<Xamarin.Forms.WebNavigatedEventArgs>>("Navigated")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.Navigated.RemoveHandler(prevValue); target.Navigated.AddHandler(value)
             | ValueNone, ValueSome value -> target.Navigated.AddHandler(value)
             | ValueSome prevValue, ValueNone -> target.Navigated.RemoveHandler(prevValue)
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryNavigating
-            let valueOpt = source.TryNavigating
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.EventHandler<Xamarin.Forms.WebNavigatingEventArgs>>("Navigating")
+            let valueOpt = source.TryGetAttribute<System.EventHandler<Xamarin.Forms.WebNavigatingEventArgs>>("Navigating")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.Navigating.RemoveHandler(prevValue); target.Navigating.AddHandler(value)
@@ -2900,22 +2430,22 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.Page)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryTitle
-            let valueOpt = source.TryTitle
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<string>("Title")
+            let valueOpt = source.TryGetAttribute<string>("Title")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Page::Title "); target.Title <-  value
             | ValueSome _, ValueNone -> target.Title <- ""
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryPadding
-            let valueOpt = source.TryPadding
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Thickness>("Padding")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Thickness>("Padding")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Page::Padding "); target.Padding <-  value
             | ValueSome _, ValueNone -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryUseSafeArea
-            let valueOpt = source.TryUseSafeArea
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<bool>("UseSafeArea")
+            let valueOpt = source.TryGetAttribute<bool>("UseSafeArea")
             (fun _ _ target -> Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea((target :> Xamarin.Forms.Page).On<Xamarin.Forms.PlatformConfiguration.iOS>(), true) |> ignore) prevValueOpt valueOpt target
         new XamlElement(typeof<Xamarin.Forms.Page>, create, update, attribs)
 
@@ -2935,22 +2465,22 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.CarouselPage)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryChildren
-            let valueOpt = source.TryChildren
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<XamlElement[]>("Children")
+            let valueOpt = source.TryGetAttribute<XamlElement[]>("Children")
             updateIList prevValueOpt valueOpt target.Children
                 (fun (x:XamlElement) -> x.Create() :?> Xamarin.Forms.ContentPage)
                 (fun _ _ _ -> ())
                 canReuseChild
                 updateChild
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryCarouselPage_SelectedItem
-            let valueOpt = source.TryCarouselPage_SelectedItem
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.Object>("CarouselPage_SelectedItem")
+            let valueOpt = source.TryGetAttribute<System.Object>("CarouselPage_SelectedItem")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting CarouselPage::SelectedItem "); target.SelectedItem <-  value
             | ValueSome _, ValueNone -> target.SelectedItem <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryCurrentPage
-            let valueOpt = source.TryCurrentPage
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<XamlElement>("CurrentPage")
+            let valueOpt = source.TryGetAttribute<XamlElement>("CurrentPage")
             match prevValueOpt, valueOpt with
             // For structured objects, dependsOn on reference equality
             | ValueSome prevChild, ValueSome newChild when identical prevChild newChild -> ()
@@ -2961,8 +2491,8 @@ type Xaml() =
             | ValueSome _, ValueNone ->
                 target.CurrentPage <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryCurrentPageChanged
-            let valueOpt = source.TryCurrentPageChanged
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.EventHandler>("CurrentPageChanged")
+            let valueOpt = source.TryGetAttribute<System.EventHandler>("CurrentPageChanged")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.CurrentPageChanged.RemoveHandler(prevValue); target.CurrentPageChanged.AddHandler(value)
@@ -2976,7 +2506,7 @@ type Xaml() =
         let baseElement : XamlElement = Xaml.Page(?title=title, ?padding=padding, ?useSafeArea=useSafeArea, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?classId=classId, ?styleId=styleId)
         let attribs = [| 
             yield! baseElement.AttributesArray
-            match pages with None -> () | Some v -> yield ("NavigationPagePages", box (Array.ofList(v))) 
+            match pages with None -> () | Some v -> yield ("Pages", box (Array.ofList(v))) 
             match barBackgroundColor with None -> () | Some v -> yield ("BarBackgroundColor", box ((v))) 
             match barTextColor with None -> () | Some v -> yield ("BarTextColor", box ((v))) 
             match popped with None -> () | Some v -> yield ("Popped", box ((fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(v))) 
@@ -2989,67 +2519,75 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.NavigationPage)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryNavigationPagePages
-            let valueOpt = source.TryNavigationPagePages
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<XamlElement[]>("Pages")
+            let valueOpt = source.TryGetAttribute<XamlElement[]>("Pages")
             updateNavigationPages prevValueOpt valueOpt target
                 (fun prevChildOpt newChild targetChild -> 
                     // Adjust the attached properties
-                    match (match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryBackButtonTitle), newChild.TryBackButtonTitle with
+                    let prevChildValueOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttribute<string>("BackButtonTitle")
+                    let childValueOpt = newChild.TryGetAttribute<string>("BackButtonTitle")
+                    match prevChildValueOpt, childValueOpt with
                     | ValueSome prev, ValueSome v when prev = v -> ()
                     | prevOpt, ValueSome value -> Xamarin.Forms.NavigationPage.SetBackButtonTitle(targetChild, value)
                     | ValueSome _, ValueNone -> Xamarin.Forms.NavigationPage.SetBackButtonTitle(targetChild, null) // TODO: not always perfect, should set back to original default?
                     | _ -> ()
                     // Adjust the attached properties
-                    match (match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryHasBackButton), newChild.TryHasBackButton with
+                    let prevChildValueOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttribute<bool>("HasBackButton")
+                    let childValueOpt = newChild.TryGetAttribute<bool>("HasBackButton")
+                    match prevChildValueOpt, childValueOpt with
                     | ValueSome prev, ValueSome v when prev = v -> ()
                     | prevOpt, ValueSome value -> Xamarin.Forms.NavigationPage.SetHasBackButton(targetChild, value)
                     | ValueSome _, ValueNone -> Xamarin.Forms.NavigationPage.SetHasBackButton(targetChild, true) // TODO: not always perfect, should set back to original default?
                     | _ -> ()
                     // Adjust the attached properties
-                    match (match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryHasNavigationBar), newChild.TryHasNavigationBar with
+                    let prevChildValueOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttribute<bool>("HasNavigationBar")
+                    let childValueOpt = newChild.TryGetAttribute<bool>("HasNavigationBar")
+                    match prevChildValueOpt, childValueOpt with
                     | ValueSome prev, ValueSome v when prev = v -> ()
                     | prevOpt, ValueSome value -> Xamarin.Forms.NavigationPage.SetHasNavigationBar(targetChild, value)
                     | ValueSome _, ValueNone -> Xamarin.Forms.NavigationPage.SetHasNavigationBar(targetChild, true) // TODO: not always perfect, should set back to original default?
                     | _ -> ()
                     // Adjust the attached properties
-                    match (match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryTitleIcon), newChild.TryTitleIcon with
+                    let prevChildValueOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttribute<string>("TitleIcon")
+                    let childValueOpt = newChild.TryGetAttribute<string>("TitleIcon")
+                    match prevChildValueOpt, childValueOpt with
                     | ValueSome prev, ValueSome v when prev = v -> ()
                     | prevOpt, ValueSome value -> Xamarin.Forms.NavigationPage.SetTitleIcon(targetChild, makeFileImageSource value)
                     | ValueSome _, ValueNone -> Xamarin.Forms.NavigationPage.SetTitleIcon(targetChild, null) // TODO: not always perfect, should set back to original default?
                     | _ -> ()
                     ())
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryBarBackgroundColor
-            let valueOpt = source.TryBarBackgroundColor
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Color>("BarBackgroundColor")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Color>("BarBackgroundColor")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting NavigationPage::BarBackgroundColor "); target.BarBackgroundColor <-  value
             | ValueSome _, ValueNone -> target.BarBackgroundColor <- Xamarin.Forms.Color.Default
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryBarTextColor
-            let valueOpt = source.TryBarTextColor
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Color>("BarTextColor")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Color>("BarTextColor")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting NavigationPage::BarTextColor "); target.BarTextColor <-  value
             | ValueSome _, ValueNone -> target.BarTextColor <- Xamarin.Forms.Color.Default
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryPopped
-            let valueOpt = source.TryPopped
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.EventHandler<Xamarin.Forms.NavigationEventArgs>>("Popped")
+            let valueOpt = source.TryGetAttribute<System.EventHandler<Xamarin.Forms.NavigationEventArgs>>("Popped")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.Popped.RemoveHandler(prevValue); target.Popped.AddHandler(value)
             | ValueNone, ValueSome value -> target.Popped.AddHandler(value)
             | ValueSome prevValue, ValueNone -> target.Popped.RemoveHandler(prevValue)
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryPoppedToRoot
-            let valueOpt = source.TryPoppedToRoot
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.EventHandler<Xamarin.Forms.NavigationEventArgs>>("PoppedToRoot")
+            let valueOpt = source.TryGetAttribute<System.EventHandler<Xamarin.Forms.NavigationEventArgs>>("PoppedToRoot")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.PoppedToRoot.RemoveHandler(prevValue); target.PoppedToRoot.AddHandler(value)
             | ValueNone, ValueSome value -> target.PoppedToRoot.AddHandler(value)
             | ValueSome prevValue, ValueNone -> target.PoppedToRoot.RemoveHandler(prevValue)
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryPushed
-            let valueOpt = source.TryPushed
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.EventHandler<Xamarin.Forms.NavigationEventArgs>>("Pushed")
+            let valueOpt = source.TryGetAttribute<System.EventHandler<Xamarin.Forms.NavigationEventArgs>>("Pushed")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.Pushed.RemoveHandler(prevValue); target.Pushed.AddHandler(value)
@@ -3073,22 +2611,22 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.TabbedPage)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryChildren
-            let valueOpt = source.TryChildren
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<XamlElement[]>("Children")
+            let valueOpt = source.TryGetAttribute<XamlElement[]>("Children")
             updateIList prevValueOpt valueOpt target.Children
                 (fun (x:XamlElement) -> x.Create() :?> Xamarin.Forms.Page)
                 (fun _ _ _ -> ())
                 canReuseChild
                 updateChild
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryBarBackgroundColor
-            let valueOpt = source.TryBarBackgroundColor
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Color>("BarBackgroundColor")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Color>("BarBackgroundColor")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting TabbedPage::BarBackgroundColor "); target.BarBackgroundColor <-  value
             | ValueSome _, ValueNone -> target.BarBackgroundColor <- Xamarin.Forms.Color.Default
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryBarTextColor
-            let valueOpt = source.TryBarTextColor
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Color>("BarTextColor")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Color>("BarTextColor")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting TabbedPage::BarTextColor "); target.BarTextColor <-  value
@@ -3110,8 +2648,8 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.ContentPage)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryContent
-            let valueOpt = source.TryContent
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<XamlElement>("Content")
+            let valueOpt = source.TryGetAttribute<XamlElement>("Content")
             match prevValueOpt, valueOpt with
             // For structured objects, dependsOn on reference equality
             | ValueSome prevChild, ValueSome newChild when identical prevChild newChild -> ()
@@ -3122,8 +2660,8 @@ type Xaml() =
             | ValueSome _, ValueNone ->
                 target.Content <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryOnSizeAllocatedCallback
-            let valueOpt = source.TryOnSizeAllocatedCallback
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<FSharp.Control.Handler<(double * double)>>("OnSizeAllocatedCallback")
+            let valueOpt = source.TryGetAttribute<FSharp.Control.Handler<(double * double)>>("OnSizeAllocatedCallback")
             updateOnSizeAllocated prevValueOpt valueOpt target
         new XamlElement(typeof<Xamarin.Forms.ContentPage>, create, update, attribs)
 
@@ -3145,8 +2683,8 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.MasterDetailPage)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryMaster
-            let valueOpt = source.TryMaster
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<XamlElement>("Master")
+            let valueOpt = source.TryGetAttribute<XamlElement>("Master")
             match prevValueOpt, valueOpt with
             // For structured objects, dependsOn on reference equality
             | ValueSome prevChild, ValueSome newChild when identical prevChild newChild -> ()
@@ -3157,8 +2695,8 @@ type Xaml() =
             | ValueSome _, ValueNone ->
                 target.Master <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryDetail
-            let valueOpt = source.TryDetail
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<XamlElement>("Detail")
+            let valueOpt = source.TryGetAttribute<XamlElement>("Detail")
             match prevValueOpt, valueOpt with
             // For structured objects, dependsOn on reference equality
             | ValueSome prevChild, ValueSome newChild when identical prevChild newChild -> ()
@@ -3169,29 +2707,29 @@ type Xaml() =
             | ValueSome _, ValueNone ->
                 target.Detail <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryIsGestureEnabled
-            let valueOpt = source.TryIsGestureEnabled
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<bool>("IsGestureEnabled")
+            let valueOpt = source.TryGetAttribute<bool>("IsGestureEnabled")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting MasterDetailPage::IsGestureEnabled "); target.IsGestureEnabled <-  value
             | ValueSome _, ValueNone -> target.IsGestureEnabled <- true
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryIsPresented
-            let valueOpt = source.TryIsPresented
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<bool>("IsPresented")
+            let valueOpt = source.TryGetAttribute<bool>("IsPresented")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting MasterDetailPage::IsPresented "); target.IsPresented <-  value
             | ValueSome _, ValueNone -> target.IsPresented <- true
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryMasterBehavior
-            let valueOpt = source.TryMasterBehavior
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.MasterBehavior>("MasterBehavior")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.MasterBehavior>("MasterBehavior")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting MasterDetailPage::MasterBehavior "); target.MasterBehavior <-  value
             | ValueSome _, ValueNone -> target.MasterBehavior <- Xamarin.Forms.MasterBehavior.Default
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryIsPresentedChanged
-            let valueOpt = source.TryIsPresentedChanged
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.EventHandler>("IsPresentedChanged")
+            let valueOpt = source.TryGetAttribute<System.EventHandler>("IsPresentedChanged")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.IsPresentedChanged.RemoveHandler(prevValue); target.IsPresentedChanged.AddHandler(value)
@@ -3215,15 +2753,15 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.Cell)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryHeight
-            let valueOpt = source.TryHeight
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<double>("Height")
+            let valueOpt = source.TryGetAttribute<double>("Height")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Cell::Height "); target.Height <-  value
             | ValueSome _, ValueNone -> target.Height <- -1.0
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryIsEnabled
-            let valueOpt = source.TryIsEnabled
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<bool>("IsEnabled")
+            let valueOpt = source.TryGetAttribute<bool>("IsEnabled")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting Cell::IsEnabled "); target.IsEnabled <-  value
@@ -3250,42 +2788,42 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.TextCell)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryText
-            let valueOpt = source.TryText
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<string>("Text")
+            let valueOpt = source.TryGetAttribute<string>("Text")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting TextCell::Text "); target.Text <-  value
             | ValueSome _, ValueNone -> target.Text <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryTextDetail
-            let valueOpt = source.TryTextDetail
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<string>("TextDetail")
+            let valueOpt = source.TryGetAttribute<string>("TextDetail")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting TextCell::Detail "); target.Detail <-  value
             | ValueSome _, ValueNone -> target.Detail <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryTextColor
-            let valueOpt = source.TryTextColor
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Color>("TextColor")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Color>("TextColor")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting TextCell::TextColor "); target.TextColor <-  value
             | ValueSome _, ValueNone -> target.TextColor <- Xamarin.Forms.Color.Default
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryTextDetailColor
-            let valueOpt = source.TryTextDetailColor
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Color>("TextDetailColor")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Color>("TextDetailColor")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting TextCell::DetailColor "); target.DetailColor <-  value
             | ValueSome _, ValueNone -> target.DetailColor <- Xamarin.Forms.Color.Default
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryTextCellCommand
-            let valueOpt = source.TryTextCellCommand
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<unit -> unit>("TextCellCommand")
+            let valueOpt = source.TryGetAttribute<unit -> unit>("TextCellCommand")
             (fun _ _ _ -> ()) prevValueOpt valueOpt target
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryTextCellCanExecute
-            let valueOpt = source.TryTextCellCanExecute
-            updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryTextCellCommand) prevValueOpt source.TryTextCellCommand valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine("Setting TextCell::Command "); target.Command <- cmd) prevValueOpt valueOpt target
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryCommandParameter
-            let valueOpt = source.TryCommandParameter
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<bool>("TextCellCanExecute")
+            let valueOpt = source.TryGetAttribute<bool>("TextCellCanExecute")
+            updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<_>("TextCellCommand")) prevValueOpt (source.TryGetAttribute<_>("TextCellCommand")) valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine("Setting TextCell::Command "); target.Command <- cmd) prevValueOpt valueOpt target
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.Object>("CommandParameter")
+            let valueOpt = source.TryGetAttribute<System.Object>("CommandParameter")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting TextCell::CommandParameter "); target.CommandParameter <-  value
@@ -3306,8 +2844,8 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.ImageCell)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryImageSource
-            let valueOpt = source.TryImageSource
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<string>("ImageSource")
+            let valueOpt = source.TryGetAttribute<string>("ImageSource")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ImageCell::ImageSource "); target.ImageSource <- makeImageSource  value
@@ -3328,8 +2866,8 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.ViewCell)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryView
-            let valueOpt = source.TryView
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<XamlElement>("View")
+            let valueOpt = source.TryGetAttribute<XamlElement>("View")
             match prevValueOpt, valueOpt with
             // For structured objects, dependsOn on reference equality
             | ValueSome prevChild, ValueSome newChild when identical prevChild newChild -> ()
@@ -3358,13 +2896,13 @@ type Xaml() =
             match refreshCommand with None -> () | Some v -> yield ("RefreshCommand", box (makeCommand(v))) 
             match rowHeight with None -> () | Some v -> yield ("RowHeight", box ((v))) 
             match selectedItem with None -> () | Some v -> yield ("ListView_SelectedItem", box ((v))) 
-            match separatorVisibility with None -> () | Some v -> yield ("SeparatorVisibility", box ((v))) 
-            match separatorColor with None -> () | Some v -> yield ("SeparatorColor", box ((v))) 
+            match separatorVisibility with None -> () | Some v -> yield ("ListView_SeparatorVisibility", box ((v))) 
+            match separatorColor with None -> () | Some v -> yield ("ListView_SeparatorColor", box ((v))) 
             match itemAppearing with None -> () | Some v -> yield ("ListView_ItemAppearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))(v))) 
             match itemDisappearing with None -> () | Some v -> yield ("ListView_ItemDisappearing", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))(v))) 
             match itemSelected with None -> () | Some v -> yield ("ListView_ItemSelected", box ((fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (tryFindListViewItem sender args.SelectedItem)))(v))) 
             match itemTapped with None -> () | Some v -> yield ("ListView_ItemTapped", box ((fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))(v))) 
-            match refreshing with None -> () | Some v -> yield ("Refreshing", box ((fun f -> System.EventHandler(fun sender args -> f ()))(v))) 
+            match refreshing with None -> () | Some v -> yield ("ListView_Refreshing", box ((fun f -> System.EventHandler(fun sender args -> f ()))(v))) 
           |]
 
         let create () =
@@ -3372,127 +2910,127 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.ListView)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryListViewItems
-            let valueOpt = source.TryListViewItems
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<seq<XamlElement>>("ListViewItems")
+            let valueOpt = source.TryGetAttribute<seq<XamlElement>>("ListViewItems")
             updateListViewItems prevValueOpt valueOpt target
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryFooter
-            let valueOpt = source.TryFooter
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.Object>("Footer")
+            let valueOpt = source.TryGetAttribute<System.Object>("Footer")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::Footer "); target.Footer <-  value
             | ValueSome _, ValueNone -> target.Footer <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryHasUnevenRows
-            let valueOpt = source.TryHasUnevenRows
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<bool>("HasUnevenRows")
+            let valueOpt = source.TryGetAttribute<bool>("HasUnevenRows")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::HasUnevenRows "); target.HasUnevenRows <-  value
             | ValueSome _, ValueNone -> target.HasUnevenRows <- false
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryHeader
-            let valueOpt = source.TryHeader
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.Object>("Header")
+            let valueOpt = source.TryGetAttribute<System.Object>("Header")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::Header "); target.Header <-  value
             | ValueSome _, ValueNone -> target.Header <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryHeaderTemplate
-            let valueOpt = source.TryHeaderTemplate
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.DataTemplate>("HeaderTemplate")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.DataTemplate>("HeaderTemplate")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::HeaderTemplate "); target.HeaderTemplate <-  value
             | ValueSome _, ValueNone -> target.HeaderTemplate <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryIsGroupingEnabled
-            let valueOpt = source.TryIsGroupingEnabled
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<bool>("IsGroupingEnabled")
+            let valueOpt = source.TryGetAttribute<bool>("IsGroupingEnabled")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::IsGroupingEnabled "); target.IsGroupingEnabled <-  value
             | ValueSome _, ValueNone -> target.IsGroupingEnabled <- false
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryIsPullToRefreshEnabled
-            let valueOpt = source.TryIsPullToRefreshEnabled
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<bool>("IsPullToRefreshEnabled")
+            let valueOpt = source.TryGetAttribute<bool>("IsPullToRefreshEnabled")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::IsPullToRefreshEnabled "); target.IsPullToRefreshEnabled <-  value
             | ValueSome _, ValueNone -> target.IsPullToRefreshEnabled <- false
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryIsRefreshing
-            let valueOpt = source.TryIsRefreshing
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<bool>("IsRefreshing")
+            let valueOpt = source.TryGetAttribute<bool>("IsRefreshing")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::IsRefreshing "); target.IsRefreshing <-  value
             | ValueSome _, ValueNone -> target.IsRefreshing <- false
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryRefreshCommand
-            let valueOpt = source.TryRefreshCommand
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.Windows.Input.ICommand>("RefreshCommand")
+            let valueOpt = source.TryGetAttribute<System.Windows.Input.ICommand>("RefreshCommand")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::RefreshCommand "); target.RefreshCommand <-  value
             | ValueSome _, ValueNone -> target.RefreshCommand <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryRowHeight
-            let valueOpt = source.TryRowHeight
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<int>("RowHeight")
+            let valueOpt = source.TryGetAttribute<int>("RowHeight")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::RowHeight "); target.RowHeight <-  value
             | ValueSome _, ValueNone -> target.RowHeight <- -1
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryListView_SelectedItem
-            let valueOpt = source.TryListView_SelectedItem
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<int option>("ListView_SelectedItem")
+            let valueOpt = source.TryGetAttribute<int option>("ListView_SelectedItem")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::SelectedItem "); target.SelectedItem <- (function None -> null | Some i -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListElementData<XamlElement>> in if i >= 0 && i < items.Count then items.[i] else null)  value
             | ValueSome _, ValueNone -> target.SelectedItem <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TrySeparatorVisibility
-            let valueOpt = source.TrySeparatorVisibility
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.SeparatorVisibility>("ListView_SeparatorVisibility")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.SeparatorVisibility>("ListView_SeparatorVisibility")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::SeparatorVisibility "); target.SeparatorVisibility <-  value
             | ValueSome _, ValueNone -> target.SeparatorVisibility <- Xamarin.Forms.SeparatorVisibility.Default
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TrySeparatorColor
-            let valueOpt = source.TrySeparatorColor
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Color>("ListView_SeparatorColor")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Color>("ListView_SeparatorColor")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ListView::SeparatorColor "); target.SeparatorColor <-  value
             | ValueSome _, ValueNone -> target.SeparatorColor <- Xamarin.Forms.Color.Default
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryListView_ItemAppearing
-            let valueOpt = source.TryListView_ItemAppearing
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>>("ListView_ItemAppearing")
+            let valueOpt = source.TryGetAttribute<System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>>("ListView_ItemAppearing")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.ItemAppearing.RemoveHandler(prevValue); target.ItemAppearing.AddHandler(value)
             | ValueNone, ValueSome value -> target.ItemAppearing.AddHandler(value)
             | ValueSome prevValue, ValueNone -> target.ItemAppearing.RemoveHandler(prevValue)
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryListView_ItemDisappearing
-            let valueOpt = source.TryListView_ItemDisappearing
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>>("ListView_ItemDisappearing")
+            let valueOpt = source.TryGetAttribute<System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>>("ListView_ItemDisappearing")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.ItemDisappearing.RemoveHandler(prevValue); target.ItemDisappearing.AddHandler(value)
             | ValueNone, ValueSome value -> target.ItemDisappearing.AddHandler(value)
             | ValueSome prevValue, ValueNone -> target.ItemDisappearing.RemoveHandler(prevValue)
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryListView_ItemSelected
-            let valueOpt = source.TryListView_ItemSelected
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>>("ListView_ItemSelected")
+            let valueOpt = source.TryGetAttribute<System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>>("ListView_ItemSelected")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.ItemSelected.RemoveHandler(prevValue); target.ItemSelected.AddHandler(value)
             | ValueNone, ValueSome value -> target.ItemSelected.AddHandler(value)
             | ValueSome prevValue, ValueNone -> target.ItemSelected.RemoveHandler(prevValue)
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryListView_ItemTapped
-            let valueOpt = source.TryListView_ItemTapped
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>>("ListView_ItemTapped")
+            let valueOpt = source.TryGetAttribute<System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>>("ListView_ItemTapped")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.ItemTapped.RemoveHandler(prevValue); target.ItemTapped.AddHandler(value)
             | ValueNone, ValueSome value -> target.ItemTapped.AddHandler(value)
             | ValueSome prevValue, ValueNone -> target.ItemTapped.RemoveHandler(prevValue)
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryRefreshing
-            let valueOpt = source.TryRefreshing
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.EventHandler>("ListView_Refreshing")
+            let valueOpt = source.TryGetAttribute<System.EventHandler>("ListView_Refreshing")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.Refreshing.RemoveHandler(prevValue); target.Refreshing.AddHandler(value)
@@ -3506,7 +3044,7 @@ type Xaml() =
         let baseElement : XamlElement = Xaml.View(?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?classId=classId, ?styleId=styleId)
         let attribs = [| 
             yield! baseElement.AttributesArray
-            match items with None -> () | Some v -> yield ("GroupListViewItemsSource", box ((fun es -> es |> Array.ofList |> Array.map (fun (e,l) -> (e, Array.ofList l)))(v))) 
+            match items with None -> () | Some v -> yield ("ListViewGrouped_ItemsSource", box ((fun es -> es |> Array.ofList |> Array.map (fun (e,l) -> (e, Array.ofList l)))(v))) 
             match footer with None -> () | Some v -> yield ("Footer", box ((v))) 
             match hasUnevenRows with None -> () | Some v -> yield ("HasUnevenRows", box ((v))) 
             match header with None -> () | Some v -> yield ("Header", box ((v))) 
@@ -3530,120 +3068,120 @@ type Xaml() =
         let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
             baseElement.UpdateMethod prevOpt source targetObj
             let target = (targetObj :?> Xamarin.Forms.ListView)
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGroupListViewItemsSource
-            let valueOpt = source.TryGroupListViewItemsSource
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<(XamlElement * XamlElement[])[]>("ListViewGrouped_ItemsSource")
+            let valueOpt = source.TryGetAttribute<(XamlElement * XamlElement[])[]>("ListViewGrouped_ItemsSource")
             updateListViewGroupedItems prevValueOpt valueOpt target
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryFooter
-            let valueOpt = source.TryFooter
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.Object>("Footer")
+            let valueOpt = source.TryGetAttribute<System.Object>("Footer")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::Footer "); target.Footer <-  value
             | ValueSome _, ValueNone -> target.Footer <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryHasUnevenRows
-            let valueOpt = source.TryHasUnevenRows
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<bool>("HasUnevenRows")
+            let valueOpt = source.TryGetAttribute<bool>("HasUnevenRows")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::HasUnevenRows "); target.HasUnevenRows <-  value
             | ValueSome _, ValueNone -> target.HasUnevenRows <- false
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryHeader
-            let valueOpt = source.TryHeader
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.Object>("Header")
+            let valueOpt = source.TryGetAttribute<System.Object>("Header")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::Header "); target.Header <-  value
             | ValueSome _, ValueNone -> target.Header <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryIsGroupingEnabled
-            let valueOpt = source.TryIsGroupingEnabled
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<bool>("IsGroupingEnabled")
+            let valueOpt = source.TryGetAttribute<bool>("IsGroupingEnabled")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::IsGroupingEnabled "); target.IsGroupingEnabled <-  value
             | ValueSome _, ValueNone -> target.IsGroupingEnabled <- false
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryIsPullToRefreshEnabled
-            let valueOpt = source.TryIsPullToRefreshEnabled
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<bool>("IsPullToRefreshEnabled")
+            let valueOpt = source.TryGetAttribute<bool>("IsPullToRefreshEnabled")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::IsPullToRefreshEnabled "); target.IsPullToRefreshEnabled <-  value
             | ValueSome _, ValueNone -> target.IsPullToRefreshEnabled <- false
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryIsRefreshing
-            let valueOpt = source.TryIsRefreshing
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<bool>("IsRefreshing")
+            let valueOpt = source.TryGetAttribute<bool>("IsRefreshing")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::IsRefreshing "); target.IsRefreshing <-  value
             | ValueSome _, ValueNone -> target.IsRefreshing <- false
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryRefreshCommand
-            let valueOpt = source.TryRefreshCommand
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.Windows.Input.ICommand>("RefreshCommand")
+            let valueOpt = source.TryGetAttribute<System.Windows.Input.ICommand>("RefreshCommand")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::RefreshCommand "); target.RefreshCommand <-  value
             | ValueSome _, ValueNone -> target.RefreshCommand <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryRowHeight
-            let valueOpt = source.TryRowHeight
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<int>("RowHeight")
+            let valueOpt = source.TryGetAttribute<int>("RowHeight")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::RowHeight "); target.RowHeight <-  value
             | ValueSome _, ValueNone -> target.RowHeight <- -1
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryListViewGrouped_SelectedItem
-            let valueOpt = source.TryListViewGrouped_SelectedItem
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<(int * int) option>("ListViewGrouped_SelectedItem")
+            let valueOpt = source.TryGetAttribute<(int * int) option>("ListViewGrouped_SelectedItem")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::SelectedItem "); target.SelectedItem <- (function None -> null | Some (i,j) -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListGroupData<XamlElement>> in (if i >= 0 && i < items.Count then (let items2 = items.[i] in if j >= 0 && j < items2.Count then items2.[j] else null) else null))  value
             | ValueSome _, ValueNone -> target.SelectedItem <- null
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TrySeparatorVisibility
-            let valueOpt = source.TrySeparatorVisibility
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.SeparatorVisibility>("SeparatorVisibility")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.SeparatorVisibility>("SeparatorVisibility")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::SeparatorVisibility "); target.SeparatorVisibility <-  value
             | ValueSome _, ValueNone -> target.SeparatorVisibility <- Xamarin.Forms.SeparatorVisibility.Default
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TrySeparatorColor
-            let valueOpt = source.TrySeparatorColor
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<Xamarin.Forms.Color>("SeparatorColor")
+            let valueOpt = source.TryGetAttribute<Xamarin.Forms.Color>("SeparatorColor")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine("Setting ListViewGrouped::SeparatorColor "); target.SeparatorColor <-  value
             | ValueSome _, ValueNone -> target.SeparatorColor <- Xamarin.Forms.Color.Default
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryListViewGrouped_ItemAppearing
-            let valueOpt = source.TryListViewGrouped_ItemAppearing
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>>("ListViewGrouped_ItemAppearing")
+            let valueOpt = source.TryGetAttribute<System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>>("ListViewGrouped_ItemAppearing")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.ItemAppearing.RemoveHandler(prevValue); target.ItemAppearing.AddHandler(value)
             | ValueNone, ValueSome value -> target.ItemAppearing.AddHandler(value)
             | ValueSome prevValue, ValueNone -> target.ItemAppearing.RemoveHandler(prevValue)
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryListViewGrouped_ItemDisappearing
-            let valueOpt = source.TryListViewGrouped_ItemDisappearing
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>>("ListViewGrouped_ItemDisappearing")
+            let valueOpt = source.TryGetAttribute<System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>>("ListViewGrouped_ItemDisappearing")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.ItemDisappearing.RemoveHandler(prevValue); target.ItemDisappearing.AddHandler(value)
             | ValueNone, ValueSome value -> target.ItemDisappearing.AddHandler(value)
             | ValueSome prevValue, ValueNone -> target.ItemDisappearing.RemoveHandler(prevValue)
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryListViewGrouped_ItemSelected
-            let valueOpt = source.TryListViewGrouped_ItemSelected
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>>("ListViewGrouped_ItemSelected")
+            let valueOpt = source.TryGetAttribute<System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>>("ListViewGrouped_ItemSelected")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.ItemSelected.RemoveHandler(prevValue); target.ItemSelected.AddHandler(value)
             | ValueNone, ValueSome value -> target.ItemSelected.AddHandler(value)
             | ValueSome prevValue, ValueNone -> target.ItemSelected.RemoveHandler(prevValue)
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryListViewGrouped_ItemTapped
-            let valueOpt = source.TryListViewGrouped_ItemTapped
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>>("ListViewGrouped_ItemTapped")
+            let valueOpt = source.TryGetAttribute<System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>>("ListViewGrouped_ItemTapped")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.ItemTapped.RemoveHandler(prevValue); target.ItemTapped.AddHandler(value)
             | ValueNone, ValueSome value -> target.ItemTapped.AddHandler(value)
             | ValueSome prevValue, ValueNone -> target.ItemTapped.RemoveHandler(prevValue)
             | ValueNone, ValueNone -> ()
-            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryRefreshing
-            let valueOpt = source.TryRefreshing
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<System.EventHandler>("Refreshing")
+            let valueOpt = source.TryGetAttribute<System.EventHandler>("Refreshing")
             match prevValueOpt, valueOpt with
             | ValueSome prevValue, ValueSome value when identical prevValue value -> ()
             | ValueSome prevValue, ValueSome value -> target.Refreshing.RemoveHandler(prevValue); target.Refreshing.AddHandler(value)
