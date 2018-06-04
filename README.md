@@ -18,6 +18,8 @@ Getting started with Elmish.XamarinForms
 2. Add nuget package `Elmish.XamarinForms` to to your shared code project.
 3. Put the sample code below in your shared app library
 
+Alternatively clone and adapt the [Simple Calculator Project](https://github.com/nosami/Elmish.Calculator).
+
 A Basic Example
 ------
 Here is a full example of an app:
@@ -476,7 +478,7 @@ You can also set up global subscriptions, which are events sent from outside the
     ...
     let runner = 
         ...
-        |> Program.withSubscription timerTick
+        |> Program.withSubscription (fun _ -> Cmd.ofSub timerTick)
         ...
         
 ```
