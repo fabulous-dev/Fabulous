@@ -1,4 +1,4 @@
-﻿// dotnet build Generator\Generator.fsproj && dotnet  Generator\bin\Debug\netcoreapp2.0\Generator.dll Generator\bindings.json Elmish.XamarinForms\DynamicXaml.fs && fsc -a -r:packages\androidapp\Xamarin.Forms\lib\netstandard1.0\Xamarin.Forms.Core.dll Elmish.XamarinForms\XamlElement.fs Elmish.XamarinForms\DynamicXamlConverters.fs Elmish.XamarinForms\DynamicXaml.fs
+﻿// dotnet build -c Release Generator\Generator.fsproj && dotnet Generator\bin\Release\netcoreapp2.0\Generator.dll Generator\bindings.json Elmish.XamarinForms\DynamicXaml.fs && fsc -a -r:packages\androidapp\Xamarin.Forms\lib\netstandard1.0\Xamarin.Forms.Core.dll Elmish.XamarinForms\XamlElement.fs Elmish.XamarinForms\DynamicXamlConverters.fs Elmish.XamarinForms\DynamicXaml.fs
 
 module Generator
 
@@ -475,7 +475,11 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
 
                             w.printfn "            match prevValueOpt, valueOpt with"
                             w.printfn "            | ValueSome prevValue, ValueSome value when prevValue = value -> ()"
+#if DEBUG
                             w.printfn "            | prevOpt, ValueSome value -> System.Diagnostics.Debug.WriteLine(\"Setting %s::%s \"); target.%s <- %s value" nameOfCreator m.Name m.Name update
+#else
+                            w.printfn "            | prevOpt, ValueSome value -> target.%s <- %s value" m.Name update
+#endif
                             w.printfn "            | ValueSome _, ValueNone -> target.%s <- %s"  m.Name m.DefaultValue
                             w.printfn "            | ValueNone, ValueNone -> ()"
                                 

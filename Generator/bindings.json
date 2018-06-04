@@ -1278,7 +1278,7 @@
 					"uniqueName": "TextCellCanExecute",
 					"inputType": "bool",
 					"modelType": "bool",
-					"updateCode": "updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<_>(\"TextCellCommand\")) prevValueOpt (source.TryGetAttribute<_>(\"TextCellCommand\")) valueOpt (fun cmd -> System.Diagnostics.Debug.WriteLine(\"Setting TextCell::Command \"); target.Command <- cmd)"
+					"updateCode": "updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<_>(\"TextCellCommand\")) prevValueOpt (source.TryGetAttribute<_>(\"TextCellCommand\")) valueOpt (fun cmd -> target.Command <- cmd)"
 				},
 				{
 					"name": "CommandParameter",
