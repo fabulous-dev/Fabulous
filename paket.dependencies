@@ -1,6 +1,18 @@
 framework: netstandard2.0
 source https://www.nuget.org/api/v2
 nuget FAKE
+	
+# Dependencies used when compiling and running WPF samples. We use the latest FSharp.Core and 
+# latest Xamarin.Forms
+group wpfapp
+	framework: net46
+	source https://www.nuget.org/api/v2
+	nuget Xamarin.Forms
+	nuget Xamarin.Forms.Platform.WPF
+	nuget WpfLightToolkit
+	nuget OpenTK
+	nuget OpenTK.GLControl
+	nuget System.ValueTuple
 
 # dependencies used when compiling and running the library and neutral parts of samples
 group neutral
