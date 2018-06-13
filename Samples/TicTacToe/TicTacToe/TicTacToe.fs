@@ -138,7 +138,8 @@ module App =
     /// of the Xaml resource for the image for a player
     let imageForPos cell =
         match cell with
-        | Full X -> "Cross"
+        // Revert this once https://github.com/fsprojects/Elmish.XamarinForms/pull/51 is reverted
+        | Full X -> "icon"
         | Full O -> "Nought"
         | Empty -> ""
 

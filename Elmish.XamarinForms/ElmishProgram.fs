@@ -23,6 +23,7 @@ module Values =
     let mutable currentPage : Page = null
 
 [<RequireQualifiedAccess>]
+/// For navigation in the half-elmish model
 module Nav =
 
     // TODO: modify the Elmish framework we use to remove this global state and pass it into all commands??
@@ -64,6 +65,7 @@ module Nav =
 
 
 [<RequireQualifiedAccess>]
+/// For combining init functions in the half-elmish model
 module Init =
     let combo2 init1 init2 () = 
         let model1 = init1()
@@ -92,6 +94,7 @@ module Init =
         (model1, model2, model3, model4, model5)
 
 [<RequireQualifiedAccess>]
+/// For combining init+cmd functions in the half-elmish model
 module InitCmd =
     let combo2 init1 init2 () = 
         let model1, cmd1 = init1()
@@ -121,6 +124,7 @@ module InitCmd =
 
 
 [<RequireQualifiedAccess>]
+/// For combining update functions in the half-elmish model
 module Update =
 
     let combo2 (update1: Update<_, _, _>) (update2: Update<_, _, _>) : Update<_,_,_> = fun msg (model1, model2) ->
@@ -156,6 +160,7 @@ module Update =
         newModel2, Cmd.batch [cmds; cmds2]
 
 [<RequireQualifiedAccess>]
+/// For combining static view functions in the half-elmish model
 module StaticView =
 
     let internal setBindingContextsUntyped (bindings: ViewBindings<'model, 'msg>) (viewModel: StaticViewModel<obj, obj>) = 
@@ -251,7 +256,7 @@ module Program =
         mkProgram (fun arg -> init arg, Cmd.none) (fun msg model -> update msg model, Cmd.none) view
 
     /// Subscribe to external source of events.
-    /// The subscription is called once - with the initial model, but can dispatch new messages at any time.
+    /// The subscription is called once - with the initial (or resumed) model, but can dispatch new messages at any time.
     let withSubscription (subscribe : 'model -> Cmd<'msg>) (program: Program<'model, 'msg, 'view>) =
         let sub model =
             Cmd.batch [ program.subscribe model
@@ -295,8 +300,7 @@ module Program =
 
         let mutable lastModel = initialModel
         let mutable lastViewData = None
-        let mutable dispatchImpl = (fun msg -> failwith "do not call dispatch during initialization")
-        let dispatch msg = dispatchImpl msg
+        let dispatch = ProgramDispatch<'msg>.Dispatch
 
         do Debug.WriteLine "run: computing static components of view"
 
@@ -309,7 +313,11 @@ module Program =
             | Choice1Of2 (mainPage, bindings) -> Choice1Of2 (mainPage, bindings), mainPage
             | Choice2Of2 ((app: Application), contentf: _ -> _ -> XamlElement) -> 
                 let pageDescription = contentf initialModel dispatch
-                let mainPage = pageDescription.CreateAsPage()
+                let pageObj = pageDescription.Create()
+                let mainPage = 
+                    match pageObj with 
+                    | :? Page as page -> page
+                    | _ -> failwithf "Incorrect model type: expected a page but got a %O" (pageObj.GetType())
                 app.MainPage <- mainPage
                 //app.Properties.["model"] <- initialModel
                 Choice2Of2 (pageDescription, app, contentf), mainPage
@@ -356,16 +364,20 @@ module Program =
                         Choice1Of2 (page, bindings, viewModel)
                     | Choice2Of2 (prevPageDescription, app, contentf) -> 
                         let newPageDescription: XamlElement = contentf updatedModel dispatch
-                        if canReuseDefault prevPageDescription newPageDescription then
+                        if canReuseChild prevPageDescription newPageDescription then
                             newPageDescription.UpdateIncremental (prevPageDescription, app.MainPage)
                         else
-                            app.MainPage <- newPageDescription.CreateAsPage()
-                        //app.Properties.["model"] <- updatedModel
+                            let pageObj = newPageDescription.Create()
+                            match pageObj with 
+                            | :? Page as page -> app.MainPage <- page
+                            | _ -> failwithf "Incorrect model type: expected a page but got a %O" (pageObj.GetType())
+
                         Choice2Of2 (newPageDescription, app, contentf)
                 lastViewData <- Some viewData
                       
         do 
-           dispatchImpl <- (fun msg -> Device.BeginInvokeOnMainThread(fun () -> processMsg msg))
+           // Set up the global dispatch function
+           ProgramDispatch<'msg>.Dispatch <- (fun msg -> Device.BeginInvokeOnMainThread(fun () -> processMsg msg))
 
            Debug.WriteLine "updating the initial view"
 
@@ -377,18 +389,31 @@ module Program =
 
         member __.InitialMainPage = mainPage
 
-        member __.Model 
-            with get () = lastModel 
-            and set model = 
-                Debug.WriteLine "updating the view after setting the model"
-                lastModel <- model
-                updateView model
+        member __.CurrentModel = lastModel 
 
+        /// Set the current model, e.g. on resume
+        member __.SetCurrentModel(model, cmd: Cmd<_>) =
+            Debug.WriteLine "updating the view after setting the model"
+            lastModel <- model
+            updateView model
+            for sub in program.subscribe model @ cmd do
+                sub dispatch
+
+    /// Starts the Elmish dispatch loop for the page with the given Elmish program
+    and internal ProgramDispatch<'msg>()  = 
+        /// We store the current dispatch function for the running Elmish progream as a 
+        /// static-global because we want old view elements stored in the `dependsOn` global table
+        /// to be recyclable on resumption (when a new ProgramRunner gets created).
+        static let mutable dispatchImpl = (fun (msg: 'msg) -> failwith "do not call dispatch during initialization" : unit)
+
+        static let dispatch = id (fun msg -> dispatchImpl msg)
+
+        static member Dispatch with get () = dispatch and set v = dispatchImpl <- v
 
     /// Creates the view model for the given page and starts the Elmish dispatch loop for the matching program
     let run program = ProgramRunner(program)
 
-    /// Add navigation to an application, used only for Static Xaml.
+    /// Add navigation to an application, used only for Half-Elmish Static Xaml.
     let withNavigation (program: Program<_,_,_>) = 
         { init = program.init
           update = program.update

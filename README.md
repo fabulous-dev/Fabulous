@@ -1,7 +1,7 @@
 F# Functional App Development, using Xamarin.Forms 
 =======
 
-[![NuGet version](https://badge.fury.io/nu/Elmish.XamarinForms.svg)](https://badge.fury.io/nu/Elmish.XamarinForms) [![Build status (Windows)](https://ci.appveyor.com/api/projects/status/4qajefd4c6sbjfrt/branch/master?svg=true)](https://ci.appveyor.com/project/dsyme/elmish-xamarinforms/branch/master)  [![Build status (OSX)](https://ci.appveyor.com/api/projects/status/4qajefd4c6sbjfrt/branch/master?svg=true)](https://travis-ci.org/fsprojects/Elmish.XamarinForms.svg?branch=master)
+[![NuGet version](https://badge.fury.io/nu/Elmish.XamarinForms.svg)](https://badge.fury.io/nu/Elmish.XamarinForms) [![Build status (Windows)](https://ci.appveyor.com/api/projects/status/4qajefd4c6sbjfrt/branch/master?svg=true)](https://ci.appveyor.com/project/dsyme/elmish-xamarinforms/branch/master)  [![Build status (OSX)](https://ci.appveyor.com/api/projects/status/4qajefd4c6sbjfrt/branch/master?svg=true)](https://travis-ci.org/fsprojects/Elmish.XamarinForms.svg?branch=master) [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/fsprojects/Elmish.XamarinForms)
 
 Never write a ViewModel class again!  Conquer the world with clean dynamic UIs!
 
@@ -13,9 +13,12 @@ To quote [@dsyme](http://github.com/dsyme):
 
 Getting started with Elmish.XamarinForms
 ------
+
 1. Create a blank F# Xamarin Forms app in Visual Studio or Visual Studio Code.  Make sure your shared code is an F# .NET Standard 2.0 Library project. 
 2. Add nuget package `Elmish.XamarinForms` to to your shared code project.
 3. Put the sample code below in your shared app library
+
+Alternatively clone and adapt the [Simple Calculator Project](https://github.com/nosami/Elmish.Calculator).
 
 A Basic Example
 ------
@@ -55,6 +58,13 @@ type App () =
 ```
 The init function returns your initial state, and each model gets an update function for message processing. The `view` function computes an immutable Xaml-like description. In the above example, the choice between a label and button depends on the `model.Pressed` value.
 
+Some advantages of using an immutable model are:
+
+* It is easy to unit test your `init`, `update` and `view` functions
+* You can save/restore your model relatively easily
+* It makes tracing causality usually very simple
+
+
 Example Views
 ------
 
@@ -67,8 +77,7 @@ Screenshots from Anrdoid (Google Pixel):
 <img src="https://user-images.githubusercontent.com/7204669/39318922-57c95174-4977-11e8-94a9-cc385101ce5d.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318926-59f844e6-4977-11e8-9834-325a6517ced6.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318929-5b66c776-4977-11e8-8317-ee1c121301d4.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318934-5cbe3c3a-4977-11e8-92aa-c3fdf644b01c.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318936-5e2380bc-4977-11e8-8912-f078744a2bde.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318938-5f6ec4f4-4977-11e8-97a9-779edd3594bc.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318941-60c1b0f0-4977-11e8-8a4a-57e17ef8c6ec.png" width="100">
 
 
-Dynamic Views
-------
+## Dynamic Views
 
 Dynamic `view` functions are written using an F# DSL, see ``Elmish.XamarinForms.DynamicViews``.
 Dynamic Views excel in cases where the existence, characteristics and layout of the view depends on information in the model. React-style differential update is used to update the Xamarin.Forms display based on the previous and current view descriptions.
@@ -80,8 +89,7 @@ Notes:
 * There are some additional F# DSL helpers, e.g. [`button |> withText "Hello"`](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms/DynamicXaml.fs#L729) (note: you don't have
 to use these, and the samples don't use them).
 
-Dynamic Views and Performance
-------
+### Dynamic Views: Performance Hints
 
 Dynamic views are only efficient for large UIs if the unchanging parts of a UI are "memoized", returning identical
 objects on each invocation of the `view` function.  This must be done explicitly, currently using `dependsOn`. Here is an example for a 6x6 Grid that depends on nothing, i.e. never changes:
@@ -116,42 +124,243 @@ You can also use
 * the `fix` function for portions of a view that have no dependencies at all (besides the "dispatch" function)
 * the `fixf` function for command callbacks that have no dependencies at all (besides the "dispatch" function)
 
+### Dynamic Views: Resource Dictionaries
 
-Advantages of an immutable model
-------
-
-* Easy to unit test your `init`, `update` and `view` functions
-* Can save/restore your model very easily (see below)
-* Makes tracing causality usually very simple
-
-
-Saving Application State
---------------
-
-Application state is very simple to save by serializing the model into `app.Properties`. For example, you can store as JSON as follows using [`FsPickler` and `FsPickler.Json`](https://github.com/mbraceproject/FsPickler), which use `Json.NET`:
+In Elmish.XamarinForms, resources dictionaries are just "simple F# programming", e.g.
 ```fsharp
-open MBrace.FsPickler.Json
+let horzOptions = LayoutOptions.Center
+let vertOptions = LayoutOptions.CenterAndExpand
+```
+is basically the eqivalent of Xaml:
+```xml
+<ContentPage.Resources>
+    <ResourceDictionary>
+        <LayoutOptions x:Key="horzOptions"
+                     Alignment="Center" />
 
-type Application() = 
-    ....
-    let modelId = "model"
-    override __.OnSleep() = 
-        app.Properties.[modelId] <- FsPickler.CreateJsonSerializer().PickleToString(runner.Model)
+        <LayoutOptions x:Key="vertOptions"
+                     Alignment="Center"
+                     Expands="True" />
+    </ResourceDictionary>
+</ContentPage.Resources>
+```
+In other words, you can normally forget about resource dictionaries and just program as you would normally in F#.
 
-    override __.OnResume() = 
-        try 
-            match app.Properties.TryGetValue modelId with
-            | true, (:? string as json) -> 
-                runner.Model <- FsPickler.CreateJsonSerializer().UnPickleOfString(json)
-            | _ -> ()
-        with ex -> 
-            program.onError("Error while restoring model found in app.Properties", ex)
+Other kinds of resources like images need a little more attention and you may need to ship multiple versions of images etc. for Android and iOS.  TBD: write a guide on these, in the meantime see the samples.
 
-    override this.OnStart() = this.OnResume()
+
+
+### Dynamic Views: Multiple Pages and Navigation
+
+
+Multiple pages are just generated as part of the overall view.
+
+Four multi-page navigation models are shown in `AllControls`:
+
+* MasterDetail
+* NavigationPage (using push/pop)
+* TabbedPage
+* CarouselPage
+
+#### NavigationPage push/pop
+
+The basic principles are easy:
+1. Keep some information in your model indicating the page stack (e.g. a list of page identifiers or page models)
+2. Return the current visual page stack in the `pages` property of `NavigationPage`.
+3. Set `HasNavigationBar` and `HasBackButton` on each sub-page according to your desire
+4. Dispatch messages in order to navigate, where the corresponding `update` adjusts the page stack in the model 
+
+```fsharp
+let view model dispatch = 
+    Xaml.NavigationPage(pages=
+        [ for page in model.PageStack do
+            match page with 
+            | "Home" -> 
+                yield Xaml.ContentPage(...).HasNavigationBar(true).HasBackButton(true)
+            | "PageA" -> 
+                yield Xaml.ContentPage(...).HasNavigationBar(true).HasBackButton(true)
+            | "PageB" -> 
+                yield Xaml.ContentPage(...).HasNavigationBar(true).HasBackButton(true)
+        ])
 ```
 
-Models and Validation
-------
+#### TabbedPage navigation
+
+Return a `TabbedPage` from your view:
+```fsharp
+let view model dispatch = 
+    Xaml.TabbedPage(children= [ ... ])
+```
+
+#### CarouselPage navigation
+
+Return a `CarouselPage` from your view:
+```fsharp
+let view model dispatch = 
+    Xaml.CarouselPage(children= [ ... ])
+```
+
+#### MasterDetail Page navigation
+
+Principles:
+1. Keep some information in your model indicating the current detail being shown
+2. Return a `MasterDetailPage` from your `view` function
+
+See the `AllControls` sample
+
+### Dynamic Views: ListView, ListGroupedView and friends
+
+The programming model supports several more bespoke uses of the underlying [`ListView`](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/listview/) control from `Xamarin.Forms.Core`.  In the simplest form, just called `ListView`, the `items` property specifies a collection of visual elements:
+```fsharp
+    Xaml.ListView(items = [ Xaml.Label "Ionide"
+                            Xaml.Label "Visual Studio"
+                            Xaml.Label "Emacs"
+                            Xaml.Label "Visual Studio Code"
+                            Xaml.Label "JetBrains Rider"], 
+                  itemSelected=(fun idx -> dispatch (ListViewSelectedItemChanged idx)))
+```
+In the underlying implementation, each visual item is placed in a `ContentCell`.
+Currently the `itemSelected` callback uses integers indexes for
+keys to identify the elements (NOTE: this may change in future updates).
+
+There is also a `ListViewGrouped` for grouped items of data.
+
+#### "Infinite" or "unbounded" ListViews 
+
+"Infinite" (really "unbounded") lists are created by using the `itemAppearing` event to prompt a message which nudges the
+underlying model in a direction that will then supply new items to the view. 
+
+For example, consider this pattern:
+```fsharp
+type Model = 
+    { ...
+      LatestItemAvailable: int 
+    }
+
+type Message = 
+    ...
+    | GetMoreItems of int
+
+let update msg model = 
+    match msg with 
+    | ...
+    | GetMoreItems n -> { model with LatestItemAvailable = n }
+    
+let view model dispatch = 
+    ...
+    Xaml.ListView(items = [ for i in 1 .. model.LatestItemAvailable do 
+                              yield Xaml.Label("Item " + string i) ], 
+                  itemAppearing=(fun idx -> if idx >= max - 2 then dispatch (GetMoreItems (idx + 10) ) )  )
+    ...
+```
+Note:
+* The underlying data in the model is just an integer `LatestItemAvailable` (normally it would really be a list of actual entities drawn from a data source)
+* On each update to the view we produce all the visual items from `Item 1` onwards
+* The `itemAppearing` event is called for each item, e.g. when item `10` appears
+* When the event triggers we grow the underlying data model by 10
+* This will trigger an update of the view again, with more visual elements available (but not yet appearing)
+
+Surprisingly even this naive technique  is fairly efficient. There are numerous ways to make this more efficient (we aim to document more of these over time too).  One simple one is to memoize each individual visual item using `dependsOn`:
+```fsharp
+                  items = [ for i in 1 .. model.LatestItemAvailable do 
+                              yield dependsOn i (fun model i -> Xaml.Label("Item " + string i)) ]
+```
+With that, this simple list views scale to > 10,000 items on a modern phone, though your mileage may vary.
+There are many other techniques (e.g. save the latest collection of visual element descriptions in the model, or to use a `ConditionalWeakTable` to associate it with the latest model).  We will document further techniques in due course. 
+
+Thre is also an `itemDisappearing` event for `ListView` that can be used to discard data from the underlying model and restrict the
+range of visual items that need to be generated.
+
+### Dynamic Views: Differential Update of Lists of Things
+
+There are a few different kinds of list in view descriptions:
+1. lists of raw data (e.g. data for a chart control, though there are no samples like that yet in this library)
+2. long lists of UI elements that are used to produce cells (e.g. `ListView`, see above)
+3. short lists of UI elements (e.g. StackLayout `children`)
+4. short lists of pages (e.g. NavigationPages `pages`)
+
+The perf of incremental update to these is progressively less important as you go down that list above.  
+
+For all of the above, the typical, naive implementation of the `view` function returns a new list
+instance on each invocation. The incremental update of dynamic views maintains a corresponding mutable target
+(e.g. the `Children` property of a `Xamarin.Forms.StackLayout`, or an `ObservableCollection` to use as an `ItemsSource` to a `ListView`) based on the previous (PREV) list and the new (NEW) list.  The list diffing currently does the following:
+1. trims of excess elements from TARGET down to size LIM = min(NEW.Count, PREV.Count)
+2. incrementally updates existing elements 0..MIN-1 in TARGET (skips this if PREV.[i] is reference-equal to NEW.[i])
+3. creates elements LIM..NEW.Count-1
+
+This means
+1. Incremental update costs minimally one transition of the whole list.
+2. Incremental update recycles visual elements at the start of the list and handles add/remove at end of list relatively efficiently
+3. Returning a new list that inserts an element at the beginning will recreate all elements down the way.
+
+Basically, incremental update is faster if lists are changing at their beginning, rather than their end.
+
+The above is sufficient for many purposes, but care must always be taken with large lists and data sources, see `ListView` above for example.  Care must also be taken whenever data updates very rapidly.
+
+
+### Dynamic Views: Styling
+
+Styling is a significant topic in Xamarin.Forms programming.  See [the extensive Xamarin.Forms documentation on styling](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/styles/).
+
+
+#### F#-coded styling
+
+One approach is to manually code up styling simply by using normal F# programming to abstract away commonality between
+various parts of your view logiv.
+
+We do not give a guide here as it is routine application of F# coding.  The [Fulma](https://mangelmaxime.github.io/Fulma/#fulma) approach to styling may also be of interest and provide inspiration.
+
+There are many upsides to this approach. The downsides are:
+* styling is done using F# coding, and some UI designers may prefer to work with CSS or another styling technique
+* there is no easy way to provide default styling base on selectors like "All buttons" (except of course to carefully code your F# to make sure all button creations go through a particular helper)
+* you may end up hand-rolling certain selector queries and patterns from other styling languages.
+
+#### CSS styling with Xamarin.Forms 3.0
+
+1. create a CSS file with appropriate selectors and property specifications, e.g.
+```css
+stacklayout {
+    margin: 20;
+}
+
+.mainPageTitle {
+    font-style: bold;
+    font-size: medium;
+}
+
+.detailPageTitle {
+    font-style: bold;
+    font-size: medium;
+    text-align: center;
+}
+
+```
+where `stacklayout` referes to all elements of that type, and `.mainPageTitle` refers to a specific element style-class path. 
+
+2. Add the style sheet to your app as an `EmbeddedResource` node
+
+3. Load it into your app:
+```
+type App () as app = 
+    inherit Application ()
+    do app.Resources.Add(StyleSheet.FromAssemblyResource(Assembly.GetExecutingAssembly(),"MyProject.Assets.styles.css"))
+```
+
+4. Set `StyleClass` for named elements, e.g. 
+
+```fsharp
+      Xaml.Label(text="Hello", styleClass=detailPageTitle")
+      ...
+      Xaml.Label(text="Main Page", styleClass="mainPageTitle")
+```
+
+#### "Xaml" coding via explicit `Style` objects
+
+You can also use "Xaml styling" by creating specific `Style` objects using the `Xamarin.Forms` APIs directly
+and attaching them to your application.  See [the Xamarin.Forms documentation](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/styles/xaml/).  We don't go into details here
+## Models
+
+### Models: Messages and Validation
 
 Validation is generally done on updates to the model, storing error messages from validation logic in the model
 so they can be correctly and simply displayed to the user.  Here is an example of a typical pattern.
@@ -166,10 +375,10 @@ so they can be correctly and simply displayed to the user.  Here is an example o
         { TempF: Temperature
           TempC: Temperature }
 
-    /// Valdiate a temperature in fareneit, can be shared between client/server
+    /// Validate a temperature in Farenheit, can be shared between client/server
     let validateF text =  ... // return a Result
 
-    /// Valdiate a temperature in celcius, can be shared between client/server
+    /// Validate a temperature in celcius, can be shared between client/server
     let validateC text = // return a Result 
 
     let update msg model =
@@ -187,211 +396,111 @@ so they can be correctly and simply displayed to the user.  Here is an example o
 
 Note that the same validation logic can be used in both your app and a service back-end.
 
-Roadmap
---------
+### Models: Saving Application State
 
-* Programming model: Do these from `Xamarin.Forms.Core`: 
-  * Menu, MenuItem, NavigationBar, Accelerator
-  * Animation
-  * OpenGLView
-  * Allow configuration of protected overrides 
-  * Fix issue for slider where minimum = 1.0, maximum=10.0 (i.e. when value=0 and minimum gets set before maximum?)
-
-* Programming efficiency
-  * Support F# in Xamarin Live Player
-  * Support hot-reloading of the saved model, reapplying to the same app where possible
-
-* Docs
-  * Generate `///` docs in code generator
-
-* Handle 3rd party controls.
-  * Examples: `Xamarin.Forms.Maps`, `SkiaSharp`
-  * Please add more examples of 3rd party controls
-  * Consider whether to continue using a code generator or to switch to a type provider
-  * Make any necessary changes/additions to the `bindings.json` format (nothing is set in stone yet)
-
-* Templates
-  * Develop a template pack
-
-* Debugging
-  * Improve diagnostics when property update fails
-  * Fix bug where ranges for locals seem off-by-one in Android debugging
-
-* Testing
-  * Better unit-testing
-  * Add an explicit unit-test project
-  * Test with Visual Studio for Mac
-  * Test with iOS
-  * Most testing so far is done through  [AllControls](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Samples/AllControls/AllControls/AllControls.fs) project
-
-* Real-world road-testing:
-  * Multi-page apps with navigation
-  * Apps using charting
-  * Apps using maps
-
-* Performance:
-  * Road test differential update
-  * Minimize updates where possible
-  * Experiment with different approaches to memoization
-  * Memoize function closure creation
-  * Use integer atoms for property names
-  * Do better list comparison/diffing
-  * Consider keeping a running identity hash on the immutable objects
-  * Consider implementing equality and hash on the immutable objects
-  * Perf-test on large lists and do resulting perf work
-  * Consider moving 'view' and 'model' computations off the UI thread
-
-* Communication
-  * Develop a sample that includes both client and server development, like [this talk](https://skillsmatter.com/skillscasts/11308-safe-apps-with-f-web-stack)
-
-* Consider allowing explicit static Xaml through a type provider, e.g `xaml<"""<StackLayout Padding="20">...</StackLayout>""">`, evaluating to a `XamlElement`
-
-* Make some small F# langauge improvements to improve code:
-  * Remove `yield` in more cases
-  * Automatically save function values that do not capture any arguments and consider making the `dispatch` function global (partly to avoid is being seen as a captured argument)
-  * [Allow syntax `Xaml.Foo(prop1=expr1, [ // end of line`](https://github.com/Microsoft/visualfsharp/pull/4929)
-  * [`TryGetValue` on F# immutable map](https://github.com/Microsoft/visualfsharp/pull/4827/)
-  * Allow a default unnamed argument for `children` so the argument name doesn't have to be given explicitly
-  * Allow the use of struct options for optional arguments (to reduce allocations)
-  * Implement the C# 5.0 "open static classes" feature in F# to allow the `Xaml.` prefix to be dropped
-
-Static Views and "Half Elmish"
-------
-
-In some circumstances there are advantages to using static Xaml, and static bindings from the model to those views. This is called "Half Elmish" and is the primary technique used by [`Elmish.WPF`](https://github.com/Prolucid/Elmish.WPF) at time of writing. (It was also  the original technique used by this repo and the prototype `Elmish.Forms`).   
-
-"Half Elmish" is a pragmatic choice to allow, but doesn't provide the same level of cognitive-simplicity. In the words of Jim Bennett:
-
-> As a C#/XAML dev I really like the half Elmish model. I’m comfortable with XAML so like being able to use the Elmish bits to create a nice immutable model and have clean code, but still using XAML and binding as I’m comfortable there. This feels more like how existing C# Xamarin devs would move to F#. Full elmish is how F# devs will move to Xamarin.
-
-Static Xaml + bindings has signifcant pros:
-* Pro: in some circumstances perf can be better
-* Pro: you can interact with existing xaml assets
-* Pro: you can interact with 3rd party controls relatively easily
-* Con: you have to know a lot more about Xaml (e.g. binding, commands, templating, converters)
-* Con: you get more files in your project (e.g. 3 instead of 1, even for simple examples)
-* Con: you are more reliant on tooling (which is often a bit flakey...)
-* Con: you may end up using more mutable data structures
-* Con: there are  more failure points (e.g. magic strings to link the Xaml to the code through binding etc.).  
-* Con: the Xaml is static, and only made dynamic through the addition of control bindings to turn elements on/off
-
-If you want to use static Xaml, then you will need to do bindings to that Xaml.
-Bindings in your XAML code will look like typical bindings, but a bit of extra code is needed to 
-map those bindings to your Elmish model. These are the viewBindings, which expose parts of the model to the view. 
-
-Here is a full example (excluding Xaml):
+Application state is very simple to save by serializing the model into `app.Properties`. For example, you can store as JSON as follows using [`FsPickler` and `FsPickler.Json`](https://github.com/mbraceproject/FsPickler), which use `Json.NET`:
 ```fsharp
-namespace CounterApp
+open MBrace.FsPickler.Json
 
-open Elmish
-open Elmish.XamarinForms
-open Elmish.XamarinForms.StaticViews
-open Xamarin.Forms
+type Application() = 
+    ....
+    let modelId = "model"
+    override __.OnSleep() = 
+        app.Properties.[modelId] <- FsPickler.CreateJsonSerializer().PickleToString(runner.Model)
 
-type Model = 
-  { Count : int
-    Step : int }
+    override __.OnResume() = 
+        try 
+            match app.Properties.TryGetValue modelId with
+            | true, (:? string as json) -> 
+                runner.SetCurrentModel(FsPickler.CreateJsonSerializer().UnPickleOfString(json), Cmd.none)
+            | _ -> ()
+        with ex -> 
+            program.onError("Error while restoring model found in app.Properties", ex)
 
-type Msg = 
-    | Increment 
-    | Decrement 
-    | Reset
-    | SetStep of int
+    override this.OnStart() = this.OnResume()
+```
 
-type CounterApp () = 
-    inherit Application ()
+## Messages, Commands and Control
 
-    let init () = { Count = 0; Step = 3 }
+### Messages, Commands and Asynchronous Actions
+
+Asynchronous actions are triggered by having the `update` function return "commands", which can trigger later `dispatch` of further messages.
+
+* Change `Program.mkSimple` to `Program.mkProgram`
+
+```fsharp
+    let program = Program.mkProgram App.init App.update App.view
+```
+
+* Change your `update` function to return a pair of a model and a command. For most messages the command will be `Cmd.none` but for basic async actions use `Cmd.ofAsyncMsg`.
+
+For example, here is one pattern for a timer loop that can be turned on/off:
+
+```fsharp
+    type Model = 
+        { ...
+          TimerOn: bool 
+        }
+        
+    type Message = 
+        | ...
+        | TimedTick
+        | TimerToggled of bool
+        
+    let timerCmd = 
+        async { do! Async.Sleep 200
+                return TimedTick }
+        |> Cmd.ofAsyncMsg
 
     let update msg model =
         match msg with
-        | Increment -> { model with Count = model.Count + model.Step }
-        | Decrement -> { model with Count = model.Count - model.Step }
-        | Reset -> init ()
-        | SetStep n -> { model with Step = n }
-
-    let view () =
-        CounterPage (),
-        [ "CounterValue" |> Binding.oneWay (fun m -> m.Count)
-          "CounterValue2" |> Binding.oneWay (fun m -> m.Count + 1)
-          "IncrementCommand" |> Binding.msg Increment
-          "DecrementCommand" |> Binding.msg Decrement
-          "ResetCommand" |> Binding.msgIf Reset (fun m -> m <> init ())
-          "ResetVisible" |> Binding.oneWay (fun m ->  m <> init ())
-          "StepValue" |> Binding.twoWay (fun m -> double m.Step) (fun v -> SetStep (int (v + 0.5))) ]
-
-    let runner = 
-        Program.mkSimple init update view
-        |> Program.withConsoleTrace
-        |> Program.withStaticView
-        |> Program.run
-
-    do base.MainPage <- runner.InitialMainPage
+        | ...
+        | TimerToggled on -> { model with TimerOn = on }, (if on then timerCmd else Cmd.none)
+        | TimedTick -> if model.TimerOn then { model with Count = model.Count + model.Step }, timerCmd else model, Cmd.none
 ```
-There are helper functions to create bindings located in the `Binding` module:
-* `Binding.oneWay getter`
-  * Basic source-to-view binding. Maps to `BindingMode.OneWay`.
-  * Takes a getter (`'model -> 'a`)
-* `Binding.twoWay getter setter`
-  * Binding from source to view, or view to source, and usually used for input controls. 
-  * Takes a getter (`'model -> 'a`) and a setter (`'a -> 'model -> 'msg`) that returns a message.
-* `Binding.oneWayFromView setter`
-  * Binding from view to source, and usually used for input controls. 
-  * Takes a a setter (`'a -> 'model -> 'msg`) that returns a message.
-* `Binding.twoWayValidation getter setter`
-  * Binding from source to view and view to source, and usually used for input controls. Maps to `BindingMode.TwoWay`. Setter will implement validation.
-  * Takes a getter (`'model -> 'a`) and a setter (`'a -> 'model -> Result<'msg,string>`) that indicates whether the input is valid or not.
-* `Binding.msg`
-  * Basic command binding to dispatch a message
-  * Takes an execute function (`'model -> 'msg`)
-* `Binding.msgIf`
-  * Conditional command binding to dispatch a message
-  * Takes an execute function (`'model -> 'msg`) and a canExecute function (`'model -> bool`)
-* `Binding.msgWithParamIf`
-  * Conditional command binding to dispatch a message, with an additional `CommandParameter`
-  * Takes an execute function (`'model -> 'msg`) and a canExecute function (`'model -> bool`)
-* `Binding.subView initf getter toMsg viewBindings name`
-  * Composite model binding
-  * Takes a sub-model initializer sub-model getter (`'model -> '_model`) to fetch part of a model, a message embedder (`'_msg -> 'msg`) to embed sub-component messages into a larger space of messages, and the composite sub-model viewBindings, and a name for the sub-model
-* `oneWayMap`
-  * One-way binding that applies a map when passing data to the view.
-  * Takes a getter (`'model -> 'a`) and a mapper (`'a -> 'b`).
+The state-resurrection `OnResume` logic of your application (see above) should also be adjusted to restart
+appropriate `async` actions accoring to the state of the application.
 
-The string piped to each binding is the name of the property as referenced in the XAML binding.
+NOTE: Making all stages of async computations (and their outcomes, e.g. cancellation and/or exceptions) explicit can add
+additional messages and model states. This comes with pros and cons. Please discuss concrete examples by opening issues
+in this repository.
 
+### Messages: Global asynchronous event subscriptions
 
-Elmish Subscriptions
-------
-
-Elmish subscriptions are events sent from outside the view or the dispatch loop, are created using `Cmd.ofSub`. For example, dispatching events on a timer:
+You can also set up global subscriptions, which are events sent from outside the view or the dispatch loop. For example, dispatching `ClockMsg` messages on a global timer:
 ```fsharp
     let timerTick dispatch =
         let timer = new System.Timers.Timer(1.0)
-        timer.Elapsed.Subscribe (fun _ -> dispatch (System.DateTime.Now |> Tick |> ClockMsg)) |> ignore
+        timer.Elapsed.Subscribe (fun _ -> dispatch (ClockMsg System.DateTime.Now)) |> ignore
         timer.Enabled <- true
         timer.Start()
 
-    let subscribe model =
-        Cmd.ofSub timerTick
+    ...
+    let runner = 
+        ...
+        |> Program.withSubscription (fun _ -> Cmd.ofSub timerTick)
+        ...
+        
 ```
-NOTE: we may switch to using the Xamarin `MessagingCenter` that is global to the application.
 
+## Static Views and "Half Elmish"
 
-Multiple Pages and Navigation
-------
+In some circumstances there are advantages to using static Xaml, and static bindings from the model to those views. This is called "Half Elmish" and is the primary technique used by [`Elmish.WPF`](https://github.com/Prolucid/Elmish.WPF) at time of writing. (It was also  the original technique used by this repo and the prototype `Elmish.Forms`).   
 
-There is some experimental support for multiple-page apps and navigation. See the MasterDetailApp sample.  This currently only supports static views.
+See [HALF-ELMISH.md](HALF-ELMISH.md)
 
+## Roadmap
 
-Dev Notes - Releasing
-------
+See [ROADMAP.md](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/ROADMAP.md), a list of TODOs.
 
-Use this:
+## Building
 
-    .\build NuGet
-    set APIKEY=...
-    .nuget\NuGet.exe push C:\GitHub\dsyme\Elmish.XamarinForms\build_output\Elmish.XamarinForms.*.nupkg  %APIKEY% -Source https://www.nuget.org
-    copy C:\GitHub\dsyme\Elmish.XamarinForms\build_output\Elmish.XamarinForms.*.nupkg  %USERPROFILE%\Downloads
+See [DEVGUIDE.md](DEVGUIDE.md).
+
+## Contributing
+
+Please contribute to this library through issue reports, pull requests, code reviews and discussion.
+
 
 Credits
 -----

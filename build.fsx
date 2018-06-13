@@ -12,25 +12,35 @@ let release = LoadReleaseNotes "RELEASE_NOTES.md"
 let project = "Elmish.XamarinForms"
 let summary = "F# bindings for using elmish in WPF"
 
-// targetsAreOnSameLevel
-Target "BuildApp" (fun _ ->
+Target "BuildLibrary" (fun _ ->
 
     // needed or else 'project.assets.json' not found'
     DotNetCli.Restore (fun p -> { p with Project = "Elmish.XamarinForms/Elmish.XamarinForms.fsproj" })
 
-    // needed or else 'project.assets.json' not found'
     !! "Elmish.XamarinForms/Elmish.XamarinForms.fsproj"
        |> MSBuildRelease buildDir "Restore"
        |> Log "AppRestore-Output: "
 
-    // Building apps on CI not yet possible
-    // // build the apps debug
-    //!! "Elmish.XamarinForms.sln"
-    //   |> MSBuildDebug buildDir "Build"
-    //   |> Log "AppBuildDebug-Output: "
     !! "Elmish.XamarinForms/Elmish.XamarinForms.fsproj"
        |> MSBuildRelease buildDir "Build"
        |> Log "AppBuild-Output: "
+)
+
+Target "BuildSamples" (fun _ ->
+
+    // needed or else 'project.assets.json' not found'
+    DotNetCli.Restore (fun p -> { p with Project = "Elmish.XamarinForms.sln" })
+
+    // restore the apps debug
+    !! "Elmish.XamarinForms.sln"
+          |> MSBuildDebug buildDir "Restore"
+          |> Log "AppRestoreDebug-Output: "
+
+    // build the apps debug
+    !! "Elmish.XamarinForms.sln"
+          |> MSBuildDebug buildDir "Build"
+          |> Log "AppBuildDebug-Output: "
+
 )
 
 Target "Clean" (fun _ ->
@@ -83,7 +93,8 @@ Target "All" DoNothing
 
 "Clean"
   ==> "AssemblyInfo"
-  ==> "BuildApp"
+  ==> "BuildLibrary"
+  =?>  ("BuildSamples", EnvironmentHelper.isMacOS)
   ==> "All"
 
 "All" 

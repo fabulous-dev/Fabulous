@@ -1,3 +1,15 @@
+#### 0.5.0
+* Simplify generated code
+* Code generator now in F#
+* Remove `x |> margin 3.0`  pipelined versions of properties and instead people always need to use members `x.Margin(3.0)`
+
+#### 0.4.5
+* `app.Model` --> `app.CurrentModel` and `app.SetModel(model)`
+* Sequences not lists for model inputs
+* `itemAppearing` and `itemDisappearing` now use integer indexes
+* Old view elements are now reusable after application resumes
+* Global `dispatch` function available to reduce number of closures 
+
 #### 0.4.4
 * [Fix UpdateIncremental when types of Old and New object differs](https://github.com/fsprojects/Elmish.XamarinForms/pull/53)
 

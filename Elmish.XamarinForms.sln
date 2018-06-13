@@ -49,7 +49,7 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CounterApp.Droid", "Samples
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CounterApp.iOS", "Samples\CounterApp\iOS\CounterApp.iOS.fsproj", "{F557905B-B099-44AB-939C-AB169499A36E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Generator", "Generator\Generator.csproj", "{10DF5D2F-17FA-43DE-9549-B84E6CF26602}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Generator", "Generator\Generator.fsproj", "{10DF5D2F-17FA-43DE-9549-B84E6CF26602}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AllControls.WPF", "Samples\AllControls\AllControls.WPF\AllControls.WPF.fsproj", "{851F51C5-D484-405F-8B6A-3761F078E3E3}"
 EndProject

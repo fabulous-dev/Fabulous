@@ -1,9 +1,7 @@
 ﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
 namespace CounterApp
 
-open System
 open System.Diagnostics
-open Elmish
 open Elmish.XamarinForms
 open Elmish.XamarinForms.DynamicViews
 open Xamarin.Forms
@@ -61,8 +59,6 @@ module App =
               yield Xaml.Button(text="Reset", horizontalOptions=LayoutOptions.Center, command=fixf(fun () -> dispatch Reset), canExecute = (model <> initModel))
             ]))
 
-open App
-
 type CounterApp () as app = 
     inherit Application ()
 
@@ -72,12 +68,14 @@ type CounterApp () as app =
         |> Program.withConsoleTrace
         |> Program.withDynamicView app
         |> Program.run
-    
 
 #if !NO_SAVE_MODEL_WITH_JSON
     let modelId = "model"
+    let serializer = MBrace.FsPickler.Json.FsPickler.CreateJsonSerializer()
+
     override __.OnSleep() = 
-        let json = MBrace.FsPickler.Json.FsPickler.CreateJsonSerializer().PickleToString(runner.Model)
+
+        let json = serializer.PickleToString(runner.CurrentModel)
         Debug.WriteLine("OnSleep: saving model into app.Properties, json = {0}", json)
 
         app.Properties.[modelId] <- json
@@ -87,40 +85,17 @@ type CounterApp () as app =
         try 
             match app.Properties.TryGetValue modelId with
             | true, (:? string as json) -> 
+
                 Debug.WriteLine("OnResume: restoring model from app.Properties, json = {0}", json)
-                let model = MBrace.FsPickler.Json.FsPickler.CreateJsonSerializer().UnPickleOfString(json)
+                let model = serializer.UnPickleOfString<App.Model>(json)
+
                 Debug.WriteLine("OnResume: restoring model from app.Properties, model = {0}", (sprintf "%0A" model))
-                runner.Model <- model
+                runner.SetCurrentModel (model, Cmd.none)
+
             | _ -> ()
         with ex -> 
             program.onError("Error while restoring model found in app.Properties", ex)
 
     override this.OnStart() = this.OnResume()
 
-#endif
-
-#if SAVE_MODEL_BIT_BY_BIT
-    let modelId = "model"
-    override __.OnSleep() = 
-        Debug.WriteLine "OnSleep: saving model into app.Properties"
-        app.Properties.["count"] <- runner.Model.Count
-        app.Properties.["step"] <- runner.Model.Step
-        app.Properties.["timerOn"] <- runner.Model.TimerOn
-
-    override __.OnResume() = 
-        Debug.WriteLine "OnResume: checking for model in app.Properties"
-        try 
-            match app.Properties.TryGetValue("count"),
-                  app.Properties.TryGetValue("step"),
-                  app.Properties.TryGetValue("timerOn") with
-            | (true, (:? int32 as count)), (true, (:? int32 as step)), (true, (:? bool as timerOn)) -> 
-                Debug.WriteLine "OnResume: restored model from app.Properties"
-                runner.Model <- { Count=count; Step=step; TimerOn=timerOn }
-            | _ -> 
-                Debug.WriteLine "OnResume: no model found to restore from app.Properties"
-                ()
-        with ex -> 
-            program.onError("Error while restoring model found in app.Properties", ex)
-
-    override this.OnStart() = this.OnResume()
 #endif
