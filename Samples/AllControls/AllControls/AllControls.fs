@@ -367,9 +367,9 @@ module App =
                [Xaml.Label(text="ListView:")
                 Xaml.ListView(items = [ for i in 0 .. 10 do 
                                           yield Xaml.Label "Ionide"
-                                          yield Xaml.Label "Visual Studio"
+                                          yield Xaml.Label(formattedText=Xaml.FormattedString([|Xaml.Span(text="Visual ", backgroundColor=Color.Green); Xaml.Span(text="Studio ", fontSize = 10)|]))
                                           yield Xaml.Label "Emacs"
-                                          yield Xaml.Label "Visual Studio Code"
+                                          yield Xaml.Label(formattedText=Xaml.FormattedString([|Xaml.Span(text="Visual ", fontAttributes=FontAttributes.Bold); Xaml.Span(text="Studio ", fontAttributes=FontAttributes.Italic); Xaml.Span(text="Code", foregroundColor = Color.Blue)|]))
                                           yield Xaml.Label "Rider"], 
                               horizontalOptions=LayoutOptions.CenterAndExpand, 
                               itemSelected=(fun idx -> dispatch (ListViewSelectedItemChanged idx)))
