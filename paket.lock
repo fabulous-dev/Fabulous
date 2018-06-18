@@ -1,4 +1,4 @@
-RESTRICTION: == netstandard2.0
+RESTRICTION: == net45
 NUGET
   remote: https://www.nuget.org/api/v2
     FAKE (4.64.13)
@@ -184,8 +184,8 @@ NUGET
     FsPickler.Json (5.2)
       FSharp.Core (>= 4.3.2)
       Newtonsoft.Json (>= 10.0.1)
-    Microsoft.NETCore.Platforms (2.0.2)
-    Microsoft.NETCore.Targets (2.0)
+    Microsoft.NETCore.Platforms (2.1)
+    Microsoft.NETCore.Targets (2.1)
     Newtonsoft.Json (11.0.2)
     System.IO (4.3)
       Microsoft.NETCore.Platforms (>= 1.1)
@@ -223,4 +223,4 @@ NUGET
       Microsoft.NETCore.Platforms (>= 1.1)
       Microsoft.NETCore.Targets (>= 1.1)
       System.Runtime (>= 4.3)
-    Xamarin.Forms (2.5.0.122203)
+    Xamarin.Forms (2.5.0.280555)
