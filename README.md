@@ -208,9 +208,21 @@ let view model dispatch =
                       content= Xaml.StackLayout(
                           children=[ 
                               Xaml.Label(text = "Elmish.XamarinForms, version " + string (typeof<XamlElement>.Assembly.GetName().Version))
-                              Xaml.Button(text = "Continue", command=(fun () -> dispatch (SetRootPageKind (ShowAbout false)) ))
+                              Xaml.Button(text = "Continue", command=(fun () -> dispatch (ShowAbout false) ))
                           ]))
         ])
+```
+
+#### Toolbar
+
+A toolbar can be added to a navigation page using `.ToolbarItems([ ... ])` as follows:
+
+```fsharp
+let view model dispatch = 
+    ...
+    Xaml.NavigationPage(pages=
+        [ Xaml.ContentPage(...)
+            .ToolbarItems([Xaml.ToolbarItem(text="About", command=(fun () -> dispatch (ShowAbout true))) ] )
 ```
 
 #### TabbedPage navigation
