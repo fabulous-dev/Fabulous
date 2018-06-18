@@ -191,18 +191,18 @@ A modal page is done by yielding an additional page in the NavigationPage. For e
 ```fsharp
 type Model =
     { ShowAbout: bool 
-	  ...
-	}
+      ...
+    }
 
 type Msg = 
-	| ...
+    | ...
     | ShowAbout of bool
 
 let view model dispatch = 
     ...
     Xaml.NavigationPage(pages=
         [ yield Xaml.ContentPage(title="Root Page", content=Xaml.Button(text="About", command=(fun () -> dispatch (ShowAbout true)))) 
-		  if model.ShowAbout then 
+          if model.ShowAbout then 
               yield 
                   Xaml.ContentPage(title="About", 
                       content= Xaml.StackLayout(
