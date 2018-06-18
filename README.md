@@ -334,7 +334,7 @@ This means
 2. Incremental update recycles visual elements at the start of the list and handles add/remove at end of list relatively efficiently
 3. Returning a new list that inserts an element at the beginning will recreate all elements down the way.
 
-Basically, incremental update is faster if lists are changing at their beginning, rather than their end.
+Basically, incremental update is faster if items are being added/removed at the end, rather than the beginning of the list. 
 
 The above is sufficient for many purposes, but care must always be taken with large lists and data sources, see `ListView` above for example.  Care must also be taken whenever data updates very rapidly.
 
