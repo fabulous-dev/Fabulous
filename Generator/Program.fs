@@ -1,4 +1,4 @@
-﻿// dotnet build -c Release Generator\Generator.fsproj && dotnet Generator\bin\Release\netcoreapp2.0\Generator.dll Generator\bindings.json Elmish.XamarinForms\DynamicXaml.fs && fsc -a -r:packages\androidapp\Xamarin.Forms\lib\netstandard1.0\Xamarin.Forms.Core.dll Elmish.XamarinForms\XamlElement.fs Elmish.XamarinForms\DynamicXamlConverters.fs Elmish.XamarinForms\DynamicXaml.fs
+﻿// dotnet build -c Release Generator\Generator.fsproj && dotnet Generator\bin\Release\netcoreapp2.0\Generator.dll Generator\Xamarin.Forms.Core.json Elmish.XamarinForms\Xamarin.Forms.Core.fs && fsc -a -r:packages\androidapp\Xamarin.Forms\lib\netstandard1.0\Xamarin.Forms.Core.dll Elmish.XamarinForms\XamlElement.fs Elmish.XamarinForms\DynamicXamlConverters.fs Elmish.XamarinForms\Xamarin.Forms.Core.fs
 
 module Generator
 
@@ -329,6 +329,7 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
         | None -> ()
         | Some baseType ->
             let nameOfBaseCreator = if String.IsNullOrWhiteSpace(baseType.ModelName) then resolutions.[baseType].Name else baseType.ModelName
+            w.printfn ""
             w.printf "        let baseElement : XamlElement = Xaml.%s(" nameOfBaseCreator
             allBaseMembers |> iterSep ", " (fun head m -> 
                 let inputType = m.GetInputType(bindings, memberResolutions, null)
@@ -336,6 +337,7 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
                 w.printf "%s?%s=%s" head m.LowerBoundShortName m.LowerBoundShortName)
             w.printfn ")"
 
+        w.printfn ""
         w.printfn "        let attribs = [| "
         match baseTypeOpt with 
         | None -> ()
@@ -370,9 +372,9 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
                         //else
                         w.printf "%s%s" head m.LowerBoundShortName)
                 w.printfn "))"
-                w.printf "            | _ -> box (new %s())" customTypeToCreate
+                w.printfn "            | _ -> box (new %s())" customTypeToCreate
             else
-                w.printf "            box (new %s())" customTypeToCreate
+                w.printfn "            box (new %s())" customTypeToCreate
         else
             w.printfn "            failwith \"can't create %s\"" tdef.FullName
         w.printfn ""
@@ -483,6 +485,7 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
                             w.printfn "            | ValueSome _, ValueNone -> target.%s <- %s"  m.Name m.DefaultValue
                             w.printfn "            | ValueNone, ValueNone -> ()"
                                 
+        w.printfn ""
         w.printfn "        new XamlElement(typeof<%s>, create, update, attribs)" tdef.FullName
 
     w.ToString ()

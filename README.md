@@ -184,6 +184,47 @@ let view model dispatch =
         ])
 ```
 
+#### Example: Modal pages
+
+A modal page is done by yielding an additional page in the NavigationPage. For example, here is an "About" page example:
+
+```fsharp
+type Model =
+    { ShowAbout: bool 
+	  ...
+	}
+
+type Msg = 
+	| ...
+    | ShowAbout of bool
+
+let view model dispatch = 
+    ...
+    Xaml.NavigationPage(pages=
+        [ yield Xaml.ContentPage(title="Root Page", content=Xaml.Button(text="About", command=(fun () -> dispatch (ShowAbout true)))) 
+		  if model.ShowAbout then 
+              yield 
+                  Xaml.ContentPage(title="About", 
+                      content= Xaml.StackLayout(
+                          children=[ 
+                              Xaml.Label(text = "Elmish.XamarinForms, version " + string (typeof<XamlElement>.Assembly.GetName().Version))
+                              Xaml.Button(text = "Continue", command=(fun () -> dispatch (ShowAbout false) ))
+                          ]))
+        ])
+```
+
+#### Toolbar
+
+A toolbar can be added to a navigation page using `.ToolbarItems([ ... ])` as follows:
+
+```fsharp
+let view model dispatch = 
+    ...
+    Xaml.NavigationPage(pages=
+        [ Xaml.ContentPage(...)
+            .ToolbarItems([Xaml.ToolbarItem(text="About", command=(fun () -> dispatch (ShowAbout true))) ] )
+```
+
 #### TabbedPage navigation
 
 Return a `TabbedPage` from your view:

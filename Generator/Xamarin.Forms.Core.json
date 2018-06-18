@@ -1062,6 +1062,25 @@
 					"defaultValue": "\"\""
 				},
 				{
+					"name": "BackgroundImage",
+					"inputType": "string",
+					"modelType": "string",
+					"defaultValue": "null"
+				},
+				{
+					"name": "Icon",
+					"inputType": "string",
+					"modelType": "string",
+					"convToValue": "makeFileImageSource",
+					"defaultValue": "null"
+				},
+				{
+					"name": "IsBusy",
+					"inputType": "bool",
+					"modelType": "bool",
+					"defaultValue": "false"
+				},
+				{
 					"name": "Padding",
 					"inputType": "obj",
 					"modelType": "Xamarin.Forms.Thickness",
@@ -1069,10 +1088,37 @@
 					"defaultValue": "Unchecked.defaultof<Xamarin.Forms.Thickness>"
 				},
 				{
+					"name": "ToolbarItems",
+					"inputType": "XamlElement list",
+					"modelType": "XamlElement[]",
+					"convToModel": "Array.ofList"
+				},
+				{
 					"name": "UseSafeArea",
 					"inputType": "bool",
 					"modelType": "bool",
 					"updateCode": "(fun _ _ target -> Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea((target :> Xamarin.Forms.Page).On<Xamarin.Forms.PlatformConfiguration.iOS>(), true) |> ignore)"
+				},
+				{
+					"name": "Appearing",
+					"uniqueName": "Page_Appearing",
+					"defaultValue": "null",
+					"inputType": "unit -> unit",
+					"convToModel": "(fun f -> System.EventHandler(fun _sender _args -> f ()))"
+				},
+				{
+					"name": "Disappearing",
+					"uniqueName": "Page_Disappearing",
+					"defaultValue": "null",
+					"inputType": "unit -> unit",
+					"convToModel": "(fun f -> System.EventHandler(fun _sender _args -> f ()))"
+				},
+				{
+					"name": "LayoutChanged",
+					"uniqueName": "Page_LayoutChanged",
+					"defaultValue": "null",
+					"inputType": "unit -> unit",
+					"convToModel": "(fun f -> System.EventHandler(fun _sender _args -> f ()))"
 				}
 			]
 		},
@@ -1087,16 +1133,16 @@
 					"convToModel": "Array.ofList"
 				},
 				//{
-			//		"name": "ItemsSource",
-			//		"inputType": "'T list",
-		//			"modelType": "System.Collections.Generic.IList<obj>",
-		//			"convToModel": "(fun es -> es |> Array.ofList |> Array.map box :> System.Collections.Generic.IList<obj>)",
-		//			"defaultValue": "null"
-		//		},
-		//		{
-		//			"name": "ItemTemplate",
-		//			"defaultValue": "null"
-		//		},
+				//		"name": "ItemsSource",
+				//		"inputType": "'T list",
+				//			"modelType": "System.Collections.Generic.IList<obj>",
+				//			"convToModel": "(fun es -> es |> Array.ofList |> Array.map box :> System.Collections.Generic.IList<obj>)",
+				//			"defaultValue": "null"
+				//		},
+				//		{
+				//			"name": "ItemTemplate",
+				//			"defaultValue": "null"
+				//		},
 				{
 					"name": "SelectedItem",
 					"uniqueName": "CarouselPage_SelectedItem",
@@ -1261,6 +1307,41 @@
 			]
 		},
 		{
+			"name": "Xamarin.Forms.MenuItem",
+			"members": [
+				{
+					"name": "Text",
+					"defaultValue": "null"
+				},
+				{
+					"name": "Command",
+					"defaultValue": "null",
+					"inputType": "unit -> unit",
+					"convToModel": "makeCommand"
+				},
+				{
+					"name": "CommandParameter",
+					"defaultValue": "null"
+				},
+				{
+					"name": "Icon",
+					"inputType": "string",
+					"modelType": "string",
+					"convToValue": "makeFileImageSource",
+					"defaultValue": "null"
+				}
+      ],
+		  "attached": [
+					{
+						"name": "Accelerator",
+						"inputType": "string",
+						"modelType": "string",
+ 					  "convToValue": "makeAccelerator",
+						"defaultValue": "null"
+					}
+  			]
+		},
+		{
 			"name": "Xamarin.Forms.TextCell",
 			"members": [
 				{
@@ -1298,6 +1379,19 @@
 				{
 					"name": "CommandParameter",
 					"defaultValue": "null"
+				}
+			]
+		},
+		{
+			"name": "Xamarin.Forms.ToolbarItem",
+			"members": [
+				{
+					"name": "Order",
+					"defaultValue": "Xamarin.Forms.ToolbarItemOrder.Default"
+				},
+				{
+					"name": "Priority",
+					"defaultValue": "0"
 				}
 			]
 		},
@@ -1412,21 +1506,21 @@
 					"uniqueName": "ListView_ItemAppearing",
 					"defaultValue": "null",
 					"inputType": "int -> unit",
-     			"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))"
+					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))"
 				},
 				{
 					"name": "ItemDisappearing",
 					"uniqueName": "ListView_ItemDisappearing",
 					"defaultValue": "null",
 					"inputType": "int -> unit",
-     			"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))"
+					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))"
 				},
 				{
 					"name": "ItemSelected",
 					"uniqueName": "ListView_ItemSelected",
 					"defaultValue": "null",
 					"inputType": "int option -> unit",
-     			"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (tryFindListViewItem sender args.SelectedItem)))"
+					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (tryFindListViewItem sender args.SelectedItem)))"
 				},
 				{
 					"name": "ItemTapped",
@@ -1529,14 +1623,14 @@
 					"uniqueName": "ListViewGrouped_ItemAppearing",
 					"defaultValue": "null",
 					"inputType": "int * int -> unit",
-     			"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.Item).Value))"
+					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.Item).Value))"
 				},
 				{
 					"name": "ItemDisappearing",
 					"uniqueName": "ListViewGrouped_ItemDisappearing",
 					"defaultValue": "null",
 					"inputType": "int * int -> unit",
-     			"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.Item).Value))"
+					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.Item).Value))"
 				},
 				{
 					"name": "ItemSelected",

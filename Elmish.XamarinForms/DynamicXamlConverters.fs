@@ -96,6 +96,8 @@ module Converters =
 
     let makeImageSource (image: string) = ImageSource.op_Implicit image
 
+    let makeAccelerator (accelerator: string) = Accelerator.op_Implicit accelerator
+
     let makeFileImageSource (image: string) = FileImageSource.op_Implicit image
 
     let makeThickness (v: obj) = 
