@@ -1,3 +1,6 @@
+#### 0.5.1
+* Support FormattedText parameter to Label
+
 #### 0.5.0
 * Simplify generated code
 * Code generator now in F#

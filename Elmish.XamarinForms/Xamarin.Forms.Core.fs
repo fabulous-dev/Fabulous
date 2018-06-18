@@ -331,6 +331,9 @@ module XamlElementExtensions =
         /// Adjusts the VerticalTextAlignment property in the visual element
         member x.VerticalTextAlignment(value: Xamarin.Forms.TextAlignment) = x.WithAttribute("VerticalTextAlignment", box ((value)))
 
+        /// Adjusts the FormattedText property in the visual element
+        member x.FormattedText(value: XamlElement) = x.WithAttribute("FormattedText", box ((value)))
+
         /// Adjusts the IsClippedToBounds property in the visual element
         member x.IsClippedToBounds(value: bool) = x.WithAttribute("IsClippedToBounds", box ((value)))
 
@@ -348,6 +351,9 @@ module XamlElementExtensions =
 
         /// Adjusts the PropertyChanged property in the visual element
         member x.PropertyChanged(value: System.ComponentModel.PropertyChangedEventArgs -> unit) = x.WithAttribute("PropertyChanged", box ((fun f -> System.EventHandler<System.ComponentModel.PropertyChangedEventArgs>(fun _sender args -> f args))(value)))
+
+        /// Adjusts the Spans property in the visual element
+        member x.Spans(value: XamlElement[]) = x.WithAttribute("Spans", box ((value)))
 
         /// Adjusts the Time property in the visual element
         member x.Time(value: System.TimeSpan) = x.WithAttribute("Time", box ((value)))
@@ -2285,7 +2291,7 @@ type Xaml() =
         new XamlElement(typeof<Xamarin.Forms.EntryCell>, create, update, attribs)
 
     /// Describes a Label in the view
-    static member Label(?text: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?verticalTextAlignment: Xamarin.Forms.TextAlignment, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
+    static member Label(?text: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?verticalTextAlignment: Xamarin.Forms.TextAlignment, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?formattedText: XamlElement, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 
 
         let baseElement : XamlElement = Xaml.View(?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?classId=classId, ?styleId=styleId)
 
@@ -2298,6 +2304,7 @@ type Xaml() =
             match fontFamily with None -> () | Some v -> yield ("FontFamily", box ((v))) 
             match fontAttributes with None -> () | Some v -> yield ("FontAttributes", box ((v))) 
             match textColor with None -> () | Some v -> yield ("TextColor", box ((v))) 
+            match formattedText with None -> () | Some v -> yield ("FormattedText", box ((v))) 
           |]
 
         let create () =
@@ -2354,6 +2361,18 @@ type Xaml() =
             | ValueSome prevValue, ValueSome value when prevValue = value -> ()
             | prevOpt, ValueSome value -> target.TextColor <-  value
             | ValueSome _, ValueNone -> target.TextColor <- Xamarin.Forms.Color.Default
+            | ValueNone, ValueNone -> ()
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<XamlElement>("FormattedText")
+            let valueOpt = source.TryGetAttribute<XamlElement>("FormattedText")
+            match prevValueOpt, valueOpt with
+            // For structured objects, dependsOn on reference equality
+            | ValueSome prevChild, ValueSome newChild when identical prevChild newChild -> ()
+            | ValueSome prevChild, ValueSome newChild when canReuseChild prevChild newChild ->
+                newChild.UpdateIncremental(prevChild, target.FormattedText)
+            | _, ValueSome newChild ->
+                target.FormattedText <- (newChild.Create() :?> Xamarin.Forms.FormattedString)
+            | ValueSome _, ValueNone ->
+                target.FormattedText <- null
             | ValueNone, ValueNone -> ()
 
         new XamlElement(typeof<Xamarin.Forms.Label>, create, update, attribs)
@@ -2504,6 +2523,28 @@ type Xaml() =
             | ValueNone, ValueNone -> ()
 
         new XamlElement(typeof<Xamarin.Forms.Span>, create, update, attribs)
+
+    /// Describes a FormattedString in the view
+    static member FormattedString(?spans: XamlElement[]) = 
+
+        let attribs = [| 
+            match spans with None -> () | Some v -> yield ("Spans", box ((v))) 
+          |]
+
+        let create () =
+            box (new Xamarin.Forms.FormattedString())
+
+        let update (prevOpt: XamlElement voption) (source: XamlElement) (targetObj:obj) = 
+            let target = (targetObj :?> Xamarin.Forms.FormattedString)
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<XamlElement[]>("Spans")
+            let valueOpt = source.TryGetAttribute<XamlElement[]>("Spans")
+            updateIList prevValueOpt valueOpt target.Spans
+                (fun (x:XamlElement) -> x.Create() :?> Xamarin.Forms.Span)
+                (fun _ _ _ -> ())
+                canReuseChild
+                updateChild
+
+        new XamlElement(typeof<Xamarin.Forms.FormattedString>, create, update, attribs)
 
     /// Describes a TimePicker in the view
     static member TimePicker(?time: System.TimeSpan, ?format: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: XamlElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?classId: string, ?styleId: string) = 

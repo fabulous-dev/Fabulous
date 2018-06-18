@@ -923,6 +923,10 @@
 				{
 					"name": "TextColor",
 					"defaultValue": "Xamarin.Forms.Color.Default"
+				},
+				{
+					"name": "FormattedText",
+					"defaultValue": "null"
 				}
 			]
 		},
@@ -997,6 +1001,17 @@
 					"defaultValue": "null",
 					"inputType": "System.ComponentModel.PropertyChangedEventArgs -> unit",
 					"convToModel": "(fun f -> System.EventHandler<System.ComponentModel.PropertyChangedEventArgs>(fun _sender args -> f args))"
+				}
+			]
+		},
+		{
+			"name": "Xamarin.Forms.FormattedString",
+			"members": [
+				{
+					"name": "Spans",
+					"defaultValue": "null",
+					"inputType": "XamlElement[]",
+					"modelType": "XamlElement[]"
 				}
 			]
 		},
