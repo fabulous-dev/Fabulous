@@ -5,9 +5,7 @@ open Xamarin.Forms
 
 open Elmish.XamarinForms
 open Elmish.XamarinForms.DynamicViews
-open System.Runtime.CompilerServices
 open System.Collections.Generic
-open System.Windows.Input
 
 [<AutoOpen>]
 module SimplerHelpers = 
@@ -29,10 +27,10 @@ module SimplerHelpers =
 
     type DoNotUseModelInsideDependsOn = | DoNotUseModelInsideDependsOn
 
-    /// Memoize part of a view model computation and prevent the use of the model inside
+    /// Memoize part of a view model computation. Also prevent the use of the model inside
     /// the computation except where explicitly de-referenced.
     ///
-    /// Usage: "dependsOn model.Count <| fun model count -> ..."
+    /// Usage: "dependsOn model.Count (fun model count -> ...)"
     ///
     /// Note, this function uses "f.GetType()" to get a unique code location.
     let dependsOn key (f: DoNotUseModelInsideDependsOn -> 'Key -> 'Value) : 'Value = 
@@ -46,10 +44,11 @@ module SimplerHelpers =
              res
         
     /// Dispatch a message via the currently running Elmish program
+    [<System.Obsolete("The global dispatch routine should no longer be used as it is not type safe, please use the dispatch routine passed to the 'view' function", error=true)>]
     let dispatch msg = Program.ProgramDispatch<'msg>.Dispatch msg 
 
     /// Memoize a callback that has no interesting dependencies.
-    /// NOTE: use with caution. The function must not capture any values.
+    /// NOTE: use with caution. The function must not capture any values besides "dispatch"
     let fix (f: unit -> 'Value) = 
         let key = f.GetType()
         let mutable res = null
@@ -63,6 +62,8 @@ module SimplerHelpers =
              Memoizations.T.[key] <- System.WeakReference<obj>(box res)
              res
 
+    /// Memoize a callback that has explicit dependencies.
+    /// NOTE: use with caution. The function must not capture any values besides "dispatch"
     let fixf (f: 'Args -> 'Value) = 
         let key = f.GetType()
         let mutable res = null

@@ -172,7 +172,7 @@ module App =
         static member NonScrollingContentPage(title, children, ?gestureRecognizers) =
             Xaml.ContentPage(title=title, content=Xaml.StackLayout(padding=20.0, children=children, ?gestureRecognizers=gestureRecognizers))
 
-    let view (model: Model) _dispatch =
+    let view (model: Model) dispatch =
 
        match model.RootPageKind with 
        | Choice showAbout -> 
@@ -330,6 +330,8 @@ module App =
                [Xaml.Label(text=sprintf "Grid (6x6, *):")
                 Xaml.Grid(rowdefs= [for i in 1 .. 6 -> box "*"], coldefs=[for i in 1 .. 6 -> box "*"], 
                           children = [ for i in 1 .. 6 do for j in 1 .. 6 -> Xaml.BoxView(Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0) ).GridRow(i-1).GridColumn(j-1) ] )
+                Xaml.Button(text="Main page", command=(fun () -> dispatch (SetRootPageKind (Choice false))), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)
+               
                ]))
 
              dependsOn (model.GridSize, model.NewGridSize) (fun model (gridSize, newGridSize) -> 
@@ -536,6 +538,8 @@ module App =
                               horizontalOptions=LayoutOptions.CenterAndExpand, 
                               // Every time the last element is needed, grow the set of data to be at least 10 bigger then that index 
                               itemAppearing=(fun idx -> if idx >= max - 2 then dispatch (SetInfiniteScrollMaxIndex (idx + 10) ) )  )
+                Xaml.Button(text="Main page", command=(fun () -> dispatch (SetRootPageKind (Choice false))), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)
+               
                ]))
 
 

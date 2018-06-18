@@ -1,3 +1,10 @@
+#### 0.6.0
+* Toolbar, ToolbarItem support
+* MenuItem support
+* Support Page properties: BackgroundImage, Icon, IsBusy, ToolbarItems
+* Support Page events: Appearing, Disappearing, LayoutChanged
+* Add docs on modal pages
+
 #### 0.5.1
 * Support FormattedText parameter to Label
 
