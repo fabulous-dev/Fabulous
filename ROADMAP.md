@@ -1,9 +1,10 @@
 ## Roadmap
 
 * Programming model: Do these from `Xamarin.Forms.Core`: 
+  * Change `Xaml.` to `UI.` or `XF.` or `X.`
   * FlexLayout and XF 3.0 additions
   * Move to `seq<_>` as the de-facto model type
-  * Menu, MenuItem, NavigationBar, Accelerator
+  * Menu, NavigationBar, Accelerator
   * Animation
   * OpenGLView
   * Assess further common async patterns
@@ -18,7 +19,7 @@
 
 * Handle 3rd party controls.
   * Examples: `Xamarin.Forms.Maps`, `SkiaSharp`
-  * Consider whether to continue using a code generator or to switch to a type provider (see [this comment](https://github.com/fsprojects/Elmish.XamarinForms/issues/50#issuecomment-390396365))
+  * Possibly switch to a type provider (see [this comment](https://github.com/fsprojects/Elmish.XamarinForms/issues/50#issuecomment-390396365))
   * Make any necessary changes/additions to the `bindings.json` format (nothing is set in stone yet)
 
 * Templates
@@ -39,25 +40,20 @@
   * Check the Xamarin tree-shaker cuts out all unused code from DynamicXaml.fs
 
 * Performance:
-  * Memoize function closure creation
-  * Use integer atoms for property names
   * Do better list comparison/diffing
-  * Allow a `ChunkList` tree as input to ListView etc., e.g. `chunks { yield! stablePart; yield newElement; yield! stablePart2 }` 
+  * Perf-test on large lists and do resulting perf work
+  * Consider allowing a `ChunkList` tree as input to ListView etc., e.g. `chunks { yield! stablePart; yield newElement; yield! stablePart2 }` 
+  * Consider memoize function closure creation
+  * Consider using integer atoms for property names
   * Consider keeping a running identity hash on the immutable objects
   * Consider implementing equality and hash on the immutable objects
-  * Perf-test on large lists and do resulting perf work
   * Consider moving 'view' and 'model' computations off the UI thread
-
-* Communication
-  * Develop a sample that includes both client and server development, like [this talk](https://skillsmatter.com/skillscasts/11308-safe-apps-with-f-web-stack)
 
 * Consider allowing explicit static Xaml through a type provider, e.g `xaml<"""<StackLayout Padding="20">...</StackLayout>""">`, evaluating to a `XamlElement`
 
 * Make some small F# langauge improvements to improve code:
   * Remove `yield` in more cases
-  * Automatically save function values that do not capture any arguments and consider making the `dispatch` function global (partly to avoid is being seen as a captured argument)
-  * [Allow syntax `Xaml.Foo(prop1=expr1, [ // end of line`](https://github.com/Microsoft/visualfsharp/pull/4929)
-  * [`TryGetValue` on F# immutable map](https://github.com/Microsoft/visualfsharp/pull/4827/)
+  * Automatically save function values that do not capture any arguments
   * Allow a default unnamed argument for `children` so the argument name doesn't have to be given explicitly
   * Allow the use of struct options for optional arguments (to reduce allocations)
   * Implement the C# 5.0 "open static classes" feature in F# to allow the `Xaml.` prefix to be dropped
