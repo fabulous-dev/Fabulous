@@ -6,7 +6,7 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="XamlElement.fs" />
     <Compile Include="DynamicXamlConverters.fs" />
-    <Compile Include="DynamicXaml.fs" />
+    <Compile Include="Xamarin.Forms.Core.fs" />
     <Compile Include="ElmishCmd.fs" />
     <Compile Include="StaticXamlBinding.fs" />
     <Compile Include="StaticXamlViewModel.fs" />

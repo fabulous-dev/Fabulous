@@ -10,7 +10,7 @@ open Xamarin.Forms.PlatformConfiguration
 open Xamarin.Forms.PlatformConfiguration.iOSSpecific
 
 type RootPageKind = 
-    | Choice
+    | Choice of bool
     | Tabbed 
     | Navigation 
     | Carousel 
@@ -83,7 +83,7 @@ type Msg =
 
 module App = 
     let init () = 
-        { RootPageKind = Choice
+        { RootPageKind = Choice false
           Count = 0
           CountForSlider = 0
           CountForActivityIndicator = 0
@@ -172,24 +172,33 @@ module App =
         static member NonScrollingContentPage(title, children, ?gestureRecognizers) =
             Xaml.ContentPage(title=title, content=Xaml.StackLayout(padding=20.0, children=children, ?gestureRecognizers=gestureRecognizers))
 
-    let view (model: Model) dispatch =
-
-       let choicePage =
-             dependsOn (model.RootPageKind) (fun model rootPageKind -> 
-              Xaml.ContentPage(title="Root Page", 
-                 padding = new Thickness (10.0, 20.0, 10.0, 5.0), 
-                 content= Xaml.StackLayout(
-                     children=[ 
-                        Xaml.Button(text = "TabbedPage (various controls)", command=(fun () -> dispatch (SetRootPageKind Tabbed)), canExecute=(rootPageKind <> Tabbed))
-                        Xaml.Button(text = "CarouselPage (various controls)", command=(fun () -> dispatch (SetRootPageKind Carousel)), canExecute=(rootPageKind <> Carousel))
-                        Xaml.Button(text = "NavigationPage with push/pop", command=(fun () -> dispatch (SetRootPageKind Navigation)), canExecute=(rootPageKind <> Navigation))
-                        Xaml.Button(text = "MasterDetail Page", command=(fun () -> dispatch (SetRootPageKind MasterDetail)), canExecute=(rootPageKind <> MasterDetail))
-                        Xaml.Button(text = "Infinite scrolling ListView", command=(fun () -> dispatch (SetRootPageKind InfiniteScrollList)), canExecute=(rootPageKind <> InfiniteScrollList))
-                     ])))
+    let view (model: Model) _dispatch =
 
        match model.RootPageKind with 
-       | Choice -> 
-           choicePage
+       | Choice showAbout -> 
+           Xaml.NavigationPage(pages=
+               [ yield 
+                   Xaml.ContentPage(title="Root Page", 
+                      padding = new Thickness (10.0, 20.0, 10.0, 5.0), 
+                      content= Xaml.StackLayout(
+                          children=[ 
+                              Xaml.Button(text = "TabbedPage (various controls)", command=(fun () -> dispatch (SetRootPageKind Tabbed)))
+                              Xaml.Button(text = "CarouselPage (various controls)", command=(fun () -> dispatch (SetRootPageKind Carousel)))
+                              Xaml.Button(text = "NavigationPage with push/pop", command=(fun () -> dispatch (SetRootPageKind Navigation)))
+                              Xaml.Button(text = "MasterDetail Page", command=(fun () -> dispatch (SetRootPageKind MasterDetail)))
+                              Xaml.Button(text = "Infinite scrolling ListView", command=(fun () -> dispatch (SetRootPageKind InfiniteScrollList)))
+                          ]))
+                    .ToolbarItems([Xaml.ToolbarItem(text="About", command=(fun () -> dispatch (SetRootPageKind (Choice true))))] )
+                 if showAbout then 
+                      yield 
+                           Xaml.ContentPage(title="About", 
+                              padding = new Thickness (10.0, 20.0, 10.0, 5.0), 
+                              content= Xaml.StackLayout(
+                                  children=[ 
+                                      Xaml.Label(text = "Elmish.XamarinForms, version " + string (typeof<XamlElement>.Assembly.GetName().Version))
+                                      Xaml.Button(text = "Continue", command=(fun () -> dispatch (SetRootPageKind (Choice false)) ))
+                                  ]))
+               ])
 
        | Carousel -> 
           Xaml.CarouselPage(useSafeArea=true, children=
@@ -207,7 +216,7 @@ module App =
                 Xaml.Label(text="Button:")
                 Xaml.Button(text="Decrement", command=(fun () -> dispatch Decrement), horizontalOptions=LayoutOptions.CenterAndExpand)
                
-                Xaml.Button(text="Main page", command=(fun () -> dispatch (SetRootPageKind Choice)), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)
+                Xaml.Button(text="Main page", command=(fun () -> dispatch (SetRootPageKind (Choice false))), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)
                
                ]))
 
@@ -301,7 +310,7 @@ module App =
                            gestureRecognizers=[ Xaml.TapGestureRecognizer(numberOfTapsRequired=2, command=(fun () -> dispatch FrameTapped2)) ] )
 
                
-                Xaml.Button(text="Main page", command=(fun () -> dispatch (SetRootPageKind Choice)), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)
+                Xaml.Button(text="Main page", command=(fun () -> dispatch (SetRootPageKind (Choice false))), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)
                ]))
 
              dependsOn () (fun model () -> 
@@ -450,7 +459,7 @@ module App =
                                         Xaml.Button(text="Push Page A", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (PushPage "A")))
                                         Xaml.Button(text="Push Page B", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (PushPage "B")))
                
-                                        Xaml.Button(text="Main page", textColor=Color.White, backgroundColor=Color.Navy, command=(fun () -> dispatch (SetRootPageKind Choice)), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)
+                                        Xaml.Button(text="Main page", textColor=Color.White, backgroundColor=Color.Navy, command=(fun () -> dispatch (SetRootPageKind (Choice false))), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)
                                        ]) ).HasNavigationBar(true).HasBackButton(false)
                          | Some "A" -> 
                              yield 
@@ -505,7 +514,7 @@ module App =
                    Xaml.StackLayout(backgroundColor=Color.Gray, 
                      children=[ Xaml.Button(text="Detail A", textColor=Color.White, backgroundColor=Color.Navy, command=(fun () -> dispatch (SetDetailPage "A")))
                                 Xaml.Button(text="Detail B", textColor=Color.White, backgroundColor=Color.Navy, command=(fun () -> dispatch (SetDetailPage "B")))
-                                Xaml.Button(text="Main page", textColor=Color.White, backgroundColor=Color.Navy, command=(fun () -> dispatch (SetRootPageKind Choice)), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End) 
+                                Xaml.Button(text="Main page", textColor=Color.White, backgroundColor=Color.Navy, command=(fun () -> dispatch (SetRootPageKind (Choice false))), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End) 
                               ]) ), 
               detail = 
                 Xaml.NavigationPage( 
@@ -514,7 +523,7 @@ module App =
                      content = 
                        Xaml.StackLayout(backgroundColor=Color.Gray, 
                          children=[ Xaml.Label(text="Detail " + detailPage, textColor=Color.White, backgroundColor=Color.Navy)
-                                    Xaml.Button(text="Main page", textColor=Color.White, backgroundColor=Color.Navy, command=(fun () -> dispatch (SetRootPageKind Choice)), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)  ]) 
+                                    Xaml.Button(text="Main page", textColor=Color.White, backgroundColor=Color.Navy, command=(fun () -> dispatch (SetRootPageKind (Choice false))), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)  ]) 
                          ).HasNavigationBar(true).HasBackButton(true) ], 
                   poppedToRoot=(fun args -> dispatch (IsMasterPresentedChanged true) ) ) ) )
 

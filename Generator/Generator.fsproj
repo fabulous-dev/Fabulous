@@ -10,7 +10,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="bindings.json" />
+    <None Include="Xamarin.Forms.Core.json" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
