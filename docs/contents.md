@@ -1,5 +1,5 @@
 * [Home](index.html)
-* [Structure of an App](index.html#structure-of-an-app)
+* [Structure of an App](guide.html#structure-of-an-app)
 * [Views](views.html)
 * [Views: Catalog of Core Elements](elements.html)
 * [Views: Performance hints](views-perf.html)
