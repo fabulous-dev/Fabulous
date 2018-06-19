@@ -36,10 +36,9 @@ type App () =
 
 ### The Model
 
-The model is the core data from which the whole state of the app can be resurrected.  Consider the model to be "the information
-I would need on restart to get the app back to the same visual state".
+The model is the core data from which the whole state of the app can be resurrected.  When designing your model, ask yourself  "what is the information I would need on restart to get the app back to the same essential state". The model is generally immutable but may also contain elements such as service connections.
 
-The model is generally immutable but may also contain service connections.
+Generally the model grows organically as you prototype your app.
 
 Some advantages of using an immutable model are:
 
@@ -49,11 +48,12 @@ Some advantages of using an immutable model are:
 
 ### The `init` function
 
-The `init` function returns your initial state.
+The `init` function returns your initial model.
 
 ### Messages and the `update` function
 
 Each model gets an `update` function for message processing. The messages are either messages from the `view` or from external events.
+If using `Program.mkProgram` your model may also return new commands to trigger asa result of processing a message.
 
 ### The `view` function
 
