@@ -1,4 +1,4 @@
-Elmish.XamarinForms: Models
+Models
 =======
 
 {% include_relative contents.md %}

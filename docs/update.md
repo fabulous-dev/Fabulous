@@ -1,4 +1,4 @@
-Elmish.XamarinForms: Update, Messages, Commands and Async
+Update, Messages, Commands and Async
 =======
 
 {% include_relative contents.md %}

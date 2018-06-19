@@ -1,4 +1,4 @@
-Elmish.XamarinForms: Views: Catalog of Core Elements
+Views: Core Elements
 =======
 
 {% include_relative contents.md %}

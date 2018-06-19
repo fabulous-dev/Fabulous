@@ -1,4 +1,4 @@
-Elmish.XamarinForms: Views
+Views
 =======
 
 {% include_relative contents.md %}

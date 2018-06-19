@@ -1,13 +1,18 @@
-Elmish.XamarinForms: Views and Performance
+Views and Performance
 =======
 
 {% include_relative contents.md %}
 
-The performance of your app may in some cases be dominated by your view function.  The performance achieved may 
-depend on the number of message updates being generated and processed and should be considered with respect to your
-performance targets and needs.
+The performance of your app may in some cases be dominated by your view function.  This is particularly the case if
+many  message updates are being generated and processed, though not if other operations dominate such as network latency.
+Improving the performance of your view function should be done with respect to your
+overall performance targets and needs.
 
-Views functions are generally only efficient for large UIs if the unchanging parts of a UI are "memoized", returning identical
+On each update to the model, the view function is executed. The resulting view is then compared item by item with the previous view
+and updates are made to the underlying controls.
+
+As a result, views functions that are frequently executed (because of many message updates) are generally only
+efficient for large UIs if the unchanging parts of a UI are "memoized", returning identical
 objects on each invocation of the `view` function. 
 This must be done explicitly. One way of doing this is to use `dependsOn`.
 Here is an example for a 6x6 Grid that depends on nothing, i.e. never changes:
@@ -19,10 +24,10 @@ let view model dispatch =
           children=
             [ Xaml.Label(text=sprintf "Grid (6x6, auto):")
               Xaml.Grid(rowdefs= [for i in 1 .. 6 -> box "auto"],
-                        coldefs=[for i in 1 .. 6 -> box "auto"], 
-                        children = [ for i in 1 .. 6 do for j in 1 .. 6 -> 
-                                       Xaml.BoxView(Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0) )
-                                              .GridRow(i-1).GridColumn(j-1) ] )
+                coldefs=[for i in 1 .. 6 -> box "auto"], 
+                children = [ for i in 1 .. 6 do for j in 1 .. 6 -> 
+                                Xaml.BoxView(Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0) )
+                                        .GridRow(i-1).GridColumn(j-1) ] )
             ])
 ```
 Inside the function - the one passed to `dependsOn` - the `model` is rebound to be inaccessbile with a `DoNotUseMe` type so you can't use it. Here is an example where some of the model is extracted:
@@ -31,8 +36,7 @@ let view model dispatch =
     ...
     dependsOn (model.CountForSlider, model.StepForSlider) (fun model (count, step) -> 
         Xaml.Slider(minimum=0.0, maximum=10.0, value= double step, 
-                    valueChanged=(fun args -> dispatch (SliderValueChanged (int (args.NewValue + 0.5)))), 
-                    horizontalOptions=LayoutOptions.Fill)) 
+                    valueChanged=(fun args -> dispatch (SliderValueChanged (int (args.NewValue + 0.5)))))) 
     ...
 ```
 In the example, we extract properties `CountForSlider` and `StepForSlider` from the model, and bind them to `count` and `step`.  If either of these change, the section of the view will be recomputed and no adjustments will be made to the UI.

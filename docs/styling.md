@@ -1,4 +1,4 @@
-Elmish.XamarinForms: Styling Views
+Views: Styling
 =======
 
 {% include_relative contents.md %}

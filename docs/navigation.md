@@ -1,4 +1,4 @@
-Elmish.XamarinForms: Multi-page Applications and Navigation
+Multi-page Applications and Navigation
 =======
 
 {% include_relative contents.md %}
