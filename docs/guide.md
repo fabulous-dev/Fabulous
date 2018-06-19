@@ -68,7 +68,7 @@ View functions excel in cases where the existence, characteristics and layout of
 
 ### Dynamic Views: ContentPage
 
-[Link: `Xamarin.Forms.Core.ContentPage` docs](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/contentpage/).
+[Link: `Xamarin.Forms.Core.ContentPage` docs](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.ContentPage?view=xamarin-forms/).
 
 A single page app typically returns a `ContentPage`:
 
@@ -82,7 +82,7 @@ let view model dispatch =
 
 ### Dynamic Views: StackLayout
 
-[Link: `Xamarin.Forms.Core.StackLayout` docs](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/stacklayout/).
+[Link: `Xamarin.Forms.Core.StackLayout` docs](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/stack-layout/).
 
 A stack layout is a vertically-stacked sequence of content:
 
