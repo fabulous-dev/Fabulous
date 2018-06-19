@@ -7,6 +7,7 @@ Elmish.XamarinForms Guide
 * [Update, Messages and Control](update.md)
 * [Styling](styling.md)
 * [Multi-page applications and Navigation](navigation.md)
+* [Performance hints for views](views-perf.md)
 
 Structure of an App
 ------
