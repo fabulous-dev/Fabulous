@@ -1,16 +1,10 @@
 
-<html>
-<body>
-    <h1>F# Functional App Development, using Xamarin.Forms</h1>
+F# Functional App Development, using Xamarin.Forms
+========
 
-<p>Never write a ViewModel class again!  Conquer the world with clean dynamic UIs!</p>
+Never write a ViewModel class again!  Conquer the world with clean dynamic UIs!
 
-<a href="guide.html">Documentation Guide</a>
-
-    </body>
-</html>
-<!--
-This library uses a variation of [elmish](https://elmish.github.io/), an Elm architecture implemented in F#,
+This library allows you to use a variation of [elmish](https://elmish.github.io/), an Elm architecture implemented in F#,
 to build Xamarin.Forms applications for iOS, Android, Mac and more. 
 
 **This is a sample and may change.**
