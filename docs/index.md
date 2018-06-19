@@ -95,7 +95,7 @@ The F# DSL is [generated](https://github.com/fsprojects/Elmish.XamarinForms/tree
 
 In some circumstances there are advantages to using static Xaml, and static bindings from the model to those views. This is called "Half Elmish" and is the primary technique used by [`Elmish.WPF`](https://github.com/Prolucid/Elmish.WPF) at time of writing. (It was also  the original technique used by this repo and the prototype `Elmish.Forms`).   
 
-See [docs/half-elmish.md](docs/half-elmish.md)
+See [half-elmish.md](half-elmish.md).
 
 ## Contributing
 
