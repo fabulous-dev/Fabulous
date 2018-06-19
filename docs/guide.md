@@ -65,7 +65,7 @@ The view function computes an immutable Xaml-like description. In the above exam
 
 See [views](views.md), [styling](styling.md), [navigation](navigation.md) and [views and performance](views-perf.md).
 
-### The `update` function
+### The update function
 
 Each model gets an `update` function for message processing. The messages are either messages from the `view` or from external events.
 If using `Program.mkProgram` your model may also return new commands to trigger asa result of processing a message.
