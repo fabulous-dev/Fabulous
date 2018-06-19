@@ -73,8 +73,7 @@ A simple `Slider` is as follows:
 ```fsharp
     Xaml.Slider(minimum=0.0, maximum=10.0, 
         value= double step, 
-        valueChanged=(fun args -> dispatch (SliderValueChanged (int (args.NewValue + 0.5)))), 
-        horizontalOptions=LayoutOptions.Fill) 
+        valueChanged=(fun args -> dispatch (SliderValueChanged (int (args.NewValue + 0.5))))) 
 ```
 
 See also:
@@ -85,8 +84,7 @@ See also:
 
 A simple `ActivityIndicator` is as follows:
 ```fsharp
-    Xaml.ActivityIndicator(isRunning=(count > 0), 
-        horizontalOptions=LayoutOptions.CenterAndExpand)
+    Xaml.ActivityIndicator(isRunning=(count > 0))
 ```
 
 See also:
@@ -100,8 +98,7 @@ A simple `DatePicker` is as follows:
     Xaml.DatePicker(minimumDate= DateTime.Today, 
         maximumDate=DateTime.Today + TimeSpan.FromDays(365.0), 
         date=startDate, 
-        dateSelected=(fun args -> dispatch (StartDateSelected args.NewDate)), 
-        horizontalOptions=LayoutOptions.CenterAndExpand)
+        dateSelected=(fun args -> dispatch (StartDateSelected args.NewDate)))
 ```
 
 See also:
@@ -113,7 +110,6 @@ See also:
 An example `Editor` is as follows:
 ```fsharp
     Xaml.Editor(text= editorText, 
-        horizontalOptions=LayoutOptions.CenterAndExpand, 
         textChanged=(fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
         completed=(fun text -> dispatch (EditorEditCompleted text)))
 ```
@@ -137,21 +133,18 @@ See also:
 An example `Entry` is as follows:
 ```fsharp
     Xaml.Entry(text= entryText, 
-        horizontalOptions=LayoutOptions.CenterAndExpand, 
         textChanged=(fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
         completed=(fun text -> dispatch (EntryEditCompleted text)))
 ```
 An example `Entry` with password is as follows:
 ```fsharp
     Xaml.Entry(text= password, isPassword=true, 
-        horizontalOptions=LayoutOptions.CenterAndExpand, 
         textChanged=(fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
         completed=(fun text -> dispatch (EntryEditCompleted text)))
 ```
 An example `Entry` with a placeholder is as follows:
 ```fsharp
     Xaml.Entry(placeholder="Enter text", 
-        horizontalOptions=LayoutOptions.CenterAndExpand, 
         textChanged=(fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
         completed=(fun text -> dispatch (EntryEditCompleted text)))
 ```
@@ -163,9 +156,7 @@ See also:
 
 A simple `Frame` is as follows:
 ```fsharp
-    Xaml.Frame(hasShadow=true, 
-        backgroundColor=Colors.Fuchsia, 
-        horizontalOptions=LayoutOptions.CenterAndExpand ] )
+    Xaml.Frame(hasShadow=true, backgroundColor=Colors.Fuchsia)
 ```
 
 See also:
@@ -193,14 +184,12 @@ See also:
 
 ### Views: Image
 
-A simple `Image` drawn from a resource or URL is as follows:
+A simple `` drawn from a resource or URL is as follows:
 ```fsharp
 let monkey = "http://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg"
 
 ...
-    Xaml.Image(source = monkey, 
-        horizontalOptions = LayoutOptions.CenterAndExpand,
-        verticalOptions = LayoutOptions.CenterAndExpand) ]))
+    Xaml.Image(source = monkey) ]))
 ```
 
 See also:
@@ -226,7 +215,6 @@ let pickerItems =
         textColor = snd pickerItems.[pickedColorIndex], 
         selectedIndex = pickedColorIndex, 
         itemsSource = Array.map fst pickerItems,
-        horizontalOptions = LayoutOptions.CenterAndExpand, 
         selectedIndexChanged = (fun (i, item) -> dispatch (PickerItemChanged i)))
 ```
 
@@ -243,8 +231,7 @@ An example `TableView` is as follows:
                     ("Books", [ Xaml.SwitchCell(on=true, text="Expert F#", onChanged=(fun args -> ()) ) 
                                 Xaml.SwitchCell(on=false, text="Programming F#", onChanged=(fun args -> ()) ) ])
                     ("Contact", [ Xaml.EntryCell(label="Email", placeholder="foo@bar.com", completed=(fun args -> ()) )
-                                Xaml.EntryCell(label="Phone", placeholder="+44 87654321", completed=(fun args -> ()) )] )], 
-        horizontalOptions=LayoutOptions.StartAndExpand) 
+                                Xaml.EntryCell(label="Phone", placeholder="+44 87654321", completed=(fun args -> ()) )] )]) 
 ```
 
 See also:
