@@ -192,7 +192,7 @@ A simple `` drawn from a resource or URL is as follows:
 let monkey = "http://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg"
 
 ...
-    Xaml.Image(source = monkey) ]))
+    Xaml.Image(source = monkey)
 ```
 
 See also:
