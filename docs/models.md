@@ -1,10 +1,12 @@
+Elmish.XamarinForms Guide
+=======
 
 {% include_relative contents.md %}
 
 Models
-=======
+--------
 
-### Models: Messages and Validation
+### Messages and Validation
 
 Validation is generally done on updates to the model, storing error messages from validation logic in the model
 so they can be correctly and simply displayed to the user.  Here is an example of a typical pattern.
@@ -40,7 +42,7 @@ so they can be correctly and simply displayed to the user.  Here is an example o
 
 Note that the same validation logic can be used in both your app and a service back-end.
 
-### Models: Saving Application State
+### Saving Application State
 
 Application state is very simple to save by serializing the model into `app.Properties`. For example, you can store as JSON as follows using [`FsPickler` and `FsPickler.Json`](https://github.com/mbraceproject/FsPickler), which use `Json.NET`:
 ```fsharp

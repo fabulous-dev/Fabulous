@@ -1,8 +1,10 @@
-{% include_relative contents.md %}
-
-Update, Messages, Commands and Async
+Elmish.XamarinForms Guide
 =======
 
+{% include_relative contents.md %}
+
+Update, Commands and Async
+------
 
 In its simplest form, when using `Program.mkSimple`, the update function simply returns a new model:
 ```fsharp
@@ -104,3 +106,4 @@ Everything that wants access to `dispatch` must be mentioned in the composition 
 The state-resurrection `OnResume` logic of your application (see above) should also be adjusted to restart
 appropriate `async` actions accoring to the state of the application.
 
+* See also [Models](models.md)

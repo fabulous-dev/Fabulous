@@ -1,7 +1,10 @@
+Elmish.XamarinForms Guide
+=======
+
 {% include_relative contents.md %}
 
 Views: Core Elements
-=======
+------
 
 ### Views: ContentPage
 

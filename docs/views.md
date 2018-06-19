@@ -1,7 +1,10 @@
+Elmish.XamarinForms Guide
+=======
+
 {% include_relative contents.md %}
 
 Views
-=======
+------
 
 The `view` function is a function returning your view elements based on the current model. For example:
 
