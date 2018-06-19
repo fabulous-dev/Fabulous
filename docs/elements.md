@@ -6,7 +6,7 @@ Elmish.XamarinForms Guide
 Views: Core Elements
 ------
 
-### Views: ContentPage
+### ContentPage
 
 A single page app typically returns a `ContentPage`. For example:
 
@@ -21,7 +21,7 @@ let view model dispatch =
 See also: 
 * [`Xamarin.Forms.Core.ContentPage`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.ContentPage).
 
-### Views: StackLayout
+### StackLayout
 
 A stack layout is a vertically-stacked sequence of content:
 
@@ -37,7 +37,7 @@ See also:
 * [`Xamarin.Forms.Core.StackLayout`](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/stack-layout/).
 
 
-### Views: Button
+### Button
 
 Buttons are created using `Xaml.Button`. The `command` of a button will normally dispatch a messsage.  For example:
 
@@ -49,7 +49,7 @@ See also:
 * [`Xamarin.Forms.Core.Button`](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/button/).
 
 
-### Views: ListView, ListGroupedView
+### ListView, ListGroupedView
 
 A simple `ListView` is as follows:
 ```fsharp
@@ -70,7 +70,7 @@ There is also a `ListViewGrouped` for grouped items of data.  This uses the same
 See also:
 * [`Xamarin.Forms.Core.ListView`](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/listview/).
 
-### Views: Slider
+### Slider
 
 A simple `Slider` is as follows:
 ```fsharp
@@ -83,7 +83,7 @@ See also:
 * [`Xamarin.Forms.Core.Slider`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Slider).
 
 
-### Views: ActivityIndicator
+### ActivityIndicator
 
 A simple `ActivityIndicator` is as follows:
 ```fsharp
@@ -94,7 +94,7 @@ See also:
 * [`Xamarin.Forms.Core.ActivityIndicator`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.ActivityIndicator).
 
 
-### Views: DatePicker
+### DatePicker
 
 A simple `DatePicker` is as follows:
 ```fsharp
@@ -108,7 +108,7 @@ See also:
 * [`Xamarin.Forms.Core.DatePicker`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.DatePicker).
 
 
-### Views: Editor
+### Editor
 
 An example `Editor` is as follows:
 ```fsharp
@@ -121,7 +121,7 @@ See also:
 * [`Xamarin.Forms.Core.Editor`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Editor).
 
 
-### Views: BoxView
+### BoxView
 
 An example `BoxView` is as follows:
 ```fsharp
@@ -131,7 +131,7 @@ An example `BoxView` is as follows:
 See also:
 * [`Xamarin.Forms.Core.BoxView`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.BoxView).
 
-### Views: Entry
+### Entry
 
 An example `Entry` is as follows:
 ```fsharp
@@ -155,7 +155,7 @@ An example `Entry` with a placeholder is as follows:
 See also:
 * [`Xamarin.Forms.Core.Entry`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Entry).
 
-### Views: Frame
+### Frame
 
 A simple `Frame` is as follows:
 ```fsharp
@@ -165,7 +165,7 @@ A simple `Frame` is as follows:
 See also:
 * [`Xamarin.Forms.Core.Frame`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Frame).
 
-### Views: Grid
+### Grid
 
 An example `Grid` is as follows:
 ```fsharp
@@ -185,7 +185,7 @@ See also:
 * [`Xamarin.Forms.Core.Grid`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Grid).
 
 
-### Views: Image
+### Image
 
 A simple `` drawn from a resource or URL is as follows:
 ```fsharp
@@ -199,7 +199,7 @@ See also:
 * [`Xamarin.Forms.Core.Image`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Image).
 
 
-### Views: Picker
+### Picker
 
 A simple `Picker` is as follows:
 ```fsharp
@@ -224,7 +224,7 @@ let pickerItems =
 See also:
 * [`Xamarin.Forms.Core.Picker`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Picker).
 
-### Views: TableView
+### TableView
 
 An example `TableView` is as follows:
 ```fsharp
@@ -240,7 +240,7 @@ An example `TableView` is as follows:
 See also:
 * [`Xamarin.Forms.Core.TableView`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.TableView).
 
-### Views: RelativeLayout
+### RelativeLayout
 
 An example `RelativeLayout` is as follows:
 ```fsharp
@@ -257,7 +257,7 @@ An example `RelativeLayout` is as follows:
 See also:
 * [`Xamarin.Forms.Core.RelativeLayout`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.RelativeLayout).
 
-### Views: Tap Gestures
+### Tap Gestures
 
 Gesture recognizers can be added to any visual element.  For example, here is a `TapGestureRecognizer`:
 
@@ -270,7 +270,7 @@ See also:
 * [`Xamarin.Forms.Core.TapGestureRecognizer`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.TapGestureRecognizer).
 
 
-### Views: Pan Gestures
+### Pan Gestures
 
 Here is an example of a `PanGestureRecognizer` used to recognize panning touch movements:
 
@@ -285,7 +285,7 @@ Here is an example of a `PanGestureRecognizer` used to recognize panning touch m
 See also:
 * [`Xamarin.Forms.Core.PanGestureRecognizer`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.PanGestureRecognizer).
 
-### Views: Pinch Gestures
+### Pinch Gestures
 
 Here is an example of a `PinchGestureRecognizer` used to recognize pinch-or-expand touch movements:
 
@@ -301,7 +301,7 @@ See also:
 
 
 
-#### Views: "Infinite" or "unbounded" ListViews 
+#### "Infinite" or "unbounded" ListViews 
 
 "Infinite" (really "unbounded") lists are created by using the `itemAppearing` event to prompt a message which nudges the
 underlying model in a direction that will then supply new items to the view. 
@@ -348,7 +348,7 @@ There are many other techniques (e.g. save the latest collection of visual eleme
 Thre is also an `itemDisappearing` event for `ListView` that can be used to discard data from the underlying model and restrict the
 range of visual items that need to be generated.
 
-### Views: Other Controls
+### Other Controls
 
 All other controls from `Xamarin.Forms.Core` are available in the programming model.  See the `AllControls` sample.
 
@@ -357,7 +357,7 @@ See also
 
 
 
-### Views: Resource Dictionaries
+### Resource Dictionaries
 
 In Elmish.XamarinForms, resources dictionaries are just "simple F# programming", e.g.
 ```fsharp
