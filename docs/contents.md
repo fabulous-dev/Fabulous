@@ -1,4 +1,5 @@
-* [Structure of an App](#structure-of-an-app)
+* [Home](index.html)
+* [Structure of an App](index.html#structure-of-an-app)
 * [Views](views.html)
 * [Views: Catalog of Core Elements](elements.html)
 * [Views: Performance hints](views-perf.html)
@@ -6,4 +7,5 @@
 * [Views: Styling](styling.html)
 * [Models](models.html)
 * [Update, Messages and Async](update.html)
+* [GitHub](https://github.com/fsprojects/Elmish.XamarinForms)
 
