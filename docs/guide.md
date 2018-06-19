@@ -66,9 +66,10 @@ Views
 The `view` function is written using an F# DSL, see ``Elmish.XamarinForms.DynamicViews``.
 View functions excel in cases where the existence, characteristics and layout of the view depends on information in the model. Differential update is used to efficiently update the Xamarin.Forms display based on the previous and current view descriptions.
 
-### Dynamic Views: ContentPage
+See also
+* [`Xamarin.Forms` API docs](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms).
 
-[Link: `Xamarin.Forms.Core.ContentPage` docs](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.ContentPage?view=xamarin-forms/).
+### Dynamic Views: ContentPage
 
 A single page app typically returns a `ContentPage`:
 
@@ -80,9 +81,10 @@ let view model dispatch =
     )
 ```
 
-### Dynamic Views: StackLayout
+See also: 
+* [`Xamarin.Forms.Core.ContentPage`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.ContentPage).
 
-[Link: `Xamarin.Forms.Core.StackLayout` docs](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/stack-layout/).
+### Dynamic Views: StackLayout
 
 A stack layout is a vertically-stacked sequence of content:
 
@@ -97,12 +99,20 @@ let view model dispatch =
             ]))
 ```
 
+See also:
+* [`Xamarin.Forms.Core.StackLayout`](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/stack-layout/).
+
+
 
 ### Dynamic Views:  Button
 
-[Link: `Xamarin.Forms.Core.Button` docs](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/button/).
-
 Buttons are created using `Xaml.Button`. The `command` of a button will normally dispatch a messsage.  For example:
+
+```fsharp
+    Xaml.Button(text="Deposit", command=(fun () -> dispatch (Add 10.0)))
+```
+
+Here is a larger example:
 
 ```fsharp
 type Model =
@@ -130,19 +140,21 @@ let view model dispatch =
             children = [
                 match model.User with
                 | Some user ->
-                    yield Xaml.Label(text = sprintf "Logged in as : %s" user)
-                    yield Xaml.Label(text = sprintf "Balance: %s%.2f" model.CurrencySymbol model.Balance)
-                    yield Xaml.Button(text = "Withdraw", command=(fun () -> dispatch (Spend 10.0m)), canExecute=(model.Balance > 0.0m))
-                    yield Xaml.Button(text = "Deposit", command=(fun () -> dispatch (Add 10.0m)))
-                    yield Xaml.Button(text = "Logout", command=(fun () -> dispatch (Login None)))
+                    yield Xaml.Label(text=sprintf "Logged in as : %s" user)
+                    yield Xaml.Label(text=sprintf "Balance: %s%.2f" model.CurrencySymbol model.Balance)
+                    yield Xaml.Button(text="Withdraw", command=(fun () -> dispatch (Spend 10.0m)), canExecute=(model.Balance > 0.0m))
+                    yield Xaml.Button(text="Deposit", command=(fun () -> dispatch (Add 10.0m)))
+                    yield Xaml.Button(text="Logout", command=(fun () -> dispatch (Login None)))
                 | None ->
-                    yield Xaml.Button(text = "Login", command=(fun () -> dispatch (Login (Some "user"))))
+                    yield Xaml.Button(text="Login", command=(fun () -> dispatch (Login (Some "user"))))
             ]))
 ```
 
-### Dynamic Views: ListView, ListGroupedView
+See also:
+* [`Xamarin.Forms.Core.Button`](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/button/).
 
-[Link: `Xamarin.Forms.Core.ListView` docs](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/listview/).
+
+### Dynamic Views: ListView, ListGroupedView
 
 A simple `ListView` is as follows:
 ```fsharp
@@ -158,6 +170,10 @@ In the underlying implementation, each visual item is placed in a `ContentCell`.
 Currently the `itemSelected` callback uses integers indexes for keys to identify the elements (NOTE: this may change in future updates).
 
 There is also a `ListViewGrouped` for grouped items of data.  This uses the same Xamarin control under the hood but in a different mode of use.
+
+See also:
+* [`Xamarin.Forms.Core.ListView`](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/listview/).
+
 
 #### DynamicViews: "Infinite" or "unbounded" ListViews 
 
@@ -208,6 +224,9 @@ range of visual items that need to be generated.
 ### Dynamic Views: Other Controls
 
 All other controls from `Xamarin.Forms.Core` are available in the programming model.  See the `AllControls` sample.
+
+See also
+* [`Xamarin.Forms` API docs](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms).
 
 
 ### Dynamic Views and Navigation
@@ -260,13 +279,14 @@ type Msg =
 let view model dispatch = 
     ...
     Xaml.NavigationPage(pages=
-        [ yield Xaml.ContentPage(title="Root Page", content=Xaml.Button(text="About", command=(fun () -> dispatch (ShowAbout true)))) 
+        [ yield Xaml.ContentPage(title="Root Page", content=Xaml.Button(text="About", 
+                         command=(fun () -> dispatch (ShowAbout true)))) 
           if model.ShowAbout then 
               yield 
                   Xaml.ContentPage(title="About", 
                       content= Xaml.StackLayout(
                           children=[ 
-                              Xaml.Label(text = "Elmish.XamarinForms, version " + string (typeof<XamlElement>.Assembly.GetName().Version))
+                              Xaml.Label(text = "Elmish.XamarinForms!")
                               Xaml.Button(text = "Continue", command=(fun () -> dispatch (ShowAbout false) ))
                           ]))
         ])
@@ -403,8 +423,8 @@ Styling is a significant topic in Xamarin.Forms programming.  See [the extensive
 
 #### F#-coded styling
 
-One approach is to manually code up styling simply by using normal F# programming to abstract away commonality between
-various parts of your view logiv.
+The easiest approach is to manually code up styling simply by using normal F# programming to abstract away commonality between
+various parts of your view logic.
 
 We do not give a guide here as it is routine application of F# coding.  The [Fulma](https://mangelmaxime.github.io/Fulma/#fulma) approach to styling may also be of interest and provide inspiration.
 
@@ -455,7 +475,10 @@ type App () as app =
 #### "Xaml" coding via explicit `Style` objects
 
 You can also use "Xaml styling" by creating specific `Style` objects using the `Xamarin.Forms` APIs directly
-and attaching them to your application.  See [the Xamarin.Forms documentation](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/styles/xaml/).  We don't go into details here
+and attaching them to your application.   We don't go into details here
+
+See also:
+* [Xamarin.Forms styles](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/styles/xaml/). 
 
 Models
 -------
