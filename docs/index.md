@@ -12,11 +12,8 @@ to build Xamarin.Forms applications for iOS, Android, Mac and more.
 
 **This is a sample and may change.**
 
-* [Getting started](#getting=started)
 
-* [Documentation Guide](guide.md)
-
-* [Submit a fix to this guide](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/docs)
+{% include_relative contents.md %}
 
 
 Getting started
