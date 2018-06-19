@@ -80,6 +80,10 @@ The sample [CounterApp](https://github.com/fsprojects/Elmish.XamarinForms/blob/m
 
 The sample [AllControls](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Samples/AllControls/AllControls/AllControls.fs) contains examples of instantiating most controls in `Xamarin.Forms.Core`.
 
+The external sample [Calculator](https://github.com/nosami/Elmish.Calculator/) is a small calculator app. (Note: because this is an eternal sample it may not be up-to-date with the latest version of his library.)
+
+The external sample [PocketPiggyBank](https://github.com/jimbobbennett/PocketPiggyBank) is a small client-server app with login authentication. (Note: because this is an eternal sample it may not be up-to-date with the latest version of his library.)
+
 
 ## Dynamic Views
 
