@@ -1,7 +1,8 @@
-Models
-=======
 
 {% include_relative contents.md %}
+
+Models
+=======
 
 ### Models: Messages and Validation
 

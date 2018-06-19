@@ -1,7 +1,8 @@
+{% include_relative contents.md %}
+
 Views: Styling
 =======
 
-{% include_relative contents.md %}
 
 Styling is a significant topic in Xamarin.Forms programming.  
 

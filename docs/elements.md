@@ -1,7 +1,7 @@
+{% include_relative contents.md %}
+
 Views: Core Elements
 =======
-
-{% include_relative contents.md %}
 
 ### Views: ContentPage
 

@@ -1,7 +1,8 @@
+{% include_relative contents.md %}
+
 Update, Messages, Commands and Async
 =======
 
-{% include_relative contents.md %}
 
 In its simplest form, when using `Program.mkSimple`, the update function simply returns a new model:
 ```fsharp

@@ -1,7 +1,7 @@
+{% include_relative contents.md %}
+
 Views
 =======
-
-{% include_relative contents.md %}
 
 The `view` function is a function returning your view elements based on the current model. For example:
 
