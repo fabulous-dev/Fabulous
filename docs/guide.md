@@ -56,6 +56,8 @@ Some advantages of using an immutable model are:
 
 The `init` function returns your initial model.
 
+See [models](models.md).
+
 ### The view function
 
 The view function computes an immutable Xaml-like description. In the above example, the choice between a label and button depends on the `model.Pressed` value.
