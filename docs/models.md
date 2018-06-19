@@ -1,5 +1,7 @@
-Models
--------
+Elmish.XamarinForms: Models
+=======
+
+{% include_relative contents.md %}
 
 ### Models: Messages and Validation
 

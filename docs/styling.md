@@ -1,5 +1,7 @@
-Styling
--------
+Elmish.XamarinForms: Styling Views
+=======
+
+{% include_relative contents.md %}
 
 Styling is a significant topic in Xamarin.Forms programming.  
 

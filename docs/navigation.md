@@ -1,5 +1,7 @@
-Multi-page Applications and Navigation
-====================================
+Elmish.XamarinForms: Multi-page Applications and Navigation
+=======
+
+{% include_relative contents.md %}
 
 Multiple pages are generated as part of the overall view. Five multi-page navigation models are shown in the `AllControls` sample:
 

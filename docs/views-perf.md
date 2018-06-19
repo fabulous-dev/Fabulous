@@ -1,5 +1,7 @@
-Views and Performance
-------------------
+Elmish.XamarinForms: Views and Performance
+=======
+
+{% include_relative contents.md %}
 
 The performance of your app may in some cases be dominated by your view function.  The performance achieved may 
 depend on the number of message updates being generated and processed and should be considered with respect to your
