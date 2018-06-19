@@ -6,6 +6,7 @@ Elmish.XamarinForms Guide
 * [Models](models.md)
 * [Update, Messages and Control](update.md)
 * [Styling](styling.md)
+* [Multi-page applications and Navigation](navigation.md)
 
 Structure of an App
 ------
@@ -67,68 +68,4 @@ Each model gets an `update` function for message processing. The messages are ei
 If using `Program.mkProgram` your model may also return new commands to trigger asa result of processing a message.
 
 See [update](update.md)
-
-Messages, Commands and Control
-------------
-
-### Messages, Commands and Asynchronous Actions
-
-Asynchronous actions are triggered by having the `update` function return "commands", which can trigger later `dispatch` of further messages.
-
-* Change `Program.mkSimple` to `Program.mkProgram`
-
-```fsharp
-    let program = Program.mkProgram App.init App.update App.view
-```
-
-* Change your `update` function to return a pair of a model and a command. For most messages the command will be `Cmd.none` but for basic async actions use `Cmd.ofAsyncMsg`.
-
-For example, here is one pattern for a timer loop that can be turned on/off:
-
-```fsharp
-    type Model = 
-        { ...
-          TimerOn: bool 
-        }
-        
-    type Message = 
-        | ...
-        | TimedTick
-        | TimerToggled of bool
-        
-    let timerCmd = 
-        async { do! Async.Sleep 200
-                return TimedTick }
-        |> Cmd.ofAsyncMsg
-
-    let update msg model =
-        match msg with
-        | ...
-        | TimerToggled on -> { model with TimerOn = on }, (if on then timerCmd else Cmd.none)
-        | TimedTick -> if model.TimerOn then { model with Count = model.Count + model.Step }, timerCmd else model, Cmd.none
-```
-The state-resurrection `OnResume` logic of your application (see above) should also be adjusted to restart
-appropriate `async` actions accoring to the state of the application.
-
-NOTE: Making all stages of async computations (and their outcomes, e.g. cancellation and/or exceptions) explicit can add
-additional messages and model states. This comes with pros and cons. Please discuss concrete examples by opening issues
-in this repository.
-
-### Messages: Global asynchronous event subscriptions
-
-You can also set up global subscriptions, which are events sent from outside the view or the dispatch loop. For example, dispatching `ClockMsg` messages on a global timer:
-```fsharp
-    let timerTick dispatch =
-        let timer = new System.Timers.Timer(1.0)
-        timer.Elapsed.Subscribe (fun _ -> dispatch (ClockMsg System.DateTime.Now)) |> ignore
-        timer.Enabled <- true
-        timer.Start()
-
-    ...
-    let runner = 
-        ...
-        |> Program.withSubscription (fun _ -> Cmd.ofSub timerTick)
-        ...
-        
-```
 
