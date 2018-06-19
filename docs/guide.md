@@ -63,7 +63,7 @@ See [models](models.md).
 
 The view function computes an immutable Xaml-like description. In the above example, the choice between a label and button depends on the `model.Pressed` value.
 
-See [views](views.md), [styling](styling.md) and [navigation](navigation.md).
+See [views](views.md), [styling](styling.md), [navigation](navigation.md) and [views and performance](views-perf.md).
 
 ### The `update` function
 
