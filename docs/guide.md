@@ -1,41 +1,28 @@
 Elmish.XamarinForms Guide
 =======
 
-Getting started
+
+Structure of an App
 ------
 
-1. Create a blank F# Xamarin Forms app in Visual Studio or Visual Studio Code.  Make sure your shared code is an F# .NET Standard 2.0 Library project. 
-2. Add nuget package `Elmish.XamarinForms` to to your shared code project.
-3. Put the sample code below in your shared app library
-
-Alternatively clone and adapt the [Simple Calculator Project](https://github.com/nosami/Elmish.Calculator).
-
-A Basic Example
-------
-Here is a full example of an app:
+Here is the typical structure for an app:
 ```fsharp
-/// The messages dispatched by the view
 type Msg =
-    | Pressed
+    | ...
+    
 
 /// The model from which the view is generated
 type Model = 
-    { Pressed: bool }
+    { ... }
 
 /// Returns the initial state
-let init() = { Pressed=false }
+let init() = { ... }
     
 /// The funtion to update the view
-let update (msg:Msg) (model:Model) =
-    match msg with
-    | Pressed -> { model with Pressed = true }
+let update (msg:Msg) (model:Model) = ...
 
 /// The view function giving updated content for the page
-let view (model: Model) dispatch =
-    if model.Pressed then 
-        Xaml.Label(text="I was pressed!")
-    else
-        Xaml.Button(text="Press Me!", command=(fun () -> dispatch Pressed))
+let view (model: Model) dispatch = ...
 
 type App () = 
     inherit Application ()
@@ -46,13 +33,31 @@ type App () =
         |> Program.withDynamicView
         |> Program.run
 ```
-The init function returns your initial state, and each model gets an update function for message processing. The `view` function computes an immutable Xaml-like description. In the above example, the choice between a label and button depends on the `model.Pressed` value.
+
+### The Model
+
+The model is the core data from which the whole state of the app can be resurrected.  Consider the model to be "the information
+I would need on restart to get the app back to the same visual state".
+
+The model is generally immutable but may also contain service connections.
 
 Some advantages of using an immutable model are:
 
 * It is easy to unit test your `init`, `update` and `view` functions
 * You can save/restore your model relatively easily
 * It makes tracing causality usually very simple
+
+### The `init` function
+
+The `init` function returns your initial state.
+
+### Messages and the `update` function
+
+Each model gets an `update` function for message processing. The messages are either messages from the `view` or from external events.
+
+### The `view` function
+
+The `view` function computes an immutable Xaml-like description. In the above example, the choice between a label and button depends on the `model.Pressed` value.
 
 
 Dynamic Views
@@ -61,76 +66,157 @@ Dynamic Views
 Dynamic `view` functions are written using an F# DSL, see ``Elmish.XamarinForms.DynamicViews``.
 Dynamic Views excel in cases where the existence, characteristics and layout of the view depends on information in the model. React-style differential update is used to update the Xamarin.Forms display based on the previous and current view descriptions.
 
-Notes:
-* The F# DSL is [generated](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms/DynamicXaml.fs) from a [declarative model](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Generator/bindings.json) using a [code generator](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Generator) adapted from [@praeclarum](https://github.com/praeclarum)'s [ImmutableUI generator](https://github.com/praeclarum/ImmutableUI).
+The F# DSL is [generated](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms/Xamarin.Forms.Core.fs) from a [declarative model](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Generator/bindings.json) using a [code generator](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Generator) adapted from [@praeclarum](https://github.com/praeclarum)'s [ImmutableUI generator](https://github.com/praeclarum/ImmutableUI).
 * There is only one UI element type (XamlElement, an immutable property bag).
 * Safe creation is done through helpers such as [`Xaml.Button(...)`](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms/DynamicXaml.fs#L1248).
 * There are some additional F# DSL helpers, e.g. [`button |> withText "Hello"`](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms/DynamicXaml.fs#L729) (note: you don't have
 to use these, and the samples don't use them).
 
-### Dynamic Views: Performance Hints
+### Dynamic Views: ContentPage
 
-Dynamic views are only efficient for large UIs if the unchanging parts of a UI are "memoized", returning identical
-objects on each invocation of the `view` function.  This must be done explicitly, currently using `dependsOn`. Here is an example for a 6x6 Grid that depends on nothing, i.e. never changes:
+[Link: `Xamarin.Forms.Core.ContentPage` docs](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/contentpage/).
+
+A single page app typically returns a `ContentPage`:
+
 ```fsharp
 let view model dispatch =
-    ...
-    dependsOn () (fun model () -> 
-        Xaml.StackLayout(
-          children=
-            [ Xaml.Label(text=sprintf "Grid (6x6, auto):")
-              Xaml.Grid(rowdefs= [for i in 1 .. 6 -> box "auto"],
-                        coldefs=[for i in 1 .. 6 -> box "auto"], 
-                        children = [ for i in 1 .. 6 do for j in 1 .. 6 -> 
-                                       Xaml.BoxView(Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0) )
-                                              .GridRow(i-1).GridColumn(j-1) ] )
-            ])
+    Xaml.ContentPage(
+        title="Pocket Piggy Bank",
+        content= Xaml.Label(text = sprintf "Hello world!")
+    )
 ```
-Inside the function - the one passed to `dependsOn` - the `model` is rebound to be inaccessbile with a `DoNotUseMe` type so you can't use it. Here is an example where some of the model is extracted:
+
+### Dynamic Views: StackLayout
+
+[Link: `Xamarin.Forms.Core.StackLayout` docs](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/stacklayout/).
+
+A stack layout is a vertically-stacked sequence of content:
+
 ```fsharp
 let view model dispatch =
-    ...
-    dependsOn (model.CountForSlider, model.StepForSlider) (fun model (count, step) -> 
-        Xaml.Slider(minimum=0.0, maximum=10.0, value= double step, 
-                    valueChanged=(fun args -> dispatch (SliderValueChanged (int (args.NewValue + 0.5)))), 
-                    horizontalOptions=LayoutOptions.Fill)) 
-    ...
+    Xaml.ContentPage(
+        title="Pocket Piggy Bank",
+        content=Xaml.StackLayout(padding=20.0,
+            children = [
+                Xaml.Label(text = sprintf "Welcome to the bank!")
+                Xaml.Label(text = sprintf "Balance: %s%.2f" model.CurrencySymbol model.Balance)
+            ]))
 ```
-In the example, we extract properties `CountForSlider` and `StepForSlider` from the model, and bind them to `count` and `step`.  If either of these change, the section of the view will be recomputed and no adjustments will be made to the UI.
-If not, this section of the view will be reused. This helps ensure that this part of the view description only depends on the parts of the model extracted.
 
-You can also use 
-* the `fix` function for portions of a view that have no dependencies at all (besides the "dispatch" function)
-* the `fixf` function for command callbacks that have no dependencies at all (besides the "dispatch" function)
 
-### Dynamic Views: Resource Dictionaries
+### Dynamic Views:  Button
 
-In Elmish.XamarinForms, resources dictionaries are just "simple F# programming", e.g.
+[Link: `Xamarin.Forms.Core.Button` docs](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/button/).
+
+Buttons are created using `Xaml.Button`. The `command` of a button will normally dispatch a messsage.  For example:
+
 ```fsharp
-let horzOptions = LayoutOptions.Center
-let vertOptions = LayoutOptions.CenterAndExpand
+type Model =
+    { Balance : decimal
+      CurrencySymbol : string
+      User: string option }
+
+type Msg =
+    | Spend of decimal
+    | Add of decimal
+    | Login of string option
+
+let update msg model =
+    match msg with
+    | Spend x -> {model with Balance = model.Balance - x}, Cmd.none
+    | Add x -> {model with Balance = model.Balance + x}, Cmd.none
+    | Login user -> { model with User = user }, Cmd.none
+
+let view model dispatch =
+    Xaml.ContentPage(
+        title="Pocket Piggy Bank",
+        content=Xaml.StackLayout(padding=20.0,
+            horizontalOptions=LayoutOptions.Center,
+            verticalOptions=LayoutOptions.CenterAndExpand,
+            children = [
+                match model.User with
+                | Some user ->
+                    yield Xaml.Label(text = sprintf "Logged in as : %s" user)
+                    yield Xaml.Label(text = sprintf "Balance: %s%.2f" model.CurrencySymbol model.Balance)
+                    yield Xaml.Button(text = "Withdraw", command=(fun () -> dispatch (Spend 10.0m)), canExecute=(model.Balance > 0.0m))
+                    yield Xaml.Button(text = "Deposit", command=(fun () -> dispatch (Add 10.0m)))
+                    yield Xaml.Button(text = "Logout", command=(fun () -> dispatch (Login None)))
+                | None ->
+                    yield Xaml.Button(text = "Login", command=(fun () -> dispatch (Login (Some "user"))))
+            ]))
 ```
-is basically the eqivalent of Xaml:
-```xml
-<ContentPage.Resources>
-    <ResourceDictionary>
-        <LayoutOptions x:Key="horzOptions"
-                     Alignment="Center" />
 
-        <LayoutOptions x:Key="vertOptions"
-                     Alignment="Center"
-                     Expands="True" />
-    </ResourceDictionary>
-</ContentPage.Resources>
+### Dynamic Views: ListView, ListGroupedView
+
+[Link: `Xamarin.Forms.Core.ListView` docs](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/listview/).
+
+A simple `ListView` is as follows:
+```fsharp
+    Xaml.ListView(items = [ Xaml.Label "Ionide"
+                            Xaml.Label "Visual Studio"
+                            Xaml.Label "Emacs"
+                            Xaml.Label "Visual Studio Code"
+                            Xaml.Label "JetBrains Rider"], 
+                  itemSelected=(fun idx -> dispatch (ListViewSelectedItemChanged idx)))
 ```
-In other words, you can normally forget about resource dictionaries and just program as you would normally in F#.
 
-Other kinds of resources like images need a little more attention and you may need to ship multiple versions of images etc. for Android and iOS.  TBD: write a guide on these, in the meantime see the samples.
+In the underlying implementation, each visual item is placed in a `ContentCell`.
+Currently the `itemSelected` callback uses integers indexes for keys to identify the elements (NOTE: this may change in future updates).
+
+There is also a `ListViewGrouped` for grouped items of data.  This uses the same Xamarin control under the hood but in a different mode of use.
+
+#### DynamicViews: "Infinite" or "unbounded" ListViews 
+
+"Infinite" (really "unbounded") lists are created by using the `itemAppearing` event to prompt a message which nudges the
+underlying model in a direction that will then supply new items to the view. 
+
+For example, consider this pattern:
+```fsharp
+type Model = 
+    { ...
+      LatestItemAvailable: int 
+    }
+
+type Message = 
+    ...
+    | GetMoreItems of int
+
+let update msg model = 
+    match msg with 
+    | ...
+    | GetMoreItems n -> { model with LatestItemAvailable = n }
+    
+let view model dispatch = 
+    ...
+    Xaml.ListView(items = [ for i in 1 .. model.LatestItemAvailable do 
+                              yield Xaml.Label("Item " + string i) ], 
+                  itemAppearing=(fun idx -> if idx >= max - 2 then dispatch (GetMoreItems (idx + 10) ) )  )
+    ...
+```
+Note:
+* The underlying data in the model is just an integer `LatestItemAvailable` (normally it would really be a list of actual entities drawn from a data source)
+* On each update to the view we produce all the visual items from `Item 1` onwards
+* The `itemAppearing` event is called for each item, e.g. when item `10` appears
+* When the event triggers we grow the underlying data model by 10
+* This will trigger an update of the view again, with more visual elements available (but not yet appearing)
+
+Surprisingly even this naive technique  is fairly efficient. There are numerous ways to make this more efficient (we aim to document more of these over time too).  One simple one is to memoize each individual visual item using `dependsOn`:
+```fsharp
+                  items = [ for i in 1 .. model.LatestItemAvailable do 
+                              yield dependsOn i (fun model i -> Xaml.Label("Item " + string i)) ]
+```
+With that, this simple list views scale to > 10,000 items on a modern phone, though your mileage may vary.
+There are many other techniques (e.g. save the latest collection of visual element descriptions in the model, or to use a `ConditionalWeakTable` to associate it with the latest model).  We will document further techniques in due course. 
+
+Thre is also an `itemDisappearing` event for `ListView` that can be used to discard data from the underlying model and restrict the
+range of visual items that need to be generated.
+
+### Dynamic Views: Other Controls
+
+All other controls from `Xamarin.Forms.Core` are available in the programming model.  See the `AllControls` sample.
 
 
-
-### Dynamic Views: Multiple Pages and Navigation
-
+### Dynamic Views and Navigation
 
 Multiple pages are just generated as part of the overall view.
 
@@ -228,68 +314,65 @@ Principles:
 
 See the `AllControls` sample
 
-### Dynamic Views: ListView, ListGroupedView and friends
+### Dynamic Views: Performance Hints
 
-The programming model supports several more bespoke uses of the underlying [`ListView`](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/listview/) control from `Xamarin.Forms.Core`.  In the simplest form, just called `ListView`, the `items` property specifies a collection of visual elements:
+Dynamic views are only efficient for large UIs if the unchanging parts of a UI are "memoized", returning identical
+objects on each invocation of the `view` function.  This must be done explicitly, currently using `dependsOn`. Here is an example for a 6x6 Grid that depends on nothing, i.e. never changes:
 ```fsharp
-    Xaml.ListView(items = [ Xaml.Label "Ionide"
-                            Xaml.Label "Visual Studio"
-                            Xaml.Label "Emacs"
-                            Xaml.Label "Visual Studio Code"
-                            Xaml.Label "JetBrains Rider"], 
-                  itemSelected=(fun idx -> dispatch (ListViewSelectedItemChanged idx)))
+let view model dispatch =
+    ...
+    dependsOn () (fun model () -> 
+        Xaml.StackLayout(
+          children=
+            [ Xaml.Label(text=sprintf "Grid (6x6, auto):")
+              Xaml.Grid(rowdefs= [for i in 1 .. 6 -> box "auto"],
+                        coldefs=[for i in 1 .. 6 -> box "auto"], 
+                        children = [ for i in 1 .. 6 do for j in 1 .. 6 -> 
+                                       Xaml.BoxView(Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0) )
+                                              .GridRow(i-1).GridColumn(j-1) ] )
+            ])
 ```
-In the underlying implementation, each visual item is placed in a `ContentCell`.
-Currently the `itemSelected` callback uses integers indexes for
-keys to identify the elements (NOTE: this may change in future updates).
-
-There is also a `ListViewGrouped` for grouped items of data.
-
-#### "Infinite" or "unbounded" ListViews 
-
-"Infinite" (really "unbounded") lists are created by using the `itemAppearing` event to prompt a message which nudges the
-underlying model in a direction that will then supply new items to the view. 
-
-For example, consider this pattern:
+Inside the function - the one passed to `dependsOn` - the `model` is rebound to be inaccessbile with a `DoNotUseMe` type so you can't use it. Here is an example where some of the model is extracted:
 ```fsharp
-type Model = 
-    { ...
-      LatestItemAvailable: int 
-    }
-
-type Message = 
+let view model dispatch =
     ...
-    | GetMoreItems of int
-
-let update msg model = 
-    match msg with 
-    | ...
-    | GetMoreItems n -> { model with LatestItemAvailable = n }
-    
-let view model dispatch = 
-    ...
-    Xaml.ListView(items = [ for i in 1 .. model.LatestItemAvailable do 
-                              yield Xaml.Label("Item " + string i) ], 
-                  itemAppearing=(fun idx -> if idx >= max - 2 then dispatch (GetMoreItems (idx + 10) ) )  )
+    dependsOn (model.CountForSlider, model.StepForSlider) (fun model (count, step) -> 
+        Xaml.Slider(minimum=0.0, maximum=10.0, value= double step, 
+                    valueChanged=(fun args -> dispatch (SliderValueChanged (int (args.NewValue + 0.5)))), 
+                    horizontalOptions=LayoutOptions.Fill)) 
     ...
 ```
-Note:
-* The underlying data in the model is just an integer `LatestItemAvailable` (normally it would really be a list of actual entities drawn from a data source)
-* On each update to the view we produce all the visual items from `Item 1` onwards
-* The `itemAppearing` event is called for each item, e.g. when item `10` appears
-* When the event triggers we grow the underlying data model by 10
-* This will trigger an update of the view again, with more visual elements available (but not yet appearing)
+In the example, we extract properties `CountForSlider` and `StepForSlider` from the model, and bind them to `count` and `step`.  If either of these change, the section of the view will be recomputed and no adjustments will be made to the UI.
+If not, this section of the view will be reused. This helps ensure that this part of the view description only depends on the parts of the model extracted.
 
-Surprisingly even this naive technique  is fairly efficient. There are numerous ways to make this more efficient (we aim to document more of these over time too).  One simple one is to memoize each individual visual item using `dependsOn`:
+You can also use 
+* the `fix` function for portions of a view that have no dependencies at all (besides the "dispatch" function)
+* the `fixf` function for command callbacks that have no dependencies at all (besides the "dispatch" function)
+
+### Dynamic Views: Resource Dictionaries
+
+In Elmish.XamarinForms, resources dictionaries are just "simple F# programming", e.g.
 ```fsharp
-                  items = [ for i in 1 .. model.LatestItemAvailable do 
-                              yield dependsOn i (fun model i -> Xaml.Label("Item " + string i)) ]
+let horzOptions = LayoutOptions.Center
+let vertOptions = LayoutOptions.CenterAndExpand
 ```
-With that, this simple list views scale to > 10,000 items on a modern phone, though your mileage may vary.
-There are many other techniques (e.g. save the latest collection of visual element descriptions in the model, or to use a `ConditionalWeakTable` to associate it with the latest model).  We will document further techniques in due course. 
+is basically the eqivalent of Xaml:
+```xml
+<ContentPage.Resources>
+    <ResourceDictionary>
+        <LayoutOptions x:Key="horzOptions"
+                     Alignment="Center" />
 
-Thre is also an `itemDisappearing` event for `ListView` that can be used to discard data from the underlying model and restrict the
-range of visual items that need to be generated.
+        <LayoutOptions x:Key="vertOptions"
+                     Alignment="Center"
+                     Expands="True" />
+    </ResourceDictionary>
+</ContentPage.Resources>
+```
+In other words, you can normally forget about resource dictionaries and just program as you would normally in F#.
+
+Other kinds of resources like images need a little more attention and you may need to ship multiple versions of images etc. for Android and iOS.  TBD: write a guide on these, in the meantime see the samples.
+
 
 ### Dynamic Views: Differential Update of Lists of Things
 
@@ -318,7 +401,8 @@ Basically, incremental update is faster if items are being added/removed at the 
 The above is sufficient for many purposes, but care must always be taken with large lists and data sources, see `ListView` above for example.  Care must also be taken whenever data updates very rapidly.
 
 
-### Dynamic Views: Styling
+Styling
+-------
 
 Styling is a significant topic in Xamarin.Forms programming.  See [the extensive Xamarin.Forms documentation on styling](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/styles/).
 
@@ -378,7 +462,9 @@ type App () as app =
 
 You can also use "Xaml styling" by creating specific `Style` objects using the `Xamarin.Forms` APIs directly
 and attaching them to your application.  See [the Xamarin.Forms documentation](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/styles/xaml/).  We don't go into details here
-## Models
+
+Models
+-------
 
 ### Models: Messages and Validation
 
