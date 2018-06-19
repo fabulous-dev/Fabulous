@@ -1,5 +1,7 @@
-Views
+Elmish.XamarinForms: Views
 =======
+
+{% include_relative contents.md %}
 
 The `view` function is a function returning your view elements based on the current model. For example:
 
@@ -37,19 +39,15 @@ See also:
 A stack layout is a vertically-stacked sequence of content:
 
 ```fsharp
-let view model dispatch =
-    Xaml.ContentPage(
-        title="Pocket Piggy Bank",
-        content=Xaml.StackLayout(padding=20.0,
+        Xaml.StackLayout(padding=20.0,
             children = [
                 Xaml.Label(text = sprintf "Welcome to the bank!")
                 Xaml.Label(text = sprintf "Balance: %s%.2f" model.CurrencySymbol model.Balance)
-            ]))
+            ])
 ```
 
 See also:
 * [`Xamarin.Forms.Core.StackLayout`](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/stack-layout/).
-
 
 
 ### Views:  Button
@@ -121,6 +119,248 @@ There is also a `ListViewGrouped` for grouped items of data.  This uses the same
 
 See also:
 * [`Xamarin.Forms.Core.ListView`](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/listview/).
+
+### Views: Slider
+
+A simple `Slider` is as follows:
+```fsharp
+        Xaml.Slider(minimum=0.0, maximum=10.0, 
+            value= double step, 
+            valueChanged=(fun args -> dispatch (SliderValueChanged (int (args.NewValue + 0.5)))), 
+            horizontalOptions=LayoutOptions.Fill) 
+```
+
+See also:
+* [`Xamarin.Forms.Core.Slider`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Slider).
+
+
+### Views: ActivityIndicator
+
+A simple `ActivityIndicator` is as follows:
+```fsharp
+        Xaml.ActivityIndicator(isRunning=(count > 0), horizontalOptions=LayoutOptions.CenterAndExpand)
+```
+
+See also:
+* [`Xamarin.Forms.Core.ActivityIndicator`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.ActivityIndicator).
+
+
+### Views: DatePicker
+
+A simple `DatePicker` is as follows:
+```fsharp
+        Xaml.DatePicker(minimumDate= DateTime.Today, 
+            maximumDate=DateTime.Today + TimeSpan.FromDays(365.0), 
+            date=startDate, 
+            dateSelected=(fun args -> dispatch (StartDateSelected args.NewDate)), 
+            horizontalOptions=LayoutOptions.CenterAndExpand)
+```
+
+See also:
+* [`Xamarin.Forms.Core.DatePicker`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.DatePicker).
+
+
+### Views: Editor
+
+An example `Editor` is as follows:
+```fsharp
+        Xaml.Editor(text= editorText, 
+            horizontalOptions=LayoutOptions.CenterAndExpand, 
+            textChanged=(fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
+            completed=(fun text -> dispatch (EditorEditCompleted text)))
+```
+
+See also:
+* [`Xamarin.Forms.Core.Editor`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Editor).
+
+
+### Views: BoxView
+
+An example `BoxView` is as follows:
+```fsharp
+        Xaml.BoxView(Colors.Fuchsia)
+```
+
+See also:
+* [`Xamarin.Forms.Core.BoxView`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.BoxView).
+
+### Views: Entry
+
+An example `Entry` is as follows:
+```fsharp
+        Xaml.Entry(text= entryText, 
+            horizontalOptions=LayoutOptions.CenterAndExpand, 
+            textChanged=(fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
+            completed=(fun text -> dispatch (EntryEditCompleted text)))
+```
+An example `Entry` with password is as follows:
+```fsharp
+        Xaml.Entry(text= password, isPassword=true, 
+            horizontalOptions=LayoutOptions.CenterAndExpand, 
+            textChanged=(fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
+            completed=(fun text -> dispatch (EntryEditCompleted text)))
+```
+An example `Entry` with a placeholder is as follows:
+```fsharp
+        Xaml.Entry(placeholder="Enter text", 
+            horizontalOptions=LayoutOptions.CenterAndExpand, 
+            textChanged=(fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
+            completed=(fun text -> dispatch (EntryEditCompleted text)))
+```
+
+See also:
+* [`Xamarin.Forms.Core.Entry`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Entry).
+
+### Views: Frame
+
+A simple `Frame` is as follows:
+```fsharp
+                Xaml.Frame(hasShadow=true, 
+                    backgroundColor=Colors.Fuchsia, 
+                    horizontalOptions=LayoutOptions.CenterAndExpand ] )
+```
+
+See also:
+* [`Xamarin.Forms.Core.Frame`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Frame).
+
+### Views: Grid
+
+An example `Grid` is as follows:
+```fsharp
+        Xaml.Grid(
+            rowdefs = [for i in 1 .. 6 -> box "auto"], 
+            coldefs = [for i in 1 .. 6 -> box "auto"], 
+            children =
+                [ for i in 1 .. 6 do for j in 1 .. 6 -> 
+                     let color = Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0)
+                     Xaml.BoxView(color).GridRow(i-1).GridColumn(j-1) ] )
+```
+Notes:
+* Row and column definitions can use `"*"`, `"auto"` or a thickness
+* Fluent methods `.GridRow(..)` and `.GridColumn(..)` are used to place the items in locations on the grid.
+
+See also:
+* [`Xamarin.Forms.Core.Grid`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Grid).
+
+
+### Views: Image
+
+A simple `Image` drawn from a resource or URL is as follows:
+```fsharp
+let monkey = "http://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg"
+
+...
+        Xaml.Image(source = monkey, 
+            horizontalOptions = LayoutOptions.CenterAndExpand,
+            verticalOptions = LayoutOptions.CenterAndExpand) ]))
+```
+
+See also:
+* [`Xamarin.Forms.Core.Image`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Image).
+
+
+### Views: Picker
+
+A simple `Picker` is as follows:
+```fsharp
+    let pickerItems = 
+        [| ("Aqua", Color.Aqua); ("Black", Color.Black);
+           ("Blue", Color.Blue); ("Fucshia", Color.Fuchsia);
+           ("Gray", Color.Gray); ("Green", Color.Green);
+           ("Lime", Color.Lime); ("Maroon", Color.Maroon);
+           ("Navy", Color.Navy); ("Olive", Color.Olive);
+           ("Purple", Color.Purple); ("Red", Color.Red);
+           ("Silver", Color.Silver); ("Teal", Color.Teal);
+           ("White", Color.White); ("Yellow", Color.Yellow ) |]
+
+...
+    Xaml.Picker(title = "Choose Color:", 
+        textColor = snd pickerItems.[pickedColorIndex], 
+        selectedIndex = pickedColorIndex, 
+        itemsSource = Array.map fst pickerItems,
+        horizontalOptions = LayoutOptions.CenterAndExpand, 
+        selectedIndexChanged = (fun (i, item) -> dispatch (PickerItemChanged i)))
+```
+
+See also:
+* [`Xamarin.Forms.Core.Picker`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Picker).
+
+### Views: TableView
+
+An example `TableView` is as follows:
+```fsharp
+        Xaml.TableView(
+            items= [ ("Videos", [ Xaml.SwitchCell(on=true, text="Luca 2008", onChanged=(fun args -> ()) ) 
+                                  Xaml.SwitchCell(on=true, text="Don 2010", onChanged=(fun args -> ()) ) ] )
+                     ("Books", [ Xaml.SwitchCell(on=true, text="Expert F#", onChanged=(fun args -> ()) ) 
+                                 Xaml.SwitchCell(on=false, text="Programming F#", onChanged=(fun args -> ()) ) ])
+                     ("Contact", [ Xaml.EntryCell(label="Email", placeholder="foo@bar.com", completed=(fun args -> ()) )
+                                   Xaml.EntryCell(label="Phone", placeholder="+44 87654321", completed=(fun args -> ()) )] )], 
+            horizontalOptions=LayoutOptions.StartAndExpand) 
+```
+
+See also:
+* [`Xamarin.Forms.Core.TableView`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.TableView).
+
+### Views: RelativeLayout
+
+An example `RelativeLayout` is as follows:
+```fsharp
+        Xaml.RelativeLayout(
+            children=[ 
+                Xaml.Label(text = "RelativeLayout Example", textColor = Color.Red)
+                    .XConstraint(Constraint.RelativeToParent(fun parent -> 0.0))
+                Xaml.Label(text = "Positioned relative to my parent", textColor = Color.Red)
+                    .XConstraint(Constraint.RelativeToParent(fun parent -> parent.Width / 3.0))
+                    .YConstraint(Constraint.RelativeToParent(fun parent -> parent.Height / 2.0))
+            ])
+```
+
+See also:
+* [`Xamarin.Forms.Core.RelativeLayout`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.RelativeLayout).
+
+### Views: Tap Gestures
+
+Gesture recognizers can be added to any visual element.  For example, here is a `TapGestureRecognizer`:
+
+```fsharp
+        Xaml.Frame(hasShadow=true, 
+            gestureRecognizers=[ Xaml.TapGestureRecognizer(command=(fun () -> dispatch FrameTapped)) ] )
+```
+
+See also:
+* [`Xamarin.Forms.Core.TapGestureRecognizer`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.TapGestureRecognizer).
+
+
+### Views: Pan Gestures
+
+Here is an example of a `PanGestureRecognizer` used to recognize panning touch movements:
+
+```fsharp
+        Xaml.Frame(hasShadow=true, 
+            gestureRecognizers=[ 
+                Xaml.PanGestureRecognizer(touchPoints=1, panUpdated=(fun panArgs -> 
+                       if panArgs.StatusType = GestureStatus.Running then 
+                           dispatch (PanGesture panArgs)))]) 
+```
+
+See also:
+* [`Xamarin.Forms.Core.PanGestureRecognizer`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.PanGestureRecognizer).
+
+### Views: Pinch Gestures
+
+Here is an example of a `PinchGestureRecognizer` used to recognize pinch-or-expand touch movements:
+
+```fsharp
+        Xaml.Frame(hasShadow=true, 
+            gestureRecognizers=
+                [ Xaml.PinchGestureRecognizer(pinchUpdated=(fun pinchArgs -> 
+                      dispatch (UpdateSize (pinchArgs.Scale, pinchArgs.Status)))) ] ))
+```
+
+See also:
+* [`Xamarin.Forms.Core.PinchGestureRecognizer`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.PinchGestureRecognizer).
+
 
 
 #### Views: "Infinite" or "unbounded" ListViews 
