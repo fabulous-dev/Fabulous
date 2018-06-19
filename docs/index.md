@@ -13,6 +13,9 @@ to build Xamarin.Forms applications for iOS, Android, Mac and more.
 
 * [Documentation Guide](guide.md)
 
+* [Submit a fix to this guide](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/docs)
+
+
 Getting started
 ------
 
@@ -98,4 +101,3 @@ See [docs/half-elmish.md](docs/half-elmish.md)
 
 Please contribute to this library through issue reports, pull requests, code reviews and discussion.
 
--->
