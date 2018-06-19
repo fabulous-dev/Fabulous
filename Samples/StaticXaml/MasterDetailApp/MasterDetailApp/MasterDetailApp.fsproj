@@ -6,6 +6,25 @@
   <ItemGroup>
     <Compile Include="Common/AssemblyInfo.fs" />
     <Compile Include="Common/Common.fs" />
+    <EmbeddedResource Include="Pages\AboutPage.xaml" />
+    <EmbeddedResource Include="Pages\ItemDetailPage.xaml" />
+    <EmbeddedResource Include="Pages\NewItemPage.xaml" />
+    <EmbeddedResource Include="Pages\ItemsPage.xaml" />
+    <Compile Include="Pages\AboutPage.xaml.fs">
+      <DependentUpon>AboutPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ItemDetailPage.xaml.fs">
+      <DependentUpon>ItemDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\NewItemPage.xaml.fs">
+      <DependentUpon>NewItemPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ItemsPage.xaml.fs">
+      <DependentUpon>ItemsPage.xaml</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="App.xaml" />
+    <Compile Include="MasterDetailApp.fs" />
+    <PackageReference Include="Xamarin.Forms" Version="2.5.0.280555" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\AboutPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -21,23 +40,7 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)App.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <Compile Include="Pages\AboutPage.xaml.fs">
-      <DependentUpon>AboutPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\ItemDetailPage.xaml.fs">
-      <DependentUpon>ItemDetailPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\NewItemPage.xaml.fs">
-      <DependentUpon>NewItemPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\ItemsPage.xaml.fs">
-      <DependentUpon>ItemsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MasterDetailApp.fs" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="FSharp.Core" Version="4.3.3" />
-    <PackageReference Include="Xamarin.Forms" Version="2.5.0.280555" />
     <ProjectReference Include="..\..\..\..\Elmish.XamarinForms\Elmish.XamarinForms.fsproj" />
   </ItemGroup>
 </Project>

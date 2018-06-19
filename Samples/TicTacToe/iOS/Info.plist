@@ -7,7 +7,7 @@
 	<key>CFBundleName</key>
 	<string>TicTacToe</string>
 	<key>CFBundleIdentifier</key>
-	<string>io.jimbobbennett.TicTacToe</string>
+	<string>com.donsyme.AllControls</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>

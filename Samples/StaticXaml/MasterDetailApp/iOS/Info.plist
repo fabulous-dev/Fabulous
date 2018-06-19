@@ -7,7 +7,7 @@
 	<key>CFBundleName</key>
 	<string>MasterDetailApp</string>
 	<key>CFBundleIdentifier</key>
-	<string>ca.seventhwave.MasterDetailApp</string>
+	<string>com.donsyme.AllControls</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
