@@ -75,32 +75,19 @@ Some advantages of using an immutable model are:
 Example Views
 ------
 
-The sample [CounterApp](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Samples/CounterApp/CounterApp/CounterApp.fs) contains a slightly larger example of Button/Label/Slider controls.
+The sample [CounterApp](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Samples/CounterApp/CounterApp/CounterApp.fs) contains a slightly larger example of Button/Label/Slider elements.
 
-The sample [AllControls](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Samples/AllControls/AllControls/AllControls.fs) contains examples of instantiating most controls in `Xamarin.Forms.Core`.
+The sample [TicTacToe](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Samples/TicTacToe/TicTacToe/TicTacToe.fs) contains examples of the Grid and Image elements.
+
+The sample [AllControls](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Samples/AllControls/AllControls/AllControls.fs) contains examples of instantiating most elements in `Xamarin.Forms.Core`.
 
 The external sample [Calculator](https://github.com/nosami/Elmish.Calculator/) is a small calculator app. (Note: because this is an external sample it may not be up-to-date with the latest version of his library.)
 
 The external sample [PocketPiggyBank](https://github.com/jimbobbennett/PocketPiggyBank) is a small client-server app with login authentication. (Note: because this is an external sample it may not be up-to-date with the latest version of his library.)
 
 
-## Dynamic Views
-
-Dynamic `view` functions are written using an F# DSL, see ``Elmish.XamarinForms.DynamicViews``.
-Dynamic Views excel in cases where the existence, characteristics and layout of the view depends on information in the model. React-style differential update is used to update the Xamarin.Forms display based on the previous and current view descriptions.
-
-The F# DSL is [generated](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms/Xamarin.Forms.Core.fs) from a [declarative model](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Generator/bindings.json) using a [code generator](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Generator) adapted from [@praeclarum](https://github.com/praeclarum)'s [ImmutableUI generator](https://github.com/praeclarum/ImmutableUI).
-* There is only one UI element type (XamlElement, an immutable property bag).
-* Safe creation is done through helpers such as [`Xaml.Button(...)`](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms/DynamicXaml.fs#L1248).
-
-
-## Static Views and "Half Elmish"
-
-In some circumstances there are advantages to using static Xaml, and static bindings from the model to those views. This is called "Half Elmish" and is the primary technique used by [`Elmish.WPF`](https://github.com/Prolucid/Elmish.WPF) at time of writing. (It was also  the original technique used by this repo and the prototype `Elmish.Forms`).   
-
-See [half-elmish.md](half-elmish.md).
-
-## Contributing
+Contributing
+------
 
 Please contribute to this library through issue reports, pull requests, code reviews and discussion.
 
