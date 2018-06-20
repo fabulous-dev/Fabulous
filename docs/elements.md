@@ -21,16 +21,16 @@ let view model dispatch =
 For other kinds of pages, see [Multi-page applications and Navigation](navigation.md)
 
 See also: 
-* [`Xamarin.Forms.Core.ContentPage`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.ContentPage).
+* [`Xamarin.Forms.Core.ContentPage`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.ContentPage)
 
 
 Views: Core Elements: Layouts
 -------------------
 
 Xamarin.Forms has several layouts and features for organizing content on screen.
-For a comprehensive guide see the [Xamarin Guide to Layouts](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/).
+For a comprehensive guide see the [Xamarin Guide to Layouts](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/)
 
-[![](absolute-layout-images/layouts-sml.png "Xamarin.Forms Layouts")](https://user-images.githubusercontent.com/7204669/41666541-aae7b246-74a2-11e8-891a-1c9194632d8b.png)
+[![](https://user-images.githubusercontent.com/7204669/41666541-aae7b246-74a2-11e8-891a-1c9194632d8b.png "Xamarin.Forms Layouts")](https://user-images.githubusercontent.com/7204669/41666541-aae7b246-74a2-11e8-891a-1c9194632d8b.png)
 
 
 ### StackLayout
@@ -46,8 +46,8 @@ StackLayout organizes views in a one-dimensional line ("stack"), either horizont
 ```
 
 See also:
-* [Xamarin guide to StackLayout](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/stack-layout/).
-* [Xamarin API docs for `StackLayout`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.StackLayout).
+* [Xamarin guide to StackLayout](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/stack-layout/)
+* [Xamarin API docs for `StackLayout`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.StackLayout)
 
 ### AbsoluteLayout
 
@@ -69,8 +69,8 @@ Xaml.AbsoluteLayout(backgroundColor = Color.Blue.WithLuminosity(0.9), verticalOp
 ```
 
 See also:
-* [Xamarin guide to AbsoluteLayout](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/absolute-layout/).
-* [Xamarin API docs for `AbsoluteLayout`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.AbsoluteLayout).
+* [Xamarin guide to AbsoluteLayout](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/absolute-layout/)
+* [Xamarin API docs for `AbsoluteLayout`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.AbsoluteLayout)
 
 ### RelativeLayout
 
@@ -89,8 +89,8 @@ An example `RelativeLayout` is as follows:
 ```
 
 See also:
-* [Xamarin guide to RelativeLayout](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/relative-layout/).
-* [Xamarin API docs for `RelativeLayout`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.RelativeLayout).
+* [Xamarin guide to RelativeLayout](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/relative-layout/)
+* [Xamarin API docs for `RelativeLayout`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.RelativeLayout)
 
 ### FlexLayout
 
@@ -115,8 +115,8 @@ Xaml.FlexLayout(direction=FlexDirection.Column,
 ```
 
 See also:
-* [Xamarin guide to FlexLayout](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/flex-layout/).
-* [Xamarin API docs for `FlexLayout`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.FlexLayout).
+* [Xamarin guide to FlexLayout](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/flex-layout/)
+* [Xamarin API docs for `FlexLayout`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.FlexLayout)
 
 ### Grid
 
@@ -137,7 +137,7 @@ Notes:
 * Fluent methods `.GridRow(..)` and `.GridColumn(..)` are used to place the items in locations on the grid.
 
 See also:
-* [`Xamarin.Forms.Core.Grid`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Grid).
+* [`Xamarin.Forms.Core.Grid`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Grid)
 
 ### ScrollView
 
@@ -148,8 +148,8 @@ to automatically move to the visible portion of the screen when the keyboard is 
 ```
 
 See also:
-* [Xamarin guide to ScrollView](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/scroll-view).
-* [`Xamarin.Forms.Core.ScrollView`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.ScrollView).
+* [Xamarin guide to ScrollView](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/scroll-view)
+* [`Xamarin.Forms.Core.ScrollView`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.ScrollView)
 
 
 
@@ -177,7 +177,7 @@ Currently the `itemSelected` callback uses integers indexes for keys to identify
 There is also a `ListViewGrouped` for grouped items of data.  This uses the same Xamarin control under the hood but in a different mode of use.
 
 See also:
-* [`Xamarin.Forms.Core.ListView`](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/listview/).
+* [`Xamarin.Forms.Core.ListView`](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/listview/)
 
 ### TableView
 
@@ -193,7 +193,7 @@ An example `TableView` is as follows:
 ```
 
 See also:
-* [`Xamarin.Forms.Core.TableView`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.TableView).
+* [`Xamarin.Forms.Core.TableView`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.TableView)
 
 #### "Infinite" or "unbounded" ListViews 
 
@@ -257,7 +257,7 @@ Buttons are created using `Xaml.Button`. The `command` of a button will normally
 
 See also:
 * [Xamarin guide to Button](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/button)
-* [`Xamarin.Forms.Core.Button`](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/button/).
+* [`Xamarin.Forms.Core.Button`](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/button/)
 
 
 ### Slider
@@ -271,7 +271,7 @@ A simple `Slider` is as follows:
 
 See also:
 * [Xamarin guide to Slider](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/slider)
-* [`Xamarin.Forms.Core.Slider`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Slider).
+* [`Xamarin.Forms.Core.Slider`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Slider)
 
 
 ### ActivityIndicator
@@ -282,7 +282,7 @@ A simple `ActivityIndicator` is as follows:
 ```
 
 See also:
-* [`Xamarin.Forms.Core.ActivityIndicator`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.ActivityIndicator).
+* [`Xamarin.Forms.Core.ActivityIndicator`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.ActivityIndicator)
 
 
 ### DatePicker
@@ -297,7 +297,7 @@ A simple `DatePicker` is as follows:
 
 See also:
 * [Xamarin guide to DatePicker](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/datepicker)
-* [`Xamarin.Forms.Core.DatePicker`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.DatePicker).
+* [`Xamarin.Forms.Core.DatePicker`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.DatePicker)
 
 
 ### Editor
@@ -310,7 +310,7 @@ An example `Editor` is as follows:
 ```
 
 See also:
-* [`Xamarin.Forms.Core.Editor`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Editor).
+* [`Xamarin.Forms.Core.Editor`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Editor)
 
 
 ### BoxView
@@ -321,7 +321,7 @@ An example `BoxView` is as follows:
 ```
 
 See also:
-* [`Xamarin.Forms.Core.BoxView`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.BoxView).
+* [`Xamarin.Forms.Core.BoxView`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.BoxView)
 
 ### Entry
 
@@ -345,7 +345,7 @@ An example `Entry` with a placeholder is as follows:
 ```
 
 See also:
-* [`Xamarin.Forms.Core.Entry`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Entry).
+* [`Xamarin.Forms.Core.Entry`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Entry)
 
 ### Frame
 
@@ -355,7 +355,7 @@ A frame contains other content. A simple `Frame` is as follows:
 ```
 
 See also:
-* [`Xamarin.Forms.Core.Frame`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Frame).
+* [`Xamarin.Forms.Core.Frame`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Frame)
 
 
 ### Image
@@ -369,7 +369,7 @@ let monkey = "http://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anu
 ```
 
 See also:
-* [`Xamarin.Forms.Core.Image`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Image).
+* [`Xamarin.Forms.Core.Image`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Image)
 
 
 ### Picker
@@ -395,7 +395,7 @@ let pickerItems =
 ```
 
 See also:
-* [`Xamarin.Forms.Core.Picker`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Picker).
+* [`Xamarin.Forms.Core.Picker`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Picker)
 
 
 Views: Core Elements: Gestures
@@ -411,7 +411,7 @@ Gesture recognizers can be added to any visual element.  For example, here is a 
 ```
 
 See also:
-* [`Xamarin.Forms.Core.TapGestureRecognizer`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.TapGestureRecognizer).
+* [`Xamarin.Forms.Core.TapGestureRecognizer`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.TapGestureRecognizer)
 
 
 ### Pan Gestures
@@ -427,7 +427,7 @@ Here is an example of a `PanGestureRecognizer` used to recognize panning touch m
 ```
 
 See also:
-* [`Xamarin.Forms.Core.PanGestureRecognizer`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.PanGestureRecognizer).
+* [`Xamarin.Forms.Core.PanGestureRecognizer`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.PanGestureRecognizer)
 
 ### Pinch Gestures
 
@@ -441,7 +441,7 @@ Here is an example of a `PinchGestureRecognizer` used to recognize pinch-or-expa
 ```
 
 See also:
-* [`Xamarin.Forms.Core.PinchGestureRecognizer`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.PinchGestureRecognizer).
+* [`Xamarin.Forms.Core.PinchGestureRecognizer`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.PinchGestureRecognizer)
 
 
 
@@ -451,7 +451,7 @@ See also:
 All other controls from `Xamarin.Forms.Core` are available in the programming model.  See the `AllControls` sample.
 
 See also
-* [`Xamarin.Forms` API docs](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms).
+* [`Xamarin.Forms` API docs](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms)
 
 
 
