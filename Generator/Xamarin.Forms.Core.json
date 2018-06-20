@@ -91,6 +91,13 @@
 				{
 					"name": "WidthRequest",
 					"defaultValue": "-1.0"
+				},
+				{
+					"name": "Resources",
+					"defaultValue": "null",
+					"inputType": "seq<string * obj>",
+					"modelType": "seq<string * obj>",
+					"updateCode": "updateResources"
 				}
 			]
 		},
