@@ -57,15 +57,32 @@ type App () as app =
 4. Set `StyleClass` for named elements, e.g. 
 
 ```fsharp
-      Xaml.Label(text="Hello", styleClass=detailPageTitle")
+      Xaml.Label(text="Hello", styleClass="detailPageTitle")
       ...
       Xaml.Label(text="Main Page", styleClass="mainPageTitle")
+```
+
+You can also add style sheets for particular elements and their contents by using the `styleSheets` property for each visual element. For example:
+
+```fsharp
+// Always define your style sheets as static values, sine their object identity is signficant!
+let styleSheet = StyleSheet.FromAssemblyResource(Assembly.GetExecutingAssembly(),"MyProject.Assets.styles.css")
+
+let view model disptch = 
+    Xaml.ContentPage(styleSheets=[myStyleSheet], ...)
 ```
 
 #### "Xaml" coding via explicit `Style` objects
 
 You can also use "Xaml styling" by creating specific `Style` objects using the `Xamarin.Forms` APIs directly
 and attaching them to your application.   We don't go into details here
+
+```fsharp
+// Always define your styles as static values, sine their object identity is signficant!
+let style = Style...
+let view model disptch = 
+    Xaml.ContentPage(styles=[myStyle], ...)
+```
 
 See also:
 * [Xamarin.Forms styles](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/styles/xaml/). 

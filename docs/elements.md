@@ -3,7 +3,7 @@ Elmish.XamarinForms Guide
 
 {% include_relative contents.md %}
 
-Views: Core Elements
+Views: Core Elements: Pages
 ------
 
 ### ContentPage
@@ -21,9 +21,20 @@ let view model dispatch =
 See also: 
 * [`Xamarin.Forms.Core.ContentPage`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.ContentPage).
 
+
+Views: Core Elements: Layouts
+-------------------
+
+Xamarin.Forms has several layouts and features for organizing content on screen.
+
+
+[![](absolute-layout-images/layouts-sml.png "Xamarin.Forms Layouts")](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/images/layouts-sml.png)
+
+See the [Xamarin Guide to Layouts](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/).
+
 ### StackLayout
 
-A stack layout is a vertically-stacked sequence of content:
+StackLayout organizes views in a one-dimensional line ("stack"), either horizontally or vertically. Views in a StackLayout can be sized based on the space in the layout using layout options. Positioning is determined by the order views were added to the layout and the layout options of the views.
 
 ```fsharp
     Xaml.StackLayout(padding=20.0,
@@ -34,19 +45,116 @@ A stack layout is a vertically-stacked sequence of content:
 ```
 
 See also:
-* [`Xamarin.Forms.Core.StackLayout`](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/stack-layout/).
+* [Xamarin guide to StackLayout](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/stack-layout/).
+* [Xamarin API docs for `StackLayout`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.StackLayout).
 
+### AbsoluteLayout
 
-### Button
-
-Buttons are created using `Xaml.Button`. The `command` of a button will normally dispatch a messsage.  For example:
+AbsoluteLayout positions and sizes child elements proportional to its own size and position or by absolute values. 
+Child views may be positioned and sized using proportional values or static values, and proportional and static values can be mixed.
 
 ```fsharp
-    Xaml.Button(text="Deposit", command=(fun () -> dispatch (Add 10.0)))
+Xaml.AbsoluteLayout(backgroundColor = Color.Blue.WithLuminosity(0.9), verticalOptions = LayoutOptions.FillAndExpand, 
+   children = [
+       Xaml.Label(text = "Top Left", textColor = Color.Black)
+           .LayoutFlags(AbsoluteLayoutFlags.PositionProportional)
+           .LayoutBounds(Rectangle(0.0, 0.0, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize))
+       Xaml.Label(text = "Centered", textColor = Color.Black)
+           .LayoutFlags(AbsoluteLayoutFlags.PositionProportional)
+           .LayoutBounds(Rectangle(0.5, 0.5, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize))
+       Xaml.Label(text = "Bottom Right", textColor = Color.Black)
+           .LayoutFlags(AbsoluteLayoutFlags.PositionProportional)
+           .LayoutBounds(Rectangle(1.0, 1.0, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize)) ])
 ```
 
 See also:
-* [`Xamarin.Forms.Core.Button`](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/button/).
+* [Xamarin guide to AbsoluteLayout](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/absolute-layout/).
+* [Xamarin API docs for `AbsoluteLayout`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.AbsoluteLayout).
+
+### RelativeLayout
+
+RelativeLayout is used to position and size views relative to properties of the layout or sibling views. Unlike AbsoluteLayout, RelativeLayout does not have the concept of the moving anchor and does not have facilities for positioning elements relative to the bottom or right edges of the layout. RelativeLayout does support positioning elements outside of its own bounds.
+
+An example `RelativeLayout` is as follows:
+```fsharp
+    Xaml.RelativeLayout(
+        children=[ 
+            Xaml.Label(text = "RelativeLayout Example", textColor = Color.Red)
+                .XConstraint(Constraint.RelativeToParent(fun parent -> 0.0))
+            Xaml.Label(text = "Positioned relative to my parent", textColor = Color.Red)
+                .XConstraint(Constraint.RelativeToParent(fun parent -> parent.Width / 3.0))
+                .YConstraint(Constraint.RelativeToParent(fun parent -> parent.Height / 2.0))
+        ])
+```
+
+See also:
+* [Xamarin guide to RelativeLayout](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/relative-layout/).
+* [Xamarin API docs for `RelativeLayout`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.RelativeLayout).
+
+### FlexLayout
+
+FlexLayout is similar to the Xamarin.Forms StackLayout in that it can arrange its children horizontally and vertically in a stack. However, the FlexLayout is also capable of wrapping its children if there are too many to fit in a single row or column, and also has many options for orientation, alignment, and adapting to various screen sizes.
+
+```fsharp
+Xaml.FlexLayout(direction=FlexDirection.Column,
+    children = [ 
+        Xaml.Label(text="Seated Monkey", fontSize="Large", textColor=Color.Blue)
+        Xaml.Label(text="This monkey is laid back and relaxed.")
+        Xaml.Label(text="  • Often smiles mysteriously")
+        Xaml.Label(text="  • Sleeps sitting up")
+
+        Xaml.Image(heightRequest=240.0, 
+            widthRequest=160.0, 
+            source="images/160px-Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg"
+        ).FlexOrder(-1).FlexAlignSelf(FlexAlignSelf.Center)
+
+        Xaml.Label(margin=Thickness(0.0, 4.0)).FlexGrow(1.0)
+        Xaml.Button(text="Learn More", fontSize="Large", cornerRadius=20) ])
+    ] )
+```
+
+See also:
+* [Xamarin guide to FlexLayout](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/flex-layout/).
+* [Xamarin API docs for `FlexLayout`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.FlexLayout).
+
+### Grid
+
+Grid supports arranging views into rows and columns. Rows and columns can be set to have proportional sizes or absolute sizes. The Grid layout should not be confused with traditional tables and is not intended to present tabular data. Grid does not have the concept of row, column or cell formatting. Unlike HTML tables, Grid is purely intended for laying out content.
+
+An example `Grid` is as follows:
+```fsharp
+    Xaml.Grid(
+        rowdefs = [for i in 1 .. 6 -> box "auto"], 
+        coldefs = [for i in 1 .. 6 -> box "auto"], 
+        children =
+            [ for i in 1 .. 6 do for j in 1 .. 6 -> 
+                    let color = Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0)
+                    Xaml.BoxView(color).GridRow(i-1).GridColumn(j-1) ] )
+```
+Notes:
+* Row and column definitions can use `"*"`, `"auto"` or a thickness
+* Fluent methods `.GridRow(..)` and `.GridColumn(..)` are used to place the items in locations on the grid.
+
+See also:
+* [`Xamarin.Forms.Core.Grid`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Grid).
+
+### ScrollView
+
+ScrollView contains layouts and enables them to scroll offscreen. ScrollView is also used to allow views
+to automatically move to the visible portion of the screen when the keyboard is showing.
+```fsharp
+    Xaml.ScrollView(Xaml.StackLayout(padding=20.0, children= ...) )
+```
+
+See also:
+* [Xamarin guide to ScrollView](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/scroll-view).
+* [`Xamarin.Forms.Core.ScrollView`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.ScrollView).
+
+
+
+
+Views: Core Elements: Lists and Tables
+-------------------
 
 
 ### ListView, ListGroupedView
@@ -70,6 +178,87 @@ There is also a `ListViewGrouped` for grouped items of data.  This uses the same
 See also:
 * [`Xamarin.Forms.Core.ListView`](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/listview/).
 
+### TableView
+
+An example `TableView` is as follows:
+```fsharp
+    Xaml.TableView(
+        items= [ ("Videos", [ Xaml.SwitchCell(on=true, text="Luca 2008", onChanged=(fun args -> ()) ) 
+                                Xaml.SwitchCell(on=true, text="Don 2010", onChanged=(fun args -> ()) ) ] )
+                    ("Books", [ Xaml.SwitchCell(on=true, text="Expert F#", onChanged=(fun args -> ()) ) 
+                                Xaml.SwitchCell(on=false, text="Programming F#", onChanged=(fun args -> ()) ) ])
+                    ("Contact", [ Xaml.EntryCell(label="Email", placeholder="foo@bar.com", completed=(fun args -> ()) )
+                                Xaml.EntryCell(label="Phone", placeholder="+44 87654321", completed=(fun args -> ()) )] )]) 
+```
+
+See also:
+* [`Xamarin.Forms.Core.TableView`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.TableView).
+
+#### "Infinite" or "unbounded" ListViews 
+
+"Infinite" (really "unbounded") lists are created by using the `itemAppearing` event to prompt a message which nudges the
+underlying model in a direction that will then supply new items to the view. 
+
+For example, consider this pattern:
+```fsharp
+type Model = 
+    { ...
+      LatestItemAvailable: int 
+    }
+
+type Message = 
+    ...
+    | GetMoreItems of int
+
+let update msg model = 
+    match msg with 
+    | ...
+    | GetMoreItems n -> { model with LatestItemAvailable = n }
+    
+let view model dispatch = 
+    ...
+    Xaml.ListView(
+        items = [ for i in 1 .. model.LatestItemAvailable do 
+                     yield Xaml.Label("Item " + string i) ], 
+        itemAppearing=(fun idx -> if idx >= max - 2 then dispatch (GetMoreItems (idx + 10) ) )  )
+...
+```
+Note:
+* The underlying data in the model is just an integer `LatestItemAvailable` (normally it would really be a list of actual entities drawn from a data source)
+* On each update to the view we produce all the visual items from `Item 1` onwards
+* The `itemAppearing` event is called for each item, e.g. when item `10` appears
+* When the event triggers we grow the underlying data model by 10
+* This will trigger an update of the view again, with more visual elements available (but not yet appearing)
+
+Surprisingly even this naive technique  is fairly efficient. There are numerous ways to make this more efficient (we aim to document more of these over time too).  One simple one is to memoize each individual visual item using `dependsOn`:
+```fsharp
+        items = [ for i in 1 .. model.LatestItemAvailable do 
+                    yield dependsOn i (fun model i -> Xaml.Label("Item " + string i)) ]
+```
+With that, this simple list views scale to > 10,000 items on a modern phone, though your mileage may vary.
+There are many other techniques (e.g. save the latest collection of visual element descriptions in the model, or to use a `ConditionalWeakTable` to associate it with the latest model).  We will document further techniques in due course. 
+
+Thre is also an `itemDisappearing` event for `ListView` that can be used to discard data from the underlying model and restrict the
+range of visual items that need to be generated.
+
+
+Views: Core Elements: Various Elements
+-------------------
+
+
+### Button
+
+Buttons are created using `Xaml.Button`. The `command` of a button will normally dispatch a messsage.  For example:
+
+```fsharp
+    Xaml.Button(text="Deposit", command=(fun () -> dispatch (Add 10.0)))
+```
+
+See also:
+* [Xamarin guide to Button](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/button)
+* [`Xamarin.Forms.Core.Button`](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/button/).
+
+
 ### Slider
 
 A simple `Slider` is as follows:
@@ -80,6 +269,7 @@ A simple `Slider` is as follows:
 ```
 
 See also:
+* [Xamarin guide to Slider](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/slider)
 * [`Xamarin.Forms.Core.Slider`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Slider).
 
 
@@ -105,6 +295,7 @@ A simple `DatePicker` is as follows:
 ```
 
 See also:
+* [Xamarin guide to DatePicker](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/datepicker)
 * [`Xamarin.Forms.Core.DatePicker`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.DatePicker).
 
 
@@ -157,32 +348,13 @@ See also:
 
 ### Frame
 
-A simple `Frame` is as follows:
+A frame contains other content. A simple `Frame` is as follows:
 ```fsharp
     Xaml.Frame(hasShadow=true, backgroundColor=Colors.Fuchsia)
 ```
 
 See also:
 * [`Xamarin.Forms.Core.Frame`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Frame).
-
-### Grid
-
-An example `Grid` is as follows:
-```fsharp
-    Xaml.Grid(
-        rowdefs = [for i in 1 .. 6 -> box "auto"], 
-        coldefs = [for i in 1 .. 6 -> box "auto"], 
-        children =
-            [ for i in 1 .. 6 do for j in 1 .. 6 -> 
-                    let color = Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0)
-                    Xaml.BoxView(color).GridRow(i-1).GridColumn(j-1) ] )
-```
-Notes:
-* Row and column definitions can use `"*"`, `"auto"` or a thickness
-* Fluent methods `.GridRow(..)` and `.GridColumn(..)` are used to place the items in locations on the grid.
-
-See also:
-* [`Xamarin.Forms.Core.Grid`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Grid).
 
 
 ### Image
@@ -224,38 +396,9 @@ let pickerItems =
 See also:
 * [`Xamarin.Forms.Core.Picker`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Picker).
 
-### TableView
 
-An example `TableView` is as follows:
-```fsharp
-    Xaml.TableView(
-        items= [ ("Videos", [ Xaml.SwitchCell(on=true, text="Luca 2008", onChanged=(fun args -> ()) ) 
-                                Xaml.SwitchCell(on=true, text="Don 2010", onChanged=(fun args -> ()) ) ] )
-                    ("Books", [ Xaml.SwitchCell(on=true, text="Expert F#", onChanged=(fun args -> ()) ) 
-                                Xaml.SwitchCell(on=false, text="Programming F#", onChanged=(fun args -> ()) ) ])
-                    ("Contact", [ Xaml.EntryCell(label="Email", placeholder="foo@bar.com", completed=(fun args -> ()) )
-                                Xaml.EntryCell(label="Phone", placeholder="+44 87654321", completed=(fun args -> ()) )] )]) 
-```
-
-See also:
-* [`Xamarin.Forms.Core.TableView`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.TableView).
-
-### RelativeLayout
-
-An example `RelativeLayout` is as follows:
-```fsharp
-    Xaml.RelativeLayout(
-        children=[ 
-            Xaml.Label(text = "RelativeLayout Example", textColor = Color.Red)
-                .XConstraint(Constraint.RelativeToParent(fun parent -> 0.0))
-            Xaml.Label(text = "Positioned relative to my parent", textColor = Color.Red)
-                .XConstraint(Constraint.RelativeToParent(fun parent -> parent.Width / 3.0))
-                .YConstraint(Constraint.RelativeToParent(fun parent -> parent.Height / 2.0))
-        ])
-```
-
-See also:
-* [`Xamarin.Forms.Core.RelativeLayout`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.RelativeLayout).
+Views: Core Elements: Gestures
+-------------------
 
 ### Tap Gestures
 
@@ -301,52 +444,6 @@ See also:
 
 
 
-#### "Infinite" or "unbounded" ListViews 
-
-"Infinite" (really "unbounded") lists are created by using the `itemAppearing` event to prompt a message which nudges the
-underlying model in a direction that will then supply new items to the view. 
-
-For example, consider this pattern:
-```fsharp
-type Model = 
-    { ...
-      LatestItemAvailable: int 
-    }
-
-type Message = 
-    ...
-    | GetMoreItems of int
-
-let update msg model = 
-    match msg with 
-    | ...
-    | GetMoreItems n -> { model with LatestItemAvailable = n }
-    
-let view model dispatch = 
-    ...
-    Xaml.ListView(
-        items = [ for i in 1 .. model.LatestItemAvailable do 
-                     yield Xaml.Label("Item " + string i) ], 
-        itemAppearing=(fun idx -> if idx >= max - 2 then dispatch (GetMoreItems (idx + 10) ) )  )
-...
-```
-Note:
-* The underlying data in the model is just an integer `LatestItemAvailable` (normally it would really be a list of actual entities drawn from a data source)
-* On each update to the view we produce all the visual items from `Item 1` onwards
-* The `itemAppearing` event is called for each item, e.g. when item `10` appears
-* When the event triggers we grow the underlying data model by 10
-* This will trigger an update of the view again, with more visual elements available (but not yet appearing)
-
-Surprisingly even this naive technique  is fairly efficient. There are numerous ways to make this more efficient (we aim to document more of these over time too).  One simple one is to memoize each individual visual item using `dependsOn`:
-```fsharp
-        items = [ for i in 1 .. model.LatestItemAvailable do 
-                    yield dependsOn i (fun model i -> Xaml.Label("Item " + string i)) ]
-```
-With that, this simple list views scale to > 10,000 items on a modern phone, though your mileage may vary.
-There are many other techniques (e.g. save the latest collection of visual element descriptions in the model, or to use a `ConditionalWeakTable` to associate it with the latest model).  We will document further techniques in due course. 
-
-Thre is also an `itemDisappearing` event for `ListView` that can be used to discard data from the underlying model and restrict the
-range of visual items that need to be generated.
 
 ### Other Controls
 

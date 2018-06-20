@@ -459,68 +459,69 @@ module App =
 
 
                dependsOn model.Count (fun model count -> 
-                Xaml.ContentPage(title="AbsoluteLayout", useSafeArea=true,
-                  padding = new Thickness (10.0, 20.0, 10.0, 5.0), 
-                  content= Xaml.StackLayout(
-                      children=[ 
-                         Xaml.Label(text = "AbsoluteLayout Demo", fontSize = Device.GetNamedSize(NamedSize.Large, typeof<Label>), horizontalOptions = LayoutOptions.Center)
-                         Xaml.AbsoluteLayout(backgroundColor = Color.Blue.WithLuminosity(0.9), verticalOptions = LayoutOptions.FillAndExpand, 
-                           children = [
-                              Xaml.Label(text = "Top Left", textColor = Color.Black)
-                                  .LayoutFlags(AbsoluteLayoutFlags.PositionProportional)
-                                  .LayoutBounds(Rectangle(0.0, 0.0, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize))
-                              Xaml.Label(text = "Centered", textColor = Color.Black)
-                                  .LayoutFlags(AbsoluteLayoutFlags.PositionProportional)
-                                  .LayoutBounds(Rectangle(0.5, 0.5, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize))
-                              Xaml.Label(text = "Bottom Right", textColor = Color.Black)
-                                  .LayoutFlags(AbsoluteLayoutFlags.PositionProportional)
-                                  .LayoutBounds(Rectangle(1.0, 1.0, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize)) ])
-                      ])))
+                   Xaml.ContentPage(title="AbsoluteLayout", useSafeArea=true,
+                       padding = new Thickness (10.0, 20.0, 10.0, 5.0), 
+                       content= Xaml.StackLayout(
+                           children=[ 
+                               Xaml.Label(text = "AbsoluteLayout Demo", fontSize = Device.GetNamedSize(NamedSize.Large, typeof<Label>), horizontalOptions = LayoutOptions.Center)
+                               Xaml.AbsoluteLayout(backgroundColor = Color.Blue.WithLuminosity(0.9), 
+                                   verticalOptions = LayoutOptions.FillAndExpand, 
+                                   children = [
+                                      Xaml.Label(text = "Top Left", textColor = Color.Black)
+                                          .LayoutFlags(AbsoluteLayoutFlags.PositionProportional)
+                                          .LayoutBounds(Rectangle(0.0, 0.0, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize))
+                                      Xaml.Label(text = "Centered", textColor = Color.Black)
+                                          .LayoutFlags(AbsoluteLayoutFlags.PositionProportional)
+                                          .LayoutBounds(Rectangle(0.5, 0.5, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize))
+                                      Xaml.Label(text = "Bottom Right", textColor = Color.Black)
+                                          .LayoutFlags(AbsoluteLayoutFlags.PositionProportional)
+                                          .LayoutBounds(Rectangle(1.0, 1.0, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize)) ])
+                            ])))
 
                dependsOn model.Count (fun model count -> 
-                Xaml.ContentPage(title="FlexLayout", useSafeArea=true,
-                  padding = new Thickness (10.0, 20.0, 10.0, 5.0), 
-                  content= 
-                      Xaml.ScrollView(orientation=ScrollOrientation.Both,
-                         content = Xaml.FlexLayout(
-                             children = [
-                                 Xaml.Frame(heightRequest=480.0, widthRequest=300.0, 
-                                     content = Xaml.FlexLayout( direction=FlexDirection.Column,
-                                         children = [ 
-                                             Xaml.Label(text="Seated Monkey", margin=Thickness(0.0, 8.0), fontSize="Large", textColor=Color.Blue)
-                                             Xaml.Label(text="This monkey is laid back and relaxed, and likes to watch the world go by.", margin=Thickness(0.0, 4.0), textColor=Color.Black)
-                                             Xaml.Label(text="  • Often smiles mysteriously", margin=Thickness(0.0, 4.0), textColor=Color.Black)
-                                             Xaml.Label(text="  • Sleeps sitting up", margin=Thickness(0.0, 4.0), textColor=Color.Black)
-                                             Xaml.Image(heightRequest=240.0, 
-                                                 widthRequest=160.0, 
-                                                 source="https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg/160px-Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg"
-                                             ).FlexOrder(-1).FlexAlignSelf(FlexAlignSelf.Center)
-                                             Xaml.Label(margin=Thickness(0.0, 4.0)).FlexGrow(1.0)
-                                             Xaml.Button(text="Learn More", fontSize="Large", textColor=Color.White, backgroundColor=Color.Green, cornerRadius=20) ]),
-                                     backgroundColor=Color.LightYellow,
-                                     borderColor=Color.Blue,
-                                     margin=10.0,
-                                     cornerRadius=15.0)
-                                 Xaml.Frame(heightRequest=480.0, widthRequest=300.0, 
-                                     content = Xaml.FlexLayout( direction=FlexDirection.Column,
-                                         children = [ 
-                                             Xaml.Label(text="Banana Monkey", margin=Thickness(0.0, 8.0), fontSize="Large", textColor=Color.Blue)
-                                             Xaml.Label(text="Watch this monkey eat a giant banana.", margin=Thickness(0.0, 4.0), textColor=Color.Black)
-                                             Xaml.Label(text="  • More fun than a barrel of monkeys", margin=Thickness(0.0, 4.0), textColor=Color.Black)
-                                             Xaml.Label(text="  • Banana not included", margin=Thickness(0.0, 4.0), textColor=Color.Black)
-                                             Xaml.Image(heightRequest=213.0, 
-                                                 widthRequest=320.0, 
-                                                 source="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Crab_eating_macaque_in_Ubud_with_banana.JPG/320px-Crab_eating_macaque_in_Ubud_with_banana.JPG"
-                                             ).FlexOrder(-1).FlexAlignSelf(FlexAlignSelf.Center)
-                                             Xaml.Label(margin=Thickness(0.0, 4.0)).FlexGrow(1.0)
-                                             Xaml.Button(text="Learn More", fontSize="Large", textColor=Color.White, backgroundColor=Color.Green, cornerRadius=20) ]),
-                                     backgroundColor=Color.LightYellow,
-                                     borderColor=Color.Blue,
-                                     margin=10.0,
-                                     cornerRadius=15.0)
-                             ] ))
-                      ) )
-             ])
+                   Xaml.ContentPage(title="FlexLayout", useSafeArea=true,
+                       padding = new Thickness (10.0, 20.0, 10.0, 5.0), 
+                       content= 
+                           Xaml.ScrollView(orientation=ScrollOrientation.Both,
+                              content = Xaml.FlexLayout(
+                                  children = [
+                                      Xaml.Frame(heightRequest=480.0, widthRequest=300.0, 
+                                          content = Xaml.FlexLayout( direction=FlexDirection.Column,
+                                              children = [ 
+                                                  Xaml.Label(text="Seated Monkey", margin=Thickness(0.0, 8.0), fontSize="Large", textColor=Color.Blue)
+                                                  Xaml.Label(text="This monkey is laid back and relaxed, and likes to watch the world go by.", margin=Thickness(0.0, 4.0), textColor=Color.Black)
+                                                  Xaml.Label(text="  • Often smiles mysteriously", margin=Thickness(0.0, 4.0), textColor=Color.Black)
+                                                  Xaml.Label(text="  • Sleeps sitting up", margin=Thickness(0.0, 4.0), textColor=Color.Black)
+                                                  Xaml.Image(heightRequest=240.0, 
+                                                      widthRequest=160.0, 
+                                                      source="https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg/160px-Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg"
+                                                  ).FlexOrder(-1).FlexAlignSelf(FlexAlignSelf.Center)
+                                                  Xaml.Label(margin=Thickness(0.0, 4.0)).FlexGrow(1.0)
+                                                  Xaml.Button(text="Learn More", fontSize="Large", textColor=Color.White, backgroundColor=Color.Green, cornerRadius=20) ]),
+                                          backgroundColor=Color.LightYellow,
+                                          borderColor=Color.Blue,
+                                          margin=10.0,
+                                          cornerRadius=15.0)
+                                      Xaml.Frame(heightRequest=480.0, widthRequest=300.0, 
+                                          content = Xaml.FlexLayout( direction=FlexDirection.Column,
+                                              children = [ 
+                                                  Xaml.Label(text="Banana Monkey", margin=Thickness(0.0, 8.0), fontSize="Large", textColor=Color.Blue)
+                                                  Xaml.Label(text="Watch this monkey eat a giant banana.", margin=Thickness(0.0, 4.0), textColor=Color.Black)
+                                                  Xaml.Label(text="  • More fun than a barrel of monkeys", margin=Thickness(0.0, 4.0), textColor=Color.Black)
+                                                  Xaml.Label(text="  • Banana not included", margin=Thickness(0.0, 4.0), textColor=Color.Black)
+                                                  Xaml.Image(heightRequest=213.0, 
+                                                      widthRequest=320.0, 
+                                                      source="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Crab_eating_macaque_in_Ubud_with_banana.JPG/320px-Crab_eating_macaque_in_Ubud_with_banana.JPG"
+                                                  ).FlexOrder(-1).FlexAlignSelf(FlexAlignSelf.Center)
+                                                  Xaml.Label(margin=Thickness(0.0, 4.0)).FlexGrow(1.0)
+                                                  Xaml.Button(text="Learn More", fontSize="Large", textColor=Color.White, backgroundColor=Color.Green, cornerRadius=20) ]),
+                                          backgroundColor=Color.LightYellow,
+                                          borderColor=Color.Blue,
+                                          margin=10.0,
+                                          cornerRadius=15.0)
+                                  ] ))
+                           ) )
+                ])
          
          | Navigation -> 
 
