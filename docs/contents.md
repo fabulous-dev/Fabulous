@@ -1,6 +1,6 @@
 * [Home](index.html)
-* [Getting started](index.html#getting=started)
-* [Overview](guide.html#structure-of-an-app)
+* [Getting started](index.html#getting-started)
+* [Overview](guide.html)
   * [Structure of an App](guide.html#structure-of-an-app)
 * [Views](views.html)
   * [Core Elements](elements.html)

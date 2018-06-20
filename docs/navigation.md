@@ -9,7 +9,7 @@ Multi-page Applications and Navigation
 Multiple pages are generated as part of the overall view. Five multi-page navigation models are shown in the `AllControls` sample:
 
 * NavigationPage using push/pop
-* NavigationPage toolbar
+* NavigationPage Toolbar
 * TabbedPage
 * CarouselPage
 * MasterDetail
@@ -44,13 +44,13 @@ A toolbar can be added to a navigation page using `.ToolbarItems([ ... ])` as fo
 ```fsharp
 let view model dispatch = 
     ...
-    Xaml.NavigationPage(pages=
+    Xaml.NavigationPage(pages =
         [ Xaml.ContentPage(...)
-            .ToolbarItems([Xaml.ToolbarItem(text="About", command=(fun () -> dispatch (ShowAbout true))) ] )
+            .ToolbarItems([Xaml.ToolbarItem(text = "About", command = (fun () -> dispatch (ShowAbout true))) ] )
 ```
 ### Example: Modal pages by pushing an extra page
 
-A modal page is done by yielding an additional page in the NavigationPage. For example, here is an "About" page example:
+A modal page can be achieved by yielding an additional page in the NavigationPage. For example, here is an "About" page example:
 
 ```fsharp
 type Model =
@@ -64,17 +64,21 @@ type Msg =
 
 let view model dispatch = 
     ...
+    let rootPage dispatch = 
+	    Xaml.ContentPage(title = "Root Page", content = Xaml.Button(text = "About", command = (fun () -> dispatch (ShowAbout true))))
+
+    let modalPage dispatch = 
+	    Xaml.ContentPage(title = "About", 
+            content= Xaml.StackLayout(
+                children = [ 
+                    Xaml.Label(text = "Elmish.XamarinForms!")
+                    Xaml.Button(text = "Continue", command = (fun () -> dispatch (ShowAbout false) ))
+                ]))
+
     Xaml.NavigationPage(pages=
-        [ yield Xaml.ContentPage(title="Root Page", content=Xaml.Button(text="About", 
-                         command=(fun () -> dispatch (ShowAbout true)))) 
+        [ yield rootPage dispatch
           if model.ShowAbout then 
-              yield 
-                  Xaml.ContentPage(title="About", 
-                      content= Xaml.StackLayout(
-                          children=[ 
-                              Xaml.Label(text = "Elmish.XamarinForms!")
-                              Xaml.Button(text = "Continue", command=(fun () -> dispatch (ShowAbout false) ))
-                          ]))
+              yield modalPage dispatch
         ])
 ```
 
@@ -83,7 +87,7 @@ let view model dispatch =
 Return a `TabbedPage` from your view:
 ```fsharp
 let view model dispatch = 
-    Xaml.TabbedPage(children= [ ... ])
+    Xaml.TabbedPage(children = [ ... ])
 ```
 
 ### CarouselPage navigation
@@ -91,14 +95,21 @@ let view model dispatch =
 Return a `CarouselPage` from your view:
 ```fsharp
 let view model dispatch = 
-    Xaml.CarouselPage(children= [ ... ])
+    Xaml.CarouselPage(children = [ ... ])
 ```
 
 ### MasterDetail Page navigation
 
-Principles:
-1. Keep some information in your model indicating the current detail being shown
-2. Return a `MasterDetailPage` from your `view` function
+Return a `MasterDetailPage` from your view, choosing the appropriate `MasterBehavior`:
+```fsharp
+let view model dispatch = 
+	Xaml.MasterDetailPage(
+		masterBehavior=MasterBehavior.Popover, 
+		master = Xaml.ContentPage(...),
+		detail = Xaml.ContentPage(...)
+	)
+```
 
-See the `AllControls` sample
+See also
+* The `AllControls` sample.
 
