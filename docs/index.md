@@ -10,7 +10,9 @@ Never write a ViewModel class again!  Conquer the world with clean dynamic UIs!
 This library allows you to use a variation of [elmish](https://elmish.github.io/), an Elm architecture implemented in F#,
 to build Xamarin.Forms applications for iOS, Android, Mac and more. 
 
-**This is a sample and may change.**
+> The amount of code I'm *not* writing is great!  [@jimbobbennett](https://github.com/jimbobbennett/)
+
+**This project is a sample and may change.**
 
 
 {% include_relative contents.md %}
