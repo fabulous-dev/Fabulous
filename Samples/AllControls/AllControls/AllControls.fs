@@ -11,7 +11,9 @@ open Xamarin.Forms.PlatformConfiguration.iOSSpecific
 
 type RootPageKind = 
     | Choice of bool
-    | Tabbed 
+    | Tabbed1 
+    | Tabbed2 
+    | Tabbed3 
     | Navigation 
     | Carousel 
     | MasterDetail
@@ -167,10 +169,10 @@ module App =
 
     type Xaml with 
         static member ScrollingContentPage(title, children) =
-            Xaml.ContentPage(title=title, content=Xaml.ScrollView(Xaml.StackLayout(padding=20.0, children=children)))
+            Xaml.ContentPage(title=title, content=Xaml.ScrollView(Xaml.StackLayout(padding=20.0, children=children) ), useSafeArea=true)
 
         static member NonScrollingContentPage(title, children, ?gestureRecognizers) =
-            Xaml.ContentPage(title=title, content=Xaml.StackLayout(padding=20.0, children=children, ?gestureRecognizers=gestureRecognizers))
+            Xaml.ContentPage(title=title, content=Xaml.StackLayout(padding=20.0, children=children, ?gestureRecognizers=gestureRecognizers), useSafeArea=true)
 
     let view (model: Model) dispatch =
 
@@ -178,11 +180,13 @@ module App =
        | Choice showAbout -> 
            Xaml.NavigationPage(pages=
                [ yield 
-                   Xaml.ContentPage(title="Root Page", 
+                   Xaml.ContentPage(title="Root Page", useSafeArea=true,
                       padding = new Thickness (10.0, 20.0, 10.0, 5.0), 
                       content= Xaml.StackLayout(
                           children=[ 
-                              Xaml.Button(text = "TabbedPage (various controls)", command=(fun () -> dispatch (SetRootPageKind Tabbed)))
+                              Xaml.Button(text = "TabbedPage #1 (various controls)", command=(fun () -> dispatch (SetRootPageKind Tabbed1)))
+                              Xaml.Button(text = "TabbedPage #2 (various controls)", command=(fun () -> dispatch (SetRootPageKind Tabbed2)))
+                              Xaml.Button(text = "TabbedPage #3 (various controls)", command=(fun () -> dispatch (SetRootPageKind Tabbed3)))
                               Xaml.Button(text = "CarouselPage (various controls)", command=(fun () -> dispatch (SetRootPageKind Carousel)))
                               Xaml.Button(text = "NavigationPage with push/pop", command=(fun () -> dispatch (SetRootPageKind Navigation)))
                               Xaml.Button(text = "MasterDetail Page", command=(fun () -> dispatch (SetRootPageKind MasterDetail)))
@@ -191,7 +195,7 @@ module App =
                     .ToolbarItems([Xaml.ToolbarItem(text="About", command=(fun () -> dispatch (SetRootPageKind (Choice true))))] )
                  if showAbout then 
                       yield 
-                           Xaml.ContentPage(title="About", 
+                           Xaml.ContentPage(title="About", useSafeArea=true, 
                               padding = new Thickness (10.0, 20.0, 10.0, 5.0), 
                               content= Xaml.StackLayout(
                                   children=[ 
@@ -218,23 +222,6 @@ module App =
                
                 Xaml.Button(text="Main page", command=(fun () -> dispatch (SetRootPageKind (Choice false))), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)
                
-               ]))
-
-             dependsOn (model.CountForSlider, model.StepForSlider) (fun model (count, step) -> 
-              Xaml.ScrollingContentPage("Slider", 
-               [Xaml.Label(text="Label:")
-                Xaml.Label(text= sprintf "%d" count, horizontalOptions=LayoutOptions.CenterAndExpand)
-
-                Xaml.Label(text="Button:")
-                Xaml.Button(text="Increment", command=(fun () -> dispatch IncrementForSlider), horizontalOptions=LayoutOptions.CenterAndExpand)
-                
-                Xaml.Label(text="Button:")
-                Xaml.Button(text="Decrement", command=(fun () -> dispatch DecrementForSlider), horizontalOptions=LayoutOptions.CenterAndExpand)
-                
-                Xaml.Label(text="Slider:")
-                Xaml.Slider(minimum=0.0, maximum=10.0, value= double step, 
-                            valueChanged=(fun args -> dispatch (SliderValueChanged (int (args.NewValue + 0.5)))), 
-                                horizontalOptions=LayoutOptions.Fill) 
                ]))
 
              dependsOn model.CountForActivityIndicator (fun model count -> 
@@ -322,9 +309,26 @@ module App =
 
           ])
 
-       | Tabbed ->
+       | Tabbed1 ->
           Xaml.TabbedPage(useSafeArea=true, children=
             [
+             dependsOn (model.CountForSlider, model.StepForSlider) (fun model (count, step) -> 
+              Xaml.ScrollingContentPage("Slider", 
+               [Xaml.Label(text="Label:")
+                Xaml.Label(text= sprintf "%d" count, horizontalOptions=LayoutOptions.CenterAndExpand)
+
+                Xaml.Label(text="Button:")
+                Xaml.Button(text="Increment", command=(fun () -> dispatch IncrementForSlider), horizontalOptions=LayoutOptions.CenterAndExpand)
+                
+                Xaml.Label(text="Button:")
+                Xaml.Button(text="Decrement", command=(fun () -> dispatch DecrementForSlider), horizontalOptions=LayoutOptions.CenterAndExpand)
+                
+                Xaml.Label(text="Slider:")
+                Xaml.Slider(minimum=0.0, maximum=10.0, value= double step, 
+                            valueChanged=(fun args -> dispatch (SliderValueChanged (int (args.NewValue + 0.5)))), 
+                                horizontalOptions=LayoutOptions.Fill) 
+               ]))
+
              dependsOn () (fun model () -> 
               Xaml.NonScrollingContentPage("Grid", 
                [Xaml.Label(text=sprintf "Grid (6x6, *):")
@@ -364,26 +368,32 @@ module App =
               Xaml.NonScrollingContentPage("Image", 
                [Xaml.Label(text="Image:")
                 Xaml.Image(source="http://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg", 
-                           horizontalOptions=LayoutOptions.CenterAndExpand,
-                           verticalOptions=LayoutOptions.CenterAndExpand) ]))
+                           horizontalOptions=LayoutOptions.FillAndExpand,
+                           verticalOptions=LayoutOptions.FillAndExpand) ]))
+            ])
 
+       | Tabbed2 ->
+          Xaml.TabbedPage(useSafeArea=true, children=
+            [
              dependsOn (model.PickedColorIndex) (fun model (pickedColorIndex) -> 
-              Xaml.ScrollingContentPage("Picker", 
-               [Xaml.Label(text="Picker:")
-                Xaml.Picker(title="Choose Color:", textColor=snd pickerItems.[pickedColorIndex], selectedIndex=pickedColorIndex, itemsSource=(Array.map fst pickerItems), horizontalOptions=LayoutOptions.CenterAndExpand, selectedIndexChanged=(fun (i, item) -> dispatch (PickerItemChanged i)))
-               ]))
+                 Xaml.ScrollingContentPage("Picker", 
+                    [ Xaml.Label(text="Picker:")
+                      Xaml.Picker(title="Choose Color:", textColor=snd pickerItems.[pickedColorIndex], selectedIndex=pickedColorIndex, itemsSource=(Array.map fst pickerItems), horizontalOptions=LayoutOptions.CenterAndExpand, selectedIndexChanged=(fun (i, item) -> dispatch (PickerItemChanged i)))
+                    ]))
 
              dependsOn () (fun model () -> 
-              Xaml.ScrollingContentPage("ListView", 
-               [Xaml.Label(text="ListView:")
-                Xaml.ListView(items = [ for i in 0 .. 10 do 
-                                          yield Xaml.Label "Ionide"
-                                          yield Xaml.Label(formattedText=Xaml.FormattedString([|Xaml.Span(text="Visual ", backgroundColor=Color.Green); Xaml.Span(text="Studio ", fontSize = 10)|]))
-                                          yield Xaml.Label "Emacs"
-                                          yield Xaml.Label(formattedText=Xaml.FormattedString([|Xaml.Span(text="Visual ", fontAttributes=FontAttributes.Bold); Xaml.Span(text="Studio ", fontAttributes=FontAttributes.Italic); Xaml.Span(text="Code", foregroundColor = Color.Blue)|]))
-                                          yield Xaml.Label "Rider"], 
-                              horizontalOptions=LayoutOptions.CenterAndExpand, 
-                              itemSelected=(fun idx -> dispatch (ListViewSelectedItemChanged idx)))
+                 Xaml.ScrollingContentPage("ListView", 
+                    [ Xaml.Label(text="ListView:")
+                      Xaml.ListView(
+                          items = [ 
+                              for i in 0 .. 10 do 
+                                  yield Xaml.Label "Ionide"
+                                  yield Xaml.Label(formattedText=Xaml.FormattedString([|Xaml.Span(text="Visual ", backgroundColor=Color.Green); Xaml.Span(text="Studio ", fontSize = 10)|]))
+                                  yield Xaml.Label "Emacs"
+                                  yield Xaml.Label(formattedText=Xaml.FormattedString([|Xaml.Span(text="Visual ", fontAttributes=FontAttributes.Bold); Xaml.Span(text="Studio ", fontAttributes=FontAttributes.Italic); Xaml.Span(text="Code", foregroundColor = Color.Blue)|]))
+                                  yield Xaml.Label "Rider"], 
+                          horizontalOptions=LayoutOptions.CenterAndExpand, 
+                          itemSelected=(fun idx -> dispatch (ListViewSelectedItemChanged idx)))
                ]))
 
              dependsOn () (fun model () -> 
@@ -399,6 +409,11 @@ module App =
 
                   ]))
 
+            ])
+       | Tabbed3 ->
+          Xaml.TabbedPage(useSafeArea=true, 
+           children=
+            [
              dependsOn () (fun model () -> 
               Xaml.ScrollingContentPage("TableView", 
                [Xaml.Label(text="TableView:")
@@ -425,7 +440,7 @@ module App =
 
 
              dependsOn model.Count (fun model count -> 
-              Xaml.ContentPage(title="AbsoluteLayout", 
+              Xaml.ContentPage(title="AbsoluteLayout", useSafeArea=true,
                  padding = new Thickness (10.0, 20.0, 10.0, 5.0), 
                  content= Xaml.StackLayout(
                      children=[ 
@@ -443,6 +458,50 @@ module App =
                                  .LayoutBounds(Rectangle(1.0, 1.0, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize)) ])
                      ])))
 
+             dependsOn model.Count (fun model count -> 
+              Xaml.ContentPage(title="FlexLayout", useSafeArea=true,
+                 padding = new Thickness (10.0, 20.0, 10.0, 5.0), 
+                 content= 
+                     Xaml.ScrollView(orientation=ScrollOrientation.Both,
+                        content = Xaml.FlexLayout(
+                            children = [
+                                Xaml.Frame(heightRequest=480.0, widthRequest=300.0, 
+                                    content = Xaml.FlexLayout( direction=FlexDirection.Column,
+                                        children = [ 
+                                            Xaml.Label(text="Seated Monkey", margin=Thickness(0.0, 8.0), fontSize="Large", textColor=Color.Blue)
+                                            Xaml.Label(text="This monkey is laid back and relaxed, and likes to watch the world go by.", margin=Thickness(0.0, 4.0))
+                                            Xaml.Label(text="  &#x2022; Doesn't make a lot of noise", margin=Thickness(0.0, 4.0))
+                                            Xaml.Label(text="  &#x2022; Often smiles mysteriously", margin=Thickness(0.0, 4.0))
+                                            Xaml.Label(text="  &#x2022; Sleeps sitting up", margin=Thickness(0.0, 4.0))
+                                            Xaml.Image(heightRequest=240.0, 
+                                                widthRequest=160.0, 
+                                                source="https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg/160px-Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg"
+                                            ).FlexOrder(-1).FlexAlignSelf(FlexAlignSelf.Center)
+                                            Xaml.Label(margin=Thickness(0.0, 4.0)).FlexGrow(1.0)
+                                            Xaml.Button(text="Learn More", fontSize="Large", textColor=Color.White, backgroundColor=Color.Green, cornerRadius=20) ]),
+                                    backgroundColor=Color.LightYellow,
+                                    borderColor=Color.Blue,
+                                    margin=10.0,
+                                    cornerRadius=15.0)
+                                Xaml.Frame(heightRequest=480.0, widthRequest=300.0, 
+                                    content = Xaml.FlexLayout( direction=FlexDirection.Column,
+                                        children = [ 
+                                            Xaml.Label(text="Banana Monkey", margin=Thickness(0.0, 8.0), fontSize="Large", textColor=Color.Blue)
+                                            Xaml.Label(text="Watch this monkey eat a giant banana.", margin=Thickness(0.0, 4.0))
+                                            Xaml.Label(text="  &#x2022; More fun than a barrel of monkeys", margin=Thickness(0.0, 4.0))
+                                            Xaml.Label(text="  &#x2022; Banana not included", margin=Thickness(0.0, 4.0))
+                                            Xaml.Image(heightRequest=213.0, 
+                                                widthRequest=320.0, 
+                                                source="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Crab_eating_macaque_in_Ubud_with_banana.JPG/320px-Crab_eating_macaque_in_Ubud_with_banana.JPG"
+                                            ).FlexOrder(-1).FlexAlignSelf(FlexAlignSelf.Center)
+                                            Xaml.Label(margin=Thickness(0.0, 4.0)).FlexGrow(1.0)
+                                            Xaml.Button(text="Learn More", fontSize="Large", textColor=Color.White, backgroundColor=Color.Green, cornerRadius=20) ]),
+                                    backgroundColor=Color.LightYellow,
+                                    borderColor=Color.Blue,
+                                    margin=10.0,
+                                    cornerRadius=15.0)
+                            ] ))
+                     ) )
             ])
         
         | Navigation -> 
@@ -454,8 +513,8 @@ module App =
                          match page with 
                          | Some "Home" -> 
                              yield 
-                                 Xaml.ContentPage(
-                                   Xaml.StackLayout(
+                                 Xaml.ContentPage(useSafeArea=true,
+                                   content=Xaml.StackLayout(
                                     children=
                                       [ Xaml.Label(text="Home Page", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center)
                                         Xaml.Button(text="Push Page A", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (PushPage "A")))
@@ -465,38 +524,39 @@ module App =
                                        ]) ).HasNavigationBar(true).HasBackButton(false)
                          | Some "A" -> 
                              yield 
-                               Xaml.ContentPage(
-                                Xaml.StackLayout(
-                                 children=
-                                  [Xaml.Label(text="Page A", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.Center)
-                                   Xaml.Button(text="Page B", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (PushPage "B")))
-                                   Xaml.Button(text="Page C", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (PushPage "C")))
-                                   Xaml.Button(text="Replace by Page B", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (ReplacePage "B")))
-                                   Xaml.Button(text="Replace by Page C", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (ReplacePage "C")))
-                                   Xaml.Button(text="Back", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch PopPage ))
-                                   ]) ).HasNavigationBar(true).HasBackButton(true)
+                               Xaml.ContentPage(useSafeArea=true,
+                                   content=
+                                    Xaml.StackLayout(
+                                     children=
+                                      [Xaml.Label(text="Page A", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.Center)
+                                       Xaml.Button(text="Page B", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (PushPage "B")))
+                                       Xaml.Button(text="Page C", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (PushPage "C")))
+                                       Xaml.Button(text="Replace by Page B", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (ReplacePage "B")))
+                                       Xaml.Button(text="Replace by Page C", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (ReplacePage "C")))
+                                       Xaml.Button(text="Back", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch PopPage ))
+                                       ]) ).HasNavigationBar(true).HasBackButton(true)
                          | Some "B" -> 
                              yield 
-                               Xaml.ContentPage(
-                                Xaml.StackLayout(
-                                 children=
-                                  [Xaml.Label(text="Page B", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center)
-                                   Xaml.Label(text="(nb. no back button in navbar)", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center)
-                                   Xaml.Button(text="Page A", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (PushPage "A")))
-                                   Xaml.Button(text="Page C", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (PushPage "C")))
-                                   Xaml.Button(text="Back", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch PopPage ))
-                                   ]) ).HasNavigationBar(true).HasBackButton(false)
+                               Xaml.ContentPage(useSafeArea=true,
+                                   content=Xaml.StackLayout(
+                                        children=
+                                            [Xaml.Label(text="Page B", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center)
+                                             Xaml.Label(text="(nb. no back button in navbar)", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center)
+                                             Xaml.Button(text="Page A", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (PushPage "A")))
+                                             Xaml.Button(text="Page C", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (PushPage "C")))
+                                             Xaml.Button(text="Back", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch PopPage ))
+                                            ]) ).HasNavigationBar(true).HasBackButton(false)
                          | Some "C" -> 
                              yield 
-                               Xaml.ContentPage(
-                                Xaml.StackLayout(
-                                 children=
-                                  [Xaml.Label(text="Page C", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center)
-                                   Xaml.Label(text="(nb. no navbar)", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center)
-                                   Xaml.Button(text="Page A", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (PushPage "A")))
-                                   Xaml.Button(text="Page B", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (PushPage "B")))
-                                   Xaml.Button(text="Back", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch PopPage ))
-                                   ]) ).HasNavigationBar(false).HasBackButton(false)
+                               Xaml.ContentPage(useSafeArea=true,
+                                   content=Xaml.StackLayout(
+                                     children=
+                                      [Xaml.Label(text="Page C", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center)
+                                       Xaml.Label(text="(nb. no navbar)", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center)
+                                       Xaml.Button(text="Page A", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (PushPage "A")))
+                                       Xaml.Button(text="Page B", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (PushPage "B")))
+                                       Xaml.Button(text="Back", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch PopPage ))
+                                       ]) ).HasNavigationBar(false).HasBackButton(false)
 
                          | _ -> 
                               ()  ], 
@@ -511,7 +571,7 @@ module App =
               isPresented=isMasterPresented, 
               isPresentedChanged=(fun b -> dispatch (IsMasterPresentedChanged b)), 
               master = 
-                Xaml.ContentPage(title="Master", 
+                Xaml.ContentPage(useSafeArea=true, title="Master", 
                  content = 
                    Xaml.StackLayout(backgroundColor=Color.Gray, 
                      children=[ Xaml.Button(text="Detail A", textColor=Color.White, backgroundColor=Color.Navy, command=(fun () -> dispatch (SetDetailPage "A")))
@@ -521,7 +581,7 @@ module App =
               detail = 
                 Xaml.NavigationPage( 
                   pages=[
-                    Xaml.ContentPage(title="Detail", 
+                    Xaml.ContentPage(title="Detail", useSafeArea=true,
                      content = 
                        Xaml.StackLayout(backgroundColor=Color.Gray, 
                          children=[ Xaml.Label(text="Detail " + detailPage, textColor=Color.White, backgroundColor=Color.Navy)

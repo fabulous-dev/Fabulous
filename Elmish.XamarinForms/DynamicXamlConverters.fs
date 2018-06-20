@@ -6,6 +6,7 @@ open System.Reflection
 open System.Diagnostics
 open System.Windows.Input
 open Xamarin.Forms
+open Xamarin.Forms.StyleSheets
 
 module UOption = 
     let inline map f x = match x with ValueNone -> ValueNone | ValueSome v -> ValueSome (f v)
@@ -77,6 +78,7 @@ type CustomContentPage() as self =
 module Converters =
     open System.Collections.ObjectModel
     open Xamarin.Forms
+    open Xamarin.Forms.StyleSheets
 
     let makeCommand f =
         let ev = Event<_,_>()
@@ -107,12 +109,15 @@ module Converters =
        | _ -> failwithf "makeThickness: invalid argument %O" v
 
     let makeGridLength (v: obj) = 
-       match v with 
-       | :? string as s when s = "*" -> GridLength.Star
-       | :? string as s when s = "auto" -> GridLength.Auto
-       | :? double as f -> GridLength.op_Implicit f
-       | :? GridLength as v -> v
-       | _ -> failwithf "makeGridLength: invalid argument %O" v
+        match v with 
+        | :? string as s when s = "*" -> GridLength.Star
+        | :? string as s when s.EndsWith "*" && fst (Double.TryParse(s.[0..s.Length-2]))  -> 
+            let sz = snd (Double.TryParse(s.[0..s.Length-2]))
+            GridLength(sz, GridUnitType.Star)
+        | :? string as s when s = "auto" -> GridLength.Auto
+        | :? double as f -> GridLength.op_Implicit f
+        | :? GridLength as v -> v
+        | _ -> failwithf "makeGridLength: invalid argument %O" v
 
     let makeFontSize (v: obj) = 
         match box v with 
@@ -122,8 +127,12 @@ module Converters =
         | _ -> System.Convert.ToDouble(v)
 
     let identical (x: 'T) (y:'T) = System.Object.ReferenceEquals(x, y)
-    let canReuseChild (prevChild:XamlElement) (newChild:XamlElement) = (prevChild.TargetType = newChild.TargetType)
-    let updateChild (prevChild:XamlElement) (newChild:XamlElement) targetChild = newChild.UpdateIncremental(prevChild, targetChild)
+
+    let canReuseChild (prevChild:XamlElement) (newChild:XamlElement) = 
+        (prevChild.TargetType = newChild.TargetType)
+
+    let updateChild (prevChild:XamlElement) (newChild:XamlElement) targetChild = 
+        newChild.UpdateIncremental(prevChild, targetChild)
 
     type Chunks<'T> = 
         | Chunk of 'T[]
@@ -223,7 +232,7 @@ module Converters =
             (fun (prevTitle,prevChild) (newTitle, newChild) target -> 
                 updateIList (ValueSome prevChild) (ValueSome newChild) target create (fun _ _ _ -> ()) canReuseChild updateChild) 
 
-    let updateResources (prevCollOpt: seq<string * obj> voption) (collOpt: seq<string * obj> voption) (target: Xamarin.Forms.VisualElement) = 
+    let updateResources (prevCollOpt: (string * obj) list voption) (collOpt: (string * obj) list voption) (target: Xamarin.Forms.VisualElement) = 
         let targetColl = target.Resources
         match prevCollOpt, collOpt with 
         | ValueSome prevColl, ValueSome newColl when identical prevColl newColl -> ()
@@ -239,7 +248,7 @@ module Converters =
                             match prevCollOpt with 
                             | ValueNone -> ValueNone 
                             | ValueSome prevColl -> 
-                                match prevColl |> Seq.tryFind(fun (prevKey, _) -> key = prevKey) with 
+                                match prevColl |> List.tryFind(fun (prevKey, _) -> key = prevKey) with 
                                 | Some (_, prevChild) -> ValueSome prevChild
                                 | None -> ValueNone
                         if (match prevChildOpt with ValueNone -> true | ValueSome prevChild -> not (identical prevChild newChild)) then
@@ -252,6 +261,72 @@ module Converters =
                    if not (coll |> Array.exists(fun (key2, v2) -> key = key2)) then 
                        targetColl.Remove(key) |> ignore
 
+
+    // Note, style sheets can't be removed
+    // Note, style sheets are compared by object identity
+    let updateStyleSheets (prevCollOpt: list<StyleSheet> voption) (collOpt: list<StyleSheet> voption) (target: Xamarin.Forms.VisualElement) = 
+        let targetColl = target.Resources
+        match prevCollOpt, collOpt with 
+        | ValueSome prevColl, ValueSome newColl when identical prevColl newColl -> ()
+        | _, ValueNone -> targetColl.Clear()
+        | _, ValueSome coll ->
+            let coll = Array.ofSeq coll
+            if (coll = null || coll.Length = 0) then
+                targetColl.Clear()
+            else
+                for styleSheet in coll do 
+                    let prevChildOpt = 
+                        match prevCollOpt with 
+                        | ValueNone -> None 
+                        | ValueSome prevColl -> prevColl |> List.tryFind(fun prevStyleSheet -> identical styleSheet prevStyleSheet)
+                    match prevChildOpt with 
+                    | None -> targetColl.Add(styleSheet)                            
+                    | Some _ -> ()
+                match prevCollOpt with 
+                | ValueNone -> ()
+                | ValueSome prevColl -> 
+                    for prevStyleSheet in prevColl do 
+                        let childOpt = 
+                            match prevCollOpt with 
+                            | ValueNone -> None 
+                            | ValueSome prevColl -> prevColl |> List.tryFind(fun styleSheet -> identical styleSheet prevStyleSheet)
+                        match childOpt with 
+                        | None -> 
+                            eprintfn "**** WARNING: style sheets may not be removed, and are compared by object identity, so should be created independently of your update or view functions ****"
+                        | Some _ -> ()
+
+    // Note, styles can't be removed
+    // Note, styles are compared by object identity
+    let updateStyles (prevCollOpt: Style list voption) (collOpt: Style list voption) (target: Xamarin.Forms.VisualElement) = 
+        let targetColl = target.Resources
+        match prevCollOpt, collOpt with 
+        | ValueSome prevColl, ValueSome newColl when identical prevColl newColl -> ()
+        | _, ValueNone -> targetColl.Clear()
+        | _, ValueSome coll ->
+            let coll = Array.ofSeq coll
+            if (coll = null || coll.Length = 0) then
+                targetColl.Clear()
+            else
+                for styleSheet in coll do 
+                    let prevChildOpt = 
+                        match prevCollOpt with 
+                        | ValueNone -> None 
+                        | ValueSome prevColl -> prevColl |> Seq.tryFind(fun prevStyleSheet -> identical styleSheet prevStyleSheet)
+                    match prevChildOpt with 
+                    | None -> targetColl.Add(styleSheet)                            
+                    | Some _ -> ()
+                match prevCollOpt with 
+                | ValueNone -> ()
+                | ValueSome prevColl -> 
+                    for prevStyle in prevColl do 
+                        let childOpt = 
+                            match prevCollOpt with 
+                            | ValueNone -> None 
+                            | ValueSome prevColl -> prevColl |> Seq.tryFind(fun style-> identical style prevStyle)
+                        match childOpt with 
+                        | None -> 
+                            eprintfn "**** WARNING: styles may not be removed, and are compared by object identity. They should be created independently of your update or view functions ****"
+                        | Some _ -> ()
 
     /// Incremental NavigationPage maintenance: push/pop the right pages
     let updateNavigationPages (prevCollOpt: XamlElement[] voption)  (collOpt: XamlElement[] voption) (target: NavigationPage) attach =
