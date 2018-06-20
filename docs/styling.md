@@ -26,7 +26,8 @@ There are many upsides to this approach. The downsides are:
 #### CSS styling with Xamarin.Forms 3.0
 
 1. create a CSS file with appropriate selectors and property specifications, e.g.
-```css
+
+```
 stacklayout {
     margin: 20;
 }
@@ -41,13 +42,14 @@ stacklayout {
     font-size: medium;
     text-align: center;
 }
-
 ```
+
 where `stacklayout` referes to all elements of that type, and `.mainPageTitle` refers to a specific element style-class path. 
 
 2. Add the style sheet to your app as an `EmbeddedResource` node
 
 3. Load it into your app:
+
 ```
 type App () as app = 
     inherit Application ()

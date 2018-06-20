@@ -100,8 +100,8 @@ Xaml.FlexLayout(direction=FlexDirection.Column,
     children = [ 
         Xaml.Label(text="Seated Monkey", fontSize="Large", textColor=Color.Blue)
         Xaml.Label(text="This monkey is laid back and relaxed.")
-        Xaml.Label(text="  • Often smiles mysteriously")
-        Xaml.Label(text="  • Sleeps sitting up")
+        Xaml.Label(text="  - Often smiles mysteriously")
+        Xaml.Label(text="  - Sleeps sitting up")
 
         Xaml.Image(heightRequest=240.0, 
             widthRequest=160.0, 
