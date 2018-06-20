@@ -86,7 +86,7 @@
       <Private>True</Private>
     </ProjectReference>
     <Reference Include="FSharp.Core">
-      <HintPath>..\..\..\packages\FSharp.Core.4.3.2\lib\netstandard1.6\FSharp.Core.dll</HintPath>
+      <HintPath>..\..\..\packages\FSharp.Core.4.3.3\lib\netstandard1.6\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="FsPickler">
       <HintPath>..\..\..\packages\neutral\FsPickler\lib\netstandard2.0\FsPickler.dll</HintPath>
