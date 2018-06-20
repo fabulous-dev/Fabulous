@@ -23,7 +23,6 @@ in the model. Differential update is used to efficiently update the Xamarin.Form
 and current view descriptions.
 
 Here is a larger example:
-Here is a larger example:
 
 ```fsharp
 type Model =
@@ -63,46 +62,10 @@ let view model dispatch =
 
 
 See also: 
-* [Catalog of Core Elements](elements.md).
+* [Core Elements](elements.md).
 * [Views and Performance](views-perf.md).
 * [Views and Styling](styling.md).
 * [Views and Navigation](navigation.md).
-
-
-
-### Views: Other Controls
-
-All other controls from `Xamarin.Forms.Core` are available in the programming model.  See the `AllControls` sample.
-
-See also
-* [`Xamarin.Forms` API docs](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms).
-
-
-### Views: Resource Dictionaries
-
-In Xamarin.Forms documentation you may see references to resource dictionaries.
-In Elmish.XamarinForms, resources dictionaries are replaced by "simple F# programming", e.g.
-```fsharp
-let horzOptions = LayoutOptions.Center
-let vertOptions = LayoutOptions.CenterAndExpand
-```
-is basically the eqivalent of Xaml:
-```xml
-<ContentPage.Resources>
-    <ResourceDictionary>
-        <LayoutOptions x:Key="horzOptions"
-                     Alignment="Center" />
-
-        <LayoutOptions x:Key="vertOptions"
-                     Alignment="Center"
-                     Expands="True" />
-    </ResourceDictionary>
-</ContentPage.Resources>
-```
-In other words, you can normally forget about resource dictionaries and just program as you would normally in F#.
-
-Other kinds of resources like images need a little more attention and you may need to ship multiple versions of images etc. for Android and iOS.  TBD: write a guide on these, in the meantime see the samples.
-
 
 ## Static Views and "Half Elmish"
 

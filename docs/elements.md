@@ -18,6 +18,8 @@ let view model dispatch =
     )
 ```
 
+For other kinds of pages, see [Multi-page applications and Navigation](navigation.md)
+
 See also: 
 * [`Xamarin.Forms.Core.ContentPage`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.ContentPage).
 
@@ -26,11 +28,10 @@ Views: Core Elements: Layouts
 -------------------
 
 Xamarin.Forms has several layouts and features for organizing content on screen.
+For a comprehensive guide see the [Xamarin Guide to Layouts](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/).
 
+[![](absolute-layout-images/layouts-sml.png "Xamarin.Forms Layouts")](https://user-images.githubusercontent.com/7204669/41666541-aae7b246-74a2-11e8-891a-1c9194632d8b.png)
 
-[![](absolute-layout-images/layouts-sml.png "Xamarin.Forms Layouts")](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/images/layouts-sml.png)
-
-See the [Xamarin Guide to Layouts](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/).
 
 ### StackLayout
 

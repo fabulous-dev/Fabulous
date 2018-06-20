@@ -6,7 +6,7 @@ Elmish.XamarinForms Guide
 Views: Styling
 -------
 
-#### F#-coded styling
+### F#-coded styling
 
 The easiest approach is to manually code up styling simply by using normal F# programming to abstract away commonality between
 various parts of your view logic.
@@ -28,7 +28,7 @@ There are many upsides to this approach. The downsides are:
 * there is no easy way to provide default styling base on selectors like "All buttons" (except of course to carefully code your F# to make sure all button creations go through a particular helper)
 * you may end up hand-rolling certain selector queries and patterns from other styling languages.
 
-#### CSS styling with Xamarin.Forms 3.0
+### CSS styling with Xamarin.Forms 3.0
 
 1. create a CSS file with appropriate selectors and property specifications.
 
@@ -81,7 +81,7 @@ let view model disptch =
     Xaml.ContentPage(styleSheets=[myStyleSheet], ...)
 ```
 
-#### "Xaml" coding via explicit `Style` objects
+### "Xaml" coding via explicit `Style` objects
 
 You can also use "Xaml styling" by creating specific `Style` objects using the `Xamarin.Forms` APIs directly
 and attaching them to your application.   We don't go into details here
@@ -93,7 +93,33 @@ let view model disptch =
     Xaml.ContentPage(styles=[myStyle], ...)
 ```
 
+### Resource Dictionaries
+
+In Xamarin.Forms documentation you may see references to resource dictionaries.
+In Elmish.XamarinForms, resources dictionaries are replaced by "simple F# programming", e.g.
+```fsharp
+let horzOptions = LayoutOptions.Center
+let vertOptions = LayoutOptions.CenterAndExpand
+```
+is basically the eqivalent of Xaml:
+```xml
+<ContentPage.Resources>
+    <ResourceDictionary>
+        <LayoutOptions x:Key="horzOptions"
+                     Alignment="Center" />
+
+        <LayoutOptions x:Key="vertOptions"
+                     Alignment="Center"
+                     Expands="True" />
+    </ResourceDictionary>
+</ContentPage.Resources>
+```
+In other words, you can normally forget about resource dictionaries and just program as you would normally in F#.
+
+Other kinds of resources like images need a little more attention and you may need to ship multiple versions of images etc. for Android and iOS.  TBD: write a guide on these, in the meantime see the samples.
+
+
 See also:
-* [Xamarin.Forms styling](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/styles/).
+* [Xamarin.Forms styling](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/styles/)
 
 
