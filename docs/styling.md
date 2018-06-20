@@ -6,17 +6,22 @@ Elmish.XamarinForms Guide
 Views: Styling
 -------
 
-Styling is a significant topic in Xamarin.Forms programming.  
-
-See also:
-* [Xamarin.Forms styling](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/styles/).
-
 #### F#-coded styling
 
 The easiest approach is to manually code up styling simply by using normal F# programming to abstract away commonality between
 various parts of your view logic.
 
-We do not give a guide here as it is routine application of F# coding.  The [Fulma](https://mangelmaxime.github.io/Fulma/#fulma) approach to styling may also be of interest and provide inspiration.
+For example, if a set of Labels share the same margin and color you can write this:
+```fsharp
+let Label text = 
+	Xaml.Label(text=text, margin=Thickness(0.0, 4.0), textColor=Color.Black)
+
+Label(text="This monkey is laid back and relaxed, and likes to watch the world go by.")
+Label(text="  - Often smiles mysteriously")
+Label(text="  - Sleeps sitting up")
+```
+
+We do not give a full guide here as it is routine application of F# coding.  
 
 There are many upsides to this approach. The downsides are:
 * styling is done using F# coding, and some UI designers may prefer to work with CSS or another styling technique
@@ -25,8 +30,15 @@ There are many upsides to this approach. The downsides are:
 
 #### CSS styling with Xamarin.Forms 3.0
 
-1. create a CSS file with appropriate selectors and property specifications, e.g.
+1. create a CSS file with appropriate selectors and property specifications.
 
+2. Add the style sheet to your app as an `EmbeddedResource` node.
+
+3. Load it into your app.
+
+4. Set `styleClass` for named elements.
+
+For example, places the following CSS into "MyProject.Assets.styles.css":
 ```
 stacklayout {
     margin: 20;
@@ -44,24 +56,19 @@ stacklayout {
 }
 ```
 
-where `stacklayout` referes to all elements of that type, and `.mainPageTitle` refers to a specific element style-class path. 
+Here `stacklayout` referes to all elements of that type, and `.mainPageTitle` refers to a specific element style-class path. 
 
-2. Add the style sheet to your app as an `EmbeddedResource` node
-
-3. Load it into your app:
-
-```
+The CSS is added to the app in your main app code:
+```fsharp
 type App () as app = 
     inherit Application ()
     do app.Resources.Add(StyleSheet.FromAssemblyResource(Assembly.GetExecutingAssembly(),"MyProject.Assets.styles.css"))
 ```
-
-4. Set `StyleClass` for named elements, e.g. 
-
+Set the style classes as follows:
 ```fsharp
-      Xaml.Label(text="Hello", styleClass="detailPageTitle")
-      ...
-      Xaml.Label(text="Main Page", styleClass="mainPageTitle")
+    Xaml.Label(text="Hello", styleClass="detailPageTitle")
+    ...
+    Xaml.Label(text="Main Page", styleClass="mainPageTitle")
 ```
 
 You can also add style sheets for particular elements and their contents by using the `styleSheets` property for each visual element. For example:
@@ -87,5 +94,6 @@ let view model disptch =
 ```
 
 See also:
-* [Xamarin.Forms styles](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/styles/xaml/). 
+* [Xamarin.Forms styling](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/styles/).
+
 
