@@ -33,12 +33,12 @@ Target "BuildSamples" (fun _ ->
 
     // restore the apps debug
     !! "Elmish.XamarinForms.sln"
-          |> MSBuildDebug buildDir "Restore"
+          |> MSBuildDebug null "Restore"
           |> Log "AppRestoreDebug-Output: "
 
     // build the apps debug
     !! "Elmish.XamarinForms.sln"
-          |> MSBuildDebug buildDir "Build"
+          |> MSBuildDebug null "Build"
           |> Log "AppBuildDebug-Output: "
 
 )

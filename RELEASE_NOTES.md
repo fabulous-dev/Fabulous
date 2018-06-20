@@ -1,3 +1,9 @@
+#### 0.7.0
+* Base dependency is now Xamarin.Forms 3.0
+* Add `Resources` property to `VisualElement`
+* Add `Styles` property to `VisualElement`
+* Add `StyleSheets` property to `VisualElement`
+
 #### 0.6.0
 * Toolbar, ToolbarItem support
 * MenuItem support
@@ -10,7 +16,7 @@
 
 #### 0.5.0
 * Simplify generated code
-* Code generator now in F#
+* Code generator now in F#  
 * Remove `x |> margin 3.0`  pipelined versions of properties and instead people always need to use members `x.Margin(3.0)`
 
 #### 0.4.5

@@ -21,6 +21,7 @@
     <SelectedDevice>Google Pixel 2</SelectedDevice>
     <DefaultDevice>new_device</DefaultDevice>
     <Name>AllControls.Droid</Name>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -67,7 +68,7 @@
   <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.v7.AppCompat\build\MonoAndroid81\Xamarin.Android.Support.v7.AppCompat.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.v7.AppCompat\build\MonoAndroid81\Xamarin.Android.Support.v7.AppCompat.targets')" />
   <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.Design\build\MonoAndroid81\Xamarin.Android.Support.Design.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.Design\build\MonoAndroid81\Xamarin.Android.Support.Design.targets')" />
   <Import Project="..\..\..\packages\androidapp\Xamarin.Android.Support.v7.MediaRouter\build\MonoAndroid81\Xamarin.Android.Support.v7.MediaRouter.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Android.Support.v7.MediaRouter\build\MonoAndroid81\Xamarin.Android.Support.v7.MediaRouter.targets')" />
-  <Import Project="..\..\..\packages\androidapp\Xamarin.Forms\build\netstandard1.0\Xamarin.Forms.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Forms.2.5.1.444934\build\netstandard1.0\Xamarin.Forms.targets')" />
+  <Import Project="..\..\..\packages\androidapp\Xamarin.Forms\build\netstandard1.0\Xamarin.Forms.targets" Condition="Exists('..\..\..\packages\androidapp\Xamarin.Forms\build\netstandard1.0\Xamarin.Forms.targets')" />
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.fs" />
     <None Include="Properties\AndroidManifest.xml" />

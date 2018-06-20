@@ -21,9 +21,10 @@ to build Xamarin.Forms applications for iOS, Android, Mac and more.
 Getting started
 ------
 
-1. Create a blank F# Xamarin Forms app in Visual Studio or Visual Studio Code.  Make sure your shared code is an F# .NET Standard 2.0 Library project. 
-2. Add nuget package `Elmish.XamarinForms` to to your shared code project.
-3. Put the sample code below in your shared app library
+1. Enable Xamarin support in Visual Studio or Visual Studio for Mac.
+2. Create a blank F# Xamarin Forms app.  Make sure your shared code is an F# .NET Standard 2.0 Library project. 
+3. Add nuget package `Elmish.XamarinForms` to to your shared code project. (If necessary first upgrade all your projects to use Xamarin.Forms 3.0 components.)
+4. Put the sample code below in your shared app library.
 
 Alternatively clone and adapt the [Simple Calculator Project](https://github.com/nosami/Elmish.Calculator).
 

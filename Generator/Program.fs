@@ -280,14 +280,14 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
             let inputType = m.GetInputType(bindings, memberResolutions, null)
             w.printfn "%s" ("        member x." + m.BoundUniqueName + "(value: " + inputType + ") = x.WithAttribute(\"" + m.BoundUniqueName + "\", box (" + conv + "(value)))")
 
-    //w.printfn ""
-    //for ms in allMembersInAllTypesGroupedByName do
-    //    let m = ms.First()
-    //    if not m.IsParam then
-    //        let inputType = m.GetInputType(bindings, memberResolutions, null)
-    //        w.printfn ""
-    //        w.printfn "    /// Adjusts the %s property in the visual element" m.BoundUniqueName
-    //        w.printfn "%s" ("    let " + m.LowerBoundUniqueName + " (value: " + inputType + ") (x: XamlElement) = x." + m.BoundUniqueName + "(value)")
+    w.printfn ""
+    for ms in allMembersInAllTypesGroupedByName do
+        let m = ms.First()
+        if not m.IsParam then
+            let inputType = m.GetInputType(bindings, memberResolutions, null)
+            w.printfn ""
+            w.printfn "    /// Adjusts the %s property in the visual element" m.BoundUniqueName
+            w.printfn "%s" ("    let " + m.LowerBoundUniqueName + " (value: " + inputType + ") (x: XamlElement) = x." + m.BoundUniqueName + "(value)")
 
     w.printfn ""
     w.printfn "type Xaml() ="

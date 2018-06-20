@@ -91,6 +91,27 @@
 				{
 					"name": "WidthRequest",
 					"defaultValue": "-1.0"
+				},
+				{
+					"name": "Resources",
+					"defaultValue": "null",
+					"inputType": "(string * obj) list",
+					"modelType": "(string * obj) list",
+					"updateCode": "updateResources"
+				},
+				{
+					"name": "Styles",
+					"defaultValue": "null",
+					"inputType": "Xamarin.Forms.Style list",
+					"modelType": "Xamarin.Forms.Style list",
+					"updateCode": "updateStyles"
+				},
+				{
+					"name": "StyleSheets",
+					"defaultValue": "null",
+					"inputType": "Xamarin.Forms.StyleSheets.StyleSheet list",
+					"modelType": "Xamarin.Forms.StyleSheets.StyleSheet list",
+					"updateCode": "updateStyleSheets"
 				}
 			]
 		},
@@ -329,13 +350,11 @@
 					"name": "ContentLayout",
 					"defaultValue": "null"
 				},
-				// XF 2.5.1
-				//
-				//{
-				//	"name": "CornerRadius",
-				//		"uniqueName": "ButtonCornerRadius",
-				//		"defaultValue": "0"
-				//	},
+				{
+					"name": "CornerRadius",
+					"uniqueName": "ButtonCornerRadius",
+					"defaultValue": "0"
+				},
 				{
 					"name": "FontFamily",
 					"defaultValue": "null"
@@ -617,6 +636,85 @@
 			]
 		},
 		{
+			"name": "Xamarin.Forms.FlexLayout",
+					"members": [
+						{
+							"name": "AlignContent",
+							"modelType": "Xamarin.Forms.FlexAlignContent",
+							"defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexAlignContent>"
+						},
+						{
+							"name": "AlignItems",
+							"modelType": "Xamarin.Forms.FlexAlignItems",
+							"defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexAlignItems>"
+						},
+						{
+							"name": "Direction",
+							"modelType": "Xamarin.Forms.FlexDirection",
+							"defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexDirection>"
+						},
+						{
+							"name": "Position",
+							"modelType": "Xamarin.Forms.FlexPosition",
+							"defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexPosition>"
+						},
+						{
+							"name": "Wrap",
+							"modelType": "Xamarin.Forms.FlexWrap",
+							"defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexWrap>"
+						},
+						{
+							"name": "JustifyContent",
+							"modelType": "Xamarin.Forms.FlexJustify",
+							"defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexJustify>"
+						},
+						{
+							"name": "Children",
+							"defaultValue": "null",
+							"inputType": "XamlElement list",
+							"modelType": "XamlElement[]",
+							"convToModel": "Array.ofList",
+							"attached": [
+								{
+									"name": "AlignSelf",
+									"uniqueName": "FlexAlignSelf",
+									"modelType": "Xamarin.Forms.FlexAlignSelf",
+									"defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexAlignSelf>"
+								},
+								{
+									"name": "Order",
+									"uniqueName": "FlexOrder",
+									"modelType": "int",
+									"defaultValue": "0"
+								},
+								{
+									"name": "Basis",
+									"uniqueName": "FlexBasis",
+									"modelType": "Xamarin.Forms.FlexBasis",
+									"defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexBasis>"
+								},
+								{
+									"name": "Grow",
+									"uniqueName": "FlexGrow",
+									"inputType": "double",
+									"modelType": "single",
+									"convToModel": "single",
+									"defaultValue": "0.0f"
+								},
+								{
+									"name": "Shrink",
+									"uniqueName": "FlexShrink",
+									"inputType": "double",
+									"modelType": "single",
+									"convToModel": "single",
+									"defaultValue": "1.0f"
+								}
+							]
+						}
+					]
+
+		},
+		{
 			"name": "Xamarin.Forms.RowDefinition",
 			"members": [
 				{
@@ -719,12 +817,15 @@
 			"name": "Xamarin.Forms.Frame",
 			"members": [
 				{
-					"name": "OutlineColor",
+					"name": "BorderColor",
 					"defaultValue": "Xamarin.Forms.Color.Default"
 				},
 				{
 					"name": "CornerRadius",
 					"uniqueName": "FrameCornerRadius",
+					"inputType": "double",
+					"modelType": "single",
+					"convToModel": "single",
 					"defaultValue": "-1.0f"
 				},
 				{
@@ -1330,16 +1431,16 @@
 					"convToValue": "makeFileImageSource",
 					"defaultValue": "null"
 				}
-      ],
-		  "attached": [
-					{
-						"name": "Accelerator",
-						"inputType": "string",
-						"modelType": "string",
- 					  "convToValue": "makeAccelerator",
-						"defaultValue": "null"
-					}
-  			]
+			],
+			"attached": [
+				{
+					"name": "Accelerator",
+					"inputType": "string",
+					"modelType": "string",
+					"convToValue": "makeAccelerator",
+					"defaultValue": "null"
+				}
+			]
 		},
 		{
 			"name": "Xamarin.Forms.TextCell",
