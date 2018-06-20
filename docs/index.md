@@ -73,7 +73,7 @@ Some advantages of using an immutable model are:
 * It makes tracing causality usually very simple
 
 
-Example Views
+Samples
 ------
 
 The sample [CounterApp](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Samples/CounterApp/CounterApp/CounterApp.fs) contains a slightly larger example of Button/Label/Slider elements.

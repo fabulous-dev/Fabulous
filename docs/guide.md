@@ -66,3 +66,20 @@ If using `Program.mkProgram` your model may also return new commands to trigger 
 
 See [update](update.md)
 
+Structure of a Project
+------
+
+The majority of your app logic will be in your shared code project, normally a .NET Standard 2.0 project.
+
+Your project will also have `iOS` and `Droid` projects for actually running the core logic on these different platforms.  
+
+Running 
+------
+
+To run, set your target to `AnyCPU` (Android) or `iPhone` or `iPhone Simulator`, then chooce your device and launch.
+
+You may need to install Android, iOS and/or other SDK tooling.  
+
+If running on-device you may need to enable developer settings for your device,
+or, in the case of iOS, enable [free provisioning](https://docs.microsoft.com/en-us/xamarin/ios/get-started/installation/device-provisioning/free-provisioning).
+
