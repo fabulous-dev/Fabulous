@@ -104,3 +104,8 @@ In other words, you can normally forget about resource dictionaries and just pro
 Other kinds of resources like images need a little more attention and you may need to ship multiple versions of images etc. for Android and iOS.  TBD: write a guide on these, in the meantime see the samples.
 
 
+## Static Views and "Half Elmish"
+
+In some circumstances there are advantages to using static Xaml, and static bindings from the model to those views. This is called "Half Elmish" and is the primary technique used by [`Elmish.WPF`](https://github.com/Prolucid/Elmish.WPF) at time of writing. (It was also  the original technique used by this repo and the prototype `Elmish.Forms`).   
+
+See [half-elmish.md](half-elmish.md).
