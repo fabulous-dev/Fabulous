@@ -38,11 +38,13 @@ For a comprehensive guide see the [Xamarin Guide to Layouts](https://docs.micros
 StackLayout organizes views in a one-dimensional line ("stack"), either horizontally or vertically. Views in a StackLayout can be sized based on the space in the layout using layout options. Positioning is determined by the order views were added to the layout and the layout options of the views.
 
 ```fsharp
-    Xaml.StackLayout(padding=20.0,
-        children = [
-            Xaml.Label(text = sprintf "Welcome to the bank!")
-            Xaml.Label(text = sprintf "Balance: %s%.2f" model.CurrencySymbol model.Balance)
-        ])
+Xaml.StackLayout(
+	padding=20.0,
+    children = [ 
+	    Xaml.Label(text = sprintf "Welcome to the bank!")
+        Xaml.Label(text = sprintf "Balance: %s%.2f" model.CurrencySymbol model.Balance) 
+	]
+)
 ```
 
 See also:
@@ -55,7 +57,8 @@ AbsoluteLayout positions and sizes child elements proportional to its own size a
 Child views may be positioned and sized using proportional values or static values, and proportional and static values can be mixed.
 
 ```fsharp
-Xaml.AbsoluteLayout(backgroundColor = Color.Blue.WithLuminosity(0.9), verticalOptions = LayoutOptions.FillAndExpand, 
+Xaml.AbsoluteLayout(
+    backgroundColor = Color.Blue.WithLuminosity(0.9), 
    children = [
        Xaml.Label(text = "Top Left", textColor = Color.Black)
            .LayoutFlags(AbsoluteLayoutFlags.PositionProportional)
@@ -65,7 +68,9 @@ Xaml.AbsoluteLayout(backgroundColor = Color.Blue.WithLuminosity(0.9), verticalOp
            .LayoutBounds(Rectangle(0.5, 0.5, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize))
        Xaml.Label(text = "Bottom Right", textColor = Color.Black)
            .LayoutFlags(AbsoluteLayoutFlags.PositionProportional)
-           .LayoutBounds(Rectangle(1.0, 1.0, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize)) ])
+           .LayoutBounds(Rectangle(1.0, 1.0, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize)) 
+    ]
+)
 ```
 
 See also:
@@ -78,14 +83,15 @@ RelativeLayout is used to position and size views relative to properties of the 
 
 An example `RelativeLayout` is as follows:
 ```fsharp
-    Xaml.RelativeLayout(
-        children=[ 
-            Xaml.Label(text = "RelativeLayout Example", textColor = Color.Red)
-                .XConstraint(Constraint.RelativeToParent(fun parent -> 0.0))
-            Xaml.Label(text = "Positioned relative to my parent", textColor = Color.Red)
-                .XConstraint(Constraint.RelativeToParent(fun parent -> parent.Width / 3.0))
-                .YConstraint(Constraint.RelativeToParent(fun parent -> parent.Height / 2.0))
-        ])
+Xaml.RelativeLayout(
+    children =
+	    [ Xaml.Label(text = "RelativeLayout Example", textColor = Color.Red)
+              .XConstraint(Constraint.RelativeToParent(fun parent -> 0.0))
+          Xaml.Label(text = "Positioned relative to my parent", textColor = Color.Red)
+              .XConstraint(Constraint.RelativeToParent(fun parent -> parent.Width / 3.0))
+              .YConstraint(Constraint.RelativeToParent(fun parent -> parent.Height / 2.0))
+        ]
+)
 ```
 
 See also:
@@ -97,7 +103,8 @@ See also:
 FlexLayout is similar to the Xamarin.Forms StackLayout in that it can arrange its children horizontally and vertically in a stack. However, the FlexLayout is also capable of wrapping its children if there are too many to fit in a single row or column, and also has many options for orientation, alignment, and adapting to various screen sizes.
 
 ```fsharp
-Xaml.FlexLayout(direction=FlexDirection.Column,
+Xaml.FlexLayout(
+    direction=FlexDirection.Column,
     children = [ 
         Xaml.Label(text = "Seated Monkey", fontSize="Large", textColor=Color.Blue)
         Xaml.Label(text = "This monkey is laid back and relaxed.")
@@ -110,7 +117,8 @@ Xaml.FlexLayout(direction=FlexDirection.Column,
 
         Xaml.Label(margin = Thickness(0.0, 4.0)).FlexGrow(1.0)
         Xaml.Button(text = "Learn More", fontSize = "Large", cornerRadius = 20) ])
-    ] )
+    ]
+)
 ```
 
 See also:
@@ -123,16 +131,19 @@ Grid supports arranging views into rows and columns. Rows and columns can be set
 
 An example `Grid` is as follows:
 ```fsharp
-    Xaml.Grid(
-        rowdefs = [for i in 1 .. 6 -> box "auto"], 
-        coldefs = [for i in 1 .. 6 -> box "auto"], 
-        children =
-            [ for i in 1 .. 6 do for j in 1 .. 6 -> 
-                    let color = Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0)
-                    Xaml.BoxView(color).GridRow(i-1).GridColumn(j-1) ] )
+Xaml.Grid(
+    rowdefs = [for i in 1 .. 6 -> box "auto"], 
+    coldefs = [for i in 1 .. 6 -> box "auto"], 
+    children = [ 
+	    for i in 1 .. 6 do 
+		    for j in 1 .. 6 -> 
+                let color = Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0)
+                Xaml.BoxView(color).GridRow(i-1).GridColumn(j-1) 
+    ] 
+)
 ```
 Notes:
-* Row and column definitions can use `"*"`, `"auto"` or a thickness
+* Row and column definitions can use `"*"`, `N*` where `N` is a number, `"auto"` or a thickness
 * Fluent methods `.GridRow(..)` and `.GridColumn(..)` are used to place the items in locations on the grid.
 
 See also:
@@ -143,7 +154,7 @@ See also:
 ScrollView contains layouts and enables them to scroll offscreen. ScrollView is also used to allow views
 to automatically move to the visible portion of the screen when the keyboard is showing.
 ```fsharp
-    Xaml.ScrollView(Xaml.StackLayout(padding=20.0, children= ...) )
+Xaml.ScrollView(Xaml.StackLayout(padding=20.0, children= ...) )
 ```
 
 See also:
@@ -161,13 +172,13 @@ Lists and Tables
 
 A simple `ListView` is as follows:
 ```fsharp
-    Xaml.ListView(
-        items = [ Xaml.Label "Ionide"
-                  Xaml.Label "Visual Studio"
-                  Xaml.Label "Emacs"
-                  Xaml.Label "Visual Studio Code"
-                  Xaml.Label "JetBrains Rider"], 
-        itemSelected=(fun idx -> dispatch (ListViewSelectedItemChanged idx)))
+Xaml.ListView(
+    items = [ Xaml.Label "Ionide"
+                Xaml.Label "Visual Studio"
+                Xaml.Label "Emacs"
+                Xaml.Label "Visual Studio Code"
+                Xaml.Label "JetBrains Rider"], 
+    itemSelected=(fun idx -> dispatch (ListViewSelectedItemChanged idx)))
 ```
 
 In the underlying implementation, each visual item is placed in a `ContentCell`.
@@ -182,13 +193,14 @@ See also:
 
 An example `TableView` is as follows:
 ```fsharp
-    Xaml.TableView(
-        items = [ ("Videos", [ Xaml.SwitchCell(on=true, text="Luca 2008", onChanged=(fun args -> ()) ) 
-                               Xaml.SwitchCell(on=true, text="Don 2010", onChanged=(fun args -> ()) ) ] )
-                  ("Books", [ Xaml.SwitchCell(on=true, text="Expert F#", onChanged=(fun args -> ()) ) 
-                              Xaml.SwitchCell(on=false, text="Programming F#", onChanged=(fun args -> ()) ) ])
-                  ("Contact", [ Xaml.EntryCell(label="Email", placeholder="foo@bar.com", completed=(fun args -> ()) )
-                                Xaml.EntryCell(label="Phone", placeholder="+44 87654321", completed=(fun args -> ()) )] )]) 
+Xaml.TableView(
+    items = [ 
+	    ("Videos", [ Xaml.SwitchCell(on=true, text="Luca 2008", onChanged=(fun args -> ()) ) 
+                     Xaml.SwitchCell(on=true, text="Don 2010", onChanged=(fun args -> ()) ) ] )
+        ("Books", [ Xaml.SwitchCell(on=true, text="Expert F#", onChanged=(fun args -> ()) ) 
+                    Xaml.SwitchCell(on=false, text="Programming F#", onChanged=(fun args -> ()) ) ])
+        ("Contact", [ Xaml.EntryCell(label="Email", placeholder="foo@bar.com", completed=(fun args -> ()) )
+                      Xaml.EntryCell(label="Phone", placeholder="+44 87654321", completed=(fun args -> ()) )] )]) 
 ```
 
 See also:
@@ -253,7 +265,7 @@ the control is not documented here.
 Buttons are created using `Xaml.Button`. The `command` of a button will normally dispatch a messsage.  For example:
 
 ```fsharp
-    Xaml.Button(text = "Deposit", command = (fun () -> dispatch (Add 10.0)))
+Xaml.Button(text = "Deposit", command = (fun () -> dispatch (Add 10.0)))
 ```
 
 See also:
@@ -265,9 +277,12 @@ See also:
 
 A simple `Slider` is as follows:
 ```fsharp
-    Xaml.Slider(minimum = 0.0, maximum = 10.0, 
-        value= double step, 
-        valueChanged=(fun args -> dispatch (SliderValueChanged (int (args.NewValue + 0.5))))) 
+Xaml.Slider(
+    minimum = 0.0,
+	maximum = 10.0, 
+    value= double step, 
+    valueChanged=(fun args -> dispatch (SliderValueChanged (int (args.NewValue + 0.5))))
+) 
 ```
 
 See also:
@@ -279,7 +294,7 @@ See also:
 
 A simple `ActivityIndicator` is as follows:
 ```fsharp
-    Xaml.ActivityIndicator(isRunning = (count > 0))
+Xaml.ActivityIndicator(isRunning = (count > 0))
 ```
 
 See also:
@@ -290,10 +305,10 @@ See also:
 
 A simple `DatePicker` is as follows:
 ```fsharp
-    Xaml.DatePicker(minimumDate = DateTime.Today, 
-        maximumDate = DateTime.Today + TimeSpan.FromDays(365.0), 
-        date = startDate, 
-        dateSelected=(fun args -> dispatch (StartDateSelected args.NewDate)))
+Xaml.DatePicker(minimumDate = DateTime.Today, 
+    maximumDate = DateTime.Today + TimeSpan.FromDays(365.0), 
+    date = startDate, 
+    dateSelected=(fun args -> dispatch (StartDateSelected args.NewDate)))
 ```
 
 See also:
@@ -305,9 +320,9 @@ See also:
 
 An example `Editor` is as follows:
 ```fsharp
-    Xaml.Editor(text = editorText, 
-        textChanged = (fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
-        completed = (fun text -> dispatch (EditorEditCompleted text)))
+Xaml.Editor(text = editorText, 
+    textChanged = (fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
+    completed = (fun text -> dispatch (EditorEditCompleted text)))
 ```
 
 See also:
@@ -318,7 +333,7 @@ See also:
 
 An example `BoxView` is as follows:
 ```fsharp
-    Xaml.BoxView(Colors.Fuchsia)
+Xaml.BoxView(Colors.Fuchsia)
 ```
 
 See also:
@@ -328,22 +343,28 @@ See also:
 
 An example `Entry` is as follows:
 ```fsharp
-    Xaml.Entry(text = entryText, 
-        textChanged = (fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
-        completed = (fun text -> dispatch (EntryEditCompleted text)))
+Xaml.Entry(
+    text = entryText, 
+    textChanged = (fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
+    completed = (fun text -> dispatch (EntryEditCompleted text))
+)
 ```
 An example `Entry` with password is as follows:
 ```fsharp
-    Xaml.Entry(text = password, 
-	    isPassword = true, 
-        textChanged = (fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
-        completed = (fun text -> dispatch (EntryEditCompleted text)))
+Xaml.Entry(
+    text = password, 
+    isPassword = true, 
+    textChanged = (fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
+    completed = (fun text -> dispatch (EntryEditCompleted text))
+)
 ```
 An example `Entry` with a placeholder is as follows:
 ```fsharp
-    Xaml.Entry(placeholder = "Enter text", 
-        textChanged = (fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
-        completed = (fun text -> dispatch (EntryEditCompleted text)))
+Xaml.Entry(
+    placeholder = "Enter text", 
+    textChanged = (fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
+    completed = (fun text -> dispatch (EntryEditCompleted text))
+)
 ```
 
 See also:
@@ -353,25 +374,24 @@ See also:
 
 A frame contains other content. A simple `Frame` is as follows:
 ```fsharp
-    Xaml.Frame(hasShadow = true, backgroundColor = Colors.Fuchsia)
+Xaml.Frame(hasShadow = true, backgroundColor = Colors.Fuchsia)
 ```
 
 See also:
-* [Images in Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/images?tabs=vswin)
 * [`Xamarin.Forms.Core.Frame`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Frame)
 
 
 ### Image
 
-A simple `` drawn from a resource or URL is as follows:
+A simple image drawn from a resource or URL is as follows:
 ```fsharp
 let monkey = "http://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg"
 
-...
-    Xaml.Image(source = monkey)
+Xaml.Image(source = monkey)
 ```
 
 See also:
+* [Images in Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/images?tabs=vswin)
 * [`Xamarin.Forms.Core.Image`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Image)
 
 
@@ -389,13 +409,13 @@ let pickerItems =
        ("Silver", Color.Silver); ("Teal", Color.Teal);
        ("White", Color.White); ("Yellow", Color.Yellow ) |]
 
-...
-    Xaml.Picker(title = "Choose Color:", 
-        textColor = snd pickerItems.[pickedColorIndex], 
-        selectedIndex = pickedColorIndex, 
-        itemsSource = Array.map fst pickerItems,
-        selectedIndexChanged = (fun (i, item) -> dispatch (PickerItemChanged i)))
-```
+Xaml.Picker(
+    title = "Choose Color:", 
+    textColor = snd pickerItems.[pickedColorIndex], 
+    selectedIndex = pickedColorIndex, 
+    itemsSource = Array.map fst pickerItems,
+    selectedIndexChanged = (fun (i, item) -> dispatch (PickerItemChanged i))
+)
 
 See also:
 * [`Xamarin.Forms.Core.Picker`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Picker)
@@ -409,8 +429,10 @@ Gestures
 Gesture recognizers can be added to any visual element.  For example, here is a `TapGestureRecognizer`:
 
 ```fsharp
-    Xaml.Frame(hasShadow = true, 
-        gestureRecognizers = [ Xaml.TapGestureRecognizer(command=(fun () -> dispatch FrameTapped)) ] )
+Xaml.Frame(
+    hasShadow = true, 
+    gestureRecognizers = [ Xaml.TapGestureRecognizer(command=(fun () -> dispatch FrameTapped)) ] 
+)
 ```
 
 See also:
@@ -422,11 +444,14 @@ See also:
 Here is an example of a `PanGestureRecognizer` used to recognize panning touch movements:
 
 ```fsharp
-    Xaml.Frame(hasShadow = true, 
-        gestureRecognizers=[ 
-            Xaml.PanGestureRecognizer(touchPoints=1, panUpdated=(fun panArgs -> 
-                    if panArgs.StatusType = GestureStatus.Running then 
-                        dispatch (PanGesture panArgs)))]) 
+Xaml.Frame(
+    hasShadow = true, 
+    gestureRecognizers = [ 
+        Xaml.PanGestureRecognizer(touchPoints=1, panUpdated=(fun panArgs -> 
+                if panArgs.StatusType = GestureStatus.Running then 
+                    dispatch (PanGesture panArgs)))
+    ]
+) 
 ```
 
 See also:
@@ -437,10 +462,13 @@ See also:
 Here is an example of a `PinchGestureRecognizer` used to recognize pinch-or-expand touch movements:
 
 ```fsharp
-    Xaml.Frame(hasShadow=true, 
-        gestureRecognizers=
-            [ Xaml.PinchGestureRecognizer(pinchUpdated=(fun pinchArgs -> 
-                    dispatch (UpdateSize (pinchArgs.Scale, pinchArgs.Status)))) ] ))
+Xaml.Frame(
+    hasShadow=true, 
+    gestureRecognizers= [ 
+	    Xaml.PinchGestureRecognizer(pinchUpdated=(fun pinchArgs -> 
+            dispatch (UpdateSize (pinchArgs.Scale, pinchArgs.Status)))) 
+    ] 
+)
 ```
 
 See also:
