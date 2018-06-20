@@ -3,7 +3,7 @@ Elmish.XamarinForms Guide
 
 {% include_relative contents.md %}
 
-Views: Core Elements: Pages
+Pages
 ------
 
 ### ContentPage
@@ -13,8 +13,8 @@ A single page app typically returns a `ContentPage`. For example:
 ```fsharp
 let view model dispatch =
     Xaml.ContentPage(
-        title="Pocket Piggy Bank",
-        content= Xaml.Label(text = sprintf "Hello world!")
+        title = "Pocket Piggy Bank",
+        content = Xaml.Label(text = sprintf "Hello world!")
     )
 ```
 
@@ -24,7 +24,7 @@ See also:
 * [`Xamarin.Forms.Core.ContentPage`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.ContentPage)
 
 
-Views: Core Elements: Layouts
+Layouts
 -------------------
 
 Xamarin.Forms has several layouts and features for organizing content on screen.
@@ -99,18 +99,17 @@ FlexLayout is similar to the Xamarin.Forms StackLayout in that it can arrange it
 ```fsharp
 Xaml.FlexLayout(direction=FlexDirection.Column,
     children = [ 
-        Xaml.Label(text="Seated Monkey", fontSize="Large", textColor=Color.Blue)
-        Xaml.Label(text="This monkey is laid back and relaxed.")
-        Xaml.Label(text="  - Often smiles mysteriously")
-        Xaml.Label(text="  - Sleeps sitting up")
+        Xaml.Label(text = "Seated Monkey", fontSize="Large", textColor=Color.Blue)
+        Xaml.Label(text = "This monkey is laid back and relaxed.")
+        Xaml.Label(text = "  - Often smiles mysteriously")
+        Xaml.Label(text = "  - Sleeps sitting up")
 
-        Xaml.Image(heightRequest=240.0, 
-            widthRequest=160.0, 
-            source="images/160px-Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg"
+        Xaml.Image(widthRequest = 160.0, heightRequest = 240.0, 
+            source = "images/160px-Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg"
         ).FlexOrder(-1).FlexAlignSelf(FlexAlignSelf.Center)
 
-        Xaml.Label(margin=Thickness(0.0, 4.0)).FlexGrow(1.0)
-        Xaml.Button(text="Learn More", fontSize="Large", cornerRadius=20) ])
+        Xaml.Label(margin = Thickness(0.0, 4.0)).FlexGrow(1.0)
+        Xaml.Button(text = "Learn More", fontSize = "Large", cornerRadius = 20) ])
     ] )
 ```
 
@@ -154,7 +153,7 @@ See also:
 
 
 
-Views: Core Elements: Lists and Tables
+Lists and Tables
 -------------------
 
 
@@ -184,11 +183,11 @@ See also:
 An example `TableView` is as follows:
 ```fsharp
     Xaml.TableView(
-        items= [ ("Videos", [ Xaml.SwitchCell(on=true, text="Luca 2008", onChanged=(fun args -> ()) ) 
-                                Xaml.SwitchCell(on=true, text="Don 2010", onChanged=(fun args -> ()) ) ] )
-                    ("Books", [ Xaml.SwitchCell(on=true, text="Expert F#", onChanged=(fun args -> ()) ) 
-                                Xaml.SwitchCell(on=false, text="Programming F#", onChanged=(fun args -> ()) ) ])
-                    ("Contact", [ Xaml.EntryCell(label="Email", placeholder="foo@bar.com", completed=(fun args -> ()) )
+        items = [ ("Videos", [ Xaml.SwitchCell(on=true, text="Luca 2008", onChanged=(fun args -> ()) ) 
+                               Xaml.SwitchCell(on=true, text="Don 2010", onChanged=(fun args -> ()) ) ] )
+                  ("Books", [ Xaml.SwitchCell(on=true, text="Expert F#", onChanged=(fun args -> ()) ) 
+                              Xaml.SwitchCell(on=false, text="Programming F#", onChanged=(fun args -> ()) ) ])
+                  ("Contact", [ Xaml.EntryCell(label="Email", placeholder="foo@bar.com", completed=(fun args -> ()) )
                                 Xaml.EntryCell(label="Phone", placeholder="+44 87654321", completed=(fun args -> ()) )] )]) 
 ```
 
@@ -221,7 +220,7 @@ let view model dispatch =
     Xaml.ListView(
         items = [ for i in 1 .. model.LatestItemAvailable do 
                      yield Xaml.Label("Item " + string i) ], 
-        itemAppearing=(fun idx -> if idx >= max - 2 then dispatch (GetMoreItems (idx + 10) ) )  )
+        itemAppearing = (fun idx -> if idx >= max - 2 then dispatch (GetMoreItems (idx + 10) ) )  )
 ...
 ```
 Note:
@@ -243,16 +242,18 @@ Thre is also an `itemDisappearing` event for `ListView` that can be used to disc
 range of visual items that need to be generated.
 
 
-Views: Core Elements: Various Elements
+Other Core Elements
 -------------------
 
+All other controls from `Xamarin.Forms.Core` are available in the programming model.  See the `AllControls` sample if
+the control is not documented here.
 
 ### Button
 
 Buttons are created using `Xaml.Button`. The `command` of a button will normally dispatch a messsage.  For example:
 
 ```fsharp
-    Xaml.Button(text="Deposit", command=(fun () -> dispatch (Add 10.0)))
+    Xaml.Button(text = "Deposit", command = (fun () -> dispatch (Add 10.0)))
 ```
 
 See also:
@@ -264,7 +265,7 @@ See also:
 
 A simple `Slider` is as follows:
 ```fsharp
-    Xaml.Slider(minimum=0.0, maximum=10.0, 
+    Xaml.Slider(minimum = 0.0, maximum = 10.0, 
         value= double step, 
         valueChanged=(fun args -> dispatch (SliderValueChanged (int (args.NewValue + 0.5))))) 
 ```
@@ -278,7 +279,7 @@ See also:
 
 A simple `ActivityIndicator` is as follows:
 ```fsharp
-    Xaml.ActivityIndicator(isRunning=(count > 0))
+    Xaml.ActivityIndicator(isRunning = (count > 0))
 ```
 
 See also:
@@ -289,9 +290,9 @@ See also:
 
 A simple `DatePicker` is as follows:
 ```fsharp
-    Xaml.DatePicker(minimumDate= DateTime.Today, 
-        maximumDate=DateTime.Today + TimeSpan.FromDays(365.0), 
-        date=startDate, 
+    Xaml.DatePicker(minimumDate = DateTime.Today, 
+        maximumDate = DateTime.Today + TimeSpan.FromDays(365.0), 
+        date = startDate, 
         dateSelected=(fun args -> dispatch (StartDateSelected args.NewDate)))
 ```
 
@@ -304,9 +305,9 @@ See also:
 
 An example `Editor` is as follows:
 ```fsharp
-    Xaml.Editor(text= editorText, 
-        textChanged=(fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
-        completed=(fun text -> dispatch (EditorEditCompleted text)))
+    Xaml.Editor(text = editorText, 
+        textChanged = (fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
+        completed = (fun text -> dispatch (EditorEditCompleted text)))
 ```
 
 See also:
@@ -327,21 +328,22 @@ See also:
 
 An example `Entry` is as follows:
 ```fsharp
-    Xaml.Entry(text= entryText, 
-        textChanged=(fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
-        completed=(fun text -> dispatch (EntryEditCompleted text)))
+    Xaml.Entry(text = entryText, 
+        textChanged = (fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
+        completed = (fun text -> dispatch (EntryEditCompleted text)))
 ```
 An example `Entry` with password is as follows:
 ```fsharp
-    Xaml.Entry(text= password, isPassword=true, 
-        textChanged=(fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
-        completed=(fun text -> dispatch (EntryEditCompleted text)))
+    Xaml.Entry(text = password, 
+	    isPassword = true, 
+        textChanged = (fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
+        completed = (fun text -> dispatch (EntryEditCompleted text)))
 ```
 An example `Entry` with a placeholder is as follows:
 ```fsharp
-    Xaml.Entry(placeholder="Enter text", 
-        textChanged=(fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
-        completed=(fun text -> dispatch (EntryEditCompleted text)))
+    Xaml.Entry(placeholder = "Enter text", 
+        textChanged = (fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
+        completed = (fun text -> dispatch (EntryEditCompleted text)))
 ```
 
 See also:
@@ -351,10 +353,11 @@ See also:
 
 A frame contains other content. A simple `Frame` is as follows:
 ```fsharp
-    Xaml.Frame(hasShadow=true, backgroundColor=Colors.Fuchsia)
+    Xaml.Frame(hasShadow = true, backgroundColor = Colors.Fuchsia)
 ```
 
 See also:
+* [Images in Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/images?tabs=vswin)
 * [`Xamarin.Forms.Core.Frame`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Frame)
 
 
@@ -378,13 +381,13 @@ A simple `Picker` is as follows:
 ```fsharp
 let pickerItems = 
     [| ("Aqua", Color.Aqua); ("Black", Color.Black);
-        ("Blue", Color.Blue); ("Fucshia", Color.Fuchsia);
-        ("Gray", Color.Gray); ("Green", Color.Green);
-        ("Lime", Color.Lime); ("Maroon", Color.Maroon);
-        ("Navy", Color.Navy); ("Olive", Color.Olive);
-        ("Purple", Color.Purple); ("Red", Color.Red);
-        ("Silver", Color.Silver); ("Teal", Color.Teal);
-        ("White", Color.White); ("Yellow", Color.Yellow ) |]
+       ("Blue", Color.Blue); ("Fucshia", Color.Fuchsia);
+       ("Gray", Color.Gray); ("Green", Color.Green);
+       ("Lime", Color.Lime); ("Maroon", Color.Maroon);
+       ("Navy", Color.Navy); ("Olive", Color.Olive);
+       ("Purple", Color.Purple); ("Red", Color.Red);
+       ("Silver", Color.Silver); ("Teal", Color.Teal);
+       ("White", Color.White); ("Yellow", Color.Yellow ) |]
 
 ...
     Xaml.Picker(title = "Choose Color:", 
@@ -398,7 +401,7 @@ See also:
 * [`Xamarin.Forms.Core.Picker`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Picker)
 
 
-Views: Core Elements: Gestures
+Gestures
 -------------------
 
 ### Tap Gestures
@@ -406,8 +409,8 @@ Views: Core Elements: Gestures
 Gesture recognizers can be added to any visual element.  For example, here is a `TapGestureRecognizer`:
 
 ```fsharp
-    Xaml.Frame(hasShadow=true, 
-        gestureRecognizers=[ Xaml.TapGestureRecognizer(command=(fun () -> dispatch FrameTapped)) ] )
+    Xaml.Frame(hasShadow = true, 
+        gestureRecognizers = [ Xaml.TapGestureRecognizer(command=(fun () -> dispatch FrameTapped)) ] )
 ```
 
 See also:
@@ -419,7 +422,7 @@ See also:
 Here is an example of a `PanGestureRecognizer` used to recognize panning touch movements:
 
 ```fsharp
-    Xaml.Frame(hasShadow=true, 
+    Xaml.Frame(hasShadow = true, 
         gestureRecognizers=[ 
             Xaml.PanGestureRecognizer(touchPoints=1, panUpdated=(fun panArgs -> 
                     if panArgs.StatusType = GestureStatus.Running then 
@@ -444,39 +447,5 @@ See also:
 * [`Xamarin.Forms.Core.PinchGestureRecognizer`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.PinchGestureRecognizer)
 
 
-
-
-### Other Controls
-
-All other controls from `Xamarin.Forms.Core` are available in the programming model.  See the `AllControls` sample.
-
-See also
-* [`Xamarin.Forms` API docs](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms)
-
-
-
-### Resource Dictionaries
-
-In Elmish.XamarinForms, resources dictionaries are just "simple F# programming", e.g.
-```fsharp
-let horzOptions = LayoutOptions.Center
-let vertOptions = LayoutOptions.CenterAndExpand
-```
-is basically the eqivalent of Xaml:
-```xml
-<ContentPage.Resources>
-    <ResourceDictionary>
-        <LayoutOptions x:Key="horzOptions"
-                     Alignment="Center" />
-
-        <LayoutOptions x:Key="vertOptions"
-                     Alignment="Center"
-                     Expands="True" />
-    </ResourceDictionary>
-</ContentPage.Resources>
-```
-In other words, you can normally forget about resource dictionaries and just program as you would normally in F#.
-
-Other kinds of resources like images need a little more attention and you may need to ship multiple versions of images etc. for Android and iOS.  TBD: write a guide on these, in the meantime see the samples.
 
 
