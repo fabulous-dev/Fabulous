@@ -242,16 +242,6 @@ let iterSep sep f xs =
 let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDefinition>, memberResolutions) =
     let w = new StringWriter()
 
-    w.printfn "namespace rec %s " bindings.OutputNamespace
-    w.printfn ""
-    w.printfn "#nowarn \"67\" // cast always holds"
-    w.printfn ""
-
-    w.printfn "[<AutoOpen>]"
-    w.printfn "module XamlElementExtensions = "
-    w.printfn ""
-    w.printfn "    type XamlElement with"
-
     let allMembersInAllTypes = new List<MemberBinding>()
     for typ in bindings.Types do
         if (typ.Members <> null) then
@@ -262,35 +252,37 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
                         allMembersInAllTypes.Add(ap)
 
     let allMembersInAllTypesGroupedByName = allMembersInAllTypes.GroupBy(fun y -> y.BoundUniqueName)
+
     //for ms in allMembersInAllTypesGroupedByName do
     //    let m = ms.First()
     //    if not m.IsParam then
     //        w.printfn ""
     //        w.printfn "        /// Try to get the %s property in the visual element" m.BoundUniqueName
-    //        w.printfn "%s" ("        member internal x.Try" + m.BoundUniqueName + " = x.TryGetAttribute<" + modelType + ">(\"" + m.BoundUniqueName + "\")")
+    //        w.printfn "%s" ("        member internal x.Try" + m.BoundUniqueName + " = x.TryGetAttributeKeyed<" + modelType + ">(\"" + m.BoundUniqueName + "\")")
     let tryGetCode (m: MemberBinding) = 
         let modelType = m.GetModelType(bindings, memberResolutions, null)
-        "TryGetAttribute<" + modelType + ">(\"" + m.BoundUniqueName + "\")"
-    for ms in allMembersInAllTypesGroupedByName do
-        let m = ms.First()
-        if not m.IsParam then
-            w.printfn ""
-            w.printfn "        /// Adjusts the %s property in the visual element" m.BoundUniqueName
-            let conv = if String.IsNullOrWhiteSpace(m.ConvToModel) then "" else m.ConvToModel
-            let inputType = m.GetInputType(bindings, memberResolutions, null)
-            w.printfn "%s" ("        member x." + m.BoundUniqueName + "(value: " + inputType + ") = x.WithAttribute(\"" + m.BoundUniqueName + "\", box (" + conv + "(value)))")
+        "TryGetAttributeKeyed<" + modelType + ">(Xaml." + m.BoundUniqueName + "Key)"
 
+    w.printfn "namespace %s " bindings.OutputNamespace
     w.printfn ""
-    for ms in allMembersInAllTypesGroupedByName do
-        let m = ms.First()
-        if not m.IsParam then
-            let inputType = m.GetInputType(bindings, memberResolutions, null)
-            w.printfn ""
-            w.printfn "    /// Adjusts the %s property in the visual element" m.BoundUniqueName
-            w.printfn "%s" ("    let " + m.LowerBoundUniqueName + " (value: " + inputType + ") (x: XamlElement) = x." + m.BoundUniqueName + "(value)")
+    w.printfn "#nowarn \"67\" // cast always holds"
 
     w.printfn ""
     w.printfn "type Xaml() ="
+
+    let allImmediateMembersCombined = 
+       [| for typ in bindings.Types do
+            for m in typ.Members.ToList() do
+                yield m
+                if (m.Attached <> null) then
+                    for ap in m.Attached do
+                        yield ap
+       |]
+       |> Seq.distinctBy (fun m -> m.BoundUniqueName)
+
+    for m in allImmediateMembersCombined do
+        w.printfn "    static member val internal %sKey = XamlElement.GetKey(\"%s\")" m.BoundUniqueName m.BoundUniqueName
+
     for typ in bindings.Types do
         let tdef = resolutions.[typ]
         let nameOfCreator = if String.IsNullOrWhiteSpace(typ.ModelName) then tdef.Name else typ.ModelName
@@ -338,15 +330,15 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
             w.printfn ")"
 
         w.printfn ""
-        w.printfn "        let attribs = [| "
+        w.printfn "        let attribs : System.Collections.Generic.KeyValuePair<int, obj>[] = [| "
         match baseTypeOpt with 
         | None -> ()
         | Some baseType ->
-            w.printfn ("            yield! baseElement.AttributesArray")
+            w.printfn ("            yield! baseElement.AttributesKeyed")
 
         for m in allImmediateMembers do
             let conv = if String.IsNullOrWhiteSpace(m.ConvToModel) then "" else m.ConvToModel
-            w.printfn "%s" ("            match " + m.LowerBoundShortName + " with None -> () | Some v -> yield (\"" + m.BoundUniqueName + "\"" + sprintf ", box (" + conv + "(v))) ")
+            w.printfn "%s" ("            match " + m.LowerBoundShortName + " with None -> () | Some v -> yield (System.Collections.Generic.KeyValuePair(Xaml." + m.BoundUniqueName + "Key" + sprintf ", box (" + conv + "(v)))) ")
 
         w.printfn "          |]"
 
@@ -487,6 +479,31 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
                                 
         w.printfn ""
         w.printfn "        new XamlElement(typeof<%s>, create, update, attribs)" tdef.FullName
+
+    w.printfn ""
+    w.printfn "[<AutoOpen>]"
+    w.printfn "module XamlElementExtensions = "
+
+    w.printfn ""
+    w.printfn "    type XamlElement with"
+
+    for ms in allMembersInAllTypesGroupedByName do
+        let m = ms.First()
+        if not m.IsParam then
+            w.printfn ""
+            w.printfn "        /// Adjusts the %s property in the visual element" m.BoundUniqueName
+            let conv = if String.IsNullOrWhiteSpace(m.ConvToModel) then "" else m.ConvToModel
+            let inputType = m.GetInputType(bindings, memberResolutions, null)
+            w.printfn "%s" ("        member x." + m.BoundUniqueName + "(value: " + inputType + ") = x.WithAttributeKeyed(Xaml." + m.BoundUniqueName + "Key, box (" + conv + "(value)))")
+
+    w.printfn ""
+    for ms in allMembersInAllTypesGroupedByName do
+        let m = ms.First()
+        if not m.IsParam then
+            let inputType = m.GetInputType(bindings, memberResolutions, null)
+            w.printfn ""
+            w.printfn "    /// Adjusts the %s property in the visual element" m.BoundUniqueName
+            w.printfn "%s" ("    let " + m.LowerBoundUniqueName + " (value: " + inputType + ") (x: XamlElement) = x." + m.BoundUniqueName + "(value)")
 
     w.ToString ()
 
