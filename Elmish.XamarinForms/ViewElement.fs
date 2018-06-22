@@ -4,45 +4,33 @@ namespace Elmish.XamarinForms.DynamicViews
 
 open System
 open System.Collections.Generic
-open System.Reflection
 open System.Diagnostics
-open System.Windows.Input
-open Xamarin.Forms
-
-[<Struct>]
-type ValueOption<'T> = 
-    | ValueSome of 'T | ValueNone
-    member x.Value = match x with ValueSome v -> v | ValueNone -> failwith "ValueNone has no value"
-
-type voption<'T> = ValueOption<'T>
 
 /// A description of a visual element
 [<AllowNullLiteral>]
-type XamlElement (targetType: Type, create: (unit -> obj), update: (XamlElement voption -> XamlElement -> obj -> unit), attribs: KeyValuePair<int, obj>[] ) = 
+type ViewElement (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), attribs: KeyValuePair<int, obj>[] ) = 
     
-    static let keys = Dictionary<string,int>()
-    static let unkeys = Dictionary<int,string>()
+    static let attribKeys = Dictionary<string,int>()
+    static let attribNames = Dictionary<int,string>()
 
-    static let getKey(attribName: string) = 
-        match keys.TryGetValue(attribName) with 
+    static let getAttribKey (attribName: string) = 
+        match attribKeys.TryGetValue(attribName) with 
         | true, keyv -> keyv
         | false, _ -> 
-            let keyv = keys.Count + 1
-            keys.[attribName] <- keyv
-            unkeys.[keyv] <- attribName
+            let keyv = attribKeys.Count + 1
+            attribKeys.[attribName] <- keyv
+            attribNames.[keyv] <- attribName
             keyv
 
-    static let unkey(key: int) = 
-        match unkeys.TryGetValue(key) with 
+    static let getAttribName (key: int) = 
+        match attribNames.TryGetValue(key) with 
         | true, keyv -> keyv
         | false, _ -> failwithf "invalid key %d" key
 
-    static let keyify ( attribs: KeyValuePair<string, obj>[]) = 
-        attribs |> Array.map (fun (KeyValue(attribName, v)) -> KeyValuePair(getKey attribName, v))
-
-    /// Create a new XamlElement
-    new (targetType: Type, create: (unit -> obj), update: (XamlElement voption -> XamlElement -> obj -> unit), attribs: KeyValuePair<string, obj>[]) =
-        XamlElement(targetType, create, update, keyify attribs)
+    /// Create a new ViewElement
+    new (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), attribs: KeyValuePair<string, obj>[]) =
+        let attribs = attribs |> Array.map (fun (KeyValue(attribName, v)) -> KeyValuePair(getAttribKey attribName, v))
+        ViewElement(targetType, create, update, attribs)
 
     /// Get the type created by the visual element
     member x.TargetType = targetType
@@ -54,7 +42,7 @@ type XamlElement (targetType: Type, create: (unit -> obj), update: (XamlElement 
     /// Get the attributes of the visual element
     [<DebuggerBrowsable(DebuggerBrowsableState.RootHidden)>]
     member x.Attributes = 
-        attribs |> Array.map (fun (KeyValue(key, v)) -> (unkey key, v))
+        attribs |> Array.map (fun (KeyValue(key, v)) -> (getAttribName key, v))
 
     /// Get an attribute of the visual element
     member x.TryGetAttributeKeyed<'T>(key: int) = 
@@ -64,7 +52,7 @@ type XamlElement (targetType: Type, create: (unit -> obj), update: (XamlElement 
 
     /// Get an attribute of the visual element
     member x.TryGetAttribute<'T>(name: string) = 
-        x.TryGetAttributeKeyed (getKey name)
+        x.TryGetAttributeKeyed (getAttribKey name)
  
     /// Apply initial settings to a freshly created visual element
     member x.Update (target: obj) = update ValueNone x target
@@ -74,7 +62,7 @@ type XamlElement (targetType: Type, create: (unit -> obj), update: (XamlElement 
     member x.UpdateMethod = update
 
     /// Differentially update a visual element given the previous settings
-    member x.UpdateIncremental(prev: XamlElement, target: obj) = update (ValueSome prev) x target
+    member x.UpdateIncremental(prev: ViewElement, target: obj) = update (ValueSome prev) x target
 
     /// Update a different description to a similar visual element
     [<DebuggerBrowsable(DebuggerBrowsableState.Never)>]
@@ -93,12 +81,12 @@ type XamlElement (targetType: Type, create: (unit -> obj), update: (XamlElement 
         let attribs2 = Array.zeroCreate (n + 1)
         Array.blit attribs 0 attribs2 0 n
         attribs2.[n] <- KeyValuePair(key, value)
-        XamlElement(targetType, create, update, attribs2)
+        ViewElement(targetType, create, update, attribs2)
 
     /// Produce a new visual element with an adjusted attribute
     member x.WithAttribute(attribName: string, attribValue: obj) = 
-        x.WithAttributeKeyed(getKey attribName, attribValue)
+        x.WithAttributeKeyed(getAttribKey attribName, attribValue)
 
     override x.ToString() = sprintf "%s(...)@%d" x.TargetType.Name (x.GetHashCode())
 
-    static member GetKey (attribName: string) = getKey attribName
+    static member GetKey (attribName: string) = getAttribKey attribName

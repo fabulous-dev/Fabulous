@@ -2,10 +2,8 @@
 
 namespace TicTacToe
 
-open Elmish
 open Elmish.XamarinForms
 open Elmish.XamarinForms.DynamicViews
-open Elmish.XamarinForms.DynamicViews.SimplerHelpers
 open Xamarin.Forms
 
 /// Represents a player and a player's move

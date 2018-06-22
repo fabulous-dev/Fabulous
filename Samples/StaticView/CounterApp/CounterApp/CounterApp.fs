@@ -1,7 +1,6 @@
 ﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
 namespace CounterApp
 
-open Elmish
 open Elmish.XamarinForms
 open Elmish.XamarinForms.StaticViews
 open Xamarin.Forms
@@ -15,9 +14,6 @@ type Msg =
     | Decrement 
     | Reset
     | SetStep of int
-
-open Xamarin.Forms.PlatformConfiguration
-open Xamarin.Forms.PlatformConfiguration.iOSSpecific
 
 type CounterApp () = 
     inherit Application ()

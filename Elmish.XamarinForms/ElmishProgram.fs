@@ -65,111 +65,8 @@ module Nav =
 
 
 [<RequireQualifiedAccess>]
-/// For combining init functions in the half-elmish model
-module Init =
-    let combo2 init1 init2 () = 
-        let model1 = init1()
-        let model2 = init2()
-        (model1, model2)
-
-    let combo3 init1 init2 init3 () = 
-        let model1 = init1()
-        let model2 = init2()
-        let model3 = init3()
-        (model1, model2, model3)
-
-    let combo4 init1 init2 init3 init4 () = 
-        let model1 = init1()
-        let model2 = init2()
-        let model3 = init3()
-        let model4 = init4()
-        (model1, model2, model3, model4)
-
-    let combo5 init1 init2 init3 init4 init5 () =
-        let model1 = init1()
-        let model2 = init2()
-        let model3 = init3()
-        let model4 = init4()
-        let model5 = init5()
-        (model1, model2, model3, model4, model5)
-
-[<RequireQualifiedAccess>]
-/// For combining init+cmd functions in the half-elmish model
-module InitCmd =
-    let combo2 init1 init2 () = 
-        let model1, cmd1 = init1()
-        let model2, cmd2 = init2()
-        (model1, model2), Cmd.batch [cmd1; cmd2]
-
-    let combo3 init1 init2 init3 () = 
-        let model1, cmd1 = init1()
-        let model2, cmd2 = init2()
-        let model3, cmd3 = init3()
-        (model1, model2, model3), Cmd.batch [cmd1; cmd2; cmd3]
-
-    let combo4 init1 init2 init3 init4 () = 
-        let model1, cmd1 = init1()
-        let model2, cmd2 = init2()
-        let model3, cmd3 = init3()
-        let model4, cmd4 = init4()
-        (model1, model2, model3, model4), Cmd.batch [cmd1; cmd2; cmd3; cmd4]
-
-    let combo5 init1 init2 init3 init4 init5 () =
-        let model1, cmd1 = init1()
-        let model2, cmd2 = init2()
-        let model3, cmd3 = init3()
-        let model4, cmd4 = init4()
-        let model5, cmd5 = init5()
-        (model1, model2, model3, model4, model5), Cmd.batch [cmd1; cmd2; cmd3; cmd4; cmd5]
-
-
-[<RequireQualifiedAccess>]
-/// For combining update functions in the half-elmish model
-module Update =
-
-    let combo2 (update1: Update<_, _, _>) (update2: Update<_, _, _>) : Update<_,_,_> = fun msg (model1, model2) ->
-        match msg with
-        | Choice1Of2 msg1 -> let newModel, cmds, extmsg = update1 msg1 model1 in (newModel, model2), Cmd.map Choice1Of2 cmds, extmsg 
-        | Choice2Of2 msg2 -> let newModel, cmds, extmsg = update2 msg2 model2 in (model1, newModel), Cmd.map Choice2Of2 cmds, extmsg 
-
-    let combo3 (update1: Update<_, _, _>) (update2: Update<_, _, _>) (update3: Update<_, _, _>) : Update<_,_,_> = fun msg (model1, model2, model3) ->
-        match msg with
-        | Choice1Of3 msg1 -> let newModel, cmds, extmsg = update1 msg1 model1 in (newModel, model2, model3), Cmd.map Choice1Of3 cmds, extmsg  
-        | Choice2Of3 msg2 -> let newModel, cmds, extmsg = update2 msg2 model2 in (model1, newModel, model3), Cmd.map Choice2Of3 cmds, extmsg  
-        | Choice3Of3 msg3 -> let newModel, cmds, extmsg = update3 msg3 model3 in (model1, model2, newModel), Cmd.map Choice3Of3 cmds, extmsg  
-
-    let combo4 (update1: Update<_, _, _>) (update2: Update<_, _, _>) (update3: Update<_, _, _>) (update4: Update<_, _, _>) : Update<_,_,_> = fun msg (model1, model2, model3, model4) ->
-        match msg with
-        | Choice1Of4 msg1 -> let newModel, cmds, extmsg = update1 msg1 model1 in (newModel, model2, model3, model4), Cmd.map Choice1Of4 cmds, extmsg  
-        | Choice2Of4 msg2 -> let newModel, cmds, extmsg = update2 msg2 model2 in (model1, newModel, model3, model4), Cmd.map Choice2Of4 cmds, extmsg  
-        | Choice3Of4 msg3 -> let newModel, cmds, extmsg = update3 msg3 model3 in (model1, model2, newModel, model4), Cmd.map Choice3Of4 cmds, extmsg  
-        | Choice4Of4 msg4 -> let newModel, cmds, extmsg = update4 msg4 model4 in (model1, model2, model3, newModel), Cmd.map Choice4Of4 cmds, extmsg  
-
-    let combo5 (update1: Update<_, _, _>) (update2: Update<_, _, _>) (update3: Update<_, _, _>) (update4: Update<_, _, _>) (update5: Update<_, _, _>) : Update<_,_,_> = fun msg (model1, model2, model3, model4, model5) ->
-        match msg with
-        | Choice1Of5 msg1 -> let newModel, cmds, extmsg = update1 msg1 model1 in (newModel, model2, model3, model4, model5), Cmd.map Choice1Of5 cmds, extmsg 
-        | Choice2Of5 msg2 -> let newModel, cmds, extmsg = update2 msg2 model2 in (model1, newModel, model3, model4, model5), Cmd.map Choice2Of5 cmds, extmsg 
-        | Choice3Of5 msg3 -> let newModel, cmds, extmsg = update3 msg3 model3 in (model1, model2, newModel, model4, model5), Cmd.map Choice3Of5 cmds, extmsg 
-        | Choice4Of5 msg4 -> let newModel, cmds, extmsg = update4 msg4 model4 in (model1, model2, model3, newModel, model5), Cmd.map Choice4Of5 cmds, extmsg 
-        | Choice5Of5 msg5 -> let newModel, cmds, extmsg = update5 msg5 model5 in (model1, model2, model3, model4, newModel), Cmd.map Choice5Of5 cmds, extmsg 
-
-    /// Reconcile external messages by turning them into changes in the composed model and/or commands
-    let reconcile f (update: Update<'model,'msg,'extmsg>) : Update<'model,'msg> = fun msg model ->
-        let newModel, cmds, extmsg = update msg model
-        let newModel2, cmds2 = f extmsg newModel
-        newModel2, Cmd.batch [cmds; cmds2]
-
-[<RequireQualifiedAccess>]
 /// For combining static view functions in the half-elmish model
 module StaticView =
-
-    let internal setBindingContextsUntyped (bindings: ViewBindings<'model, 'msg>) (viewModel: StaticViewModel<obj, obj>) = 
-        for (bindingName, binding) in bindings do 
-            match binding with 
-            | BindSubModel (ViewSubModel (initf, _, _, _, _)) -> 
-                let subModel = viewModel.[bindingName]
-                initf subModel
-            | _ -> ()
 
     let internal setBindingContexts (bindings: ViewBindings<'model, 'msg>) (viewModel: StaticViewModel<'model, 'msg>) = 
         for (bindingName, binding) in bindings do 
@@ -178,53 +75,6 @@ module StaticView =
                 let subModel = viewModel.[bindingName]
                 initf subModel
             | _ -> ()
-
-    let internal staticPageInitUntyped (page: Page) (bindings: ViewBindings<'model, 'msg>) =
-        fun (objViewModel: obj) ->
-            match objViewModel with
-            | :? StaticViewModel<obj, obj> as viewModel -> 
-                setBindingContextsUntyped bindings viewModel
-                page.BindingContext <- objViewModel
-            | _ -> failwithf "unexpected type in staticPageInitUntyped: %A" (objViewModel.GetType())
-
-    let internal genViewName = let mutable c = 0 in fun () -> c <- c + 1; "View"+string c
-
-    let internal apply (view: StaticView<_, _, _>) = 
-        let page, bindings = view() 
-        let name = genViewName()
-        name, page, bindings
-
-    let subPage (view1: StaticView<'model, 'msg, 'page>) =
-        let nm1, page1, bindings1 = apply view1
-        page1,
-        [ nm1 |> Binding.subView (staticPageInitUntyped page1 bindings1) id id bindings1 ]
-
-    let combo2 (view1: StaticView<'model1, 'msg1, 'page1>) (view2: StaticView<'model2, 'msg2, 'page2>) =
-        let nm1, page1, bindings1 = apply view1
-        let nm2, page2, bindings2 = apply view2
-        (page1, page2),
-        [ nm1 |> Binding.subView (staticPageInitUntyped page1 bindings1) (fun (a,_) -> a) Choice1Of2 bindings1
-          nm2 |> Binding.subView (staticPageInitUntyped page1 bindings2) (fun (_,a) -> a) Choice2Of2 bindings2 ]
-
-    let combo3 (view1: StaticView<'model1, 'msg1, 'page1>) (view2: StaticView<'model2, 'msg2, 'page2>) (view3: StaticView<'model3, 'msg3, 'page3>) = 
-        let nm1, page1, bindings1 = apply view1
-        let nm2, page2, bindings2 = apply view2
-        let nm3, page3, bindings3 = apply view3
-        (page1, page2, page3),
-        [ nm1 |> Binding.subView (staticPageInitUntyped page1 bindings1) (fun (a,_,_) -> a) Choice1Of3 bindings1
-          nm2 |> Binding.subView (staticPageInitUntyped page2 bindings2) (fun (_,a,_) -> a) Choice2Of3 bindings2
-          nm3 |> Binding.subView (staticPageInitUntyped page3 bindings3) (fun (_,_,a) -> a) Choice3Of3 bindings3 ]
-
-    let combo4 (view1: StaticView<'model1, 'msg1, 'page1>) (view2: StaticView<'model2, 'msg2, 'page2>) (view3: StaticView<'model3, 'msg3, 'page3>) (view4: StaticView<'model4, 'msg4, 'page4>) =
-        let nm1, page1, bindings1 = apply view1
-        let nm2, page2, bindings2 = apply view2
-        let nm3, page3, bindings3 = apply view3
-        let nm4, page4, bindings4 = apply view4
-        (page1, page2, page3, page4),
-        [ nm1 |> Binding.subView (staticPageInitUntyped page1 bindings1) (fun (a,_,_,_) -> a) Choice1Of4 bindings1
-          nm2 |> Binding.subView (staticPageInitUntyped page2 bindings2) (fun (_,a,_,_) -> a) Choice2Of4 bindings2
-          nm3 |> Binding.subView (staticPageInitUntyped page3 bindings3) (fun (_,_,a,_) -> a) Choice3Of4 bindings3
-          nm4 |> Binding.subView (staticPageInitUntyped page4 bindings4) (fun (_,_,_,a) -> a) Choice4Of4 bindings4 ]
 
 /// Program type captures various aspects of program behavior
 type Program<'model, 'msg, 'view> = 
@@ -311,7 +161,7 @@ module Program =
         let viewInfo, mainPage = 
             match viewInfo with 
             | Choice1Of2 (mainPage, bindings) -> Choice1Of2 (mainPage, bindings), mainPage
-            | Choice2Of2 ((app: Application), contentf: _ -> _ -> XamlElement) -> 
+            | Choice2Of2 ((app: Application), contentf: _ -> _ -> ViewElement) -> 
                 let pageDescription = contentf initialModel dispatch
                 let pageObj = pageDescription.Create()
                 let mainPage = 
@@ -363,7 +213,7 @@ module Program =
                         viewModel.UpdateModel updatedModel
                         Choice1Of2 (page, bindings, viewModel)
                     | Choice2Of2 (prevPageDescription, app, contentf) -> 
-                        let newPageDescription: XamlElement = contentf updatedModel dispatch
+                        let newPageDescription: ViewElement = contentf updatedModel dispatch
                         if canReuseChild prevPageDescription newPageDescription then
                             newPageDescription.UpdateIncremental (prevPageDescription, app.MainPage)
                         else

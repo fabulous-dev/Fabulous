@@ -7,7 +7,7 @@ GROUP androidapp
 RESTRICTION: == monoandroid7.1
 NUGET
   remote: https://www.nuget.org/api/v2
-    FSharp.Core (4.3.3)
+    FSharp.Core (4.5)
       System.Collections (>= 4.0.11)
       System.Console (>= 4.0)
       System.Diagnostics.Debug (>= 4.0.11)
@@ -124,7 +124,7 @@ GROUP iosapp
 RESTRICTION: == monotouch
 NUGET
   remote: https://www.nuget.org/api/v2
-    FSharp.Core (4.3.3)
+    FSharp.Core (4.5)
       System.Collections (>= 4.0.11)
       System.Console (>= 4.0)
       System.Diagnostics.Debug (>= 4.0.11)
@@ -177,7 +177,7 @@ GROUP neutral
 RESTRICTION: == netstandard2.0
 NUGET
   remote: https://www.nuget.org/api/v2
-    FSharp.Core (4.3.3)
+    FSharp.Core (4.5)
     FsPickler (5.2)
       FSharp.Core (>= 4.3.2)
       System.Reflection.Emit.Lightweight (>= 4.3)

@@ -136,8 +136,8 @@
 				{
 					"name": "GestureRecognizers",
 					"defaultValue": "null",
-					"inputType": "XamlElement list",
-					"modelType": "XamlElement[]",
+					"inputType": "ViewElement list",
+					"modelType": "ViewElement[]",
 					"convToModel": "Array.ofList"
 				}
 			]
@@ -301,7 +301,7 @@
 					"uniqueName": "SearchBarCanExecute",
 					"inputType": "bool",
 					"modelType": "bool",
-					"updateCode": "updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttributeKeyed<_>(Xaml.SearchBarCommandKey)) prevValueOpt (source.TryGetAttributeKeyed<_>(Xaml.SearchBarCommandKey)) valueOpt (fun cmd -> target.SearchCommand <- cmd)"
+					"updateCode": "updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttributeKeyed<_>(Xaml.SearchBarCommandKey)) prevSearchBarCanExecuteOpt (curr.TryGetAttributeKeyed<_>(Xaml.SearchBarCommandKey)) currSearchBarCanExecuteOpt (fun cmd -> target.SearchCommand <- cmd)"
 				},
 				{
 					"name": "Text",
@@ -332,7 +332,7 @@
 					"uniqueName": "ButtonCanExecute",
 					"inputType": "bool",
 					"modelType": "bool",
-					"updateCode": "updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttributeKeyed<_>(Xaml.ButtonCommandKey)) prevValueOpt (source.TryGetAttributeKeyed<_>(Xaml.ButtonCommandKey)) valueOpt (fun cmd -> target.Command <- cmd)"
+					"updateCode": "updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttributeKeyed<_>(Xaml.ButtonCommandKey)) prevButtonCanExecuteOpt (curr.TryGetAttributeKeyed<_>(Xaml.ButtonCommandKey)) currButtonCanExecuteOpt (fun cmd -> target.Command <- cmd)"
 				},
 				{
 					"name": "BorderColor",
@@ -490,8 +490,8 @@
 					"shortName": "items",
 					"defaultValue": "null",
 					"elementType": "Xamarin.Forms.TableSection",
-					"modelType": "(string * XamlElement[])[]",
-					"inputType": "(string * XamlElement list) list",
+					"modelType": "(string * ViewElement[])[]",
+					"inputType": "(string * ViewElement list) list",
 					"convToModel": "(fun es -> es |> Array.ofList |> Array.map (fun (title, es) -> (title, Array.ofList es)))",
 					"updateCode": "updateTableViewItems"
 				}
@@ -506,7 +506,7 @@
 					"shortName": "rowdefs",
 					"defaultValue": "null",
 					"elementType": "Xamarin.Forms.RowDefinition",
-					"modelType": "XamlElement[]",
+					"modelType": "ViewElement[]",
 					"inputType": "obj list",
 					"convToModel": "(fun es -> es |> Array.ofList |> Array.map (fun h -> Xaml.RowDefinition(height=h)))"
 				},
@@ -516,7 +516,7 @@
 					"shortName": "coldefs",
 					"defaultValue": "null",
 					"elementType": "Xamarin.Forms.ColumnDefinition",
-					"modelType": "XamlElement[]",
+					"modelType": "ViewElement[]",
 					"inputType": "obj list",
 					"convToModel": "(fun es -> es |> Array.ofList |> Array.map (fun h -> Xaml.ColumnDefinition(width=h)))"
 				},
@@ -533,8 +533,8 @@
 				{
 					"name": "Children",
 					"defaultValue": "null",
-					"inputType": "XamlElement list",
-					"modelType": "XamlElement[]",
+					"inputType": "ViewElement list",
+					"modelType": "ViewElement[]",
 					"convToModel": "Array.ofList",
 					"attached": [
 						{
@@ -571,8 +571,8 @@
 				{
 					"name": "Children",
 					"defaultValue": "null",
-					"inputType": "XamlElement list",
-					"modelType": "XamlElement[]",
+					"inputType": "ViewElement list",
+					"modelType": "ViewElement[]",
 					"convToModel": "Array.ofList",
 					"attached": [
 						{
@@ -597,8 +597,8 @@
 				{
 					"name": "Children",
 					"defaultValue": "null",
-					"inputType": "XamlElement list",
-					"modelType": "XamlElement[]",
+					"inputType": "ViewElement list",
+					"modelType": "ViewElement[]",
 					"convToModel": "Array.ofList",
 					"attached": [
 						{
@@ -671,8 +671,8 @@
 						{
 							"name": "Children",
 							"defaultValue": "null",
-							"inputType": "XamlElement list",
-							"modelType": "XamlElement[]",
+							"inputType": "ViewElement list",
+							"modelType": "ViewElement[]",
 							"convToModel": "Array.ofList",
 							"attached": [
 								{
@@ -1053,8 +1053,8 @@
 				{
 					"name": "Children",
 					"defaultValue": "null",
-					"inputType": "XamlElement list",
-					"modelType": "XamlElement[]",
+					"inputType": "ViewElement list",
+					"modelType": "ViewElement[]",
 					"convToModel": "Array.ofList"
 				},
 				{
@@ -1111,8 +1111,8 @@
 				{
 					"name": "Spans",
 					"defaultValue": "null",
-					"inputType": "XamlElement[]",
-					"modelType": "XamlElement[]"
+					"inputType": "ViewElement[]",
+					"modelType": "ViewElement[]"
 				}
 			]
 		},
@@ -1190,8 +1190,8 @@
 				},
 				{
 					"name": "ToolbarItems",
-					"inputType": "XamlElement list",
-					"modelType": "XamlElement[]",
+					"inputType": "ViewElement list",
+					"modelType": "ViewElement[]",
 					"convToModel": "Array.ofList"
 				},
 				{
@@ -1229,8 +1229,8 @@
 				{
 					"name": "Children",
 					"defaultValue": "null",
-					"inputType": "XamlElement list",
-					"modelType": "XamlElement[]",
+					"inputType": "ViewElement list",
+					"modelType": "ViewElement[]",
 					"convToModel": "Array.ofList"
 				},
 				//{
@@ -1266,9 +1266,9 @@
 			"members": [
 				{
 					"name": "Pages",
-					"inputType": "XamlElement list",
+					"inputType": "ViewElement list",
 					"shortName": "pages",
-					"modelType": "XamlElement[]",
+					"modelType": "ViewElement[]",
 					"convToModel": "Array.ofList",
 					"updateCode": "updateNavigationPages",
 					"attached": [
@@ -1330,8 +1330,8 @@
 				{
 					"name": "Children",
 					"defaultValue": "null",
-					"inputType": "XamlElement list",
-					"modelType": "XamlElement[]",
+					"inputType": "ViewElement list",
+					"modelType": "ViewElement[]",
 					"convToModel": "Array.ofList"
 				},
 				{
@@ -1475,7 +1475,7 @@
 					"uniqueName": "TextCellCanExecute",
 					"inputType": "bool",
 					"modelType": "bool",
-					"updateCode": "updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttributeKeyed<_>(Xaml.TextCellCommandKey)) prevValueOpt (source.TryGetAttributeKeyed<_>(Xaml.TextCellCommandKey)) valueOpt (fun cmd -> target.Command <- cmd)"
+					"updateCode": "updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttributeKeyed<_>(Xaml.TextCellCommandKey)) prevTextCellCanExecuteOpt (curr.TryGetAttributeKeyed<_>(Xaml.TextCellCommandKey)) currTextCellCanExecuteOpt (fun cmd -> target.Command <- cmd)"
 				},
 				{
 					"name": "CommandParameter",
@@ -1525,8 +1525,8 @@
 					"name": "ItemsSource",
 					"uniqueName": "ListViewItems",
 					"shortName": "items",
-					"inputType": "seq<XamlElement>",
-					"modelType": "seq<XamlElement>",
+					"inputType": "seq<ViewElement>",
+					"modelType": "seq<ViewElement>",
 					"updateCode": "updateListViewItems"
 				},
 				//{
@@ -1590,7 +1590,7 @@
 					"uniqueName": "ListView_SelectedItem",
 					"defaultValue": "null",
 					"modelType": "int option",
-					"convToValue": "(function None -> null | Some i -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListElementData<XamlElement>> in if i >= 0 && i < items.Count then items.[i] else null)"
+					"convToValue": "(function None -> null | Some i -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListElementData<ViewElement>> in if i >= 0 && i < items.Count then items.[i] else null)"
 				},
 				{
 					"name": "SeparatorVisibility",
@@ -1648,8 +1648,8 @@
 					"name": "ItemsSource",
 					"uniqueName": "ListViewGrouped_ItemsSource",
 					"shortName": "items",
-					"inputType": "(XamlElement * XamlElement list) list",
-					"modelType": "(XamlElement * XamlElement[])[]",
+					"inputType": "(ViewElement * ViewElement list) list",
+					"modelType": "(ViewElement * ViewElement[])[]",
 					"convToModel": "(fun es -> es |> Array.ofList |> Array.map (fun (e,l) -> (e, Array.ofList l)))",
 					"updateCode": "updateListViewGroupedItems"
 				},
@@ -1709,7 +1709,7 @@
 					"uniqueName": "ListViewGrouped_SelectedItem",
 					"defaultValue": "null",
 					"modelType": "(int * int) option",
-					"convToValue": "(function None -> null | Some (i,j) -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListGroupData<XamlElement>> in (if i >= 0 && i < items.Count then (let items2 = items.[i] in if j >= 0 && j < items2.Count then items2.[j] else null) else null))"
+					"convToValue": "(function None -> null | Some (i,j) -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListGroupData<ViewElement>> in (if i >= 0 && i < items.Count then (let items2 = items.[i] in if j >= 0 && j < items2.Count then items2.[j] else null) else null))"
 				},
 				{
 					"name": "SeparatorVisibility",
