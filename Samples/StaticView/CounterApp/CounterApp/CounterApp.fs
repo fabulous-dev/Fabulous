@@ -41,8 +41,7 @@ type CounterApp () =
         let runner = 
             Program.mkSimple init update view
             |> Program.withConsoleTrace
-            |> Program.withStaticView
-            |> Program.run
+            |> Program.runWithStaticView
         let page = runner.InitialMainPage
 
         do PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(page.On<PlatformConfiguration.iOS>(), true) |> ignore

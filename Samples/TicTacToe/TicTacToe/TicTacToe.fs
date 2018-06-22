@@ -201,6 +201,5 @@ type App() as app =
     let runner = 
         Program.mkSimple App.init (App.update gameOver) App.view
         |> Program.withConsoleTrace
-        |> Program.withDynamicView app
-        |> Program.run
+        |> Program.runWithDynamicView app
         

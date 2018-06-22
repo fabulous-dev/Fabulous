@@ -301,7 +301,7 @@
 					"uniqueName": "SearchBarCanExecute",
 					"inputType": "bool",
 					"modelType": "bool",
-					"updateCode": "updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttributeKeyed<_>(Xaml.SearchBarCommandKey)) prevSearchBarCanExecuteOpt (curr.TryGetAttributeKeyed<_>(Xaml.SearchBarCommandKey)) currSearchBarCanExecuteOpt (fun cmd -> target.SearchCommand <- cmd)"
+					"updateCode": "updateCommand prevSearchBarCommandOpt prevSearchBarCanExecuteOpt currSearchBarCommandOpt currSearchBarCanExecuteOpt (fun cmd -> target.SearchCommand <- cmd)"
 				},
 				{
 					"name": "Text",
@@ -332,7 +332,7 @@
 					"uniqueName": "ButtonCanExecute",
 					"inputType": "bool",
 					"modelType": "bool",
-					"updateCode": "updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttributeKeyed<_>(Xaml.ButtonCommandKey)) prevButtonCanExecuteOpt (curr.TryGetAttributeKeyed<_>(Xaml.ButtonCommandKey)) currButtonCanExecuteOpt (fun cmd -> target.Command <- cmd)"
+					"updateCode": "updateCommand prevButtonCommandOpt prevButtonCanExecuteOpt currButtonCommandOpt currButtonCanExecuteOpt (fun cmd -> target.Command <- cmd)"
 				},
 				{
 					"name": "BorderColor",
@@ -1475,7 +1475,7 @@
 					"uniqueName": "TextCellCanExecute",
 					"inputType": "bool",
 					"modelType": "bool",
-					"updateCode": "updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttributeKeyed<_>(Xaml.TextCellCommandKey)) prevTextCellCanExecuteOpt (curr.TryGetAttributeKeyed<_>(Xaml.TextCellCommandKey)) currTextCellCanExecuteOpt (fun cmd -> target.Command <- cmd)"
+					"updateCode": "updateCommand prevTextCellCommandOpt prevTextCellCanExecuteOpt currTextCellCommandOpt currTextCellCanExecuteOpt (fun cmd -> target.Command <- cmd)"
 				},
 				{
 					"name": "CommandParameter",

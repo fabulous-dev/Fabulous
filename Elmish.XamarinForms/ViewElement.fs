@@ -42,12 +42,12 @@ type ViewElement (targetType: Type, create: (unit -> obj), update: (ViewElement 
     /// Get the attributes of the visual element
     [<DebuggerBrowsable(DebuggerBrowsableState.RootHidden)>]
     member x.Attributes = 
-        attribs |> Array.map (fun (KeyValue(key, v)) -> (getAttribName key, v))
+        attribs |> Array.map (fun kvp -> KeyValuePair(getAttribName kvp.Key, kvp.Value))
 
     /// Get an attribute of the visual element
     member x.TryGetAttributeKeyed<'T>(key: int) = 
-        match attribs |> Array.tryFind (fun (KeyValue(key2, v)) -> key2 = key) with 
-        | Some v -> ValueSome(unbox<'T>(v)) 
+        match attribs |> Array.tryFind (fun kvp -> kvp.Key = key) with 
+        | Some kvp -> ValueSome(unbox<'T>(kvp.Value)) 
         | None -> ValueNone
 
     /// Get an attribute of the visual element

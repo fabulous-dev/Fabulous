@@ -66,8 +66,7 @@ type CounterApp () as app =
     let runner = 
         program
         |> Program.withConsoleTrace
-        |> Program.withDynamicView app
-        |> Program.run
+        |> Program.runWithDynamicView app
 
 #if !NO_SAVE_MODEL_WITH_JSON
     let modelId = "model"

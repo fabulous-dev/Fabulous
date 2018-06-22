@@ -6,11 +6,13 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="ViewElement.fs" />
     <Compile Include="ViewConverters.fs" />
+    <Compile Include="ViewHelpers.fs" />
     <Compile Include="ElmishCmd.fs" />
+    <Compile Include="ElmishProgram.fs" />
     <Compile Include="StaticViewBinding.fs" />
     <Compile Include="StaticViewModel.fs" />
-    <Compile Include="ElmishProgram.fs" />
-    <Compile Include="ViewHelpers.fs" />
+    <Compile Include="StaticViewNav.fs" />
+    <Compile Include="StaticViewProgram.fs" />
     <Compile Include="Xamarin.Forms.Core.fs" />
   </ItemGroup>
   <ItemGroup>
