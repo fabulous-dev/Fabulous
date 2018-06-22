@@ -66,7 +66,7 @@ Likewise, for example, here is one pattern for a timer loop that can be turned o
         | TimedTick -> if model.TimerOn then { model with Count = model.Count + model.Step }, timerCmd else model, Cmd.none
 ```
 
-### Messages: External event and asynchronous event subscriptions
+###  External events
 
 You can also set up global subscriptions, which are events sent from outside the view or the dispatch loop. For example, dispatching `ClockMsg` messages on a global timer:
 ```fsharp
@@ -96,3 +96,19 @@ To subscribe to an external event source, use something like this:
 
 Everything that wants access to `dispatch` must be mentioned in the composition of the overall app, or as part of a command produced as a result of processing a message, or in the view.
 
+### Threading and Long-running Operations
+
+1. `update` gets run on the UI thread.  
+2. `dispatch` can be called from any thread. The message will be processed by `update` on the UI thread
+3. `view` gets called on the UI thread. In the future an option may be added to offload the `view` function automatically. 
+
+When handling any long running operation, the operation should initiate it's thing and dispatch a message when done.
+If necessary, explicitly off-load and then dispatch at the end, e.g.
+
+```fsharp
+let backgroundCmd =
+    Cmd.ofAsyncMsg (async { 
+        do! Async.SwitchToThreadPool()
+        let res = ..
+        return msg
+    })```
