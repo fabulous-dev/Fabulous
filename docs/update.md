@@ -3,55 +3,53 @@ Elmish.XamarinForms Guide
 
 {% include_relative contents.md %}
 
-Update, Commands and Async
+The Init and Update Functions
 ------
 
-In its simplest form, when using `Program.mkSimple`, the update function simply returns a new model:
+The init function returns an initial model, and the update function processes a message and returns a new model:
 ```fsharp
-    let init () = { ... }
+type Model = { TimerOn: bool } 
+
+type Message = 
+    | TimerToggled of bool
     
-    let update msg model =
-        match msg with
-        | ...
-        | TimerToggled on -> { model with TimerOn = on }
-```
-The init and update functions may also return new commands when using `Program.mkProgram`:
-```fsharp
-
-    let init () = { ... }, Cmd.none
+let init () = { TimerOn = false }
     
-    let update msg model =
-        match msg with
-        | ...
-        | TimerToggled on -> { model with TimerOn = on }, (if on then timerCmd else Cmd.none)
+let update msg model =
+    match msg with
+    | TimerToggled on -> { model with TimerOn = on }
 ```
-Asynchronous actions are triggered in this way: by having the `init` and `update` function return commands,
-which can trigger later `dispatch` of further messages. To start returning commands from your update function:
 
-* Change `Program.mkSimple` to `Program.mkProgram`
+Commands
+------
 
+A `Cmd` is a callback that can dispatch messages, i.e. gets access to `dispatch` when run.
+These can be used for event subscriptions to callback, implement timers and so on. They can also be returned
+with the model to queue up long running operations such as network calls.
+
+Commands are often asynchronous and nearly always dispatch messages. For example, the simplest way to make a command
+is `Cmd.ofAsyncMsg` which triggers a message dispatch when an async completes:
 ```fsharp
-    let program = Program.mkProgram App.init App.update App.view
+let timerCmd = 
+    async { do! Async.Sleep 200
+            return TimedTick }
+    |> Cmd.ofAsyncMsg
 ```
 
-* Change your `update` function to return a pair of a model and a command. For most messages the command will be `Cmd.none` but for basic async actions use `Cmd.ofAsyncMsg`.
-
-For example here is a command to get an initial balance on startup:
+The init and update functions may return new "commands".  This is permitted when using `Program.mkProgram`.
+For example here is a pattern  to get an initial balance on startup:
 ```fsharp
     let fetchInitialBalance = Cmd.ofAsyncMsg (async { ... })
 
-    let init () = { ... },fetchInitialBalance
+    let init () = { ... }, fetchInitialBalance
 ```
 Likewise, for example, here is one pattern for a timer loop that can be turned on/off:
 
 ```fsharp
     type Model = 
-        { ...
-          TimerOn: bool 
-        }
+        { TimerOn: bool }
         
     type Message = 
-        | ...
         | TimedTick
         | TimerToggled of bool
         
@@ -64,11 +62,9 @@ Likewise, for example, here is one pattern for a timer loop that can be turned o
     
     let update msg model =
         match msg with
-        | ...
         | TimerToggled on -> { model with TimerOn = on }, (if on then timerCmd else Cmd.none)
         | TimedTick -> if model.TimerOn then { model with Count = model.Count + model.Step }, timerCmd else model, Cmd.none
 ```
-
 
 ### Messages: External event and asynchronous event subscriptions
 
@@ -95,15 +91,8 @@ To subscribe to an external event source, use something like this:
 
 ...
 
-    |> Program.withSubscription(fun _ -> Cmd.ofSub subscribeToPushEvent)```
-(edited)
+    |> Program.withSubscription(fun _ -> Cmd.ofSub subscribeToPushEvent)
 ```
 
 Everything that wants access to `dispatch` must be mentioned in the composition of the overall app, or as part of a command produced as a result of processing a message, or in the view.
 
-### State Resurrection
-
-The state-resurrection `OnResume` logic of your application (see above) should also be adjusted to restart
-appropriate `async` actions accoring to the state of the application.
-
-* See also [Models](models.md)
