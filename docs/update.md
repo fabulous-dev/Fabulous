@@ -36,14 +36,22 @@ let timerCmd =
     |> Cmd.ofAsyncMsg
 ```
 
-The init and update functions may return new "commands".  This is permitted when using `Program.mkProgram`.
+Triggering Commands on Initialization
+------
+
+The `init` function may trigger commands, e.g. initial database requests.  This is permitted when using `Program.mkProgram`.
 For example here is a pattern  to get an initial balance on startup:
 ```fsharp
 let fetchInitialBalance = Cmd.ofAsyncMsg (async { ... })
 
 let init () = { ... }, fetchInitialBalance
 ```
-Likewise, for example, here is one pattern for a timer loop that can be turned on/off:
+
+Triggering Commands as Messages are Processed
+------
+
+The `update` function may trigger commands such as timers.  This is permitted when using `Program.mkProgram`.
+For example, here is one pattern for a timer loop that can be turned on/off:
 
 ```fsharp
 type Model = 
@@ -66,7 +74,7 @@ let update msg model =
     | TimedTick -> if model.TimerOn then { model with Count = model.Count + model.Step }, timerCmd else model, Cmd.none
 ```
 
-External events
+Triggering Commands from External Events
 ------
 
 You can also set up global subscriptions, which are events sent from outside the view or the dispatch loop. For example, dispatching `ClockMsg` messages on a global timer:
@@ -83,7 +91,7 @@ let runner =
     |> Program.runWithDynamicView app
         
 ```
-To subscribe to an external event source, use something like this:
+Likewise, the general pattern to subscribe to external event sources is as follows:
 ```let subscribeToPushEvent dispatch = 
      ...
      call dispatch in some closure
@@ -101,8 +109,9 @@ Everything that wants access to `dispatch` must be mentioned in the composition 
 Threading and Long-running Operations
 ------
 
+The rules:
 1. `update` gets run on the UI thread.  
-2. `dispatch` can be called from any thread. The message will be processed by `update` on the UI thread
+2. `dispatch` can be called from any thread. The message will be processed by `update` on the UI thread.
 3. `view` gets called on the UI thread. In the future an option may be added to offload the `view` function automatically. 
 
 When handling any long running operation, the operation should initiate it's thing and dispatch a message when done.
