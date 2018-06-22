@@ -23,8 +23,9 @@ let update msg model =
 Commands
 ------
 
-A `Cmd` is a callback that can dispatch messages, i.e. gets access to `dispatch` when run.
-These can be used for event subscriptions to callback, implement timers and so on. They can also be returned
+A command (type `Cmd`) is a callback that can dispatch messages, i.e. gets access to `dispatch` when run.
+
+Commands can be used for event subscriptions to callback, implement timers and so on. They can also be returned
 with the model to queue up long running operations such as network calls.
 
 Commands are often asynchronous and nearly always dispatch messages. For example, the simplest way to make a command
