@@ -3,107 +3,125 @@ Elmish.XamarinForms Guide
 
 {% include_relative contents.md %}
 
-Update, Commands and Async
+The Init and Update Functions
 ------
 
-In its simplest form, when using `Program.mkSimple`, the update function simply returns a new model:
+The init function returns an initial model, and the update function processes a message and returns a new model:
 ```fsharp
-    let init () = { ... }
+type Model = { TimerOn: bool } 
+
+type Message = 
+    | TimerToggled of bool
     
-    let update msg model =
-        match msg with
-        | ...
-        | TimerToggled on -> { model with TimerOn = on }
-```
-The init and update functions may also return new commands when using `Program.mkProgram`:
-```fsharp
-
-    let init () = { ... }, Cmd.none
+let init () = { TimerOn = false }
     
-    let update msg model =
-        match msg with
-        | ...
-        | TimerToggled on -> { model with TimerOn = on }, (if on then timerCmd else Cmd.none)
-```
-Asynchronous actions are triggered in this way: by having the `init` and `update` function return commands,
-which can trigger later `dispatch` of further messages. To start returning commands from your update function:
-
-* Change `Program.mkSimple` to `Program.mkProgram`
-
-```fsharp
-    let program = Program.mkProgram App.init App.update App.view
+let update msg model =
+    match msg with
+    | TimerToggled on -> { model with TimerOn = on }
 ```
 
-* Change your `update` function to return a pair of a model and a command. For most messages the command will be `Cmd.none` but for basic async actions use `Cmd.ofAsyncMsg`.
+Commands
+------
 
-For example here is a command to get an initial balance on startup:
+A command (type `Cmd`) is a callback that can dispatch messages, i.e. gets access to `dispatch` when run.
+
+Commands can be used for event subscriptions to callback, implement timers and so on. They can also be returned
+with the model to queue up long running operations such as network calls.
+
+Commands are often asynchronous and nearly always dispatch messages. For example, the simplest way to make a command
+is `Cmd.ofAsyncMsg` which triggers a message dispatch when an async completes:
 ```fsharp
-    let fetchInitialBalance = Cmd.ofAsyncMsg (async { ... })
-
-    let init () = { ... },fetchInitialBalance
+let timerCmd = 
+    async { do! Async.Sleep 200
+            return TimedTick }
+    |> Cmd.ofAsyncMsg
 ```
-Likewise, for example, here is one pattern for a timer loop that can be turned on/off:
+
+Triggering Commands on Initialization
+------
+
+The `init` function may trigger commands, e.g. initial database requests.  This is permitted when using `Program.mkProgram`.
+For example here is a pattern  to get an initial balance on startup:
+```fsharp
+let fetchInitialBalance = Cmd.ofAsyncMsg (async { ... })
+
+let init () = { ... }, fetchInitialBalance
+```
+
+Triggering Commands as Messages are Processed
+------
+
+The `update` function may trigger commands such as timers.  This is permitted when using `Program.mkProgram`.
+For example, here is one pattern for a timer loop that can be turned on/off:
 
 ```fsharp
-    type Model = 
-        { ...
-          TimerOn: bool 
-        }
+type Model = 
+    { TimerOn: bool }
         
-    type Message = 
-        | ...
-        | TimedTick
-        | TimerToggled of bool
+type Message = 
+    | TimedTick
+    | TimerToggled of bool
         
-    let timerCmd = 
-        async { do! Async.Sleep 200
-                return TimedTick }
-        |> Cmd.ofAsyncMsg
+let timerCmd = 
+    async { do! Async.Sleep 200
+            return TimedTick }
+    |> Cmd.ofAsyncMsg
 
-    let init () = { TimerOn = false }, Cmd.none
+let init () = { TimerOn = false }, Cmd.none
     
-    let update msg model =
-        match msg with
-        | ...
-        | TimerToggled on -> { model with TimerOn = on }, (if on then timerCmd else Cmd.none)
-        | TimedTick -> if model.TimerOn then { model with Count = model.Count + model.Step }, timerCmd else model, Cmd.none
+let update msg model =
+    match msg with
+    | TimerToggled on -> { model with TimerOn = on }, (if on then timerCmd else Cmd.none)
+    | TimedTick -> if model.TimerOn then { model with Count = model.Count + model.Step }, timerCmd else model, Cmd.none
 ```
 
-
-### Messages: External event and asynchronous event subscriptions
+Triggering Commands from External Events
+------
 
 You can also set up global subscriptions, which are events sent from outside the view or the dispatch loop. For example, dispatching `ClockMsg` messages on a global timer:
 ```fsharp
-    let timerTick dispatch =
-        let timer = new System.Timers.Timer(1.0)
-        timer.Elapsed.Subscribe (fun _ -> dispatch (ClockMsg System.DateTime.Now)) |> ignore
-        timer.Enabled <- true
-        timer.Start()
+let timerTick dispatch =
+    let timer = new System.Timers.Timer(1.0)
+    timer.Elapsed.Subscribe (fun _ -> dispatch (ClockMsg System.DateTime.Now)) |> ignore
+    timer.Enabled <- true
+    timer.Start()
 
-    ...
-    let runner = 
-        ...
-        |> Program.withSubscription (fun _ -> Cmd.ofSub timerTick)
-        ...
+let runner = 
+    Program.mkSimple App.init App.update App.view
+    |> Program.withSubscription (fun _ -> Cmd.ofSub timerTick)
+    |> Program.runWithDynamicView app
         
 ```
-To subscribe to an external event source, use something like this:
-```let subscribeToPushEvent disptach = 
+Likewise, the general pattern to subscribe to external event sources is as follows:
+```let subscribeToPushEvent dispatch = 
      ...
-       call dispatch in some closure
-    ...
+     call dispatch in some closure
+     ...
 
-...
-
-    |> Program.withSubscription(fun _ -> Cmd.ofSub subscribeToPushEvent)```
-(edited)
+let runner = 
+    Program.mkSimple App.init App.update App.view
+    |> Program.withSubscription (fun _ -> Cmd.ofSub subscribeToPushEvent)
+    |> Program.runWithDynamicView app
+        
 ```
 
 Everything that wants access to `dispatch` must be mentioned in the composition of the overall app, or as part of a command produced as a result of processing a message, or in the view.
 
-### State Resurrection
+Threading and Long-running Operations
+------
 
-The state-resurrection `OnResume` logic of your application (see above) should also be adjusted to restart
-appropriate `async` actions accoring to the state of the application.
+The rules:
+1. `update` gets run on the UI thread.  
+2. `dispatch` can be called from any thread. The message will be processed by `update` on the UI thread.
+3. `view` gets called on the UI thread. In the future an option may be added to offload the `view` function automatically. 
 
-* See also [Models](models.md)
+When handling any long running operation, the operation should initiate it's thing and dispatch a message when done.
+If necessary, explicitly off-load and then dispatch at the end, e.g.
+
+```fsharp
+let backgroundCmd =
+    Cmd.ofAsyncMsg (async { 
+        do! Async.SwitchToThreadPool()
+        let res = ..
+        return msg
+    })```
