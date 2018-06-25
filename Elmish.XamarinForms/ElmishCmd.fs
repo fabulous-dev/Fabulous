@@ -1,10 +1,6 @@
 ﻿// Copyright 2018 Elmish and Elmish.XamarinForms contributors. See LICENSE.md for license.
 namespace Elmish.XamarinForms
 
-open System
-open System.Diagnostics
-open FSharp.Control
-
 /// Dispatch - feed new message into the processing loop
 type Dispatch<'msg> = 'msg -> unit
 

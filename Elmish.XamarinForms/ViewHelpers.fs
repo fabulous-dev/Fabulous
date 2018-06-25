@@ -10,17 +10,6 @@ open System.Collections.Generic
 [<AutoOpen>]
 module SimplerHelpers = 
 
-    let rowdef h = Xaml.RowDefinition(height=makeGridLength h)
-    let coldef h = Xaml.ColumnDefinition(width=makeGridLength h)
-
-    let rows rds (els: XamlElement list) = 
-        let children = els |> List.mapi (fun i x -> x.GridRow i)
-        Xaml.Grid(rowdefs=rds, children=children)
-
-    let cols cds (els: XamlElement list) = 
-        let children = els |> List.mapi (fun i x -> x.GridColumn i)
-        Xaml.Grid(coldefs=cds, children=children)
-
     type internal Memoizations() = 
        static let t = Dictionary<obj,System.WeakReference<obj>>(HashIdentity.Structural)
        static member T = t
@@ -45,7 +34,7 @@ module SimplerHelpers =
         
     /// Dispatch a message via the currently running Elmish program
     [<System.Obsolete("The global dispatch routine should no longer be used as it is not type safe, please use the dispatch routine passed to the 'view' function", error=true)>]
-    let dispatch msg = Program.ProgramDispatch<'msg>.Dispatch msg 
+    let dispatch msg : unit = failwith "??"
 
     /// Memoize a callback that has no interesting dependencies.
     /// NOTE: use with caution. The function must not capture any values besides "dispatch"

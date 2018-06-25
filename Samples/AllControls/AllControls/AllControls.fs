@@ -2,12 +2,9 @@
 namespace AllControls
 
 open System
-open System.Collections.Generic
 open Elmish.XamarinForms
 open Elmish.XamarinForms.DynamicViews
 open Xamarin.Forms
-open Xamarin.Forms.PlatformConfiguration
-open Xamarin.Forms.PlatformConfiguration.iOSSpecific
 
 type RootPageKind = 
     | Choice of bool
@@ -200,7 +197,7 @@ module App =
                             padding = new Thickness (10.0, 20.0, 10.0, 5.0), 
                             content= Xaml.StackLayout(
                                children=[ 
-                                   Xaml.Label(text = "Elmish.XamarinForms, version " + string (typeof<XamlElement>.Assembly.GetName().Version))
+                                   Xaml.Label(text = "Elmish.XamarinForms, version " + string (typeof<ViewElement>.Assembly.GetName().Version))
                                    Xaml.Button(text = "Continue", command=(fun () -> dispatch (SetRootPageKind (Choice false)) ))
                                ]))
                 ])
@@ -628,5 +625,4 @@ type App () as app =
     let runner = 
         Program.mkSimple App.init App.update App.view
         |> Program.withConsoleTrace
-        |> Program.withDynamicView app
-        |> Program.run
+        |> Program.runWithDynamicView app

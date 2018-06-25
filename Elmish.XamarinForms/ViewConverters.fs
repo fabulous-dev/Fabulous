@@ -28,7 +28,7 @@ type ListGroupData<'T>(key:'T, coll: 'T[]) =
     member x.Items = coll
 
 
-type XamlElementCell() = 
+type ViewElementCell() = 
     inherit ViewCell()
 
     let mutable modelOpt = None
@@ -57,10 +57,10 @@ type XamlElementCell() =
             modelOpt <- None
 
 type CustomListView() = 
-    inherit ListView(ItemTemplate=DataTemplate(typeof<XamlElementCell>))
+    inherit ListView(ItemTemplate=DataTemplate(typeof<ViewElementCell>))
 
 type CustomGroupListView() = 
-    inherit ListView(ItemTemplate=DataTemplate(typeof<XamlElementCell>), GroupHeaderTemplate=DataTemplate(typeof<XamlElementCell>))
+    inherit ListView(ItemTemplate=DataTemplate(typeof<ViewElementCell>), GroupHeaderTemplate=DataTemplate(typeof<ViewElementCell>))
 
 type CustomContentPage() as self = 
     inherit ContentPage()
@@ -128,10 +128,10 @@ module Converters =
 
     let identical (x: 'T) (y:'T) = System.Object.ReferenceEquals(x, y)
 
-    let canReuseChild (prevChild:XamlElement) (newChild:XamlElement) = 
+    let canReuseChild (prevChild:ViewElement) (newChild:ViewElement) = 
         (prevChild.TargetType = newChild.TargetType)
 
-    let updateChild (prevChild:XamlElement) (newChild:XamlElement) targetChild = 
+    let updateChild (prevChild:ViewElement) (newChild:ViewElement) targetChild = 
         newChild.UpdateIncremental(prevChild, targetChild)
 
     type Chunks<'T> = 
@@ -217,7 +217,7 @@ module Converters =
         updateIList prevCollOpt collOpt targetColl ListGroupData (fun _ _ _ -> ()) (fun _ _ -> false) (fun _ _ _ -> failwith "no element reuse")
 
     let updateTableViewItems (prevCollOpt: (string * 'T[])[] voption) (collOpt: (string * 'T[])[] voption) (target: Xamarin.Forms.TableView) = 
-        let create (desc: XamlElement) = (desc.Create() :?> Cell)
+        let create (desc: ViewElement) = (desc.Create() :?> Cell)
         let root = 
             match target.Root with 
             | null -> 
@@ -329,8 +329,8 @@ module Converters =
                         | Some _ -> ()
 
     /// Incremental NavigationPage maintenance: push/pop the right pages
-    let updateNavigationPages (prevCollOpt: XamlElement[] voption)  (collOpt: XamlElement[] voption) (target: NavigationPage) attach =
-          let create (desc: XamlElement) = (desc.Create() :?> Page)
+    let updateNavigationPages (prevCollOpt: ViewElement[] voption)  (collOpt: ViewElement[] voption) (target: NavigationPage) attach =
+          let create (desc: ViewElement) = (desc.Create() :?> Page)
           match prevCollOpt, collOpt with 
           | ValueSome prevColl, ValueSome newColl when identical prevColl newColl -> ()
           | _, ValueNone -> failwith "Error while updating NavigationPage pages: the pages collection should never be empty for a NavigationPage"
@@ -405,8 +405,8 @@ module Converters =
     let tryFindListViewItem (sender: obj) (item: obj) =
         match item with 
         | null -> None
-        | :? ListElementData<XamlElement> as item -> 
-            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListElementData<XamlElement>> 
+        | :? ListElementData<ViewElement> as item -> 
+            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListElementData<ViewElement>> 
             // TODO: this linear search is needs improvement
             items |> Seq.tryFindIndex (fun item2 -> identical item.Key item2.Key)
         | _ -> None
@@ -414,8 +414,8 @@ module Converters =
     let tryFindGroupedListViewItem (sender: obj) (item: obj) =
         match item with 
         | null -> None
-        | :? ListGroupData<XamlElement> as item ->
-            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData<XamlElement>> 
+        | :? ListGroupData<ViewElement> as item ->
+            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData<ViewElement>> 
             // TODO: this linear search is needs improvement
             items 
             |> Seq.indexed 

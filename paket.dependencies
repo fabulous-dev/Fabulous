@@ -6,7 +6,7 @@ nuget FAKE 4.64.13
 group neutral
   framework: netstandard2.0
   source https://www.nuget.org/api/v2
-  nuget FSharp.Core 4.3.3
+  nuget FSharp.Core 4.5.0
   nuget Xamarin.Forms 3.0.0.482510
   nuget FsPickler 5.2
   nuget FsPickler.Json 5.2
@@ -16,7 +16,7 @@ group neutral
 group androidapp
   framework: monoandroid71
   source https://www.nuget.org/api/v2
-  nuget FSharp.Core 4.3.3
+  nuget FSharp.Core 4.5.0
   nuget Xamarin.Forms 3.0.0.482510
   nuget Xamarin.Android.FSharp.ResourceProvider 1.0.0.14
   nuget Xamarin.Android.Support.Animated.Vector.Drawable 25.4.0.2
@@ -41,5 +41,5 @@ group androidapp
 group iosapp
   framework: monotouch
   source https://www.nuget.org/api/v2
-  nuget FSharp.Core 4.3.3
+  nuget FSharp.Core 4.5.0
   nuget Xamarin.Forms 3.0.0.482510

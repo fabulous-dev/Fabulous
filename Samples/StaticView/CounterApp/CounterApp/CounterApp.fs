@@ -1,7 +1,6 @@
 ﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
 namespace CounterApp
 
-open Elmish
 open Elmish.XamarinForms
 open Elmish.XamarinForms.StaticViews
 open Xamarin.Forms
@@ -15,9 +14,6 @@ type Msg =
     | Decrement 
     | Reset
     | SetStep of int
-
-open Xamarin.Forms.PlatformConfiguration
-open Xamarin.Forms.PlatformConfiguration.iOSSpecific
 
 type CounterApp () = 
     inherit Application ()
@@ -45,8 +41,7 @@ type CounterApp () =
         let runner = 
             Program.mkSimple init update view
             |> Program.withConsoleTrace
-            |> Program.withStaticView
-            |> Program.run
+            |> Program.runWithStaticView
         let page = runner.InitialMainPage
 
         do PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(page.On<PlatformConfiguration.iOS>(), true) |> ignore

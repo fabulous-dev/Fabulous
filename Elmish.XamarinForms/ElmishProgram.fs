@@ -4,227 +4,22 @@ namespace Elmish.XamarinForms
 open System
 open System.Diagnostics
 open Elmish.XamarinForms
-open Elmish.XamarinForms.StaticViews
 open Elmish.XamarinForms.DynamicViews
 open Xamarin.Forms
-
-/// Represents a model when you don't have a model.  A Clayton's model.
-type NoModel = 
-    | NoModel
-
-type Update<'model, 'msg> = 'msg -> 'model -> 'model * Cmd<'msg>
-type Update<'model, 'msg, 'extmsg> = 'msg -> 'model -> 'model * Cmd<'msg> * 'extmsg
-type StaticView<'model, 'msg, 'page> = unit -> 'page * ViewBindings<'model, 'msg>
-type DynamicView<'model, 'msg, 'page> = unit -> 'page * ('model -> 'msg -> Xamarin.Forms.View)
 
 [<AutoOpen>]
 module Values =
     let NoCmd<'a> : Cmd<'a> = Cmd.none
-    let mutable currentPage : Page = null
 
-[<RequireQualifiedAccess>]
-/// For navigation in the half-elmish model
-module Nav =
+/// We store the current dispatch function for the running Elmish program as a 
+/// static-global thunk because we want old view elements stored in the `dependsOn` global table
+/// to be recyclable on resumption (when a new ProgramRunner gets created).
+type internal ProgramDispatch<'msg>()  = 
+    static let mutable dispatchImpl = (fun (msg: 'msg) -> failwith "do not call dispatch during initialization" : unit)
 
-    // TODO: modify the Elmish framework we use to remove this global state and pass it into all commands??
-    let mutable globalNavMap : Map<System.IComparable, Page> = Map.empty
+    static let dispatch = id (fun msg -> dispatchImpl msg)
 
-    /// Push new location into history and navigate there
-    let push (fromPageTag: ('navTarget :> System.IComparable)) (toPageTag: ('navTarget :> System.IComparable)) : Cmd<_> =
-        [ fun _ -> 
-            let fromPage = globalNavMap.[fromPageTag]
-            let toPage = globalNavMap.[toPageTag]
-            let nav = fromPage.Navigation
-            nav.PushAsync toPage |> ignore ]
-
-    /// Push new location into history and navigate there
-    let pushModal (fromPageTag: ('navTarget :> System.IComparable)) (toPageTag: ('navTarget :> System.IComparable)) : Cmd<_> =
-        [ fun _ -> 
-            let fromPage = globalNavMap.[fromPageTag]
-            let toPage = globalNavMap.[toPageTag]
-            let nav = fromPage.Navigation
-            nav.PushModalAsync toPage |> ignore ]
-
-    let popToRoot (fromPageTag: ('navTarget :> System.IComparable)) : Cmd<_> =
-        [ fun _ -> 
-            let fromPage = globalNavMap.[fromPageTag]
-            let nav = fromPage.Navigation
-            nav.PopToRootAsync() |> ignore ]
-
-    let popModal (fromPageTag: ('navTarget :> System.IComparable)) : Cmd<_> =
-        [ fun _ -> 
-            let fromPage = globalNavMap.[fromPageTag]
-            let nav = fromPage.Navigation
-            nav.PopModalAsync() |> ignore ]
-
-    let pop (fromPageTag: ('navTarget :> System.IComparable)) : Cmd<_> =
-        [ fun _ -> 
-            let fromPage = globalNavMap.[fromPageTag]
-            let nav = fromPage.Navigation
-            nav.PopAsync() |> ignore ]
-
-
-[<RequireQualifiedAccess>]
-/// For combining init functions in the half-elmish model
-module Init =
-    let combo2 init1 init2 () = 
-        let model1 = init1()
-        let model2 = init2()
-        (model1, model2)
-
-    let combo3 init1 init2 init3 () = 
-        let model1 = init1()
-        let model2 = init2()
-        let model3 = init3()
-        (model1, model2, model3)
-
-    let combo4 init1 init2 init3 init4 () = 
-        let model1 = init1()
-        let model2 = init2()
-        let model3 = init3()
-        let model4 = init4()
-        (model1, model2, model3, model4)
-
-    let combo5 init1 init2 init3 init4 init5 () =
-        let model1 = init1()
-        let model2 = init2()
-        let model3 = init3()
-        let model4 = init4()
-        let model5 = init5()
-        (model1, model2, model3, model4, model5)
-
-[<RequireQualifiedAccess>]
-/// For combining init+cmd functions in the half-elmish model
-module InitCmd =
-    let combo2 init1 init2 () = 
-        let model1, cmd1 = init1()
-        let model2, cmd2 = init2()
-        (model1, model2), Cmd.batch [cmd1; cmd2]
-
-    let combo3 init1 init2 init3 () = 
-        let model1, cmd1 = init1()
-        let model2, cmd2 = init2()
-        let model3, cmd3 = init3()
-        (model1, model2, model3), Cmd.batch [cmd1; cmd2; cmd3]
-
-    let combo4 init1 init2 init3 init4 () = 
-        let model1, cmd1 = init1()
-        let model2, cmd2 = init2()
-        let model3, cmd3 = init3()
-        let model4, cmd4 = init4()
-        (model1, model2, model3, model4), Cmd.batch [cmd1; cmd2; cmd3; cmd4]
-
-    let combo5 init1 init2 init3 init4 init5 () =
-        let model1, cmd1 = init1()
-        let model2, cmd2 = init2()
-        let model3, cmd3 = init3()
-        let model4, cmd4 = init4()
-        let model5, cmd5 = init5()
-        (model1, model2, model3, model4, model5), Cmd.batch [cmd1; cmd2; cmd3; cmd4; cmd5]
-
-
-[<RequireQualifiedAccess>]
-/// For combining update functions in the half-elmish model
-module Update =
-
-    let combo2 (update1: Update<_, _, _>) (update2: Update<_, _, _>) : Update<_,_,_> = fun msg (model1, model2) ->
-        match msg with
-        | Choice1Of2 msg1 -> let newModel, cmds, extmsg = update1 msg1 model1 in (newModel, model2), Cmd.map Choice1Of2 cmds, extmsg 
-        | Choice2Of2 msg2 -> let newModel, cmds, extmsg = update2 msg2 model2 in (model1, newModel), Cmd.map Choice2Of2 cmds, extmsg 
-
-    let combo3 (update1: Update<_, _, _>) (update2: Update<_, _, _>) (update3: Update<_, _, _>) : Update<_,_,_> = fun msg (model1, model2, model3) ->
-        match msg with
-        | Choice1Of3 msg1 -> let newModel, cmds, extmsg = update1 msg1 model1 in (newModel, model2, model3), Cmd.map Choice1Of3 cmds, extmsg  
-        | Choice2Of3 msg2 -> let newModel, cmds, extmsg = update2 msg2 model2 in (model1, newModel, model3), Cmd.map Choice2Of3 cmds, extmsg  
-        | Choice3Of3 msg3 -> let newModel, cmds, extmsg = update3 msg3 model3 in (model1, model2, newModel), Cmd.map Choice3Of3 cmds, extmsg  
-
-    let combo4 (update1: Update<_, _, _>) (update2: Update<_, _, _>) (update3: Update<_, _, _>) (update4: Update<_, _, _>) : Update<_,_,_> = fun msg (model1, model2, model3, model4) ->
-        match msg with
-        | Choice1Of4 msg1 -> let newModel, cmds, extmsg = update1 msg1 model1 in (newModel, model2, model3, model4), Cmd.map Choice1Of4 cmds, extmsg  
-        | Choice2Of4 msg2 -> let newModel, cmds, extmsg = update2 msg2 model2 in (model1, newModel, model3, model4), Cmd.map Choice2Of4 cmds, extmsg  
-        | Choice3Of4 msg3 -> let newModel, cmds, extmsg = update3 msg3 model3 in (model1, model2, newModel, model4), Cmd.map Choice3Of4 cmds, extmsg  
-        | Choice4Of4 msg4 -> let newModel, cmds, extmsg = update4 msg4 model4 in (model1, model2, model3, newModel), Cmd.map Choice4Of4 cmds, extmsg  
-
-    let combo5 (update1: Update<_, _, _>) (update2: Update<_, _, _>) (update3: Update<_, _, _>) (update4: Update<_, _, _>) (update5: Update<_, _, _>) : Update<_,_,_> = fun msg (model1, model2, model3, model4, model5) ->
-        match msg with
-        | Choice1Of5 msg1 -> let newModel, cmds, extmsg = update1 msg1 model1 in (newModel, model2, model3, model4, model5), Cmd.map Choice1Of5 cmds, extmsg 
-        | Choice2Of5 msg2 -> let newModel, cmds, extmsg = update2 msg2 model2 in (model1, newModel, model3, model4, model5), Cmd.map Choice2Of5 cmds, extmsg 
-        | Choice3Of5 msg3 -> let newModel, cmds, extmsg = update3 msg3 model3 in (model1, model2, newModel, model4, model5), Cmd.map Choice3Of5 cmds, extmsg 
-        | Choice4Of5 msg4 -> let newModel, cmds, extmsg = update4 msg4 model4 in (model1, model2, model3, newModel, model5), Cmd.map Choice4Of5 cmds, extmsg 
-        | Choice5Of5 msg5 -> let newModel, cmds, extmsg = update5 msg5 model5 in (model1, model2, model3, model4, newModel), Cmd.map Choice5Of5 cmds, extmsg 
-
-    /// Reconcile external messages by turning them into changes in the composed model and/or commands
-    let reconcile f (update: Update<'model,'msg,'extmsg>) : Update<'model,'msg> = fun msg model ->
-        let newModel, cmds, extmsg = update msg model
-        let newModel2, cmds2 = f extmsg newModel
-        newModel2, Cmd.batch [cmds; cmds2]
-
-[<RequireQualifiedAccess>]
-/// For combining static view functions in the half-elmish model
-module StaticView =
-
-    let internal setBindingContextsUntyped (bindings: ViewBindings<'model, 'msg>) (viewModel: StaticViewModel<obj, obj>) = 
-        for (bindingName, binding) in bindings do 
-            match binding with 
-            | BindSubModel (ViewSubModel (initf, _, _, _, _)) -> 
-                let subModel = viewModel.[bindingName]
-                initf subModel
-            | _ -> ()
-
-    let internal setBindingContexts (bindings: ViewBindings<'model, 'msg>) (viewModel: StaticViewModel<'model, 'msg>) = 
-        for (bindingName, binding) in bindings do 
-            match binding with 
-            | BindSubModel (ViewSubModel (initf, _, _, _, _)) -> 
-                let subModel = viewModel.[bindingName]
-                initf subModel
-            | _ -> ()
-
-    let internal staticPageInitUntyped (page: Page) (bindings: ViewBindings<'model, 'msg>) =
-        fun (objViewModel: obj) ->
-            match objViewModel with
-            | :? StaticViewModel<obj, obj> as viewModel -> 
-                setBindingContextsUntyped bindings viewModel
-                page.BindingContext <- objViewModel
-            | _ -> failwithf "unexpected type in staticPageInitUntyped: %A" (objViewModel.GetType())
-
-    let internal genViewName = let mutable c = 0 in fun () -> c <- c + 1; "View"+string c
-
-    let internal apply (view: StaticView<_, _, _>) = 
-        let page, bindings = view() 
-        let name = genViewName()
-        name, page, bindings
-
-    let subPage (view1: StaticView<'model, 'msg, 'page>) =
-        let nm1, page1, bindings1 = apply view1
-        page1,
-        [ nm1 |> Binding.subView (staticPageInitUntyped page1 bindings1) id id bindings1 ]
-
-    let combo2 (view1: StaticView<'model1, 'msg1, 'page1>) (view2: StaticView<'model2, 'msg2, 'page2>) =
-        let nm1, page1, bindings1 = apply view1
-        let nm2, page2, bindings2 = apply view2
-        (page1, page2),
-        [ nm1 |> Binding.subView (staticPageInitUntyped page1 bindings1) (fun (a,_) -> a) Choice1Of2 bindings1
-          nm2 |> Binding.subView (staticPageInitUntyped page1 bindings2) (fun (_,a) -> a) Choice2Of2 bindings2 ]
-
-    let combo3 (view1: StaticView<'model1, 'msg1, 'page1>) (view2: StaticView<'model2, 'msg2, 'page2>) (view3: StaticView<'model3, 'msg3, 'page3>) = 
-        let nm1, page1, bindings1 = apply view1
-        let nm2, page2, bindings2 = apply view2
-        let nm3, page3, bindings3 = apply view3
-        (page1, page2, page3),
-        [ nm1 |> Binding.subView (staticPageInitUntyped page1 bindings1) (fun (a,_,_) -> a) Choice1Of3 bindings1
-          nm2 |> Binding.subView (staticPageInitUntyped page2 bindings2) (fun (_,a,_) -> a) Choice2Of3 bindings2
-          nm3 |> Binding.subView (staticPageInitUntyped page3 bindings3) (fun (_,_,a) -> a) Choice3Of3 bindings3 ]
-
-    let combo4 (view1: StaticView<'model1, 'msg1, 'page1>) (view2: StaticView<'model2, 'msg2, 'page2>) (view3: StaticView<'model3, 'msg3, 'page3>) (view4: StaticView<'model4, 'msg4, 'page4>) =
-        let nm1, page1, bindings1 = apply view1
-        let nm2, page2, bindings2 = apply view2
-        let nm3, page3, bindings3 = apply view3
-        let nm4, page4, bindings4 = apply view4
-        (page1, page2, page3, page4),
-        [ nm1 |> Binding.subView (staticPageInitUntyped page1 bindings1) (fun (a,_,_,_) -> a) Choice1Of4 bindings1
-          nm2 |> Binding.subView (staticPageInitUntyped page2 bindings2) (fun (_,a,_,_) -> a) Choice2Of4 bindings2
-          nm3 |> Binding.subView (staticPageInitUntyped page3 bindings3) (fun (_,_,a,_) -> a) Choice3Of4 bindings3
-          nm4 |> Binding.subView (staticPageInitUntyped page4 bindings4) (fun (_,_,_,a) -> a) Choice4Of4 bindings4 ]
+    static member Dispatch with get () = dispatch and set v = dispatchImpl <- v
 
 /// Program type captures various aspects of program behavior
 type Program<'model, 'msg, 'view> = 
@@ -234,6 +29,87 @@ type Program<'model, 'msg, 'view> =
       view : 'view
       debug : bool
       onError : (string*exn) -> unit }
+
+/// Starts the Elmish dispatch loop for the page with the given Elmish program
+type ProgramRunner<'model, 'msg>(app: Application, program: Program<'model, 'msg, _>)  = 
+
+    do Debug.WriteLine "run: computing initial model"
+
+    // Get the initial model
+    let (initialModel,cmd) = program.init ()
+
+    let mutable lastModel = initialModel
+    let mutable lastViewDataOpt = None
+    let dispatch = ProgramDispatch<'msg>.Dispatch
+
+    // If the view is dynamic, create the initial page
+    let viewInfo, mainPage = 
+        let pageDescription : ViewElement = program.view initialModel dispatch
+        let pageObj = pageDescription.Create()
+        let mainPage = 
+            match pageObj with 
+            | :? Page as page -> page
+            | _ -> failwithf "Incorrect model type: expected a page but got a %O" (pageObj.GetType())
+        app.MainPage <- mainPage
+        //app.Properties.["model"] <- initialModel
+        (pageDescription), mainPage
+
+    // Start Elmish dispatch loop  
+    let rec processMsg msg = 
+        try
+            let (updatedModel,newCommands) = program.update msg lastModel
+            lastModel <- updatedModel
+            try 
+                updateView updatedModel 
+            with ex ->
+                program.onError ("Unable to update view:", ex)
+            try 
+                newCommands |> List.iter (fun sub -> sub dispatch)
+            with ex ->
+                program.onError ("Error executing commands:", ex)
+        with ex ->
+            program.onError ("Unable to process a message:", ex)
+
+    and updateView updatedModel = 
+        match lastViewDataOpt with
+        | None -> 
+            lastViewDataOpt <- Some viewInfo
+
+        | Some prevPageDescription ->
+            let newPageDescription: ViewElement = program.view updatedModel dispatch
+            if canReuseChild prevPageDescription newPageDescription then
+                newPageDescription.UpdateIncremental (prevPageDescription, app.MainPage)
+            else
+                let pageObj = newPageDescription.Create()
+                match pageObj with 
+                | :? Page as page -> app.MainPage <- page
+                | _ -> failwithf "Incorrect model type: expected a page but got a %O" (pageObj.GetType())
+
+            lastViewDataOpt <- Some newPageDescription
+                      
+    do 
+        // Set up the global dispatch function
+        ProgramDispatch<'msg>.Dispatch <- (fun msg -> Device.BeginInvokeOnMainThread(fun () -> processMsg msg))
+
+        Debug.WriteLine "updating the initial view"
+
+        updateView initialModel 
+
+        Debug.WriteLine "dispatching initial commands"
+        for sub in (program.subscribe initialModel @ cmd) do
+            sub dispatch
+
+    member __.InitialMainPage = mainPage
+
+    member __.CurrentModel = lastModel 
+
+    /// Set the current model, e.g. on resume
+    member __.SetCurrentModel(model, cmd: Cmd<_>) =
+        Debug.WriteLine "updating the view after setting the model"
+        lastModel <- model
+        updateView model
+        for sub in program.subscribe model @ cmd do
+            sub dispatch
 
 /// Program module - functions to manipulate program instances
 [<RequireQualifiedAccess>]
@@ -290,169 +166,28 @@ module Program =
         { program
             with onError = onError }
 
-    /// Starts the Elmish dispatch loop for the page with the given Elmish program
-    type ProgramRunner<'model, 'msg>(program: Program<'model, 'msg, _>)  = 
-
-        do Debug.WriteLine "run: computing initial model"
-
-        // Get the initial model
-        let (initialModel,cmd) = program.init ()
-
-        let mutable lastModel = initialModel
-        let mutable lastViewData = None
-        let dispatch = ProgramDispatch<'msg>.Dispatch
-
-        do Debug.WriteLine "run: computing static components of view"
-
-        // Extract the static content from the view
-        let viewInfo = program.view ()
-
-        // If the view is dynamic, create the initial page
-        let viewInfo, mainPage = 
-            match viewInfo with 
-            | Choice1Of2 (mainPage, bindings) -> Choice1Of2 (mainPage, bindings), mainPage
-            | Choice2Of2 ((app: Application), contentf: _ -> _ -> XamlElement) -> 
-                let pageDescription = contentf initialModel dispatch
-                let pageObj = pageDescription.Create()
-                let mainPage = 
-                    match pageObj with 
-                    | :? Page as page -> page
-                    | _ -> failwithf "Incorrect model type: expected a page but got a %O" (pageObj.GetType())
-                app.MainPage <- mainPage
-                //app.Properties.["model"] <- initialModel
-                Choice2Of2 (pageDescription, app, contentf), mainPage
-
-        // Start Elmish dispatch loop  
-        let rec processMsg msg = 
-            try
-                let (updatedModel,newCommands) = program.update msg lastModel
-                lastModel <- updatedModel
-                try 
-                   updateView updatedModel 
-                with ex ->
-                    program.onError ("Unable to update view:", ex)
-                try 
-                    newCommands |> List.iter (fun sub -> sub dispatch)
-                with ex ->
-                    program.onError ("Error executing commands:", ex)
-            with ex ->
-                program.onError ("Unable to process a message:", ex)
-
-        and updateView updatedModel = 
-            match lastViewData with
-            | None -> 
-
-                // Construct the binding context for the view model
-
-                let viewData = 
-                    match viewInfo with 
-                    | Choice1Of2 (mainPage, bindings) -> 
-                        let viewModel = StaticViewModel (updatedModel, dispatch, bindings, program.debug)
-                        StaticView.setBindingContexts bindings viewModel
-                        mainPage.BindingContext <- box viewModel
-                        Choice1Of2 (mainPage, bindings, viewModel)
-                    | Choice2Of2 (pageDescription, mainPage, contentf) -> 
-                        Choice2Of2 (pageDescription, mainPage, contentf)
-
-                lastViewData <- Some viewData
-
-            | Some prevViewData ->
-                let viewData = 
-                    match prevViewData with 
-                    | Choice1Of2 (page, bindings, viewModel) -> 
-                        viewModel.UpdateModel updatedModel
-                        Choice1Of2 (page, bindings, viewModel)
-                    | Choice2Of2 (prevPageDescription, app, contentf) -> 
-                        let newPageDescription: XamlElement = contentf updatedModel dispatch
-                        if canReuseChild prevPageDescription newPageDescription then
-                            newPageDescription.UpdateIncremental (prevPageDescription, app.MainPage)
-                        else
-                            let pageObj = newPageDescription.Create()
-                            match pageObj with 
-                            | :? Page as page -> app.MainPage <- page
-                            | _ -> failwithf "Incorrect model type: expected a page but got a %O" (pageObj.GetType())
-
-                        Choice2Of2 (newPageDescription, app, contentf)
-                lastViewData <- Some viewData
-                      
-        do 
-           // Set up the global dispatch function
-           ProgramDispatch<'msg>.Dispatch <- (fun msg -> Device.BeginInvokeOnMainThread(fun () -> processMsg msg))
-
-           Debug.WriteLine "updating the initial view"
-
-           updateView initialModel 
-
-           Debug.WriteLine "dispatching initial commands"
-           for sub in (program.subscribe initialModel @ cmd) do
-                sub dispatch
-
-        member __.InitialMainPage = mainPage
-
-        member __.CurrentModel = lastModel 
-
-        /// Set the current model, e.g. on resume
-        member __.SetCurrentModel(model, cmd: Cmd<_>) =
-            Debug.WriteLine "updating the view after setting the model"
-            lastModel <- model
-            updateView model
-            for sub in program.subscribe model @ cmd do
-                sub dispatch
-
-    /// Starts the Elmish dispatch loop for the page with the given Elmish program
-    and internal ProgramDispatch<'msg>()  = 
-        /// We store the current dispatch function for the running Elmish progream as a 
-        /// static-global because we want old view elements stored in the `dependsOn` global table
-        /// to be recyclable on resumption (when a new ProgramRunner gets created).
-        static let mutable dispatchImpl = (fun (msg: 'msg) -> failwith "do not call dispatch during initialization" : unit)
-
-        static let dispatch = id (fun msg -> dispatchImpl msg)
-
-        static member Dispatch with get () = dispatch and set v = dispatchImpl <- v
-
-    /// Creates the view model for the given page and starts the Elmish dispatch loop for the matching program
-    let run program = ProgramRunner(program)
-
-    /// Add navigation to an application, used only for Half-Elmish Static Xaml.
-    let withNavigation (program: Program<_,_,_>) = 
-        { init = program.init
-          update = program.update
-          subscribe = program.subscribe
-          onError = program.onError
-          debug = program.debug
-          view = (fun () -> 
-              let page, contents, navMap = program.view ()
-              Debug.WriteLine "setting global navigation map"
-              // TODO: modify the Elmish framework we use to remove this global state and pass it into all commands??
-              Nav.globalNavMap <- (navMap |> List.map (fun (tg, page) -> ((tg :> System.IComparable), page)) |> Map.ofList)
-              page, contents  )}
-
-    /// Assert that the program uses static views
-    let withStaticView (program: Program<'model, 'msg, _>) = 
-        { init = program.init
-          update = program.update
-          subscribe = program.subscribe
-          onError = program.onError
-          debug = program.debug
-          view = (fun () -> 
-              let page, bindings = program.view ()
-              Choice1Of2 ((page :> Page), bindings)) }
-
     /// Set debugging to true
     let withDebug program = 
         { program with debug = true }
 
-    /// Add dynamic views associated with a specific application
-    let withDynamicView app (program: Program<'model, 'msg, _>) = 
-        { init = program.init
-          update = program.update
-          debug = program.debug
-          subscribe = program.subscribe
-          onError = program.onError
-          view = (fun () -> Choice2Of2 ((app :> Application), program.view)) }
-
     /// Run the app with ddynamic views for a specific application
-    let runWithDynamicView app (program: Program<'model, 'msg, _>) = 
-        program 
-        |> withDynamicView app
-        |> run
+    let runWithDynamicView (app : Application) (program: Program<'model, 'msg, _>) = 
+        ProgramRunner(app, program)
+
+
+
+
+
+
+    /// Creates the view model for the given page and starts the Elmish dispatch loop for the matching program
+    [<Obsolete("Please use Program.runWithDynamicView", true)>]
+    let run app program = ProgramRunner(app,program)
+
+    /// Add dynamic views associated with a specific application
+    [<Obsolete("Please use Program.runWithDynamicView", true)>]
+    let withDynamicView app (program: Program<'model, 'msg, _>) = failwith ""
+
+    /// Add dynamic views associated with a specific application
+    [<Obsolete("Please open Elmish.XamarinForms.StaticViews and use Program.runWithStaticView", true)>]
+    let withStaticView (program: Program<'model, 'msg, _>) = failwith ""
+

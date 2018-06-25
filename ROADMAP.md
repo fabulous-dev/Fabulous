@@ -37,7 +37,7 @@
   * Apps using maps
 
 * App size:
-  * Check the Xamarin tree-shaker cuts out all unused code from DynamicXaml.fs
+  * Check the Xamarin tree-shaker cuts out all unused code from DynamicView.fs
 
 * Performance:
   * Do better list comparison/diffing
@@ -49,7 +49,7 @@
   * Consider implementing equality and hash on the immutable objects
   * Consider moving 'view' and 'model' computations off the UI thread
 
-* Consider allowing explicit static Xaml through a type provider, e.g `xaml<"""<StackLayout Padding="20">...</StackLayout>""">`, evaluating to a `XamlElement`
+* Consider allowing explicit static Xaml through a type provider, e.g `xaml<"""<StackLayout Padding="20">...</StackLayout>""">`, evaluating to a `ViewElement`
 
 * Make some small F# langauge improvements to improve code:
   * Remove `yield` in more cases

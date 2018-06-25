@@ -4,17 +4,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="XamlElement.fs" />
-    <Compile Include="DynamicXamlConverters.fs" />
-    <Compile Include="Xamarin.Forms.Core.fs" />
+    <Compile Include="ViewElement.fs" />
+    <Compile Include="ViewConverters.fs" />
+    <Compile Include="ViewHelpers.fs" />
     <Compile Include="ElmishCmd.fs" />
-    <Compile Include="StaticXamlBinding.fs" />
-    <Compile Include="StaticXamlViewModel.fs" />
     <Compile Include="ElmishProgram.fs" />
-    <Compile Include="DynamicViewHelpers.fs" />
+    <Compile Include="StaticViewBinding.fs" />
+    <Compile Include="StaticViewModel.fs" />
+    <Compile Include="StaticViewNav.fs" />
+    <Compile Include="StaticViewProgram.fs" />
+    <Compile Include="Xamarin.Forms.Core.fs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FSharp.Core" Version="4.3.3" />
+    <PackageReference Include="FSharp.Core" Version="4.5.0" />
     <PackageReference Include="Xamarin.Forms" Version="3.0.0.482510" />
   </ItemGroup>
 </Project>

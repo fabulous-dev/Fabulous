@@ -2,10 +2,8 @@
 
 namespace TicTacToe
 
-open Elmish
 open Elmish.XamarinForms
 open Elmish.XamarinForms.DynamicViews
-open Elmish.XamarinForms.DynamicViews.SimplerHelpers
 open Xamarin.Forms
 
 /// Represents a player and a player's move
@@ -203,6 +201,5 @@ type App() as app =
     let runner = 
         Program.mkSimple App.init (App.update gameOver) App.view
         |> Program.withConsoleTrace
-        |> Program.withDynamicView app
-        |> Program.run
+        |> Program.runWithDynamicView app
         
