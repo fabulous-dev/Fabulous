@@ -1,3 +1,6 @@
+#### 0.8.0
+* Rename `XamlElement` --> `ViewElement`
+
 #### 0.7.0
 * Base dependency is now Xamarin.Forms 3.0
 * Add `Resources` property to `VisualElement`
