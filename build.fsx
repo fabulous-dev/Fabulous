@@ -101,7 +101,7 @@ Target "TestTemplatesNuGet" (fun _ ->
     DotNetCli.RunCommand id ("new -i " + buildDir + "Elmish.XamarinForms.Templates." + release.NugetVersion + ".nupkg")
     CleanDir "testapp"
     DotNetCli.RunCommand id "new elmish-forms-app -n testapp -lang F#" 
-    DotNetCli.RunCommand id "restore testapp/testapp/testapp.fsproj -s " + buildDir
+    DotNetCli.RunCommand id ("restore testapp/testapp/testapp.fsproj -s " + buildDir)
     !! "testapp/testapp.Android/testapp.*.fsproj"
        |> MSBuildDebug null "RestorePackages"
        |> Log "AppBuild-Output: "
