@@ -182,7 +182,7 @@
     <PackageReference Include="Xamarin.TestCloud.Agent" Version="0.21.4"/>
     <#endif-->
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets" Condition="Exists('$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets')"/>
   <ItemGroup>
     <ProjectReference Include="..\NewApp\NewApp.fsproj">
       <Project>{99E19497-29A6-4B77-B773-BEC55F9B55DC}</Project>

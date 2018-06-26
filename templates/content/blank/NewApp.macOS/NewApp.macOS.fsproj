@@ -94,7 +94,7 @@
   <ItemGroup>
     <Compile Include="AppDelegate.fs" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.FSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.FSharp.targets" Condition="Exists('$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.FSharp.targets')"/>
   <ItemGroup>
     <ProjectReference Include="..\NewApp\NewApp.fsproj">
       <Project>{99E19497-29A6-4B77-B773-BEC55F9B55DC}</Project>
