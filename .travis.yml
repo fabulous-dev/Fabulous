@@ -16,6 +16,7 @@ install:
   - nuget restore
 
 script:
+  - mkdir -p build_output
   - ./install-xamarin-android-ios.sh
-  - ./build.sh NuGet
+  - ./build.sh Test
 
