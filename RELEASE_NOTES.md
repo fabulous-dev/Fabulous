@@ -1,3 +1,6 @@
+#### 0.8.1
+* This version number used for active development
+
 #### 0.8.0
 * Rename `XamlElement` --> `ViewElement`
 * Rejig  `XamlElement` to store an immutable array of attributes rather than a `Map`

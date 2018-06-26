@@ -6,7 +6,7 @@ open Fake.AssemblyInfoFile
 open Fake.Git
 open Fake.ReleaseNotesHelper
 
-let buildDir = "./build_output/"
+let buildDir = "./build_output"
 let release = LoadReleaseNotes "RELEASE_NOTES.md"
 
 let project = "Elmish.XamarinForms"
@@ -77,7 +77,7 @@ Target "AssemblyInfo" (fun _ ->
 Target "LibraryNuGet" (fun _ ->
     Paket.Pack(fun p -> 
         { p with
-            OutputPath = buildDir
+            OutputPath = buildDir + "/"
             TemplateFile = "paket.template"
             Version = release.NugetVersion
             ReleaseNotes = toLines release.Notes})
@@ -89,25 +89,36 @@ Target "TemplatesNuGet" (fun _ ->
     NuGetHelper.NuGetPack (fun p -> 
         { p with
             WorkingDir = "templates"
-            OutputPath = buildDir
+            OutputPath = buildDir + "/"
             Version = release.NugetVersion
             ReleaseNotes = toLines release.Notes}) @"templates\Elmish.XamarinForms.Templates.nuspec"
 )
 
 Target "TestTemplatesNuGet" (fun _ ->
 
-    // needed or else 'project.assets.json' not found'
-    DotNetCli.Restore (fun p -> { p with Project = "Elmish.XamarinForms.sln" })
+    // Globally install the templates from the template nuget package we just built
     DotNetCli.RunCommand id ("new -i " + buildDir + "Elmish.XamarinForms.Templates." + release.NugetVersion + ".nupkg")
+
+    // Instantiate the template. TODO: additional parameters and variations
     CleanDir "testapp"
     DotNetCli.RunCommand id "new elmish-forms-app -n testapp -lang F#" 
-    DotNetCli.RunCommand id ("restore testapp/testapp/testapp.fsproj -s " + buildDir)
+
+    let pkgs = System.IO.Path.GetFullPath(buildDir)
+    // When restoring, using the build_output as a package source to pick up the package we just compiled
+    DotNetCli.RunCommand id ("restore testapp/testapp/testapp.fsproj  --source https://api.nuget.org/v3/index.json --source " + pkgs)
     !! "testapp/testapp.Android/testapp.*.fsproj"
-       |> MSBuildDebug null "RestorePackages"
-       |> Log "AppBuild-Output: "
+       |> MSBuild null "RestorePackages" [ ("Configuration", "Release"); ("PackageSources", "https://api.nuget.org/v3/index.json;" + pkgs) ]
+       |> Log "AppRestore-Android-Output: "
+    !! "testapp/testapp.iOS/testapp.*.fsproj"
+       |> MSBuild null "RestorePackages" [ ("Configuration", "Release"); ("PackageSources", "https://api.nuget.org/v3/index.json;" + pkgs) ]
+       |> Log "AppRestore-iOS-Output: "
+
     !! "testapp/testapp.Android/testapp.*.fsproj"
        |> MSBuildDebug null "Build"
-       |> Log "AppBuild-Output: "
+       |> Log "AppBuild-Android-Output: "
+    !! "testapp/testapp.iOS/testapp.*.fsproj"
+       |> MSBuildDebug null "Build"
+       |> Log "AppBuild-iOS-Output: "
 
     (* Manual steps without building nupkg
         .\build LibraryNuGet
