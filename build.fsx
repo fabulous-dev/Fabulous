@@ -88,7 +88,7 @@ Target "TestTemplatesNuGet" (fun _ ->
 
     // needed or else 'project.assets.json' not found'
     DotNetCli.Restore (fun p -> { p with Project = "Elmish.XamarinForms.sln" })
-    DotNetCli.RunCommand id ("new -i " + buildDir + "/Elmish.XamarinForms.Templates." + release.NugetVersion + ".nupkg")
+    DotNetCli.RunCommand id ("new -i " + buildDir + "Elmish.XamarinForms.Templates." + release.NugetVersion + ".nupkg")
     CleanDir "testapp"
     DotNetCli.RunCommand id "new elmish-forms-app -n testapp -lang F#" 
     DotNetCli.RunCommand id "restore testapp/testapp/testapp.fsproj"
@@ -141,7 +141,7 @@ Target "NuGet" DoNothing
 "All" 
   ==> "LibraryNuGet" 
   ==> "TemplatesNuGet" 
-  ==>  "TestTemplatesNuGet"
+  ==> "TestTemplatesNuGet"
   //=?>  ("TestTemplatesNuGet", EnvironmentHelper.isMacOS)
   ==> "NuGet"
   ==> "PublishNuGets"
