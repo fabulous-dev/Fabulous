@@ -23,18 +23,21 @@ Getting started
 
 1. Enable Xamarin support in Visual Studio or Visual Studio for Mac.
 
-2. Create a blank F# Xamarin Forms app and add the projects to a solution:
+2. Create a blank F# Xamarin Forms app:
 
        dotnet new -i Elmish.XamarinForms.Templates
-       dotnet new sln -o testapp
        dotnet new elmish-forms-app -lang F# -n testapp
+
+   and add the projects to a solution:
+
+       dotnet new sln -o testapp
        dotnet sln testapp\testapp.sln add testapp\testapp\testapp.fsproj
        dotnet sln testapp\testapp.sln add testapp\testapp.Android\testapp.Android.fsproj
        dotnet sln testapp\testapp.sln add testapp\testapp.iOS\testapp.iOS.fsproj
 
 3. Restore packages
 
-       dotnet restore testapp\testapp\testapp.fsproj
+       dotnet restore testapp\testapp.sln
        msbuild testapp\testapp.Android\testapp.Android.fsproj /t:RestorePackages
        msbuild testapp\testapp.iOS\testapp.iOS.fsproj /t:RestorePackages
 
