@@ -4,6 +4,7 @@
 * Using `open Elmish.XamarinForms.StaticViews` is now necessary to use static Xaml bindings and the `Nav.*` type
 * Obsolete `Program.withDynamicView` and `Program.withStaticView` in favour of `Program.runWithDynamicView` and `Program.runWithStaticView`
 * Remove `StaticXaml/MasterDetailApp` sample since it's not a great sample anyway
+* Add template
 
 #### 0.7.0
 * Base dependency is now Xamarin.Forms 3.0

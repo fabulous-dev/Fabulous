@@ -53,11 +53,21 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="netstandard" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.Mac" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="XamarinFormsSdk" />
+    <Reference Include="Xamarin.Forms.Core">
+      <HintPath>$(SolutionDir)/packages/Xamarin.Forms.XamarinFormsSdk/lib/Xamarin.Mac/Xamarin.Forms.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Platform">
+      <HintPath>$(SolutionDir)/packages/Xamarin.Forms.XamarinFormsSdk/lib/Xamarin.Mac/Xamarin.Forms.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Platform.Android">
+      <HintPath>$(SolutionDir)/packages/Xamarin.Forms.XamarinFormsSdk/lib/Xamarin.Mac/Xamarin.Forms.Platform.macOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Xaml">
+      <HintPath>$(SolutionDir)/packages/Xamarin.Forms.XamarinFormsSdk/lib/Xamarin.Mac/Xamarin.Forms.Xaml.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
@@ -82,7 +92,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Main.fs" />
     <Compile Include="AppDelegate.fs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.FSharp.targets" />
@@ -92,4 +101,5 @@
       <Name>NewApp</Name>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="../.nuget/NuGet.targets" />
 </Project>

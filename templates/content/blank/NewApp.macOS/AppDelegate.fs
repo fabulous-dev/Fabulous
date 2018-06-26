@@ -1,41 +1,36 @@
-﻿using AppKit;
-using Foundation;
-using Xamarin.Forms;
-using Xamarin.Forms.Platform.MacOS;
+﻿namespace NewApp.macOS
 
-namespace NewApp.macOS
-{
-    [Register("AppDelegate")]
-    public class AppDelegate : FormsApplicationDelegate
-    {
-        NSWindow window;
-        public AppDelegate()
-        {
-            var style = NSWindowStyle.Closable | NSWindowStyle.Resizable | NSWindowStyle.Titled;
+open System
+open AppKit
+open Foundation
+open Xamarin.Forms
+open Xamarin.Forms.Platform.MacOS
 
-            var rect = new CoreGraphics.CGRect(200, 1000, 1024, 768);
-            window = new NSWindow(rect, style, NSBackingStore.Buffered, false);
-            window.Title = "Xamarin.Forms on Mac!";
-            window.TitleVisibility = NSWindowTitleVisibility.Hidden;
-        }
+[<Register("AppDelegate")>]
+type AppDelegate() =
+    inherit FormsApplicationDelegate()
+    let  style = NSWindowStyle.Closable ||| NSWindowStyle.Resizable ||| NSWindowStyle.Titled
 
-        public override NSWindow MainWindow
-        {
-            get { return window; }
-        }
+    let  rect = new CoreGraphics.CGRect(nfloat 200.0, nfloat 1000.0, nfloat 1024.0, nfloat 768.0)
 
+    let window = new NSWindow(rect, style, NSBackingStore.Buffered, false, Title = "Xamarin.Forms on Mac!", TitleVisibility = NSWindowTitleVisibility.Hidden)
 
-        public override void DidFinishLaunching(NSNotification notification)
-        {
-            Forms.Init();
-            LoadApplication(new App());
+    override __.MainWindow = window
 
-            base.DidFinishLaunching(notification);
-        }
+    override this.DidFinishLaunching(notification: NSNotification) =
+        Forms.Init()
+        this.LoadApplication(new NewApp.App())
 
-        public override void WillTerminate(NSNotification notification)
-        {
-            // Insert code here to tear down your application
-        }
-    }
-}
+        base.DidFinishLaunching(notification)
+
+    override __.WillTerminate(notification: NSNotification) =
+        // Insert code here to tear down your application
+        ()
+
+module EntryClass = 
+    [<EntryPoint>]
+    let Main(args: string[]) =
+        NSApplication.Init() |> ignore
+        NSApplication.SharedApplication.Delegate <- new AppDelegate()
+        NSApplication.Main(args)
+        0

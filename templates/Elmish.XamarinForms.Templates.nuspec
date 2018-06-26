@@ -4,7 +4,7 @@
         <id>Elmish.XamarinForms.Templates</id>
         <title>Elmish.XamarinForms Template Pack</title>
         <version>0.0.1</version>
-        <authors>Don Syme</authors>
+        <authors>fsprojects</authors>
         <description>Templates for building iOS and Android apps with Elmish.XamarinForms.</description>
         <projectUrl>https://fsprojects.github.io/Elmish.XamarinForms/</projectUrl>
         <iconUrl>http://xamarin.com/content/images/nuget/xamarin.png</iconUrl>

@@ -1,10 +1,10 @@
 ﻿{
-    "author": "Don Syme",
+    "author": "fsprojects",
     "classifications": [
         "Elmish.XamarinForms",
         "Cross-platform"
     ],
-    "name": "Elmish.XamarinForms  App",
+    "name": "Elmish.XamarinForms App",
     "groupIdentity": "Elmish.XamarinForms.App",
     "identity": "Elmish.XamarinForms.FSharp",
     "shortName": "elmish-forms-app",
@@ -109,12 +109,12 @@
             "type": "parameter",
             "datatype": "int",
             "replaces": "MinAndroidAPI",
-            "defaultValue": "21"
+            "defaultValue": "19"
         },
-        "SupportLibVersion": {
+        "XamarinAndroidSdkVersion": {
             "type": "parameter",
             "datatype": "string",
-            "replaces": "SupportLibVersion",
+            "replaces": "XamarinAndroidSdkVersion",
             "defaultValue": "27.0.2"
         },
         "XamarinEssentialsSdk": {
@@ -129,6 +129,24 @@
             "replaces": "XamarinFormsSdk",
             "defaultValue": "3.0.0.482510"
         },
+        "ElmishXamarinFormsPkg": {
+            "type": "parameter",
+            "dataType": "string",
+            "replaces": "ElmishXamarinFormsPkg",
+            "defaultValue": "0.8.0"
+        },
+        "NewtonsoftJsonPkg": {
+            "type": "parameter",
+            "dataType": "string",
+            "replaces": "NewtonsoftJsonPkg",
+            "defaultValue": "11.0.2"
+        },
+        "XamarinAndroidFSharpResourceProviderPkg": {
+            "type": "parameter",
+            "dataType": "string",
+            "replaces": "XamarinAndroidFSharpResourceProviderPkg",
+            "defaultValue": "1.0.0.25"
+        },
         "FSharpCorePkg": {
             "type": "parameter",
             "dataType": "string",
@@ -139,7 +157,7 @@
             "type": "parameter",
             "dataType": "string",
             "replaces": "FsPicklerPkg",
-            "defaultValue": "5.2.0"
+            "defaultValue": "5.2"
         },
         "ProjectID": {
             "type": "generated",
@@ -272,6 +290,9 @@
                         "NewApp.macOS/**/*"
                     ]
                 }
+            ],
+            "copyOnly": [
+                "**/*.targets"
             ]
         }
         //,

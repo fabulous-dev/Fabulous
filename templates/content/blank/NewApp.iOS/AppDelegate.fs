@@ -1,5 +1,5 @@
 ﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
-namespace iOS
+namespace NewApp.iOS
 
 open System
 open UIKit
@@ -13,7 +13,7 @@ type AppDelegate () =
 
     override this.FinishedLaunching (app, options) =
         Forms.Init()
-        let appcore = new NewApp.NewApp()
+        let appcore = new NewApp.App()
         this.LoadApplication (appcore)
         base.FinishedLaunching(app, options)
 

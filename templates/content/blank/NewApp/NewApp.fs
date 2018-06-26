@@ -59,7 +59,7 @@ module App =
               yield Xaml.Button(text="Reset", horizontalOptions=LayoutOptions.Center, command=fixf(fun () -> dispatch Reset), canExecute = (model <> initModel))
             ]))
 
-type NewApp () as app = 
+type App () as app = 
     inherit Application ()
 
     let program = Program.mkProgram App.init App.update App.view
