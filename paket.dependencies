@@ -43,3 +43,9 @@ group iosapp
   source https://www.nuget.org/api/v2
   nuget FSharp.Core 4.5.0
   nuget Xamarin.Forms 3.0.0.482510
+
+group macos
+  framework: xamarinmac20
+  source https://www.nuget.org/api/v2
+    nuget FSharp.Core 4.5.0
+    nuget Xamarin.Forms 3.0.0.482510 
