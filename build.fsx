@@ -101,7 +101,7 @@ Target "TestTemplatesNuGet" (fun _ ->
     DotNetCli.RunCommand id ("new -i " + buildDir + "Elmish.XamarinForms.Templates." + release.NugetVersion + ".nupkg")
     CleanDir "testapp"
     DotNetCli.RunCommand id "new elmish-forms-app -n testapp -lang F#" 
-    DotNetCli.RunCommand id "restore testapp/testapp/testapp.fsproj"
+    DotNetCli.RunCommand id "restore testapp/testapp/testapp.fsproj -s " + buildDir
     !! "testapp/testapp.Android/testapp.*.fsproj"
        |> MSBuildDebug null "RestorePackages"
        |> Log "AppBuild-Output: "
@@ -114,7 +114,7 @@ Target "TestTemplatesNuGet" (fun _ ->
         dotnet new -i  templates
         rmdir /s /q testapp
         dotnet new elmish-forms-app -n testapp -lang F#
-        dotnet restore testapp/testapp/testapp.fsproj
+        dotnet restore testapp/testapp/testapp.fsproj -s build_output/
         dotnet new -i  templates && rmdir /s /q testapp && dotnet new elmish-forms-app -n testapp -lang F# && dotnet restore testapp/testapp/testapp.fsproj && msbuild testapp/testapp.Android/testapp.Android.fsproj /t:RestorePackages && msbuild testapp/testapp.Android/testapp.Android.fsproj
         dotnet new -i  templates && rmdir /s /q testapp && dotnet new elmish-forms-app -n testapp -lang F# && dotnet restore testapp/testapp/testapp.fsproj && msbuild testapp/testapp.iOS/testapp.iOS.fsproj /t:RestorePackages && msbuild testapp/testapp.iOS/testapp.iOS.fsproj
         dotnet new -i  templates && rmdir /s /q testapp && dotnet new elmish-forms-app -n testapp -lang F# --CreateMacProject && dotnet restore testapp/testapp/testapp.fsproj && msbuild testapp/testapp.macOS/testapp.macOS.fsproj /t:RestorePackages && msbuild testapp/testapp.macOS/testapp.macOS.fsproj
