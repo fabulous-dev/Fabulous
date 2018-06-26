@@ -12,7 +12,7 @@ brew cask install android-sdk > brew.cask.install.android-sdk.log
 mkdir ~/.android
 touch ~/.android/repositories.cfg
 
-yes | $ANDROID_SDK_PATH/tools/bin/sdkmanager "build-tools;27.0.1" "platforms;android-25" "platform-tools" > sdkmanager.log
+yes | $ANDROID_SDK_PATH/tools/bin/sdkmanager "build-tools;27.0.1" "platforms;android-27" "platform-tools" > sdkmanager.log
 
 # install Xamarin.IOS
 wget https://dl.xamarin.com/MonoTouch/Mac/xamarin.ios-$XAMARIN_IOS_VERSION.pkg
