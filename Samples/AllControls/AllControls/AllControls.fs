@@ -41,6 +41,7 @@ type Model =
     PageStack: string option list
     // For InfiniteScroll page demo. It's not really an "infinite" scroll, just an unbounded set of data whose growth is prompted by the need formore of it in the UI
     InfiniteScrollMaxRequested: int
+    SearchTerm: string
     }
 
 type Msg = 
@@ -79,6 +80,7 @@ type Msg =
     | SetDetailPage of string
     // For InfiniteScroll page demo. It's not really an "infinite" scroll, just a growing set of "data"
     | SetInfiniteScrollMaxIndex of int
+    | ExecuteSearch of string
 
 module App = 
     let init () = 
@@ -102,7 +104,8 @@ module App =
           NumTaps2=0
           PageStack=[ Some "Home" ]
           DetailPage="A"
-          InfiniteScrollMaxRequested = 10 }
+          InfiniteScrollMaxRequested = 10 
+          SearchTerm = "nothing!"}
 
     let update msg model =
         match msg with
@@ -153,6 +156,7 @@ module App =
         | SetInfiniteScrollMaxIndex n -> if n >= max n model.InfiniteScrollMaxRequested then { model with InfiniteScrollMaxRequested = (n + 10)} else model
         // For selection page
         | SetRootPageKind kind -> { model with RootPageKind = kind }
+        | ExecuteSearch search -> { model with SearchTerm = search }
 
     let pickerItems = 
         [| ("Aqua", Color.Aqua); ("Black", Color.Black);
@@ -413,6 +417,16 @@ module App =
                            itemSelected=(fun idx -> dispatch (ListViewSelectedItemChanged idx)))
                 ]))
 
+                      
+               dependsOn (model.SearchTerm) (fun model (searchTerm) -> 
+                  Xaml.ScrollingContentPage("SearchBar", 
+                     [ Xaml.Label(text="SearchBar:")
+                       Xaml.SearchBar(
+                            placeholder = "Enter search term",
+                            searchCommand = (fun searchBarText -> dispatch (ExecuteSearch searchBarText)),
+                            canExecute=true) 
+                       Xaml.Label(text="You searched for " + searchTerm) ]))
+
                dependsOn () (fun model () -> 
                    Xaml.ScrollingContentPage("ListViewGrouped", 
                        [ Xaml.Label(text="ListView (grouped):")
@@ -430,7 +444,52 @@ module App =
         | Tabbed3 ->
            Xaml.TabbedPage(useSafeArea=true, 
             children=
-             [ dependsOn () (fun model () -> 
+             [ 
+               dependsOn model.Count (fun model count -> 
+                   Xaml.ContentPage(title="FlexLayout", useSafeArea=true,
+                       padding = new Thickness (10.0, 20.0, 10.0, 5.0), 
+                       content= 
+                           Xaml.ScrollView(orientation=ScrollOrientation.Both,
+                              content = Xaml.FlexLayout(
+                                  children = [
+                                      Xaml.Frame(heightRequest=480.0, widthRequest=300.0, 
+                                          content = Xaml.FlexLayout( direction=FlexDirection.Column,
+                                              children = [ 
+                                                  Xaml.Label(text="Seated Monkey", margin=Thickness(0.0, 8.0), fontSize="Large", textColor=Color.Blue)
+                                                  Xaml.Label(text="This monkey is laid back and relaxed, and likes to watch the world go by.", margin=Thickness(0.0, 4.0), textColor=Color.Black)
+                                                  Xaml.Label(text="  • Often smiles mysteriously", margin=Thickness(0.0, 4.0), textColor=Color.Black)
+                                                  Xaml.Label(text="  • Sleeps sitting up", margin=Thickness(0.0, 4.0), textColor=Color.Black)
+                                                  Xaml.Image(heightRequest=240.0, 
+                                                      widthRequest=160.0, 
+                                                      source="https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg/160px-Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg"
+                                                  ).FlexOrder(-1).FlexAlignSelf(FlexAlignSelf.Center)
+                                                  Xaml.Label(margin=Thickness(0.0, 4.0)).FlexGrow(1.0)
+                                                  Xaml.Button(text="Learn More", fontSize="Large", textColor=Color.White, backgroundColor=Color.Green, cornerRadius=20) ]),
+                                          backgroundColor=Color.LightYellow,
+                                          borderColor=Color.Blue,
+                                          margin=10.0,
+                                          cornerRadius=15.0)
+                                      Xaml.Frame(heightRequest=480.0, widthRequest=300.0, 
+                                          content = Xaml.FlexLayout( direction=FlexDirection.Column,
+                                              children = [ 
+                                                  Xaml.Label(text="Banana Monkey", margin=Thickness(0.0, 8.0), fontSize="Large", textColor=Color.Blue)
+                                                  Xaml.Label(text="Watch this monkey eat a giant banana.", margin=Thickness(0.0, 4.0), textColor=Color.Black)
+                                                  Xaml.Label(text="  • More fun than a barrel of monkeys", margin=Thickness(0.0, 4.0), textColor=Color.Black)
+                                                  Xaml.Label(text="  • Banana not included", margin=Thickness(0.0, 4.0), textColor=Color.Black)
+                                                  Xaml.Image(heightRequest=213.0, 
+                                                      widthRequest=320.0, 
+                                                      source="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Crab_eating_macaque_in_Ubud_with_banana.JPG/320px-Crab_eating_macaque_in_Ubud_with_banana.JPG"
+                                                  ).FlexOrder(-1).FlexAlignSelf(FlexAlignSelf.Center)
+                                                  Xaml.Label(margin=Thickness(0.0, 4.0)).FlexGrow(1.0)
+                                                  Xaml.Button(text="Learn More", fontSize="Large", textColor=Color.White, backgroundColor=Color.Green, cornerRadius=20) ]),
+                                          backgroundColor=Color.LightYellow,
+                                          borderColor=Color.Blue,
+                                          margin=10.0,
+                                          cornerRadius=15.0)
+                                  ] ))
+                           ) )
+
+               dependsOn () (fun model () -> 
                 Xaml.ScrollingContentPage("TableView", 
                  [Xaml.Label(text="TableView:")
                   Xaml.TableView(items= [ ("Videos", [ Xaml.SwitchCell(on=true, text="Luca 2008", onChanged=(fun args -> ()) ) 
@@ -475,49 +534,6 @@ module App =
                                           .LayoutBounds(Rectangle(1.0, 1.0, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize)) ])
                             ])))
 
-               dependsOn model.Count (fun model count -> 
-                   Xaml.ContentPage(title="FlexLayout", useSafeArea=true,
-                       padding = new Thickness (10.0, 20.0, 10.0, 5.0), 
-                       content= 
-                           Xaml.ScrollView(orientation=ScrollOrientation.Both,
-                              content = Xaml.FlexLayout(
-                                  children = [
-                                      Xaml.Frame(heightRequest=480.0, widthRequest=300.0, 
-                                          content = Xaml.FlexLayout( direction=FlexDirection.Column,
-                                              children = [ 
-                                                  Xaml.Label(text="Seated Monkey", margin=Thickness(0.0, 8.0), fontSize="Large", textColor=Color.Blue)
-                                                  Xaml.Label(text="This monkey is laid back and relaxed, and likes to watch the world go by.", margin=Thickness(0.0, 4.0), textColor=Color.Black)
-                                                  Xaml.Label(text="  • Often smiles mysteriously", margin=Thickness(0.0, 4.0), textColor=Color.Black)
-                                                  Xaml.Label(text="  • Sleeps sitting up", margin=Thickness(0.0, 4.0), textColor=Color.Black)
-                                                  Xaml.Image(heightRequest=240.0, 
-                                                      widthRequest=160.0, 
-                                                      source="https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg/160px-Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg"
-                                                  ).FlexOrder(-1).FlexAlignSelf(FlexAlignSelf.Center)
-                                                  Xaml.Label(margin=Thickness(0.0, 4.0)).FlexGrow(1.0)
-                                                  Xaml.Button(text="Learn More", fontSize="Large", textColor=Color.White, backgroundColor=Color.Green, cornerRadius=20) ]),
-                                          backgroundColor=Color.LightYellow,
-                                          borderColor=Color.Blue,
-                                          margin=10.0,
-                                          cornerRadius=15.0)
-                                      Xaml.Frame(heightRequest=480.0, widthRequest=300.0, 
-                                          content = Xaml.FlexLayout( direction=FlexDirection.Column,
-                                              children = [ 
-                                                  Xaml.Label(text="Banana Monkey", margin=Thickness(0.0, 8.0), fontSize="Large", textColor=Color.Blue)
-                                                  Xaml.Label(text="Watch this monkey eat a giant banana.", margin=Thickness(0.0, 4.0), textColor=Color.Black)
-                                                  Xaml.Label(text="  • More fun than a barrel of monkeys", margin=Thickness(0.0, 4.0), textColor=Color.Black)
-                                                  Xaml.Label(text="  • Banana not included", margin=Thickness(0.0, 4.0), textColor=Color.Black)
-                                                  Xaml.Image(heightRequest=213.0, 
-                                                      widthRequest=320.0, 
-                                                      source="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Crab_eating_macaque_in_Ubud_with_banana.JPG/320px-Crab_eating_macaque_in_Ubud_with_banana.JPG"
-                                                  ).FlexOrder(-1).FlexAlignSelf(FlexAlignSelf.Center)
-                                                  Xaml.Label(margin=Thickness(0.0, 4.0)).FlexGrow(1.0)
-                                                  Xaml.Button(text="Learn More", fontSize="Large", textColor=Color.White, backgroundColor=Color.Green, cornerRadius=20) ]),
-                                          backgroundColor=Color.LightYellow,
-                                          borderColor=Color.Blue,
-                                          margin=10.0,
-                                          cornerRadius=15.0)
-                                  ] ))
-                           ) )
                 ])
          
          | Navigation -> 

@@ -962,7 +962,7 @@ type Xaml() =
         new ViewElement(typeof<Xamarin.Forms.ScrollView>, create, update, attribs)
 
     /// Describes a SearchBar in the view
-    static member SearchBar(?cancelButtonColor: Xamarin.Forms.Color, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?placeholder: string, ?placeholderColor: Xamarin.Forms.Color, ?searchCommand: unit -> unit, ?canExecute: bool, ?text: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member SearchBar(?cancelButtonColor: Xamarin.Forms.Color, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?placeholder: string, ?placeholderColor: Xamarin.Forms.Color, ?searchCommand: string -> unit, ?canExecute: bool, ?text: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let baseElement : ViewElement = Xaml.View(?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
@@ -1025,7 +1025,7 @@ type Xaml() =
                 if kvp.Key = Xaml.PlaceholderColorKey then 
                     currPlaceholderColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
                 if kvp.Key = Xaml.SearchBarCommandKey then 
-                    currSearchBarCommandOpt <- ValueSome (kvp.Value :?> unit -> unit)
+                    currSearchBarCommandOpt <- ValueSome (kvp.Value :?> string -> unit)
                 if kvp.Key = Xaml.SearchBarCanExecuteKey then 
                     currSearchBarCanExecuteOpt <- ValueSome (kvp.Value :?> bool)
                 if kvp.Key = Xaml.TextKey then 
@@ -1051,7 +1051,7 @@ type Xaml() =
                     if kvp.Key = Xaml.PlaceholderColorKey then 
                         prevPlaceholderColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
                     if kvp.Key = Xaml.SearchBarCommandKey then 
-                        prevSearchBarCommandOpt <- ValueSome (kvp.Value :?> unit -> unit)
+                        prevSearchBarCommandOpt <- ValueSome (kvp.Value :?> string -> unit)
                     if kvp.Key = Xaml.SearchBarCanExecuteKey then 
                         prevSearchBarCanExecuteOpt <- ValueSome (kvp.Value :?> bool)
                     if kvp.Key = Xaml.TextKey then 
@@ -1094,7 +1094,7 @@ type Xaml() =
             | ValueSome _, ValueNone -> target.PlaceholderColor <- Xamarin.Forms.Color.Default
             | ValueNone, ValueNone -> ()
             (fun _ _ _ -> ()) prevSearchBarCommandOpt currSearchBarCommandOpt target
-            updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttributeKeyed<_>(Xaml.SearchBarCommandKey)) prevSearchBarCanExecuteOpt (curr.TryGetAttributeKeyed<_>(Xaml.SearchBarCommandKey)) currSearchBarCanExecuteOpt (fun cmd -> target.SearchCommand <- cmd) prevSearchBarCanExecuteOpt currSearchBarCanExecuteOpt target
+            updateCommand prevSearchBarCommandOpt currSearchBarCommandOpt (fun (target: Xamarin.Forms.SearchBar) -> target.Text) (fun (target: Xamarin.Forms.SearchBar) cmd -> target.SearchCommand <- cmd) prevSearchBarCanExecuteOpt currSearchBarCanExecuteOpt target
             match prevTextOpt, currTextOpt with
             | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
             | prevOpt, ValueSome currValue -> target.Text <-  currValue
@@ -1225,7 +1225,7 @@ type Xaml() =
             | ValueSome _, ValueNone -> target.Text <- null
             | ValueNone, ValueNone -> ()
             (fun _ _ _ -> ()) prevButtonCommandOpt currButtonCommandOpt target
-            updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttributeKeyed<_>(Xaml.ButtonCommandKey)) prevButtonCanExecuteOpt (curr.TryGetAttributeKeyed<_>(Xaml.ButtonCommandKey)) currButtonCanExecuteOpt (fun cmd -> target.Command <- cmd) prevButtonCanExecuteOpt currButtonCanExecuteOpt target
+            updateCommand prevButtonCommandOpt currButtonCommandOpt (fun _target -> ()) (fun (target: Xamarin.Forms.Button) cmd -> target.Command <- cmd) prevButtonCanExecuteOpt currButtonCanExecuteOpt target
             match prevBorderColorOpt, currBorderColorOpt with
             | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
             | prevOpt, ValueSome currValue -> target.BorderColor <-  currValue
@@ -4058,7 +4058,7 @@ type Xaml() =
             | ValueSome _, ValueNone -> target.DetailColor <- Xamarin.Forms.Color.Default
             | ValueNone, ValueNone -> ()
             (fun _ _ _ -> ()) prevTextCellCommandOpt currTextCellCommandOpt target
-            updateCommand (match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttributeKeyed<_>(Xaml.TextCellCommandKey)) prevTextCellCanExecuteOpt (curr.TryGetAttributeKeyed<_>(Xaml.TextCellCommandKey)) currTextCellCanExecuteOpt (fun cmd -> target.Command <- cmd) prevTextCellCanExecuteOpt currTextCellCanExecuteOpt target
+            updateCommand prevTextCellCommandOpt currTextCellCommandOpt (fun _target -> ()) (fun (target: Xamarin.Forms.TextCell) cmd -> target.Command <- cmd) prevTextCellCanExecuteOpt currTextCellCanExecuteOpt target
             match prevCommandParameterOpt, currCommandParameterOpt with
             | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
             | prevOpt, ValueSome currValue -> target.CommandParameter <-  currValue
@@ -4804,7 +4804,7 @@ module ViewElementExtensions =
         member x.PlaceholderColor(value: Xamarin.Forms.Color) = x.WithAttributeKeyed(Xaml.PlaceholderColorKey, box ((value)))
 
         /// Adjusts the SearchBarCommand property in the visual element
-        member x.SearchBarCommand(value: unit -> unit) = x.WithAttributeKeyed(Xaml.SearchBarCommandKey, box ((value)))
+        member x.SearchBarCommand(value: string -> unit) = x.WithAttributeKeyed(Xaml.SearchBarCommandKey, box ((value)))
 
         /// Adjusts the SearchBarCanExecute property in the visual element
         member x.SearchBarCanExecute(value: bool) = x.WithAttributeKeyed(Xaml.SearchBarCanExecuteKey, box ((value)))
@@ -5390,7 +5390,7 @@ module ViewElementExtensions =
     let placeholderColor (value: Xamarin.Forms.Color) (x: ViewElement) = x.PlaceholderColor(value)
 
     /// Adjusts the SearchBarCommand property in the visual element
-    let searchBarCommand (value: unit -> unit) (x: ViewElement) = x.SearchBarCommand(value)
+    let searchBarCommand (value: string -> unit) (x: ViewElement) = x.SearchBarCommand(value)
 
     /// Adjusts the SearchBarCanExecute property in the visual element
     let searchBarCanExecute (value: bool) (x: ViewElement) = x.SearchBarCanExecute(value)

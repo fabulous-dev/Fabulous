@@ -292,8 +292,8 @@
 				{
 					"name": "SearchCommand",
 					"uniqueName": "SearchBarCommand",
-					"inputType": "unit -> unit",
-					"modelType": "unit -> unit",
+					"inputType": "string -> unit",
+					"modelType": "string -> unit",
 					"updateCode": "(fun _ _ _ -> ())" // set below in CanExecute
 				},
 				{
@@ -301,7 +301,7 @@
 					"uniqueName": "SearchBarCanExecute",
 					"inputType": "bool",
 					"modelType": "bool",
-					"updateCode": "updateCommand prevSearchBarCommandOpt prevSearchBarCanExecuteOpt currSearchBarCommandOpt currSearchBarCanExecuteOpt (fun cmd -> target.SearchCommand <- cmd)"
+					"updateCode": "updateCommand prevSearchBarCommandOpt currSearchBarCommandOpt (fun (target: Xamarin.Forms.SearchBar) -> target.Text) (fun (target: Xamarin.Forms.SearchBar) cmd -> target.SearchCommand <- cmd)"
 				},
 				{
 					"name": "Text",
@@ -332,7 +332,7 @@
 					"uniqueName": "ButtonCanExecute",
 					"inputType": "bool",
 					"modelType": "bool",
-					"updateCode": "updateCommand prevButtonCommandOpt prevButtonCanExecuteOpt currButtonCommandOpt currButtonCanExecuteOpt (fun cmd -> target.Command <- cmd)"
+					"updateCode": "updateCommand prevButtonCommandOpt currButtonCommandOpt (fun _target -> ()) (fun (target: Xamarin.Forms.Button) cmd -> target.Command <- cmd)"
 				},
 				{
 					"name": "BorderColor",
@@ -1475,7 +1475,7 @@
 					"uniqueName": "TextCellCanExecute",
 					"inputType": "bool",
 					"modelType": "bool",
-					"updateCode": "updateCommand prevTextCellCommandOpt prevTextCellCanExecuteOpt currTextCellCommandOpt currTextCellCanExecuteOpt (fun cmd -> target.Command <- cmd)"
+					"updateCode": "updateCommand prevTextCellCommandOpt currTextCellCommandOpt (fun _target -> ()) (fun (target: Xamarin.Forms.TextCell) cmd -> target.Command <- cmd)"
 				},
 				{
 					"name": "CommandParameter",
