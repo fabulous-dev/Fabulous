@@ -23,32 +23,22 @@ Getting started
 
 1. Enable Xamarin support in Visual Studio or Visual Studio for Mac.
 
-2. Create a blank F# Xamarin Forms app:
+2. Install the template pack:
 
        dotnet new -i Elmish.XamarinForms.Templates
+
+3. Create a blank F# Functional Xamarin Forms app:
+
        dotnet new elmish-forms-app -lang F# -n testapp
 
-   and add the projects to a solution:
+   Also add the projects to a solution (a later update will automate this)
 
        dotnet new sln -o testapp
        dotnet sln testapp\testapp.sln add testapp\testapp\testapp.fsproj
        dotnet sln testapp\testapp.sln add testapp\testapp.Android\testapp.Android.fsproj
        dotnet sln testapp\testapp.sln add testapp\testapp.iOS\testapp.iOS.fsproj
 
-3. Restore packages
-
-       dotnet restore testapp\testapp.sln
-       msbuild testapp\testapp.Android\testapp.Android.fsproj /t:RestorePackages
-       msbuild testapp\testapp.iOS\testapp.iOS.fsproj /t:RestorePackages
-
-4. Open, edit, build and deploy in Visual Studio, Visual Studio for Mac and/or command line, e.g. 
-
-       devenv testapp\testapp.sln
-
-       msbuild testapp\testapp.Android\testapp.Android.fsproj
-       msbuild testapp\testapp.iOS\testapp.iOS.fsproj
-
-Alternatively clone and adapt the [Simple Calculator Project](https://github.com/nosami/Elmish.Calculator).
+4. Open, edit, build and deploy in Visual Studio, Visual Studio for Mac and/or command line
 
 
 A Basic Example
