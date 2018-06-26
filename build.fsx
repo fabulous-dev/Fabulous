@@ -91,7 +91,7 @@ Target "TemplatesNuGet" (fun _ ->
             WorkingDir = "templates"
             OutputPath = buildDir + "/"
             Version = release.NugetVersion
-            ReleaseNotes = toLines release.Notes}) @"templates\Elmish.XamarinForms.Templates.nuspec"
+            ReleaseNotes = toLines release.Notes}) @"templates/Elmish.XamarinForms.Templates.nuspec"
 )
 
 Target "TestTemplatesNuGet" (fun _ ->
