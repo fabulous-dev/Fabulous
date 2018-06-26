@@ -1,0 +1,323 @@
+﻿{
+    "author": "fsprojects",
+    "classifications": [
+        "Elmish.XamarinForms",
+        "Cross-platform"
+    ],
+    "name": "Elmish.XamarinForms App",
+    "groupIdentity": "Elmish.XamarinForms.App",
+    "identity": "Elmish.XamarinForms.FSharp",
+    "shortName": "elmish-forms-app",
+    "tags": {
+        "language": "F#",
+        "type": "project"
+    },
+    "sourceName": "NewApp",
+    "primaryOutputs": [
+        {
+            "path": "NewApp\\NewApp.fs"
+        },
+        {
+            "condition": "CreateAndroidProject",
+            "path": "NewApp.Android\\NewApp.Android.fsproj"
+        },
+        {
+            "condition": "CreateiOSProject",
+            "path": "NewApp.iOS\\NewApp.iOS.fsproj"
+        }
+        //{
+        //    "condition": "CreateBackendProject",
+        //    "path": "NewApp.MobileAppService\\NewApp.MobileAppService.fsproj"
+        //},
+        //{
+        //    "condition": "CreateUITestProject",
+        //    "path": "NewApp.UITests\\NewApp.UITests.fsproj"
+        //}
+    ],
+    "defaultName": "App",
+    "preferNameDirectory": "true",
+    "guids": [
+        "99E19497-29A6-4B77-B773-BEC55F9B55DC", // .NET Standard Library
+        "8D9F8CF0-E178-402D-8D40-A88B7B5F3D42", // Android
+        "91D74A40-E440-42AD-B51F-C2D641C49384" // iOS
+    ],
+    "symbols": {
+        "kind": {
+            "type": "parameter",
+            "datatype": "choice",
+            "defaultValue": "blank",
+            "choices": [
+                {
+                    "choice": "blank",
+                    "description": "An empty Elmish.XamarinForms app"
+                }
+            ]
+        },
+        "AppIdentifier": {
+            "type": "parameter",
+            "description": "Overrides the Info.plist's CFBundleIdentifier",
+            "datatype": "string",
+            "defaultValue": "com.companyname"
+        },
+        "AndroidAppIdentifier": {
+            "type": "parameter",
+            "description": "Overrides the package name in the AndroidManifest.xml",
+            "datatype": "string"
+        },
+        "iOSAppIdentifier": {
+            "type": "parameter",
+            "description": "Overrides the Info.plist's CFBundleIdentifier",
+            "datatype": "string"
+        },
+        "AndroidAppIdentifierReplacer": {
+            "type": "generated",
+            "generator": "coalesce",
+            "parameters": {
+                "sourceVariableName": "AndroidAppIdentifier",
+                "fallbackVariableName": "AppIdentifier"
+            },
+            "replaces": "com.companyname.NewApp.Android"
+        },
+        "iOSAppIdentifierReplacer": {
+            "type": "generated",
+            "generator": "coalesce",
+            "parameters": {
+                "sourceVariableName": "iOSAppIdentifier",
+                "fallbackVariableName": "AppIdentifier"
+            },
+            "replaces": "com.companyname.NewApp.iOS"
+        },
+        "WindowsSdk": {
+            "type": "parameter",
+            "description": "Windows SDK Target Version. Minimum Version is Fall Creator's Update (10.0.16278).",
+            "dataType": "string",
+            "replaces": "WindowsSdk"
+        },
+        "AndroidSDKVersion": {
+            "type": "parameter",
+            "datatype": "string",
+            "replaces": "AndroidSDKVersion",
+            "defaultValue": "v8.1"
+        },
+        "TargetAndroidAPI": {
+            "type": "parameter",
+            "datatype": "string",
+            "replaces": "TargetAndroidAPI",
+            "defaultValue": "27"
+        },
+        "MinAndroidAPI": {
+            "type": "parameter",
+            "datatype": "int",
+            "replaces": "MinAndroidAPI",
+            "defaultValue": "19"
+        },
+        "XamarinAndroidSdkVersion": {
+            "type": "parameter",
+            "datatype": "string",
+            "replaces": "XamarinAndroidSdkVersion",
+            "defaultValue": "27.0.2"
+        },
+        "XamarinEssentialsSdk": {
+            "type": "parameter",
+            "dataType": "string",
+            "replaces": "XamarinEssentialsSdk",
+            "defaultValue": "0.6.0-preview"
+        },
+        "XamarinFormsSdk": {
+            "type": "parameter",
+            "dataType": "string",
+            "replaces": "XamarinFormsSdk",
+            "defaultValue": "3.0.0.482510"
+        },
+        "ElmishXamarinFormsPkg": {
+            "type": "parameter",
+            "dataType": "string",
+            "replaces": "ElmishXamarinFormsPkg",
+            "defaultValue": "0.8.1"
+        },
+        "NewtonsoftJsonPkg": {
+            "type": "parameter",
+            "dataType": "string",
+            "replaces": "NewtonsoftJsonPkg",
+            "defaultValue": "11.0.2"
+        },
+        "XamarinAndroidFSharpResourceProviderPkg": {
+            "type": "parameter",
+            "dataType": "string",
+            "replaces": "XamarinAndroidFSharpResourceProviderPkg",
+            "defaultValue": "1.0.0.25"
+        },
+        "FSharpCorePkg": {
+            "type": "parameter",
+            "dataType": "string",
+            "replaces": "FSharpCorePkg",
+            "defaultValue": "4.5.0"
+        },
+        "FsPicklerPkg": {
+            "type": "parameter",
+            "dataType": "string",
+            "replaces": "FsPicklerPkg",
+            "defaultValue": "5.2"
+        },
+        "ProjectID": {
+            "type": "generated",
+            "generator": "guid",
+            "replaces": "Project_ID"
+        },
+        "UserID": {
+            "type": "generated",
+            "generator": "guid",
+            "replaces": "User_ID"
+        },
+        // Project Symbols
+        //"CreateSharedProject": {
+        //    "type": "parameter",
+        //    "dataType": "bool",
+        //    "defaultValue": "true"
+        //},
+        "CreateiOSProject": {
+            "type": "parameter",
+            "dataType": "bool",
+            "defaultValue": "true"
+        },
+        "CreateMacProject": {
+            "type": "parameter",
+            "dataType": "bool",
+            "defaultValue": "false"
+        },
+        "CreateAndroidProject": {
+            "type": "parameter",
+            "dataType": "bool",
+            "defaultValue": "true"
+        }
+        //"CreateUWPProject": {
+        //    "type": "parameter",
+        //    "dataType": "bool",
+        //    "defaultValue": "true"
+        //},
+        //"CreateBackendProject": {
+        //    "type": "parameter",
+        //    "dataType": "bool",
+        //    "defaultValue": "false"
+        //},
+        //"CreateUITestProject": {
+        //    "type": "parameter",
+        //    "dataType": "bool",
+        //    "defaultValue": "false"
+       // }
+    },
+    "postActions": [
+        {
+            "description": "Opens NewApp.fs in the editor.",
+            "manualInstructions": [],
+            "actionId": "84C0DA21-51C8-4541-9940-6CA19AF04EE6",
+            "args": {
+                "files": "0"
+            },
+            "continueOnError": true
+        }
+    ],
+    "sources": [
+        {
+            "modifiers": [
+                //{
+                //    "condition": "(!CreateSharedProject)",
+                //    "exclude": "NewApp/**/*"
+                //},
+                {
+                    "condition": "(!CreateiOSProject)",
+                    "exclude": [
+                        "NewApp.iOS/**/*"
+                    ]
+                },
+                {
+                    "condition": "(!CreateAndroidProject)",
+                    "exclude": [
+                        "NewApp.Android/**/*"
+                    ]
+                },
+                ////{
+                //    "condition": "(!CreateUWPProject)",
+                //    "exclude": [
+                //        "NewApp.UWP/**/*"
+                //    ]
+                //},
+                {
+                    "condition": "(!CreateMacProject)",
+                    "exclude": [
+                        "NewApp.macOS/**/*"
+                    ]
+                }
+            ]
+        },
+        {
+            "source": "./",
+            "condition": "(kind == \"blank\")",
+            "modifiers": [
+                //{
+                //    "condition": "CreateSharedProject",
+                //    "exclude": [
+                //        "NewApp/NewApp.fsproj"
+                //    ]
+                //},
+                //{
+                //    "condition": "(!CreateSharedProject)",
+                //    "exclude": [
+                //        "NewApp/NewApp.projitems"
+                //    ]
+                //},
+                {
+                    "condition": "(!CreateiOSProject)",
+                    "exclude": [
+                        "NewApp.iOS/**/*"
+                    ]
+                },
+                {
+                    "condition": "(!CreateAndroidProject)",
+                    "exclude": [
+                        "NewApp.Android/**/*"
+                    ]
+                },
+                //{
+                //    "condition": "(!CreateUWPProject)",
+                //    "exclude": [
+                //        "NewApp.UWP/**/*"
+                 //   ]
+                //},
+                {
+                    "condition": "(!CreateMacProject)",
+                    "exclude": [
+                        "NewApp.macOS/**/*"
+                    ]
+                }
+            ],
+            "copyOnly": [
+                "**/*.targets"
+            ]
+        }
+        //,
+        //{
+        //    "source": "../uitest/",
+        //    "condition": "CreateUITestProject",
+        //    "target": "NewApp.UITests/",
+        //    "modifiers": [
+        //        {
+        //            "condition": "(kind == \"blank\")",
+        //            "exclude": [
+        //                "Pages/**/*",
+        //                "Tests/**/*"
+        //            ],
+        //            "rename": {
+        //                "BlankAppTests.cs": "Tests.cs"
+        //            }
+        //        },
+        //        {
+        //            "condition": "(kind == \"master-detail\")",
+        //            "exclude": [
+        //                "BlankAppTests.cs"
+        //            ]
+        //        }
+        //    ]
+        //}
+    ]
+}

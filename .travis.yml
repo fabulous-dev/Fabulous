@@ -3,7 +3,7 @@ language: csharp
 os: osx
 osx_image: xcode9.3
 
-dotnet: 2.1.4
+dotnet: 2.1.300
 
 env:
   global:
@@ -16,6 +16,7 @@ install:
   - nuget restore
 
 script:
+  - mkdir -p build_output
   - ./install-xamarin-android-ios.sh
-  - ./build.sh NuGet
+  - ./build.sh Test
 

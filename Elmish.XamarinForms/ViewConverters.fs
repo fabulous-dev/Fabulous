@@ -386,14 +386,14 @@ module Converters =
         match valueOpt with ValueNone -> () | ValueSome f -> target.SizeAllocated.AddHandler(f)
 
     /// This links the Command and CanExecute properties
-    let inline updateCommand prevCommandValueOpt prevCanExecuteValueOpt commandValueOpt canExecuteValueOpt setter _ _ _ = 
+    let inline updateCommand prevCommandValueOpt commandValueOpt argTransform setter  prevCanExecuteValueOpt canExecuteValueOpt target = 
         match prevCommandValueOpt, prevCanExecuteValueOpt, commandValueOpt, canExecuteValueOpt with 
         | ValueNone, ValueNone, ValueNone, ValueNone -> ()
         | ValueSome prevf, ValueNone, ValueSome f, ValueNone when identical prevf f -> ()
         | ValueSome prevf, ValueSome prevx, ValueSome f, ValueSome x when identical prevf f && prevx = x -> ()
-        | _, _, ValueNone, _ -> setter null
-        | _, _, ValueSome f, ValueNone -> setter (makeCommand f)
-        | _, _, ValueSome f, ValueSome k -> setter (makeCommandCanExecute f k)
+        | _, _, ValueNone, _ -> setter target null
+        | _, _, ValueSome f, ValueNone -> setter target (makeCommand (fun () -> f (argTransform target)))
+        | _, _, ValueSome f, ValueSome k -> setter target (makeCommandCanExecute (fun () -> f (argTransform target)) k)
 
     let equalLayoutOptions (x:Xamarin.Forms.LayoutOptions) (y:Xamarin.Forms.LayoutOptions)  =
         x.Alignment = y.Alignment && x.Expands = y.Expands

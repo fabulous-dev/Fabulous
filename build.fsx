@@ -6,24 +6,24 @@ open Fake.AssemblyInfoFile
 open Fake.Git
 open Fake.ReleaseNotesHelper
 
-let buildDir = "./build_output/"
+let buildDir = "./build_output"
 let release = LoadReleaseNotes "RELEASE_NOTES.md"
 
 let project = "Elmish.XamarinForms"
 let summary = "F# bindings for using elmish in WPF"
 
-Target "BuildLibrary" (fun _ ->
+Target "Build" (fun _ ->
 
     // needed or else 'project.assets.json' not found'
     DotNetCli.Restore (fun p -> { p with Project = "Elmish.XamarinForms/Elmish.XamarinForms.fsproj" })
 
     !! "Elmish.XamarinForms/Elmish.XamarinForms.fsproj"
        |> MSBuildRelease buildDir "Restore"
-       |> Log "AppRestore-Output: "
+       |> Log "LibraryRestore-Output: "
 
     !! "Elmish.XamarinForms/Elmish.XamarinForms.fsproj"
        |> MSBuildRelease buildDir "Build"
-       |> Log "AppBuild-Output: "
+       |> Log "LibraryBuild-Output: "
 )
 
 Target "BuildSamples" (fun _ ->
@@ -34,12 +34,12 @@ Target "BuildSamples" (fun _ ->
     // restore the apps debug
     !! "Elmish.XamarinForms.sln"
           |> MSBuildDebug null "Restore"
-          |> Log "AppRestoreDebug-Output: "
+          |> Log "SamplesRestoreDebug-Output: "
 
     // build the apps debug
     !! "Elmish.XamarinForms.sln"
           |> MSBuildDebug null "Build"
-          |> Log "AppBuildDebug-Output: "
+          |> Log "SamplesBuildDebug-Output: "
 
 )
 
@@ -74,33 +74,92 @@ Target "AssemblyInfo" (fun _ ->
 )
 
 // Build a NuGet package
-Target "NuGet" (fun _ ->
+Target "LibraryNuGet" (fun _ ->
     Paket.Pack(fun p -> 
         { p with
-            OutputPath = buildDir
+            OutputPath = buildDir + "/"
             TemplateFile = "paket.template"
             Version = release.NugetVersion
             ReleaseNotes = toLines release.Notes})
+
+)
+// Build a NuGet package
+Target "TemplatesNuGet" (fun _ ->
+
+    NuGetHelper.NuGetPack (fun p -> 
+        { p with
+            WorkingDir = "templates"
+            OutputPath = buildDir + "/"
+            Version = release.NugetVersion
+            ReleaseNotes = toLines release.Notes}) @"templates/Elmish.XamarinForms.Templates.nuspec"
 )
 
-Target "PublishNuget" (fun _ ->
+Target "TestTemplatesNuGet" (fun _ ->
+
+    // Globally install the templates from the template nuget package we just built
+    DotNetCli.RunCommand id ("new -i " + buildDir + "/Elmish.XamarinForms.Templates." + release.NugetVersion + ".nupkg")
+
+    // Instantiate the template. TODO: additional parameters and variations
+    CleanDir "testapp"
+    DotNetCli.RunCommand id "new elmish-forms-app -n testapp -lang F#" 
+
+    let pkgs = System.IO.Path.GetFullPath(buildDir)
+    // When restoring, using the build_output as a package source to pick up the package we just compiled
+    DotNetCli.RunCommand id ("restore testapp/testapp/testapp.fsproj  --source https://api.nuget.org/v3/index.json --source " + pkgs)
+    !! "testapp/testapp.Android/testapp.*.fsproj"
+       |> MSBuild null "RestorePackages" [ ("Configuration", "Release"); ("PackageSources", "https://api.nuget.org/v3/index.json;" + pkgs) ]
+       |> Log "AppRestore-Android-Output: "
+    !! "testapp/testapp.iOS/testapp.*.fsproj"
+       |> MSBuild null "RestorePackages" [ ("Configuration", "Release"); ("PackageSources", "https://api.nuget.org/v3/index.json;" + pkgs) ]
+       |> Log "AppRestore-iOS-Output: "
+
+    !! "testapp/testapp.Android/testapp.*.fsproj"
+       |> MSBuildDebug null "Build"
+       |> Log "AppBuild-Android-Output: "
+    !! "testapp/testapp.iOS/testapp.*.fsproj"
+       |> MSBuildDebug null "Build"
+       |> Log "AppBuild-iOS-Output: "
+
+    (* Manual steps without building nupkg
+        .\build LibraryNuGet
+        dotnet new -i  templates
+        rmdir /s /q testapp
+        dotnet new elmish-forms-app -n testapp -lang F#
+        dotnet restore testapp/testapp/testapp.fsproj -s build_output/
+        dotnet new -i  templates && rmdir /s /q testapp && dotnet new elmish-forms-app -n testapp -lang F# && dotnet restore testapp/testapp/testapp.fsproj && msbuild testapp/testapp.Android/testapp.Android.fsproj /t:RestorePackages && msbuild testapp/testapp.Android/testapp.Android.fsproj
+        dotnet new -i  templates && rmdir /s /q testapp && dotnet new elmish-forms-app -n testapp -lang F# && dotnet restore testapp/testapp/testapp.fsproj && msbuild testapp/testapp.iOS/testapp.iOS.fsproj /t:RestorePackages && msbuild testapp/testapp.iOS/testapp.iOS.fsproj
+        dotnet new -i  templates && rmdir /s /q testapp && dotnet new elmish-forms-app -n testapp -lang F# --CreateMacProject && dotnet restore testapp/testapp/testapp.fsproj && msbuild testapp/testapp.macOS/testapp.macOS.fsproj /t:RestorePackages && msbuild testapp/testapp.macOS/testapp.macOS.fsproj
+        *)
+
+)
+
+
+Target "PublishNuGets" (fun _ ->
     Paket.Push(fun p -> 
         { p with
             WorkingDir = buildDir })
 )
 
-Target "All" DoNothing
+Target "NuGet" DoNothing
+Target "Test" DoNothing
 
-"Clean"
-  ==> "AssemblyInfo"
-  ==> "BuildLibrary"
-  =?>  ("BuildSamples", EnvironmentHelper.isMacOS)
-  ==> "All"
-
-"All" 
+//"Clean"
+//  ==> "AssemblyInfo"
+//  ==> 
+"Build"
+  ==> "LibraryNuGet" 
+  ==> "TemplatesNuGet" 
   ==> "NuGet"
-  ==> "PublishNuget"
+
+"Build"
+  ==> "BuildSamples"
+  ==> "Test"
+
+"NuGet" 
+  ==> "TestTemplatesNuGet"
+  ==> "Test"
+  ==> "PublishNuGets"
 
 
 // start build
-RunTargetOrDefault "All"
+RunTargetOrDefault "Build"
