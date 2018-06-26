@@ -63,10 +63,11 @@ type ProgramRunner<'model, 'msg>(app: Application, program: Program<'model, 'msg
                 updateView updatedModel 
             with ex ->
                 program.onError ("Unable to update view:", ex)
-            try 
-                newCommands |> List.iter (fun sub -> sub dispatch)
-            with ex ->
-                program.onError ("Error executing commands:", ex)
+            for sub in newCommands do
+                try 
+                    sub dispatch
+                with ex ->
+                    program.onError ("Error executing commands:", ex)
         with ex ->
             program.onError ("Unable to process a message:", ex)
 
