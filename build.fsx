@@ -97,7 +97,7 @@ Target "TemplatesNuGet" (fun _ ->
 Target "TestTemplatesNuGet" (fun _ ->
 
     // Globally install the templates from the template nuget package we just built
-    DotNetCli.RunCommand id ("new -i " + buildDir + "Elmish.XamarinForms.Templates." + release.NugetVersion + ".nupkg")
+    DotNetCli.RunCommand id ("new -i " + buildDir + "/Elmish.XamarinForms.Templates." + release.NugetVersion + ".nupkg")
 
     // Instantiate the template. TODO: additional parameters and variations
     CleanDir "testapp"
