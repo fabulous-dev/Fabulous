@@ -12,7 +12,7 @@ let release = LoadReleaseNotes "RELEASE_NOTES.md"
 let project = "Elmish.XamarinForms"
 let summary = "F# bindings for using elmish in WPF"
 
-Target "BuildLibrary" (fun _ ->
+Target "Build" (fun _ ->
 
     // needed or else 'project.assets.json' not found'
     DotNetCli.Restore (fun p -> { p with Project = "Elmish.XamarinForms/Elmish.XamarinForms.fsproj" })
@@ -74,11 +74,21 @@ Target "AssemblyInfo" (fun _ ->
 )
 
 // Build a NuGet package
+Target "LibraryNuGet" (fun _ ->
+    Paket.Pack(fun p -> 
+        { p with
+            OutputPath = buildDir
+            TemplateFile = "paket.template"
+            Version = release.NugetVersion
+            ReleaseNotes = toLines release.Notes})
+
+)
+// Build a NuGet package
 Target "TemplatesNuGet" (fun _ ->
 
     NuGetHelper.NuGetPack (fun p -> 
         { p with
-            WorkingDir = buildDir
+            WorkingDir = "templates"
             OutputPath = buildDir
             Version = release.NugetVersion
             ReleaseNotes = toLines release.Notes}) @"templates\Elmish.XamarinForms.Templates.nuspec"
@@ -112,16 +122,6 @@ Target "TestTemplatesNuGet" (fun _ ->
 
 )
 
-// Build a NuGet package
-Target "LibraryNuGet" (fun _ ->
-    Paket.Pack(fun p -> 
-        { p with
-            OutputPath = buildDir
-            TemplateFile = "paket.template"
-            Version = release.NugetVersion
-            ReleaseNotes = toLines release.Notes})
-
-)
 
 Target "PublishNuGets" (fun _ ->
     Paket.Push(fun p -> 
@@ -129,23 +129,26 @@ Target "PublishNuGets" (fun _ ->
             WorkingDir = buildDir })
 )
 
-Target "All" DoNothing
 Target "NuGet" DoNothing
+Target "Test" DoNothing
 
-"Clean"
-  ==> "AssemblyInfo"
-  ==> "BuildLibrary"
-  ==> "BuildSamples"
-  ==> "All"
-
-"All" 
+//"Clean"
+//  ==> "AssemblyInfo"
+//  ==> 
+"Build"
   ==> "LibraryNuGet" 
   ==> "TemplatesNuGet" 
-  ==> "TestTemplatesNuGet"
-  //=?>  ("TestTemplatesNuGet", EnvironmentHelper.isMacOS)
   ==> "NuGet"
+
+"Build"
+  ==> "BuildSamples"
+  ==> "Test"
+
+"NuGet" 
+  ==> "TestTemplatesNuGet"
+  ==> "Test"
   ==> "PublishNuGets"
 
 
 // start build
-RunTargetOrDefault "All"
+RunTargetOrDefault "Build"
