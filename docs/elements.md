@@ -416,6 +416,7 @@ Xaml.Picker(
     itemsSource = Array.map fst pickerItems,
     selectedIndexChanged = (fun (i, item) -> dispatch (PickerItemChanged i))
 )
+```
 
 See also:
 * [`Xamarin.Forms.Core.Picker`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Picker)
