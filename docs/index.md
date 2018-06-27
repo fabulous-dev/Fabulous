@@ -29,14 +29,14 @@ Getting started
 
 3. Create a blank F# Functional Xamarin Forms app:
 
-       dotnet new elmish-forms-app -lang F# -n testapp
+       dotnet new elmish-forms-app -lang F# -n SqueakyApp
 
    Also add the projects to a solution (a later update will automate this)
 
-       dotnet new sln -o testapp
-       dotnet sln testapp\testapp.sln add testapp\testapp\testapp.fsproj
-       dotnet sln testapp\testapp.sln add testapp\testapp.Android\testapp.Android.fsproj
-       dotnet sln testapp\testapp.sln add testapp\testapp.iOS\testapp.iOS.fsproj
+       dotnet new sln -o SqueakyApp
+       dotnet sln SqueakyApp\SqueakyApp.sln add SqueakyApp\SqueakyApp\SqueakyApp.fsproj
+       dotnet sln SqueakyApp\SqueakyApp.sln add SqueakyApp\SqueakyApp.Android\SqueakyApp.Android.fsproj
+       dotnet sln SqueakyApp\SqueakyApp.sln add SqueakyApp\SqueakyApp.iOS\SqueakyApp.iOS.fsproj
 
 4. Open, edit, build and deploy in Visual Studio, Visual Studio for Mac and/or command line
 
