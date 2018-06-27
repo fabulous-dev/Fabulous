@@ -416,9 +416,23 @@ Xaml.Picker(
     itemsSource = Array.map fst pickerItems,
     selectedIndexChanged = (fun (i, item) -> dispatch (PickerItemChanged i))
 )
+```
 
 See also:
 * [`Xamarin.Forms.Core.Picker`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Picker)
+
+### SearchBar
+A simple `SearchBar` is as follows:
+
+```fsharp
+Xaml.SearchBar(
+    placeholder = "Enter search term",
+    searchCommand = (fun searchBarText -> dispatch  (ExecuteSearch searchBarText)),
+    canExecute=true) 
+```
+
+See also:
+* [Xamarin.Forms.Core.SearchBar](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.searchbar?view=xamarin-forms)
 
 
 Gestures
