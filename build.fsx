@@ -112,8 +112,10 @@ Target "TestTemplatesNuGet" (fun _ ->
     DotNetCli.RunCommand id ("restore testapp/testapp/testapp.fsproj  --source https://api.nuget.org/v3/index.json --source " + pkgs)
     
     let slash = if isUnix then "\\" else ""
-    exec "msbuild" (sprintf "testapp/testapp.Android/testapp.Android.fsproj /p:Configuration=Release /p:PackageSources=%s\"https://api.nuget.org/v3/index.json%s;%s%s\"" slash slash pkgs slash)
-    exec "msbuild" (sprintf "testapp/testapp.iOS/testapp.iOS.fsproj /p:Configuration=Release /p:PackageSources=%s\"https://api.nuget.org/v3/index.json%s;%s%s\"" slash slash pkgs slash)
+    for c in ["Debug"; "Release"] do 
+        for p in ["Android"; "iOS"] do
+            for t in ["RestorePackages"; "Build"] do
+                exec "msbuild" (sprintf "testapp/testapp.%s/testapp.%s.fsproj /p:Configuration=%s /t:%s /p:PackageSources=%s\"https://api.nuget.org/v3/index.json%s;%s%s\"" p p c t slash slash pkgs slash)
 
     (* Manual steps without building nupkg
         .\build LibraryNuGet
