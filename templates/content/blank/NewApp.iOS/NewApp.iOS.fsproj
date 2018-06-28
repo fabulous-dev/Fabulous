@@ -3,6 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
+    <SolutionDir Condition=" '$(SolutionDir)' == '' ">..\</SolutionDir>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{91D74A40-E440-42AD-B51F-C2D641C49384}</ProjectGuid>
