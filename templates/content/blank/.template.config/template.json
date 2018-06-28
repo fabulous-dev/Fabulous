@@ -37,9 +37,11 @@
     "defaultName": "App",
     "preferNameDirectory": "true",
     "guids": [
-        "99E19497-29A6-4B77-B773-BEC55F9B55DC", // .NET Standard Library
-        "8D9F8CF0-E178-402D-8D40-A88B7B5F3D42", // Android
-        "91D74A40-E440-42AD-B51F-C2D641C49384" // iOS
+        "99E19497-29A6-4B77-B773-BEC55F9B55DC", // .NET Standard Library project identity
+        "8D9F8CF0-E178-402D-8D40-A88B7B5F3D42", // Android project identity
+        "91D74A40-E440-42AD-B51F-C2D641C49384", // iOS project identity
+        "B445DF73-AC9E-4276-9FBA-7CB5AD5D2518", // macOS project identity
+        "3EA9E612-E717-4E55-9034-C415CD62AF9A" // UWP project identity
     ],
     "symbols": {
         "kind": {
@@ -208,6 +210,7 @@
     },
     "postActions": [
         {
+            "condition": "(HostIdentifier != \"dotnetcli\" && HostIdentifier != \"dotnetcli-preview\")",
             "description": "Opens NewApp.fs in the editor.",
             "manualInstructions": [],
             "actionId": "84C0DA21-51C8-4541-9940-6CA19AF04EE6",
