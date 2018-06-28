@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <SolutionDir Condition=" '$(SolutionDir)' == '' ">..</SolutionDir>
+    <SolutionDir Condition=" '$(SolutionDir)' == '' ">..\</SolutionDir>
     <ProjectGuid>{8D9F8CF0-E178-402D-8D40-A88B7B5F3D42}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TemplateGuid>{c9e5eea5-ca05-42a1-839b-61506e0a37df}</TemplateGuid>
@@ -101,11 +101,11 @@
     <Reference Include="Xamarin.Android.Support.Compat">
       <HintPath>$(SolutionDir)/packages/Xamarin.Android.Support.Compat.XamarinAndroidSdkVersion/lib/MonoAndroid81/Xamarin.Android.Support.Compat.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Android.Support.Arch.Core.Common">
-      <HintPath>$(SolutionDir)/packages/Xamarin.Android.Support.Arch.Core.Common.1.0.0.1/lib/MonoAndroid81/Xamarin.Android.Arch.Core.Common.dll</HintPath>
+    <Reference Include="Xamarin.Android.Arch.Core.Common">
+      <HintPath>$(SolutionDir)/packages/Xamarin.Android.Arch.Core.Common.1.0.0.1/lib/MonoAndroid81/Xamarin.Android.Arch.Core.Common.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Android.Support.Arch.Core.Runtime">
-      <HintPath>$(SolutionDir)/packages/Xamarin.Android.Support.Arch.Core.Runtime.1.0.0.1/lib/MonoAndroid81/Xamarin.Android.Arch.Core.Runtime.dll</HintPath>
+    <Reference Include="Xamarin.Android.Arch.Core.Runtime">
+      <HintPath>$(SolutionDir)/packages/Xamarin.Android.Arch.Core.Runtime.1.0.0.1/lib/MonoAndroid81/Xamarin.Android.Arch.Core.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Arch.Lifecycle.Common">
       <HintPath>$(SolutionDir)/packages/Xamarin.Android.Arch.Lifecycle.Common.1.0.3.1/lib/MonoAndroid80/Xamarin.Android.Arch.Lifecycle.Common.dll</HintPath>
