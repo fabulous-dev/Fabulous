@@ -94,6 +94,27 @@ The external sample [Calculator](https://github.com/nosami/Elmish.Calculator/) i
 
 The external sample [PocketPiggyBank](https://github.com/jimbobbennett/PocketPiggyBank) is a small client-server app with login authentication. (Note: because this is an external sample it may not be up-to-date with the latest version of his library.)
 
+Further Resources
+--------
+
+**General Docs**
+* [Xamarin](https://docs.microsoft.com/xamarin/)
+* [Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/)
+  * [Performance and Security](https://docs.microsoft.com/en-us/xamarin/cross-platform/deploy-test/performance)
+  * [Deployment and Debugging](https://docs.microsoft.com/en-us/xamarin/cross-platform/deploy-test/)
+  * [Cross-platform for Desktop Developers](https://docs.microsoft.com/en-us/xamarin/cross-platform/desktop/)
+* [Xamarin Essentials](https://docs.microsoft.com/en-us/xamarin/essentials/index?context=xamarin/xamarin-forms)
+
+**Android Setup**
+* [SDK](https://docs.microsoft.com/en-us/xamarin/android/get-started/installation/android-sdk?tabs=vswin)
+* [Emulator](https://docs.microsoft.com/en-us/xamarin/android/get-started/installation/android-emulator/)
+* [Device](https://docs.microsoft.com/xamarin/android/get-started/installation/set-up-device-for-development)
+
+**iOS Setup**
+* [SDK](https://docs.microsoft.com/en-gb/visualstudio/mac/installation)
+* [Emulator](https://docs.microsoft.com/en-us/xamarin/android/get-started/installation/android-emulator/)
+* [Pair to Mac](https://docs.microsoft.com/en-us/xamarin/ios/get-started/installation/windows/connecting-to-mac/)
+* [Device](https://docs.microsoft.com/en-us/xamarin/ios/get-started/installation/device-provisioning/)
 
 Contributing
 ------
