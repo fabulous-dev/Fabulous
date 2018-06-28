@@ -1,5 +1,8 @@
-#### 0.8.4
-* This version number used only for active development
+#### 0.8.6
+* Adjust template to deploy to Android by default for Any CPU
+
+#### 0.8.6
+* Fix template
 
 #### 0.8.2
 * Fix template 
