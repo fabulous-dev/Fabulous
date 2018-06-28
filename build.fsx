@@ -2,6 +2,7 @@
 #I "packages/FAKE/tools"
 #r "packages/FAKE/tools/FakeLib.dll"
 open Fake
+open System
 open Fake.AssemblyInfoFile
 open Fake.Git
 open Fake.ReleaseNotesHelper
@@ -93,6 +94,9 @@ Target "TemplatesNuGet" (fun _ ->
             Version = release.NugetVersion
             ReleaseNotes = toLines release.Notes}) @"templates/Elmish.XamarinForms.Templates.nuspec"
 )
+let exec exe args =
+    let code = Shell.Exec(exe, args) 
+    if code <> 0 then failwithf "%s %s failed, error code %d" exe args code
 
 Target "TestTemplatesNuGet" (fun _ ->
 
@@ -106,19 +110,10 @@ Target "TestTemplatesNuGet" (fun _ ->
     let pkgs = System.IO.Path.GetFullPath(buildDir)
     // When restoring, using the build_output as a package source to pick up the package we just compiled
     DotNetCli.RunCommand id ("restore testapp/testapp/testapp.fsproj  --source https://api.nuget.org/v3/index.json --source " + pkgs)
-    !! "testapp/testapp.Android/testapp.*.fsproj"
-       |> MSBuild null "RestorePackages" [ ("Configuration", "Release"); ("PackageSources", "https://api.nuget.org/v3/index.json;" + pkgs) ]
-       |> Log "AppRestore-Android-Output: "
-    !! "testapp/testapp.iOS/testapp.*.fsproj"
-       |> MSBuild null "RestorePackages" [ ("Configuration", "Release"); ("PackageSources", "https://api.nuget.org/v3/index.json;" + pkgs) ]
-       |> Log "AppRestore-iOS-Output: "
-
-    !! "testapp/testapp.Android/testapp.*.fsproj"
-       |> MSBuildDebug null "Build"
-       |> Log "AppBuild-Android-Output: "
-    !! "testapp/testapp.iOS/testapp.*.fsproj"
-       |> MSBuildDebug null "Build"
-       |> Log "AppBuild-iOS-Output: "
+    
+    let slash = if isUnix then "\\" else ""
+    exec "msbuild" (sprintf "testapp/testapp.Android/testapp.Android.fsproj /p:Configuration=Release /p:PackageSources=%s\"https://api.nuget.org/v3/index.json%s;%s%s\"" slash slash pkgs slash)
+    exec "msbuild" (sprintf "testapp/testapp.iOS/testapp.iOS.fsproj /p:Configuration=Release /p:PackageSources=%s\"https://api.nuget.org/v3/index.json%s;%s%s\"" slash slash pkgs slash)
 
     (* Manual steps without building nupkg
         .\build LibraryNuGet
