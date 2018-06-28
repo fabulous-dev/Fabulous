@@ -31,7 +31,7 @@ Getting started
 
        dotnet new elmish-forms-app -lang F# -n SqueakyApp
 
-4. Open, edit, build and deploy in Visual Studio, Visual Studio for Mac and/or command line
+4. Open, edit, build and deploy in Visual Studio, Visual Studio for Mac and/or "msbuild" command line
 
        SqueakyApp/SqueakyApp.sln
 

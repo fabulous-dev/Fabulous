@@ -135,7 +135,7 @@
             "type": "parameter",
             "dataType": "string",
             "replaces": "ElmishXamarinFormsPkg",
-            "defaultValue": "0.8.3"
+            "defaultValue": "0.8.4"
         },
         "NewtonsoftJsonPkg": {
             "type": "parameter",
