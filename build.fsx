@@ -114,7 +114,7 @@ Target "TestTemplatesNuGet" (fun _ ->
     let slash = if isUnix then "\\" else ""
     for c in ["Debug"; "Release"] do 
         for p in ["Any CPU"; "iPhoneSimulator"] do 
-            exec "msbuild" (sprintf "testapp/testapp.sln /p:Platform=%s /p:Configuration=%s /p:PackageSources=%s\"https://api.nuget.org/v3/index.json%s;%s%s\"" p c  slash slash pkgs slash)
+            exec "msbuild" (sprintf "testapp/testapp.sln /p:Platform=\"%s\" /p:Configuration=%s /p:PackageSources=%s\"https://api.nuget.org/v3/index.json%s;%s%s\"" p c  slash slash pkgs slash)
 
     // build one project at a time:
     //for c in ["Debug"; "Release"] do 

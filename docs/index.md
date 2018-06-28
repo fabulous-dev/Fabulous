@@ -31,14 +31,9 @@ Getting started
 
        dotnet new elmish-forms-app -lang F# -n SqueakyApp
 
-   Also add the projects to a solution (a later update will automate this)
-
-       dotnet new sln -o SqueakyApp
-       dotnet sln SqueakyApp\SqueakyApp.sln add SqueakyApp\SqueakyApp\SqueakyApp.fsproj
-       dotnet sln SqueakyApp\SqueakyApp.sln add SqueakyApp\SqueakyApp.Android\SqueakyApp.Android.fsproj
-       dotnet sln SqueakyApp\SqueakyApp.sln add SqueakyApp\SqueakyApp.iOS\SqueakyApp.iOS.fsproj
-
 4. Open, edit, build and deploy in Visual Studio, Visual Studio for Mac and/or command line
+
+       SqueakyApp/SqueakyApp.sln
 
 
 A Basic Example
