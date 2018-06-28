@@ -140,10 +140,9 @@ Target "PublishNuGets" (fun _ ->
 Target "NuGet" DoNothing
 Target "Test" DoNothing
 
-//"Clean"
-//  ==> "AssemblyInfo"
-//  ==> 
-"Build"
+"Clean"
+  ==> "AssemblyInfo"
+  ==> "Build"
   ==> "LibraryNuGet" 
   ==> "TemplatesNuGet" 
   ==> "NuGet"
