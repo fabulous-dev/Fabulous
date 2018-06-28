@@ -1,5 +1,8 @@
 #### 0.8.3
-* This version number used for active development
+* This version number used only for active development
+
+#### 0.8.2
+* Fix template 
 
 #### 0.8.0
 * Rename `XamlElement` --> `ViewElement`
