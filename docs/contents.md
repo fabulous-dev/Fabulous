@@ -13,5 +13,7 @@
   * [Styling](styling.html)
 * [Models](models.html)
 * [Update, Messages and Async](update.html)
+* [Xamarin Cross-Platform Docs](https://docs.microsoft.com/xamarin/#pivot=platforms&panel=Cross-Platform)
+* [Xamarin Essentials](https://docs.microsoft.com/en-us/xamarin/essentials/)
 * [Submit a fix to this guide](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/docs)
 
