@@ -23,6 +23,7 @@
     <#endif-->
     <NuGetPackageImportStamp></NuGetPackageImportStamp>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -102,10 +103,10 @@
       <HintPath>$(SolutionDir)/packages/Xamarin.Android.Support.Compat.XamarinAndroidSdkVersion/lib/MonoAndroid81/Xamarin.Android.Support.Compat.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Arch.Core.Common">
-      <HintPath>$(SolutionDir)/packages/Xamarin.Android.Arch.Core.Common.1.0.0.1/lib/MonoAndroid81/Xamarin.Android.Arch.Core.Common.dll</HintPath>
+      <HintPath>$(SolutionDir)/packages/Xamarin.Android.Arch.Core.Common.1.0.0.1/lib/MonoAndroid80/Xamarin.Android.Arch.Core.Common.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Arch.Core.Runtime">
-      <HintPath>$(SolutionDir)/packages/Xamarin.Android.Arch.Core.Runtime.1.0.0.1/lib/MonoAndroid81/Xamarin.Android.Arch.Core.Runtime.dll</HintPath>
+      <HintPath>$(SolutionDir)/packages/Xamarin.Android.Arch.Core.Runtime.1.0.0.1/lib/MonoAndroid80/Xamarin.Android.Arch.Core.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Arch.Lifecycle.Common">
       <HintPath>$(SolutionDir)/packages/Xamarin.Android.Arch.Lifecycle.Common.1.0.3.1/lib/MonoAndroid80/Xamarin.Android.Arch.Lifecycle.Common.dll</HintPath>
@@ -195,7 +196,7 @@
   <Import Project="$(SolutionDir)/packages/Xamarin.Android.Support.Compat.XamarinAndroidSdkVersion/build/MonoAndroid81/Xamarin.Android.Support.Compat.targets" Condition="Exists('$(SolutionDir)/packages/Xamarin.Android.Support.Compat/build/MonoAndroid81/Xamarin.Android.Support.Compat.targets')" />
   <Import Project="$(SolutionDir)/packages/Xamarin.Android.Support.Annotations.XamarinAndroidSdkVersion/build/MonoAndroid81/Xamarin.Android.Support.Annotations.targets" Condition="Exists('$(SolutionDir)/packages/Xamarin.Android.Support.Annotations/build/MonoAndroid81/Xamarin.Android.Support.Annotations.targets')" />
   <Import Project="$(SolutionDir)/packages/Xamarin.Android.Arch.Core.Common.1.0.0.1/build/MonoAndroid80/Xamarin.Android.Arch.Core.Common.targets" Condition="Exists('$(SolutionDir)/packages/Xamarin.Android.Arch.Core.Common.1.0.0.1/build/MonoAndroid80/Xamarin.Android.Arch.Core.Common.targets')" />
-  <Import Project="$(SolutionDir)/packages/Xamarin.Android.Arch.Core.Runtime.1.0.0.1/build/MonoAndroid80/Xamarin.Android.Arch.Core.Common.targets" Condition="Exists('$(SolutionDir)/packages/Xamarin.Android.Arch.Core.Runtime.1.0.0.1/build/MonoAndroid80/Xamarin.Android.Arch.Core.Runtime.targets')" />
+  <Import Project="$(SolutionDir)/packages/Xamarin.Android.Arch.Core.Runtime.1.0.0.1/build/MonoAndroid80/Xamarin.Android.Arch.Core.Runtime.targets" Condition="Exists('$(SolutionDir)/packages/Xamarin.Android.Arch.Core.Runtime.1.0.0.1/build/MonoAndroid80/Xamarin.Android.Arch.Core.Runtime.targets')" />
   <Import Project="$(SolutionDir)/packages/Xamarin.Android.Arch.Lifecycle.Common.1.0.3.1/build/MonoAndroid80/Xamarin.Android.Arch.Lifecycle.Common.targets" Condition="Exists('$(SolutionDir)/packages/Xamarin.Android.Arch.Lifecycle.Common.1.0.3.1/build/MonoAndroid80/Xamarin.Android.Arch.Lifecycle.Common.targets')" />
   <Import Project="$(SolutionDir)/packages/Xamarin.Android.Arch.Lifecycle.Runtime.1.0.3.1/build/MonoAndroid80/Xamarin.Android.Arch.Lifecycle.Runtime.targets" Condition="Exists('$(SolutionDir)/packages/Xamarin.Android.Arch.Lifecycle.Runtime.1.0.3.1/build/MonoAndroid80/Xamarin.Android.Arch.Lifecycle.Runtime.targets')" />
   <Import Project="$(SolutionDir)/packages/Xamarin.Android.Support.Core.Utils.XamarinAndroidSdkVersion/build/MonoAndroid81/Xamarin.Android.Support.Core.Utils.targets" Condition="Exists('$(SolutionDir)/packages/Xamarin.Android.Support.Core.Utils.XamarinAndroidSdkVersion/build/MonoAndroid81/Xamarin.Android.Support.Core.Utils.targets')" />

@@ -113,10 +113,15 @@ Target "TestTemplatesNuGet" (fun _ ->
     
     let slash = if isUnix then "\\" else ""
     for c in ["Debug"; "Release"] do 
-        for p in ["Android"; "iOS"] do
-            for t in ["RestorePackages"; "Build"] do
-                exec "msbuild" (sprintf "testapp/testapp.%s/testapp.%s.fsproj /p:Configuration=%s /t:%s /p:PackageSources=%s\"https://api.nuget.org/v3/index.json%s;%s%s\"" p p c t slash slash pkgs slash)
+        for p in ["Any CPU"; "iPhoneSimulator"] do 
+            exec "msbuild" (sprintf "testapp/testapp.sln /p:Platform=\"%s\" /p:Configuration=%s /p:PackageSources=%s\"https://api.nuget.org/v3/index.json%s;%s%s\"" p c  slash slash pkgs slash)
 
+    // build one project at a time:
+    //for c in ["Debug"; "Release"] do 
+    //    for p in ["Android"; "iOS"] do
+    //        for t in ["RestorePackages"; "Build"] do
+    //            exec "msbuild" (sprintf "testapp/testapp.%s/testapp.%s.fsproj /p:Configuration=%s /t:%s /p:PackageSources=%s\"https://api.nuget.org/v3/index.json%s;%s%s\"" p p c t slash slash pkgs slash)
+    //
     (* Manual steps without building nupkg
         .\build LibraryNuGet
         dotnet new -i  templates
@@ -124,8 +129,8 @@ Target "TestTemplatesNuGet" (fun _ ->
         dotnet new elmish-forms-app -n testapp -lang F#
         dotnet restore testapp/testapp/testapp.fsproj -s build_output/
         dotnet new -i  templates && rmdir /s /q testapp && dotnet new elmish-forms-app -n testapp -lang F# && dotnet restore testapp/testapp/testapp.fsproj && msbuild testapp/testapp.Android/testapp.Android.fsproj /t:RestorePackages && msbuild testapp/testapp.Android/testapp.Android.fsproj
-        dotnet new -i  templates && rmdir /s /q testapp && dotnet new elmish-forms-app -n testapp -lang F# && dotnet restore testapp/testapp/testapp.fsproj && msbuild testapp/testapp.iOS/testapp.iOS.fsproj /t:RestorePackages && msbuild testapp/testapp.iOS/testapp.iOS.fsproj
-        dotnet new -i  templates && rmdir /s /q testapp && dotnet new elmish-forms-app -n testapp -lang F# --CreateMacProject && dotnet restore testapp/testapp/testapp.fsproj && msbuild testapp/testapp.macOS/testapp.macOS.fsproj /t:RestorePackages && msbuild testapp/testapp.macOS/testapp.macOS.fsproj
+        dotnet new -i  templates && rmdir /s /q testapp && dotnet new elmish-forms-app -n testapp -lang F# && dotnet restore testapp/testapp/testapp.fsproj && msbuild testapp/testapp.iOS/testapp.iOS.fsproj /t:RestorePackages  && msbuild testapp/testapp.iOS/testapp.iOS.fsproj
+        dotnet new -i  templates && rmdir /s /q testapp && dotnet new elmish-forms-app -n testapp -lang F# --CreateMacProject && dotnet restore testapp/testapp/testapp.fsproj && msbuild testapp/testapp.macOS/testapp.macOS.fsproj /t:RestorePackages  && msbuild testapp/testapp.macOS/testapp.macOS.fsproj
         *)
 
 )
