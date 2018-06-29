@@ -9,7 +9,10 @@ Using Additional View Components
 Many open source and 3rd-party Xamarin.Forms control libraries exist.  To use additional controls, a small amount of wrapper code must
 be written to make the control fit the incremental-update model used by Elmish.XamarinForms.
 
-An example for `Xamarin.Forms.Maps` is shown below. To use this sample, you must
+An example for `Xamarin.Forms.Maps` is shown below. The sample is a property mapping for the types [Map](https://docs.microsoft.com/en-gb/dotnet/api/xamarin.forms.maps.map?view=xamarin-forms]) and
+[Pin](https://docs.microsoft.com/en-gb/dotnet/api/xamarin.forms.maps.pin?view=xamarin-forms).
+
+To use this sample, you must
 additionally [follow the instructions Xamarin.Forms Maps](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/map#Maps_Initialization).
 
 > **NOTE** The API used to write these extensions is subject to change, as is all of this sample.
@@ -25,7 +28,6 @@ module Maps =
         static member internal Map(?pins: seq<ViewElement>, ?isShowingUser: bool, ?mapType: bool, ?hasScrollEnabled: bool, ?hasZoomEnabled: bool, ?requestedRegion: bool) = 
 
             let baseElement : ViewElement = Xaml.View() 
-            //let baseElement : ViewElement = Xaml.View(?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
             let attribs = [| 
                 yield! baseElement.Attributes
                 match pins with None -> () | Some v -> yield KeyValuePair("Map_Pins", box v) 
