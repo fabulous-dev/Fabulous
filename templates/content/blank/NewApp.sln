@@ -8,12 +8,12 @@ Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "NewApp", "NewApp\NewApp.fsp
 EndProject
 
 #//#if (CreateAndroidProject)
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewApp.Android", "NewApp.Android\NewApp.Android.fsproj", "{8D9F8CF0-E178-402D-8D40-A88B7B5F3D42}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NewApp.Android", "NewApp.Android\NewApp.Android.fsproj", "{8D9F8CF0-E178-402D-8D40-A88B7B5F3D42}"
 EndProject
 #//#endif
 
 #//#if (CreateiOSProject)
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewApp.iOS", "NewApp.iOS\NewApp.iOS.fsproj", "{91D74A40-E440-42AD-B51F-C2D641C49384}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NewApp.iOS", "NewApp.iOS\NewApp.iOS.fsproj", "{91D74A40-E440-42AD-B51F-C2D641C49384}"
 EndProject
 #//#endif
 
@@ -269,6 +269,7 @@ Global
 		{8D9F8CF0-E178-402D-8D40-A88B7B5F3D42}.AppStore|x86.Build.0 = Release|Any CPU
 		{8D9F8CF0-E178-402D-8D40-A88B7B5F3D42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8D9F8CF0-E178-402D-8D40-A88B7B5F3D42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D9F8CF0-E178-402D-8D40-A88B7B5F3D42}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{8D9F8CF0-E178-402D-8D40-A88B7B5F3D42}.Debug|ARM.ActiveCfg = Debug|Any CPU
 		{8D9F8CF0-E178-402D-8D40-A88B7B5F3D42}.Debug|ARM.Build.0 = Debug|Any CPU
 		{8D9F8CF0-E178-402D-8D40-A88B7B5F3D42}.Debug|iPhone.ActiveCfg = Debug|Any CPU
@@ -281,6 +282,7 @@ Global
 		{8D9F8CF0-E178-402D-8D40-A88B7B5F3D42}.Debug|x86.Build.0 = Debug|Any CPU
 		{8D9F8CF0-E178-402D-8D40-A88B7B5F3D42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D9F8CF0-E178-402D-8D40-A88B7B5F3D42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D9F8CF0-E178-402D-8D40-A88B7B5F3D42}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{8D9F8CF0-E178-402D-8D40-A88B7B5F3D42}.Release|ARM.ActiveCfg = Release|Any CPU
 		{8D9F8CF0-E178-402D-8D40-A88B7B5F3D42}.Release|ARM.Build.0 = Release|Any CPU
 		{8D9F8CF0-E178-402D-8D40-A88B7B5F3D42}.Release|iPhone.ActiveCfg = Release|Any CPU

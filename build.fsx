@@ -103,25 +103,20 @@ Target "TestTemplatesNuGet" (fun _ ->
     // Globally install the templates from the template nuget package we just built
     DotNetCli.RunCommand id ("new -i " + buildDir + "/Elmish.XamarinForms.Templates." + release.NugetVersion + ".nupkg")
 
+    let testAppName = "testapp" + string (abs (hash System.DateTime.Now.Ticks) % 100)
     // Instantiate the template. TODO: additional parameters and variations
-    CleanDir "testapp"
-    DotNetCli.RunCommand id "new elmish-forms-app -n testapp -lang F#" 
+    CleanDir testAppName
+    DotNetCli.RunCommand id (sprintf "new elmish-forms-app -n %s -lang F#" testAppName)
 
     let pkgs = System.IO.Path.GetFullPath(buildDir)
     // When restoring, using the build_output as a package source to pick up the package we just compiled
-    DotNetCli.RunCommand id ("restore testapp/testapp/testapp.fsproj  --source https://api.nuget.org/v3/index.json --source " + pkgs)
+    DotNetCli.RunCommand id (sprintf "restore %s/%s/%s.fsproj  --source https://api.nuget.org/v3/index.json --source %s" testAppName testAppName testAppName pkgs)
     
     let slash = if isUnix then "\\" else ""
     for c in ["Debug"; "Release"] do 
         for p in ["Any CPU"; "iPhoneSimulator"] do 
-            exec "msbuild" (sprintf "testapp/testapp.sln /p:Platform=\"%s\" /p:Configuration=%s /p:PackageSources=%s\"https://api.nuget.org/v3/index.json%s;%s%s\"" p c  slash slash pkgs slash)
+            exec "msbuild" (sprintf "%s/%s.sln /p:Platform=\"%s\" /p:Configuration=%s /p:PackageSources=%s\"https://api.nuget.org/v3/index.json%s;%s%s\"" testAppName testAppName p c  slash slash pkgs slash)
 
-    // build one project at a time:
-    //for c in ["Debug"; "Release"] do 
-    //    for p in ["Android"; "iOS"] do
-    //        for t in ["RestorePackages"; "Build"] do
-    //            exec "msbuild" (sprintf "testapp/testapp.%s/testapp.%s.fsproj /p:Configuration=%s /t:%s /p:PackageSources=%s\"https://api.nuget.org/v3/index.json%s;%s%s\"" p p c t slash slash pkgs slash)
-    //
     (* Manual steps without building nupkg
         .\build LibraryNuGet
         dotnet new -i  templates
