@@ -3,9 +3,8 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <SolutionDir Condition=" '$(SolutionDir)' == '' ">..\</SolutionDir>
     <ProjectGuid>{B445DF73-AC9E-4276-9FBA-7CB5AD5D2518}</ProjectGuid>
-    <ProjectTypeGuids>{A3F8F2AB-B479-4A4A-A458-A89E7DC349F1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectTypeGuids>{A3F8F2AB-B479-4A4A-A458-A89E7DC349F1};{F2A71F9B-5D33-465A-A702-920D77279786}</ProjectTypeGuids>
     <TemplateGuid>{40ed8a7a-2bf4-42fa-b1a7-b43e1d3b7273}</TemplateGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>NewApp.macOS</RootNamespace>

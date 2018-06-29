@@ -4,16 +4,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.26730.10
 MinimumVisualStudioVersion = 10.0.40219.1
 
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "testapp", "testapp\testapp.fsproj", "{99E19497-29A6-4B77-B773-BEC55F9B55DC}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "NewApp", "NewApp\NewApp.fsproj", "{99E19497-29A6-4B77-B773-BEC55F9B55DC}"
 EndProject
 
 #//#if (CreateAndroidProject)
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testapp.Android", "testapp.Android\testapp.Android.fsproj", "{8D9F8CF0-E178-402D-8D40-A88B7B5F3D42}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NewApp.Android", "NewApp.Android\NewApp.Android.fsproj", "{8D9F8CF0-E178-402D-8D40-A88B7B5F3D42}"
 EndProject
 #//#endif
 
 #//#if (CreateiOSProject)
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testapp.iOS", "testapp.iOS\testapp.iOS.fsproj", "{91D74A40-E440-42AD-B51F-C2D641C49384}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NewApp.iOS", "NewApp.iOS\NewApp.iOS.fsproj", "{91D74A40-E440-42AD-B51F-C2D641C49384}"
 EndProject
 #//#endif
 
