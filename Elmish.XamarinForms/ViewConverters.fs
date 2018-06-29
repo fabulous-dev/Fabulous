@@ -8,7 +8,7 @@ open System.Windows.Input
 open Xamarin.Forms
 open Xamarin.Forms.StyleSheets
 
-module UOption = 
+module ValueOption = 
     let inline map f x = match x with ValueNone -> ValueNone | ValueSome v -> ValueSome (f v)
 
 [<AllowNullLiteral>]
@@ -138,9 +138,24 @@ module Converters =
         | Chunk of 'T[]
         | Chunks of Chunks<'T> * Chunks<'T>
 
+    let seqToArray (itemsSource:seq<'T>) =
+        match itemsSource with 
+        | :? ('T []) as arr -> arr 
+        | es -> Array.ofSeq es 
+
+    let seqToIListUntyped (itemsSource:seq<'T>) =
+        match itemsSource with 
+        | :? System.Collections.IList as arr -> arr
+        | es -> (Array.ofSeq es :> System.Collections.IList)
+
+    let seqToIList (itemsSource:seq<'T>) =
+        match itemsSource with 
+        | :? IList<'T> as arr -> arr
+        | es -> (Array.ofSeq es :> IList<'T>)
+
     // Incremental list maintenance: given a collection, and a previous version of that collection, perform
     // a reduced number of clear/add/remove/insert operations
-    let updateIList
+    let updateCollectionGeneric
            (prevCollOpt: 'T[] voption) 
            (collOpt: 'T[] voption) 
            (targetColl: IList<'TargetT>) 
@@ -186,15 +201,32 @@ module Converters =
                     attach prevChildOpt newChild targetChild
 
 
-    let seqToArray (itemsSource:seq<'T>) =
-        match itemsSource with 
-        | :? ('T []) as arr -> arr 
-        | es -> Array.ofSeq es 
+    type ViewElement with
+        member inline source.UpdatePrimitive(prevOpt: ViewElement voption, target: 'Target, propertyName: string, getter: 'Target -> 'T, setter: 'Target -> 'T -> unit, ?defaultValue: 'T) = 
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<'T>(propertyName)
+            let valueOpt = source.TryGetAttribute<'T>(propertyName)
+            match prevValueOpt, valueOpt with
+            | ValueSome prevValue, ValueSome newValue when prevValue = newValue -> ()
+            | _, ValueSome newValue -> setter target newValue
+            | ValueSome _, ValueNone -> setter target (defaultArg defaultValue Unchecked.defaultof<_>)
+            | ValueNone, ValueNone -> ()
 
-    let seqToIList (itemsSource:seq<'T>) =
-        match itemsSource with 
-        | :? ('T []) as arr -> (arr :> System.Collections.IList) 
-        | es -> (Array.ofSeq es :> System.Collections.IList)
+        member inline source.UpdateElement(prevOpt: ViewElement voption, target: 'Target, propertyName: string, getter: 'Target -> 'T, setter: 'Target -> 'T -> unit) = 
+            let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<ViewElement>(propertyName)
+            let valueOpt = source.TryGetAttribute<ViewElement>(propertyName)
+            match prevValueOpt, valueOpt with
+            | ValueSome prevChild, ValueSome newChild when identical prevChild newChild -> ()
+            | ValueSome prevChild, ValueSome newChild when canReuseChild prevChild newChild ->
+                newChild.UpdateIncremental(prevChild, getter target)
+            | _, ValueSome newChild -> setter target (newChild.Create() :?> 'T)
+            | ValueSome _, ValueNone -> setter target null
+            | ValueNone, ValueNone -> ()
+
+        member inline source.UpdateElementCollection(prevOpt: ViewElement voption, target: 'Target, propertyName: string, getter: 'Target -> #IList<'T>)  =
+            let prevCollOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<seq<ViewElement>>(propertyName)
+            let collOpt = source.TryGetAttribute<seq<ViewElement>>(propertyName)
+            let targetColl = getter target
+            updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetColl (fun x -> x.Create() :?> 'T) (fun _ _ _ -> ()) canReuseChild updateChild
 
     let updateListViewItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.ListView) = 
         let targetColl = 
@@ -204,7 +236,7 @@ module Converters =
                 let oc = ObservableCollection<ListElementData<'T>>()
                 target.ItemsSource <- oc
                 oc
-        updateIList (UOption.map seqToArray prevCollOpt) (UOption.map seqToArray collOpt) targetColl ListElementData (fun _ _ _ -> ()) (fun _ _ -> false) (fun _ _ _ -> failwith "no element reuse") 
+        updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetColl ListElementData (fun _ _ _ -> ()) (fun _ _ -> false) (fun _ _ _ -> failwith "no element reuse") 
 
     let updateListViewGroupedItems (prevCollOpt: ('T * 'T[])[] voption) (collOpt: ('T * 'T[])[] voption) (target: Xamarin.Forms.ListView) = 
         let targetColl = 
@@ -214,7 +246,7 @@ module Converters =
                 let oc = ObservableCollection<ListGroupData<'T>>()
                 target.ItemsSource <- oc
                 oc
-        updateIList prevCollOpt collOpt targetColl ListGroupData (fun _ _ _ -> ()) (fun _ _ -> false) (fun _ _ _ -> failwith "no element reuse")
+        updateCollectionGeneric prevCollOpt collOpt targetColl ListGroupData (fun _ _ _ -> ()) (fun _ _ -> false) (fun _ _ _ -> failwith "no element reuse")
 
     let updateTableViewItems (prevCollOpt: (string * 'T[])[] voption) (collOpt: (string * 'T[])[] voption) (target: Xamarin.Forms.TableView) = 
         let create (desc: ViewElement) = (desc.Create() :?> Cell)
@@ -225,12 +257,12 @@ module Converters =
                 target.Root <- v
                 v
             | v -> v
-        updateIList prevCollOpt collOpt root 
+        updateCollectionGeneric prevCollOpt collOpt root 
             (fun (s, es) -> let section = TableSection(s) in section.Add(Seq.map create es); section) 
             (fun _ _ _ -> ()) // attach
             (fun _ _ -> true) // canReuse
             (fun (prevTitle,prevChild) (newTitle, newChild) target -> 
-                updateIList (ValueSome prevChild) (ValueSome newChild) target create (fun _ _ _ -> ()) canReuseChild updateChild) 
+                updateCollectionGeneric (ValueSome prevChild) (ValueSome newChild) target create (fun _ _ _ -> ()) canReuseChild updateChild) 
 
     let updateResources (prevCollOpt: (string * obj) list voption) (collOpt: (string * obj) list voption) (target: Xamarin.Forms.VisualElement) = 
         let targetColl = target.Resources

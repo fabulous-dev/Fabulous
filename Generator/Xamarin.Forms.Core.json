@@ -786,7 +786,7 @@
 					"uniqueName": "PickerItemsSource",
 					"inputType": "seq<'T>",
 					"modelType": "System.Collections.IList",
-					"convToModel": "seqToIList",
+					"convToModel": "seqToIListUntyped",
 					"defaultValue": "null"
 				},
 				{
