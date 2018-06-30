@@ -15,7 +15,7 @@
     "sourceName": "NewApp",
     "primaryOutputs": [
         {
-            "path": "NewApp\\NewApp.fs"
+            "path": "NewApp\\NewApp.fsproj"
         },
         {
             "condition": "CreateAndroidProject",
@@ -24,6 +24,10 @@
         {
             "condition": "CreateiOSProject",
             "path": "NewApp.iOS\\NewApp.iOS.fsproj"
+        },
+        {
+            "condition": "CreateMacProject",
+            "path": "NewApp.macOS\\NewApp.macOS.fsproj"
         }
         //{
         //    "condition": "CreateBackendProject",

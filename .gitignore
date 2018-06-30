@@ -6,3 +6,7 @@ bin
 packages
 paket-files
 *.dll
+.DS_Store
+.mfractor/.elmish.xamarinforms.db
+./build_output/**
+VSMacAddIn/Elmish.XamarinForms.Templates.nupkg

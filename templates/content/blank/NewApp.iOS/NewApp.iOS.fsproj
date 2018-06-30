@@ -190,5 +190,4 @@
       <Name>NewApp</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="../.nuget/NuGet.targets" />
 </Project>

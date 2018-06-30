@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ExtensionModel>
+    <Runtime>
+    </Runtime>
+    
+    <Extension path="/MonoDevelop/Ide/ProjectTemplateCategories/other/net">
+        <Category id="elmish" name="Elmish"/>
+    </Extension>
+
+    <Extension path="/MonoDevelop/Ide/Templates">
+      <Template
+         id="Elmish.XamarinForms.FSharp"
+         _overrideDescription="Creates a new example Elmish.XamarinForms app"
+         path="./Elmish.XamarinForms.Templates.nupkg"
+         category="other/net/elmish"
+         icon="res:VSMacAddIn.Icons.fsharp256.png"/>
+    </Extension>
+</ExtensionModel>

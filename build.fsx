@@ -3,6 +3,7 @@
 #r "packages/FAKE/tools/FakeLib.dll"
 open Fake
 open System
+open System.IO
 open Fake.AssemblyInfoFile
 open Fake.Git
 open Fake.ReleaseNotesHelper
@@ -87,6 +88,25 @@ Target "LibraryNuGet" (fun _ ->
 // Build a NuGet package
 Target "TemplatesNuGet" (fun _ ->
 
+    // turn on macOS
+    
+
+    // build for VS for Mac
+    NuGetHelper.NuGetPack (fun p -> 
+        { p with
+            WorkingDir = "templates"
+            OutputPath = buildDir + "/"
+            Version = release.NugetVersion
+            ReleaseNotes = toLines release.Notes}) @"templates/Elmish.XamarinForms.Templates.nuspec"
+
+    // Copy the versioned one to the VS for Mac add-in
+    let package = Directory.GetFiles((buildDir + "/"), "Elmish.XamarinForms.Templates.*.nupkg")
+                    |> Array.head
+    File.Copy(package, @"./VSMacAddIn/Elmish.XamarinForms.Templates.nupkg", true)
+
+    // turn off macOS
+
+    // Build for dotnet new
     NuGetHelper.NuGetPack (fun p -> 
         { p with
             WorkingDir = "templates"
