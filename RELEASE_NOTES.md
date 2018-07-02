@@ -1,7 +1,7 @@
-#### 0.8.12
+#### 0.8.13
 * Adjust template to deploy to Android by default for Any CPU
 
-#### 0.8.12
+#### 0.8.13
 * Fix template
 
 #### 0.8.2

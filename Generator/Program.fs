@@ -309,7 +309,8 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
         // Emit the constructor
         w.printfn ""
         w.printfn "    /// Describes a %s in the view" nameOfCreator
-        let qual = if hasCreate then "internal " else ""
+        //let qual = if hasCreate then "internal " else ""
+        let qual = ""
         w.printf "    static member %s%s(" qual nameOfCreator
         allMembers |> iterSep ", " (fun head m -> 
             let inputType = m.GetInputType(bindings, memberResolutions, null)
@@ -415,7 +416,7 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
 
                     match elementTypeOpt with 
                     | Some elementType when not hasApply ->
-                        w.printfn "            updateIList prev%sOpt curr%sOpt target.%s" m.BoundUniqueName m.BoundUniqueName m.Name
+                        w.printfn "            updateCollectionGeneric prev%sOpt curr%sOpt target.%s" m.BoundUniqueName m.BoundUniqueName m.Name
                         w.printfn "                (fun (x:ViewElement) -> x.Create() :?> %s)" elementType
                         if (m.Attached <> null) then
                             w.printfn "                (fun prevChildOpt newChild targetChild -> "

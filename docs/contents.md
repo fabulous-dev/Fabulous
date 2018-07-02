@@ -11,6 +11,7 @@
   * [Performance hints](views-perf.html)
   * [Multi-page applications and Navigation](navigation.html)
   * [Styling](styling.html)
+  * [Using Other View Components](views-extending.html)
 * [Models](models.html)
 * [Update, Messages and Async](update.html)
 * [Xamarin Cross-Platform Docs](https://docs.microsoft.com/xamarin/#pivot=platforms&panel=Cross-Platform)

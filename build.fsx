@@ -103,7 +103,7 @@ Target "TestTemplatesNuGet" (fun _ ->
     // Globally install the templates from the template nuget package we just built
     DotNetCli.RunCommand id ("new -i " + buildDir + "/Elmish.XamarinForms.Templates." + release.NugetVersion + ".nupkg")
 
-    let testAppName = "testapp" + string (abs (hash System.DateTime.Now.Ticks) % 100)
+    let testAppName = "testapp2" + string (abs (hash System.DateTime.Now.Ticks) % 100)
     // Instantiate the template. TODO: additional parameters and variations
     CleanDir testAppName
     DotNetCli.RunCommand id (sprintf "new elmish-forms-app -n %s -lang F#" testAppName)
@@ -120,12 +120,12 @@ Target "TestTemplatesNuGet" (fun _ ->
     (* Manual steps without building nupkg
         .\build LibraryNuGet
         dotnet new -i  templates
-        rmdir /s /q testapp
-        dotnet new elmish-forms-app -n testapp -lang F#
-        dotnet restore testapp/testapp/testapp.fsproj -s build_output/
-        dotnet new -i  templates && rmdir /s /q testapp && dotnet new elmish-forms-app -n testapp -lang F# && dotnet restore testapp/testapp/testapp.fsproj && msbuild testapp/testapp.Android/testapp.Android.fsproj /t:RestorePackages && msbuild testapp/testapp.Android/testapp.Android.fsproj
-        dotnet new -i  templates && rmdir /s /q testapp && dotnet new elmish-forms-app -n testapp -lang F# && dotnet restore testapp/testapp/testapp.fsproj && msbuild testapp/testapp.iOS/testapp.iOS.fsproj /t:RestorePackages  && msbuild testapp/testapp.iOS/testapp.iOS.fsproj
-        dotnet new -i  templates && rmdir /s /q testapp && dotnet new elmish-forms-app -n testapp -lang F# --CreateMacProject && dotnet restore testapp/testapp/testapp.fsproj && msbuild testapp/testapp.macOS/testapp.macOS.fsproj /t:RestorePackages  && msbuild testapp/testapp.macOS/testapp.macOS.fsproj
+        rmdir /s /q testapp2
+        dotnet new elmish-forms-app -n testapp2 -lang F#
+        dotnet restore testapp2/testapp2/testapp2.fsproj -s build_output/
+        dotnet new -i  templates && rmdir /s /q testapp2 && dotnet new elmish-forms-app -n testapp2 -lang F# && dotnet restore testapp2/testapp2/testapp2.fsproj && msbuild testapp2/testapp2.Android/testapp2.Android.fsproj /t:RestorePackages && msbuild testapp2/testapp2.Android/testapp2.Android.fsproj
+        dotnet new -i  templates && rmdir /s /q testapp2 && dotnet new elmish-forms-app -n testapp2 -lang F# && dotnet restore testapp2/testapp2/testapp2.fsproj && msbuild testapp2/testapp2.iOS/testapp2.iOS.fsproj /t:RestorePackages  && msbuild testapp2/testapp2.iOS/testapp2.iOS.fsproj
+        dotnet new -i  templates && rmdir /s /q testapp2 && dotnet new elmish-forms-app -n testapp2 -lang F# --CreateMacProject && dotnet restore testapp2/testapp2/testapp2.fsproj && msbuild testapp2/testapp2.macOS/testapp2.macOS.fsproj /t:RestorePackages  && msbuild testapp2/testapp2.macOS/testapp2.macOS.fsproj
         *)
 
 )

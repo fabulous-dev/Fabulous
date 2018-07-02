@@ -6,6 +6,7 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="ViewElement.fs" />
     <Compile Include="ViewConverters.fs" />
+    <Compile Include="Xamarin.Forms.Core.fs" />
     <Compile Include="ViewHelpers.fs" />
     <Compile Include="ElmishCmd.fs" />
     <Compile Include="ElmishProgram.fs" />
@@ -13,7 +14,6 @@
     <Compile Include="StaticViewModel.fs" />
     <Compile Include="StaticViewNav.fs" />
     <Compile Include="StaticViewProgram.fs" />
-    <Compile Include="Xamarin.Forms.Core.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FSharp.Core" Version="4.5.0" />

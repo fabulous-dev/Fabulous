@@ -46,8 +46,8 @@ module App =
                 Xaml.StackLayout(padding=20.0, verticalOptions=LayoutOptions.Center,
                   children=[
                     Xaml.Label(text= sprintf "%d" model.Count, horizontalOptions=LayoutOptions.Center, fontSize = "Large")
-                    Xaml.Button(text="Increment", command= fixf (fun () -> dispatch Increment))
-                    Xaml.Button(text="Decrement", command= fixf (fun () -> dispatch Decrement))
+                    Xaml.Button(text="Increment", command= (fun () -> dispatch Increment))
+                    Xaml.Button(text="Decrement", command= (fun () -> dispatch Decrement))
                     Xaml.StackLayout(padding=20.0, orientation=StackOrientation.Horizontal, horizontalOptions=LayoutOptions.Center,
                                     children = [ Xaml.Label(text="Timer")
                                                  Xaml.Switch(isToggled=model.TimerOn, toggled=fixf(fun on -> dispatch (TimerToggled on.Value))) ])

@@ -52,7 +52,7 @@ type ViewElement (targetType: Type, create: (unit -> obj), update: (ViewElement 
 
     /// Get an attribute of the visual element
     member x.TryGetAttribute<'T>(name: string) = 
-        x.TryGetAttributeKeyed (getAttribKey name)
+        x.TryGetAttributeKeyed<'T>(getAttribKey name)
  
     /// Apply initial settings to a freshly created visual element
     member x.Update (target: obj) = update ValueNone x target

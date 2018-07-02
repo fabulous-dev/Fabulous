@@ -200,7 +200,7 @@ type Xaml() =
     static member val internal RefreshingKey = ViewElement.GetKey("Refreshing")
 
     /// Describes a Element in the view
-    static member internal Element(?classId: string, ?styleId: string) = 
+    static member Element(?classId: string, ?styleId: string) = 
 
         let attribs : System.Collections.Generic.KeyValuePair<int, obj>[] = [| 
             match classId with None -> () | Some v -> yield (System.Collections.Generic.KeyValuePair(Xaml.ClassIdKey, box ((v)))) 
@@ -243,7 +243,7 @@ type Xaml() =
         new ViewElement(typeof<Xamarin.Forms.Element>, create, update, attribs)
 
     /// Describes a VisualElement in the view
-    static member internal VisualElement(?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member VisualElement(?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let baseElement : ViewElement = Xaml.Element(?classId=classId, ?styleId=styleId)
 
@@ -506,7 +506,7 @@ type Xaml() =
         new ViewElement(typeof<Xamarin.Forms.VisualElement>, create, update, attribs)
 
     /// Describes a View in the view
-    static member internal View(?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member View(?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let baseElement : ViewElement = Xaml.VisualElement(?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
@@ -568,7 +568,7 @@ type Xaml() =
             | prevOpt, ValueSome currValue -> target.Margin <-  currValue
             | ValueSome _, ValueNone -> target.Margin <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | ValueNone, ValueNone -> ()
-            updateIList prevGestureRecognizersOpt currGestureRecognizersOpt target.GestureRecognizers
+            updateCollectionGeneric prevGestureRecognizersOpt currGestureRecognizersOpt target.GestureRecognizers
                 (fun (x:ViewElement) -> x.Create() :?> Xamarin.Forms.IGestureRecognizer)
                 (fun _ _ _ -> ())
                 canReuseChild
@@ -577,7 +577,7 @@ type Xaml() =
         new ViewElement(typeof<Xamarin.Forms.View>, create, update, attribs)
 
     /// Describes a IGestureRecognizer in the view
-    static member internal IGestureRecognizer() = 
+    static member IGestureRecognizer() = 
 
         let attribs : System.Collections.Generic.KeyValuePair<int, obj>[] = [| 
           |]
@@ -1665,12 +1665,12 @@ type Xaml() =
                         prevColumnSpacingOpt <- ValueSome (kvp.Value :?> double)
                     if kvp.Key = Xaml.ChildrenKey then 
                         prevChildrenOpt <- ValueSome (kvp.Value :?> ViewElement[])
-            updateIList prevGridRowDefinitionsOpt currGridRowDefinitionsOpt target.RowDefinitions
+            updateCollectionGeneric prevGridRowDefinitionsOpt currGridRowDefinitionsOpt target.RowDefinitions
                 (fun (x:ViewElement) -> x.Create() :?> Xamarin.Forms.RowDefinition)
                 (fun _ _ _ -> ())
                 canReuseChild
                 updateChild
-            updateIList prevGridColumnDefinitionsOpt currGridColumnDefinitionsOpt target.ColumnDefinitions
+            updateCollectionGeneric prevGridColumnDefinitionsOpt currGridColumnDefinitionsOpt target.ColumnDefinitions
                 (fun (x:ViewElement) -> x.Create() :?> Xamarin.Forms.ColumnDefinition)
                 (fun _ _ _ -> ())
                 canReuseChild
@@ -1685,7 +1685,7 @@ type Xaml() =
             | prevOpt, ValueSome currValue -> target.ColumnSpacing <-  currValue
             | ValueSome _, ValueNone -> target.ColumnSpacing <- 0.0
             | ValueNone, ValueNone -> ()
-            updateIList prevChildrenOpt currChildrenOpt target.Children
+            updateCollectionGeneric prevChildrenOpt currChildrenOpt target.Children
                 (fun (x:ViewElement) -> x.Create() :?> Xamarin.Forms.View)
                 (fun prevChildOpt newChild targetChild -> 
                     // Adjust the attached properties
@@ -1753,7 +1753,7 @@ type Xaml() =
                 for kvp in prev.AttributesKeyed do
                     if kvp.Key = Xaml.ChildrenKey then 
                         prevChildrenOpt <- ValueSome (kvp.Value :?> ViewElement[])
-            updateIList prevChildrenOpt currChildrenOpt target.Children
+            updateCollectionGeneric prevChildrenOpt currChildrenOpt target.Children
                 (fun (x:ViewElement) -> x.Create() :?> Xamarin.Forms.View)
                 (fun prevChildOpt newChild targetChild -> 
                     // Adjust the attached properties
@@ -1805,7 +1805,7 @@ type Xaml() =
                 for kvp in prev.AttributesKeyed do
                     if kvp.Key = Xaml.ChildrenKey then 
                         prevChildrenOpt <- ValueSome (kvp.Value :?> ViewElement[])
-            updateIList prevChildrenOpt currChildrenOpt target.Children
+            updateCollectionGeneric prevChildrenOpt currChildrenOpt target.Children
                 (fun (x:ViewElement) -> x.Create() :?> Xamarin.Forms.View)
                 (fun prevChildOpt newChild targetChild -> 
                     // Adjust the attached properties
@@ -1953,7 +1953,7 @@ type Xaml() =
             | prevOpt, ValueSome currValue -> target.JustifyContent <-  currValue
             | ValueSome _, ValueNone -> target.JustifyContent <- Unchecked.defaultof<Xamarin.Forms.FlexJustify>
             | ValueNone, ValueNone -> ()
-            updateIList prevChildrenOpt currChildrenOpt target.Children
+            updateCollectionGeneric prevChildrenOpt currChildrenOpt target.Children
                 (fun (x:ViewElement) -> x.Create() :?> Xamarin.Forms.View)
                 (fun prevChildOpt newChild targetChild -> 
                     // Adjust the attached properties
@@ -2213,7 +2213,7 @@ type Xaml() =
 
         let attribs : System.Collections.Generic.KeyValuePair<int, obj>[] = [| 
             yield! baseElement.AttributesKeyed
-            match itemsSource with None -> () | Some v -> yield (System.Collections.Generic.KeyValuePair(Xaml.PickerItemsSourceKey, box (seqToIList(v)))) 
+            match itemsSource with None -> () | Some v -> yield (System.Collections.Generic.KeyValuePair(Xaml.PickerItemsSourceKey, box (seqToIListUntyped(v)))) 
             match selectedIndex with None -> () | Some v -> yield (System.Collections.Generic.KeyValuePair(Xaml.SelectedIndexKey, box ((v)))) 
             match title with None -> () | Some v -> yield (System.Collections.Generic.KeyValuePair(Xaml.TitleKey, box ((v)))) 
             match textColor with None -> () | Some v -> yield (System.Collections.Generic.KeyValuePair(Xaml.TextColorKey, box ((v)))) 
@@ -2409,7 +2409,7 @@ type Xaml() =
         new ViewElement(typeof<Xamarin.Forms.Image>, create, update, attribs)
 
     /// Describes a InputView in the view
-    static member internal InputView(?keyboard: Xamarin.Forms.Keyboard, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member InputView(?keyboard: Xamarin.Forms.Keyboard, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let baseElement : ViewElement = Xaml.View(?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
@@ -2930,7 +2930,7 @@ type Xaml() =
         new ViewElement(typeof<Xamarin.Forms.Label>, create, update, attribs)
 
     /// Describes a Layout in the view
-    static member internal Layout(?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member Layout(?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let baseElement : ViewElement = Xaml.View(?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
@@ -3017,7 +3017,7 @@ type Xaml() =
                         prevStackOrientationOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.StackOrientation)
                     if kvp.Key = Xaml.SpacingKey then 
                         prevSpacingOpt <- ValueSome (kvp.Value :?> double)
-            updateIList prevChildrenOpt currChildrenOpt target.Children
+            updateCollectionGeneric prevChildrenOpt currChildrenOpt target.Children
                 (fun (x:ViewElement) -> x.Create() :?> Xamarin.Forms.View)
                 (fun _ _ _ -> ())
                 canReuseChild
@@ -3162,7 +3162,7 @@ type Xaml() =
                 for kvp in prev.AttributesKeyed do
                     if kvp.Key = Xaml.SpansKey then 
                         prevSpansOpt <- ValueSome (kvp.Value :?> ViewElement[])
-            updateIList prevSpansOpt currSpansOpt target.Spans
+            updateCollectionGeneric prevSpansOpt currSpansOpt target.Spans
                 (fun (x:ViewElement) -> x.Create() :?> Xamarin.Forms.Span)
                 (fun _ _ _ -> ())
                 canReuseChild
@@ -3405,7 +3405,7 @@ type Xaml() =
             | prevOpt, ValueSome currValue -> target.Padding <-  currValue
             | ValueSome _, ValueNone -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
             | ValueNone, ValueNone -> ()
-            updateIList prevToolbarItemsOpt currToolbarItemsOpt target.ToolbarItems
+            updateCollectionGeneric prevToolbarItemsOpt currToolbarItemsOpt target.ToolbarItems
                 (fun (x:ViewElement) -> x.Create() :?> Xamarin.Forms.ToolbarItem)
                 (fun _ _ _ -> ())
                 canReuseChild
@@ -3480,7 +3480,7 @@ type Xaml() =
                         prevCurrentPageOpt <- ValueSome (kvp.Value :?> ViewElement)
                     if kvp.Key = Xaml.CurrentPageChangedKey then 
                         prevCurrentPageChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
-            updateIList prevChildrenOpt currChildrenOpt target.Children
+            updateCollectionGeneric prevChildrenOpt currChildrenOpt target.Children
                 (fun (x:ViewElement) -> x.Create() :?> Xamarin.Forms.ContentPage)
                 (fun _ _ _ -> ())
                 canReuseChild
@@ -3678,7 +3678,7 @@ type Xaml() =
                         prevBarBackgroundColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
                     if kvp.Key = Xaml.BarTextColorKey then 
                         prevBarTextColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
-            updateIList prevChildrenOpt currChildrenOpt target.Children
+            updateCollectionGeneric prevChildrenOpt currChildrenOpt target.Children
                 (fun (x:ViewElement) -> x.Create() :?> Xamarin.Forms.Page)
                 (fun _ _ _ -> ())
                 canReuseChild
@@ -3851,7 +3851,7 @@ type Xaml() =
         new ViewElement(typeof<Xamarin.Forms.MasterDetailPage>, create, update, attribs)
 
     /// Describes a Cell in the view
-    static member internal Cell(?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
+    static member Cell(?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
 
         let baseElement : ViewElement = Xaml.Element(?classId=classId, ?styleId=styleId)
 
@@ -4981,7 +4981,7 @@ module ViewElementExtensions =
         member x.DateSelected(value: Xamarin.Forms.DateChangedEventArgs -> unit) = x.WithAttributeKeyed(Xaml.DateSelectedKey, box ((fun f -> System.EventHandler<Xamarin.Forms.DateChangedEventArgs>(fun _sender args -> f args))(value)))
 
         /// Adjusts the PickerItemsSource property in the visual element
-        member x.PickerItemsSource(value: seq<'T>) = x.WithAttributeKeyed(Xaml.PickerItemsSourceKey, box (seqToIList(value)))
+        member x.PickerItemsSource(value: seq<'T>) = x.WithAttributeKeyed(Xaml.PickerItemsSourceKey, box (seqToIListUntyped(value)))
 
         /// Adjusts the SelectedIndex property in the visual element
         member x.SelectedIndex(value: int) = x.WithAttributeKeyed(Xaml.SelectedIndexKey, box ((value)))
