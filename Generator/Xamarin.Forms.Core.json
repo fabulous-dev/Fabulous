@@ -243,6 +243,22 @@
 			]
 		},
 		{
+			"name": "Xamarin.Forms.Layout",
+			"members": [
+				{
+					"name": "IsClippedToBounds",
+					"defaultValue": "false"
+				},
+				{
+					"name": "Padding",
+					"inputType": "obj",
+					"modelType": "Xamarin.Forms.Thickness",
+					"convToModel": "makeThickness",
+					"defaultValue": "Unchecked.defaultof<Xamarin.Forms.Thickness>"
+				}
+			]
+		},
+		{
 			"name": "Xamarin.Forms.ScrollView",
 			"members": [
 				{
@@ -451,6 +467,20 @@
 			]
 		},
 		{
+			"name": "Xamarin.Forms.Cell",
+			"members": [
+				{
+					"name": "Height",
+					"defaultValue": "-1.0"
+				},
+				{
+					"name": "IsEnabled",
+					"defaultValue": "true"
+				}
+				//ContextActions	- A list of MenuItem objects to display when the user performs the context action.
+			]
+		},
+		{
 			"name": "Xamarin.Forms.SwitchCell",
 			"members": [
 				{
@@ -494,6 +524,30 @@
 					"inputType": "(string * ViewElement list) list",
 					"convToModel": "(fun es -> es |> Array.ofList |> Array.map (fun (title, es) -> (title, Array.ofList es)))",
 					"updateCode": "updateTableViewItems"
+				}
+			]
+		},
+		{
+			"name": "Xamarin.Forms.RowDefinition",
+			"members": [
+				{
+					"name": "Height",
+					"uniqueName": "RowDefinitionHeight",
+					"inputType": "obj",
+					"convToModel": "makeGridLength",
+					"defaultValue": "Xamarin.Forms.GridLength.Auto"
+				}
+			]
+		},
+		{
+			"name": "Xamarin.Forms.ColumnDefinition",
+			"members": [
+				{
+					"name": "Width",
+					"uniqueName": "ColumnDefinitionWidth",
+					"inputType": "obj",
+					"convToModel": "makeGridLength",
+					"defaultValue": "Xamarin.Forms.GridLength.Auto"
 				}
 			]
 		},
@@ -637,106 +691,86 @@
 		},
 		{
 			"name": "Xamarin.Forms.FlexLayout",
-					"members": [
+			"members": [
+				{
+					"name": "AlignContent",
+					"modelType": "Xamarin.Forms.FlexAlignContent",
+					"defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexAlignContent>"
+				},
+				{
+					"name": "AlignItems",
+					"modelType": "Xamarin.Forms.FlexAlignItems",
+					"defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexAlignItems>"
+				},
+				{
+					"name": "Direction",
+					"modelType": "Xamarin.Forms.FlexDirection",
+					"defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexDirection>"
+				},
+				{
+					"name": "Position",
+					"modelType": "Xamarin.Forms.FlexPosition",
+					"defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexPosition>"
+				},
+				{
+					"name": "Wrap",
+					"modelType": "Xamarin.Forms.FlexWrap",
+					"defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexWrap>"
+				},
+				{
+					"name": "JustifyContent",
+					"modelType": "Xamarin.Forms.FlexJustify",
+					"defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexJustify>"
+				},
+				{
+					"name": "Children",
+					"defaultValue": "null",
+					"inputType": "ViewElement list",
+					"modelType": "ViewElement[]",
+					"convToModel": "Array.ofList",
+					"attached": [
 						{
-							"name": "AlignContent",
-							"modelType": "Xamarin.Forms.FlexAlignContent",
-							"defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexAlignContent>"
+							"name": "AlignSelf",
+							"uniqueName": "FlexAlignSelf",
+							"modelType": "Xamarin.Forms.FlexAlignSelf",
+							"defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexAlignSelf>"
 						},
 						{
-							"name": "AlignItems",
-							"modelType": "Xamarin.Forms.FlexAlignItems",
-							"defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexAlignItems>"
+							"name": "Order",
+							"uniqueName": "FlexOrder",
+							"modelType": "int",
+							"defaultValue": "0"
 						},
 						{
-							"name": "Direction",
-							"modelType": "Xamarin.Forms.FlexDirection",
-							"defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexDirection>"
+							"name": "Basis",
+							"uniqueName": "FlexBasis",
+							"modelType": "Xamarin.Forms.FlexBasis",
+							"defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexBasis>"
 						},
 						{
-							"name": "Position",
-							"modelType": "Xamarin.Forms.FlexPosition",
-							"defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexPosition>"
+							"name": "Grow",
+							"uniqueName": "FlexGrow",
+							"inputType": "double",
+							"modelType": "single",
+							"convToModel": "single",
+							"defaultValue": "0.0f"
 						},
 						{
-							"name": "Wrap",
-							"modelType": "Xamarin.Forms.FlexWrap",
-							"defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexWrap>"
-						},
-						{
-							"name": "JustifyContent",
-							"modelType": "Xamarin.Forms.FlexJustify",
-							"defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexJustify>"
-						},
-						{
-							"name": "Children",
-							"defaultValue": "null",
-							"inputType": "ViewElement list",
-							"modelType": "ViewElement[]",
-							"convToModel": "Array.ofList",
-							"attached": [
-								{
-									"name": "AlignSelf",
-									"uniqueName": "FlexAlignSelf",
-									"modelType": "Xamarin.Forms.FlexAlignSelf",
-									"defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexAlignSelf>"
-								},
-								{
-									"name": "Order",
-									"uniqueName": "FlexOrder",
-									"modelType": "int",
-									"defaultValue": "0"
-								},
-								{
-									"name": "Basis",
-									"uniqueName": "FlexBasis",
-									"modelType": "Xamarin.Forms.FlexBasis",
-									"defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexBasis>"
-								},
-								{
-									"name": "Grow",
-									"uniqueName": "FlexGrow",
-									"inputType": "double",
-									"modelType": "single",
-									"convToModel": "single",
-									"defaultValue": "0.0f"
-								},
-								{
-									"name": "Shrink",
-									"uniqueName": "FlexShrink",
-									"inputType": "double",
-									"modelType": "single",
-									"convToModel": "single",
-									"defaultValue": "1.0f"
-								}
-							]
+							"name": "Shrink",
+							"uniqueName": "FlexShrink",
+							"inputType": "double",
+							"modelType": "single",
+							"convToModel": "single",
+							"defaultValue": "1.0f"
 						}
 					]
+				}
+			]
 
 		},
 		{
-			"name": "Xamarin.Forms.RowDefinition",
-			"members": [
-				{
-					"name": "Height",
-					"uniqueName": "RowDefinitionHeight",
-					"inputType": "obj",
-					"convToModel": "makeGridLength",
-					"defaultValue": "Xamarin.Forms.GridLength.Auto"
-				}
-			]
-		},
-		{
-			"name": "Xamarin.Forms.ColumnDefinition",
-			"members": [
-				{
-					"name": "Width",
-					"uniqueName": "ColumnDefinitionWidth",
-					"inputType": "obj",
-					"convToModel": "makeGridLength",
-					"defaultValue": "Xamarin.Forms.GridLength.Auto"
-				}
-			]
+			"name": "Xamarin.Forms.TemplatedView",
+			"members": []
 		},
 		{
 			"name": "Xamarin.Forms.ContentView",
@@ -746,10 +780,6 @@
 					"defaultValue": "null"
 				}
 			]
-		},
-		{
-			"name": "Xamarin.Forms.TemplatedView",
-			"members": []
 		},
 		{
 			"name": "Xamarin.Forms.DatePicker",
@@ -1028,22 +1058,6 @@
 				{
 					"name": "FormattedText",
 					"defaultValue": "null"
-				}
-			]
-		},
-		{
-			"name": "Xamarin.Forms.Layout",
-			"members": [
-				{
-					"name": "IsClippedToBounds",
-					"defaultValue": "false"
-				},
-				{
-					"name": "Padding",
-					"inputType": "obj",
-					"modelType": "Xamarin.Forms.Thickness",
-					"convToModel": "makeThickness",
-					"defaultValue": "Unchecked.defaultof<Xamarin.Forms.Thickness>"
 				}
 			]
 		},
@@ -1391,20 +1405,6 @@
 					"inputType": "bool -> unit",
 					"convToModel": "(fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.MasterDetailPage).IsPresented))"
 				}
-			]
-		},
-		{
-			"name": "Xamarin.Forms.Cell",
-			"members": [
-				{
-					"name": "Height",
-					"defaultValue": "-1.0"
-				},
-				{
-					"name": "IsEnabled",
-					"defaultValue": "true"
-				}
-				//ContextActions	- A list of MenuItem objects to display when the user performs the context action.
 			]
 		},
 		{

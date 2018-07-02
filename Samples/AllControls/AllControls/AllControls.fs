@@ -176,6 +176,29 @@ module App =
         static member NonScrollingContentPage(title, children, ?gestureRecognizers) =
             Xaml.ContentPage(title=title, content=Xaml.StackLayout(padding=20.0, children=children, ?gestureRecognizers=gestureRecognizers), useSafeArea=true)
 
+        /// Describes a Label in the view
+        static member TestLabel(?text: string, ?fontFamily: string, ?backgroundColor, ?rotation) = 
+
+            // Get the attributes for the base element. The number is the the expected number of attributes.
+            // You can add additional base element attributes here if you like
+            let attribs = Xaml._BuildView(1, ?backgroundColor = backgroundColor, ?rotation = rotation) 
+
+            // Add our own attributes. They must have unique names.
+            match text with None -> () | Some v -> attribs.Add("TestLabel_Text", box v) 
+            match fontFamily with None -> () | Some v -> attribs.Add("TestLabel_FontFamily", box v) 
+
+            // The creation method
+            let create () = box (new Xamarin.Forms.Label())
+
+            // The incremental update method
+            let update (prevOpt: ViewElement voption) (source: ViewElement) (targetObj:obj) = 
+                Xaml._UpdateView prevOpt source targetObj
+                let target = (targetObj :?> Xamarin.Forms.Label)
+                source.UpdatePrimitive(prevOpt, target, "TestLabel_Text", (fun target -> target.Text), (fun target v -> target.Text <- v))
+                source.UpdatePrimitive(prevOpt, target, "TestLabel_FontFamily", (fun target -> target.FontFamily), (fun target v -> target.FontFamily <- v))
+
+            new ViewElement(typeof<Xamarin.Forms.Label>, create, update, attribs)
+
     let view (model: Model) dispatch =
 
         match model.RootPageKind with 
