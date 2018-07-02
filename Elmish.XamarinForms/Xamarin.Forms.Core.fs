@@ -205,7 +205,7 @@ type Xaml() =
 
         let attribCount = match classId with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match styleId with Some _ -> attribCount + 1 | None -> attribCount
-        let attribBuilder = new ViewElementBuilder(attribCount)
+        let attribBuilder = new AttributesBuilder(attribCount)
         match classId with None -> () | Some v -> attribBuilder.AddKeyed(Xaml._ClassIdPropertyKey, box ((v))) 
         match styleId with None -> () | Some v -> attribBuilder.AddKeyed(Xaml._StyleIdPropertyKey, box ((v))) 
         attribBuilder
@@ -626,7 +626,7 @@ type Xaml() =
     /// Builds the attributes for a IGestureRecognizer in the view
     static member inline _BuildIGestureRecognizer(attribCount: int) = 
 
-        let attribBuilder = new ViewElementBuilder(attribCount)
+        let attribBuilder = new AttributesBuilder(attribCount)
         attribBuilder
 
     static member val _ProtoIGestureRecognizer : ViewElement option = None with get, set
@@ -1927,7 +1927,7 @@ type Xaml() =
     static member inline _BuildRowDefinition(attribCount: int, ?height: obj) = 
 
         let attribCount = match height with Some _ -> attribCount + 1 | None -> attribCount
-        let attribBuilder = new ViewElementBuilder(attribCount)
+        let attribBuilder = new AttributesBuilder(attribCount)
         match height with None -> () | Some v -> attribBuilder.AddKeyed(Xaml._RowDefinitionHeightPropertyKey, box (makeGridLength(v))) 
         attribBuilder
 
@@ -1966,7 +1966,7 @@ type Xaml() =
     static member inline _BuildColumnDefinition(attribCount: int, ?width: obj) = 
 
         let attribCount = match width with Some _ -> attribCount + 1 | None -> attribCount
-        let attribBuilder = new ViewElementBuilder(attribCount)
+        let attribBuilder = new AttributesBuilder(attribCount)
         match width with None -> () | Some v -> attribBuilder.AddKeyed(Xaml._ColumnDefinitionWidthPropertyKey, box (makeGridLength(v))) 
         attribBuilder
 
@@ -3492,7 +3492,7 @@ type Xaml() =
         let attribCount = match foregroundColor with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match propertyChanged with Some _ -> attribCount + 1 | None -> attribCount
-        let attribBuilder = new ViewElementBuilder(attribCount)
+        let attribBuilder = new AttributesBuilder(attribCount)
         match fontFamily with None -> () | Some v -> attribBuilder.AddKeyed(Xaml._FontFamilyPropertyKey, box ((v))) 
         match fontAttributes with None -> () | Some v -> attribBuilder.AddKeyed(Xaml._FontAttributesPropertyKey, box ((v))) 
         match fontSize with None -> () | Some v -> attribBuilder.AddKeyed(Xaml._FontSizePropertyKey, box (makeFontSize(v))) 
@@ -3604,7 +3604,7 @@ type Xaml() =
     static member inline _BuildFormattedString(attribCount: int, ?spans: ViewElement[]) = 
 
         let attribCount = match spans with Some _ -> attribCount + 1 | None -> attribCount
-        let attribBuilder = new ViewElementBuilder(attribCount)
+        let attribBuilder = new AttributesBuilder(attribCount)
         match spans with None -> () | Some v -> attribBuilder.AddKeyed(Xaml._SpansPropertyKey, box ((v))) 
         attribBuilder
 

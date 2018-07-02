@@ -1,4 +1,4 @@
-namespace rec Elmish.XamarinForms.DynamicViews
+namespace Elmish.XamarinForms.DynamicViews
 
 #nowarn "67" // cast always holds
 
@@ -7,26 +7,6 @@ open System.Collections.Generic
 open System.Diagnostics
 
 /// A description of a visual element
-[<AllowNullLiteral>]
-type ViewElementBuilder (expectedAttributeCount: int) = 
-
-    let attribs = List<KeyValuePair<int, obj>>(expectedAttributeCount)    
-
-    /// Get the attributes of the visual element
-    [<DebuggerBrowsable(DebuggerBrowsableState.RootHidden)>]
-    member x.Attributes = attribs.ToArray() |> Array.map (fun kvp -> KeyValuePair(ViewElement.GetAttributeName kvp.Key, kvp.Value))
-
-    /// Get the attributes of the visual element
-    member x.GetAttributesKeyed() = attribs.ToArray() 
-
-    /// Produce a new visual element with an adjusted attribute
-    member x.AddKeyed(key: int, value: obj) = attribs.Add(KeyValuePair(key, value))
-
-    /// Produce a new visual element with an adjusted attribute
-    member x.Add(attribName: string, attribValue: obj) = x.AddKeyed(ViewElement.GetKey attribName, attribValue)
-
-/// A description of a visual element
-[<AllowNullLiteral>]
 type ViewElement (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), attribs: KeyValuePair<int,obj>[]) = 
     
     static let attribKeys = Dictionary<string,int>()
@@ -46,8 +26,8 @@ type ViewElement (targetType: Type, create: (unit -> obj), update: (ViewElement 
         | true, keyv -> keyv
         | false, _ -> failwithf "invalid key %d" key
 
-    new (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), attribsBuilder: ViewElementBuilder) =
-        ViewElement(targetType, create, update, attribsBuilder.GetAttributesKeyed())
+    new (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), attribsBuilder: AttributesBuilder) =
+        ViewElement(targetType, create, update, attribsBuilder.Close())
 
     /// Get the type created by the visual element
     member x.TargetType = targetType
@@ -107,3 +87,33 @@ type ViewElement (targetType: Type, create: (unit -> obj), update: (ViewElement 
 
     static member GetKey (attribName: string) = getAttribKey attribName
     static member GetAttributeName (key: int) = getAttribName key
+
+/// A description of a visual element
+and AttributesBuilder (attribCount: int) = 
+
+    let mutable count = 0
+    let mutable attribs = Array.zeroCreate<KeyValuePair<int, obj>>(attribCount)    
+
+    /// Get the attributes of the visual element
+    [<DebuggerBrowsable(DebuggerBrowsableState.RootHidden)>]
+    member x.Attributes = 
+        if isNull attribs then [| |] 
+        else attribs |> Array.map (fun kvp -> KeyValuePair(ViewElement.GetAttributeName kvp.Key, kvp.Value))
+
+    /// Get the attributes of the visual element
+    member x.Close() : _[] = 
+        let res = attribs 
+        attribs <- null
+        res
+
+    /// Produce a new visual element with an adjusted attribute
+    member x.AddKeyed(key: int, value: obj) = 
+        if isNull attribs then failwithf "The attribute builder has already been closed"
+        if count >= attribs.Length then failwithf "The attribute builder was not large enough for the added attributes, it was given size %d. Did you get the attribute count right?" attribs.Length
+        attribs.[count] <- KeyValuePair(key, value)
+        count <- count + 1
+
+    /// Produce a new visual element with an adjusted attribute
+    member x.Add(attribName: string, attribValue: obj) = 
+        x.AddKeyed(ViewElement.GetKey attribName, attribValue)
+

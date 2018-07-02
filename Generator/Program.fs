@@ -314,7 +314,7 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
 
         match nameOfBaseCreatorOpt with 
         | None ->
-            w.printfn "        let attribBuilder = new ViewElementBuilder(attribCount)"
+            w.printfn "        let attribBuilder = new AttributesBuilder(attribCount)"
         | Some nameOfBaseCreator ->
             w.printfn ""
             w.printf "        let attribBuilder = Xaml._Build%s(attribCount" nameOfBaseCreator

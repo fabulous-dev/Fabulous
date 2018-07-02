@@ -132,7 +132,7 @@ module Maps =
             let attribCount = match pinType with Some _ -> attribCount + 1 | None -> attribCount
             let attribCount = match address with Some _ -> attribCount + 1 | None -> attribCount
 
-            let attribs = ViewElementBuilder(attribCount)
+            let attribs = AttributesBuilder(attribCount)
 
             // Add our own attributes. They must have unique names which must match the names below.
             match position with None -> () | Some v -> attribs.Add("Pin_Position", box v) 
