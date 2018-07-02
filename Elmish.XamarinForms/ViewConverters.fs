@@ -222,11 +222,10 @@ module Converters =
             | ValueSome _, ValueNone -> setter target null
             | ValueNone, ValueNone -> ()
 
-        member inline source.UpdateElementCollection(prevOpt: ViewElement voption, target: 'Target, propertyName: string, getter: 'Target -> #IList<'T>)  =
+        member inline source.UpdateElementCollection(prevOpt: ViewElement voption, propertyName: string, targetCollection: IList<'T>)  =
             let prevCollOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<seq<ViewElement>>(propertyName)
             let collOpt = source.TryGetAttribute<seq<ViewElement>>(propertyName)
-            let targetColl = getter target
-            updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetColl (fun x -> x.Create() :?> 'T) (fun _ _ _ -> ()) canReuseChild updateChild
+            updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetCollection (fun x -> x.Create() :?> 'T) (fun _ _ _ -> ()) canReuseChild updateChild
 
     let updateListViewItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.ListView) = 
         let targetColl = 
