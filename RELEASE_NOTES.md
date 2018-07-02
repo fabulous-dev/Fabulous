@@ -1,3 +1,6 @@
+#### 0.9.4
+* Require extensions to give the correct size for attribute count, and don't reallocate the attribute array
+
 #### 0.9.2
 * Fix template
 
