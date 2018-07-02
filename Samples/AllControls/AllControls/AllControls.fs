@@ -176,6 +176,32 @@ module App =
         static member NonScrollingContentPage(title, children, ?gestureRecognizers) =
             Xaml.ContentPage(title=title, content=Xaml.StackLayout(padding=20.0, children=children, ?gestureRecognizers=gestureRecognizers), useSafeArea=true)
 
+        /// Test the extension API be making a 2nd wrapper for "Label":
+        static member TestLabel(?text: string, ?fontFamily: string, ?backgroundColor, ?rotation) = 
+
+            // Get the attributes for the base element. The number is the the expected number of attributes.
+            // You can add additional base element attributes here if you like
+            let attribCount = 0
+            let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
+            let attribCount = match fontFamily with Some _ -> attribCount + 1 | None -> attribCount
+            let attribs = Xaml._BuildView(attribCount, ?backgroundColor = backgroundColor, ?rotation = rotation) 
+
+            // Add our own attributes. They must have unique names.
+            match text with None -> () | Some v -> attribs.Add("TestLabel_Text", box v) 
+            match fontFamily with None -> () | Some v -> attribs.Add("TestLabel_FontFamily", box v) 
+
+            // The creation method
+            let create () = box (new Xamarin.Forms.Label())
+
+            // The incremental update method
+            let update (prevOpt: ViewElement voption) (source: ViewElement) (targetObj:obj) = 
+                Xaml._UpdateView prevOpt source targetObj
+                let target = (targetObj :?> Xamarin.Forms.Label)
+                source.UpdatePrimitive(prevOpt, target, "TestLabel_Text", (fun target -> target.Text), (fun target v -> target.Text <- v))
+                source.UpdatePrimitive(prevOpt, target, "TestLabel_FontFamily", (fun target -> target.FontFamily), (fun target v -> target.FontFamily <- v))
+
+            new ViewElement(typeof<Xamarin.Forms.Label>, create, update, attribs)
+
     let view (model: Model) dispatch =
 
         match model.RootPageKind with 
@@ -201,7 +227,7 @@ module App =
                             padding = new Thickness (10.0, 20.0, 10.0, 5.0), 
                             content= Xaml.StackLayout(
                                children=[ 
-                                   Xaml.Label(text = "Elmish.XamarinForms, version " + string (typeof<ViewElement>.Assembly.GetName().Version))
+                                   Xaml.TestLabel(text = "Elmish.XamarinForms, version " + string (typeof<ViewElement>.Assembly.GetName().Version))
                                    Xaml.Button(text = "Continue", command=(fun () -> dispatch (SetRootPageKind (Choice false)) ))
                                ]))
                 ])

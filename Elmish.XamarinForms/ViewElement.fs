@@ -7,8 +7,7 @@ open System.Collections.Generic
 open System.Diagnostics
 
 /// A description of a visual element
-[<AllowNullLiteral>]
-type ViewElement (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), attribs: KeyValuePair<int, obj>[] ) = 
+type ViewElement (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), attribs: KeyValuePair<int,obj>[]) = 
     
     static let attribKeys = Dictionary<string,int>()
     static let attribNames = Dictionary<int,string>()
@@ -27,10 +26,8 @@ type ViewElement (targetType: Type, create: (unit -> obj), update: (ViewElement 
         | true, keyv -> keyv
         | false, _ -> failwithf "invalid key %d" key
 
-    /// Create a new ViewElement
-    new (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), attribs: KeyValuePair<string, obj>[]) =
-        let attribs = attribs |> Array.map (fun (KeyValue(attribName, v)) -> KeyValuePair(getAttribKey attribName, v))
-        ViewElement(targetType, create, update, attribs)
+    new (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), attribsBuilder: AttributesBuilder) =
+        ViewElement(targetType, create, update, attribsBuilder.Close())
 
     /// Get the type created by the visual element
     member x.TargetType = targetType
@@ -41,8 +38,7 @@ type ViewElement (targetType: Type, create: (unit -> obj), update: (ViewElement 
 
     /// Get the attributes of the visual element
     [<DebuggerBrowsable(DebuggerBrowsableState.RootHidden)>]
-    member x.Attributes = 
-        attribs |> Array.map (fun kvp -> KeyValuePair(getAttribName kvp.Key, kvp.Value))
+    member x.Attributes = attribs |> Array.map (fun kvp -> KeyValuePair(getAttribName kvp.Key, kvp.Value))
 
     /// Get an attribute of the visual element
     member x.TryGetAttributeKeyed<'T>(key: int) = 
@@ -90,3 +86,34 @@ type ViewElement (targetType: Type, create: (unit -> obj), update: (ViewElement 
     override x.ToString() = sprintf "%s(...)@%d" x.TargetType.Name (x.GetHashCode())
 
     static member GetKey (attribName: string) = getAttribKey attribName
+    static member GetAttributeName (key: int) = getAttribName key
+
+/// A description of a visual element
+and AttributesBuilder (attribCount: int) = 
+
+    let mutable count = 0
+    let mutable attribs = Array.zeroCreate<KeyValuePair<int, obj>>(attribCount)    
+
+    /// Get the attributes of the visual element
+    [<DebuggerBrowsable(DebuggerBrowsableState.RootHidden)>]
+    member x.Attributes = 
+        if isNull attribs then [| |] 
+        else attribs |> Array.map (fun kvp -> KeyValuePair(ViewElement.GetAttributeName kvp.Key, kvp.Value))
+
+    /// Get the attributes of the visual element
+    member x.Close() : _[] = 
+        let res = attribs 
+        attribs <- null
+        res
+
+    /// Produce a new visual element with an adjusted attribute
+    member x.AddKeyed(key: int, value: obj) = 
+        if isNull attribs then failwithf "The attribute builder has already been closed"
+        if count >= attribs.Length then failwithf "The attribute builder was not large enough for the added attributes, it was given size %d. Did you get the attribute count right?" attribs.Length
+        attribs.[count] <- KeyValuePair(key, value)
+        count <- count + 1
+
+    /// Produce a new visual element with an adjusted attribute
+    member x.Add(attribName: string, attribValue: obj) = 
+        x.AddKeyed(ViewElement.GetKey attribName, attribValue)
+

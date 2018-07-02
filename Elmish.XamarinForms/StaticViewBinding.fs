@@ -69,20 +69,20 @@ module Binding =
     ///<param name="setter">Setter function, returns a message to dispatch, typically to set the value in the model</param>
     ///<param name="name">Binding name</param>
     let twoWay (getter: 'model -> 'a) (setter: 'a -> 'msg) name : ViewBinding<'model,'msg> = 
-        name, BindTwoWay (getter >> box, fun v m -> setter (unbox v))
+        name, BindTwoWay (getter >> box, fun v _m -> setter (unbox v))
     
     ///<summary>View to model binding (i.e. BindingMode.OneWayToSource)</summary>
     ///<param name="setter">Setter function, returns a message to dispatch, typically to set the value in the model</param>
     ///<param name="name">Binding name</param>
     let oneWayFromView (setter: 'a -> 'msg) name : ViewBinding<'model,'msg> = 
-        name, BindOneWayToSource (fun v m -> setter (unbox v))
+        name, BindOneWayToSource (fun v _m -> setter (unbox v))
     
     ///<summary>Both model to view and view to model (i.e. BindingMode.TwoWay) with INotifyDataErrorInfo implementation)</summary>
     ///<param name="getter">Gets value from the model</param>
     ///<param name="setter">Validation function, returns a Result with the command to dispatch or an error string</param>
     ///<param name="name">Binding name</param>
     let twoWayValidation (getter: 'model -> 'a) (setter: 'a -> Result<'msg,string>) name : ViewBinding<'model,'msg> = 
-        name, BindTwoWayValidation (getter >> box, fun v m -> setter (unbox v))
+        name, BindTwoWayValidation (getter >> box, fun v _m -> setter (unbox v))
         
     ///<summary>Command binding</summary>
     ///<param name="msg">A message to dispatch</param>

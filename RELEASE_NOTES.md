@@ -1,7 +1,16 @@
-#### 0.8.13
+#### 0.9.4
+* Require extensions to give the correct size for attribute count, and don't reallocate the attribute array
+
+#### 0.9.2
+* Fix template
+
+#### 0.9.0
+* Use an attribute builder
+
+#### 0.8.12
 * Adjust template to deploy to Android by default for Any CPU
 
-#### 0.8.13
+#### 0.8.4
 * Fix template
 
 #### 0.8.2

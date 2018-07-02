@@ -15,7 +15,7 @@ module Values =
 /// static-global thunk because we want old view elements stored in the `dependsOn` global table
 /// to be recyclable on resumption (when a new ProgramRunner gets created).
 type internal ProgramDispatch<'msg>()  = 
-    static let mutable dispatchImpl = (fun (msg: 'msg) -> failwith "do not call dispatch during initialization" : unit)
+    static let mutable dispatchImpl = (fun (_msg: 'msg) -> failwith "do not call dispatch during initialization" : unit)
 
     static let dispatch = id (fun msg -> dispatchImpl msg)
 
@@ -186,9 +186,9 @@ module Program =
 
     /// Add dynamic views associated with a specific application
     [<Obsolete("Please use Program.runWithDynamicView", true)>]
-    let withDynamicView app (program: Program<'model, 'msg, _>) = failwith ""
+    let withDynamicView _app (_program: Program<'model, 'msg, _>) = failwith ""
 
     /// Add dynamic views associated with a specific application
     [<Obsolete("Please open Elmish.XamarinForms.StaticViews and use Program.runWithStaticView", true)>]
-    let withStaticView (program: Program<'model, 'msg, _>) = failwith ""
+    let withStaticView (_program: Program<'model, 'msg, _>) = failwith ""
 

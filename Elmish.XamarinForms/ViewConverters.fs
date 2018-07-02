@@ -202,7 +202,7 @@ module Converters =
 
 
     type ViewElement with
-        member inline source.UpdatePrimitive(prevOpt: ViewElement voption, target: 'Target, propertyName: string, getter: 'Target -> 'T, setter: 'Target -> 'T -> unit, ?defaultValue: 'T) = 
+        member inline source.UpdatePrimitive(prevOpt: ViewElement voption, target: 'Target, propertyName: string, _getter: 'Target -> 'T, setter: 'Target -> 'T -> unit, ?defaultValue: 'T) = 
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttribute<'T>(propertyName)
             let valueOpt = source.TryGetAttribute<'T>(propertyName)
             match prevValueOpt, valueOpt with
@@ -260,7 +260,7 @@ module Converters =
             (fun (s, es) -> let section = TableSection(s) in section.Add(Seq.map create es); section) 
             (fun _ _ _ -> ()) // attach
             (fun _ _ -> true) // canReuse
-            (fun (prevTitle,prevChild) (newTitle, newChild) target -> 
+            (fun (_prevTitle,prevChild) (_newTitle, newChild) target -> 
                 updateCollectionGeneric (ValueSome prevChild) (ValueSome newChild) target create (fun _ _ _ -> ()) canReuseChild updateChild) 
 
     let updateResources (prevCollOpt: (string * obj) list voption) (collOpt: (string * obj) list voption) (target: Xamarin.Forms.VisualElement) = 
@@ -288,8 +288,8 @@ module Converters =
                             targetColl.[key] <- newChild
                     else
                         targetColl.Remove(key) |> ignore
-                for (KeyValue(key, newChild)) in targetColl do 
-                   if not (coll |> Array.exists(fun (key2, v2) -> key = key2)) then 
+                for (KeyValue(key, _newChild)) in targetColl do 
+                   if not (coll |> Array.exists(fun (key2, _v2) -> key = key2)) then 
                        targetColl.Remove(key) |> ignore
 
 

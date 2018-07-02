@@ -34,7 +34,7 @@ module SimplerHelpers =
         
     /// Dispatch a message via the currently running Elmish program
     [<System.Obsolete("The global dispatch routine should no longer be used as it is not type safe, please use the dispatch routine passed to the 'view' function", error=true)>]
-    let dispatch msg : unit = failwith "??"
+    let dispatch _msg : unit = failwith "??"
 
     /// Memoize a callback that has no interesting dependencies.
     /// NOTE: use with caution. The function must not capture any values besides "dispatch"
@@ -76,6 +76,7 @@ module SimplerHelpers =
             let x = match horizontalOptions with None -> x | Some opt -> x.HorizontalOptions(opt)
             let x = match verticalOptions with None -> x | Some opt -> x.VerticalOptions(opt)
             let x = match margin with None -> x | Some opt -> x.Margin(opt)
+            let x = match gestureRecognizers with None -> x | Some opt -> x.GestureRecognizers(opt)
             let x = match anchorX with None -> x | Some opt -> x.AnchorX(opt)
             let x = match anchorY with None -> x | Some opt -> x.AnchorY(opt)
             let x = match backgroundColor with None -> x | Some opt -> x.BackgroundColor(opt)
