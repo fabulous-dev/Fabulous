@@ -112,6 +112,7 @@ module MyViewExtensions =
     open Elmish.XamarinForms
     open Elmish.XamarinForms.DynamicViews
 
+    // Define keys for the possible attributes
     let Prop1AttribKey = AttributeKey<seq<ViewElement>> "ABC_Prop1"
     let Prop2AttribKey = AttributeKey<bool> "ABC_Prop2"
 
@@ -127,23 +128,22 @@ module MyViewExtensions =
             // Populate the attributes of the base element
             let attribs = Xaml._BuildBASE(attribCount, ... inherited attributes ... ) 
 
-            // Add our own attributes. They must have unique names which must match the names below.
+            // Add our own attributes. 
             match prop1 with None -> () | Some v -> attribs.Add(Prop1AttribKey, v) 
             match prop2 with None -> () | Some v -> attribs.Add(Prop2AttribKey, v) 
             ...
 
             // The creation method
-            let create () = box (new ABC())
+            let create () = new ABC()
 
             // The incremental update method
-            let update (prev: ViewElement voption) (source: ViewElement) (targetObj:obj) = 
-                Xaml._UpdateBASE prev source targetObj
-                let target = (targetObj :?> ABC)
+            let update (prev: ViewElement voption) (source: ViewElement) (target: ABC) = 
+                Xaml._UpdateBASE prev source (box target)
                 source.UpdateElementCollection(prev, rop1AttribKey, target.Prop1)
                 source.UpdatePrimitive(prev, target, Prop2AttribKey, (fun target -> target.Prop2), (fun target v -> target.Prop2 <- v))
                 ...
 
-            new ViewElement(typeof<ABC>, create, update, attribs)
+            ViewElement.Create<ABC>(create, update, attribs)
 ```
 The control is then used as follows:
 ```fsharp
