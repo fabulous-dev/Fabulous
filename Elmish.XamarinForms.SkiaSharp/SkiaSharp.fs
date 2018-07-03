@@ -3,7 +3,6 @@ namespace Elmish.XamarinForms.DynamicViews
 [<AutoOpen>]
 module MapsExtension = 
 
-    open Elmish.XamarinForms
     open Elmish.XamarinForms.DynamicViews
 
     open Xamarin.Forms

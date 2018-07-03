@@ -2,13 +2,10 @@
 
 * Programming model: Do these from `Xamarin.Forms.Core`: 
   * Change `Xaml.` to `UI.` or `XF.` or `X.`
-  * FlexLayout and XF 3.0 additions
   * Move to `seq<_>` as the de-facto model type
-  * Menu, NavigationBar, Accelerator
   * Animation
   * OpenGLView
-  * Assess further common async patterns
-  * Assess further common incremental update of large data sets, e.g. `chunks { ... }`
+  * Consider allowing explicit static Xaml through a type provider, e.g `xaml<"""<StackLayout Padding="20">...</StackLayout>""">`, evaluating to a `ViewElement`
 
 * Docs
   * Generate `///` docs in code generator
@@ -18,12 +15,8 @@
   * Support hot-reloading of the saved model, reapplying to the same app where possible
 
 * Handle 3rd party controls.
-  * Examples: `Xamarin.Forms.Maps`, `SkiaSharp`
+  * Add a charting control library
   * Possibly switch to a type provider (see [this comment](https://github.com/fsprojects/Elmish.XamarinForms/issues/50#issuecomment-390396365))
-  * Make any necessary changes/additions to the `bindings.json` format (nothing is set in stone yet)
-
-* Templates
-  * Develop a template pack
 
 * Debugging
   * Improve diagnostics when property update fails
@@ -37,7 +30,7 @@
   * Apps using maps
 
 * App size:
-  * Check the Xamarin tree-shaker cuts out all unused code from DynamicView.fs
+  * Remove F# resources in linker, see https://github.com/fsprojects/Elmish.XamarinForms/issues/94
 
 * Performance:
   * Do better list comparison/diffing
@@ -48,8 +41,6 @@
   * Consider keeping a running identity hash on the immutable objects
   * Consider implementing equality and hash on the immutable objects
   * Consider moving 'view' and 'model' computations off the UI thread
-
-* Consider allowing explicit static Xaml through a type provider, e.g `xaml<"""<StackLayout Padding="20">...</StackLayout>""">`, evaluating to a `ViewElement`
 
 * Make some small F# langauge improvements to improve code:
   * Remove `yield` in more cases

@@ -6,9 +6,8 @@ Elmish.XamarinForms Guide
 Additional View Elements
 ------
 
-Many open source and 3rd-party libraries of Xamarin.Forms controls exist.  
-To use other controls, a small amount of wrapper code is typically needed to
-define a corresponding view element using the incremental-update model used by Elmish.XamarinForms.
+Many open source and 3rd-party libraries of Xamarin.Forms controls exist. To use other controls, a small amount of wrapper code
+is typically needed to define a corresponding view element using the incremental-update model used by Elmish.XamarinForms.
 
 The following additional components are available as pre-built nuget libraries:
 * Maps
@@ -53,6 +52,8 @@ Xaml.Map(hasZoomEnabled = true, hasScrollEnabled = true,
 
 See also: 
 * [Working with Maps](https://developer.xamarin.com/samples/xamarin-forms/WorkingWithMaps).
+* [Source for the Maps extension](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms.Maps)
+* Defining the Maps Extension (see below)
 
 Using SkiaSharp
 ------
@@ -83,6 +84,7 @@ Xaml.SKCanvasView(enableTouchEvents = true,
 
 See also: 
 * [Using SkiaSharp in Xamarin.Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/graphics/skiasharp/).
+* [Source for the SkiaSharp extension](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/Elmish.XamarinForms.SkiaSharp)
 
 Adding Further Additional View Components
 ------
