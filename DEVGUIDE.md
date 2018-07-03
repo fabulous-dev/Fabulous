@@ -1,11 +1,11 @@
- Dev Notes - Building
+### Dev Notes - Building
 
     .\build NuGet
     
-    .\build BuildSamples
+    .\build Test
 
 
-# Dev Notes - Releasing
+### Dev Notes - Releasing
 
 Use this:
 
@@ -17,7 +17,7 @@ Use this:
 ### Dev Notes - Checking App Size
 
 It is worth occasionally checking that unused code is trimmed from the Android and iOS app packagings by the Mono linker.
-There is one known issue with this, see https://github.com/mono/linker/issues/329.
+There is [one known issue with this](https://github.com/fsprojects/Elmish.XamarinForms/issues/94).
 
 App size on Android is checked by
 1. build + deploying `Samples\CounterApp` (to device or emulator)
