@@ -240,6 +240,7 @@ NUGET
     Microsoft.NETCore.Platforms (2.1)
     Microsoft.NETCore.Targets (2.1)
     Newtonsoft.Json (11.0.2)
+    SkiaSharp (1.60.2)
     System.IO (4.3)
       Microsoft.NETCore.Platforms (>= 1.1)
       Microsoft.NETCore.Targets (>= 1.1)

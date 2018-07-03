@@ -7,6 +7,8 @@ Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Elmish.XamarinForms", "Elmi
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Elmish.XamarinForms.Maps", "Elmish.XamarinForms.Maps\Elmish.XamarinForms.Maps.fsproj", "{B459AFAD-BB5B-43C3-BD86-609E8DB3E3FE}"
 EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Elmish.XamarinForms.SkiaSharp", "Elmish.XamarinForms.SkiaSharp\Elmish.XamarinForms.SkiaSharp.fsproj", "{B459AFAD-BB5B-43C3-BD86-609E8DB3E3FF}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{FB194A8D-00A6-4416-AA8D-A89C1541935B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StaticView", "StaticView", "{FB194A8D-00A6-4416-AA8D-A89C1541935C}"

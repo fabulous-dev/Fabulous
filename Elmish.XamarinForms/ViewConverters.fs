@@ -202,7 +202,7 @@ module Converters =
 
 
     type ViewElement with
-        member inline source.UpdateEvent(prevOpt: ViewElement voption, attribKey: AttributeKey, targetEvent: IEvent<'T,'Args>) = 
+        member inline source.UpdateEvent(prevOpt: ViewElement voption, attribKey: AttributeKey<'T>, targetEvent: IEvent<'T,'Args>) = 
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttributeKeyed<'T>(attribKey)
             let valueOpt = source.TryGetAttributeKeyed<'T>(attribKey)
             match prevValueOpt, valueOpt with
@@ -212,7 +212,7 @@ module Converters =
             | ValueSome prevValue, ValueNone -> targetEvent.RemoveHandler(prevValue)
             | ValueNone, ValueNone -> ()
 
-        member inline source.UpdatePrimitive(prevOpt: ViewElement voption, target: 'Target, attribKey: AttributeKey, setter: 'Target -> 'T -> unit, ?defaultValue: 'T) = 
+        member inline source.UpdatePrimitive(prevOpt: ViewElement voption, target: 'Target, attribKey: AttributeKey<'T>, setter: 'Target -> 'T -> unit, ?defaultValue: 'T) = 
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttributeKeyed<'T>(attribKey)
             let valueOpt = source.TryGetAttributeKeyed<'T>(attribKey)
             match prevValueOpt, valueOpt with
@@ -221,7 +221,7 @@ module Converters =
             | ValueSome _, ValueNone -> setter target (defaultArg defaultValue Unchecked.defaultof<_>)
             | ValueNone, ValueNone -> ()
 
-        member inline source.UpdateElement(prevOpt: ViewElement voption, target: 'Target, attribKey: AttributeKey, getter: 'Target -> 'T, setter: 'Target -> 'T -> unit) = 
+        member inline source.UpdateElement(prevOpt: ViewElement voption, target: 'Target, attribKey: AttributeKey<ViewElement>, getter: 'Target -> 'T, setter: 'Target -> 'T -> unit) = 
             let prevValueOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttributeKeyed<ViewElement>(attribKey)
             let valueOpt = source.TryGetAttributeKeyed<ViewElement>(attribKey)
             match prevValueOpt, valueOpt with
@@ -232,9 +232,9 @@ module Converters =
             | ValueSome _, ValueNone -> setter target null
             | ValueNone, ValueNone -> ()
 
-        member inline source.UpdateElementCollection(prevOpt: ViewElement voption, attribKey: AttributeKey, targetCollection: IList<'T>)  =
-            let prevCollOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttributeKeyed<seq<ViewElement>>(attribKey)
-            let collOpt = source.TryGetAttributeKeyed<seq<ViewElement>>(attribKey)
+        member inline source.UpdateElementCollection(prevOpt: ViewElement voption, attribKey: AttributeKey<seq<ViewElement>>, targetCollection: IList<'T>)  =
+            let prevCollOpt = match prevOpt with ValueNone -> ValueNone | ValueSome prev -> prev.TryGetAttributeKeyed<_>(attribKey)
+            let collOpt = source.TryGetAttributeKeyed<_>(attribKey)
             updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetCollection (fun x -> x.Create() :?> 'T) (fun _ _ _ -> ()) canReuseChild updateChild
 
     let updateListViewItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.ListView) = 

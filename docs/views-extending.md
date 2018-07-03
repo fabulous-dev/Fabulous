@@ -29,8 +29,8 @@ module MyViewExtensions =
     open Elmish.XamarinForms
     open Elmish.XamarinForms.DynamicViews
 
-    let Prop1AttribKey = AttributeKey "ABC_Prop1"
-    let Prop2AttribKey = AttributeKey "ABC_Prop2"
+    let Prop1AttribKey = AttributeKey<seq<ViewElement>> "ABC_Prop1"
+    let Prop2AttribKey = AttributeKey<bool> "ABC_Prop2"
 
     type Xaml with
         /// Describes a ABC in the view
@@ -45,8 +45,8 @@ module MyViewExtensions =
             let attribs = Xaml._BuildBASE(attribCount, ... inherited attributes ... ) 
 
             // Add our own attributes. They must have unique names which must match the names below.
-            match prop1 with None -> () | Some v -> attribs.Add(Prop1AttribKey, box v) 
-            match prop2 with None -> () | Some v -> attribs.Add(Prop2AttribKey, box v) 
+            match prop1 with None -> () | Some v -> attribs.Add(Prop1AttribKey, v) 
+            match prop2 with None -> () | Some v -> attribs.Add(Prop2AttribKey, v) 
             ...
 
             // The creation method
