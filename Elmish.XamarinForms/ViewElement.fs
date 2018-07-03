@@ -6,10 +6,13 @@ open System
 open System.Collections.Generic
 open System.Diagnostics
 
+[<AutoOpen>]
+module internal AttributeKeys = 
+    let attribKeys = Dictionary<string,int>()
+    let attribNames = Dictionary<int,string>()
+
 [<Struct>]
 type AttributeKey<'T> internal (keyv: int) = 
-    static let attribKeys = Dictionary<string,int>()
-    static let attribNames = Dictionary<int,string>()
 
     static let getAttribKeyValue (attribName: string) : int = 
         match attribKeys.TryGetValue(attribName) with 
