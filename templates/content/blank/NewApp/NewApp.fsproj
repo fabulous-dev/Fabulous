@@ -5,11 +5,6 @@
     <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugType>pdbonly</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="NewApp.fs" />
   </ItemGroup>

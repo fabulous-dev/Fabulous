@@ -78,7 +78,7 @@ Your project will also have `iOS` and `Droid` projects for actually running the 
 Running 
 ------
 
-To run, set your target to `AnyCPU` (Android) or `iPhone` or `iPhone Simulator`, then choose your device and launch.
+To run, set your target to `Any CPU` (Android) or `iPhone` or `iPhone Simulator`, then choose your device and launch.
 
 You may need to install Android, iOS and/or other SDK tooling.  
 
