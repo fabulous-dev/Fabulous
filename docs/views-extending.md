@@ -11,7 +11,7 @@ currently be written to make the control fit the incremental-update model used b
 
 The basic shape of an extension view component is shown below. Here we assume the view component defines one extra element 
 called ABC deriving from existing element kind BASE, and that ABC has one additional
-collection property `Property1` and two basic properties `Property2` and `Property3`.
+collection property `Prop1` and two basic properties `Prop2` and `Property3`.
 A collection property is a one that may contain further sub-elements, e.g. `children` for StackLayout, `gestureRecognizers` for any `View`
 and `pins` in the Maps example further below.
 
@@ -23,26 +23,30 @@ The returned object inherits the attributes and update functionality from BASE v
 > **NOTE**: The API used to write these extensions is subject to change.
 
 ```fsharp
-module MyViewExtensions = 
+[<AutoOpen>]
+module MyViewExtensions =
 
-	open Elmish.XamarinForms
-	open Elmish.XamarinForms.DynamicViews
+    open Elmish.XamarinForms
+    open Elmish.XamarinForms.DynamicViews
+
+    let Prop1AttribKey = AttributeKey "ABC_Prop1"
+    let Prop2AttribKey = AttributeKey "ABC_Prop2"
 
     type Xaml with
         /// Describes a ABC in the view
-        static member ABC(?property1: seq<ViewElement>, ?property2: bool, ... inherited attributes ... ) = 
+        static member ABC(?prop1: seq<ViewElement>, ?prop2: bool, ... inherited attributes ... ) = 
 
             // Count the number of additional attributes
             let attribCount = 0
-            let attribCount = match property1 with Some _ -> attribCount + 1 | None -> attribCount
-            let attribCount = match property2 with Some _ -> attribCount + 1 | None -> attribCount
+            let attribCount = match prop1 with Some _ -> attribCount + 1 | None -> attribCount
+            let attribCount = match prop2 with Some _ -> attribCount + 1 | None -> attribCount
 
             // Populate the attributes of the base element
-			let attribs = Xaml._BuildBASE(attribCount, ... inherited attributes ... ) 
+            let attribs = Xaml._BuildBASE(attribCount, ... inherited attributes ... ) 
 
             // Add our own attributes. They must have unique names which must match the names below.
-            match property1 with None -> () | Some v -> attribs.Add("ABC_Property1", box v) 
-            match property2 with None -> () | Some v -> attribs.Add("ABC_Property2", box v) 
+            match prop1 with None -> () | Some v -> attribs.Add(Prop1AttribKey, box v) 
+            match prop2 with None -> () | Some v -> attribs.Add(Prop2AttribKey, box v) 
             ...
 
             // The creation method
@@ -52,22 +56,36 @@ module MyViewExtensions =
             let update (prev: ViewElement voption) (source: ViewElement) (targetObj:obj) = 
                 Xaml._UpdateBASE prev source targetObj
                 let target = (targetObj :?> ABC)
-                source.UpdateElementCollection(prev, target, "ABC_Property1", target.Property1)
-                source.UpdatePrimitive(prev, target, "ABC_Property2", (fun target -> target.Property2), (fun target v -> target.Property2 <- v))
+                source.UpdateElementCollection(prev, rop1AttribKey, target.Prop1)
+                source.UpdatePrimitive(prev, target, Prop2AttribKey, (fun target -> target.Prop2), (fun target v -> target.Prop2 <- v))
                 ...
 
             new ViewElement(typeof<ABC>, create, update, attribs)
 ```
 The control is then used as follows:
 ```fsharp
-    Xaml.ABC(property1 = [ Xaml.Label("hello") ], property2 = true, property3 = "Yo!")
+    Xaml.ABC(Prop1 = [ Xaml.Label("hello") ], prop2 = true, property3 = "Yo!")
 ```
+
+The `update` method of the extension is specified using:
+* `source.UpdatePrimitive(prev, target, attribKey, setter, ?defaultValue)` - incrementally update a primitive
+* `source.UpdateElement(prev, target, attribKey, getter, setter)` - incrementally update a nested element
+* `source.UpdateElementCollection(prev, attribKey, targetCollection)` - incrementally update a collection of nested elements
+* `source.UpdateEvent(prev, target, attribKey, setter, ?defaultValue)` - incrementally update a primitive event
+
+Sometimes it makes sense to "massage" the input values before storing them in attibutes, e.g. to apply a conversion from an F#-friendly value
+to a stored attribte value here:
+```
+            match prop1 with None -> () | Some v -> attribs.Add(Prop1AttribKey, box (CONV v)) 
+```
+
 It is common to mark view extensions as `inline`. This allows the F# compiler to create more optimized element-creation code for each particular instantiation
 based on the small set of properties specified at a particular usage point.
 
 ### Example: Xamarin.Forms.Maps
 
-An example for `Xamarin.Forms.Maps` is shown below. The sample is a property mapping for the types [Map](https://docs.microsoft.com/dotnet/api/xamarin.forms.maps.map?view=xamarin-forms]) and
+An example for `Xamarin.Forms.Maps` is shown below - this extension is available in `Elmish.XamarinForms.Maps.dll`.
+The sample implements the extension for the types [Map](https://docs.microsoft.com/dotnet/api/xamarin.forms.maps.map?view=xamarin-forms]) and
 [Pin](https://docs.microsoft.com/en-gb/dotnet/api/xamarin.forms.maps.pin?view=xamarin-forms).
 
 [![Maps example from Microsoft](https://user-images.githubusercontent.com/7204669/42186154-60437d42-7e43-11e8-805b-7200282f3b98.png)](https://user-images.githubusercontent.com/7204669/42186154-60437d42-7e43-11e8-805b-7200282f3b98.png)
@@ -78,8 +96,24 @@ An example for `Xamarin.Forms.Maps` is shown below. The sample is a property map
 
 ```fsharp
 [<AutoOpen>]
-module Maps = 
+module Maps =
     open Xamarin.Forms.Maps
+
+    type Xaml with
+        /// Describes a Map in the view
+        static member Map(?pins: seq<ViewElement>, ?isShowingUser: bool, ?mapType: bool, ?hasScrollEnabled: bool, ?hasZoomEnabled: bool, ?requestedRegion: bool) = 
+
+    let MapHasScrollEnabledAttribKey = AttributeKey "Map_HasScrollEnabled"
+    let MapIsShowingUserAttribKey = AttributeKey "Map_IsShowingUser"
+    let MapPinsAttribKey = AttributeKey "Map_Pins"
+    let MapTypeAttribKey = AttributeKey "Map_MapType"
+    let MapHasZoomEnabledAttribKey = AttributeKey "Map_HasZoomEnabled"
+    let MapRequestingRegionAttribKey = AttributeKey "Map_RequestedRegion"
+
+    let PinPositionAttribKey = AttributeKey "Pin_Position"
+    let PinLabelAttribKey = AttributeKey "Pin_Label"
+    let PinTypeAttribKey = AttributeKey "Pin_PinType"
+    let PinAddressAttribKey = AttributeKey "Pin_Address"
 
     type Xaml with
         /// Describes a Map in the view
@@ -98,12 +132,12 @@ module Maps =
             let attribs = Xaml._BuildView(attribCount) 
 
             // Add our own attributes. They must have unique names which must match the names below.
-            match pins with None -> () | Some v -> attribs.Add("Map_Pins", box v) 
-            match hasScrollEnabled with None -> () | Some v -> attribs.Add("Map_HasScrollEnabled", box v) 
-            match isShowingUser with None -> () | Some v -> attribs.Add("Map_IsShowingUser", box v) 
-            match mapType with None -> () | Some v -> attribs.Add("Map_MapType", box v) 
-            match hasZoomEnabled with None -> () | Some v -> attribs.Add("Map_HasZoomEnabled", box v) 
-            match requestedRegion with None -> () | Some v -> attribs.Add("Map_RequestedRegion", box v) 
+            match pins with None -> () | Some v -> attribs.Add(MapPinsAttributeKey, box v) 
+            match hasScrollEnabled with None -> () | Some v -> attribs.Add(MapHasScrollEnabledAttributeKey, box v) 
+            match isShowingUser with None -> () | Some v -> attribs.Add(MapIsShowingUserAttributeKey, box v) 
+            match mapType with None -> () | Some v -> attribs.Add(MapTypeAttributeKey, box v) 
+            match hasZoomEnabled with None -> () | Some v -> attribs.Add(MapHasZoomEnabledAttributeKey, box v) 
+            match requestedRegion with None -> () | Some v -> attribs.Add(MapRequestingRegionAttributeKey, box v) 
 
             // The create method
             let create () = box (new Xamarin.Forms.Maps.Map())
@@ -112,12 +146,12 @@ module Maps =
             let update (prevOpt: ViewElement voption) (source: ViewElement) (targetObj:obj) = 
                 Xaml._UpdateView prevOpt source targetObj
                 let target = (targetObj :?> Xamarin.Forms.Maps.Map)
-                source.UpdatePrimitive(prevOpt, target, "Map_HasScrollEnabled", (fun target -> target.HasScrollEnabled), (fun target v -> target.HasScrollEnabled <- v))
-                source.UpdatePrimitive(prevOpt, target, "Map_HasZoomEnabled", (fun target -> target.HasZoomEnabled), (fun target v -> target.HasZoomEnabled <- v))
-                source.UpdatePrimitive(prevOpt, target, "Map_IsShowingUser", (fun target -> target.IsShowingUser), (fun target v -> target.IsShowingUser <- v))
-                source.UpdatePrimitive(prevOpt, target, "Map_MapType", (fun target -> target.MapType), (fun target v -> target.MapType <- v))
-                source.UpdateElementCollection(prevOpt, "Map_Pins", target.Pins)
-                source.UpdatePrimitive(prevOpt, target, "Map_RequestedRegion", (fun target -> target.VisibleRegion), (fun target v -> target.MoveToRegion(v)))
+                source.UpdatePrimitive(prevOpt, target, MapHasScrollEnabledAttributeKey, (fun target v -> target.HasScrollEnabled <- v))
+                source.UpdatePrimitive(prevOpt, target, MapHasZoomEnabledAttributeKey, (fun target v -> target.HasZoomEnabled <- v))
+                source.UpdatePrimitive(prevOpt, target, MapIsShowingUserAttribKey, (fun target v -> target.IsShowingUser <- v))
+                source.UpdatePrimitive(prevOpt, target, MapTypeAttribKey, (fun target v -> target.MapType <- v))
+                source.UpdateElementCollection(prevOpt, MapPinsAttribKey, target.Pins)
+                source.UpdatePrimitive(prevOpt, target, MapRequestingRegionAttribKey, (fun target v -> target.MoveToRegion(v)))
 
             // The element
             new ViewElement(typeof<Xamarin.Forms.Maps.Map>, create, update, attribs)
@@ -135,10 +169,10 @@ module Maps =
             let attribs = AttributesBuilder(attribCount)
 
             // Add our own attributes. They must have unique names which must match the names below.
-            match position with None -> () | Some v -> attribs.Add("Pin_Position", box v) 
-            match label with None -> () | Some v -> attribs.Add("Pin_Label", box v) 
-            match pinType with None -> () | Some v -> attribs.Add("Pin_Type", box v) 
-            match address with None -> () | Some v -> attribs.Add("Pin_Address", box v) 
+            match position with None -> () | Some v -> attribs.Add(PinPositionAttribKey, box v) 
+            match label with None -> () | Some v -> attribs.Add(PinLabelAttribKey, box v) 
+            match pinType with None -> () | Some v -> attribs.Add(PinTypeAttribKey, box v) 
+            match address with None -> () | Some v -> attribs.Add(PinAddressAttribKey, box v) 
 
             // The create method
             let create () = box (new Xamarin.Forms.Maps.Pin())
@@ -146,10 +180,10 @@ module Maps =
             // The update method
             let update (prevOpt: ViewElement voption) (source: ViewElement) (targetObj:obj) = 
                 let target = (targetObj :?> Xamarin.Forms.Maps.Pin)
-                source.UpdatePrimitive(prevOpt, target, "Pin_Position", (fun target -> target.Position), (fun target v -> target.Position <- v))
-                source.UpdatePrimitive(prevOpt, target, "Pin_Label", (fun target -> target.Label), (fun target v -> target.Label <- v))
-                source.UpdatePrimitive(prevOpt, target, "Pin_Type", (fun target -> target.Type), (fun target v -> target.Type <- v))
-                source.UpdatePrimitive(prevOpt, target, "Pin_Address", (fun target -> target.Address), (fun target v -> target.Address <- v))
+                source.UpdatePrimitive(prevOpt, target, PinPositionAttribKey, (fun target v -> target.Position <- v))
+                source.UpdatePrimitive(prevOpt, target, PinLabelAttribKey, (fun target v -> target.Label <- v))
+                source.UpdatePrimitive(prevOpt, target, PinTypeAttribKey, (fun target v -> target.Type <- v))
+                source.UpdatePrimitive(prevOpt, target, PinAddressAttribKey, (fun target v -> target.Address <- v))
 
             // The element
             new ViewElement(typeof<Xamarin.Forms.Maps.Pin>, create, update, attribs)

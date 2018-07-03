@@ -261,7 +261,7 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
     //        w.printfn "%s" ("        member internal x.Try" + m.BoundUniqueName + " = x.TryGetAttributeKeyed<" + modelType + ">(\"" + m.BoundUniqueName + "\")")
     let tryGetCode (m: MemberBinding) = 
         let modelType = m.GetModelType(bindings, memberResolutions, null)
-        sprintf "TryGetAttributeKeyed<%s>(Xaml._%sPropertyKey)" modelType m.BoundUniqueName
+        sprintf "TryGetAttributeKeyed<%s>(Xaml._%sAttribKey)" modelType m.BoundUniqueName
 
     w.printfn "namespace %s " bindings.OutputNamespace
     w.printfn ""
@@ -282,7 +282,7 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
 
     w.printfn ""
     for m in allImmediateMembersCombined do
-        w.printfn "    static member val _%sPropertyKey = ViewElement.GetKey(\"%s\")" m.BoundUniqueName m.BoundUniqueName
+        w.printfn "    static member val _%sAttribKey = AttributeKey(\"%s\")" m.BoundUniqueName m.BoundUniqueName
 
     for typ in bindings.Types do
         let tdef = resolutions.[typ]
@@ -325,7 +325,7 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
 
         for m in allImmediateMembers do
             let conv = if String.IsNullOrWhiteSpace(m.ConvToModel) then "" else m.ConvToModel
-            w.printfn "        match %s with None -> () | Some v -> attribBuilder.AddKeyed(Xaml._%sPropertyKey, box (%s(v))) " m.LowerBoundShortName m.BoundUniqueName conv 
+            w.printfn "        match %s with None -> () | Some v -> attribBuilder.Add(Xaml._%sAttribKey, box (%s(v))) " m.LowerBoundShortName m.BoundUniqueName conv 
 
         w.printfn "        attribBuilder"
 
@@ -392,7 +392,7 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
             w.printfn "        for kvp in curr.AttributesKeyed do"
             for m in allImmediateMembers do
                 let modelType = m.GetModelType(bindings, memberResolutions, null)
-                w.printfn "            if kvp.Key = Xaml._%sPropertyKey then " m.BoundUniqueName
+                w.printfn "            if kvp.Key = Xaml._%sAttribKey then " m.BoundUniqueName
                 w.printfn "                curr%sOpt <- ValueSome (kvp.Value :?> %s)" m.BoundUniqueName modelType
             w.printfn "        match prevOpt with"
             w.printfn "        | ValueNone -> ()"
@@ -400,7 +400,7 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
             w.printfn "            for kvp in prev.AttributesKeyed do"
             for m in allImmediateMembers do
                 let modelType = m.GetModelType(bindings, memberResolutions, null)
-                w.printfn "                if kvp.Key = Xaml._%sPropertyKey then " m.BoundUniqueName
+                w.printfn "                if kvp.Key = Xaml._%sAttribKey then " m.BoundUniqueName
                 w.printfn "                    prev%sOpt <- ValueSome (kvp.Value :?> %s)" m.BoundUniqueName modelType
 
             for m in allImmediateMembers do
@@ -532,7 +532,7 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
             w.printfn "        /// Adjusts the %s property in the visual element" m.BoundUniqueName
             let conv = if String.IsNullOrWhiteSpace(m.ConvToModel) then "" else m.ConvToModel
             let inputType = m.GetInputType(bindings, memberResolutions, null)
-            w.printfn "        member x.%s(value: %s) = x.WithAttributeKeyed(Xaml._%sPropertyKey, box (%s(value)))" m.BoundUniqueName inputType m.BoundUniqueName conv
+            w.printfn "        member x.%s(value: %s) = x.WithAttribute(Xaml._%sAttribKey, box (%s(value)))" m.BoundUniqueName inputType m.BoundUniqueName conv
 
     w.printfn ""
     for ms in allMembersInAllTypesGroupedByName do

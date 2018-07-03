@@ -277,3 +277,5 @@ NUGET
       Microsoft.NETCore.Targets (>= 1.1)
       System.Runtime (>= 4.3)
     Xamarin.Forms (3.0.0.482510)
+    Xamarin.Forms.Maps (3.0.0.482510)
+      Xamarin.Forms (>= 3.0.0.482510)

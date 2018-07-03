@@ -1,3 +1,7 @@
+#### 0.10.0
+* Adjust extension API to require use of attribute keys
+* Add Elmish.XamarinForms.Maps
+
 #### 0.9.4
 * Require extensions to give the correct size for attribute count, and don't reallocate the attribute array
 
