@@ -1,3 +1,7 @@
+#### 0.11.0
+* Adjust extension API to be more type safe
+* Add Elmish.XamarinForms.SkiaSharp
+
 #### 0.10.0
 * Adjust extension API to require use of attribute keys
 * Add Elmish.XamarinForms.Maps
