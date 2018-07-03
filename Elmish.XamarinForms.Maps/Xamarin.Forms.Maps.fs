@@ -3,7 +3,6 @@ namespace Elmish.XamarinForms.DynamicViews
 [<AutoOpen>]
 module MapsExtension = 
 
-    open Elmish.XamarinForms
     open Elmish.XamarinForms.DynamicViews
 
     open Xamarin.Forms
@@ -23,7 +22,13 @@ module MapsExtension =
 
     type Xaml with
         /// Describes a Map in the view
-        static member Map(?pins: seq<ViewElement>, ?isShowingUser: bool, ?mapType: MapType, ?hasScrollEnabled: bool, ?hasZoomEnabled: bool, ?requestedRegion: MapSpan, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+        static member inline Map(?pins: seq<ViewElement>, ?isShowingUser: bool, ?mapType: MapType, ?hasScrollEnabled: bool, 
+                                 ?hasZoomEnabled: bool, ?requestedRegion: MapSpan, ?horizontalOptions: Xamarin.Forms.LayoutOptions, 
+                                 // inherited attributes common to all views
+                                 ?verticalOptions, ?margin, ?gestureRecognizers, ?anchorX, ?anchorY, ?backgroundColor, ?heightRequest, 
+                                 ?inputTransparent, ?isEnabled, ?isVisible, ?minimumHeightRequest, ?minimumWidthRequest, ?opacity, 
+                                 ?rotation, ?rotationX, ?rotationY, ?scale, ?style, ?translationX, ?translationY, ?widthRequest, 
+                                 ?resources, ?styles, ?styleSheets, ?classId, ?styleId) = 
 
             // Count the number of additional attributes
             let attribCount = 0
@@ -34,8 +39,16 @@ module MapsExtension =
             let attribCount = match hasZoomEnabled with Some _ -> attribCount + 1 | None -> attribCount
             let attribCount = match requestedRegion with Some _ -> attribCount + 1 | None -> attribCount
 
-            // Populate the attributes of the base element
-            let attribs = Xaml._BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+            // Count and populate the inherited attributes
+            let attribs = 
+                Xaml._BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, 
+                                ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, 
+                                ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, 
+                                ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest,
+                                ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, 
+                                ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, 
+                                ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, 
+                                ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
             // Add our own attributes. They must have unique names which must match the names below.
             match pins with None -> () | Some v -> attribs.Add(MapPinsAttribKey, v) 
@@ -44,9 +57,6 @@ module MapsExtension =
             match mapType with None -> () | Some v -> attribs.Add(MapTypeAttribKey, v) 
             match hasZoomEnabled with None -> () | Some v -> attribs.Add(MapHasZoomEnabledAttribKey, v) 
             match requestedRegion with None -> () | Some v -> attribs.Add(MapRequestingRegionAttribKey, v) 
-
-            // The create method
-            let create () = new Xamarin.Forms.Maps.Map()
 
             // The update method
             let update (prevOpt: ViewElement voption) (source: ViewElement) (target: Map) = 
@@ -59,7 +69,7 @@ module MapsExtension =
                 source.UpdatePrimitive(prevOpt, target, MapRequestingRegionAttribKey, (fun target v -> target.MoveToRegion(v)))
 
             // The element
-            ViewElement.Create<Xamarin.Forms.Maps.Map>(create, update, attribs)
+            ViewElement.Create<Xamarin.Forms.Maps.Map>(Map, update, attribs)
 
         /// Describes a Pin in the view
         static member Pin(?position: Position, ?label: string, ?pinType: PinType, ?address: string) = 
@@ -79,16 +89,30 @@ module MapsExtension =
             match pinType with None -> () | Some v -> attribs.Add(PinTypeAttribKey, v) 
             match address with None -> () | Some v -> attribs.Add(PinAddressAttribKey, v) 
 
-            // The create method
-            let create () = box (new Xamarin.Forms.Maps.Pin())
-
             // The update method
-            let update (prevOpt: ViewElement voption) (source: ViewElement) (targetObj:obj) = 
-                let target = (targetObj :?> Xamarin.Forms.Maps.Pin)
+            let update (prevOpt: ViewElement voption) (source: ViewElement) (target: Pin) = 
                 source.UpdatePrimitive(prevOpt, target, PinPositionAttribKey, (fun target v -> target.Position <- v))
                 source.UpdatePrimitive(prevOpt, target, PinLabelAttribKey, (fun target v -> target.Label <- v))
                 source.UpdatePrimitive(prevOpt, target, PinTypeAttribKey, (fun target v -> target.Type <- v))
                 source.UpdatePrimitive(prevOpt, target, PinAddressAttribKey, (fun target v -> target.Address <- v))
 
             // The element
-            new ViewElement(typeof<Xamarin.Forms.Maps.Pin>, create, update, attribs)
+            ViewElement.Create<Xamarin.Forms.Maps.Pin>(Pin, update, attribs)
+
+#if DEBUG 
+    let sample1 = Xaml.Map(hasZoomEnabled = true, hasScrollEnabled = true)
+
+    let sample2 = 
+        let timbuktu = Position(16.7666, -3.0026)
+        Xaml.Map(hasZoomEnabled = true, hasScrollEnabled = true,
+                 requestedRegion = MapSpan.FromCenterAndRadius(timbuktu, Distance.FromKilometers(1.0)))
+
+    let sample3 = 
+        let paris = Position(48.8566, 2.3522)
+        let london = Position(51.5074, -0.1278)
+        let calais = Position(50.9513, 1.8587)
+        Xaml.Map(hasZoomEnabled = true, hasScrollEnabled = true, 
+                 pins = [ Xaml.Pin(paris, label="Paris", pinType = PinType.Place)
+                          Xaml.Pin(london, label="London", pinType = PinType.Place) ] ,
+                 requestedRegion = MapSpan.FromCenterAndRadius(calais, Distance.FromKilometers(300.0)))
+#endif
