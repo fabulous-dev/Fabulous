@@ -12,4 +12,4 @@ licenseUrl
 	https://github.com/fsprojects/Elmish.XamarinForms/blob/master/LICENSE.md
 requireLicenseAcceptance false
 files
-	build_output/Elmish.XamarinForms.dll ==> lib/netstandard2.0
+	../build_output/Elmish.XamarinForms.dll ==> lib/netstandard2.0

@@ -168,15 +168,11 @@ module App =
            ("Silver", Color.Silver); ("Teal", Color.Teal);
            ("White", Color.White); ("Yellow", Color.Yellow ) |]
 
-    // Some helpers to create controls with consistent styles
+    /// Test the extension API be making a 2nd wrapper for "Label":
+    let TestLabelTextAttribKey = AttributeKey "TestLabel_Text"
+    let TestLabelFontFamilyAttribKey = AttributeKey "TestLabel_FontFamily"
     type Xaml with 
-        static member ScrollingContentPage(title, children) =
-            Xaml.ContentPage(title=title, content=Xaml.ScrollView(Xaml.StackLayout(padding=20.0, children=children) ), useSafeArea=true)
 
-        static member NonScrollingContentPage(title, children, ?gestureRecognizers) =
-            Xaml.ContentPage(title=title, content=Xaml.StackLayout(padding=20.0, children=children, ?gestureRecognizers=gestureRecognizers), useSafeArea=true)
-
-        /// Test the extension API be making a 2nd wrapper for "Label":
         static member TestLabel(?text: string, ?fontFamily: string, ?backgroundColor, ?rotation) = 
 
             // Get the attributes for the base element. The number is the the expected number of attributes.
@@ -187,8 +183,8 @@ module App =
             let attribs = Xaml._BuildView(attribCount, ?backgroundColor = backgroundColor, ?rotation = rotation) 
 
             // Add our own attributes. They must have unique names.
-            match text with None -> () | Some v -> attribs.Add("TestLabel_Text", box v) 
-            match fontFamily with None -> () | Some v -> attribs.Add("TestLabel_FontFamily", box v) 
+            match text with None -> () | Some v -> attribs.Add(TestLabelTextAttribKey, box v) 
+            match fontFamily with None -> () | Some v -> attribs.Add(TestLabelFontFamilyAttribKey, box v) 
 
             // The creation method
             let create () = box (new Xamarin.Forms.Label())
@@ -197,10 +193,17 @@ module App =
             let update (prevOpt: ViewElement voption) (source: ViewElement) (targetObj:obj) = 
                 Xaml._UpdateView prevOpt source targetObj
                 let target = (targetObj :?> Xamarin.Forms.Label)
-                source.UpdatePrimitive(prevOpt, target, "TestLabel_Text", (fun target -> target.Text), (fun target v -> target.Text <- v))
-                source.UpdatePrimitive(prevOpt, target, "TestLabel_FontFamily", (fun target -> target.FontFamily), (fun target v -> target.FontFamily <- v))
+                source.UpdatePrimitive(prevOpt, target, TestLabelTextAttribKey, (fun target v -> target.Text <- v))
+                source.UpdatePrimitive(prevOpt, target, TestLabelFontFamilyAttribKey, (fun target v -> target.FontFamily <- v))
 
             new ViewElement(typeof<Xamarin.Forms.Label>, create, update, attribs)
+
+    type Xaml with 
+        static member ScrollingContentPage(title, children) =
+            Xaml.ContentPage(title=title, content=Xaml.ScrollView(Xaml.StackLayout(padding=20.0, children=children) ), useSafeArea=true)
+
+        static member NonScrollingContentPage(title, children, ?gestureRecognizers) =
+            Xaml.ContentPage(title=title, content=Xaml.StackLayout(padding=20.0, children=children, ?gestureRecognizers=gestureRecognizers), useSafeArea=true)
 
     let view (model: Model) dispatch =
 
@@ -242,13 +245,10 @@ module App =
                          Xaml.Label(text="Button:")
                          Xaml.Button(text="Increment", command=(fun () -> dispatch Increment), horizontalOptions=LayoutOptions.CenterAndExpand)
                  
-                         //Xaml.Label(text="Button (cornerRadius=5):")
-                         //Xaml.Button(text="Decrement", cornerRadius=5, command=(fun () -> dispatch Decrement), horizontalOptions=LayoutOptions.CenterAndExpand)
-                
                          Xaml.Label(text="Button:")
                          Xaml.Button(text="Decrement", command=(fun () -> dispatch Decrement), horizontalOptions=LayoutOptions.CenterAndExpand)
                 
-                         Xaml.Button(text="Main page", command=(fun () -> dispatch (SetRootPageKind (Choice false))), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)
+                         Xaml.Button(text="Main page", cornerRadius=5, command=(fun () -> dispatch (SetRootPageKind (Choice false))), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)
                 
                       ]))
 

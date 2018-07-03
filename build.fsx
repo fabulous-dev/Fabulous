@@ -3,28 +3,27 @@
 #r "packages/FAKE/tools/FakeLib.dll"
 open Fake
 open System
+open System.IO
 open Fake.AssemblyInfoFile
-open Fake.Git
 open Fake.ReleaseNotesHelper
 
 let buildDir = "./build_output"
 let release = LoadReleaseNotes "RELEASE_NOTES.md"
 
-let project = "Elmish.XamarinForms"
-let summary = "F# bindings for using elmish in WPF"
+let projects = 
+    [ ("Elmish.XamarinForms/Elmish.XamarinForms.fsproj", "Elmish.XamarinForms", "F# Functional App Dev Framework")
+      ("Elmish.XamarinForms.Maps/Elmish.XamarinForms.Maps.fsproj", "Elmish.XamarinForms.Maps", "Elmish.XamarinForms bindings for Xamarin.Forms.Maps") ]
 
 Target "Build" (fun _ ->
 
     // needed or else 'project.assets.json' not found'
     DotNetCli.Restore (fun p -> { p with Project = "Elmish.XamarinForms/Elmish.XamarinForms.fsproj" })
 
-    !! "Elmish.XamarinForms/Elmish.XamarinForms.fsproj"
-       |> MSBuildRelease buildDir "Restore"
-       |> Log "LibraryRestore-Output: "
+    for (projFile, _project, _summary) in projects do
+        !! projFile |> MSBuildRelease buildDir "Restore" |> Log "LibraryRestore-Output: "
 
-    !! "Elmish.XamarinForms/Elmish.XamarinForms.fsproj"
-       |> MSBuildRelease buildDir "Build"
-       |> Log "LibraryBuild-Output: "
+    for (projFile, _project, _summary) in projects do
+        !! projFile |> MSBuildRelease buildDir "Build" |> Log "LibraryBuild-Output: "
 )
 
 Target "BuildSamples" (fun _ ->
@@ -50,40 +49,31 @@ Target "Clean" (fun _ ->
 
 // Generate assembly info files with the right version & up-to-date information
 Target "AssemblyInfo" (fun _ ->
-    let getAssemblyInfoAttributes projectName =
-        [ Attribute.Title (projectName)
-          Attribute.Product project
-          Attribute.Description summary
-          Attribute.Version release.AssemblyVersion
-          Attribute.FileVersion release.AssemblyVersion ]
 
-    let getProjectDetails projectPath =
-        let projectName = System.IO.Path.GetFileNameWithoutExtension(projectPath)
-        ( projectPath, 
-          projectName,
-          System.IO.Path.GetDirectoryName(projectPath),
-          (getAssemblyInfoAttributes projectName)
-        )
+    for (projFile, projName, summary) in projects do
+        let projFolder = Path.GetDirectoryName(projFile)
+        let projDetails = 
+          [ Attribute.Title projName
+            Attribute.Product projName
+            Attribute.Description summary
+            Attribute.Version release.AssemblyVersion
+            Attribute.FileVersion release.AssemblyVersion ]
 
-    !! "*/*.??proj"
-    |> Seq.map getProjectDetails
-    |> Seq.iter (fun (projFileName, projectName, folderName, attributes) ->
-        match projFileName with
-        | Fsproj -> CreateFSharpAssemblyInfo (folderName @@ "AssemblyInfo.fs") attributes
-        | _ -> ()
-        )
+        CreateFSharpAssemblyInfo (projFolder @@ "AssemblyInfo.fs") projDetails
 )
 
 // Build a NuGet package
 Target "LibraryNuGet" (fun _ ->
-    Paket.Pack(fun p -> 
-        { p with
-            OutputPath = buildDir + "/"
-            TemplateFile = "paket.template"
-            Version = release.NugetVersion
-            ReleaseNotes = toLines release.Notes})
-
+    for (projFile, _projName, _summary) in projects do
+        let projFolder = Path.GetDirectoryName(projFile)
+        Paket.Pack(fun p -> 
+            { p with
+                OutputPath = buildDir + "/"
+                TemplateFile = projFolder + "/paket.template"
+                Version = release.NugetVersion
+                ReleaseNotes = toLines release.Notes})
 )
+
 // Build a NuGet package
 Target "TemplatesNuGet" (fun _ ->
 
@@ -108,7 +98,7 @@ Target "TestTemplatesNuGet" (fun _ ->
     CleanDir testAppName
     DotNetCli.RunCommand id (sprintf "new elmish-forms-app -n %s -lang F#" testAppName)
 
-    let pkgs = System.IO.Path.GetFullPath(buildDir)
+    let pkgs = Path.GetFullPath(buildDir)
     // When restoring, using the build_output as a package source to pick up the package we just compiled
     DotNetCli.RunCommand id (sprintf "restore %s/%s/%s.fsproj  --source https://api.nuget.org/v3/index.json --source %s" testAppName testAppName testAppName pkgs)
     
@@ -131,12 +121,6 @@ Target "TestTemplatesNuGet" (fun _ ->
 )
 
 
-Target "PublishNuGets" (fun _ ->
-    Paket.Push(fun p -> 
-        { p with
-            WorkingDir = buildDir })
-)
-
 Target "NuGet" DoNothing
 Target "Test" DoNothing
 
@@ -154,7 +138,6 @@ Target "Test" DoNothing
 "NuGet" 
   ==> "TestTemplatesNuGet"
   ==> "Test"
-  ==> "PublishNuGets"
 
 
 // start build
