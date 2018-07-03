@@ -169,8 +169,8 @@ module App =
            ("White", Color.White); ("Yellow", Color.Yellow ) |]
 
     /// Test the extension API be making a 2nd wrapper for "Label":
-    let TestLabelTextAttribKey = AttributeKey "TestLabel_Text"
-    let TestLabelFontFamilyAttribKey = AttributeKey "TestLabel_FontFamily"
+    let TestLabelTextAttribKey = AttributeKey<_> "TestLabel_Text"
+    let TestLabelFontFamilyAttribKey = AttributeKey<_> "TestLabel_FontFamily"
     type Xaml with 
 
         static member TestLabel(?text: string, ?fontFamily: string, ?backgroundColor, ?rotation) = 
@@ -183,20 +183,19 @@ module App =
             let attribs = Xaml._BuildView(attribCount, ?backgroundColor = backgroundColor, ?rotation = rotation) 
 
             // Add our own attributes. They must have unique names.
-            match text with None -> () | Some v -> attribs.Add(TestLabelTextAttribKey, box v) 
-            match fontFamily with None -> () | Some v -> attribs.Add(TestLabelFontFamilyAttribKey, box v) 
+            match text with None -> () | Some v -> attribs.Add(TestLabelTextAttribKey, v) 
+            match fontFamily with None -> () | Some v -> attribs.Add(TestLabelFontFamilyAttribKey, v) 
 
             // The creation method
-            let create () = box (new Xamarin.Forms.Label())
+            let create () = new Xamarin.Forms.Label()
 
             // The incremental update method
-            let update (prevOpt: ViewElement voption) (source: ViewElement) (targetObj:obj) = 
-                Xaml._UpdateView prevOpt source targetObj
-                let target = (targetObj :?> Xamarin.Forms.Label)
+            let update (prevOpt: ViewElement voption) (source: ViewElement) (target: Xamarin.Forms.Label) = 
+                Xaml._UpdateView prevOpt source (target :> View)
                 source.UpdatePrimitive(prevOpt, target, TestLabelTextAttribKey, (fun target v -> target.Text <- v))
                 source.UpdatePrimitive(prevOpt, target, TestLabelFontFamilyAttribKey, (fun target v -> target.FontFamily <- v))
 
-            new ViewElement(typeof<Xamarin.Forms.Label>, create, update, attribs)
+            ViewElement.Create<Xamarin.Forms.Label>(create, update, attribs)
 
     type Xaml with 
         static member ScrollingContentPage(title, children) =

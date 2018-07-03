@@ -265,6 +265,8 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
 
     w.printfn "namespace %s " bindings.OutputNamespace
     w.printfn ""
+    w.printfn "#nowarn \"59\" // cast always holds"
+    w.printfn "#nowarn \"66\" // cast always holds"
     w.printfn "#nowarn \"67\" // cast always holds"
 
     let allImmediateMembersCombined = 
@@ -282,7 +284,7 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
 
     w.printfn ""
     for m in allImmediateMembersCombined do
-        w.printfn "    static member val _%sAttribKey = AttributeKey(\"%s\")" m.BoundUniqueName m.BoundUniqueName
+        w.printfn "    static member val _%sAttribKey : AttributeKey<_> = AttributeKey<_>(\"%s\")" m.BoundUniqueName m.BoundUniqueName
 
     for typ in bindings.Types do
         let tdef = resolutions.[typ]
@@ -325,7 +327,7 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
 
         for m in allImmediateMembers do
             let conv = if String.IsNullOrWhiteSpace(m.ConvToModel) then "" else m.ConvToModel
-            w.printfn "        match %s with None -> () | Some v -> attribBuilder.Add(Xaml._%sAttribKey, box (%s(v))) " m.LowerBoundShortName m.BoundUniqueName conv 
+            w.printfn "        match %s with None -> () | Some v -> attribBuilder.Add(Xaml._%sAttribKey, %s(v)) " m.LowerBoundShortName m.BoundUniqueName conv 
 
         w.printfn "        attribBuilder"
 
@@ -342,7 +344,7 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
         w.printfn "    static member val _Proto%s : ViewElement option = None with get, set" nameOfCreator
 
         w.printfn ""
-        w.printfn "    static member val _Create%s = fun () -> " nameOfCreator
+        w.printfn "    static member val _Create%s : (unit -> %s) = fun () -> " nameOfCreator tdef.FullName
         if not hasCreate then
             if (allMembers.Any(fun m -> m.IsParam)) then
                 w.printfn "        match "
@@ -355,7 +357,7 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
                     if m.IsParam then
                         w.printf "%sSome %s" head m.LowerBoundShortName)
                 w.printfn " ->"
-                w.printfn "            box (new %s(" customTypeToCreate
+                w.printfn "            upcast (new %s(" customTypeToCreate
                 allImmediateMembers |> iterSep ", " (fun head m -> 
                     if m.IsParam then
                         //if (bt <> null) then
@@ -363,28 +365,26 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
                         //else
                         w.printf "%s%s" head m.LowerBoundShortName)
                 w.printfn "))"
-                w.printfn "            | _ -> box (new %s())" customTypeToCreate
+                w.printfn "            | _ -> upcast (new %s())" customTypeToCreate
             else
-                w.printfn "            box (new %s())" customTypeToCreate
+                w.printfn "            upcast (new %s())" customTypeToCreate
         else
             w.printfn "        failwith \"can't create %s\"" tdef.FullName
 
         w.printfn ""
-        w.printfn "    static member val _Update%s = fun (prevOpt: ViewElement voption) (curr: ViewElement) (targetObj:obj) -> " nameOfCreator
+        w.printfn "    static member val _Update%s = fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: %s) -> " nameOfCreator tdef.FullName
 
         match nameOfBaseCreatorOpt with 
         | None -> ()
         | Some nameOfBaseCreator ->
             w.printfn "        let baseElement = (if Xaml._Proto%s.IsNone then Xaml._Proto%s <- Some (Xaml.%s())); Xaml._Proto%s.Value" nameOfBaseCreator nameOfBaseCreator nameOfBaseCreator nameOfBaseCreator
-            w.printfn "        baseElement.UpdateMethod prevOpt curr targetObj"
+            w.printfn "        baseElement.UpdateMethod prevOpt curr (box target)"
 
         if (allImmediateMembers.Length = 0) then
             w.printfn "        ignore prevOpt"
             w.printfn "        ignore curr"
-            w.printfn "        ignore targetObj"
+            w.printfn "        ignore target"
         else
-
-            w.printfn "        let target = (targetObj :?> %s)" tdef.FullName
 
             for m in allImmediateMembers do
                 w.printfn "        let mutable prev%sOpt = ValueNone" m.BoundUniqueName
@@ -392,7 +392,7 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
             w.printfn "        for kvp in curr.AttributesKeyed do"
             for m in allImmediateMembers do
                 let modelType = m.GetModelType(bindings, memberResolutions, null)
-                w.printfn "            if kvp.Key = Xaml._%sAttribKey then " m.BoundUniqueName
+                w.printfn "            if kvp.Key = Xaml._%sAttribKey.KeyValue then " m.BoundUniqueName
                 w.printfn "                curr%sOpt <- ValueSome (kvp.Value :?> %s)" m.BoundUniqueName modelType
             w.printfn "        match prevOpt with"
             w.printfn "        | ValueNone -> ()"
@@ -400,7 +400,7 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
             w.printfn "            for kvp in prev.AttributesKeyed do"
             for m in allImmediateMembers do
                 let modelType = m.GetModelType(bindings, memberResolutions, null)
-                w.printfn "                if kvp.Key = Xaml._%sAttribKey then " m.BoundUniqueName
+                w.printfn "                if kvp.Key = Xaml._%sAttribKey.KeyValue then " m.BoundUniqueName
                 w.printfn "                    prev%sOpt <- ValueSome (kvp.Value :?> %s)" m.BoundUniqueName modelType
 
             for m in allImmediateMembers do
@@ -516,7 +516,7 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
         allMembers |> iterSep ", " (fun head m -> w.printf "%s?%s=%s" head m.LowerBoundShortName m.LowerBoundShortName)
         w.printfn ")"
         w.printfn ""
-        w.printfn "        new ViewElement(typeof<%s>, Xaml._Create%s, Xaml._Update%s, attribBuilder)" tdef.FullName nameOfCreator nameOfCreator
+        w.printfn "        ViewElement.Create<%s>(Xaml._Create%s, Xaml._Update%s, attribBuilder)" tdef.FullName nameOfCreator nameOfCreator
 
     w.printfn ""
     w.printfn "[<AutoOpen>]"
@@ -532,7 +532,7 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
             w.printfn "        /// Adjusts the %s property in the visual element" m.BoundUniqueName
             let conv = if String.IsNullOrWhiteSpace(m.ConvToModel) then "" else m.ConvToModel
             let inputType = m.GetInputType(bindings, memberResolutions, null)
-            w.printfn "        member x.%s(value: %s) = x.WithAttribute(Xaml._%sAttribKey, box (%s(value)))" m.BoundUniqueName inputType m.BoundUniqueName conv
+            w.printfn "        member x.%s(value: %s) = x.WithAttribute(Xaml._%sAttribKey, %s(value))" m.BoundUniqueName inputType m.BoundUniqueName conv
 
     w.printfn ""
     for ms in allMembersInAllTypesGroupedByName do

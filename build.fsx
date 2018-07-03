@@ -12,12 +12,14 @@ let release = LoadReleaseNotes "RELEASE_NOTES.md"
 
 let projects = 
     [ ("Elmish.XamarinForms/Elmish.XamarinForms.fsproj", "Elmish.XamarinForms", "F# Functional App Dev Framework")
-      ("Elmish.XamarinForms.Maps/Elmish.XamarinForms.Maps.fsproj", "Elmish.XamarinForms.Maps", "Elmish.XamarinForms bindings for Xamarin.Forms.Maps") ]
+      ("Elmish.XamarinForms.Maps/Elmish.XamarinForms.Maps.fsproj", "Elmish.XamarinForms.Maps", "Elmish.XamarinForms bindings for Xamarin.Forms.Maps") 
+      ("Elmish.XamarinForms.SkiaSharp/Elmish.XamarinForms.SkiaSharp.fsproj", "Elmish.XamarinForms.SkiaSharp", "Elmish.XamarinForms bindings for SkiaSharp") ]
 
 Target "Build" (fun _ ->
 
     // needed or else 'project.assets.json' not found'
-    DotNetCli.Restore (fun p -> { p with Project = "Elmish.XamarinForms/Elmish.XamarinForms.fsproj" })
+    for (projFile, _project, _summary) in projects do
+        DotNetCli.Restore (fun p -> { p with Project = projFile })
 
     for (projFile, _project, _summary) in projects do
         !! projFile |> MSBuildRelease buildDir "Restore" |> Log "LibraryRestore-Output: "
@@ -40,7 +42,6 @@ Target "BuildSamples" (fun _ ->
     !! "Elmish.XamarinForms.sln"
           |> MSBuildDebug null "Build"
           |> Log "SamplesBuildDebug-Output: "
-
 )
 
 Target "Clean" (fun _ ->
@@ -104,7 +105,7 @@ Target "TestTemplatesNuGet" (fun _ ->
     
     let slash = if isUnix then "\\" else ""
     for c in ["Debug"; "Release"] do 
-        for p in ["AnyCPU"; "iPhoneSimulator"] do 
+        for p in ["Any CPU"; "iPhoneSimulator"] do 
             exec "msbuild" (sprintf "%s/%s.sln /p:Platform=\"%s\" /p:Configuration=%s /p:PackageSources=%s\"https://api.nuget.org/v3/index.json%s;%s%s\"" testAppName testAppName p c  slash slash pkgs slash)
 
     (* Manual steps without building nupkg
