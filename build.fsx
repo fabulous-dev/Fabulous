@@ -105,7 +105,7 @@ Target "TestTemplatesNuGet" (fun _ ->
     
     let slash = if isUnix then "\\" else ""
     for c in ["Debug"; "Release"] do 
-        for p in ["AnyCPU"; "iPhoneSimulator"] do 
+        for p in ["Any CPU"; "iPhoneSimulator"] do 
             exec "msbuild" (sprintf "%s/%s.sln /p:Platform=\"%s\" /p:Configuration=%s /p:PackageSources=%s\"https://api.nuget.org/v3/index.json%s;%s%s\"" testAppName testAppName p c  slash slash pkgs slash)
 
     (* Manual steps without building nupkg

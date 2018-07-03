@@ -1,0 +1,15 @@
+type file
+id Elmish.XamarinForms.Maps
+version 0.0
+authors Elmish.XamarinForms Contributors
+description
+    Elmish.XamarinForms bindings for Xamarin.Forms.Maps
+tags
+	Xamarin.Forms F# Elmish Elm
+projectUrl
+	https://github.com/fsprojects/Elmish.XamarinForms
+licenseUrl
+	https://github.com/fsprojects/Elmish.XamarinForms/blob/master/LICENSE.md
+requireLicenseAcceptance false
+files
+	../build_output/Elmish.XamarinForms.Maps.dll ==> lib/netstandard2.0
