@@ -1,7 +1,7 @@
 Elmish.XamarinForms Guide
 =======
 
-{% include_relative contents.md %}
+{% include_relative contents-views.md %}
 
 Views: Styling
 -------

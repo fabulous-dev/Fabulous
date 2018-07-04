@@ -1,7 +1,7 @@
 Elmish.XamarinForms Guide
 =======
 
-{% include_relative contents.md %}
+{% include_relative contents-views.md %}
 
 Views
 ------
@@ -16,9 +16,9 @@ let view model dispatch =
     )
 ```
 
-The view function is normal F# code that returns elements expressed using the `Xaml.*` F# DSL.
+The view function is normal F# code that returns elements created using the `Xaml.*` method calls.
 
-View functions excel in cases where the existence, characteristics and layout of the view depends on information
+View functions are particuarly useful when the the existence, characteristics and layout of the view depends on information
 in the model. Differential update is used to efficiently update the Xamarin.Forms display based on the previous
 and current view descriptions.
 
@@ -60,15 +60,15 @@ let view model dispatch =
             ]))
 ```
 
+See also:
 
-See also: 
-* [Core Elements](elements.md).
+* [Core Elements](views-elements.md).
 * [Views and Performance](views-perf.md).
-* [Views and Styling](styling.md).
-* [Views and Navigation](navigation.md).
+* [Styling](views-styling.md).
+* [Multi-page Applications and Navigation](views-navigation.md).
 
 ## Static Views and "Half Elmish"
 
-In some circumstances there are advantages to using static Xaml, and static bindings from the model to those views. This is called "Half Elmish" and is the primary technique used by [`Elmish.WPF`](https://github.com/Prolucid/Elmish.WPF) at time of writing. (It was also  the original technique used by this repo and the prototype `Elmish.Forms`).   
+In some circumstances there are advantages to using static Xaml, and static bindings from the model to those views. This is called "Half Elmish" and is the primary technique used by [`Elmish.WPF`](https://github.com/Prolucid/Elmish.WPF) at time of writing. (It was also  the original technique used by this repo and the prototype `Elmish.Forms`).
 
 See [half-elmish.md](half-elmish.md).

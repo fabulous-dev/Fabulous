@@ -65,7 +65,9 @@ type CounterApp () as app =
     let program = Program.mkProgram App.init App.update App.view
     let runner = 
         program
+#if DEBUG
         |> Program.withConsoleTrace
+#endif
         |> Program.runWithDynamicView app
 
 #if !NO_SAVE_MODEL_WITH_JSON

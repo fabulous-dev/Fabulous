@@ -1,11 +1,14 @@
-### Dev Notes - Building
+# Dev Notes
 
+## Dev Notes - Building
+
+```fsharp
     .\build NuGet
-    
+
     .\build Test
+```
 
-
-### Dev Notes - Releasing
+## Dev Notes - Releasing
 
 Use this:
 
@@ -14,12 +17,13 @@ Use this:
     .nuget\NuGet.exe push C:\GitHub\dsyme\Elmish.XamarinForms\build_output\Elmish.XamarinForms.*.nupkg  %APIKEY% -Source https://www.nuget.org
     copy C:\GitHub\dsyme\Elmish.XamarinForms\build_output\Elmish.XamarinForms.*.nupkg  %USERPROFILE%\Downloads
 
-### Dev Notes - Checking App Size
+## Dev Notes - Checking App Size
 
 It is worth occasionally checking that unused code is trimmed from the Android and iOS app packagings by the Mono linker.
 There is [one known issue with this](https://github.com/fsprojects/Elmish.XamarinForms/issues/94).
 
 App size on Android is checked by
+
 1. build + deploying `Samples\CounterApp` (to device or emulator)
 2. renaming and unziping `Samples\CounterApp\Droid\bin\Release\com.companyname.CounterApp.apk`
 3. checking sizes and contents of
@@ -27,9 +31,10 @@ App size on Android is checked by
        Samples\CounterApp\Droid\bin\Release\com.donsyme.AllControls\assemblies\FSharp.Core.dll
        Samples\CounterApp\Droid\bin\Release\com.donsyme.AllControls\assemblies\Elmish.XamarinForms.dll
 
-   e.g. see https://github.com/fsprojects/Elmish.XamarinForms/issues/94#issuecomment-402157490
+   e.g. see [this comment](https://github.com/fsprojects/Elmish.XamarinForms/issues/94#issuecomment-402157490)
 
-Smallest app size is produced by 
+Smallest app size is produced by
+
 * "Generate one package per ABI"
 * "Enable ProGuard"
 * "Linking: Sdk and User assemblies"

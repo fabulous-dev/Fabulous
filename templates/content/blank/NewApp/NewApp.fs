@@ -65,21 +65,24 @@ type App () as app =
     let program = Program.mkProgram App.init App.update App.view
     let runner = 
         program
+#if DEBUG
         |> Program.withConsoleTrace
+#endif
         |> Program.runWithDynamicView app
 
-#if !NO_SAVE_MODEL_WITH_JSON
+(*  // Uncomment this code to save the applciation state to app.Properties using FsPickler
+
     let modelId = "model"
     let serializer = MBrace.FsPickler.Json.FsPickler.CreateJsonSerializer()
 
-    override __.OnSleep() = 
+    override app.OnSleep() = 
 
         let json = serializer.PickleToString(runner.CurrentModel)
         Debug.WriteLine("OnSleep: saving model into app.Properties, json = {0}", json)
 
         app.Properties.[modelId] <- json
 
-    override __.OnResume() = 
+    override app.OnResume() = 
         Debug.WriteLine "OnResume: checking for model in app.Properties"
         try 
             match app.Properties.TryGetValue modelId with
@@ -95,6 +98,6 @@ type App () as app =
         with ex -> 
             program.onError("Error while restoring model found in app.Properties", ex)
 
-    override this.OnStart() = this.OnResume()
+    override app.OnStart() = app.OnResume()
 
-#endif
+*)

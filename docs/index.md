@@ -6,17 +6,14 @@ Never write a ViewModel class again!  Conquer the world with clean dynamic UIs!
 
 <img src="https://user-images.githubusercontent.com/7204669/39318922-57c95174-4977-11e8-94a9-cc385101ce5d.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318926-59f844e6-4977-11e8-9834-325a6517ced6.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318929-5b66c776-4977-11e8-8317-ee1c121301d4.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318934-5cbe3c3a-4977-11e8-92aa-c3fdf644b01c.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318936-5e2380bc-4977-11e8-8912-f078744a2bde.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318938-5f6ec4f4-4977-11e8-97a9-779edd3594bc.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318941-60c1b0f0-4977-11e8-8a4a-57e17ef8c6ec.png" width="100">
 
-
 This library allows you to use a variation of [elmish](https://elmish.github.io/), an Elm architecture implemented in F#,
-to build Xamarin.Forms applications for iOS, Android, Mac and more. 
+to build Xamarin.Forms applications for iOS, Android, Mac and more.
 
 > The amount of code I'm *not* writing is great!  [@jimbobbennett](https://github.com/jimbobbennett/)
 
 **This project is a sample and may change.**
 
-
 {% include_relative contents.md %}
-
 
 Getting started
 ------
@@ -35,22 +32,23 @@ Getting started
 
        SqueakyApp/SqueakyApp.sln
 
-
 A Basic Example
 ------
+
 Here is a full example of an app:
+
 ```fsharp
 /// The messages dispatched by the view
 type Msg =
     | Pressed
 
 /// The model from which the view is generated
-type Model = 
+type Model =
     { Pressed: bool }
 
 /// Returns the initial state
 let init() = { Pressed=false }
-    
+
 /// The funtion to update the view
 let update (msg:Msg) (model:Model) =
     match msg with
@@ -58,20 +56,20 @@ let update (msg:Msg) (model:Model) =
 
 /// The view function giving updated content for the page
 let view (model: Model) dispatch =
-    if model.Pressed then 
+    if model.Pressed then
         Xaml.Label(text="I was pressed!")
     else
         Xaml.Button(text="Press Me!", command=(fun () -> dispatch Pressed))
 
-type App () = 
+type App () =
     inherit Application ()
 
-    let runner = 
+    let runner =
         Program.mkSimple init update view
         |> Program.withConsoleTrace
-        |> Program.withDynamicView
-        |> Program.run
+        |> Program.runWithDynamicView
 ```
+
 The init function returns your initial state, and each model gets an update function for message processing. The `view` function computes an immutable Xaml-like description. In the above example, the choice between a label and button depends on the `model.Pressed` value.
 
 Some advantages of using an immutable model are:
@@ -79,7 +77,6 @@ Some advantages of using an immutable model are:
 * It is easy to unit test your `init`, `update` and `view` functions
 * You can save/restore your model relatively easily
 * It makes tracing causality usually very simple
-
 
 Samples
 ------
@@ -98,6 +95,7 @@ Further Resources
 --------
 
 **General Docs**
+
 * [Xamarin](https://docs.microsoft.com/xamarin/)
 * [Xamarin Forms](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/)
   * [Performance and Security](https://docs.microsoft.com/en-us/xamarin/cross-platform/deploy-test/performance)
@@ -106,11 +104,13 @@ Further Resources
 * [Xamarin Essentials](https://docs.microsoft.com/en-us/xamarin/essentials/index?context=xamarin/xamarin-forms)
 
 **Android Setup**
+
 * [SDK](https://docs.microsoft.com/en-us/xamarin/android/get-started/installation/android-sdk?tabs=vswin)
 * [Emulator](https://docs.microsoft.com/en-us/xamarin/android/get-started/installation/android-emulator/)
 * [Device](https://docs.microsoft.com/xamarin/android/get-started/installation/set-up-device-for-development)
 
 **iOS Setup**
+
 * [SDK](https://docs.microsoft.com/en-gb/visualstudio/mac/installation)
 * [Emulator](https://docs.microsoft.com/en-us/xamarin/android/get-started/installation/android-emulator/)
 * [Pair to Mac](https://docs.microsoft.com/en-us/xamarin/ios/get-started/installation/windows/connecting-to-mac/)
@@ -121,3 +121,4 @@ Contributing
 
 Please contribute to this library through issue reports, pull requests, code reviews and discussion.
 
+* [Submit a fix to this guide](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/docs)

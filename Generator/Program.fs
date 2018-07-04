@@ -284,6 +284,7 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
 
     w.printfn ""
     for m in allImmediateMembersCombined do
+        w.printfn "    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]"
         w.printfn "    static member val _%sAttribKey : AttributeKey<_> = AttributeKey<_>(\"%s\")" m.BoundUniqueName m.BoundUniqueName
 
     for typ in bindings.Types do
@@ -301,7 +302,8 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
         // Emit the constructor
         w.printfn ""
         w.printfn "    /// Builds the attributes for a %s in the view" nameOfCreator
-        w.printf "    static member inline _Build%s(attribCount: int" nameOfCreator
+        w.printfn "    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]"
+        w.printf "    static member inline Build%s(attribCount: int" nameOfCreator
         if allMembers.Length > 0 then w.printf ", "
         allMembers |> iterSep ", " (fun head m -> 
             let inputType = m.GetInputType(bindings, memberResolutions, null)
@@ -319,7 +321,7 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
             w.printfn "        let attribBuilder = new AttributesBuilder(attribCount)"
         | Some nameOfBaseCreator ->
             w.printfn ""
-            w.printf "        let attribBuilder = Xaml._Build%s(attribCount" nameOfBaseCreator
+            w.printf "        let attribBuilder = Xaml.Build%s(attribCount" nameOfBaseCreator
             if allBaseMembers.Length > 0 then w.printf ", "
             allBaseMembers |> iterSep ", " (fun head m -> 
                 w.printf "%s?%s=%s" head m.LowerBoundShortName m.LowerBoundShortName)
@@ -341,10 +343,11 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
         let hasCreate = (tdef.IsAbstract || ctor = null || ctor.Parameters.Count > 0)
 
         w.printfn ""
-        w.printfn "    static member val _Proto%s : ViewElement option = None with get, set" nameOfCreator
-
+        w.printfn "    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]"
+        w.printfn "    static member val CreateFunc%s : (unit -> %s) = (fun () -> Xaml.Create%s())" nameOfCreator tdef.FullName nameOfCreator
         w.printfn ""
-        w.printfn "    static member val _Create%s : (unit -> %s) = fun () -> " nameOfCreator tdef.FullName
+        w.printfn "    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]"
+        w.printfn "    static member Create%s () : %s = " nameOfCreator tdef.FullName
         if not hasCreate then
             if (allMembers.Any(fun m -> m.IsParam)) then
                 w.printfn "        match "
@@ -372,13 +375,18 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
             w.printfn "        failwith \"can't create %s\"" tdef.FullName
 
         w.printfn ""
-        w.printfn "    static member val _Update%s = fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: %s) -> " nameOfCreator tdef.FullName
+        w.printfn "    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]"
+        w.printfn "    static member val UpdateFunc%s = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: %s) -> Xaml.Update%s (prevOpt, curr, target)) " nameOfCreator tdef.FullName nameOfCreator
+        w.printfn ""
+        w.printfn "    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]"
+        w.printfn "    static member Update%s (prevOpt: ViewElement voption, curr: ViewElement, target: %s) = " nameOfCreator tdef.FullName
 
         match nameOfBaseCreatorOpt with 
         | None -> ()
         | Some nameOfBaseCreator ->
-            w.printfn "        let baseElement = (if Xaml._Proto%s.IsNone then Xaml._Proto%s <- Some (Xaml.%s())); Xaml._Proto%s.Value" nameOfBaseCreator nameOfBaseCreator nameOfBaseCreator nameOfBaseCreator
-            w.printfn "        baseElement.UpdateMethod prevOpt curr (box target)"
+            w.printfn "        // update the inherited %s element" nameOfBaseCreator
+            w.printfn "        let baseElement = (if Xaml.Proto%s.IsNone then Xaml.Proto%s <- Some (Xaml.%s())); Xaml.Proto%s.Value" nameOfBaseCreator nameOfBaseCreator nameOfBaseCreator nameOfBaseCreator
+            w.printfn "        baseElement.UpdateInherited (prevOpt, curr, target)"
 
         if (allImmediateMembers.Length = 0) then
             w.printfn "        ignore prevOpt"
@@ -511,12 +519,16 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
 
         w.printfn ") = "
         w.printfn ""
-        w.printf "        let attribBuilder = Xaml._Build%s(0" nameOfCreator
+        w.printf "        let attribBuilder = Xaml.Build%s(0" nameOfCreator
         if allMembers.Length > 0 then w.printf ", "
         allMembers |> iterSep ", " (fun head m -> w.printf "%s?%s=%s" head m.LowerBoundShortName m.LowerBoundShortName)
         w.printfn ")"
         w.printfn ""
-        w.printfn "        ViewElement.Create<%s>(Xaml._Create%s, Xaml._Update%s, attribBuilder)" tdef.FullName nameOfCreator nameOfCreator
+        w.printfn "        ViewElement.Create<%s>(Xaml.CreateFunc%s, Xaml.UpdateFunc%s, attribBuilder)" tdef.FullName nameOfCreator nameOfCreator
+
+        w.printfn ""
+        w.printfn "    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]"
+        w.printfn "    static member val Proto%s : ViewElement option = None with get, set" nameOfCreator
 
     w.printfn ""
     w.printfn "[<AutoOpen>]"
