@@ -1,7 +1,8 @@
-#### 0.12.8
+#### 0.12.10
 * Added oxplot extension
+* Fix dependencies in nuget packages
 
-#### 0.12.6
+#### 0.12.4
 * Missed a renaming in the extension API
 
 #### 0.12.2
