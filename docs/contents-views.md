@@ -12,6 +12,7 @@
   * [Extensions](views-extending.html)
   * [Extensions: Maps](views-maps.html)
   * [Extensions: SkiaSharp](views-skiasharp.html)
+  * [Extensions: Charting](views-charting.html)
 * [Models](models.html)
 * [Update and Messages](update.html)
 * [Further Resources](index.html#further-resources)
