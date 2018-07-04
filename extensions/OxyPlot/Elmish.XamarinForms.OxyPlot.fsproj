@@ -6,13 +6,14 @@
   <ItemGroup>
     <None Include="paket.template" />
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="Xamarin.Forms.Maps.fs" />
+    <Compile Include="OxyPlot.fs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
     <PackageReference Include="FSharp.Core" Version="4.5.0" />
     <PackageReference Include="Xamarin.Forms" Version="3.0.0.482510" />
-    <PackageReference Include="Xamarin.Forms.Maps" Version="3.0.0.482510" />
+    <PackageReference Include="OxyPlot.Core" Version="2.0.0-unstable0956" />
+    <PackageReference Include="OxyPlot.Xamarin.Forms" Version="1.1.0-unstable0013" />
     <ProjectReference Include="..\..\Elmish.XamarinForms\Elmish.XamarinForms.fsproj" />
   </ItemGroup>
 </Project>

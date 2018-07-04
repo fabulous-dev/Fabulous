@@ -1,18 +1,21 @@
 type file
-id Elmish.XamarinForms
+id Elmish.XamarinForms.OxyPlot
 version 0.0
 authors Elmish.XamarinForms Contributors
 description
-    F# bindings for using elmish in Xamarin.Forms 
+    Elmish.XamarinForms extension for OxyPlot
 tags
-	Xamarin.Forms F# Elmish Elm
+	Xamarin.Forms F# Elmish Elm OxyPlot Charting 2D
 projectUrl
 	https://github.com/fsprojects/Elmish.XamarinForms
 licenseUrl
 	https://github.com/fsprojects/Elmish.XamarinForms/blob/master/LICENSE.md
 requireLicenseAcceptance false
 files
-	../build_output/Elmish.XamarinForms.dll ==> lib/netstandard2.0
+	../../build_output/Elmish.XamarinForms.OxyPlot.dll ==> lib/netstandard2.0
 dependencies
   FSharp.Core >= LOCKEDVERSION-neutral
   Xamarin.Forms >= LOCKEDVERSION-neutral
+  OxyPlot.Core >= LOCKEDVERSION-neutral
+  OxyPlot.Xamarin.Forms >= LOCKEDVERSION-neutral
+  Elmish.XamarinForms ~> CURRENTVERSION

@@ -1,4 +1,7 @@
-#### 0.12.4
+#### 0.12.8
+* Added oxplot extension
+
+#### 0.12.6
 * Missed a renaming in the extension API
 
 #### 0.12.2

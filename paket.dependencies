@@ -6,10 +6,14 @@ nuget FAKE 4.64.13
 group neutral
   framework: netstandard2.0
   source https://www.nuget.org/api/v2
+  source https://www.myget.org/F/oxyplot
   nuget FSharp.Core 4.5.0
   nuget Xamarin.Forms 3.0.0.482510
   nuget Xamarin.Forms.Maps 3.0.0.482510
   nuget SkiaSharp
+  nuget SkiaSharp.Views.Forms
+  nuget OxyPlot.Core 2.0.0-unstable0956 # version matching last updated version of OxyPlot.Xamarin.Forms
+  nuget OxyPlot.Xamarin.Forms 1.1.0-unstable0013 # last version seen on myget
   nuget FsPickler 5.2
   nuget FsPickler.Json 5.2
 
@@ -21,22 +25,22 @@ group androidapp
   nuget FSharp.Core 4.5.0
   nuget Xamarin.Forms 3.0.0.482510
   nuget Xamarin.Android.FSharp.ResourceProvider 1.0.0.14
-  nuget Xamarin.Android.Support.Animated.Vector.Drawable 25.4.0.2
-  nuget Xamarin.Android.Support.Annotations 25.4.0.2
-  nuget Xamarin.Android.Support.Compat 25.4.0.2
-  nuget Xamarin.Android.Support.Core.UI 25.4.0.2
-  nuget Xamarin.Android.Support.Core.Utils 25.4.0.2
-  nuget Xamarin.Android.Support.Design 25.4.0.2
-  nuget Xamarin.Android.Support.Fragment 25.4.0.2
-  nuget Xamarin.Android.Support.Media.Compat 25.4.0.2
-  nuget Xamarin.Android.Support.Transition 25.4.0.2
-  nuget Xamarin.Android.Support.v4 25.4.0.2
-  nuget Xamarin.Android.Support.v7.AppCompat 25.4.0.2
-  nuget Xamarin.Android.Support.v7.CardView 25.4.0.2
-  nuget Xamarin.Android.Support.v7.MediaRouter 25.4.0.2
-  nuget Xamarin.Android.Support.v7.Palette 25.4.0.2
-  nuget Xamarin.Android.Support.v7.RecyclerView 25.4.0.2
-  nuget Xamarin.Android.Support.Vector.Drawable 25.4.0.2
+  nuget Xamarin.Android.Support.Animated.Vector.Drawable 27.0.2.1
+  nuget Xamarin.Android.Support.Annotations 27.0.2.1
+  nuget Xamarin.Android.Support.Compat 27.0.2.1
+  nuget Xamarin.Android.Support.Core.UI 27.0.2.1
+  nuget Xamarin.Android.Support.Core.Utils 27.0.2.1
+  nuget Xamarin.Android.Support.Design 27.0.2.1
+  nuget Xamarin.Android.Support.Fragment 27.0.2.1
+  nuget Xamarin.Android.Support.Media.Compat 27.0.2.1
+  nuget Xamarin.Android.Support.Transition 27.0.2.1
+  nuget Xamarin.Android.Support.v4 27.0.2.1
+  nuget Xamarin.Android.Support.v7.AppCompat 27.0.2.1
+  nuget Xamarin.Android.Support.v7.CardView 27.0.2.1
+  nuget Xamarin.Android.Support.v7.MediaRouter 27.0.2.1
+  nuget Xamarin.Android.Support.v7.Palette 27.0.2.1
+  nuget Xamarin.Android.Support.v7.RecyclerView 27.0.2.1
+  nuget Xamarin.Android.Support.Vector.Drawable 27.0.2.1
 
 # Dependencies used when compiling and running iOS samples. We can normally use the latest FSharp.Core and 
 # latest Xamarin.Forms though we pin them for now.

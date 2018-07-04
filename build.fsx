@@ -13,7 +13,8 @@ let release = LoadReleaseNotes "RELEASE_NOTES.md"
 let projects = 
     [ ("Elmish.XamarinForms/Elmish.XamarinForms.fsproj", "Elmish.XamarinForms", "F# Functional App Dev Framework")
       ("extensions/Maps/Elmish.XamarinForms.Maps.fsproj", "Elmish.XamarinForms.Maps", "Elmish.XamarinForms extension for Xamarin.Forms.Maps") 
-      ("extensions/SkiaSharp/Elmish.XamarinForms.SkiaSharp.fsproj", "Elmish.XamarinForms.SkiaSharp", "Elmish.XamarinForms extension for SkiaSharp") ]
+      ("extensions/SkiaSharp/Elmish.XamarinForms.SkiaSharp.fsproj", "Elmish.XamarinForms.SkiaSharp", "Elmish.XamarinForms extension for SkiaSharp")
+      ("extensions/OxyPlot/Elmish.XamarinForms.OxyPlot.fsproj", "Elmish.XamarinForms.OxyPlot", "Elmish.XamarinForms extension for OxyPlot") ]
 
 Target "Build" (fun _ ->
 
