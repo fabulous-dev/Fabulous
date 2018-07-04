@@ -3,30 +3,31 @@ Elmish.XamarinForms Guide
 
 {% include_relative contents-views.md %}
 
-Additional View Elements
+View Extensions
 ------
 
 Many open source and 3rd-party libraries of Xamarin.Forms controls exist. To use other controls, a small amount of wrapper code
 is typically needed to define a corresponding view element using the incremental-update model used by Elmish.XamarinForms.
 
-The following additional components are available as pre-built nuget libraries:
+The following additional view elements are available as pre-built nuget libraries:
 
-* [Maps](views-maps.md)
-* [SkiaSharp](views-skiasharp.md)
+* [Maps](views-maps.md) for platform maps
+* [SkiaSharp](views-skiasharp.md) for 2D graphics
+* [OxyPlot](views-charting.md) for charting (in preparation)
 
-To use other additional controls, a small amount of wrapper code must
-currently be written to make the control fit the incremental-update model used by Elmish.XamarinForms.
+To use other Xamarin.Forms controls, a small amount of wrapper code must
+be written to convert the control to an Elmish.XamarinForms view element.
 
 > Please consider contributing your extensions to [this repository](https://github.com/fsprojects/Elmish.XamarinForms/).
 
-The basic shape of an extension view component is shown below. Here we assume the view component defines one extra element
+The basic shape of an extension view component is shown below. Here we assume the Xamarin.Forms control defines one extra element
 called ABC deriving from existing element kind BASE, and that ABC has one additional
-collection property `Prop1` and two basic properties `Prop2` and `Property3`.
-A collection property is a one that may contain further sub-elements, e.g. `children` for StackLayout, `gestureRecognizers` for any `View`
-and `pins` in the Maps example further below.
+collection property `Prop1` and one primitive property `Prop2`.
+(A collection property is a one that may contain further sub-elements, e.g. `children` for StackLayout, `gestureRecognizers` for any `View`
+and `pins` in the Maps example further below.)
 
-An extension simply defines a static member that extends `Xaml`.
-The returned object inherits the attributes and update functionality from BASE via prototype inheritance.
+An view element simply defines a static member that extends `Xaml` and returns a `ViewElement`.
+The view element inherits attributes and update functionality from BASE via prototype inheritance.
 
 > **NOTE**: we are considering adding a code generator or type provider to automate this process, though the code is not complex to write.
 >
