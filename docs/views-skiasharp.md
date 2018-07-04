@@ -12,7 +12,13 @@ The nuget `Elmish.XamarinForms.SkiaSharp` implements a view component for the ty
 
 [![SkiaSharp example from Microsoft](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/graphics/skiasharp/curves/arcs-images/anglearc-small.png)](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/graphics/skiasharp/curves/arcs-images/anglearc-small.png)
 
-Here is a simple example of using SkiaSharp to draw a circle and respond to touch events:
+To use `Elmish.XamarinForms.SkiaSharp`, you must
+
+1. Add a reference to `SkiaSharp.Views.Forms` across your whole solution.  This will add appropriate references to your platform-specific Android and iOS projects too.
+2. Next add a reference to `Elmish.XamarinForms.SkiaSharp` across your whole solution.
+
+After these steps you can use SkiaSharp in your view function. Here is a simple example of using SkiaSharp to
+draw a circle and respond to touch events:
 
 ```fsharp
 open Elmish.XamarinForms.DynamicViews

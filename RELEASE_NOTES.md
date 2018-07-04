@@ -1,8 +1,8 @@
-#### 0.12.0
+#### 0.12.2
 * Remove unnecesary boxing in extension API
 * Improved documentation
 
-#### 0.12.0
+#### 0.12.2
 * Adjust extension API to be more type safe
 * Add Elmish.XamarinForms.SkiaSharp
 

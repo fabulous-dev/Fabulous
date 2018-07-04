@@ -127,11 +127,11 @@ module MapsExtension =
 
     type Xaml with
         /// Describes a Map in the view
-        static member inline Map(?pins: seq<ViewElement>, ?isShowingUser: bool, ?mapType: MapType, ?hasScrollEnabled: bool,
-                                 ?hasZoomEnabled: bool, ?requestedRegion: MapSpan, ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+        static member inline Map(?pins: seq<ViewElement>, ?isShowingUser: bool, ?mapType: MapType,
+                                 ?hasScrollEnabled: bool, ?hasZoomEnabled: bool, ?requestedRegion: MapSpan,
                                  // inherited attributes common to all views
-                                 ?verticalOptions, ?margin, ?gestureRecognizers, ?anchorX, ?anchorY, ?backgroundColor, ?heightRequest,
-                                 ?inputTransparent, ?isEnabled, ?isVisible, ?minimumHeightRequest, ?minimumWidthRequest, ?opacity,
+                                 ?horizontalOptions, ?verticalOptions, ?margin, ?gestureRecognizers, ?anchorX, ?anchorY, ?backgroundColor, 
+                                 ?heightRequest, ?inputTransparent, ?isEnabled, ?isVisible, ?minimumHeightRequest, ?minimumWidthRequest, ?opacity,
                                  ?rotation, ?rotationX, ?rotationY, ?scale, ?style, ?translationX, ?translationY, ?widthRequest,
                                  ?resources, ?styles, ?styleSheets, ?classId, ?styleId) =
 

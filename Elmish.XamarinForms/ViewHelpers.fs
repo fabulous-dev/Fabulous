@@ -1,9 +1,6 @@
 ﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
 namespace Elmish.XamarinForms.DynamicViews 
 
-open Xamarin.Forms
-
-open Elmish.XamarinForms
 open Elmish.XamarinForms.DynamicViews
 open System.Collections.Generic
 
@@ -11,8 +8,13 @@ open System.Collections.Generic
 module SimplerHelpers = 
 
     type internal Memoizations() = 
-       static let t = Dictionary<obj,System.WeakReference<obj>>(HashIdentity.Structural)
-       static member T = t
+         static let t = Dictionary<obj,System.WeakReference<obj>>(HashIdentity.Structural)
+         static member T = t
+         static member Add(key: obj, res: obj) = 
+             if Memoizations.T.Count > 50000 then 
+                 System.Diagnostics.Trace.WriteLine("Clearing 'dependsOn' and 'fix' memoizations...")
+                 Memoizations.T.Clear()
+             Memoizations.T.[key] <- System.WeakReference<obj>(box res)
 
     type DoNotUseModelInsideDependsOn = | DoNotUseModelInsideDependsOn
 
@@ -29,7 +31,7 @@ module SimplerHelpers =
         | true, weak when weak.TryGetTarget(&res) -> unbox res
         | _ ->
              let res = f DoNotUseModelInsideDependsOn key
-             Memoizations.T.[bkey] <- System.WeakReference<obj>(box res)
+             Memoizations.Add(bkey, box res)
              res
         
     /// Dispatch a message via the currently running Elmish program
@@ -48,7 +50,7 @@ module SimplerHelpers =
              let flds = key.GetFields(System.Reflection.BindingFlags.NonPublic) |> Array.filter (fun fld -> fld.Name <> "dispatch")
              if flds.Length > 0 then failwithf "the closure '%s' has a dependency '%s', you can't use 'fix' with such a closure" key.Name flds.[0].Name
              let res = f()
-             Memoizations.T.[key] <- System.WeakReference<obj>(box res)
+             Memoizations.Add(key, box res)
              res
 
     /// Memoize a callback that has explicit dependencies.
@@ -63,7 +65,7 @@ module SimplerHelpers =
              let flds = key.GetFields(System.Reflection.BindingFlags.NonPublic) |> Array.filter (fun fld -> fld.Name <> "dispatch")
              if flds.Length > 0 then failwithf "the closure '%s' has a dependency '%s', you can't use 'fix' with such a closure" key.Name flds.[0].Name
              let res = f
-             Memoizations.T.[key] <- System.WeakReference<obj>(box res)
+             Memoizations.Add(key, box res)
              res
 
     type ViewElement with 
@@ -102,3 +104,48 @@ module SimplerHelpers =
             let x = match classId with None -> x | Some opt -> x.ClassId(opt)
             let x = match styleId with None -> x | Some opt -> x.StyleId(opt)
             x
+
+    let ContentsAttribKey = AttributeKey<(obj -> ViewElement)> "Stateful_Contents"
+
+    let localStateTable = System.Runtime.CompilerServices.ConditionalWeakTable<obj, obj option>()
+
+    type Xaml with
+
+        /// Describes an element in the view which uses localized mutable state unrelated to the model
+        /// (and hence un-persisted), and can optionally access the underlying control. The 'init'
+        /// function is called only when the underlying control is created (and each time it is re-created,
+        /// if ever). The generated state object is associated with the underlying control.
+        static member Stateful (init: (unit -> 'State), contents: 'State -> ViewElement, ?onCreate: ('State -> obj -> unit), ?onUpdate: ('State -> obj -> unit)) : _ when 'State : not struct =
+
+            let attribs = AttributesBuilder(1)
+            attribs.Add(ContentsAttribKey, (fun stateObj -> contents (unbox (stateObj))))
+
+            // The create method
+            let create () = 
+                let state = init()
+                let desc = contents state
+                let item = desc.Create()
+                localStateTable.Add(item, Some (box state))
+                match onCreate with None -> () | Some f -> f state item
+                item
+
+            // The update method
+            let update (prevOpt: ViewElement voption) (source: ViewElement) (target: obj) = 
+                let state = unbox<'State> ((snd (localStateTable.TryGetValue(target))).Value)
+                let contents = source.TryGetAttributeKeyed(ContentsAttribKey).Value
+                let realSource = contents state
+                realSource.Update(prevOpt, source, target)
+                match onUpdate with None -> () | Some f -> f state target
+
+            // The element
+            ViewElement.Create(create, update, attribs)
+
+        static member OnCreate (contents : ViewElement, onCreate: (obj -> unit)) =
+            Xaml.Stateful (init = (fun () -> ()), contents = (fun _ -> contents), onCreate = (fun _ obj -> onCreate obj))
+
+        static member WithInternalModel(init: (unit -> 'InternalModel), 
+                                        update: ('InternalMessage -> 'InternalModel -> 'InternalModel), 
+                                        view : ('InternalModel -> ('InternalMessage -> unit) -> ViewElement)) =
+            let internalDispatch (state: 'InternalModel ref) msg = state.Value <- update msg state.Value
+            Xaml.Stateful (init = (fun () -> ref (init ())), contents = (fun state -> view state.Value (internalDispatch state)))
+
