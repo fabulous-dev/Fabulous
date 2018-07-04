@@ -1,15 +1,15 @@
 type file
-id Elmish.XamarinForms.Maps
+id Elmish.XamarinForms.SkiaSharp
 version 0.0
 authors Elmish.XamarinForms Contributors
 description
-    Elmish.XamarinForms bindings for Xamarin.Forms.Maps
+    Elmish.XamarinForms extension for SkiaSharp
 tags
-	Xamarin.Forms F# Elmish Elm
+	Xamarin.Forms F# Elmish Elm SkiaSharp Drawing 2D
 projectUrl
 	https://github.com/fsprojects/Elmish.XamarinForms
 licenseUrl
 	https://github.com/fsprojects/Elmish.XamarinForms/blob/master/LICENSE.md
 requireLicenseAcceptance false
 files
-	../build_output/Elmish.XamarinForms.Maps.dll ==> lib/netstandard2.0
+	../../build_output/Elmish.XamarinForms.SkiaSharp.dll ==> lib/netstandard2.0

@@ -82,6 +82,47 @@ type Msg =
     | SetInfiniteScrollMaxIndex of int
     | ExecuteSearch of string
 
+[<AutoOpen>]
+module MyExtension = 
+    /// Test the extension API be making a 2nd wrapper for "Label":
+    let TestLabelTextAttribKey = AttributeKey<_> "TestLabel_Text"
+    let TestLabelFontFamilyAttribKey = AttributeKey<_> "TestLabel_FontFamily"
+
+    type Xaml with 
+
+        static member TestLabel(?text: string, ?fontFamily: string, ?backgroundColor, ?rotation) = 
+
+            // Get the attributes for the base element. The number is the the expected number of attributes.
+            // You can add additional base element attributes here if you like
+            let attribCount = 0
+            let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
+            let attribCount = match fontFamily with Some _ -> attribCount + 1 | None -> attribCount
+            let attribs = Xaml.ZBuildView(attribCount, ?backgroundColor = backgroundColor, ?rotation = rotation) 
+
+            // Add our own attributes. They must have unique names.
+            match text with None -> () | Some v -> attribs.Add(TestLabelTextAttribKey, v) 
+            match fontFamily with None -> () | Some v -> attribs.Add(TestLabelFontFamilyAttribKey, v) 
+
+            // The creation method
+            let create () = new Xamarin.Forms.Label()
+
+            // The incremental update method
+            let update (prevOpt: ViewElement voption) (source: ViewElement) (target: Xamarin.Forms.Label) = 
+                Xaml.UpdateView(prevOpt, source, target)
+                source.UpdatePrimitive(prevOpt, target, TestLabelTextAttribKey, (fun target v -> target.Text <- v))
+                source.UpdatePrimitive(prevOpt, target, TestLabelFontFamilyAttribKey, (fun target v -> target.FontFamily <- v))
+
+            ViewElement.Create<Xamarin.Forms.Label>(create, update, attribs)
+
+    // Test some adhoc functional abstractions
+    type Xaml with 
+        static member ScrollingContentPage(title, children) =
+            Xaml.ContentPage(title=title, content=Xaml.ScrollView(Xaml.StackLayout(padding=20.0, children=children) ), useSafeArea=true)
+
+        static member NonScrollingContentPage(title, children, ?gestureRecognizers) =
+            Xaml.ContentPage(title=title, content=Xaml.StackLayout(padding=20.0, children=children, ?gestureRecognizers=gestureRecognizers), useSafeArea=true)
+
+
 module App = 
     let init () = 
         { RootPageKind = Choice false
@@ -167,42 +208,6 @@ module App =
            ("Purple", Color.Purple); ("Red", Color.Red);
            ("Silver", Color.Silver); ("Teal", Color.Teal);
            ("White", Color.White); ("Yellow", Color.Yellow ) |]
-
-    /// Test the extension API be making a 2nd wrapper for "Label":
-    let TestLabelTextAttribKey = AttributeKey<_> "TestLabel_Text"
-    let TestLabelFontFamilyAttribKey = AttributeKey<_> "TestLabel_FontFamily"
-    type Xaml with 
-
-        static member TestLabel(?text: string, ?fontFamily: string, ?backgroundColor, ?rotation) = 
-
-            // Get the attributes for the base element. The number is the the expected number of attributes.
-            // You can add additional base element attributes here if you like
-            let attribCount = 0
-            let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
-            let attribCount = match fontFamily with Some _ -> attribCount + 1 | None -> attribCount
-            let attribs = Xaml._BuildView(attribCount, ?backgroundColor = backgroundColor, ?rotation = rotation) 
-
-            // Add our own attributes. They must have unique names.
-            match text with None -> () | Some v -> attribs.Add(TestLabelTextAttribKey, v) 
-            match fontFamily with None -> () | Some v -> attribs.Add(TestLabelFontFamilyAttribKey, v) 
-
-            // The creation method
-            let create () = new Xamarin.Forms.Label()
-
-            // The incremental update method
-            let update (prevOpt: ViewElement voption) (source: ViewElement) (target: Xamarin.Forms.Label) = 
-                Xaml._UpdateView prevOpt source (target :> View)
-                source.UpdatePrimitive(prevOpt, target, TestLabelTextAttribKey, (fun target v -> target.Text <- v))
-                source.UpdatePrimitive(prevOpt, target, TestLabelFontFamilyAttribKey, (fun target v -> target.FontFamily <- v))
-
-            ViewElement.Create<Xamarin.Forms.Label>(create, update, attribs)
-
-    type Xaml with 
-        static member ScrollingContentPage(title, children) =
-            Xaml.ContentPage(title=title, content=Xaml.ScrollView(Xaml.StackLayout(padding=20.0, children=children) ), useSafeArea=true)
-
-        static member NonScrollingContentPage(title, children, ?gestureRecognizers) =
-            Xaml.ContentPage(title=title, content=Xaml.StackLayout(padding=20.0, children=children, ?gestureRecognizers=gestureRecognizers), useSafeArea=true)
 
     let view (model: Model) dispatch =
 

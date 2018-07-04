@@ -74,6 +74,9 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
     /// Differentially update a visual element given the previous settings
     member x.UpdateIncremental(prev: ViewElement, target: obj) = update (ValueSome prev) x target
 
+    /// Differentially update the inherited attributes of a visual element given the previous settings
+    member x.UpdateInherited(prevOpt: ViewElement voption, curr: ViewElement, target: obj) = update prevOpt curr target
+
     /// Update a different description to a similar visual element
     [<DebuggerBrowsable(DebuggerBrowsableState.Never)>]
     member __.CreateMethod = create

@@ -39,8 +39,7 @@ type App () =
     let runner = 
         Program.mkSimple init update view
         |> Program.withConsoleTrace
-        |> Program.withDynamicView
-        |> Program.run
+        |> Program.runWithDynamicView
 ```
 
 

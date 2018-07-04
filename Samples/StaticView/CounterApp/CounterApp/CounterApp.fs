@@ -40,7 +40,9 @@ type CounterApp () =
     do
         let runner = 
             Program.mkSimple init update view
+#if DEBUG
             |> Program.withConsoleTrace
+#endif
             |> Program.runWithStaticView
         let page = runner.InitialMainPage
 
