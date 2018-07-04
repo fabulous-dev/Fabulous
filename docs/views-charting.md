@@ -14,6 +14,7 @@ Below is an example of an extension for [OxyPlot](http://docs.oxyplot.org/). To 
 [![OxyPlot example](https://user-images.githubusercontent.com/7204669/42291878-777cb47c-7fc6-11e8-9eaa-4dfd784bddf2.png)](https://user-images.githubusercontent.com/7204669/42291878-777cb47c-7fc6-11e8-9eaa-4dfd784bddf2.png)
 
 Here is an example translated from [the OxyPlot documentation](http://docs.oxyplot.org/en/latest/models/series/HeatMapSeries.html).
+
 ```fsharp
 let plotModelCos =
     let model = PlotModel(Title = "Example 1")
