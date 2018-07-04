@@ -6,6 +6,7 @@ open System.Collections.Generic
 
 [<AutoOpen>]
 module SimplerHelpers = 
+    open Xamarin.Forms
 
     type internal Memoizations() = 
          static let t = Dictionary<obj,System.WeakReference<obj>>(HashIdentity.Structural)
@@ -148,4 +149,23 @@ module SimplerHelpers =
                                         view : ('InternalModel -> ('InternalMessage -> unit) -> ViewElement)) =
             let internalDispatch (state: 'InternalModel ref) msg = state.Value <- update msg state.Value
             Xaml.Stateful (init = (fun () -> ref (init ())), contents = (fun state -> view state.Value (internalDispatch state)))
+
+    // Keep a table to make sure we create a unique ViewElement for each external object
+    let externalsTable = System.Runtime.CompilerServices.ConditionalWeakTable<obj, obj>()
+    type Xaml with
+
+        /// Describes an element in the view implemented by an external object, e.g. an external
+        /// Xamarin.Forms Page or View. The element must have a type appropriate for the place in
+        /// the view where the object occurs.
+        static member External (externalObj: 'T) : _ when 'T : not struct =
+
+            match externalsTable.TryGetValue(externalObj) with 
+            | true, v -> (v :?> ViewElement)
+            | _ -> 
+                let attribs = AttributesBuilder(0)
+                let create () = box externalObj 
+                let update (_prevOpt: ViewElement voption) (_source: ViewElement) (_target: obj) = ()
+                let res = ViewElement(externalObj.GetType(), create, update, attribs)
+                externalsTable.Add(externalObj, res)
+                res
 
