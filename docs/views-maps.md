@@ -1,7 +1,7 @@
 Elmish.XamarinForms Guide
 =======
 
-{% include_relative content-views.md %}
+{% include_relative contents-views.md %}
 
 Using Maps
 ------
