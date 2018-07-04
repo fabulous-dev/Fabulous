@@ -1,4 +1,7 @@
-#### 0.12.0
+#### 0.12.4
+* Missed a renaming in the extension API
+
+#### 0.12.2
 * Remove unnecesary boxing in extension API
 * Improved documentation
 

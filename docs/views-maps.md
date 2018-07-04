@@ -11,10 +11,15 @@ The nuget `Elmish.XamarinForms.Maps` implements an [extension](views-extending.m
 
 [![Maps example from Microsoft](https://user-images.githubusercontent.com/7204669/42186154-60437d42-7e43-11e8-805b-7200282f3b98.png)](https://user-images.githubusercontent.com/7204669/42186154-60437d42-7e43-11e8-805b-7200282f3b98.png)
 
-> NOTE: To use `Elmish.XamarinForms.Maps`, you must additionally [follow the instructions to initialize Xamarin.Forms Maps](https://docs.microsoft.com/xamarin/xamarin-forms/user-interface/map#Maps_Initialization).
-(For example, on Android you must enable Google Play servies, add a call to `Xamarin.FormsMaps.Init(this, bundle)` to `MainActivity.fs` and add both and API key and `uses-permission` to `AndroidManifest.xml`.)
+To use `Elmish.XamarinForms.Maps`, you must
 
-Here are some examples of using the control. First, a general map, no specific requested location:
+1. Add a reference to `Xamarin.Forms.Maps` across your whole solution.  This will add appropriate references to your platform-specific Android and iOS projects too.
+   > NOTE: At the time of writing some tooling made incorrect updates to targets/props in project files when adding these refereces. You may currently need
+   > to hand-edit your project files after this step.
+2. Next add a reference to `Elmish.XamarinForms.Maps` across your whole solution.
+3. Additionally [follow the instructions to initialize Xamarin.Forms Maps](https://docs.microsoft.com/xamarin/xamarin-forms/user-interface/map#Maps_Initialization). For example, on Android you must enable Google Play servies, add a call to `Xamarin.FormsMaps.Init(this, bundle)` to `MainActivity.fs` and add both and API key and `uses-permission` to `AndroidManifest.xml`.
+
+After these steps you can use maps in your `view` function as follows:
 
 ```fsharp
 open Xamarin.Forms.Maps
@@ -23,7 +28,7 @@ open Elmish.XamarinForms
 Xaml.Map(hasZoomEnabled = true, hasScrollEnabled = true)
 ```
 
-Next, a map with requested region:
+Next, a map with requested region around Timbuktu:
 
 ```fsharp
 let timbuktu = Position(16.7666, -3.0026)
@@ -31,7 +36,7 @@ Xaml.Map(hasZoomEnabled = true, hasScrollEnabled = true,
          requestedRegion = MapSpan.FromCenterAndRadius(timbuktu, Distance.FromKilometers(1.0)))
 ```
 
-Next, a map with two pins:
+Next, a map with two pins for Paris and London:
 
 ```fsharp
 let paris = Position(48.8566, 2.3522)

@@ -16,7 +16,12 @@ module MapsExtension =
 
     type Xaml with
         /// Describes a Map in the view
-        static member SKCanvasView(?paintSurface: (SKPaintSurfaceEventArgs -> unit), ?touch: (SKTouchEventArgs -> unit), ?enableTouchEvents: bool, ?ignorePixelScaling: bool, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+        static member SKCanvasView(?paintSurface: (SKPaintSurfaceEventArgs -> unit), ?touch: (SKTouchEventArgs -> unit), ?enableTouchEvents: bool, ?ignorePixelScaling: bool,
+                                   // inherited attributes common to all views
+                                   ?horizontalOptions, ?verticalOptions, ?margin, ?gestureRecognizers, ?anchorX, ?anchorY, ?backgroundColor,
+                                   ?heightRequest, ?inputTransparent, ?isEnabled, ?isVisible, ?minimumHeightRequest, ?minimumWidthRequest,
+                                   ?opacity, ?rotation, ?rotationX, ?rotationY, ?scale, ?style, ?translationX, ?translationY, ?widthRequest,
+                                   ?resources, ?styles, ?styleSheets, ?classId, ?styleId) =
 
             // Count the number of additional attributes
             let attribCount = 0
@@ -26,7 +31,15 @@ module MapsExtension =
             let attribCount = match touch with Some _ -> attribCount + 1 | None -> attribCount
 
             // Populate the attributes of the base element
-            let attribs = Xaml.ZBuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+            let attribs = 
+                Xaml.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, 
+                               ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, 
+                               ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, 
+                               ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, 
+                               ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, 
+                               ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, 
+                               ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
             // Add our own attributes. They must have unique names which must match the names below.
             match enableTouchEvents with None -> () | Some v -> attribs.Add(CanvasEnableTouchEventsAttribKey, v) 
@@ -49,19 +62,29 @@ module MapsExtension =
             ViewElement.Create(create, update, attribs)
 
 #if DEBUG 
-    let sample1 = 
-        Xaml.SKCanvasView(enableTouchEvents = true, 
-            paintSurface = (fun args -> 
-                let info = args.Info
-                let surface = args.Surface
-                let canvas = surface.Canvas
+    type State = 
+        { mutable touches: int
+          mutable paints: int }
 
-                canvas.Clear() 
-                use paint = new SKPaint(Style = SKPaintStyle.Stroke, Color = Color.Red.ToSKColor(), StrokeWidth = 25.0f)
-                canvas.DrawCircle(float32 (info.Width / 2), float32 (info.Height / 2), 100.0f, paint)
-            ),
-            touch = (fun args -> 
-                printfn "touch event at (%f, %f)" args.Location.X args.Location.Y
-            )
-        )
+    let sample1 = 
+        Xaml.Stateful(
+            (fun () -> { touches = 0; paints = 0 }), 
+            (fun state -> 
+                Xaml.SKCanvasView(enableTouchEvents = true, 
+                    paintSurface = (fun args -> 
+                        let info = args.Info
+                        let surface = args.Surface
+                        let canvas = surface.Canvas
+                        state.paints <- state.paints + 1
+                        printfn "paint event, total paints on this control = %d" state.paints
+
+                        canvas.Clear() 
+                        use paint = new SKPaint(Style = SKPaintStyle.Stroke, Color = Color.Red.ToSKColor(), StrokeWidth = 25.0f)
+                        canvas.DrawCircle(float32 (info.Width / 2), float32 (info.Height / 2), 100.0f, paint)
+                    ),
+                    touch = (fun args -> 
+                        state.touches <- state.touches + 1
+                        printfn "touch event at (%f, %f), total touches on this control = %d" args.Location.X args.Location.Y state.touches
+                    )
+            )))
 #endif

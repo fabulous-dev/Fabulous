@@ -67,24 +67,16 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
     /// Apply initial settings to a freshly created visual element
     member x.Update (target: obj) = update ValueNone x target
 
-    /// The differential update method implementation
-    [<DebuggerBrowsable(DebuggerBrowsableState.Never)>]
-    member __.UpdateMethod = update
-
     /// Differentially update a visual element given the previous settings
     member x.UpdateIncremental(prev: ViewElement, target: obj) = update (ValueSome prev) x target
 
     /// Differentially update the inherited attributes of a visual element given the previous settings
     member x.UpdateInherited(prevOpt: ViewElement voption, curr: ViewElement, target: obj) = update prevOpt curr target
 
-    /// Update a different description to a similar visual element
-    [<DebuggerBrowsable(DebuggerBrowsableState.Never)>]
-    member __.CreateMethod = create
-
     /// Create the UI element from the view description
     member x.Create() : obj =
         Debug.WriteLine (sprintf "Create %O" x.TargetType)
-        let target = x.CreateMethod()
+        let target = create()
         x.Update(target)
         target
 

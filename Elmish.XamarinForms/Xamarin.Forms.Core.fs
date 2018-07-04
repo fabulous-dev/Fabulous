@@ -399,7 +399,7 @@ type Xaml() =
 
     /// Builds the attributes for a Element in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildElement(attribCount: int, ?classId: string, ?styleId: string) = 
+    static member inline BuildElement(attribCount: int, ?classId: string, ?styleId: string) = 
 
         let attribCount = match classId with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match styleId with Some _ -> attribCount + 1 | None -> attribCount
@@ -409,10 +409,10 @@ type Xaml() =
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncElement : (unit -> Xamarin.Forms.Element) = (fun () -> Xaml.ZCreateElement())
+    static member val CreateFuncElement : (unit -> Xamarin.Forms.Element) = (fun () -> Xaml.CreateElement())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateElement () : Xamarin.Forms.Element = 
+    static member CreateElement () : Xamarin.Forms.Element = 
         failwith "can't create Xamarin.Forms.Element"
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -451,16 +451,16 @@ type Xaml() =
     /// Describes a Element in the view
     static member inline Element(?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildElement(0, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildElement(0, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.Element>(Xaml.ZCreateFuncElement, Xaml.UpdateFuncElement, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.Element>(Xaml.CreateFuncElement, Xaml.UpdateFuncElement, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoElement : ViewElement option = None with get, set
+    static member val ProtoElement : ViewElement option = None with get, set
 
     /// Builds the attributes for a VisualElement in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildVisualElement(attribCount: int, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildVisualElement(attribCount: int, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match anchorX with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match anchorY with Some _ -> attribCount + 1 | None -> attribCount
@@ -484,7 +484,7 @@ type Xaml() =
         let attribCount = match styles with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match styleSheets with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildElement(attribCount, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildElement(attribCount, ?classId=classId, ?styleId=styleId)
         match anchorX with None -> () | Some v -> attribBuilder.Add(Xaml._AnchorXAttribKey, (v)) 
         match anchorY with None -> () | Some v -> attribBuilder.Add(Xaml._AnchorYAttribKey, (v)) 
         match backgroundColor with None -> () | Some v -> attribBuilder.Add(Xaml._BackgroundColorAttribKey, (v)) 
@@ -509,10 +509,10 @@ type Xaml() =
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncVisualElement : (unit -> Xamarin.Forms.VisualElement) = (fun () -> Xaml.ZCreateVisualElement())
+    static member val CreateFuncVisualElement : (unit -> Xamarin.Forms.VisualElement) = (fun () -> Xaml.CreateVisualElement())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateVisualElement () : Xamarin.Forms.VisualElement = 
+    static member CreateVisualElement () : Xamarin.Forms.VisualElement = 
         failwith "can't create Xamarin.Forms.VisualElement"
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -521,7 +521,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateVisualElement (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.VisualElement) = 
         // update the inherited Element element
-        let baseElement = (if Xaml.ZProtoElement.IsNone then Xaml.ZProtoElement <- Some (Xaml.Element())); Xaml.ZProtoElement.Value
+        let baseElement = (if Xaml.ProtoElement.IsNone then Xaml.ProtoElement <- Some (Xaml.Element())); Xaml.ProtoElement.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevAnchorXOpt = ValueNone
         let mutable currAnchorXOpt = ValueNone
@@ -751,23 +751,23 @@ type Xaml() =
     /// Describes a VisualElement in the view
     static member inline VisualElement(?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildVisualElement(0, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildVisualElement(0, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.VisualElement>(Xaml.ZCreateFuncVisualElement, Xaml.UpdateFuncVisualElement, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.VisualElement>(Xaml.CreateFuncVisualElement, Xaml.UpdateFuncVisualElement, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoVisualElement : ViewElement option = None with get, set
+    static member val ProtoVisualElement : ViewElement option = None with get, set
 
     /// Builds the attributes for a View in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildView(attribCount: int, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildView(attribCount: int, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match horizontalOptions with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match verticalOptions with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match margin with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match gestureRecognizers with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildVisualElement(attribCount, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildVisualElement(attribCount, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match horizontalOptions with None -> () | Some v -> attribBuilder.Add(Xaml._HorizontalOptionsAttribKey, (v)) 
         match verticalOptions with None -> () | Some v -> attribBuilder.Add(Xaml._VerticalOptionsAttribKey, (v)) 
         match margin with None -> () | Some v -> attribBuilder.Add(Xaml._MarginAttribKey, makeThickness(v)) 
@@ -775,10 +775,10 @@ type Xaml() =
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncView : (unit -> Xamarin.Forms.View) = (fun () -> Xaml.ZCreateView())
+    static member val CreateFuncView : (unit -> Xamarin.Forms.View) = (fun () -> Xaml.CreateView())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateView () : Xamarin.Forms.View = 
+    static member CreateView () : Xamarin.Forms.View = 
         failwith "can't create Xamarin.Forms.View"
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -787,7 +787,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateView (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.View) = 
         // update the inherited VisualElement element
-        let baseElement = (if Xaml.ZProtoVisualElement.IsNone then Xaml.ZProtoVisualElement <- Some (Xaml.VisualElement())); Xaml.ZProtoVisualElement.Value
+        let baseElement = (if Xaml.ProtoVisualElement.IsNone then Xaml.ProtoVisualElement <- Some (Xaml.VisualElement())); Xaml.ProtoVisualElement.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevHorizontalOptionsOpt = ValueNone
         let mutable currHorizontalOptionsOpt = ValueNone
@@ -842,25 +842,25 @@ type Xaml() =
     /// Describes a View in the view
     static member inline View(?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildView(0, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildView(0, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.View>(Xaml.ZCreateFuncView, Xaml.UpdateFuncView, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.View>(Xaml.CreateFuncView, Xaml.UpdateFuncView, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoView : ViewElement option = None with get, set
+    static member val ProtoView : ViewElement option = None with get, set
 
     /// Builds the attributes for a IGestureRecognizer in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildIGestureRecognizer(attribCount: int) = 
+    static member inline BuildIGestureRecognizer(attribCount: int) = 
 
         let attribBuilder = new AttributesBuilder(attribCount)
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncIGestureRecognizer : (unit -> Xamarin.Forms.IGestureRecognizer) = (fun () -> Xaml.ZCreateIGestureRecognizer())
+    static member val CreateFuncIGestureRecognizer : (unit -> Xamarin.Forms.IGestureRecognizer) = (fun () -> Xaml.CreateIGestureRecognizer())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateIGestureRecognizer () : Xamarin.Forms.IGestureRecognizer = 
+    static member CreateIGestureRecognizer () : Xamarin.Forms.IGestureRecognizer = 
         failwith "can't create Xamarin.Forms.IGestureRecognizer"
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -875,30 +875,30 @@ type Xaml() =
     /// Describes a IGestureRecognizer in the view
     static member inline IGestureRecognizer() = 
 
-        let attribBuilder = Xaml.ZBuildIGestureRecognizer(0)
+        let attribBuilder = Xaml.BuildIGestureRecognizer(0)
 
-        ViewElement.Create<Xamarin.Forms.IGestureRecognizer>(Xaml.ZCreateFuncIGestureRecognizer, Xaml.UpdateFuncIGestureRecognizer, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.IGestureRecognizer>(Xaml.CreateFuncIGestureRecognizer, Xaml.UpdateFuncIGestureRecognizer, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoIGestureRecognizer : ViewElement option = None with get, set
+    static member val ProtoIGestureRecognizer : ViewElement option = None with get, set
 
     /// Builds the attributes for a PanGestureRecognizer in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildPanGestureRecognizer(attribCount: int, ?touchPoints: int, ?panUpdated: Xamarin.Forms.PanUpdatedEventArgs -> unit, ?classId: string, ?styleId: string) = 
+    static member inline BuildPanGestureRecognizer(attribCount: int, ?touchPoints: int, ?panUpdated: Xamarin.Forms.PanUpdatedEventArgs -> unit, ?classId: string, ?styleId: string) = 
 
         let attribCount = match touchPoints with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match panUpdated with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildElement(attribCount, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildElement(attribCount, ?classId=classId, ?styleId=styleId)
         match touchPoints with None -> () | Some v -> attribBuilder.Add(Xaml._TouchPointsAttribKey, (v)) 
         match panUpdated with None -> () | Some v -> attribBuilder.Add(Xaml._PanUpdatedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.PanUpdatedEventArgs>(fun _sender args -> f args))(v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncPanGestureRecognizer : (unit -> Xamarin.Forms.PanGestureRecognizer) = (fun () -> Xaml.ZCreatePanGestureRecognizer())
+    static member val CreateFuncPanGestureRecognizer : (unit -> Xamarin.Forms.PanGestureRecognizer) = (fun () -> Xaml.CreatePanGestureRecognizer())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreatePanGestureRecognizer () : Xamarin.Forms.PanGestureRecognizer = 
+    static member CreatePanGestureRecognizer () : Xamarin.Forms.PanGestureRecognizer = 
             upcast (new Xamarin.Forms.PanGestureRecognizer())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -907,7 +907,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdatePanGestureRecognizer (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.PanGestureRecognizer) = 
         // update the inherited Element element
-        let baseElement = (if Xaml.ZProtoElement.IsNone then Xaml.ZProtoElement <- Some (Xaml.Element())); Xaml.ZProtoElement.Value
+        let baseElement = (if Xaml.ProtoElement.IsNone then Xaml.ProtoElement <- Some (Xaml.Element())); Xaml.ProtoElement.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevTouchPointsOpt = ValueNone
         let mutable currTouchPointsOpt = ValueNone
@@ -941,30 +941,30 @@ type Xaml() =
     /// Describes a PanGestureRecognizer in the view
     static member inline PanGestureRecognizer(?touchPoints: int, ?panUpdated: Xamarin.Forms.PanUpdatedEventArgs -> unit, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildPanGestureRecognizer(0, ?touchPoints=touchPoints, ?panUpdated=panUpdated, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildPanGestureRecognizer(0, ?touchPoints=touchPoints, ?panUpdated=panUpdated, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.PanGestureRecognizer>(Xaml.ZCreateFuncPanGestureRecognizer, Xaml.UpdateFuncPanGestureRecognizer, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.PanGestureRecognizer>(Xaml.CreateFuncPanGestureRecognizer, Xaml.UpdateFuncPanGestureRecognizer, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoPanGestureRecognizer : ViewElement option = None with get, set
+    static member val ProtoPanGestureRecognizer : ViewElement option = None with get, set
 
     /// Builds the attributes for a TapGestureRecognizer in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildTapGestureRecognizer(attribCount: int, ?command: unit -> unit, ?numberOfTapsRequired: int, ?classId: string, ?styleId: string) = 
+    static member inline BuildTapGestureRecognizer(attribCount: int, ?command: unit -> unit, ?numberOfTapsRequired: int, ?classId: string, ?styleId: string) = 
 
         let attribCount = match command with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match numberOfTapsRequired with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildElement(attribCount, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildElement(attribCount, ?classId=classId, ?styleId=styleId)
         match command with None -> () | Some v -> attribBuilder.Add(Xaml._CommandAttribKey, makeCommand(v)) 
         match numberOfTapsRequired with None -> () | Some v -> attribBuilder.Add(Xaml._NumberOfTapsRequiredAttribKey, (v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncTapGestureRecognizer : (unit -> Xamarin.Forms.TapGestureRecognizer) = (fun () -> Xaml.ZCreateTapGestureRecognizer())
+    static member val CreateFuncTapGestureRecognizer : (unit -> Xamarin.Forms.TapGestureRecognizer) = (fun () -> Xaml.CreateTapGestureRecognizer())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateTapGestureRecognizer () : Xamarin.Forms.TapGestureRecognizer = 
+    static member CreateTapGestureRecognizer () : Xamarin.Forms.TapGestureRecognizer = 
             upcast (new Xamarin.Forms.TapGestureRecognizer())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -973,7 +973,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateTapGestureRecognizer (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.TapGestureRecognizer) = 
         // update the inherited Element element
-        let baseElement = (if Xaml.ZProtoElement.IsNone then Xaml.ZProtoElement <- Some (Xaml.Element())); Xaml.ZProtoElement.Value
+        let baseElement = (if Xaml.ProtoElement.IsNone then Xaml.ProtoElement <- Some (Xaml.Element())); Xaml.ProtoElement.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevCommandOpt = ValueNone
         let mutable currCommandOpt = ValueNone
@@ -1006,32 +1006,32 @@ type Xaml() =
     /// Describes a TapGestureRecognizer in the view
     static member inline TapGestureRecognizer(?command: unit -> unit, ?numberOfTapsRequired: int, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildTapGestureRecognizer(0, ?command=command, ?numberOfTapsRequired=numberOfTapsRequired, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildTapGestureRecognizer(0, ?command=command, ?numberOfTapsRequired=numberOfTapsRequired, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.TapGestureRecognizer>(Xaml.ZCreateFuncTapGestureRecognizer, Xaml.UpdateFuncTapGestureRecognizer, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.TapGestureRecognizer>(Xaml.CreateFuncTapGestureRecognizer, Xaml.UpdateFuncTapGestureRecognizer, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoTapGestureRecognizer : ViewElement option = None with get, set
+    static member val ProtoTapGestureRecognizer : ViewElement option = None with get, set
 
     /// Builds the attributes for a ClickGestureRecognizer in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildClickGestureRecognizer(attribCount: int, ?command: unit -> unit, ?numberOfClicksRequired: int, ?buttons: Xamarin.Forms.ButtonsMask, ?classId: string, ?styleId: string) = 
+    static member inline BuildClickGestureRecognizer(attribCount: int, ?command: unit -> unit, ?numberOfClicksRequired: int, ?buttons: Xamarin.Forms.ButtonsMask, ?classId: string, ?styleId: string) = 
 
         let attribCount = match command with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match numberOfClicksRequired with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match buttons with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildElement(attribCount, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildElement(attribCount, ?classId=classId, ?styleId=styleId)
         match command with None -> () | Some v -> attribBuilder.Add(Xaml._CommandAttribKey, makeCommand(v)) 
         match numberOfClicksRequired with None -> () | Some v -> attribBuilder.Add(Xaml._NumberOfClicksRequiredAttribKey, (v)) 
         match buttons with None -> () | Some v -> attribBuilder.Add(Xaml._ButtonsAttribKey, (v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncClickGestureRecognizer : (unit -> Xamarin.Forms.ClickGestureRecognizer) = (fun () -> Xaml.ZCreateClickGestureRecognizer())
+    static member val CreateFuncClickGestureRecognizer : (unit -> Xamarin.Forms.ClickGestureRecognizer) = (fun () -> Xaml.CreateClickGestureRecognizer())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateClickGestureRecognizer () : Xamarin.Forms.ClickGestureRecognizer = 
+    static member CreateClickGestureRecognizer () : Xamarin.Forms.ClickGestureRecognizer = 
             upcast (new Xamarin.Forms.ClickGestureRecognizer())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -1040,7 +1040,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateClickGestureRecognizer (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.ClickGestureRecognizer) = 
         // update the inherited Element element
-        let baseElement = (if Xaml.ZProtoElement.IsNone then Xaml.ZProtoElement <- Some (Xaml.Element())); Xaml.ZProtoElement.Value
+        let baseElement = (if Xaml.ProtoElement.IsNone then Xaml.ProtoElement <- Some (Xaml.Element())); Xaml.ProtoElement.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevCommandOpt = ValueNone
         let mutable currCommandOpt = ValueNone
@@ -1084,30 +1084,30 @@ type Xaml() =
     /// Describes a ClickGestureRecognizer in the view
     static member inline ClickGestureRecognizer(?command: unit -> unit, ?numberOfClicksRequired: int, ?buttons: Xamarin.Forms.ButtonsMask, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildClickGestureRecognizer(0, ?command=command, ?numberOfClicksRequired=numberOfClicksRequired, ?buttons=buttons, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildClickGestureRecognizer(0, ?command=command, ?numberOfClicksRequired=numberOfClicksRequired, ?buttons=buttons, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.ClickGestureRecognizer>(Xaml.ZCreateFuncClickGestureRecognizer, Xaml.UpdateFuncClickGestureRecognizer, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.ClickGestureRecognizer>(Xaml.CreateFuncClickGestureRecognizer, Xaml.UpdateFuncClickGestureRecognizer, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoClickGestureRecognizer : ViewElement option = None with get, set
+    static member val ProtoClickGestureRecognizer : ViewElement option = None with get, set
 
     /// Builds the attributes for a PinchGestureRecognizer in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildPinchGestureRecognizer(attribCount: int, ?isPinching: bool, ?pinchUpdated: Xamarin.Forms.PinchGestureUpdatedEventArgs -> unit, ?classId: string, ?styleId: string) = 
+    static member inline BuildPinchGestureRecognizer(attribCount: int, ?isPinching: bool, ?pinchUpdated: Xamarin.Forms.PinchGestureUpdatedEventArgs -> unit, ?classId: string, ?styleId: string) = 
 
         let attribCount = match isPinching with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match pinchUpdated with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildElement(attribCount, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildElement(attribCount, ?classId=classId, ?styleId=styleId)
         match isPinching with None -> () | Some v -> attribBuilder.Add(Xaml._IsPinchingAttribKey, (v)) 
         match pinchUpdated with None -> () | Some v -> attribBuilder.Add(Xaml._PinchUpdatedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.PinchGestureUpdatedEventArgs>(fun _sender args -> f args))(v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncPinchGestureRecognizer : (unit -> Xamarin.Forms.PinchGestureRecognizer) = (fun () -> Xaml.ZCreatePinchGestureRecognizer())
+    static member val CreateFuncPinchGestureRecognizer : (unit -> Xamarin.Forms.PinchGestureRecognizer) = (fun () -> Xaml.CreatePinchGestureRecognizer())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreatePinchGestureRecognizer () : Xamarin.Forms.PinchGestureRecognizer = 
+    static member CreatePinchGestureRecognizer () : Xamarin.Forms.PinchGestureRecognizer = 
             upcast (new Xamarin.Forms.PinchGestureRecognizer())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -1116,7 +1116,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdatePinchGestureRecognizer (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.PinchGestureRecognizer) = 
         // update the inherited Element element
-        let baseElement = (if Xaml.ZProtoElement.IsNone then Xaml.ZProtoElement <- Some (Xaml.Element())); Xaml.ZProtoElement.Value
+        let baseElement = (if Xaml.ProtoElement.IsNone then Xaml.ProtoElement <- Some (Xaml.Element())); Xaml.ProtoElement.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevIsPinchingOpt = ValueNone
         let mutable currIsPinchingOpt = ValueNone
@@ -1150,30 +1150,30 @@ type Xaml() =
     /// Describes a PinchGestureRecognizer in the view
     static member inline PinchGestureRecognizer(?isPinching: bool, ?pinchUpdated: Xamarin.Forms.PinchGestureUpdatedEventArgs -> unit, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildPinchGestureRecognizer(0, ?isPinching=isPinching, ?pinchUpdated=pinchUpdated, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildPinchGestureRecognizer(0, ?isPinching=isPinching, ?pinchUpdated=pinchUpdated, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.PinchGestureRecognizer>(Xaml.ZCreateFuncPinchGestureRecognizer, Xaml.UpdateFuncPinchGestureRecognizer, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.PinchGestureRecognizer>(Xaml.CreateFuncPinchGestureRecognizer, Xaml.UpdateFuncPinchGestureRecognizer, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoPinchGestureRecognizer : ViewElement option = None with get, set
+    static member val ProtoPinchGestureRecognizer : ViewElement option = None with get, set
 
     /// Builds the attributes for a ActivityIndicator in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildActivityIndicator(attribCount: int, ?color: Xamarin.Forms.Color, ?isRunning: bool, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildActivityIndicator(attribCount: int, ?color: Xamarin.Forms.Color, ?isRunning: bool, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match color with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match isRunning with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match color with None -> () | Some v -> attribBuilder.Add(Xaml._ColorAttribKey, (v)) 
         match isRunning with None -> () | Some v -> attribBuilder.Add(Xaml._IsRunningAttribKey, (v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncActivityIndicator : (unit -> Xamarin.Forms.ActivityIndicator) = (fun () -> Xaml.ZCreateActivityIndicator())
+    static member val CreateFuncActivityIndicator : (unit -> Xamarin.Forms.ActivityIndicator) = (fun () -> Xaml.CreateActivityIndicator())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateActivityIndicator () : Xamarin.Forms.ActivityIndicator = 
+    static member CreateActivityIndicator () : Xamarin.Forms.ActivityIndicator = 
             upcast (new Xamarin.Forms.ActivityIndicator())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -1182,7 +1182,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateActivityIndicator (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.ActivityIndicator) = 
         // update the inherited View element
-        let baseElement = (if Xaml.ZProtoView.IsNone then Xaml.ZProtoView <- Some (Xaml.View())); Xaml.ZProtoView.Value
+        let baseElement = (if Xaml.ProtoView.IsNone then Xaml.ProtoView <- Some (Xaml.View())); Xaml.ProtoView.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevColorOpt = ValueNone
         let mutable currColorOpt = ValueNone
@@ -1215,28 +1215,28 @@ type Xaml() =
     /// Describes a ActivityIndicator in the view
     static member inline ActivityIndicator(?color: Xamarin.Forms.Color, ?isRunning: bool, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildActivityIndicator(0, ?color=color, ?isRunning=isRunning, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildActivityIndicator(0, ?color=color, ?isRunning=isRunning, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.ActivityIndicator>(Xaml.ZCreateFuncActivityIndicator, Xaml.UpdateFuncActivityIndicator, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.ActivityIndicator>(Xaml.CreateFuncActivityIndicator, Xaml.UpdateFuncActivityIndicator, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoActivityIndicator : ViewElement option = None with get, set
+    static member val ProtoActivityIndicator : ViewElement option = None with get, set
 
     /// Builds the attributes for a BoxView in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildBoxView(attribCount: int, ?color: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildBoxView(attribCount: int, ?color: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match color with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match color with None -> () | Some v -> attribBuilder.Add(Xaml._ColorAttribKey, (v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncBoxView : (unit -> Xamarin.Forms.BoxView) = (fun () -> Xaml.ZCreateBoxView())
+    static member val CreateFuncBoxView : (unit -> Xamarin.Forms.BoxView) = (fun () -> Xaml.CreateBoxView())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateBoxView () : Xamarin.Forms.BoxView = 
+    static member CreateBoxView () : Xamarin.Forms.BoxView = 
             upcast (new Xamarin.Forms.BoxView())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -1245,7 +1245,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateBoxView (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.BoxView) = 
         // update the inherited View element
-        let baseElement = (if Xaml.ZProtoView.IsNone then Xaml.ZProtoView <- Some (Xaml.View())); Xaml.ZProtoView.Value
+        let baseElement = (if Xaml.ProtoView.IsNone then Xaml.ProtoView <- Some (Xaml.View())); Xaml.ProtoView.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevColorOpt = ValueNone
         let mutable currColorOpt = ValueNone
@@ -1267,28 +1267,28 @@ type Xaml() =
     /// Describes a BoxView in the view
     static member inline BoxView(?color: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildBoxView(0, ?color=color, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildBoxView(0, ?color=color, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.BoxView>(Xaml.ZCreateFuncBoxView, Xaml.UpdateFuncBoxView, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.BoxView>(Xaml.CreateFuncBoxView, Xaml.UpdateFuncBoxView, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoBoxView : ViewElement option = None with get, set
+    static member val ProtoBoxView : ViewElement option = None with get, set
 
     /// Builds the attributes for a ProgressBar in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildProgressBar(attribCount: int, ?progress: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildProgressBar(attribCount: int, ?progress: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match progress with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match progress with None -> () | Some v -> attribBuilder.Add(Xaml._ProgressAttribKey, (v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncProgressBar : (unit -> Xamarin.Forms.ProgressBar) = (fun () -> Xaml.ZCreateProgressBar())
+    static member val CreateFuncProgressBar : (unit -> Xamarin.Forms.ProgressBar) = (fun () -> Xaml.CreateProgressBar())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateProgressBar () : Xamarin.Forms.ProgressBar = 
+    static member CreateProgressBar () : Xamarin.Forms.ProgressBar = 
             upcast (new Xamarin.Forms.ProgressBar())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -1297,7 +1297,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateProgressBar (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.ProgressBar) = 
         // update the inherited View element
-        let baseElement = (if Xaml.ZProtoView.IsNone then Xaml.ZProtoView <- Some (Xaml.View())); Xaml.ZProtoView.Value
+        let baseElement = (if Xaml.ProtoView.IsNone then Xaml.ProtoView <- Some (Xaml.View())); Xaml.ProtoView.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevProgressOpt = ValueNone
         let mutable currProgressOpt = ValueNone
@@ -1319,30 +1319,30 @@ type Xaml() =
     /// Describes a ProgressBar in the view
     static member inline ProgressBar(?progress: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildProgressBar(0, ?progress=progress, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildProgressBar(0, ?progress=progress, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.ProgressBar>(Xaml.ZCreateFuncProgressBar, Xaml.UpdateFuncProgressBar, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.ProgressBar>(Xaml.CreateFuncProgressBar, Xaml.UpdateFuncProgressBar, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoProgressBar : ViewElement option = None with get, set
+    static member val ProtoProgressBar : ViewElement option = None with get, set
 
     /// Builds the attributes for a Layout in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildLayout(attribCount: int, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildLayout(attribCount: int, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match isClippedToBounds with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match padding with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match isClippedToBounds with None -> () | Some v -> attribBuilder.Add(Xaml._IsClippedToBoundsAttribKey, (v)) 
         match padding with None -> () | Some v -> attribBuilder.Add(Xaml._PaddingAttribKey, makeThickness(v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncLayout : (unit -> Xamarin.Forms.Layout) = (fun () -> Xaml.ZCreateLayout())
+    static member val CreateFuncLayout : (unit -> Xamarin.Forms.Layout) = (fun () -> Xaml.CreateLayout())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateLayout () : Xamarin.Forms.Layout = 
+    static member CreateLayout () : Xamarin.Forms.Layout = 
         failwith "can't create Xamarin.Forms.Layout"
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -1351,7 +1351,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateLayout (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.Layout) = 
         // update the inherited View element
-        let baseElement = (if Xaml.ZProtoView.IsNone then Xaml.ZProtoView <- Some (Xaml.View())); Xaml.ZProtoView.Value
+        let baseElement = (if Xaml.ProtoView.IsNone then Xaml.ProtoView <- Some (Xaml.View())); Xaml.ProtoView.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevIsClippedToBoundsOpt = ValueNone
         let mutable currIsClippedToBoundsOpt = ValueNone
@@ -1384,30 +1384,30 @@ type Xaml() =
     /// Describes a Layout in the view
     static member inline Layout(?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildLayout(0, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildLayout(0, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.Layout>(Xaml.ZCreateFuncLayout, Xaml.UpdateFuncLayout, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.Layout>(Xaml.CreateFuncLayout, Xaml.UpdateFuncLayout, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoLayout : ViewElement option = None with get, set
+    static member val ProtoLayout : ViewElement option = None with get, set
 
     /// Builds the attributes for a ScrollView in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildScrollView(attribCount: int, ?content: ViewElement, ?orientation: Xamarin.Forms.ScrollOrientation, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildScrollView(attribCount: int, ?content: ViewElement, ?orientation: Xamarin.Forms.ScrollOrientation, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match content with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match orientation with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match content with None -> () | Some v -> attribBuilder.Add(Xaml._ContentAttribKey, (v)) 
         match orientation with None -> () | Some v -> attribBuilder.Add(Xaml._ScrollOrientationAttribKey, (v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncScrollView : (unit -> Xamarin.Forms.ScrollView) = (fun () -> Xaml.ZCreateScrollView())
+    static member val CreateFuncScrollView : (unit -> Xamarin.Forms.ScrollView) = (fun () -> Xaml.CreateScrollView())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateScrollView () : Xamarin.Forms.ScrollView = 
+    static member CreateScrollView () : Xamarin.Forms.ScrollView = 
             upcast (new Xamarin.Forms.ScrollView())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -1416,7 +1416,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateScrollView (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.ScrollView) = 
         // update the inherited Layout element
-        let baseElement = (if Xaml.ZProtoLayout.IsNone then Xaml.ZProtoLayout <- Some (Xaml.Layout())); Xaml.ZProtoLayout.Value
+        let baseElement = (if Xaml.ProtoLayout.IsNone then Xaml.ProtoLayout <- Some (Xaml.Layout())); Xaml.ProtoLayout.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevContentOpt = ValueNone
         let mutable currContentOpt = ValueNone
@@ -1454,16 +1454,16 @@ type Xaml() =
     /// Describes a ScrollView in the view
     static member inline ScrollView(?content: ViewElement, ?orientation: Xamarin.Forms.ScrollOrientation, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildScrollView(0, ?content=content, ?orientation=orientation, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildScrollView(0, ?content=content, ?orientation=orientation, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.ScrollView>(Xaml.ZCreateFuncScrollView, Xaml.UpdateFuncScrollView, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.ScrollView>(Xaml.CreateFuncScrollView, Xaml.UpdateFuncScrollView, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoScrollView : ViewElement option = None with get, set
+    static member val ProtoScrollView : ViewElement option = None with get, set
 
     /// Builds the attributes for a SearchBar in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildSearchBar(attribCount: int, ?cancelButtonColor: Xamarin.Forms.Color, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?placeholder: string, ?placeholderColor: Xamarin.Forms.Color, ?searchCommand: string -> unit, ?canExecute: bool, ?text: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildSearchBar(attribCount: int, ?cancelButtonColor: Xamarin.Forms.Color, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?placeholder: string, ?placeholderColor: Xamarin.Forms.Color, ?searchCommand: string -> unit, ?canExecute: bool, ?text: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match cancelButtonColor with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match fontFamily with Some _ -> attribCount + 1 | None -> attribCount
@@ -1477,7 +1477,7 @@ type Xaml() =
         let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match textColor with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match cancelButtonColor with None -> () | Some v -> attribBuilder.Add(Xaml._CancelButtonColorAttribKey, (v)) 
         match fontFamily with None -> () | Some v -> attribBuilder.Add(Xaml._FontFamilyAttribKey, (v)) 
         match fontAttributes with None -> () | Some v -> attribBuilder.Add(Xaml._FontAttributesAttribKey, (v)) 
@@ -1492,10 +1492,10 @@ type Xaml() =
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncSearchBar : (unit -> Xamarin.Forms.SearchBar) = (fun () -> Xaml.ZCreateSearchBar())
+    static member val CreateFuncSearchBar : (unit -> Xamarin.Forms.SearchBar) = (fun () -> Xaml.CreateSearchBar())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateSearchBar () : Xamarin.Forms.SearchBar = 
+    static member CreateSearchBar () : Xamarin.Forms.SearchBar = 
             upcast (new Xamarin.Forms.SearchBar())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -1504,7 +1504,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateSearchBar (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.SearchBar) = 
         // update the inherited View element
-        let baseElement = (if Xaml.ZProtoView.IsNone then Xaml.ZProtoView <- Some (Xaml.View())); Xaml.ZProtoView.Value
+        let baseElement = (if Xaml.ProtoView.IsNone then Xaml.ProtoView <- Some (Xaml.View())); Xaml.ProtoView.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevCancelButtonColorOpt = ValueNone
         let mutable currCancelButtonColorOpt = ValueNone
@@ -1628,16 +1628,16 @@ type Xaml() =
     /// Describes a SearchBar in the view
     static member inline SearchBar(?cancelButtonColor: Xamarin.Forms.Color, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?placeholder: string, ?placeholderColor: Xamarin.Forms.Color, ?searchCommand: string -> unit, ?canExecute: bool, ?text: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildSearchBar(0, ?cancelButtonColor=cancelButtonColor, ?fontFamily=fontFamily, ?fontAttributes=fontAttributes, ?fontSize=fontSize, ?horizontalTextAlignment=horizontalTextAlignment, ?placeholder=placeholder, ?placeholderColor=placeholderColor, ?searchCommand=searchCommand, ?canExecute=canExecute, ?text=text, ?textColor=textColor, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildSearchBar(0, ?cancelButtonColor=cancelButtonColor, ?fontFamily=fontFamily, ?fontAttributes=fontAttributes, ?fontSize=fontSize, ?horizontalTextAlignment=horizontalTextAlignment, ?placeholder=placeholder, ?placeholderColor=placeholderColor, ?searchCommand=searchCommand, ?canExecute=canExecute, ?text=text, ?textColor=textColor, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.SearchBar>(Xaml.ZCreateFuncSearchBar, Xaml.UpdateFuncSearchBar, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.SearchBar>(Xaml.CreateFuncSearchBar, Xaml.UpdateFuncSearchBar, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoSearchBar : ViewElement option = None with get, set
+    static member val ProtoSearchBar : ViewElement option = None with get, set
 
     /// Builds the attributes for a Button in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildButton(attribCount: int, ?text: string, ?command: unit -> unit, ?canExecute: bool, ?borderColor: Xamarin.Forms.Color, ?borderWidth: double, ?commandParameter: System.Object, ?contentLayout: Xamarin.Forms.Button.ButtonContentLayout, ?cornerRadius: int, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?image: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildButton(attribCount: int, ?text: string, ?command: unit -> unit, ?canExecute: bool, ?borderColor: Xamarin.Forms.Color, ?borderWidth: double, ?commandParameter: System.Object, ?contentLayout: Xamarin.Forms.Button.ButtonContentLayout, ?cornerRadius: int, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?image: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match command with Some _ -> attribCount + 1 | None -> attribCount
@@ -1653,7 +1653,7 @@ type Xaml() =
         let attribCount = match image with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match textColor with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match text with None -> () | Some v -> attribBuilder.Add(Xaml._TextAttribKey, (v)) 
         match command with None -> () | Some v -> attribBuilder.Add(Xaml._ButtonCommandAttribKey, (v)) 
         match canExecute with None -> () | Some v -> attribBuilder.Add(Xaml._ButtonCanExecuteAttribKey, (v)) 
@@ -1670,10 +1670,10 @@ type Xaml() =
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncButton : (unit -> Xamarin.Forms.Button) = (fun () -> Xaml.ZCreateButton())
+    static member val CreateFuncButton : (unit -> Xamarin.Forms.Button) = (fun () -> Xaml.CreateButton())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateButton () : Xamarin.Forms.Button = 
+    static member CreateButton () : Xamarin.Forms.Button = 
             upcast (new Xamarin.Forms.Button())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -1682,7 +1682,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateButton (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.Button) = 
         // update the inherited View element
-        let baseElement = (if Xaml.ZProtoView.IsNone then Xaml.ZProtoView <- Some (Xaml.View())); Xaml.ZProtoView.Value
+        let baseElement = (if Xaml.ProtoView.IsNone then Xaml.ProtoView <- Some (Xaml.View())); Xaml.ProtoView.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevTextOpt = ValueNone
         let mutable currTextOpt = ValueNone
@@ -1828,23 +1828,23 @@ type Xaml() =
     /// Describes a Button in the view
     static member inline Button(?text: string, ?command: unit -> unit, ?canExecute: bool, ?borderColor: Xamarin.Forms.Color, ?borderWidth: double, ?commandParameter: System.Object, ?contentLayout: Xamarin.Forms.Button.ButtonContentLayout, ?cornerRadius: int, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?image: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildButton(0, ?text=text, ?command=command, ?canExecute=canExecute, ?borderColor=borderColor, ?borderWidth=borderWidth, ?commandParameter=commandParameter, ?contentLayout=contentLayout, ?cornerRadius=cornerRadius, ?fontFamily=fontFamily, ?fontAttributes=fontAttributes, ?fontSize=fontSize, ?image=image, ?textColor=textColor, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildButton(0, ?text=text, ?command=command, ?canExecute=canExecute, ?borderColor=borderColor, ?borderWidth=borderWidth, ?commandParameter=commandParameter, ?contentLayout=contentLayout, ?cornerRadius=cornerRadius, ?fontFamily=fontFamily, ?fontAttributes=fontAttributes, ?fontSize=fontSize, ?image=image, ?textColor=textColor, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.Button>(Xaml.ZCreateFuncButton, Xaml.UpdateFuncButton, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.Button>(Xaml.CreateFuncButton, Xaml.UpdateFuncButton, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoButton : ViewElement option = None with get, set
+    static member val ProtoButton : ViewElement option = None with get, set
 
     /// Builds the attributes for a Slider in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildSlider(attribCount: int, ?minimum: double, ?maximum: double, ?value: double, ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildSlider(attribCount: int, ?minimum: double, ?maximum: double, ?value: double, ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match minimum with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match maximum with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match value with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match valueChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match minimum with None -> () | Some v -> attribBuilder.Add(Xaml._MinimumAttribKey, (v)) 
         match maximum with None -> () | Some v -> attribBuilder.Add(Xaml._MaximumAttribKey, (v)) 
         match value with None -> () | Some v -> attribBuilder.Add(Xaml._ValueAttribKey, (v)) 
@@ -1852,10 +1852,10 @@ type Xaml() =
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncSlider : (unit -> Xamarin.Forms.Slider) = (fun () -> Xaml.ZCreateSlider())
+    static member val CreateFuncSlider : (unit -> Xamarin.Forms.Slider) = (fun () -> Xaml.CreateSlider())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateSlider () : Xamarin.Forms.Slider = 
+    static member CreateSlider () : Xamarin.Forms.Slider = 
             upcast (new Xamarin.Forms.Slider())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -1864,7 +1864,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateSlider (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.Slider) = 
         // update the inherited View element
-        let baseElement = (if Xaml.ZProtoView.IsNone then Xaml.ZProtoView <- Some (Xaml.View())); Xaml.ZProtoView.Value
+        let baseElement = (if Xaml.ProtoView.IsNone then Xaml.ProtoView <- Some (Xaml.View())); Xaml.ProtoView.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevMinimumOpt = ValueNone
         let mutable currMinimumOpt = ValueNone
@@ -1920,16 +1920,16 @@ type Xaml() =
     /// Describes a Slider in the view
     static member inline Slider(?minimum: double, ?maximum: double, ?value: double, ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildSlider(0, ?minimum=minimum, ?maximum=maximum, ?value=value, ?valueChanged=valueChanged, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildSlider(0, ?minimum=minimum, ?maximum=maximum, ?value=value, ?valueChanged=valueChanged, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.Slider>(Xaml.ZCreateFuncSlider, Xaml.UpdateFuncSlider, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.Slider>(Xaml.CreateFuncSlider, Xaml.UpdateFuncSlider, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoSlider : ViewElement option = None with get, set
+    static member val ProtoSlider : ViewElement option = None with get, set
 
     /// Builds the attributes for a Stepper in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildStepper(attribCount: int, ?minimum: double, ?maximum: double, ?value: double, ?increment: double, ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildStepper(attribCount: int, ?minimum: double, ?maximum: double, ?value: double, ?increment: double, ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match minimum with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match maximum with Some _ -> attribCount + 1 | None -> attribCount
@@ -1937,7 +1937,7 @@ type Xaml() =
         let attribCount = match increment with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match valueChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match minimum with None -> () | Some v -> attribBuilder.Add(Xaml._MinimumAttribKey, (v)) 
         match maximum with None -> () | Some v -> attribBuilder.Add(Xaml._MaximumAttribKey, (v)) 
         match value with None -> () | Some v -> attribBuilder.Add(Xaml._ValueAttribKey, (v)) 
@@ -1946,10 +1946,10 @@ type Xaml() =
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncStepper : (unit -> Xamarin.Forms.Stepper) = (fun () -> Xaml.ZCreateStepper())
+    static member val CreateFuncStepper : (unit -> Xamarin.Forms.Stepper) = (fun () -> Xaml.CreateStepper())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateStepper () : Xamarin.Forms.Stepper = 
+    static member CreateStepper () : Xamarin.Forms.Stepper = 
             upcast (new Xamarin.Forms.Stepper())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -1958,7 +1958,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateStepper (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.Stepper) = 
         // update the inherited View element
-        let baseElement = (if Xaml.ZProtoView.IsNone then Xaml.ZProtoView <- Some (Xaml.View())); Xaml.ZProtoView.Value
+        let baseElement = (if Xaml.ProtoView.IsNone then Xaml.ProtoView <- Some (Xaml.View())); Xaml.ProtoView.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevMinimumOpt = ValueNone
         let mutable currMinimumOpt = ValueNone
@@ -2025,30 +2025,30 @@ type Xaml() =
     /// Describes a Stepper in the view
     static member inline Stepper(?minimum: double, ?maximum: double, ?value: double, ?increment: double, ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildStepper(0, ?minimum=minimum, ?maximum=maximum, ?value=value, ?increment=increment, ?valueChanged=valueChanged, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildStepper(0, ?minimum=minimum, ?maximum=maximum, ?value=value, ?increment=increment, ?valueChanged=valueChanged, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.Stepper>(Xaml.ZCreateFuncStepper, Xaml.UpdateFuncStepper, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.Stepper>(Xaml.CreateFuncStepper, Xaml.UpdateFuncStepper, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoStepper : ViewElement option = None with get, set
+    static member val ProtoStepper : ViewElement option = None with get, set
 
     /// Builds the attributes for a Switch in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildSwitch(attribCount: int, ?isToggled: bool, ?toggled: Xamarin.Forms.ToggledEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildSwitch(attribCount: int, ?isToggled: bool, ?toggled: Xamarin.Forms.ToggledEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match isToggled with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match toggled with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match isToggled with None -> () | Some v -> attribBuilder.Add(Xaml._IsToggledAttribKey, (v)) 
         match toggled with None -> () | Some v -> attribBuilder.Add(Xaml._ToggledAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ToggledEventArgs>(fun _sender args -> f args))(v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncSwitch : (unit -> Xamarin.Forms.Switch) = (fun () -> Xaml.ZCreateSwitch())
+    static member val CreateFuncSwitch : (unit -> Xamarin.Forms.Switch) = (fun () -> Xaml.CreateSwitch())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateSwitch () : Xamarin.Forms.Switch = 
+    static member CreateSwitch () : Xamarin.Forms.Switch = 
             upcast (new Xamarin.Forms.Switch())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -2057,7 +2057,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateSwitch (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.Switch) = 
         // update the inherited View element
-        let baseElement = (if Xaml.ZProtoView.IsNone then Xaml.ZProtoView <- Some (Xaml.View())); Xaml.ZProtoView.Value
+        let baseElement = (if Xaml.ProtoView.IsNone then Xaml.ProtoView <- Some (Xaml.View())); Xaml.ProtoView.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevIsToggledOpt = ValueNone
         let mutable currIsToggledOpt = ValueNone
@@ -2091,30 +2091,30 @@ type Xaml() =
     /// Describes a Switch in the view
     static member inline Switch(?isToggled: bool, ?toggled: Xamarin.Forms.ToggledEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildSwitch(0, ?isToggled=isToggled, ?toggled=toggled, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildSwitch(0, ?isToggled=isToggled, ?toggled=toggled, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.Switch>(Xaml.ZCreateFuncSwitch, Xaml.UpdateFuncSwitch, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.Switch>(Xaml.CreateFuncSwitch, Xaml.UpdateFuncSwitch, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoSwitch : ViewElement option = None with get, set
+    static member val ProtoSwitch : ViewElement option = None with get, set
 
     /// Builds the attributes for a Cell in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildCell(attribCount: int, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
+    static member inline BuildCell(attribCount: int, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
 
         let attribCount = match height with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match isEnabled with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildElement(attribCount, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildElement(attribCount, ?classId=classId, ?styleId=styleId)
         match height with None -> () | Some v -> attribBuilder.Add(Xaml._HeightAttribKey, (v)) 
         match isEnabled with None -> () | Some v -> attribBuilder.Add(Xaml._IsEnabledAttribKey, (v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncCell : (unit -> Xamarin.Forms.Cell) = (fun () -> Xaml.ZCreateCell())
+    static member val CreateFuncCell : (unit -> Xamarin.Forms.Cell) = (fun () -> Xaml.CreateCell())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateCell () : Xamarin.Forms.Cell = 
+    static member CreateCell () : Xamarin.Forms.Cell = 
         failwith "can't create Xamarin.Forms.Cell"
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -2123,7 +2123,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateCell (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.Cell) = 
         // update the inherited Element element
-        let baseElement = (if Xaml.ZProtoElement.IsNone then Xaml.ZProtoElement <- Some (Xaml.Element())); Xaml.ZProtoElement.Value
+        let baseElement = (if Xaml.ProtoElement.IsNone then Xaml.ProtoElement <- Some (Xaml.Element())); Xaml.ProtoElement.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevHeightOpt = ValueNone
         let mutable currHeightOpt = ValueNone
@@ -2156,32 +2156,32 @@ type Xaml() =
     /// Describes a Cell in the view
     static member inline Cell(?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildCell(0, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildCell(0, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.Cell>(Xaml.ZCreateFuncCell, Xaml.UpdateFuncCell, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.Cell>(Xaml.CreateFuncCell, Xaml.UpdateFuncCell, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoCell : ViewElement option = None with get, set
+    static member val ProtoCell : ViewElement option = None with get, set
 
     /// Builds the attributes for a SwitchCell in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildSwitchCell(attribCount: int, ?on: bool, ?text: string, ?onChanged: Xamarin.Forms.ToggledEventArgs -> unit, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
+    static member inline BuildSwitchCell(attribCount: int, ?on: bool, ?text: string, ?onChanged: Xamarin.Forms.ToggledEventArgs -> unit, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
 
         let attribCount = match on with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match onChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildCell(attribCount, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildCell(attribCount, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId)
         match on with None -> () | Some v -> attribBuilder.Add(Xaml._OnAttribKey, (v)) 
         match text with None -> () | Some v -> attribBuilder.Add(Xaml._TextAttribKey, (v)) 
         match onChanged with None -> () | Some v -> attribBuilder.Add(Xaml._OnChangedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ToggledEventArgs>(fun _sender args -> f args))(v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncSwitchCell : (unit -> Xamarin.Forms.SwitchCell) = (fun () -> Xaml.ZCreateSwitchCell())
+    static member val CreateFuncSwitchCell : (unit -> Xamarin.Forms.SwitchCell) = (fun () -> Xaml.CreateSwitchCell())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateSwitchCell () : Xamarin.Forms.SwitchCell = 
+    static member CreateSwitchCell () : Xamarin.Forms.SwitchCell = 
             upcast (new Xamarin.Forms.SwitchCell())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -2190,7 +2190,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateSwitchCell (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.SwitchCell) = 
         // update the inherited Cell element
-        let baseElement = (if Xaml.ZProtoCell.IsNone then Xaml.ZProtoCell <- Some (Xaml.Cell())); Xaml.ZProtoCell.Value
+        let baseElement = (if Xaml.ProtoCell.IsNone then Xaml.ProtoCell <- Some (Xaml.Cell())); Xaml.ProtoCell.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevOnOpt = ValueNone
         let mutable currOnOpt = ValueNone
@@ -2235,23 +2235,23 @@ type Xaml() =
     /// Describes a SwitchCell in the view
     static member inline SwitchCell(?on: bool, ?text: string, ?onChanged: Xamarin.Forms.ToggledEventArgs -> unit, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildSwitchCell(0, ?on=on, ?text=text, ?onChanged=onChanged, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildSwitchCell(0, ?on=on, ?text=text, ?onChanged=onChanged, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.SwitchCell>(Xaml.ZCreateFuncSwitchCell, Xaml.UpdateFuncSwitchCell, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.SwitchCell>(Xaml.CreateFuncSwitchCell, Xaml.UpdateFuncSwitchCell, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoSwitchCell : ViewElement option = None with get, set
+    static member val ProtoSwitchCell : ViewElement option = None with get, set
 
     /// Builds the attributes for a TableView in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildTableView(attribCount: int, ?intent: Xamarin.Forms.TableIntent, ?hasUnevenRows: bool, ?rowHeight: int, ?items: (string * ViewElement list) list, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildTableView(attribCount: int, ?intent: Xamarin.Forms.TableIntent, ?hasUnevenRows: bool, ?rowHeight: int, ?items: (string * ViewElement list) list, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match intent with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match hasUnevenRows with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match rowHeight with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match items with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match intent with None -> () | Some v -> attribBuilder.Add(Xaml._IntentAttribKey, (v)) 
         match hasUnevenRows with None -> () | Some v -> attribBuilder.Add(Xaml._HasUnevenRowsAttribKey, (v)) 
         match rowHeight with None -> () | Some v -> attribBuilder.Add(Xaml._RowHeightAttribKey, (v)) 
@@ -2259,10 +2259,10 @@ type Xaml() =
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncTableView : (unit -> Xamarin.Forms.TableView) = (fun () -> Xaml.ZCreateTableView())
+    static member val CreateFuncTableView : (unit -> Xamarin.Forms.TableView) = (fun () -> Xaml.CreateTableView())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateTableView () : Xamarin.Forms.TableView = 
+    static member CreateTableView () : Xamarin.Forms.TableView = 
             upcast (new Xamarin.Forms.TableView())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -2271,7 +2271,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateTableView (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.TableView) = 
         // update the inherited View element
-        let baseElement = (if Xaml.ZProtoView.IsNone then Xaml.ZProtoView <- Some (Xaml.View())); Xaml.ZProtoView.Value
+        let baseElement = (if Xaml.ProtoView.IsNone then Xaml.ProtoView <- Some (Xaml.View())); Xaml.ProtoView.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevIntentOpt = ValueNone
         let mutable currIntentOpt = ValueNone
@@ -2322,16 +2322,16 @@ type Xaml() =
     /// Describes a TableView in the view
     static member inline TableView(?intent: Xamarin.Forms.TableIntent, ?hasUnevenRows: bool, ?rowHeight: int, ?items: (string * ViewElement list) list, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildTableView(0, ?intent=intent, ?hasUnevenRows=hasUnevenRows, ?rowHeight=rowHeight, ?items=items, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildTableView(0, ?intent=intent, ?hasUnevenRows=hasUnevenRows, ?rowHeight=rowHeight, ?items=items, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.TableView>(Xaml.ZCreateFuncTableView, Xaml.UpdateFuncTableView, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.TableView>(Xaml.CreateFuncTableView, Xaml.UpdateFuncTableView, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoTableView : ViewElement option = None with get, set
+    static member val ProtoTableView : ViewElement option = None with get, set
 
     /// Builds the attributes for a RowDefinition in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildRowDefinition(attribCount: int, ?height: obj) = 
+    static member inline BuildRowDefinition(attribCount: int, ?height: obj) = 
 
         let attribCount = match height with Some _ -> attribCount + 1 | None -> attribCount
         let attribBuilder = new AttributesBuilder(attribCount)
@@ -2339,10 +2339,10 @@ type Xaml() =
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncRowDefinition : (unit -> Xamarin.Forms.RowDefinition) = (fun () -> Xaml.ZCreateRowDefinition())
+    static member val CreateFuncRowDefinition : (unit -> Xamarin.Forms.RowDefinition) = (fun () -> Xaml.CreateRowDefinition())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateRowDefinition () : Xamarin.Forms.RowDefinition = 
+    static member CreateRowDefinition () : Xamarin.Forms.RowDefinition = 
             upcast (new Xamarin.Forms.RowDefinition())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -2370,16 +2370,16 @@ type Xaml() =
     /// Describes a RowDefinition in the view
     static member inline RowDefinition(?height: obj) = 
 
-        let attribBuilder = Xaml.ZBuildRowDefinition(0, ?height=height)
+        let attribBuilder = Xaml.BuildRowDefinition(0, ?height=height)
 
-        ViewElement.Create<Xamarin.Forms.RowDefinition>(Xaml.ZCreateFuncRowDefinition, Xaml.UpdateFuncRowDefinition, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.RowDefinition>(Xaml.CreateFuncRowDefinition, Xaml.UpdateFuncRowDefinition, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoRowDefinition : ViewElement option = None with get, set
+    static member val ProtoRowDefinition : ViewElement option = None with get, set
 
     /// Builds the attributes for a ColumnDefinition in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildColumnDefinition(attribCount: int, ?width: obj) = 
+    static member inline BuildColumnDefinition(attribCount: int, ?width: obj) = 
 
         let attribCount = match width with Some _ -> attribCount + 1 | None -> attribCount
         let attribBuilder = new AttributesBuilder(attribCount)
@@ -2387,10 +2387,10 @@ type Xaml() =
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncColumnDefinition : (unit -> Xamarin.Forms.ColumnDefinition) = (fun () -> Xaml.ZCreateColumnDefinition())
+    static member val CreateFuncColumnDefinition : (unit -> Xamarin.Forms.ColumnDefinition) = (fun () -> Xaml.CreateColumnDefinition())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateColumnDefinition () : Xamarin.Forms.ColumnDefinition = 
+    static member CreateColumnDefinition () : Xamarin.Forms.ColumnDefinition = 
             upcast (new Xamarin.Forms.ColumnDefinition())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -2418,16 +2418,16 @@ type Xaml() =
     /// Describes a ColumnDefinition in the view
     static member inline ColumnDefinition(?width: obj) = 
 
-        let attribBuilder = Xaml.ZBuildColumnDefinition(0, ?width=width)
+        let attribBuilder = Xaml.BuildColumnDefinition(0, ?width=width)
 
-        ViewElement.Create<Xamarin.Forms.ColumnDefinition>(Xaml.ZCreateFuncColumnDefinition, Xaml.UpdateFuncColumnDefinition, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.ColumnDefinition>(Xaml.CreateFuncColumnDefinition, Xaml.UpdateFuncColumnDefinition, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoColumnDefinition : ViewElement option = None with get, set
+    static member val ProtoColumnDefinition : ViewElement option = None with get, set
 
     /// Builds the attributes for a Grid in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildGrid(attribCount: int, ?rowdefs: obj list, ?coldefs: obj list, ?rowSpacing: double, ?columnSpacing: double, ?children: ViewElement list, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildGrid(attribCount: int, ?rowdefs: obj list, ?coldefs: obj list, ?rowSpacing: double, ?columnSpacing: double, ?children: ViewElement list, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match rowdefs with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match coldefs with Some _ -> attribCount + 1 | None -> attribCount
@@ -2435,7 +2435,7 @@ type Xaml() =
         let attribCount = match columnSpacing with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match children with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match rowdefs with None -> () | Some v -> attribBuilder.Add(Xaml._GridRowDefinitionsAttribKey, (fun es -> es |> Array.ofList |> Array.map (fun h -> Xaml.RowDefinition(height=h)))(v)) 
         match coldefs with None -> () | Some v -> attribBuilder.Add(Xaml._GridColumnDefinitionsAttribKey, (fun es -> es |> Array.ofList |> Array.map (fun h -> Xaml.ColumnDefinition(width=h)))(v)) 
         match rowSpacing with None -> () | Some v -> attribBuilder.Add(Xaml._RowSpacingAttribKey, (v)) 
@@ -2444,10 +2444,10 @@ type Xaml() =
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncGrid : (unit -> Xamarin.Forms.Grid) = (fun () -> Xaml.ZCreateGrid())
+    static member val CreateFuncGrid : (unit -> Xamarin.Forms.Grid) = (fun () -> Xaml.CreateGrid())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateGrid () : Xamarin.Forms.Grid = 
+    static member CreateGrid () : Xamarin.Forms.Grid = 
             upcast (new Xamarin.Forms.Grid())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -2456,7 +2456,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateGrid (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.Grid) = 
         // update the inherited Layout element
-        let baseElement = (if Xaml.ZProtoLayout.IsNone then Xaml.ZProtoLayout <- Some (Xaml.Layout())); Xaml.ZProtoLayout.Value
+        let baseElement = (if Xaml.ProtoLayout.IsNone then Xaml.ProtoLayout <- Some (Xaml.Layout())); Xaml.ProtoLayout.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevGridRowDefinitionsOpt = ValueNone
         let mutable currGridRowDefinitionsOpt = ValueNone
@@ -2555,28 +2555,28 @@ type Xaml() =
     /// Describes a Grid in the view
     static member inline Grid(?rowdefs: obj list, ?coldefs: obj list, ?rowSpacing: double, ?columnSpacing: double, ?children: ViewElement list, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildGrid(0, ?rowdefs=rowdefs, ?coldefs=coldefs, ?rowSpacing=rowSpacing, ?columnSpacing=columnSpacing, ?children=children, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildGrid(0, ?rowdefs=rowdefs, ?coldefs=coldefs, ?rowSpacing=rowSpacing, ?columnSpacing=columnSpacing, ?children=children, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.Grid>(Xaml.ZCreateFuncGrid, Xaml.UpdateFuncGrid, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.Grid>(Xaml.CreateFuncGrid, Xaml.UpdateFuncGrid, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoGrid : ViewElement option = None with get, set
+    static member val ProtoGrid : ViewElement option = None with get, set
 
     /// Builds the attributes for a AbsoluteLayout in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildAbsoluteLayout(attribCount: int, ?children: ViewElement list, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildAbsoluteLayout(attribCount: int, ?children: ViewElement list, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match children with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match children with None -> () | Some v -> attribBuilder.Add(Xaml._ChildrenAttribKey, Array.ofList(v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncAbsoluteLayout : (unit -> Xamarin.Forms.AbsoluteLayout) = (fun () -> Xaml.ZCreateAbsoluteLayout())
+    static member val CreateFuncAbsoluteLayout : (unit -> Xamarin.Forms.AbsoluteLayout) = (fun () -> Xaml.CreateAbsoluteLayout())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateAbsoluteLayout () : Xamarin.Forms.AbsoluteLayout = 
+    static member CreateAbsoluteLayout () : Xamarin.Forms.AbsoluteLayout = 
             upcast (new Xamarin.Forms.AbsoluteLayout())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -2585,7 +2585,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateAbsoluteLayout (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.AbsoluteLayout) = 
         // update the inherited Layout element
-        let baseElement = (if Xaml.ZProtoLayout.IsNone then Xaml.ZProtoLayout <- Some (Xaml.Layout())); Xaml.ZProtoLayout.Value
+        let baseElement = (if Xaml.ProtoLayout.IsNone then Xaml.ProtoLayout <- Some (Xaml.Layout())); Xaml.ProtoLayout.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevChildrenOpt = ValueNone
         let mutable currChildrenOpt = ValueNone
@@ -2624,28 +2624,28 @@ type Xaml() =
     /// Describes a AbsoluteLayout in the view
     static member inline AbsoluteLayout(?children: ViewElement list, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildAbsoluteLayout(0, ?children=children, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildAbsoluteLayout(0, ?children=children, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.AbsoluteLayout>(Xaml.ZCreateFuncAbsoluteLayout, Xaml.UpdateFuncAbsoluteLayout, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.AbsoluteLayout>(Xaml.CreateFuncAbsoluteLayout, Xaml.UpdateFuncAbsoluteLayout, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoAbsoluteLayout : ViewElement option = None with get, set
+    static member val ProtoAbsoluteLayout : ViewElement option = None with get, set
 
     /// Builds the attributes for a RelativeLayout in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildRelativeLayout(attribCount: int, ?children: ViewElement list, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildRelativeLayout(attribCount: int, ?children: ViewElement list, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match children with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match children with None -> () | Some v -> attribBuilder.Add(Xaml._ChildrenAttribKey, Array.ofList(v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncRelativeLayout : (unit -> Xamarin.Forms.RelativeLayout) = (fun () -> Xaml.ZCreateRelativeLayout())
+    static member val CreateFuncRelativeLayout : (unit -> Xamarin.Forms.RelativeLayout) = (fun () -> Xaml.CreateRelativeLayout())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateRelativeLayout () : Xamarin.Forms.RelativeLayout = 
+    static member CreateRelativeLayout () : Xamarin.Forms.RelativeLayout = 
             upcast (new Xamarin.Forms.RelativeLayout())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -2654,7 +2654,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateRelativeLayout (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.RelativeLayout) = 
         // update the inherited Layout element
-        let baseElement = (if Xaml.ZProtoLayout.IsNone then Xaml.ZProtoLayout <- Some (Xaml.Layout())); Xaml.ZProtoLayout.Value
+        let baseElement = (if Xaml.ProtoLayout.IsNone then Xaml.ProtoLayout <- Some (Xaml.Layout())); Xaml.ProtoLayout.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevChildrenOpt = ValueNone
         let mutable currChildrenOpt = ValueNone
@@ -2717,16 +2717,16 @@ type Xaml() =
     /// Describes a RelativeLayout in the view
     static member inline RelativeLayout(?children: ViewElement list, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildRelativeLayout(0, ?children=children, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildRelativeLayout(0, ?children=children, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.RelativeLayout>(Xaml.ZCreateFuncRelativeLayout, Xaml.UpdateFuncRelativeLayout, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.RelativeLayout>(Xaml.CreateFuncRelativeLayout, Xaml.UpdateFuncRelativeLayout, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoRelativeLayout : ViewElement option = None with get, set
+    static member val ProtoRelativeLayout : ViewElement option = None with get, set
 
     /// Builds the attributes for a FlexLayout in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildFlexLayout(attribCount: int, ?alignContent: Xamarin.Forms.FlexAlignContent, ?alignItems: Xamarin.Forms.FlexAlignItems, ?direction: Xamarin.Forms.FlexDirection, ?position: Xamarin.Forms.FlexPosition, ?wrap: Xamarin.Forms.FlexWrap, ?justifyContent: Xamarin.Forms.FlexJustify, ?children: ViewElement list, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildFlexLayout(attribCount: int, ?alignContent: Xamarin.Forms.FlexAlignContent, ?alignItems: Xamarin.Forms.FlexAlignItems, ?direction: Xamarin.Forms.FlexDirection, ?position: Xamarin.Forms.FlexPosition, ?wrap: Xamarin.Forms.FlexWrap, ?justifyContent: Xamarin.Forms.FlexJustify, ?children: ViewElement list, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match alignContent with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match alignItems with Some _ -> attribCount + 1 | None -> attribCount
@@ -2736,7 +2736,7 @@ type Xaml() =
         let attribCount = match justifyContent with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match children with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match alignContent with None -> () | Some v -> attribBuilder.Add(Xaml._AlignContentAttribKey, (v)) 
         match alignItems with None -> () | Some v -> attribBuilder.Add(Xaml._AlignItemsAttribKey, (v)) 
         match direction with None -> () | Some v -> attribBuilder.Add(Xaml._DirectionAttribKey, (v)) 
@@ -2747,10 +2747,10 @@ type Xaml() =
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncFlexLayout : (unit -> Xamarin.Forms.FlexLayout) = (fun () -> Xaml.ZCreateFlexLayout())
+    static member val CreateFuncFlexLayout : (unit -> Xamarin.Forms.FlexLayout) = (fun () -> Xaml.CreateFlexLayout())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateFlexLayout () : Xamarin.Forms.FlexLayout = 
+    static member CreateFlexLayout () : Xamarin.Forms.FlexLayout = 
             upcast (new Xamarin.Forms.FlexLayout())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -2759,7 +2759,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateFlexLayout (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.FlexLayout) = 
         // update the inherited Layout element
-        let baseElement = (if Xaml.ZProtoLayout.IsNone then Xaml.ZProtoLayout <- Some (Xaml.Layout())); Xaml.ZProtoLayout.Value
+        let baseElement = (if Xaml.ProtoLayout.IsNone then Xaml.ProtoLayout <- Some (Xaml.Layout())); Xaml.ProtoLayout.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevAlignContentOpt = ValueNone
         let mutable currAlignContentOpt = ValueNone
@@ -2888,26 +2888,26 @@ type Xaml() =
     /// Describes a FlexLayout in the view
     static member inline FlexLayout(?alignContent: Xamarin.Forms.FlexAlignContent, ?alignItems: Xamarin.Forms.FlexAlignItems, ?direction: Xamarin.Forms.FlexDirection, ?position: Xamarin.Forms.FlexPosition, ?wrap: Xamarin.Forms.FlexWrap, ?justifyContent: Xamarin.Forms.FlexJustify, ?children: ViewElement list, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildFlexLayout(0, ?alignContent=alignContent, ?alignItems=alignItems, ?direction=direction, ?position=position, ?wrap=wrap, ?justifyContent=justifyContent, ?children=children, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildFlexLayout(0, ?alignContent=alignContent, ?alignItems=alignItems, ?direction=direction, ?position=position, ?wrap=wrap, ?justifyContent=justifyContent, ?children=children, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.FlexLayout>(Xaml.ZCreateFuncFlexLayout, Xaml.UpdateFuncFlexLayout, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.FlexLayout>(Xaml.CreateFuncFlexLayout, Xaml.UpdateFuncFlexLayout, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoFlexLayout : ViewElement option = None with get, set
+    static member val ProtoFlexLayout : ViewElement option = None with get, set
 
     /// Builds the attributes for a TemplatedView in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildTemplatedView(attribCount: int, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildTemplatedView(attribCount: int, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
 
-        let attribBuilder = Xaml.ZBuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncTemplatedView : (unit -> Xamarin.Forms.TemplatedView) = (fun () -> Xaml.ZCreateTemplatedView())
+    static member val CreateFuncTemplatedView : (unit -> Xamarin.Forms.TemplatedView) = (fun () -> Xaml.CreateTemplatedView())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateTemplatedView () : Xamarin.Forms.TemplatedView = 
+    static member CreateTemplatedView () : Xamarin.Forms.TemplatedView = 
             upcast (new Xamarin.Forms.TemplatedView())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -2916,7 +2916,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateTemplatedView (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.TemplatedView) = 
         // update the inherited Layout element
-        let baseElement = (if Xaml.ZProtoLayout.IsNone then Xaml.ZProtoLayout <- Some (Xaml.Layout())); Xaml.ZProtoLayout.Value
+        let baseElement = (if Xaml.ProtoLayout.IsNone then Xaml.ProtoLayout <- Some (Xaml.Layout())); Xaml.ProtoLayout.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         ignore prevOpt
         ignore curr
@@ -2925,28 +2925,28 @@ type Xaml() =
     /// Describes a TemplatedView in the view
     static member inline TemplatedView(?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildTemplatedView(0, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildTemplatedView(0, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.TemplatedView>(Xaml.ZCreateFuncTemplatedView, Xaml.UpdateFuncTemplatedView, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.TemplatedView>(Xaml.CreateFuncTemplatedView, Xaml.UpdateFuncTemplatedView, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoTemplatedView : ViewElement option = None with get, set
+    static member val ProtoTemplatedView : ViewElement option = None with get, set
 
     /// Builds the attributes for a ContentView in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildContentView(attribCount: int, ?content: ViewElement, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildContentView(attribCount: int, ?content: ViewElement, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match content with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildTemplatedView(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildTemplatedView(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match content with None -> () | Some v -> attribBuilder.Add(Xaml._ContentAttribKey, (v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncContentView : (unit -> Xamarin.Forms.ContentView) = (fun () -> Xaml.ZCreateContentView())
+    static member val CreateFuncContentView : (unit -> Xamarin.Forms.ContentView) = (fun () -> Xaml.CreateContentView())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateContentView () : Xamarin.Forms.ContentView = 
+    static member CreateContentView () : Xamarin.Forms.ContentView = 
             upcast (new Xamarin.Forms.ContentView())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -2955,7 +2955,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateContentView (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.ContentView) = 
         // update the inherited TemplatedView element
-        let baseElement = (if Xaml.ZProtoTemplatedView.IsNone then Xaml.ZProtoTemplatedView <- Some (Xaml.TemplatedView())); Xaml.ZProtoTemplatedView.Value
+        let baseElement = (if Xaml.ProtoTemplatedView.IsNone then Xaml.ProtoTemplatedView <- Some (Xaml.TemplatedView())); Xaml.ProtoTemplatedView.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevContentOpt = ValueNone
         let mutable currContentOpt = ValueNone
@@ -2982,16 +2982,16 @@ type Xaml() =
     /// Describes a ContentView in the view
     static member inline ContentView(?content: ViewElement, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildContentView(0, ?content=content, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildContentView(0, ?content=content, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.ContentView>(Xaml.ZCreateFuncContentView, Xaml.UpdateFuncContentView, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.ContentView>(Xaml.CreateFuncContentView, Xaml.UpdateFuncContentView, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoContentView : ViewElement option = None with get, set
+    static member val ProtoContentView : ViewElement option = None with get, set
 
     /// Builds the attributes for a DatePicker in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildDatePicker(attribCount: int, ?date: System.DateTime, ?format: string, ?minimumDate: System.DateTime, ?maximumDate: System.DateTime, ?dateSelected: Xamarin.Forms.DateChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildDatePicker(attribCount: int, ?date: System.DateTime, ?format: string, ?minimumDate: System.DateTime, ?maximumDate: System.DateTime, ?dateSelected: Xamarin.Forms.DateChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match date with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match format with Some _ -> attribCount + 1 | None -> attribCount
@@ -2999,7 +2999,7 @@ type Xaml() =
         let attribCount = match maximumDate with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match dateSelected with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match date with None -> () | Some v -> attribBuilder.Add(Xaml._DateAttribKey, (v)) 
         match format with None -> () | Some v -> attribBuilder.Add(Xaml._FormatAttribKey, (v)) 
         match minimumDate with None -> () | Some v -> attribBuilder.Add(Xaml._MinimumDateAttribKey, (v)) 
@@ -3008,10 +3008,10 @@ type Xaml() =
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncDatePicker : (unit -> Xamarin.Forms.DatePicker) = (fun () -> Xaml.ZCreateDatePicker())
+    static member val CreateFuncDatePicker : (unit -> Xamarin.Forms.DatePicker) = (fun () -> Xaml.CreateDatePicker())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateDatePicker () : Xamarin.Forms.DatePicker = 
+    static member CreateDatePicker () : Xamarin.Forms.DatePicker = 
             upcast (new Xamarin.Forms.DatePicker())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -3020,7 +3020,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateDatePicker (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.DatePicker) = 
         // update the inherited View element
-        let baseElement = (if Xaml.ZProtoView.IsNone then Xaml.ZProtoView <- Some (Xaml.View())); Xaml.ZProtoView.Value
+        let baseElement = (if Xaml.ProtoView.IsNone then Xaml.ProtoView <- Some (Xaml.View())); Xaml.ProtoView.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevDateOpt = ValueNone
         let mutable currDateOpt = ValueNone
@@ -3087,16 +3087,16 @@ type Xaml() =
     /// Describes a DatePicker in the view
     static member inline DatePicker(?date: System.DateTime, ?format: string, ?minimumDate: System.DateTime, ?maximumDate: System.DateTime, ?dateSelected: Xamarin.Forms.DateChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildDatePicker(0, ?date=date, ?format=format, ?minimumDate=minimumDate, ?maximumDate=maximumDate, ?dateSelected=dateSelected, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildDatePicker(0, ?date=date, ?format=format, ?minimumDate=minimumDate, ?maximumDate=maximumDate, ?dateSelected=dateSelected, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.DatePicker>(Xaml.ZCreateFuncDatePicker, Xaml.UpdateFuncDatePicker, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.DatePicker>(Xaml.CreateFuncDatePicker, Xaml.UpdateFuncDatePicker, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoDatePicker : ViewElement option = None with get, set
+    static member val ProtoDatePicker : ViewElement option = None with get, set
 
     /// Builds the attributes for a Picker in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildPicker(attribCount: int, ?itemsSource: seq<'T>, ?selectedIndex: int, ?title: string, ?textColor: Xamarin.Forms.Color, ?selectedIndexChanged: (int * 'T option) -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildPicker(attribCount: int, ?itemsSource: seq<'T>, ?selectedIndex: int, ?title: string, ?textColor: Xamarin.Forms.Color, ?selectedIndexChanged: (int * 'T option) -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match itemsSource with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match selectedIndex with Some _ -> attribCount + 1 | None -> attribCount
@@ -3104,7 +3104,7 @@ type Xaml() =
         let attribCount = match textColor with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match selectedIndexChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match itemsSource with None -> () | Some v -> attribBuilder.Add(Xaml._PickerItemsSourceAttribKey, seqToIListUntyped(v)) 
         match selectedIndex with None -> () | Some v -> attribBuilder.Add(Xaml._SelectedIndexAttribKey, (v)) 
         match title with None -> () | Some v -> attribBuilder.Add(Xaml._TitleAttribKey, (v)) 
@@ -3113,10 +3113,10 @@ type Xaml() =
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncPicker : (unit -> Xamarin.Forms.Picker) = (fun () -> Xaml.ZCreatePicker())
+    static member val CreateFuncPicker : (unit -> Xamarin.Forms.Picker) = (fun () -> Xaml.CreatePicker())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreatePicker () : Xamarin.Forms.Picker = 
+    static member CreatePicker () : Xamarin.Forms.Picker = 
             upcast (new Xamarin.Forms.Picker())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -3125,7 +3125,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdatePicker (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.Picker) = 
         // update the inherited View element
-        let baseElement = (if Xaml.ZProtoView.IsNone then Xaml.ZProtoView <- Some (Xaml.View())); Xaml.ZProtoView.Value
+        let baseElement = (if Xaml.ProtoView.IsNone then Xaml.ProtoView <- Some (Xaml.View())); Xaml.ProtoView.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevPickerItemsSourceOpt = ValueNone
         let mutable currPickerItemsSourceOpt = ValueNone
@@ -3192,32 +3192,32 @@ type Xaml() =
     /// Describes a Picker in the view
     static member inline Picker(?itemsSource: seq<'T>, ?selectedIndex: int, ?title: string, ?textColor: Xamarin.Forms.Color, ?selectedIndexChanged: (int * 'T option) -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildPicker(0, ?itemsSource=itemsSource, ?selectedIndex=selectedIndex, ?title=title, ?textColor=textColor, ?selectedIndexChanged=selectedIndexChanged, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildPicker(0, ?itemsSource=itemsSource, ?selectedIndex=selectedIndex, ?title=title, ?textColor=textColor, ?selectedIndexChanged=selectedIndexChanged, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.Picker>(Xaml.ZCreateFuncPicker, Xaml.UpdateFuncPicker, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.Picker>(Xaml.CreateFuncPicker, Xaml.UpdateFuncPicker, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoPicker : ViewElement option = None with get, set
+    static member val ProtoPicker : ViewElement option = None with get, set
 
     /// Builds the attributes for a Frame in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildFrame(attribCount: int, ?borderColor: Xamarin.Forms.Color, ?cornerRadius: double, ?hasShadow: bool, ?content: ViewElement, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildFrame(attribCount: int, ?borderColor: Xamarin.Forms.Color, ?cornerRadius: double, ?hasShadow: bool, ?content: ViewElement, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match borderColor with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match cornerRadius with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match hasShadow with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildContentView(attribCount, ?content=content, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildContentView(attribCount, ?content=content, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match borderColor with None -> () | Some v -> attribBuilder.Add(Xaml._BorderColorAttribKey, (v)) 
         match cornerRadius with None -> () | Some v -> attribBuilder.Add(Xaml._FrameCornerRadiusAttribKey, single(v)) 
         match hasShadow with None -> () | Some v -> attribBuilder.Add(Xaml._HasShadowAttribKey, (v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncFrame : (unit -> Xamarin.Forms.Frame) = (fun () -> Xaml.ZCreateFrame())
+    static member val CreateFuncFrame : (unit -> Xamarin.Forms.Frame) = (fun () -> Xaml.CreateFrame())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateFrame () : Xamarin.Forms.Frame = 
+    static member CreateFrame () : Xamarin.Forms.Frame = 
             upcast (new Xamarin.Forms.Frame())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -3226,7 +3226,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateFrame (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.Frame) = 
         // update the inherited ContentView element
-        let baseElement = (if Xaml.ZProtoContentView.IsNone then Xaml.ZProtoContentView <- Some (Xaml.ContentView())); Xaml.ZProtoContentView.Value
+        let baseElement = (if Xaml.ProtoContentView.IsNone then Xaml.ProtoContentView <- Some (Xaml.ContentView())); Xaml.ProtoContentView.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevBorderColorOpt = ValueNone
         let mutable currBorderColorOpt = ValueNone
@@ -3270,32 +3270,32 @@ type Xaml() =
     /// Describes a Frame in the view
     static member inline Frame(?borderColor: Xamarin.Forms.Color, ?cornerRadius: double, ?hasShadow: bool, ?content: ViewElement, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildFrame(0, ?borderColor=borderColor, ?cornerRadius=cornerRadius, ?hasShadow=hasShadow, ?content=content, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildFrame(0, ?borderColor=borderColor, ?cornerRadius=cornerRadius, ?hasShadow=hasShadow, ?content=content, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.Frame>(Xaml.ZCreateFuncFrame, Xaml.UpdateFuncFrame, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.Frame>(Xaml.CreateFuncFrame, Xaml.UpdateFuncFrame, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoFrame : ViewElement option = None with get, set
+    static member val ProtoFrame : ViewElement option = None with get, set
 
     /// Builds the attributes for a Image in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildImage(attribCount: int, ?source: string, ?aspect: Xamarin.Forms.Aspect, ?isOpaque: bool, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildImage(attribCount: int, ?source: string, ?aspect: Xamarin.Forms.Aspect, ?isOpaque: bool, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match source with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match aspect with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match isOpaque with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match source with None -> () | Some v -> attribBuilder.Add(Xaml._ImageSourceAttribKey, (v)) 
         match aspect with None -> () | Some v -> attribBuilder.Add(Xaml._AspectAttribKey, (v)) 
         match isOpaque with None -> () | Some v -> attribBuilder.Add(Xaml._IsOpaqueAttribKey, (v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncImage : (unit -> Xamarin.Forms.Image) = (fun () -> Xaml.ZCreateImage())
+    static member val CreateFuncImage : (unit -> Xamarin.Forms.Image) = (fun () -> Xaml.CreateImage())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateImage () : Xamarin.Forms.Image = 
+    static member CreateImage () : Xamarin.Forms.Image = 
             upcast (new Xamarin.Forms.Image())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -3304,7 +3304,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateImage (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.Image) = 
         // update the inherited View element
-        let baseElement = (if Xaml.ZProtoView.IsNone then Xaml.ZProtoView <- Some (Xaml.View())); Xaml.ZProtoView.Value
+        let baseElement = (if Xaml.ProtoView.IsNone then Xaml.ProtoView <- Some (Xaml.View())); Xaml.ProtoView.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevImageSourceOpt = ValueNone
         let mutable currImageSourceOpt = ValueNone
@@ -3348,28 +3348,28 @@ type Xaml() =
     /// Describes a Image in the view
     static member inline Image(?source: string, ?aspect: Xamarin.Forms.Aspect, ?isOpaque: bool, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildImage(0, ?source=source, ?aspect=aspect, ?isOpaque=isOpaque, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildImage(0, ?source=source, ?aspect=aspect, ?isOpaque=isOpaque, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.Image>(Xaml.ZCreateFuncImage, Xaml.UpdateFuncImage, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.Image>(Xaml.CreateFuncImage, Xaml.UpdateFuncImage, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoImage : ViewElement option = None with get, set
+    static member val ProtoImage : ViewElement option = None with get, set
 
     /// Builds the attributes for a InputView in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildInputView(attribCount: int, ?keyboard: Xamarin.Forms.Keyboard, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildInputView(attribCount: int, ?keyboard: Xamarin.Forms.Keyboard, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match keyboard with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match keyboard with None -> () | Some v -> attribBuilder.Add(Xaml._KeyboardAttribKey, (v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncInputView : (unit -> Xamarin.Forms.InputView) = (fun () -> Xaml.ZCreateInputView())
+    static member val CreateFuncInputView : (unit -> Xamarin.Forms.InputView) = (fun () -> Xaml.CreateInputView())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateInputView () : Xamarin.Forms.InputView = 
+    static member CreateInputView () : Xamarin.Forms.InputView = 
         failwith "can't create Xamarin.Forms.InputView"
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -3378,7 +3378,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateInputView (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.InputView) = 
         // update the inherited View element
-        let baseElement = (if Xaml.ZProtoView.IsNone then Xaml.ZProtoView <- Some (Xaml.View())); Xaml.ZProtoView.Value
+        let baseElement = (if Xaml.ProtoView.IsNone then Xaml.ProtoView <- Some (Xaml.View())); Xaml.ProtoView.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevKeyboardOpt = ValueNone
         let mutable currKeyboardOpt = ValueNone
@@ -3400,16 +3400,16 @@ type Xaml() =
     /// Describes a InputView in the view
     static member inline InputView(?keyboard: Xamarin.Forms.Keyboard, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildInputView(0, ?keyboard=keyboard, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildInputView(0, ?keyboard=keyboard, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.InputView>(Xaml.ZCreateFuncInputView, Xaml.UpdateFuncInputView, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.InputView>(Xaml.CreateFuncInputView, Xaml.UpdateFuncInputView, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoInputView : ViewElement option = None with get, set
+    static member val ProtoInputView : ViewElement option = None with get, set
 
     /// Builds the attributes for a Editor in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildEditor(attribCount: int, ?text: string, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?completed: string -> unit, ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?keyboard: Xamarin.Forms.Keyboard, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildEditor(attribCount: int, ?text: string, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?completed: string -> unit, ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?keyboard: Xamarin.Forms.Keyboard, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match fontSize with Some _ -> attribCount + 1 | None -> attribCount
@@ -3419,7 +3419,7 @@ type Xaml() =
         let attribCount = match completed with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match textChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildInputView(attribCount, ?keyboard=keyboard, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildInputView(attribCount, ?keyboard=keyboard, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match text with None -> () | Some v -> attribBuilder.Add(Xaml._TextAttribKey, (v)) 
         match fontSize with None -> () | Some v -> attribBuilder.Add(Xaml._FontSizeAttribKey, makeFontSize(v)) 
         match fontFamily with None -> () | Some v -> attribBuilder.Add(Xaml._FontFamilyAttribKey, (v)) 
@@ -3430,10 +3430,10 @@ type Xaml() =
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncEditor : (unit -> Xamarin.Forms.Editor) = (fun () -> Xaml.ZCreateEditor())
+    static member val CreateFuncEditor : (unit -> Xamarin.Forms.Editor) = (fun () -> Xaml.CreateEditor())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateEditor () : Xamarin.Forms.Editor = 
+    static member CreateEditor () : Xamarin.Forms.Editor = 
             upcast (new Xamarin.Forms.Editor())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -3442,7 +3442,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateEditor (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.Editor) = 
         // update the inherited InputView element
-        let baseElement = (if Xaml.ZProtoInputView.IsNone then Xaml.ZProtoInputView <- Some (Xaml.InputView())); Xaml.ZProtoInputView.Value
+        let baseElement = (if Xaml.ProtoInputView.IsNone then Xaml.ProtoInputView <- Some (Xaml.InputView())); Xaml.ProtoInputView.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevTextOpt = ValueNone
         let mutable currTextOpt = ValueNone
@@ -3532,16 +3532,16 @@ type Xaml() =
     /// Describes a Editor in the view
     static member inline Editor(?text: string, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?completed: string -> unit, ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?keyboard: Xamarin.Forms.Keyboard, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildEditor(0, ?text=text, ?fontSize=fontSize, ?fontFamily=fontFamily, ?fontAttributes=fontAttributes, ?textColor=textColor, ?completed=completed, ?textChanged=textChanged, ?keyboard=keyboard, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildEditor(0, ?text=text, ?fontSize=fontSize, ?fontFamily=fontFamily, ?fontAttributes=fontAttributes, ?textColor=textColor, ?completed=completed, ?textChanged=textChanged, ?keyboard=keyboard, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.Editor>(Xaml.ZCreateFuncEditor, Xaml.UpdateFuncEditor, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.Editor>(Xaml.CreateFuncEditor, Xaml.UpdateFuncEditor, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoEditor : ViewElement option = None with get, set
+    static member val ProtoEditor : ViewElement option = None with get, set
 
     /// Builds the attributes for a Entry in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildEntry(attribCount: int, ?text: string, ?placeholder: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?placeholderColor: Xamarin.Forms.Color, ?isPassword: bool, ?completed: string -> unit, ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?keyboard: Xamarin.Forms.Keyboard, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildEntry(attribCount: int, ?text: string, ?placeholder: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?placeholderColor: Xamarin.Forms.Color, ?isPassword: bool, ?completed: string -> unit, ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?keyboard: Xamarin.Forms.Keyboard, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match placeholder with Some _ -> attribCount + 1 | None -> attribCount
@@ -3555,7 +3555,7 @@ type Xaml() =
         let attribCount = match completed with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match textChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildInputView(attribCount, ?keyboard=keyboard, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildInputView(attribCount, ?keyboard=keyboard, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match text with None -> () | Some v -> attribBuilder.Add(Xaml._TextAttribKey, (v)) 
         match placeholder with None -> () | Some v -> attribBuilder.Add(Xaml._PlaceholderAttribKey, (v)) 
         match horizontalTextAlignment with None -> () | Some v -> attribBuilder.Add(Xaml._HorizontalTextAlignmentAttribKey, (v)) 
@@ -3570,10 +3570,10 @@ type Xaml() =
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncEntry : (unit -> Xamarin.Forms.Entry) = (fun () -> Xaml.ZCreateEntry())
+    static member val CreateFuncEntry : (unit -> Xamarin.Forms.Entry) = (fun () -> Xaml.CreateEntry())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateEntry () : Xamarin.Forms.Entry = 
+    static member CreateEntry () : Xamarin.Forms.Entry = 
             upcast (new Xamarin.Forms.Entry())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -3582,7 +3582,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateEntry (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.Entry) = 
         // update the inherited InputView element
-        let baseElement = (if Xaml.ZProtoInputView.IsNone then Xaml.ZProtoInputView <- Some (Xaml.InputView())); Xaml.ZProtoInputView.Value
+        let baseElement = (if Xaml.ProtoInputView.IsNone then Xaml.ProtoInputView <- Some (Xaml.InputView())); Xaml.ProtoInputView.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevTextOpt = ValueNone
         let mutable currTextOpt = ValueNone
@@ -3716,16 +3716,16 @@ type Xaml() =
     /// Describes a Entry in the view
     static member inline Entry(?text: string, ?placeholder: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?placeholderColor: Xamarin.Forms.Color, ?isPassword: bool, ?completed: string -> unit, ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?keyboard: Xamarin.Forms.Keyboard, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildEntry(0, ?text=text, ?placeholder=placeholder, ?horizontalTextAlignment=horizontalTextAlignment, ?fontSize=fontSize, ?fontFamily=fontFamily, ?fontAttributes=fontAttributes, ?textColor=textColor, ?placeholderColor=placeholderColor, ?isPassword=isPassword, ?completed=completed, ?textChanged=textChanged, ?keyboard=keyboard, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildEntry(0, ?text=text, ?placeholder=placeholder, ?horizontalTextAlignment=horizontalTextAlignment, ?fontSize=fontSize, ?fontFamily=fontFamily, ?fontAttributes=fontAttributes, ?textColor=textColor, ?placeholderColor=placeholderColor, ?isPassword=isPassword, ?completed=completed, ?textChanged=textChanged, ?keyboard=keyboard, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.Entry>(Xaml.ZCreateFuncEntry, Xaml.UpdateFuncEntry, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.Entry>(Xaml.CreateFuncEntry, Xaml.UpdateFuncEntry, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoEntry : ViewElement option = None with get, set
+    static member val ProtoEntry : ViewElement option = None with get, set
 
     /// Builds the attributes for a EntryCell in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildEntryCell(attribCount: int, ?label: string, ?text: string, ?keyboard: Xamarin.Forms.Keyboard, ?placeholder: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?completed: string -> unit, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
+    static member inline BuildEntryCell(attribCount: int, ?label: string, ?text: string, ?keyboard: Xamarin.Forms.Keyboard, ?placeholder: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?completed: string -> unit, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
 
         let attribCount = match label with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
@@ -3734,7 +3734,7 @@ type Xaml() =
         let attribCount = match horizontalTextAlignment with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match completed with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildCell(attribCount, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildCell(attribCount, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId)
         match label with None -> () | Some v -> attribBuilder.Add(Xaml._LabelAttribKey, (v)) 
         match text with None -> () | Some v -> attribBuilder.Add(Xaml._TextAttribKey, (v)) 
         match keyboard with None -> () | Some v -> attribBuilder.Add(Xaml._KeyboardAttribKey, (v)) 
@@ -3744,10 +3744,10 @@ type Xaml() =
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncEntryCell : (unit -> Xamarin.Forms.EntryCell) = (fun () -> Xaml.ZCreateEntryCell())
+    static member val CreateFuncEntryCell : (unit -> Xamarin.Forms.EntryCell) = (fun () -> Xaml.CreateEntryCell())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateEntryCell () : Xamarin.Forms.EntryCell = 
+    static member CreateEntryCell () : Xamarin.Forms.EntryCell = 
             upcast (new Xamarin.Forms.EntryCell())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -3756,7 +3756,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateEntryCell (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.EntryCell) = 
         // update the inherited Cell element
-        let baseElement = (if Xaml.ZProtoCell.IsNone then Xaml.ZProtoCell <- Some (Xaml.Cell())); Xaml.ZProtoCell.Value
+        let baseElement = (if Xaml.ProtoCell.IsNone then Xaml.ProtoCell <- Some (Xaml.Cell())); Xaml.ProtoCell.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevLabelOpt = ValueNone
         let mutable currLabelOpt = ValueNone
@@ -3834,16 +3834,16 @@ type Xaml() =
     /// Describes a EntryCell in the view
     static member inline EntryCell(?label: string, ?text: string, ?keyboard: Xamarin.Forms.Keyboard, ?placeholder: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?completed: string -> unit, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildEntryCell(0, ?label=label, ?text=text, ?keyboard=keyboard, ?placeholder=placeholder, ?horizontalTextAlignment=horizontalTextAlignment, ?completed=completed, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildEntryCell(0, ?label=label, ?text=text, ?keyboard=keyboard, ?placeholder=placeholder, ?horizontalTextAlignment=horizontalTextAlignment, ?completed=completed, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.EntryCell>(Xaml.ZCreateFuncEntryCell, Xaml.UpdateFuncEntryCell, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.EntryCell>(Xaml.CreateFuncEntryCell, Xaml.UpdateFuncEntryCell, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoEntryCell : ViewElement option = None with get, set
+    static member val ProtoEntryCell : ViewElement option = None with get, set
 
     /// Builds the attributes for a Label in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildLabel(attribCount: int, ?text: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?verticalTextAlignment: Xamarin.Forms.TextAlignment, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?formattedText: ViewElement, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildLabel(attribCount: int, ?text: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?verticalTextAlignment: Xamarin.Forms.TextAlignment, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?formattedText: ViewElement, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match horizontalTextAlignment with Some _ -> attribCount + 1 | None -> attribCount
@@ -3854,7 +3854,7 @@ type Xaml() =
         let attribCount = match textColor with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match formattedText with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match text with None -> () | Some v -> attribBuilder.Add(Xaml._TextAttribKey, (v)) 
         match horizontalTextAlignment with None -> () | Some v -> attribBuilder.Add(Xaml._HorizontalTextAlignmentAttribKey, (v)) 
         match verticalTextAlignment with None -> () | Some v -> attribBuilder.Add(Xaml._VerticalTextAlignmentAttribKey, (v)) 
@@ -3866,10 +3866,10 @@ type Xaml() =
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncLabel : (unit -> Xamarin.Forms.Label) = (fun () -> Xaml.ZCreateLabel())
+    static member val CreateFuncLabel : (unit -> Xamarin.Forms.Label) = (fun () -> Xaml.CreateLabel())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateLabel () : Xamarin.Forms.Label = 
+    static member CreateLabel () : Xamarin.Forms.Label = 
             upcast (new Xamarin.Forms.Label())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -3878,7 +3878,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateLabel (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.Label) = 
         // update the inherited View element
-        let baseElement = (if Xaml.ZProtoView.IsNone then Xaml.ZProtoView <- Some (Xaml.View())); Xaml.ZProtoView.Value
+        let baseElement = (if Xaml.ProtoView.IsNone then Xaml.ProtoView <- Some (Xaml.View())); Xaml.ProtoView.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevTextOpt = ValueNone
         let mutable currTextOpt = ValueNone
@@ -3982,32 +3982,32 @@ type Xaml() =
     /// Describes a Label in the view
     static member inline Label(?text: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?verticalTextAlignment: Xamarin.Forms.TextAlignment, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?formattedText: ViewElement, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildLabel(0, ?text=text, ?horizontalTextAlignment=horizontalTextAlignment, ?verticalTextAlignment=verticalTextAlignment, ?fontSize=fontSize, ?fontFamily=fontFamily, ?fontAttributes=fontAttributes, ?textColor=textColor, ?formattedText=formattedText, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildLabel(0, ?text=text, ?horizontalTextAlignment=horizontalTextAlignment, ?verticalTextAlignment=verticalTextAlignment, ?fontSize=fontSize, ?fontFamily=fontFamily, ?fontAttributes=fontAttributes, ?textColor=textColor, ?formattedText=formattedText, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.Label>(Xaml.ZCreateFuncLabel, Xaml.UpdateFuncLabel, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.Label>(Xaml.CreateFuncLabel, Xaml.UpdateFuncLabel, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoLabel : ViewElement option = None with get, set
+    static member val ProtoLabel : ViewElement option = None with get, set
 
     /// Builds the attributes for a StackLayout in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildStackLayout(attribCount: int, ?children: ViewElement list, ?orientation: Xamarin.Forms.StackOrientation, ?spacing: double, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildStackLayout(attribCount: int, ?children: ViewElement list, ?orientation: Xamarin.Forms.StackOrientation, ?spacing: double, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match children with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match orientation with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match spacing with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match children with None -> () | Some v -> attribBuilder.Add(Xaml._ChildrenAttribKey, Array.ofList(v)) 
         match orientation with None -> () | Some v -> attribBuilder.Add(Xaml._StackOrientationAttribKey, (v)) 
         match spacing with None -> () | Some v -> attribBuilder.Add(Xaml._SpacingAttribKey, (v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncStackLayout : (unit -> Xamarin.Forms.StackLayout) = (fun () -> Xaml.ZCreateStackLayout())
+    static member val CreateFuncStackLayout : (unit -> Xamarin.Forms.StackLayout) = (fun () -> Xaml.CreateStackLayout())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateStackLayout () : Xamarin.Forms.StackLayout = 
+    static member CreateStackLayout () : Xamarin.Forms.StackLayout = 
             upcast (new Xamarin.Forms.StackLayout())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -4016,7 +4016,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateStackLayout (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.StackLayout) = 
         // update the inherited Layout element
-        let baseElement = (if Xaml.ZProtoLayout.IsNone then Xaml.ZProtoLayout <- Some (Xaml.Layout())); Xaml.ZProtoLayout.Value
+        let baseElement = (if Xaml.ProtoLayout.IsNone then Xaml.ProtoLayout <- Some (Xaml.Layout())); Xaml.ProtoLayout.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevChildrenOpt = ValueNone
         let mutable currChildrenOpt = ValueNone
@@ -4060,16 +4060,16 @@ type Xaml() =
     /// Describes a StackLayout in the view
     static member inline StackLayout(?children: ViewElement list, ?orientation: Xamarin.Forms.StackOrientation, ?spacing: double, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildStackLayout(0, ?children=children, ?orientation=orientation, ?spacing=spacing, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildStackLayout(0, ?children=children, ?orientation=orientation, ?spacing=spacing, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.StackLayout>(Xaml.ZCreateFuncStackLayout, Xaml.UpdateFuncStackLayout, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.StackLayout>(Xaml.CreateFuncStackLayout, Xaml.UpdateFuncStackLayout, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoStackLayout : ViewElement option = None with get, set
+    static member val ProtoStackLayout : ViewElement option = None with get, set
 
     /// Builds the attributes for a Span in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildSpan(attribCount: int, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?backgroundColor: Xamarin.Forms.Color, ?foregroundColor: Xamarin.Forms.Color, ?text: string, ?propertyChanged: System.ComponentModel.PropertyChangedEventArgs -> unit) = 
+    static member inline BuildSpan(attribCount: int, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?backgroundColor: Xamarin.Forms.Color, ?foregroundColor: Xamarin.Forms.Color, ?text: string, ?propertyChanged: System.ComponentModel.PropertyChangedEventArgs -> unit) = 
 
         let attribCount = match fontFamily with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match fontAttributes with Some _ -> attribCount + 1 | None -> attribCount
@@ -4089,10 +4089,10 @@ type Xaml() =
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncSpan : (unit -> Xamarin.Forms.Span) = (fun () -> Xaml.ZCreateSpan())
+    static member val CreateFuncSpan : (unit -> Xamarin.Forms.Span) = (fun () -> Xaml.CreateSpan())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateSpan () : Xamarin.Forms.Span = 
+    static member CreateSpan () : Xamarin.Forms.Span = 
             upcast (new Xamarin.Forms.Span())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -4187,16 +4187,16 @@ type Xaml() =
     /// Describes a Span in the view
     static member inline Span(?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?backgroundColor: Xamarin.Forms.Color, ?foregroundColor: Xamarin.Forms.Color, ?text: string, ?propertyChanged: System.ComponentModel.PropertyChangedEventArgs -> unit) = 
 
-        let attribBuilder = Xaml.ZBuildSpan(0, ?fontFamily=fontFamily, ?fontAttributes=fontAttributes, ?fontSize=fontSize, ?backgroundColor=backgroundColor, ?foregroundColor=foregroundColor, ?text=text, ?propertyChanged=propertyChanged)
+        let attribBuilder = Xaml.BuildSpan(0, ?fontFamily=fontFamily, ?fontAttributes=fontAttributes, ?fontSize=fontSize, ?backgroundColor=backgroundColor, ?foregroundColor=foregroundColor, ?text=text, ?propertyChanged=propertyChanged)
 
-        ViewElement.Create<Xamarin.Forms.Span>(Xaml.ZCreateFuncSpan, Xaml.UpdateFuncSpan, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.Span>(Xaml.CreateFuncSpan, Xaml.UpdateFuncSpan, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoSpan : ViewElement option = None with get, set
+    static member val ProtoSpan : ViewElement option = None with get, set
 
     /// Builds the attributes for a FormattedString in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildFormattedString(attribCount: int, ?spans: ViewElement[]) = 
+    static member inline BuildFormattedString(attribCount: int, ?spans: ViewElement[]) = 
 
         let attribCount = match spans with Some _ -> attribCount + 1 | None -> attribCount
         let attribBuilder = new AttributesBuilder(attribCount)
@@ -4204,10 +4204,10 @@ type Xaml() =
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncFormattedString : (unit -> Xamarin.Forms.FormattedString) = (fun () -> Xaml.ZCreateFormattedString())
+    static member val CreateFuncFormattedString : (unit -> Xamarin.Forms.FormattedString) = (fun () -> Xaml.CreateFormattedString())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateFormattedString () : Xamarin.Forms.FormattedString = 
+    static member CreateFormattedString () : Xamarin.Forms.FormattedString = 
             upcast (new Xamarin.Forms.FormattedString())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -4235,32 +4235,32 @@ type Xaml() =
     /// Describes a FormattedString in the view
     static member inline FormattedString(?spans: ViewElement[]) = 
 
-        let attribBuilder = Xaml.ZBuildFormattedString(0, ?spans=spans)
+        let attribBuilder = Xaml.BuildFormattedString(0, ?spans=spans)
 
-        ViewElement.Create<Xamarin.Forms.FormattedString>(Xaml.ZCreateFuncFormattedString, Xaml.UpdateFuncFormattedString, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.FormattedString>(Xaml.CreateFuncFormattedString, Xaml.UpdateFuncFormattedString, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoFormattedString : ViewElement option = None with get, set
+    static member val ProtoFormattedString : ViewElement option = None with get, set
 
     /// Builds the attributes for a TimePicker in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildTimePicker(attribCount: int, ?time: System.TimeSpan, ?format: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildTimePicker(attribCount: int, ?time: System.TimeSpan, ?format: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match time with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match format with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match textColor with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match time with None -> () | Some v -> attribBuilder.Add(Xaml._TimeAttribKey, (v)) 
         match format with None -> () | Some v -> attribBuilder.Add(Xaml._FormatAttribKey, (v)) 
         match textColor with None -> () | Some v -> attribBuilder.Add(Xaml._TextColorAttribKey, (v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncTimePicker : (unit -> Xamarin.Forms.TimePicker) = (fun () -> Xaml.ZCreateTimePicker())
+    static member val CreateFuncTimePicker : (unit -> Xamarin.Forms.TimePicker) = (fun () -> Xaml.CreateTimePicker())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateTimePicker () : Xamarin.Forms.TimePicker = 
+    static member CreateTimePicker () : Xamarin.Forms.TimePicker = 
             upcast (new Xamarin.Forms.TimePicker())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -4269,7 +4269,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateTimePicker (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.TimePicker) = 
         // update the inherited View element
-        let baseElement = (if Xaml.ZProtoView.IsNone then Xaml.ZProtoView <- Some (Xaml.View())); Xaml.ZProtoView.Value
+        let baseElement = (if Xaml.ProtoView.IsNone then Xaml.ProtoView <- Some (Xaml.View())); Xaml.ProtoView.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevTimeOpt = ValueNone
         let mutable currTimeOpt = ValueNone
@@ -4313,32 +4313,32 @@ type Xaml() =
     /// Describes a TimePicker in the view
     static member inline TimePicker(?time: System.TimeSpan, ?format: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildTimePicker(0, ?time=time, ?format=format, ?textColor=textColor, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildTimePicker(0, ?time=time, ?format=format, ?textColor=textColor, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.TimePicker>(Xaml.ZCreateFuncTimePicker, Xaml.UpdateFuncTimePicker, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.TimePicker>(Xaml.CreateFuncTimePicker, Xaml.UpdateFuncTimePicker, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoTimePicker : ViewElement option = None with get, set
+    static member val ProtoTimePicker : ViewElement option = None with get, set
 
     /// Builds the attributes for a WebView in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildWebView(attribCount: int, ?source: Xamarin.Forms.WebViewSource, ?navigated: Xamarin.Forms.WebNavigatedEventArgs -> unit, ?navigating: Xamarin.Forms.WebNavigatingEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildWebView(attribCount: int, ?source: Xamarin.Forms.WebViewSource, ?navigated: Xamarin.Forms.WebNavigatedEventArgs -> unit, ?navigating: Xamarin.Forms.WebNavigatingEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match source with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match navigated with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match navigating with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match source with None -> () | Some v -> attribBuilder.Add(Xaml._WebSourceAttribKey, (v)) 
         match navigated with None -> () | Some v -> attribBuilder.Add(Xaml._NavigatedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.WebNavigatedEventArgs>(fun _sender args -> f args))(v)) 
         match navigating with None -> () | Some v -> attribBuilder.Add(Xaml._NavigatingAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.WebNavigatingEventArgs>(fun _sender args -> f args))(v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncWebView : (unit -> Xamarin.Forms.WebView) = (fun () -> Xaml.ZCreateWebView())
+    static member val CreateFuncWebView : (unit -> Xamarin.Forms.WebView) = (fun () -> Xaml.CreateWebView())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateWebView () : Xamarin.Forms.WebView = 
+    static member CreateWebView () : Xamarin.Forms.WebView = 
             upcast (new Xamarin.Forms.WebView())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -4347,7 +4347,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateWebView (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.WebView) = 
         // update the inherited View element
-        let baseElement = (if Xaml.ZProtoView.IsNone then Xaml.ZProtoView <- Some (Xaml.View())); Xaml.ZProtoView.Value
+        let baseElement = (if Xaml.ProtoView.IsNone then Xaml.ProtoView <- Some (Xaml.View())); Xaml.ProtoView.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevWebSourceOpt = ValueNone
         let mutable currWebSourceOpt = ValueNone
@@ -4393,16 +4393,16 @@ type Xaml() =
     /// Describes a WebView in the view
     static member inline WebView(?source: Xamarin.Forms.WebViewSource, ?navigated: Xamarin.Forms.WebNavigatedEventArgs -> unit, ?navigating: Xamarin.Forms.WebNavigatingEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildWebView(0, ?source=source, ?navigated=navigated, ?navigating=navigating, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildWebView(0, ?source=source, ?navigated=navigated, ?navigating=navigating, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.WebView>(Xaml.ZCreateFuncWebView, Xaml.UpdateFuncWebView, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.WebView>(Xaml.CreateFuncWebView, Xaml.UpdateFuncWebView, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoWebView : ViewElement option = None with get, set
+    static member val ProtoWebView : ViewElement option = None with get, set
 
     /// Builds the attributes for a Page in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildPage(attribCount: int, ?title: string, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?padding: obj, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?appearing: unit -> unit, ?disappearing: unit -> unit, ?layoutChanged: unit -> unit, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildPage(attribCount: int, ?title: string, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?padding: obj, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?appearing: unit -> unit, ?disappearing: unit -> unit, ?layoutChanged: unit -> unit, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match title with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match backgroundImage with Some _ -> attribCount + 1 | None -> attribCount
@@ -4415,7 +4415,7 @@ type Xaml() =
         let attribCount = match disappearing with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match layoutChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildVisualElement(attribCount, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildVisualElement(attribCount, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match title with None -> () | Some v -> attribBuilder.Add(Xaml._TitleAttribKey, (v)) 
         match backgroundImage with None -> () | Some v -> attribBuilder.Add(Xaml._BackgroundImageAttribKey, (v)) 
         match icon with None -> () | Some v -> attribBuilder.Add(Xaml._IconAttribKey, (v)) 
@@ -4429,10 +4429,10 @@ type Xaml() =
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncPage : (unit -> Xamarin.Forms.Page) = (fun () -> Xaml.ZCreatePage())
+    static member val CreateFuncPage : (unit -> Xamarin.Forms.Page) = (fun () -> Xaml.CreatePage())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreatePage () : Xamarin.Forms.Page = 
+    static member CreatePage () : Xamarin.Forms.Page = 
             upcast (new Xamarin.Forms.Page())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -4441,7 +4441,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdatePage (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.Page) = 
         // update the inherited VisualElement element
-        let baseElement = (if Xaml.ZProtoVisualElement.IsNone then Xaml.ZProtoVisualElement <- Some (Xaml.VisualElement())); Xaml.ZProtoVisualElement.Value
+        let baseElement = (if Xaml.ProtoVisualElement.IsNone then Xaml.ProtoVisualElement <- Some (Xaml.VisualElement())); Xaml.ProtoVisualElement.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevTitleOpt = ValueNone
         let mutable currTitleOpt = ValueNone
@@ -4561,23 +4561,23 @@ type Xaml() =
     /// Describes a Page in the view
     static member inline Page(?title: string, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?padding: obj, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?appearing: unit -> unit, ?disappearing: unit -> unit, ?layoutChanged: unit -> unit, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildPage(0, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildPage(0, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.Page>(Xaml.ZCreateFuncPage, Xaml.UpdateFuncPage, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.Page>(Xaml.CreateFuncPage, Xaml.UpdateFuncPage, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoPage : ViewElement option = None with get, set
+    static member val ProtoPage : ViewElement option = None with get, set
 
     /// Builds the attributes for a CarouselPage in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildCarouselPage(attribCount: int, ?children: ViewElement list, ?selectedItem: System.Object, ?currentPage: ViewElement, ?currentPageChanged: 'T option -> unit, ?title: string, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?padding: obj, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?appearing: unit -> unit, ?disappearing: unit -> unit, ?layoutChanged: unit -> unit, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildCarouselPage(attribCount: int, ?children: ViewElement list, ?selectedItem: System.Object, ?currentPage: ViewElement, ?currentPageChanged: 'T option -> unit, ?title: string, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?padding: obj, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?appearing: unit -> unit, ?disappearing: unit -> unit, ?layoutChanged: unit -> unit, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match children with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match selectedItem with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match currentPage with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match currentPageChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match children with None -> () | Some v -> attribBuilder.Add(Xaml._ChildrenAttribKey, Array.ofList(v)) 
         match selectedItem with None -> () | Some v -> attribBuilder.Add(Xaml._CarouselPage_SelectedItemAttribKey, (v)) 
         match currentPage with None -> () | Some v -> attribBuilder.Add(Xaml._CurrentPageAttribKey, (v)) 
@@ -4585,10 +4585,10 @@ type Xaml() =
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncCarouselPage : (unit -> Xamarin.Forms.CarouselPage) = (fun () -> Xaml.ZCreateCarouselPage())
+    static member val CreateFuncCarouselPage : (unit -> Xamarin.Forms.CarouselPage) = (fun () -> Xaml.CreateCarouselPage())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateCarouselPage () : Xamarin.Forms.CarouselPage = 
+    static member CreateCarouselPage () : Xamarin.Forms.CarouselPage = 
             upcast (new Xamarin.Forms.CarouselPage())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -4597,7 +4597,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateCarouselPage (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.CarouselPage) = 
         // update the inherited Page element
-        let baseElement = (if Xaml.ZProtoPage.IsNone then Xaml.ZProtoPage <- Some (Xaml.Page())); Xaml.ZProtoPage.Value
+        let baseElement = (if Xaml.ProtoPage.IsNone then Xaml.ProtoPage <- Some (Xaml.Page())); Xaml.ProtoPage.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevChildrenOpt = ValueNone
         let mutable currChildrenOpt = ValueNone
@@ -4658,16 +4658,16 @@ type Xaml() =
     /// Describes a CarouselPage in the view
     static member inline CarouselPage(?children: ViewElement list, ?selectedItem: System.Object, ?currentPage: ViewElement, ?currentPageChanged: 'T option -> unit, ?title: string, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?padding: obj, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?appearing: unit -> unit, ?disappearing: unit -> unit, ?layoutChanged: unit -> unit, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildCarouselPage(0, ?children=children, ?selectedItem=selectedItem, ?currentPage=currentPage, ?currentPageChanged=currentPageChanged, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildCarouselPage(0, ?children=children, ?selectedItem=selectedItem, ?currentPage=currentPage, ?currentPageChanged=currentPageChanged, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.CarouselPage>(Xaml.ZCreateFuncCarouselPage, Xaml.UpdateFuncCarouselPage, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.CarouselPage>(Xaml.CreateFuncCarouselPage, Xaml.UpdateFuncCarouselPage, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoCarouselPage : ViewElement option = None with get, set
+    static member val ProtoCarouselPage : ViewElement option = None with get, set
 
     /// Builds the attributes for a NavigationPage in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildNavigationPage(attribCount: int, ?pages: ViewElement list, ?barBackgroundColor: Xamarin.Forms.Color, ?barTextColor: Xamarin.Forms.Color, ?popped: Xamarin.Forms.NavigationEventArgs -> unit, ?poppedToRoot: Xamarin.Forms.NavigationEventArgs -> unit, ?pushed: Xamarin.Forms.NavigationEventArgs -> unit, ?title: string, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?padding: obj, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?appearing: unit -> unit, ?disappearing: unit -> unit, ?layoutChanged: unit -> unit, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildNavigationPage(attribCount: int, ?pages: ViewElement list, ?barBackgroundColor: Xamarin.Forms.Color, ?barTextColor: Xamarin.Forms.Color, ?popped: Xamarin.Forms.NavigationEventArgs -> unit, ?poppedToRoot: Xamarin.Forms.NavigationEventArgs -> unit, ?pushed: Xamarin.Forms.NavigationEventArgs -> unit, ?title: string, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?padding: obj, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?appearing: unit -> unit, ?disappearing: unit -> unit, ?layoutChanged: unit -> unit, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match pages with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match barBackgroundColor with Some _ -> attribCount + 1 | None -> attribCount
@@ -4676,7 +4676,7 @@ type Xaml() =
         let attribCount = match poppedToRoot with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match pushed with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match pages with None -> () | Some v -> attribBuilder.Add(Xaml._PagesAttribKey, Array.ofList(v)) 
         match barBackgroundColor with None -> () | Some v -> attribBuilder.Add(Xaml._BarBackgroundColorAttribKey, (v)) 
         match barTextColor with None -> () | Some v -> attribBuilder.Add(Xaml._BarTextColorAttribKey, (v)) 
@@ -4686,10 +4686,10 @@ type Xaml() =
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncNavigationPage : (unit -> Xamarin.Forms.NavigationPage) = (fun () -> Xaml.ZCreateNavigationPage())
+    static member val CreateFuncNavigationPage : (unit -> Xamarin.Forms.NavigationPage) = (fun () -> Xaml.CreateNavigationPage())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateNavigationPage () : Xamarin.Forms.NavigationPage = 
+    static member CreateNavigationPage () : Xamarin.Forms.NavigationPage = 
             upcast (new Xamarin.Forms.NavigationPage())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -4698,7 +4698,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateNavigationPage (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.NavigationPage) = 
         // update the inherited Page element
-        let baseElement = (if Xaml.ZProtoPage.IsNone then Xaml.ZProtoPage <- Some (Xaml.Page())); Xaml.ZProtoPage.Value
+        let baseElement = (if Xaml.ProtoPage.IsNone then Xaml.ProtoPage <- Some (Xaml.Page())); Xaml.ProtoPage.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevPagesOpt = ValueNone
         let mutable currPagesOpt = ValueNone
@@ -4808,32 +4808,32 @@ type Xaml() =
     /// Describes a NavigationPage in the view
     static member inline NavigationPage(?pages: ViewElement list, ?barBackgroundColor: Xamarin.Forms.Color, ?barTextColor: Xamarin.Forms.Color, ?popped: Xamarin.Forms.NavigationEventArgs -> unit, ?poppedToRoot: Xamarin.Forms.NavigationEventArgs -> unit, ?pushed: Xamarin.Forms.NavigationEventArgs -> unit, ?title: string, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?padding: obj, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?appearing: unit -> unit, ?disappearing: unit -> unit, ?layoutChanged: unit -> unit, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildNavigationPage(0, ?pages=pages, ?barBackgroundColor=barBackgroundColor, ?barTextColor=barTextColor, ?popped=popped, ?poppedToRoot=poppedToRoot, ?pushed=pushed, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildNavigationPage(0, ?pages=pages, ?barBackgroundColor=barBackgroundColor, ?barTextColor=barTextColor, ?popped=popped, ?poppedToRoot=poppedToRoot, ?pushed=pushed, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.NavigationPage>(Xaml.ZCreateFuncNavigationPage, Xaml.UpdateFuncNavigationPage, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.NavigationPage>(Xaml.CreateFuncNavigationPage, Xaml.UpdateFuncNavigationPage, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoNavigationPage : ViewElement option = None with get, set
+    static member val ProtoNavigationPage : ViewElement option = None with get, set
 
     /// Builds the attributes for a TabbedPage in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildTabbedPage(attribCount: int, ?children: ViewElement list, ?barBackgroundColor: Xamarin.Forms.Color, ?barTextColor: Xamarin.Forms.Color, ?title: string, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?padding: obj, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?appearing: unit -> unit, ?disappearing: unit -> unit, ?layoutChanged: unit -> unit, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildTabbedPage(attribCount: int, ?children: ViewElement list, ?barBackgroundColor: Xamarin.Forms.Color, ?barTextColor: Xamarin.Forms.Color, ?title: string, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?padding: obj, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?appearing: unit -> unit, ?disappearing: unit -> unit, ?layoutChanged: unit -> unit, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match children with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match barBackgroundColor with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match barTextColor with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match children with None -> () | Some v -> attribBuilder.Add(Xaml._ChildrenAttribKey, Array.ofList(v)) 
         match barBackgroundColor with None -> () | Some v -> attribBuilder.Add(Xaml._BarBackgroundColorAttribKey, (v)) 
         match barTextColor with None -> () | Some v -> attribBuilder.Add(Xaml._BarTextColorAttribKey, (v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncTabbedPage : (unit -> Xamarin.Forms.TabbedPage) = (fun () -> Xaml.ZCreateTabbedPage())
+    static member val CreateFuncTabbedPage : (unit -> Xamarin.Forms.TabbedPage) = (fun () -> Xaml.CreateTabbedPage())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateTabbedPage () : Xamarin.Forms.TabbedPage = 
+    static member CreateTabbedPage () : Xamarin.Forms.TabbedPage = 
             upcast (new Xamarin.Forms.TabbedPage())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -4842,7 +4842,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateTabbedPage (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.TabbedPage) = 
         // update the inherited Page element
-        let baseElement = (if Xaml.ZProtoPage.IsNone then Xaml.ZProtoPage <- Some (Xaml.Page())); Xaml.ZProtoPage.Value
+        let baseElement = (if Xaml.ProtoPage.IsNone then Xaml.ProtoPage <- Some (Xaml.Page())); Xaml.ProtoPage.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevChildrenOpt = ValueNone
         let mutable currChildrenOpt = ValueNone
@@ -4886,30 +4886,30 @@ type Xaml() =
     /// Describes a TabbedPage in the view
     static member inline TabbedPage(?children: ViewElement list, ?barBackgroundColor: Xamarin.Forms.Color, ?barTextColor: Xamarin.Forms.Color, ?title: string, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?padding: obj, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?appearing: unit -> unit, ?disappearing: unit -> unit, ?layoutChanged: unit -> unit, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildTabbedPage(0, ?children=children, ?barBackgroundColor=barBackgroundColor, ?barTextColor=barTextColor, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildTabbedPage(0, ?children=children, ?barBackgroundColor=barBackgroundColor, ?barTextColor=barTextColor, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.TabbedPage>(Xaml.ZCreateFuncTabbedPage, Xaml.UpdateFuncTabbedPage, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.TabbedPage>(Xaml.CreateFuncTabbedPage, Xaml.UpdateFuncTabbedPage, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoTabbedPage : ViewElement option = None with get, set
+    static member val ProtoTabbedPage : ViewElement option = None with get, set
 
     /// Builds the attributes for a ContentPage in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildContentPage(attribCount: int, ?content: ViewElement, ?onSizeAllocated: (double * double) -> unit, ?title: string, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?padding: obj, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?appearing: unit -> unit, ?disappearing: unit -> unit, ?layoutChanged: unit -> unit, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildContentPage(attribCount: int, ?content: ViewElement, ?onSizeAllocated: (double * double) -> unit, ?title: string, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?padding: obj, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?appearing: unit -> unit, ?disappearing: unit -> unit, ?layoutChanged: unit -> unit, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match content with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match onSizeAllocated with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match content with None -> () | Some v -> attribBuilder.Add(Xaml._ContentAttribKey, (v)) 
         match onSizeAllocated with None -> () | Some v -> attribBuilder.Add(Xaml._OnSizeAllocatedCallbackAttribKey, (fun f -> FSharp.Control.Handler<_>(fun _sender args -> f args))(v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncContentPage : (unit -> Xamarin.Forms.ContentPage) = (fun () -> Xaml.ZCreateContentPage())
+    static member val CreateFuncContentPage : (unit -> Xamarin.Forms.ContentPage) = (fun () -> Xaml.CreateContentPage())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateContentPage () : Xamarin.Forms.ContentPage = 
+    static member CreateContentPage () : Xamarin.Forms.ContentPage = 
             upcast (new Elmish.XamarinForms.DynamicViews.CustomContentPage())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -4918,7 +4918,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateContentPage (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.ContentPage) = 
         // update the inherited Page element
-        let baseElement = (if Xaml.ZProtoPage.IsNone then Xaml.ZProtoPage <- Some (Xaml.Page())); Xaml.ZProtoPage.Value
+        let baseElement = (if Xaml.ProtoPage.IsNone then Xaml.ProtoPage <- Some (Xaml.Page())); Xaml.ProtoPage.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevContentOpt = ValueNone
         let mutable currContentOpt = ValueNone
@@ -4952,16 +4952,16 @@ type Xaml() =
     /// Describes a ContentPage in the view
     static member inline ContentPage(?content: ViewElement, ?onSizeAllocated: (double * double) -> unit, ?title: string, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?padding: obj, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?appearing: unit -> unit, ?disappearing: unit -> unit, ?layoutChanged: unit -> unit, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildContentPage(0, ?content=content, ?onSizeAllocated=onSizeAllocated, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildContentPage(0, ?content=content, ?onSizeAllocated=onSizeAllocated, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.ContentPage>(Xaml.ZCreateFuncContentPage, Xaml.UpdateFuncContentPage, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.ContentPage>(Xaml.CreateFuncContentPage, Xaml.UpdateFuncContentPage, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoContentPage : ViewElement option = None with get, set
+    static member val ProtoContentPage : ViewElement option = None with get, set
 
     /// Builds the attributes for a MasterDetailPage in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildMasterDetailPage(attribCount: int, ?master: ViewElement, ?detail: ViewElement, ?isGestureEnabled: bool, ?isPresented: bool, ?masterBehavior: Xamarin.Forms.MasterBehavior, ?isPresentedChanged: bool -> unit, ?title: string, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?padding: obj, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?appearing: unit -> unit, ?disappearing: unit -> unit, ?layoutChanged: unit -> unit, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildMasterDetailPage(attribCount: int, ?master: ViewElement, ?detail: ViewElement, ?isGestureEnabled: bool, ?isPresented: bool, ?masterBehavior: Xamarin.Forms.MasterBehavior, ?isPresentedChanged: bool -> unit, ?title: string, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?padding: obj, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?appearing: unit -> unit, ?disappearing: unit -> unit, ?layoutChanged: unit -> unit, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match master with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match detail with Some _ -> attribCount + 1 | None -> attribCount
@@ -4970,7 +4970,7 @@ type Xaml() =
         let attribCount = match masterBehavior with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match isPresentedChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match master with None -> () | Some v -> attribBuilder.Add(Xaml._MasterAttribKey, (v)) 
         match detail with None -> () | Some v -> attribBuilder.Add(Xaml._DetailAttribKey, (v)) 
         match isGestureEnabled with None -> () | Some v -> attribBuilder.Add(Xaml._IsGestureEnabledAttribKey, (v)) 
@@ -4980,10 +4980,10 @@ type Xaml() =
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncMasterDetailPage : (unit -> Xamarin.Forms.MasterDetailPage) = (fun () -> Xaml.ZCreateMasterDetailPage())
+    static member val CreateFuncMasterDetailPage : (unit -> Xamarin.Forms.MasterDetailPage) = (fun () -> Xaml.CreateMasterDetailPage())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateMasterDetailPage () : Xamarin.Forms.MasterDetailPage = 
+    static member CreateMasterDetailPage () : Xamarin.Forms.MasterDetailPage = 
             upcast (new Xamarin.Forms.MasterDetailPage())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -4992,7 +4992,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateMasterDetailPage (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.MasterDetailPage) = 
         // update the inherited Page element
-        let baseElement = (if Xaml.ZProtoPage.IsNone then Xaml.ZProtoPage <- Some (Xaml.Page())); Xaml.ZProtoPage.Value
+        let baseElement = (if Xaml.ProtoPage.IsNone then Xaml.ProtoPage <- Some (Xaml.Page())); Xaml.ProtoPage.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevMasterOpt = ValueNone
         let mutable currMasterOpt = ValueNone
@@ -5080,23 +5080,23 @@ type Xaml() =
     /// Describes a MasterDetailPage in the view
     static member inline MasterDetailPage(?master: ViewElement, ?detail: ViewElement, ?isGestureEnabled: bool, ?isPresented: bool, ?masterBehavior: Xamarin.Forms.MasterBehavior, ?isPresentedChanged: bool -> unit, ?title: string, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?padding: obj, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?appearing: unit -> unit, ?disappearing: unit -> unit, ?layoutChanged: unit -> unit, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildMasterDetailPage(0, ?master=master, ?detail=detail, ?isGestureEnabled=isGestureEnabled, ?isPresented=isPresented, ?masterBehavior=masterBehavior, ?isPresentedChanged=isPresentedChanged, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildMasterDetailPage(0, ?master=master, ?detail=detail, ?isGestureEnabled=isGestureEnabled, ?isPresented=isPresented, ?masterBehavior=masterBehavior, ?isPresentedChanged=isPresentedChanged, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.MasterDetailPage>(Xaml.ZCreateFuncMasterDetailPage, Xaml.UpdateFuncMasterDetailPage, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.MasterDetailPage>(Xaml.CreateFuncMasterDetailPage, Xaml.UpdateFuncMasterDetailPage, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoMasterDetailPage : ViewElement option = None with get, set
+    static member val ProtoMasterDetailPage : ViewElement option = None with get, set
 
     /// Builds the attributes for a MenuItem in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildMenuItem(attribCount: int, ?text: string, ?command: unit -> unit, ?commandParameter: System.Object, ?icon: string, ?classId: string, ?styleId: string) = 
+    static member inline BuildMenuItem(attribCount: int, ?text: string, ?command: unit -> unit, ?commandParameter: System.Object, ?icon: string, ?classId: string, ?styleId: string) = 
 
         let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match command with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match commandParameter with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match icon with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildElement(attribCount, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildElement(attribCount, ?classId=classId, ?styleId=styleId)
         match text with None -> () | Some v -> attribBuilder.Add(Xaml._TextAttribKey, (v)) 
         match command with None -> () | Some v -> attribBuilder.Add(Xaml._CommandAttribKey, makeCommand(v)) 
         match commandParameter with None -> () | Some v -> attribBuilder.Add(Xaml._CommandParameterAttribKey, (v)) 
@@ -5104,10 +5104,10 @@ type Xaml() =
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncMenuItem : (unit -> Xamarin.Forms.MenuItem) = (fun () -> Xaml.ZCreateMenuItem())
+    static member val CreateFuncMenuItem : (unit -> Xamarin.Forms.MenuItem) = (fun () -> Xaml.CreateMenuItem())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateMenuItem () : Xamarin.Forms.MenuItem = 
+    static member CreateMenuItem () : Xamarin.Forms.MenuItem = 
             upcast (new Xamarin.Forms.MenuItem())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -5116,7 +5116,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateMenuItem (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.MenuItem) = 
         // update the inherited Element element
-        let baseElement = (if Xaml.ZProtoElement.IsNone then Xaml.ZProtoElement <- Some (Xaml.Element())); Xaml.ZProtoElement.Value
+        let baseElement = (if Xaml.ProtoElement.IsNone then Xaml.ProtoElement <- Some (Xaml.Element())); Xaml.ProtoElement.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevTextOpt = ValueNone
         let mutable currTextOpt = ValueNone
@@ -5171,16 +5171,16 @@ type Xaml() =
     /// Describes a MenuItem in the view
     static member inline MenuItem(?text: string, ?command: unit -> unit, ?commandParameter: System.Object, ?icon: string, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildMenuItem(0, ?text=text, ?command=command, ?commandParameter=commandParameter, ?icon=icon, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildMenuItem(0, ?text=text, ?command=command, ?commandParameter=commandParameter, ?icon=icon, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.MenuItem>(Xaml.ZCreateFuncMenuItem, Xaml.UpdateFuncMenuItem, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.MenuItem>(Xaml.CreateFuncMenuItem, Xaml.UpdateFuncMenuItem, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoMenuItem : ViewElement option = None with get, set
+    static member val ProtoMenuItem : ViewElement option = None with get, set
 
     /// Builds the attributes for a TextCell in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildTextCell(attribCount: int, ?text: string, ?detail: string, ?textColor: Xamarin.Forms.Color, ?detailColor: Xamarin.Forms.Color, ?command: unit -> unit, ?canExecute: bool, ?commandParameter: System.Object, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
+    static member inline BuildTextCell(attribCount: int, ?text: string, ?detail: string, ?textColor: Xamarin.Forms.Color, ?detailColor: Xamarin.Forms.Color, ?command: unit -> unit, ?canExecute: bool, ?commandParameter: System.Object, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
 
         let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match detail with Some _ -> attribCount + 1 | None -> attribCount
@@ -5190,7 +5190,7 @@ type Xaml() =
         let attribCount = match canExecute with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match commandParameter with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildCell(attribCount, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildCell(attribCount, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId)
         match text with None -> () | Some v -> attribBuilder.Add(Xaml._TextAttribKey, (v)) 
         match detail with None -> () | Some v -> attribBuilder.Add(Xaml._TextDetailAttribKey, (v)) 
         match textColor with None -> () | Some v -> attribBuilder.Add(Xaml._TextColorAttribKey, (v)) 
@@ -5201,10 +5201,10 @@ type Xaml() =
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncTextCell : (unit -> Xamarin.Forms.TextCell) = (fun () -> Xaml.ZCreateTextCell())
+    static member val CreateFuncTextCell : (unit -> Xamarin.Forms.TextCell) = (fun () -> Xaml.CreateTextCell())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateTextCell () : Xamarin.Forms.TextCell = 
+    static member CreateTextCell () : Xamarin.Forms.TextCell = 
             upcast (new Xamarin.Forms.TextCell())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -5213,7 +5213,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateTextCell (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.TextCell) = 
         // update the inherited Cell element
-        let baseElement = (if Xaml.ZProtoCell.IsNone then Xaml.ZProtoCell <- Some (Xaml.Cell())); Xaml.ZProtoCell.Value
+        let baseElement = (if Xaml.ProtoCell.IsNone then Xaml.ProtoCell <- Some (Xaml.Cell())); Xaml.ProtoCell.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevTextOpt = ValueNone
         let mutable currTextOpt = ValueNone
@@ -5293,30 +5293,30 @@ type Xaml() =
     /// Describes a TextCell in the view
     static member inline TextCell(?text: string, ?detail: string, ?textColor: Xamarin.Forms.Color, ?detailColor: Xamarin.Forms.Color, ?command: unit -> unit, ?canExecute: bool, ?commandParameter: System.Object, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildTextCell(0, ?text=text, ?detail=detail, ?textColor=textColor, ?detailColor=detailColor, ?command=command, ?canExecute=canExecute, ?commandParameter=commandParameter, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildTextCell(0, ?text=text, ?detail=detail, ?textColor=textColor, ?detailColor=detailColor, ?command=command, ?canExecute=canExecute, ?commandParameter=commandParameter, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.TextCell>(Xaml.ZCreateFuncTextCell, Xaml.UpdateFuncTextCell, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.TextCell>(Xaml.CreateFuncTextCell, Xaml.UpdateFuncTextCell, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoTextCell : ViewElement option = None with get, set
+    static member val ProtoTextCell : ViewElement option = None with get, set
 
     /// Builds the attributes for a ToolbarItem in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildToolbarItem(attribCount: int, ?order: Xamarin.Forms.ToolbarItemOrder, ?priority: int, ?text: string, ?command: unit -> unit, ?commandParameter: System.Object, ?icon: string, ?classId: string, ?styleId: string) = 
+    static member inline BuildToolbarItem(attribCount: int, ?order: Xamarin.Forms.ToolbarItemOrder, ?priority: int, ?text: string, ?command: unit -> unit, ?commandParameter: System.Object, ?icon: string, ?classId: string, ?styleId: string) = 
 
         let attribCount = match order with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match priority with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildMenuItem(attribCount, ?text=text, ?command=command, ?commandParameter=commandParameter, ?icon=icon, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildMenuItem(attribCount, ?text=text, ?command=command, ?commandParameter=commandParameter, ?icon=icon, ?classId=classId, ?styleId=styleId)
         match order with None -> () | Some v -> attribBuilder.Add(Xaml._OrderAttribKey, (v)) 
         match priority with None -> () | Some v -> attribBuilder.Add(Xaml._PriorityAttribKey, (v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncToolbarItem : (unit -> Xamarin.Forms.ToolbarItem) = (fun () -> Xaml.ZCreateToolbarItem())
+    static member val CreateFuncToolbarItem : (unit -> Xamarin.Forms.ToolbarItem) = (fun () -> Xaml.CreateToolbarItem())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateToolbarItem () : Xamarin.Forms.ToolbarItem = 
+    static member CreateToolbarItem () : Xamarin.Forms.ToolbarItem = 
             upcast (new Xamarin.Forms.ToolbarItem())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -5325,7 +5325,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateToolbarItem (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.ToolbarItem) = 
         // update the inherited MenuItem element
-        let baseElement = (if Xaml.ZProtoMenuItem.IsNone then Xaml.ZProtoMenuItem <- Some (Xaml.MenuItem())); Xaml.ZProtoMenuItem.Value
+        let baseElement = (if Xaml.ProtoMenuItem.IsNone then Xaml.ProtoMenuItem <- Some (Xaml.MenuItem())); Xaml.ProtoMenuItem.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevOrderOpt = ValueNone
         let mutable currOrderOpt = ValueNone
@@ -5358,28 +5358,28 @@ type Xaml() =
     /// Describes a ToolbarItem in the view
     static member inline ToolbarItem(?order: Xamarin.Forms.ToolbarItemOrder, ?priority: int, ?text: string, ?command: unit -> unit, ?commandParameter: System.Object, ?icon: string, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildToolbarItem(0, ?order=order, ?priority=priority, ?text=text, ?command=command, ?commandParameter=commandParameter, ?icon=icon, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildToolbarItem(0, ?order=order, ?priority=priority, ?text=text, ?command=command, ?commandParameter=commandParameter, ?icon=icon, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.ToolbarItem>(Xaml.ZCreateFuncToolbarItem, Xaml.UpdateFuncToolbarItem, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.ToolbarItem>(Xaml.CreateFuncToolbarItem, Xaml.UpdateFuncToolbarItem, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoToolbarItem : ViewElement option = None with get, set
+    static member val ProtoToolbarItem : ViewElement option = None with get, set
 
     /// Builds the attributes for a ImageCell in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildImageCell(attribCount: int, ?imageSource: string, ?text: string, ?detail: string, ?textColor: Xamarin.Forms.Color, ?detailColor: Xamarin.Forms.Color, ?command: unit -> unit, ?canExecute: bool, ?commandParameter: System.Object, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
+    static member inline BuildImageCell(attribCount: int, ?imageSource: string, ?text: string, ?detail: string, ?textColor: Xamarin.Forms.Color, ?detailColor: Xamarin.Forms.Color, ?command: unit -> unit, ?canExecute: bool, ?commandParameter: System.Object, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
 
         let attribCount = match imageSource with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildTextCell(attribCount, ?text=text, ?detail=detail, ?textColor=textColor, ?detailColor=detailColor, ?command=command, ?canExecute=canExecute, ?commandParameter=commandParameter, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildTextCell(attribCount, ?text=text, ?detail=detail, ?textColor=textColor, ?detailColor=detailColor, ?command=command, ?canExecute=canExecute, ?commandParameter=commandParameter, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId)
         match imageSource with None -> () | Some v -> attribBuilder.Add(Xaml._ImageSourceAttribKey, (v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncImageCell : (unit -> Xamarin.Forms.ImageCell) = (fun () -> Xaml.ZCreateImageCell())
+    static member val CreateFuncImageCell : (unit -> Xamarin.Forms.ImageCell) = (fun () -> Xaml.CreateImageCell())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateImageCell () : Xamarin.Forms.ImageCell = 
+    static member CreateImageCell () : Xamarin.Forms.ImageCell = 
             upcast (new Xamarin.Forms.ImageCell())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -5388,7 +5388,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateImageCell (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.ImageCell) = 
         // update the inherited TextCell element
-        let baseElement = (if Xaml.ZProtoTextCell.IsNone then Xaml.ZProtoTextCell <- Some (Xaml.TextCell())); Xaml.ZProtoTextCell.Value
+        let baseElement = (if Xaml.ProtoTextCell.IsNone then Xaml.ProtoTextCell <- Some (Xaml.TextCell())); Xaml.ProtoTextCell.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevImageSourceOpt = ValueNone
         let mutable currImageSourceOpt = ValueNone
@@ -5410,28 +5410,28 @@ type Xaml() =
     /// Describes a ImageCell in the view
     static member inline ImageCell(?imageSource: string, ?text: string, ?detail: string, ?textColor: Xamarin.Forms.Color, ?detailColor: Xamarin.Forms.Color, ?command: unit -> unit, ?canExecute: bool, ?commandParameter: System.Object, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildImageCell(0, ?imageSource=imageSource, ?text=text, ?detail=detail, ?textColor=textColor, ?detailColor=detailColor, ?command=command, ?canExecute=canExecute, ?commandParameter=commandParameter, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildImageCell(0, ?imageSource=imageSource, ?text=text, ?detail=detail, ?textColor=textColor, ?detailColor=detailColor, ?command=command, ?canExecute=canExecute, ?commandParameter=commandParameter, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.ImageCell>(Xaml.ZCreateFuncImageCell, Xaml.UpdateFuncImageCell, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.ImageCell>(Xaml.CreateFuncImageCell, Xaml.UpdateFuncImageCell, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoImageCell : ViewElement option = None with get, set
+    static member val ProtoImageCell : ViewElement option = None with get, set
 
     /// Builds the attributes for a ViewCell in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildViewCell(attribCount: int, ?view: ViewElement, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
+    static member inline BuildViewCell(attribCount: int, ?view: ViewElement, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
 
         let attribCount = match view with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildCell(attribCount, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildCell(attribCount, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId)
         match view with None -> () | Some v -> attribBuilder.Add(Xaml._ViewAttribKey, (v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncViewCell : (unit -> Xamarin.Forms.ViewCell) = (fun () -> Xaml.ZCreateViewCell())
+    static member val CreateFuncViewCell : (unit -> Xamarin.Forms.ViewCell) = (fun () -> Xaml.CreateViewCell())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateViewCell () : Xamarin.Forms.ViewCell = 
+    static member CreateViewCell () : Xamarin.Forms.ViewCell = 
             upcast (new Xamarin.Forms.ViewCell())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -5440,7 +5440,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateViewCell (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.ViewCell) = 
         // update the inherited Cell element
-        let baseElement = (if Xaml.ZProtoCell.IsNone then Xaml.ZProtoCell <- Some (Xaml.Cell())); Xaml.ZProtoCell.Value
+        let baseElement = (if Xaml.ProtoCell.IsNone then Xaml.ProtoCell <- Some (Xaml.Cell())); Xaml.ProtoCell.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevViewOpt = ValueNone
         let mutable currViewOpt = ValueNone
@@ -5467,16 +5467,16 @@ type Xaml() =
     /// Describes a ViewCell in the view
     static member inline ViewCell(?view: ViewElement, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildViewCell(0, ?view=view, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildViewCell(0, ?view=view, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.ViewCell>(Xaml.ZCreateFuncViewCell, Xaml.UpdateFuncViewCell, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.ViewCell>(Xaml.CreateFuncViewCell, Xaml.UpdateFuncViewCell, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoViewCell : ViewElement option = None with get, set
+    static member val ProtoViewCell : ViewElement option = None with get, set
 
     /// Builds the attributes for a ListView in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildListView(attribCount: int, ?items: seq<ViewElement>, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?headerTemplate: Xamarin.Forms.DataTemplate, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: int option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: int -> unit, ?itemDisappearing: int -> unit, ?itemSelected: int option -> unit, ?itemTapped: int -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildListView(attribCount: int, ?items: seq<ViewElement>, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?headerTemplate: Xamarin.Forms.DataTemplate, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: int option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: int -> unit, ?itemDisappearing: int -> unit, ?itemSelected: int option -> unit, ?itemTapped: int -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match items with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match footer with Some _ -> attribCount + 1 | None -> attribCount
@@ -5497,7 +5497,7 @@ type Xaml() =
         let attribCount = match itemTapped with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match refreshing with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match items with None -> () | Some v -> attribBuilder.Add(Xaml._ListViewItemsAttribKey, (v)) 
         match footer with None -> () | Some v -> attribBuilder.Add(Xaml._FooterAttribKey, (v)) 
         match hasUnevenRows with None -> () | Some v -> attribBuilder.Add(Xaml._HasUnevenRowsAttribKey, (v)) 
@@ -5519,10 +5519,10 @@ type Xaml() =
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncListView : (unit -> Xamarin.Forms.ListView) = (fun () -> Xaml.ZCreateListView())
+    static member val CreateFuncListView : (unit -> Xamarin.Forms.ListView) = (fun () -> Xaml.CreateListView())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateListView () : Xamarin.Forms.ListView = 
+    static member CreateListView () : Xamarin.Forms.ListView = 
             upcast (new Elmish.XamarinForms.DynamicViews.CustomListView())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -5531,7 +5531,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateListView (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.ListView) = 
         // update the inherited View element
-        let baseElement = (if Xaml.ZProtoView.IsNone then Xaml.ZProtoView <- Some (Xaml.View())); Xaml.ZProtoView.Value
+        let baseElement = (if Xaml.ProtoView.IsNone then Xaml.ProtoView <- Some (Xaml.View())); Xaml.ProtoView.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevListViewItemsOpt = ValueNone
         let mutable currListViewItemsOpt = ValueNone
@@ -5741,16 +5741,16 @@ type Xaml() =
     /// Describes a ListView in the view
     static member inline ListView(?items: seq<ViewElement>, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?headerTemplate: Xamarin.Forms.DataTemplate, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: int option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: int -> unit, ?itemDisappearing: int -> unit, ?itemSelected: int option -> unit, ?itemTapped: int -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildListView(0, ?items=items, ?footer=footer, ?hasUnevenRows=hasUnevenRows, ?header=header, ?headerTemplate=headerTemplate, ?isGroupingEnabled=isGroupingEnabled, ?isPullToRefreshEnabled=isPullToRefreshEnabled, ?isRefreshing=isRefreshing, ?refreshCommand=refreshCommand, ?rowHeight=rowHeight, ?selectedItem=selectedItem, ?separatorVisibility=separatorVisibility, ?separatorColor=separatorColor, ?itemAppearing=itemAppearing, ?itemDisappearing=itemDisappearing, ?itemSelected=itemSelected, ?itemTapped=itemTapped, ?refreshing=refreshing, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildListView(0, ?items=items, ?footer=footer, ?hasUnevenRows=hasUnevenRows, ?header=header, ?headerTemplate=headerTemplate, ?isGroupingEnabled=isGroupingEnabled, ?isPullToRefreshEnabled=isPullToRefreshEnabled, ?isRefreshing=isRefreshing, ?refreshCommand=refreshCommand, ?rowHeight=rowHeight, ?selectedItem=selectedItem, ?separatorVisibility=separatorVisibility, ?separatorColor=separatorColor, ?itemAppearing=itemAppearing, ?itemDisappearing=itemDisappearing, ?itemSelected=itemSelected, ?itemTapped=itemTapped, ?refreshing=refreshing, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.ListView>(Xaml.ZCreateFuncListView, Xaml.UpdateFuncListView, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.ListView>(Xaml.CreateFuncListView, Xaml.UpdateFuncListView, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoListView : ViewElement option = None with get, set
+    static member val ProtoListView : ViewElement option = None with get, set
 
     /// Builds the attributes for a ListViewGrouped in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline ZBuildListViewGrouped(attribCount: int, ?items: (ViewElement * ViewElement list) list, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: (int * int) option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: int * int -> unit, ?itemDisappearing: int * int -> unit, ?itemSelected: (int * int) option -> unit, ?itemTapped: int * int -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildListViewGrouped(attribCount: int, ?items: (ViewElement * ViewElement list) list, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: (int * int) option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: int * int -> unit, ?itemDisappearing: int * int -> unit, ?itemSelected: (int * int) option -> unit, ?itemTapped: int * int -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match items with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match footer with Some _ -> attribCount + 1 | None -> attribCount
@@ -5770,7 +5770,7 @@ type Xaml() =
         let attribCount = match itemTapped with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match refreshing with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = Xaml.ZBuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
         match items with None -> () | Some v -> attribBuilder.Add(Xaml._ListViewGrouped_ItemsSourceAttribKey, (fun es -> es |> Array.ofList |> Array.map (fun (e,l) -> (e, Array.ofList l)))(v)) 
         match footer with None -> () | Some v -> attribBuilder.Add(Xaml._FooterAttribKey, (v)) 
         match hasUnevenRows with None -> () | Some v -> attribBuilder.Add(Xaml._HasUnevenRowsAttribKey, (v)) 
@@ -5791,10 +5791,10 @@ type Xaml() =
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZCreateFuncListViewGrouped : (unit -> Xamarin.Forms.ListView) = (fun () -> Xaml.ZCreateListViewGrouped())
+    static member val CreateFuncListViewGrouped : (unit -> Xamarin.Forms.ListView) = (fun () -> Xaml.CreateListViewGrouped())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member ZCreateListViewGrouped () : Xamarin.Forms.ListView = 
+    static member CreateListViewGrouped () : Xamarin.Forms.ListView = 
             upcast (new Elmish.XamarinForms.DynamicViews.CustomGroupListView())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -5803,7 +5803,7 @@ type Xaml() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateListViewGrouped (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.ListView) = 
         // update the inherited View element
-        let baseElement = (if Xaml.ZProtoView.IsNone then Xaml.ZProtoView <- Some (Xaml.View())); Xaml.ZProtoView.Value
+        let baseElement = (if Xaml.ProtoView.IsNone then Xaml.ProtoView <- Some (Xaml.View())); Xaml.ProtoView.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevListViewGrouped_ItemsSourceOpt = ValueNone
         let mutable currListViewGrouped_ItemsSourceOpt = ValueNone
@@ -6002,12 +6002,12 @@ type Xaml() =
     /// Describes a ListViewGrouped in the view
     static member inline ListViewGrouped(?items: (ViewElement * ViewElement list) list, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: (int * int) option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: int * int -> unit, ?itemDisappearing: int * int -> unit, ?itemSelected: (int * int) option -> unit, ?itemTapped: int * int -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = Xaml.ZBuildListViewGrouped(0, ?items=items, ?footer=footer, ?hasUnevenRows=hasUnevenRows, ?header=header, ?isGroupingEnabled=isGroupingEnabled, ?isPullToRefreshEnabled=isPullToRefreshEnabled, ?isRefreshing=isRefreshing, ?refreshCommand=refreshCommand, ?rowHeight=rowHeight, ?selectedItem=selectedItem, ?separatorVisibility=separatorVisibility, ?separatorColor=separatorColor, ?itemAppearing=itemAppearing, ?itemDisappearing=itemDisappearing, ?itemSelected=itemSelected, ?itemTapped=itemTapped, ?refreshing=refreshing, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = Xaml.BuildListViewGrouped(0, ?items=items, ?footer=footer, ?hasUnevenRows=hasUnevenRows, ?header=header, ?isGroupingEnabled=isGroupingEnabled, ?isPullToRefreshEnabled=isPullToRefreshEnabled, ?isRefreshing=isRefreshing, ?refreshCommand=refreshCommand, ?rowHeight=rowHeight, ?selectedItem=selectedItem, ?separatorVisibility=separatorVisibility, ?separatorColor=separatorColor, ?itemAppearing=itemAppearing, ?itemDisappearing=itemDisappearing, ?itemSelected=itemSelected, ?itemTapped=itemTapped, ?refreshing=refreshing, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
-        ViewElement.Create<Xamarin.Forms.ListView>(Xaml.ZCreateFuncListViewGrouped, Xaml.UpdateFuncListViewGrouped, attribBuilder)
+        ViewElement.Create<Xamarin.Forms.ListView>(Xaml.CreateFuncListViewGrouped, Xaml.UpdateFuncListViewGrouped, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ZProtoListViewGrouped : ViewElement option = None with get, set
+    static member val ProtoListViewGrouped : ViewElement option = None with get, set
 
 [<AutoOpen>]
 module ViewElementExtensions = 

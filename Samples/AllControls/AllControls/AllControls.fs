@@ -97,7 +97,7 @@ module MyExtension =
             let attribCount = 0
             let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
             let attribCount = match fontFamily with Some _ -> attribCount + 1 | None -> attribCount
-            let attribs = Xaml.ZBuildView(attribCount, ?backgroundColor = backgroundColor, ?rotation = rotation) 
+            let attribs = Xaml.BuildView(attribCount, ?backgroundColor = backgroundColor, ?rotation = rotation) 
 
             // Add our own attributes. They must have unique names.
             match text with None -> () | Some v -> attribs.Add(TestLabelTextAttribKey, v) 
