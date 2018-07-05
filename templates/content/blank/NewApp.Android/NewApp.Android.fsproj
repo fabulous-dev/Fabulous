@@ -87,18 +87,6 @@
     <Reference Include="Xamarin.Android.FSharp.ResourceProvider.Runtime">
       <HintPath>$(SolutionDir)/packages/Xamarin.Android.FSharp.ResourceProvider.XamarinAndroidFSharpResourceProviderPkg/lib/Xamarin.Android.FSharp.ResourceProvider.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Android.Support.Animated.Vector.Drawable">
-      <HintPath>$(SolutionDir)/packages/Xamarin.Android.Support.Animated.Vector.Drawable.XamarinAndroidSdkVersion/lib/MonoAndroid81/Xamarin.Android.Support.Animated.Vector.Drawable.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Support.CustomTabs">
-      <HintPath>$(SolutionDir)/packages/Xamarin.Android.Support.CustomTabs.XamarinAndroidSdkVersion/lib/MonoAndroid81/Xamarin.Android.Support.CustomTabs.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Support.Annotations">
-      <HintPath>$(SolutionDir)/packages/Xamarin.Android.Support.Annotations.XamarinAndroidSdkVersion/lib/MonoAndroid81/Xamarin.Android.Support.Annotations.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Support.Compat">
-      <HintPath>$(SolutionDir)/packages/Xamarin.Android.Support.Compat.XamarinAndroidSdkVersion/lib/MonoAndroid81/Xamarin.Android.Support.Compat.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Android.Arch.Core.Common">
       <HintPath>$(SolutionDir)/packages/Xamarin.Android.Arch.Core.Common.1.0.0.1/lib/MonoAndroid80/Xamarin.Android.Arch.Core.Common.dll</HintPath>
     </Reference>
@@ -110,6 +98,18 @@
     </Reference>
     <Reference Include="Xamarin.Android.Arch.Lifecycle.Runtime">
       <HintPath>$(SolutionDir)/packages/Xamarin.Android.Arch.Lifecycle.Runtime.1.0.3.1/lib/MonoAndroid80/Xamarin.Android.Arch.Lifecycle.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.Animated.Vector.Drawable">
+      <HintPath>$(SolutionDir)/packages/Xamarin.Android.Support.Animated.Vector.Drawable.XamarinAndroidSdkVersion/lib/MonoAndroid81/Xamarin.Android.Support.Animated.Vector.Drawable.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.CustomTabs">
+      <HintPath>$(SolutionDir)/packages/Xamarin.Android.Support.CustomTabs.XamarinAndroidSdkVersion/lib/MonoAndroid81/Xamarin.Android.Support.CustomTabs.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.Annotations">
+      <HintPath>$(SolutionDir)/packages/Xamarin.Android.Support.Annotations.XamarinAndroidSdkVersion/lib/MonoAndroid81/Xamarin.Android.Support.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.Compat">
+      <HintPath>$(SolutionDir)/packages/Xamarin.Android.Support.Compat.XamarinAndroidSdkVersion/lib/MonoAndroid81/Xamarin.Android.Support.Compat.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.Core.UI">
       <HintPath>$(SolutionDir)/packages/Xamarin.Android.Support.Core.UI.XamarinAndroidSdkVersion/lib/MonoAndroid81/Xamarin.Android.Support.Core.UI.dll</HintPath>

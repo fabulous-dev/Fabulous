@@ -25,6 +25,10 @@ group androidapp
   nuget FSharp.Core 4.5.0
   nuget Xamarin.Forms 3.0.0.482510
   nuget Xamarin.Android.FSharp.ResourceProvider 1.0.0.14
+  nuget Xamarin.Android.Arch.Core.Common 1.0.0.1
+  nuget Xamarin.Android.Arch.Core.Runtime 1.0.0.1
+  nuget Xamarin.Android.Arch.Lifecycle.Common 1.0.3.1
+  nuget Xamarin.Android.Arch.Lifecycle.Runtime 1.0.3.1
   nuget Xamarin.Android.Support.Animated.Vector.Drawable 27.0.2.1
   nuget Xamarin.Android.Support.Annotations 27.0.2.1
   nuget Xamarin.Android.Support.Compat 27.0.2.1
