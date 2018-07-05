@@ -117,7 +117,7 @@
             "type": "parameter",
             "datatype": "string",
             "replaces": "XamarinAndroidSdkVersion",
-            "defaultValue": "27.0.2"
+            "defaultValue": "27.0.2.1"
         },
         "XamarinEssentialsSdk": {
             "type": "parameter",
@@ -135,7 +135,7 @@
             "type": "parameter",
             "dataType": "string",
             "replaces": "ElmishXamarinFormsPkg",
-            "defaultValue": "0.12.4"
+            "defaultValue": "0.12.10"
         },
         "NewtonsoftJsonPkg": {
             "type": "parameter",

@@ -13,7 +13,7 @@ The following additional view elements are available as pre-built nuget librarie
 
 * [Maps](views-maps.md) for platform maps
 * [SkiaSharp](views-skiasharp.md) for 2D graphics
-* [OxyPlot](views-charting.md) for charting (in preparation)
+* [OxyPlot](views-oxyplot.md) for charting (in preparation)
 
 To use other Xamarin.Forms controls, a small amount of wrapper code must
 be written to convert the control to an Elmish.XamarinForms view element.
