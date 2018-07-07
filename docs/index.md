@@ -89,7 +89,7 @@ The sample [AllControls](https://github.com/fsprojects/Elmish.XamarinForms/blob/
 
 The external sample [Calculator](https://github.com/nosami/Elmish.Calculator/) is a small calculator app. (Note: because this is an external sample it may not be up-to-date with the latest version of his library.)
 
-The external sample [PocketPiggyBank](https://github.com/jimbobbennett/PocketPiggyBank) is a small client-server app with login authentication. (Note: because this is an external sample it may not be up-to-date with the latest version of his library.)
+The external sample [PocketPiggyBank](https://github.com/jimbobbennett/PocketPiggyBank) is a small client-server app with login authentication. (Note: because this is an external sample it may not be up-to-date with the latest version of this library.)
 
 Further Resources
 --------
