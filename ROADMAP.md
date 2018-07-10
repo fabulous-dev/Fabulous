@@ -13,8 +13,6 @@
   * Support a Live Player reload
   * Support hot-reloading of the saved model, reapplying to the same app where possible
 
-* App size:
-  * Remove F# resources in linker, see https://github.com/fsprojects/Elmish.XamarinForms/issues/94
 
 ## Ideas
 
@@ -36,7 +34,10 @@
   * Allow the use of struct options for optional arguments (to reduce allocations)
   * Implement the C# 5.0 "open static classes" feature in F# to allow the `Xaml.` prefix to be dropped
 
-Bugs:
+* App size:
+  * Remove F# resources in linker, see https://github.com/fsprojects/Elmish.XamarinForms/issues/94
+
+## Bugs:
   * Fix issue for slider where minimum = 1.0, maximum=10.0 (i.e. when value=0 and minimum gets set before maximum?)
-  * Fix issue with application reload in AllControls.fs
+  
 
