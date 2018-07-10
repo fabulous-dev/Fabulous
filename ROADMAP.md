@@ -11,7 +11,7 @@
   * Generate `///` docs in code generator
 
 * Programming efficiency
-  * Support F# in Xamarin Live Player
+  * Support a Live Player reload
   * Support hot-reloading of the saved model, reapplying to the same app where possible
 
 * Handle 3rd party controls.
