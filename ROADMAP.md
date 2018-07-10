@@ -27,9 +27,6 @@
   * Perf-test on large lists and do resulting perf work
   * Consider allowing a `ChunkList` tree as input to ListView etc., e.g. `chunks { yield! stablePart; yield newElement; yield! stablePart2 }` 
   * Consider memoize function closure creation
-  * Consider using integer atoms for property names
-  * Consider keeping a running identity hash on the immutable objects
-  * Consider implementing equality and hash on the immutable objects
   * Consider moving 'view' and 'model' computations off the UI thread
 
 * Make some small F# langauge improvements to improve code:
