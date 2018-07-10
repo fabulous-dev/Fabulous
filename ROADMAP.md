@@ -1,11 +1,10 @@
 ## Roadmap
 
-* Programming model: Do these from `Xamarin.Forms.Core`: 
+* Programming model: 
   * Change `Xaml.` to `UI.` or `XF.` or `X.`
   * Move to `seq<_>` as the de-facto model type
-  * Animation
-  * OpenGLView
-  * Consider allowing explicit static Xaml through a type provider, e.g `xaml<"""<StackLayout Padding="20">...</StackLayout>""">`, evaluating to a `ViewElement`
+  * Add `Animation`
+  * Add `OpenGLView`
 
 * Docs
   * Generate `///` docs in code generator
@@ -14,22 +13,14 @@
   * Support a Live Player reload
   * Support hot-reloading of the saved model, reapplying to the same app where possible
 
-* Handle 3rd party controls.
-  * Possibly switch to a type provider (see [this comment](https://github.com/fsprojects/Elmish.XamarinForms/issues/50#issuecomment-390396365))
-
-* Debugging
-  * Improve diagnostics when property update fails
-  * Fix bug where ranges for locals seem off-by-one in Android debugging
-
-* Testing
-  * Add an explicit unit-test project
-
-* Real-world road-testing:
-  * Apps using charting
-  * Apps using maps
-
 * App size:
   * Remove F# resources in linker, see https://github.com/fsprojects/Elmish.XamarinForms/issues/94
+
+## Ideas
+
+* Consider allowing explicit static Xaml through a type provider, e.g `xaml<"""<StackLayout Padding="20">...</StackLayout>""">`, evaluating to a `ViewElement`
+
+* Possibly switch to a type provider (see [this comment](https://github.com/fsprojects/Elmish.XamarinForms/issues/50#issuecomment-390396365))
 
 * Performance:
   * Do better list comparison/diffing
