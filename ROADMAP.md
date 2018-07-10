@@ -15,7 +15,6 @@
   * Support hot-reloading of the saved model, reapplying to the same app where possible
 
 * Handle 3rd party controls.
-  * Add a charting control library
   * Possibly switch to a type provider (see [this comment](https://github.com/fsprojects/Elmish.XamarinForms/issues/50#issuecomment-390396365))
 
 * Debugging
