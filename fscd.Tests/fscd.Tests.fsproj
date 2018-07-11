@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+
+    <OutputType>Library</OutputType>
+    <IsPackable>false</IsPackable>
+    <DefineConstants>$(DefineConstants);TEST</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\fscd\CodeModel.fs" Link="CodeModel.fs" />
+    <Compile Include="..\fscd\Interpreter.fs" Link="Interpreter.fs" />
+    <Compile Include="..\fscd\FromCompilerService.fs" Link="FromCompilerService.fs" />
+    <Compile Include="..\fscd\fscd.fs" Link="fscd.fs" />
+    <Compile Include="Tests.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" Version="4.5.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.2.1" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.2.1" />
+    <PackageReference Include="FSharp.Compiler.Service" Version="23.0.3" />
+    <PackageReference Include="FsPickler" Version="5.2.0" />
+    <PackageReference Include="FsPickler.Json" Version="5.2.0" />
+</ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Elmish.XamarinForms\Elmish.XamarinForms.fsproj" />
+  </ItemGroup>
+
+</Project>

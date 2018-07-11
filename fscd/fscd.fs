@@ -79,9 +79,11 @@ let main (argv: string[]) =
            let mutable haveDashes = false
 
            [| for arg in argv do 
+                 let arg = arg.Trim()
                  if arg.StartsWith("@") then 
                      for line in File.ReadAllLines(arg.[1..]) do 
-                         if not (String.IsNullOrWhiteSpace line) then 
+                         let line = line.Trim()
+                         if not (String.IsNullOrWhiteSpace(line)) then
                              yield line
                  elif arg = "--" then haveDashes <- true
                  elif arg = "--watch" then watch <- true
@@ -89,15 +91,15 @@ let main (argv: string[]) =
                  elif arg.StartsWith "--webhook:" then webhook  <- Some arg.["--webhook:".Length ..]
                  else yield arg  |]
 
-        for arg in args do 
-            printfn "arg %s" arg
+        //for arg in args do 
+        //    printfn "arg %s" arg
         let sourceFiles, otherFlags = args |> Array.partition (fun arg -> arg.EndsWith(".fs") || arg.EndsWith(".fsi") || arg.EndsWith(".fsx"))
         let sourceFiles = sourceFiles |> Array.map Path.GetFullPath 
         
-        printfn "curr = %s" Environment.CurrentDirectory
+        printfn "CurrentDirectory = %s" Environment.CurrentDirectory
         let options = checker.GetProjectOptionsFromCommandLineArgs("tmp.fsproj", otherFlags)
         let options = { options with SourceFiles = sourceFiles }
-        printfn "options = %A" options
+        //printfn "options = %A" options
 
         let rec checkFile count sourceFile =         
             try 
@@ -142,30 +144,33 @@ let main (argv: string[]) =
                      let watcher = new FileSystemWatcher(path, fileName)
                      watcher.NotifyFilter <- NotifyFilters.Attributes ||| NotifyFilters.CreationTime ||| NotifyFilters.FileName ||| NotifyFilters.LastAccess ||| NotifyFilters.LastWrite ||| NotifyFilters.Size ||| NotifyFilters.Security;
                      let changed = (fun (ev: FileSystemEventArgs) -> 
-                         printfn "fscd: CHANGE DETECTED for %s, COMPILING...." sourceFile
-                         match checkFile 0 ev.FullPath  with 
-                         | Result.Error () -> 
-                             printfn "fscd: ERRORS for %s" sourceFile
-                         | Result.Ok iopt -> 
-                             printfn "fscd: COMPILED %s" sourceFile
-                             match iopt with 
-                             | None -> ()
-                             | Some i -> 
-                                 printfn "fscd: GOT PortaCode for %s" sourceFile
-                                 let json = jsonFile i
-                                 printfn "fscd: GOT JSON for %s, length = %d" sourceFile json.Length
-                                 match webhook with 
-                                 | Some hook -> 
-                                     try 
-                                         use webClient = new WebClient()
-                                         printfn "fscd: SENDING TO WEBHOOK... " // : <<<%s>>>... --> %s" json.[0 .. min (json.Length - 1) 100] hook
-                                         let resp = webClient.UploadString(hook,"Put",json)
-                                         printfn "fscd: RESP FROM WEBHOOK: %s" resp
-                                     with err -> 
-                                         printfn "fscd: ERROR SENDING TO WEBHOOK: %A" (err.ToString())
+                         try 
+                             printfn "fscd: CHANGE DETECTED for %s, COMPILING...." sourceFile
+                             match checkFile 0 ev.FullPath  with 
+                             | Result.Error () -> 
+                                 printfn "fscd: ERRORS for %s" sourceFile
+                             | Result.Ok iopt -> 
+                                 printfn "fscd: COMPILED %s" sourceFile
+                                 match iopt with 
+                                 | None -> ()
+                                 | Some i -> 
+                                     printfn "fscd: GOT PortaCode for %s" sourceFile
+                                     let json = jsonFile i
+                                     printfn "fscd: GOT JSON for %s, length = %d" sourceFile json.Length
+                                     match webhook with 
+                                     | Some hook -> 
+                                         try 
+                                             use webClient = new WebClient()
+                                             printfn "fscd: SENDING TO WEBHOOK... " // : <<<%s>>>... --> %s" json.[0 .. min (json.Length - 1) 100] hook
+                                             let resp = webClient.UploadString(hook,"Put",json)
+                                             printfn "fscd: RESP FROM WEBHOOK: %s" resp
+                                         with err -> 
+                                             printfn "fscd: ERROR SENDING TO WEBHOOK: %A" (err.ToString())
 
-                                 | None -> 
-                                     ())
+                                     | None -> 
+                                         ()
+                         with err -> 
+                             printfn "fscd: exception: %A" (err.ToString()) )
                      watcher.Changed.Add changed 
                      //watcher.Created.Add changed
                      //watcher.Deleted.Add changed
