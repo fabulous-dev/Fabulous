@@ -69,9 +69,9 @@ The model state of the app is re-initialized.
 
 ### Known limitations:
 
-1. The F# interpreter used on-device has incompletnesses and behavioural differences:
+1. The F# interpreter used on-device has incompletenesses and behavioural differences:
 
-   1. Object expressions may not be intepreted
+   1. Object expressions may not be interpreted
    2. Implementations of ToString() and other overrides will be ignored
    3. Some other F# constructs are not supported (e.g. address-of operations)
 
