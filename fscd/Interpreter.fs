@@ -426,7 +426,7 @@ type EvalContext ()  =
         | DExpr.Call(objExprOpt, memberOrFunc, typeArgs1, typeArgs2, argExprs) -> ctxt.EvalCall(env, objExprOpt, memberOrFunc, typeArgs1, typeArgs2, argExprs)
         | DExpr.Coerce(_targetType, inpExpr) -> ctxt.EvalExpr(env, inpExpr)
         | DExpr.Lambda(domainTy, rangeTy, lambdaVar, bodyExpr) -> ctxt.EvalLambda(env, domainTy, rangeTy, lambdaVar, bodyExpr)
-        //| DExpr.TypeLambda(genericParams, bodyExpr) -> ctxt.EvalTypeLambda(env, genericParams, bodyExpr)
+        | DExpr.TypeLambda(genericParams, bodyExpr) -> ctxt.EvalTypeLambda(env, genericParams, bodyExpr)
         | DExpr.Let((bindingVar, bindingExpr), bodyExpr) -> ctxt.EvalLet(env, (bindingVar, bindingExpr), bodyExpr)
         | DExpr.NewObject(objCtor, typeArgs, argExprs) -> ctxt.EvalNewObject(env, objCtor, typeArgs, argExprs)
         | DExpr.NewRecord(recordType, argExprs) ->  ctxt.EvalNewRecord(env, recordType, argExprs)
@@ -456,7 +456,6 @@ type EvalContext ()  =
         | DExpr.LetRec(recursiveBindings, bodyExpr) -> ctxt.EvalLetRec(List.map (map2 convValue convExpr) recursiveBindings, convExpr bodyExpr)
         | DExpr.NewDelegate(delegateType, delegateBodyExpr) -> ctxt.EvalNewDelegate(convType delegateType, convExpr delegateBodyExpr)
         | DExpr.Quote(quotedExpr) -> ctxt.EvalQuote(convExpr quotedExpr)
-        | DExpr.TypeLambda(genericParams, bodyExpr) -> ctxt.EvalTypeLambda(List.map convGenericParam genericParams, convExpr bodyExpr)
         | DExpr.DefaultValue defaultType -> ctxt.EvalDefaultValue (convType defaultType)
 
         // Not really possible:
@@ -530,10 +529,21 @@ type EvalContext ()  =
         | _ -> 
             failwithf "unexpected constructor %A at types %A" methR typeArgsR
 
-    member ctxt.EvalApplication(env, funcExpr, _typeArgs, argExprs) =
+    member ctxt.EvalApplication(env, funcExpr, typeArgs, argExprs) =
         let funcV =  ctxt.EvalExpr(env, funcExpr)
-        let argsV = ctxt.EvalExprs(env, argExprs)
-        ctxt.EvalApplicationOfArg(env, funcV, argsV)
+        let funcV = 
+            if typeArgs.Length > 0 then 
+               let (RTypesOrObj typeArgsR) = ctxt.ResolveTypes (env, typeArgs)
+               match getVal funcV with   
+               | :? (Type[] -> obj) as f ->  Value (f typeArgsR)
+               | t -> failwithf "unexpected value '%A' of type '%A' when evaluating type application" t (t.GetType())
+            else
+                funcV
+        if argExprs.Length = 0 then 
+            funcV
+        else
+            let argsV = ctxt.EvalExprs(env, argExprs)
+            ctxt.EvalApplicationOfArg(env, funcV, argsV)
 
     member ctxt.EvalApplicationOfArg(env, funcV, argsV) =
         match getVal funcV, argsV with 
@@ -702,6 +712,12 @@ type EvalContext ()  =
             FSharp.Reflection.FSharpValue.MakeFunction(funcTypeV, (fun (arg: obj) -> 
                 let env = bind env lambdaVar (Value arg)
                 ctxt.EvalExpr(env, bodyExpr) |> getVal)) |> box |> Value
+
+    member ctxt.EvalTypeLambda(env, genericParams, bodyExpr) =
+        (fun (typeArgs: Type[]) -> 
+            let env = (env, genericParams, typeArgs) |||> Array.fold2 (fun env p a -> bindty env p a)
+            ctxt.EvalExpr(env, bodyExpr) |> getVal) 
+        |> box |> Value
 
     member ctxt.EvalNewArray(env, arrayType, argExprs) =
         let arrayTypeR = ctxt.ResolveType (env, arrayType)

@@ -323,10 +323,30 @@ if x <> 1 then failwith "fail fail!"
 let f () = 
     let g x = x
     g 3, g 4, g
-let a, b, (c: int -> int) = g()
+let a, b, (c: int -> int) = f()
 if a <> 3 then failwith "fail!" 
 if b <> 4 then failwith "fail fail!" 
 if c 5 <> 5 then failwith "fail fail fail!" 
+        """
+
+    [<TestMethod>]
+    member this.DateTime() =
+        SimpleTestCase "GenericThing" """
+let v1 = System.DateTime.Now
+let v2 = v1.Date
+let mutable v3 = System.DateTime.Now
+let v4 = v3.Date
+        """
+
+    [<TestMethod>]
+    member this.LocalMutation() =
+        SimpleTestCase "GenericThing" """
+let f () = 
+    let mutable x = 1
+    x <- x + 1
+    x <- x + 1
+    x
+if f() <> 3 then failwith "fail fail!" 
         """
 
 
