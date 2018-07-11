@@ -19,7 +19,7 @@
     <PackageReference Include="FsPickler.Json" Version="5.2.0" />
     <!-- use explicit reference to workaround OSX msbuild bug which was giving wrong FSHarp.Core reference 4.2.3 -->
     <Reference Include="FSharp.Core">
-      <HintPath>..\..\..\packages\neutral\FSharp.Core\lib\net45\FSharp.Core.dll</HintPath>
+      <HintPath>..\packages\neutral\FSharp.Core\lib\net45\FSharp.Core.dll</HintPath>
     </Reference>
     <!-- <PackageReference Update="FSharp.Core" Version="4.5.0" /> -->
   </ItemGroup>
