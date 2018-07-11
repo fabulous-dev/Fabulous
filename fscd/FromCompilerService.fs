@@ -18,7 +18,7 @@ let rec convExpr (e:FSharpExpr) : DExpr =
     | BasicPatterns.AddressOf(lvalueExpr) -> DExpr.AddressOf(convExpr lvalueExpr)
     | BasicPatterns.AddressSet(lvalueExpr, rvalueExpr) -> DExpr.AddressSet(convExpr lvalueExpr, convExpr rvalueExpr)
     // FCS TODO: fix FCS quirk with IsNone and IsSome on the option type
-    | BasicPatterns.Application( BasicPatterns.Call(Some obj, memberOrFunc, tyargs1, tyargs2, [ ]), typeArgs, [ arg ]) when memberOrFunc.CompiledName = "get_IsNone" -> 
+    | BasicPatterns.Application( BasicPatterns.Call(Some obj, memberOrFunc, tyargs1, tyargs2, [ ]), typeArgs, [ arg ]) when memberOrFunc.CompiledName = "get_IsNone" || memberOrFunc.CompiledName = "get_IsSome"  -> 
         let objExprR = convExpr obj
         let mrefR = convMemberRef memberOrFunc
         let typeArgs1R = convTypes tyargs1
