@@ -20,6 +20,7 @@
     <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
     <SelectedDevice>Google Pixel 2</SelectedDevice>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <DefaultDevice>emulator_pixel</DefaultDevice>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,6 +44,7 @@
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <GenerateTailCalls>true</GenerateTailCalls>
+    <AndroidLinkMode>None</AndroidLinkMode>
     <PlatformTarget>
     </PlatformTarget>
   </PropertyGroup>
@@ -75,6 +77,11 @@
     <None Include="Assets\AboutAssets.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Elmish.XamarinForms.LiveUpdate\Elmish.XamarinForms.LiveUpdate.fsproj">
+      <Name>Elmish.XamarinForms.LiveUpdate</Name>
+      <Project>{b459afad-bb5b-43c3-bd86-609e8db3e3f1}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Elmish.XamarinForms\Elmish.XamarinForms.fsproj">
       <Name>Elmish.XamarinForms</Name>
       <Project>{b459afad-bb5b-43c3-bd86-609e8db3e3fd}</Project>

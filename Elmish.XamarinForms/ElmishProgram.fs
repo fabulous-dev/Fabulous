@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
+﻿// Copyright 2018 Elmish and Elmish.XamarinForms contributors. See LICENSE.md for license.
 namespace Elmish.XamarinForms
 
 open System
@@ -17,9 +17,12 @@ module Values =
 type internal ProgramDispatch<'msg>()  = 
     static let mutable dispatchImpl = (fun (_msg: 'msg) -> failwith "do not call dispatch during initialization" : unit)
 
-    static let dispatch = id (fun msg -> dispatchImpl msg)
+    static let dispatch = 
+        id (fun msg -> 
+            dispatchImpl msg)
 
-    static member Dispatch with get () = dispatch and set v = dispatchImpl <- v
+    static member DispatchViaThunk = dispatch 
+    static member SetDispatchThunk v = dispatchImpl <- v
 
 /// Program type captures various aspects of program behavior
 type Program<'model, 'msg, 'view> = 
@@ -31,28 +34,30 @@ type Program<'model, 'msg, 'view> =
       onError : (string*exn) -> unit }
 
 /// Starts the Elmish dispatch loop for the page with the given Elmish program
-type ProgramRunner<'model, 'msg>(app: Application, program: Program<'model, 'msg, _>)  = 
+type ProgramRunner<'model, 'msg>(app: Application, program: Program<'model, 'msg, 'model -> ('msg -> unit) -> ViewElement>)  = 
 
     do Debug.WriteLine "run: computing initial model"
 
     // Get the initial model
     let (initialModel,cmd) = program.init ()
+    let mutable alternativeRunner : ProgramRunner<obj,obj> option = None
 
     let mutable lastModel = initialModel
     let mutable lastViewDataOpt = None
-    let dispatch = ProgramDispatch<'msg>.Dispatch
+    let dispatch = ProgramDispatch<'msg>.DispatchViaThunk
+    let mutable reset = (fun () -> ())
 
     // If the view is dynamic, create the initial page
     let viewInfo, mainPage = 
-        let pageDescription : ViewElement = program.view initialModel dispatch
-        let pageObj = pageDescription.Create()
+        let pageElement : ViewElement = program.view initialModel dispatch
+        let pageObj = pageElement.Create()
         let mainPage = 
             match pageObj with 
             | :? Page as page -> page
             | _ -> failwithf "Incorrect model type: expected a page but got a %O" (pageObj.GetType())
         app.MainPage <- mainPage
         //app.Properties.["model"] <- initialModel
-        (pageDescription), mainPage
+        pageElement, mainPage
 
     // Start Elmish dispatch loop  
     let rec processMsg msg = 
@@ -76,21 +81,27 @@ type ProgramRunner<'model, 'msg>(app: Application, program: Program<'model, 'msg
         | None -> 
             lastViewDataOpt <- Some viewInfo
 
-        | Some prevPageDescription ->
-            let newPageDescription: ViewElement = program.view updatedModel dispatch
-            if canReuseChild prevPageDescription newPageDescription then
-                newPageDescription.UpdateIncremental (prevPageDescription, app.MainPage)
+        | Some prevPageElement ->
+            let newPageElement: ViewElement = program.view updatedModel dispatch
+            if canReuseChild prevPageElement newPageElement then
+                newPageElement.UpdateIncremental (prevPageElement, app.MainPage)
             else
-                let pageObj = newPageDescription.Create()
+                let pageObj = newPageElement.Create()
                 match pageObj with 
                 | :? Page as page -> app.MainPage <- page
                 | _ -> failwithf "Incorrect model type: expected a page but got a %O" (pageObj.GetType())
 
-            lastViewDataOpt <- Some newPageDescription
+            lastViewDataOpt <- Some newPageElement
                       
     do 
         // Set up the global dispatch function
-        ProgramDispatch<'msg>.Dispatch <- (fun msg -> Device.BeginInvokeOnMainThread(fun () -> processMsg msg))
+        ProgramDispatch<'msg>.SetDispatchThunk (fun msg -> 
+            Device.BeginInvokeOnMainThread(fun () -> 
+                processMsg msg))
+
+        reset <- (fun () -> 
+            Device.BeginInvokeOnMainThread(fun () -> 
+                updateView lastModel))
 
         Debug.WriteLine "updating the initial view"
 
@@ -103,14 +114,32 @@ type ProgramRunner<'model, 'msg>(app: Application, program: Program<'model, 'msg
     member __.InitialMainPage = mainPage
 
     member __.CurrentModel = lastModel 
+        
+    member runner.ChangeProgram(newProgram: Program<obj, obj, obj -> (obj -> unit) -> ViewElement>) : unit  =
+        Device.BeginInvokeOnMainThread(fun () -> 
+            // TODO: transmogrify the model
+            alternativeRunner <- Some (ProgramRunner<obj, obj>(app, newProgram))
+        )
+
+    member __.ResetView() : unit  =
+        Device.BeginInvokeOnMainThread(fun () -> 
+            match alternativeRunner with 
+            | Some r -> r.ResetView()
+            | None -> reset()
+        )
 
     /// Set the current model, e.g. on resume
     member __.SetCurrentModel(model, cmd: Cmd<_>) =
-        Debug.WriteLine "updating the view after setting the model"
-        lastModel <- model
-        updateView model
-        for sub in program.subscribe model @ cmd do
-            sub dispatch
+        Device.BeginInvokeOnMainThread(fun () -> 
+            match alternativeRunner with 
+            | Some _ -> failwith "SetCurrentModel: can't access runner after ChangeProgram has been called"
+            | None -> 
+                Debug.WriteLine "updating the view after setting the model"
+                lastModel <- model
+                updateView model
+                for sub in program.subscribe model @ cmd do
+                    sub dispatch
+        )
 
 /// Program module - functions to manipulate program instances
 [<RequireQualifiedAccess>]
@@ -157,6 +186,24 @@ module Program =
             init = traceInit 
             update = traceUpdate }
 
+
+    /// Trace all the updates to the console
+    let withLiveReload (program: Program<'model, 'msg, 'view>) =
+        let traceInit () =
+            let initModel,cmd = program.init ()
+            Console.WriteLine (sprintf "Initial model: %0A" initModel)
+            initModel,cmd
+
+        let traceUpdate msg model =
+            Console.WriteLine (sprintf "Message: %0A" msg)
+            let newModel,cmd = program.update msg model
+            Console.WriteLine (sprintf "Updated model: %0A" newModel)
+            newModel,cmd
+
+        { program with
+            init = traceInit 
+            update = traceUpdate }
+
     /// Trace all the messages as they update the model
     let withTrace trace (program: Program<'model, 'msg, 'view>) =
         { program
@@ -174,11 +221,6 @@ module Program =
     /// Run the app with ddynamic views for a specific application
     let runWithDynamicView (app : Application) (program: Program<'model, 'msg, _>) = 
         ProgramRunner(app, program)
-
-
-
-
-
 
     /// Creates the view model for the given page and starts the Elmish dispatch loop for the matching program
     [<Obsolete("Please use Program.runWithDynamicView", true)>]

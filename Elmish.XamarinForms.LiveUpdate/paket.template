@@ -1,0 +1,29 @@
+type file
+id Elmish.XamarinForms
+version 0.0
+authors Elmish.XamarinForms Contributors
+description
+    F# bindings for using elmish in Xamarin.Forms 
+tags
+	Xamarin.Forms F# Elmish Elm
+projectUrl
+	https://github.com/fsprojects/Elmish.XamarinForms
+licenseUrl
+	https://github.com/fsprojects/Elmish.XamarinForms/blob/master/LICENSE.md
+requireLicenseAcceptance false
+files
+	../build_output/Elmish.XamarinForms.LiveUpdate.dll ==> lib/netstandard2.0
+	../build_output/tools/fscd.exe ==> tools
+	../build_output/tools/FSharp.Core.dll ==> tools
+	../build_output/tools/FSharp.Compiler.Service.dll ==> tools
+	../build_output/tools/System.Collections.Immutable.dll ==> tools
+	../build_output/tools/System.Reflection.Metadata.dll ==> tools
+	../build_output/tools/FSharp.Core.resources.dll ==> tools
+	../build_output/tools/FsPickler.dll ==> tools
+	../build_output/tools/FsPickler.Json.dll ==> tools
+dependencies
+  FSharp.Core >= LOCKEDVERSION-neutral
+  Xamarin.Forms >= LOCKEDVERSION-neutral
+  FsPickler >= LOCKEDVERSION-neutral
+  FsPickler.Json >= LOCKEDVERSION-neutral
+  Elmish.XamarinForms ~> CURRENTVERSION

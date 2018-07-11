@@ -1,3 +1,4 @@
+// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
 namespace Elmish.XamarinForms.DynamicViews 
 
 [<AutoOpen>]

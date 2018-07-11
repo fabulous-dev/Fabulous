@@ -26,7 +26,7 @@ module StaticView =
 
         let mutable lastModel = initialModel
         let mutable lastViewData = None
-        let dispatch = ProgramDispatch<'msg>.Dispatch
+        let dispatch = ProgramDispatch<'msg>.DispatchViaThunk
 
         do Debug.WriteLine "run: computing static components of view"
 
@@ -65,7 +65,7 @@ module StaticView =
                       
         do 
            // Set up the global dispatch function
-           ProgramDispatch<'msg>.Dispatch <- (fun msg -> Device.BeginInvokeOnMainThread(fun () -> processMsg msg))
+           ProgramDispatch<'msg>.SetDispatchThunk (fun msg -> Device.BeginInvokeOnMainThread(fun () -> processMsg msg))
 
            Debug.WriteLine "updating the initial view"
 

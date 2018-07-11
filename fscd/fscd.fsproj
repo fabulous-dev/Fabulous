@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net472</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="CodeModel.fs" />
+    <Compile Include="Interpreter.fs" />
+    <Compile Include="FromCompilerService.fs" />
+    <Compile Include="fscd.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FSharp.Compiler.Service" Version="23.0.3" />
+    <PackageReference Include="FsPickler" Version="5.2.0" />
+    <PackageReference Include="FsPickler.Json" Version="5.2.0" />
+    <PackageReference Update="FSharp.Core" Version="4.5.0" />
+  </ItemGroup>
+
+</Project>

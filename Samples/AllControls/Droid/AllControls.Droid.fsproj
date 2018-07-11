@@ -18,8 +18,8 @@
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
     <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
-    <SelectedDevice>Google Pixel 2</SelectedDevice>
-    <DefaultDevice>new_device</DefaultDevice>
+    <SelectedDevice>emulator_pixel</SelectedDevice>
+    <DefaultDevice>emulator_pixel</DefaultDevice>
     <Name>AllControls.Droid</Name>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>

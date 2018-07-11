@@ -671,4 +671,5 @@ type App () as app =
     let runner = 
         Program.mkSimple App.init App.update App.view
         |> Program.withConsoleTrace
+        //|> Program.withLiveReload app
         |> Program.runWithDynamicView app

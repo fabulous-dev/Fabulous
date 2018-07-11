@@ -1,4 +1,6 @@
-﻿// dotnet build -c Release Generator\Generator.fsproj && dotnet Generator\bin\Release\netcoreapp2.0\Generator.dll Generator\Xamarin.Forms.Core.json Elmish.XamarinForms\Xamarin.Forms.Core.fs 
+﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
+
+// dotnet build -c Release Generator\Generator.fsproj && dotnet Generator\bin\Release\netcoreapp2.0\Generator.dll Generator\Xamarin.Forms.Core.json Elmish.XamarinForms\Xamarin.Forms.Core.fs 
 
 module Generator
 

@@ -2,13 +2,13 @@
 namespace CounterApp
 
 open System.Diagnostics
-open Elmish.XamarinForms
+open Elmish.XamarinForms 
 open Elmish.XamarinForms.DynamicViews
 open Xamarin.Forms
 
 module App = 
     type Model = 
-      { Count : int
+      { Count : int 
         Step : int
         TimerOn: bool }
 
@@ -20,11 +20,11 @@ module App =
         | TimerToggled of bool
         | TimedTick
 
-    let initModel = { Count = 0; Step = 1; TimerOn=false }
+    let initModel () = { Count = 0; Step = 1; TimerOn=false }
 
-    let init () = initModel, Cmd.none
+    let init () = initModel () , Cmd.none
 
-    let timerCmd = 
+    let timerCmd () = 
         async { do! Async.Sleep 200
                 return TimedTick }
         |> Cmd.ofAsyncMsg
@@ -35,41 +35,46 @@ module App =
         | Decrement -> { model with Count = model.Count - model.Step }, Cmd.none
         | Reset -> init ()
         | SetStep n -> { model with Step = n }, Cmd.none
-        | TimerToggled on -> { model with TimerOn = on }, (if on then timerCmd else Cmd.none)
-        | TimedTick -> if model.TimerOn then { model with Count = model.Count + model.Step }, timerCmd else model, Cmd.none
+        | TimerToggled on -> { model with TimerOn = on }, (if on then timerCmd() else Cmd.none)
+        | TimedTick -> if model.TimerOn then { model with Count = model.Count + model.Step }, timerCmd() else model, Cmd.none 
 
-    let view (model: Model) dispatch =
+    let view (model: Model) dispatch = 
         Xaml.ContentPage(
-          content=Xaml.StackLayout(padding=20.0,
+          content=Xaml.StackLayout(padding=30.0,verticalOptions = LayoutOptions.Center,
             children=[ 
-              yield 
-                Xaml.StackLayout(padding=20.0, verticalOptions=LayoutOptions.Center,
-                  children=[
-                    Xaml.Label(text= sprintf "%d" model.Count, horizontalOptions=LayoutOptions.Center, fontSize = "Large")
-                    Xaml.Button(text="Increment", command= fixf (fun () -> dispatch Increment))
-                    Xaml.Button(text="Decrement", command= fixf (fun () -> dispatch Decrement))
-                    Xaml.StackLayout(padding=20.0, orientation=StackOrientation.Horizontal, horizontalOptions=LayoutOptions.Center,
-                                    children = [ Xaml.Label(text="Timer")
-                                                 Xaml.Switch(isToggled=model.TimerOn, toggled=fixf(fun on -> dispatch (TimerToggled on.Value))) ])
-                    Xaml.Slider(minimum=0.0, maximum=10.0, value= double model.Step, valueChanged=fixf(fun args -> dispatch (SetStep (int (args.NewValue + 0.5)))))
-                    Xaml.Label(text=sprintf "Step size: %d" model.Step, horizontalOptions=LayoutOptions.Center) 
-                  ])
               // If you want the button to disappear when in the initial condition then use this:
-              //if model <> initModel then 
-              yield Xaml.Button(text="Reset", horizontalOptions=LayoutOptions.Center, command=fixf(fun () -> dispatch Reset), canExecute = (model <> initModel))
-            ]))
+              yield Xaml.Label(text= sprintf "%d" model.Count, horizontalOptions=LayoutOptions.Center, fontSize = "Large")
+              yield Xaml.Button(text="Increment", command= (fun () -> dispatch Increment))
+              yield Xaml.Button(text="Decrement", command= (fun () -> dispatch Decrement)) 
+              yield Xaml.StackLayout(padding=20.0, orientation=StackOrientation.Horizontal, horizontalOptions=LayoutOptions.Center,
+                              children = [ Xaml.Label(text="Timer")
+                                           Xaml.Switch(isToggled=model.TimerOn, toggled=(fun on -> dispatch (TimerToggled on.Value))) ])
+              yield Xaml.Slider(minimum=0.0, maximum=10.0, value= double model.Step, valueChanged=(fun args -> dispatch (SetStep (int (args.NewValue + 0.5)))))
+              yield Xaml.Label(text=sprintf "Step size: %d" model.Step, horizontalOptions=LayoutOptions.Center) 
+              //if model <> initModel () then 
+              yield Xaml.Button(text="Reset", horizontalOptions=LayoutOptions.Center, command=fixf(fun () -> dispatch Reset), canExecute = (model <> initModel () ))
+            ]))   
+             
+    let program = 
+        Program.mkProgram init update view 
+        |> Program.withConsoleTrace
+
+#if TESTEVAL
+    let testInit = fst (init ())
+    let testView = view testInit (fun _ -> ())
+#endif
 
 type CounterApp () as app = 
     inherit Application ()
 
-    let program = Program.mkProgram App.init App.update App.view
-    let runner = 
-        program
-#if DEBUG
-        |> Program.withConsoleTrace
-#endif
-        |> Program.runWithDynamicView app
+    let runner = App.program |> Program.runWithDynamicView app
 
+#if DEBUG && !TESTEVAL
+    do runner.EnableLiveUpdate ()
+#endif
+
+
+(*
 #if !NO_SAVE_MODEL_WITH_JSON
     let modelId = "model"
     let serializer = MBrace.FsPickler.Json.FsPickler.CreateJsonSerializer()
@@ -100,3 +105,4 @@ type CounterApp () as app =
     override this.OnStart() = this.OnResume()
 
 #endif
+*)
