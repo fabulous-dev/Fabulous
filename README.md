@@ -5,11 +5,9 @@ F# Functional App Development, using Xamarin.Forms
 
 Never write a ViewModel class again!  Conquer the world with clean dynamic UIs!
 
-This library uses a variation of [elmish](https://elmish.github.io/), an Elm architecture implemented in F#, to build Xamarin.Forms applications for iOS, Android, Mac and more. Elmish was originally written for [Fable](https://github.com/fable-compiler) applications, however it is used here for mobile applications using Xamarin.Forms. This is a sample and may change.
+This library uses a variation of [elmish](https://elmish.github.io/), an Elm architecture implemented in F#, to build Xamarin.Forms applications for iOS, Android, Mac and more. Elmish was originally written for [Fable](https://github.com/fable-compiler) applications, however it is used here for mobile applications using Xamarin.Forms.
 
-To quote [@dsyme](http://github.com/dsyme):
-
-> In my work for Xamarin, I'm asking myself "what will appeal to F# devs who want to do Xamarin programming?". These devs are very code-oriented and know F#.  People are liking Elm and React via [Elmish](https://elmish.github.io/elmish/) and also React Native. Can we apply some of the lessons to Xamarin programming?
+**This is a sample and may change.**
 
 * [Getting started](https://fsprojects.github.io/Elmish.XamarinForms/index.html#getting=started)
 
@@ -19,7 +17,6 @@ To quote [@dsyme](http://github.com/dsyme):
 
 * [Contributor guide](DEVGUIDE.md)
 
-
 ## Contributing
 
 Please contribute to this library through issue reports, pull requests, code reviews and discussion.
@@ -27,4 +24,3 @@ Please contribute to this library through issue reports, pull requests, code rev
 Credits
 -----
 This library is inspired by [Elmish.WPF](https://github.com/Prolucid/Elmish.WPF), [Elmish.Forms](https://github.com/dboris/elmish-forms) and [elmish](https://github.com/elmish/elmish), written by [et1975](https://github.com/et1975). This project technically has no tie to [Fable](http://fable.io/), which is an F# to JavaScript transpiler that is definitely worth checking out.
-

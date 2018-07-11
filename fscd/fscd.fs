@@ -1,6 +1,6 @@
 ﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
 
-// cd C:\GitHub\dsyme\Elmish.XamarinForms\Samples\CounterApp\CounterApp
+// cd Elmish.XamarinForms\Samples\CounterApp\CounterApp
 //   adb -d forward  tcp:9867 tcp:9867
 // dotnet run --project ..\..\..\fscd\fscd.fsproj -- --eval @out.args
 // dotnet run --project ..\..\..\fscd\fscd.fsproj -- --watch --webhook:http://localhost:9867/update @out.args

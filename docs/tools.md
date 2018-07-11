@@ -22,7 +22,7 @@ Some manual set-up is required.  The following assumes your app is called `Squea
            do runner.EnableLiveUpdate ()
            #endif
 
-3. In your core project directory (e.g. `SqueakyApp\SqueakyApp`), create `proj.args` containing the project options used to compile the core of your app. It should look something like [this](https://github.com/dsyme/Elmish.XamarinForms/blob/c2a93b2aa6fb728c038a907844ea04a7127c7381/Samples/CounterApp/CounterApp/out.args).
+3. In your core project directory (e.g. `SqueakyApp\SqueakyApp`), create `proj.args` containing the project options used to compile the core of your app. It should look something like [this](https://github.com/fsprojects/Elmish.XamarinForms/blob/f3a591bfe4a7a70059ec8d74a3843968b200b91b/Samples/CounterApp/CounterApp/out.args).
 
        dotnet build -v:n SqueayApp.fsproj > proj.args
        <manually edit `proj.args` to contain only the compilation arguments>
