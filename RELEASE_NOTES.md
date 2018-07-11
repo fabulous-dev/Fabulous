@@ -1,3 +1,6 @@
+#### 0.13.0
+* Add experimental LiveUpdate
+
 #### 0.12.10
 * Added oxplot extension
 * Fix dependencies in nuget packages

@@ -3,11 +3,11 @@ Elmish.XamarinForms Guide
 
 {% include_relative contents.md %}
 
-Experimental Live Update
+Live Update
 ------
 
-There is a prototype LiveUpdate mechanism available.  The aim of this is primarily to enable modifying the `view` function in order
-to see the effect of adjusting of visual options. 
+There is an experimental LiveUpdate mechanism available.  The aim of this is primarily to enable modifying the `view` function in order
+to see the effect of adjusting of visual options.
 
 Some manual set-up is required.  The following assumes your app is called `SqueakyApp`:
 
@@ -47,7 +47,7 @@ Some manual set-up is required.  The following assumes your app is called `Squea
            mono ~/.nuget/packages/Elmish.XamarinForms.LiveUpdate/0.13.0/tools/fscd.exe --watch --webhook:http://localhost:9867/update -- @proj.args
 
 Now, whenever you save a file in your core project directory, the `fscd.exe` daemon will attempt to recompile your changed file and
-send a representation of its contents to your app via a PUT request.  The app then deserializes this representation and
+send a representation of its contents to your app via a PUT request to the given webhook.  The app then deserializes this representation and
 adds the declarations to an F# interpreter. This interpreter will make some reflective calls into the existing libraries on device.
    
 To take effect, your code must have a single declaration in some module called `programLiveUpdate` or `program` taking no arguments.  For example:
@@ -69,7 +69,7 @@ The model state of the app is re-initialized.
 
 ### Known limitations:
 
-1. The F# interpreter used on-device has some incompletnesses and behavioural differences:
+1. The F# interpreter used on-device has incompletnesses and behavioural differences:
 
    1. Object expressions may not be intepreted
    2. Implementations of ToString() and other overrides will be ignored

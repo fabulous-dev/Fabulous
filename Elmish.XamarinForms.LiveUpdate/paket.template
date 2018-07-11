@@ -1,11 +1,11 @@
 type file
-id Elmish.XamarinForms
+id Elmish.XamarinForms.LiveUpdate
 version 0.0
 authors Elmish.XamarinForms Contributors
 description
     F# bindings for using elmish in Xamarin.Forms 
 tags
-	Xamarin.Forms F# Elmish Elm
+	Xamarin.Forms F# Elmish Elm LiveUpdate Android iOS
 projectUrl
 	https://github.com/fsprojects/Elmish.XamarinForms
 licenseUrl
