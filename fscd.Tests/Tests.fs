@@ -254,7 +254,7 @@ let x3 = (Some 3).IsNone
 
     [<TestMethod>]
     member this.TestEvalUnionCaseInGenericCofe () =
-        SimpleTestCase "TestEvalIsNone" """
+        SimpleTestCase "TestEvalUnionCaseInGenericCofe" """
 let f<'T>(x:'T) = Some x
 
 let y = f 3
@@ -263,7 +263,7 @@ printfn "y = %A, y.GetType() = %A" y (y.GetType())
 
     [<TestMethod>]
     member this.TestEvalNewOnClass() =
-        SimpleTestCase "TestEvalIsNone" """
+        SimpleTestCase "TestEvalNewOnClass" """
 type C(x: int) = 
     member __.X = x
 
@@ -273,7 +273,7 @@ let z = if y.X <> 3 then failwith "fail!" else 1
 
     [<TestMethod>]
     member this.TestEvalSetterOnClass() =
-        SimpleTestCase "TestEvalIsNone" """
+        SimpleTestCase "TestEvalSetterOnClass" """
 type C(x: int) = 
     let mutable y = x
     member __.Y with get() = y and set v = y <- v
@@ -286,7 +286,7 @@ if c.Y <> 4 then failwith "fail! fail!"
 
     [<TestMethod>]
     member this.TestEvalLocalFunctionOnClass() =
-        SimpleTestCase "TestEvalIsNone" """
+        SimpleTestCase "TestEvalLocalFunctionOnClass" """
 type C(x: int) = 
     let f x = x + 1
     member __.Y with get() = f x
@@ -297,14 +297,14 @@ if c.Y <> 4 then failwith "fail!"
 
     [<TestMethod>]
     member this.TestEquals() =
-        SimpleTestCase "TestEvalIsNone" """
+        SimpleTestCase "TestEquals" """
 let x = (1 = 2)
         """
 
 
     [<TestMethod>]
     member this.TestTypeTest() =
-        SimpleTestCase "TestEvalIsNone" """
+        SimpleTestCase "TestTypeTest" """
 let x = match box 1 with :? int as a -> a | _ -> failwith "fail!"
 if x <> 1 then failwith "fail fail!" 
         """
@@ -312,9 +312,21 @@ if x <> 1 then failwith "fail fail!"
 
     [<TestMethod>]
     member this.TestTypeTest2() =
-        SimpleTestCase "TestEvalIsNone" """
+        SimpleTestCase "TestTypeTest2" """
 let x = match box 2 with :? string as a -> failwith "fail!" | _ -> 1
 if x <> 1 then failwith "fail fail!" 
+        """
+
+    [<TestMethod>]
+    member this.GenericThing() =
+        SimpleTestCase "GenericThing" """
+let f () = 
+    let g x = x
+    g 3, g 4, g
+let a, b, (c: int -> int) = g()
+if a <> 3 then failwith "fail!" 
+if b <> 4 then failwith "fail fail!" 
+if c 5 <> 5 then failwith "fail fail fail!" 
         """
 
 

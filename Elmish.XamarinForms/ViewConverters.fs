@@ -450,7 +450,7 @@ module Converters =
         | null -> None
         | :? ListElementData<ViewElement> as item -> 
             let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListElementData<ViewElement>> 
-            // TODO: this linear search is needs improvement
+            // POSSIBLE IMPROVEMENT: don't use a linear search
             items |> Seq.tryFindIndex (fun item2 -> identical item.Key item2.Key)
         | _ -> None
 
@@ -459,11 +459,11 @@ module Converters =
         | null -> None
         | :? ListGroupData<ViewElement> as item ->
             let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData<ViewElement>> 
-            // TODO: this linear search is needs improvement
+            // POSSIBLE IMPROVEMENT: don't use a linear search
             items 
             |> Seq.indexed 
             |> Seq.tryPick (fun (i,items2) -> 
-                 // TODO: this linear search is needs improvement
+                // POSSIBLE IMPROVEMENT: don't use a linear search
                 items2 
                 |> Seq.indexed 
                 |> Seq.tryPick (fun (j,item2) -> if identical item.Key item2.Key then Some (i,j) else None))

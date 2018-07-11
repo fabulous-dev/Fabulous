@@ -371,7 +371,6 @@ type EvalContext ()  =
         
     member ctxt.AddDecls(decls: DDecl[]) = 
         
-        // TODO: create formal type environment
         let env = envEmpty
         for decl in decls do
             match decl with 
@@ -427,6 +426,7 @@ type EvalContext ()  =
         | DExpr.Call(objExprOpt, memberOrFunc, typeArgs1, typeArgs2, argExprs) -> ctxt.EvalCall(env, objExprOpt, memberOrFunc, typeArgs1, typeArgs2, argExprs)
         | DExpr.Coerce(_targetType, inpExpr) -> ctxt.EvalExpr(env, inpExpr)
         | DExpr.Lambda(domainTy, rangeTy, lambdaVar, bodyExpr) -> ctxt.EvalLambda(env, domainTy, rangeTy, lambdaVar, bodyExpr)
+        //| DExpr.TypeLambda(genericParams, bodyExpr) -> ctxt.EvalTypeLambda(env, genericParams, bodyExpr)
         | DExpr.Let((bindingVar, bindingExpr), bodyExpr) -> ctxt.EvalLet(env, (bindingVar, bindingExpr), bodyExpr)
         | DExpr.NewObject(objCtor, typeArgs, argExprs) -> ctxt.EvalNewObject(env, objCtor, typeArgs, argExprs)
         | DExpr.NewRecord(recordType, argExprs) ->  ctxt.EvalNewRecord(env, recordType, argExprs)
@@ -448,7 +448,7 @@ type EvalContext ()  =
         | DExpr.UnionCaseGet(unionExpr, unionType, unionCase, unionCaseField) -> ctxt.EvalUnionCaseGet(env, unionExpr, unionType, unionCase, unionCaseField)
         | DExpr.UnionCaseTag(unionExpr, unionType) -> ctxt.EvalUnionCaseTag(env, unionExpr, unionType)
         | DExpr.TypeTest(ty, inpExpr) -> ctxt.EvalTypeTest(env, ty, inpExpr)
-        | DExpr.FastIntegerForLoop(startExpr, limitExpr, consumeExpr, isUp) -> ctxt.EvalFastIntegerForLoop(env, startExpr, limitExpr, consumeExpr, isUp)
+        //| DExpr.FastIntegerForLoop(startExpr, limitExpr, consumeExpr, isUp) -> ctxt.EvalFastIntegerForLoop(env, startExpr, limitExpr, consumeExpr, isUp)
 (*
 // TODO:
         | DExpr.AddressOf(lvalueExpr) -> ctxt.EvalAddressOf(convExpr lvalueExpr)
@@ -462,8 +462,8 @@ type EvalContext ()  =
         // Not really possible:
         | DExpr.ObjectExpr(objType, baseCallExpr, overrides, interfaceImplementations) -> ctxt.EvalObjectExpr(convType objType, convExpr baseCallExpr, List.map convObjMember overrides, List.map (map2 convType (List.map convObjMember)) interfaceImplementations)
 
-        //| DExpr.TraitCall(sourceTypes, traitName, typeArgs, typeInstantiation, argTypes, argExprs) -> ctxt.EvalTraitCall(sourceTypes, traitName, typeArgs, typeInstantiation, argTypes, argExprs)
         // Not needed:
+        | DExpr.TraitCall(sourceTypes, traitName, typeArgs, typeInstantiation, argTypes, argExprs) -> ctxt.EvalTraitCall(sourceTypes, traitName, typeArgs, typeInstantiation, argTypes, argExprs)
         | DExpr.UnionCaseSet(unionExpr, unionType, unionCase, unionCaseField, valueExpr) -> ctxt.EvalUnionCaseSet(convExpr unionExpr, convType unionType, convUnionCase unionCase, convField unionCaseField, convExpr valueExpr)
         | DExpr.ILAsm(asmCode, typeArgs, argExprs) -> ctxt.EvalILAsm(asmCode, convTypes typeArgs, convExprs argExprs)
         | DExpr.ILFieldSet (objExprOpt, fieldType, fieldName, valueExpr) -> ctxt.EvalILFieldSet (convExprOpt objExprOpt, convType fieldType, fieldName, convExpr valueExpr)
@@ -792,12 +792,12 @@ type EvalContext ()  =
         else 
             Value (box ())
 
+(*
     member ctxt.EvalFastIntegerForLoop(env, startExpr, limitExpr, consumeExpr, isUp) =
         let startV = ctxt.EvalExpr(env, startExpr) |> getVal |> unbox<int>
         let limitV = ctxt.EvalExpr(env, limitExpr) |> getVal |> unbox<int>
         // FCS TODO: the loop variable is not being specified by FCS!
         failwith "intepreted integer for-loops NYI"
-(*
        if isUp then 
              for i = startV to limitV do 
              ctxt.EvalExpr(env, limitExpr) |> getVal |> unbox<int>
