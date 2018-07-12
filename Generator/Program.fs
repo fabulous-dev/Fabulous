@@ -440,7 +440,8 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
                                 w.printfn "                | ValueSome prevChildValue, ValueSome currChildValue when prevChildValue = currChildValue -> ()"
                                 let apApply = if String.IsNullOrWhiteSpace(ap.ConvToValue) then "" else ap.ConvToValue + " "
                                 w.printfn "                | _, ValueSome currChildValue -> %s.Set%s(targetChild, %scurrChildValue)" tdef.FullName ap.Name apApply
-                                w.printfn "                | ValueSome _, ValueNone -> %s.Set%s(targetChild, %s) // TODO: not always perfect, should set back to original default?" tdef.FullName ap.Name ap.DefaultValue
+                                // TODO: ap.DefaultValue not always perfect, should set back to original default?
+                                w.printfn "                | ValueSome _, ValueNone -> %s.Set%s(targetChild, %s)" tdef.FullName ap.Name ap.DefaultValue
                                 w.printfn "                | _ -> ()"
                             w.printfn "                ())"
                         else
