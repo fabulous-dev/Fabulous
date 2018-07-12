@@ -3,7 +3,7 @@ module FSharp.Compiler.PortaCode.Interpreter
 
 open System
 open System.Reflection
-open System.Collections.Generic
+open System.Collections.Concurrent
 open FSharp.Compiler.PortaCode.CodeModel
 open FSharp.Reflection
 
@@ -144,11 +144,11 @@ let inline logicUnOp (argsV: obj[]) i8 i16 i32 i64 u8 u16 u32 u64 =
     | _ -> failwith "a construct used a type instantiation of an F# operator that is not yet supported in intepreted F# code"
 
 type EvalContext ()  =
-    let members = Dictionary<(ResolvedEntity * string * ResolvedTypes),Value>(HashIdentity.Structural)
-    let entityResolutions = Dictionary<DEntityRef,ResolvedEntity>(HashIdentity.Structural)
-    //let unionCaseResolutions = Dictionary<(DType * DUnionCaseRef),ResolvedUnionCase>(HashIdentity.Structural)
-    //let fieldResolutions = Dictionary<(DType * DFieldRef),ResolvedField>(HashIdentity.Structural)
-    //let methodResolutions = Dictionary<DMemberRef,ResolvedMember>(HashIdentity.Structural)
+    let members = ConcurrentDictionary<(ResolvedEntity * string * ResolvedTypes),Value>(HashIdentity.Structural)
+    let entityResolutions = ConcurrentDictionary<DEntityRef,ResolvedEntity>(HashIdentity.Structural)
+    //let unionCaseResolutions = ConcurrentDictionary<(DType * DUnionCaseRef),ResolvedUnionCase>(HashIdentity.Structural)
+    //let fieldResolutions = ConcurrentDictionary<(DType * DFieldRef),ResolvedField>(HashIdentity.Structural)
+    //let methodResolutions = ConcurrentDictionary<DMemberRef,ResolvedMember>(HashIdentity.Structural)
     let methinfoof q = match q with Quotations.DerivedPatterns.Lambdas(_, Quotations.Patterns.Call(_,minfo,_)) -> minfo.GetGenericMethodDefinition() | _ -> failwith "unexpected"
     let op_double = methinfoof <@ double @> 
     let op_single = methinfoof <@ single @> 
@@ -212,7 +212,7 @@ type EvalContext ()  =
                 match System.Type.GetType(typeName) with 
                 | null -> failwithf "couldn't resolve type %A" typeName
                 | t -> REntity t
-            entityResolutions.Add(entityRef, res)
+            entityResolutions.[entityRef] <- res
             res
 
     member ctxt.ResolveTypes(env, tys: DType[]) = 
@@ -372,6 +372,7 @@ type EvalContext ()  =
     member ctxt.AddDecls(decls: DDecl[]) = 
         
         let env = envEmpty
+        entityResolutions.Clear()
         for decl in decls do
             match decl with 
             | DDeclEntity (entityDef, subDecls) -> 
@@ -385,7 +386,7 @@ type EvalContext ()  =
                 let paramTypes = membDef.Parameters |> Array.map (fun p -> p.Type)
                 let paramTypesR = ctxt.ResolveTypes(env, paramTypes)
                 let thunk = ctxt.EvalMethodLambda (envEmpty, (membDef.Name = ".ctor"), membDef.IsInstance, membDef.GenericParameters, membDef.Parameters, body)
-                members.Add((ty, membDef.Name, paramTypesR), Value thunk) 
+                members.[(ty, membDef.Name, paramTypesR)] <-  Value thunk
             | _ -> ()
 
     member ctxt.EvalMethodLambda(env, isCtor, isInstance, typeParameters, parameters: DLocalDef[], body) = 
@@ -411,7 +412,7 @@ type EvalContext ()  =
             | DDeclMember (membDef, body) when membDef.Parameters.Length = 0 && membDef.GenericParameters.Length = 0 -> 
                 let ty = ctxt.ResolveEntity(membDef.EnclosingEntity)
                 let res = ctxt.EvalExpr (env, body)
-                members.Add ((ty, membDef.Name, RTypes [| |]), res)
+                members.[(ty, membDef.Name, RTypes [| |])] <- res
             | DDeclMember _-> 
                 ()
             | DDecl.InitAction expr -> 

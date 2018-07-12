@@ -29,51 +29,52 @@ Some manual set-up is required.  The following assumes your app is called `Squea
 
 4. If running on Android, forward requests from localhost to the Android Debug Bridge:
 
-       USB: 
-           adb -d forward  tcp:9867 tcp:9867 
-       EMULATOR: 
-           adb -e forward  tcp:9867 tcp:9867 
+       USB:
+           adb -d forward  tcp:9867 tcp:9867
+       EMULATOR:
+           adb -e forward  tcp:9867 tcp:9867
 
 5. Launch your app in Debug mode (you can use Release mode but must set Linking options to `None` rather than `SDK Assemblies`)
 
 6. Run the following from your core project directory (e.g. `SqueakyApp\SqueakyApp`)
-      
+
        Windows:
 
            %USERPROFILE%\.nuget\packages\Elmish.XamarinForms.LiveUpdate\0.13.0\tools\fscd.exe --watch --webhook:http://localhost:9867/update -- @proj.args
-       
+
        Unix and OSX (untested):
-       
+
            mono ~/.nuget/packages/Elmish.XamarinForms.LiveUpdate/0.13.0/tools/fscd.exe --watch --webhook:http://localhost:9867/update -- @proj.args
 
 Now, whenever you save a file in your core project directory, the `fscd.exe` daemon will attempt to recompile your changed file and
 send a representation of its contents to your app via a PUT request to the given webhook.  The app then deserializes this representation and
 adds the declarations to an F# interpreter. This interpreter will make some reflective calls into the existing libraries on device.
-   
+
 To take effect, your code must have a single declaration in some module called `programLiveUpdate` or `program` taking no arguments.  For example:
 
 ```fsharp
-module App = 
+module App =
     ...
     let init() = ...
-        
+
     let update model msg = ...
-           
+
     let view model dispatch = ...
-         
+
     let program = Program.mkProgram init update view
 ```
 
 If a declaration like this is found the `program` object replaces the currently running Elmish program and the view is updated.
 The model state of the app is re-initialized.
 
-### Known limitations:
+### Known limitations
 
 1. The F# interpreter used on-device has incompletenesses and behavioural differences:
 
    1. Object expressions may not be interpreted
    2. Implementations of ToString() and other overrides will be ignored
-   3. Some other F# constructs are not supported (e.g. address-of operations)
+   3. Some other F# constructs are not supported (e.g. address-of operations, new delegate)
+   4. Some overloading of methods by type is not supported (overloading by argument count is ok)
 
    You can move generally move problematic constructs to a utility library, which will then be executed as compiled code.
 
@@ -83,22 +84,22 @@ The model state of the app is re-initialized.
 
 4. You may need to mock any platform-specific helpers you pass through, e.g.
 
-       module App = 
+       module App =
            ...
            let init() = ...
-           
+
            let update (helper1, helper2) model msg = ...
-           
+
            let view model dispatch = ...
 
-       #if DEBUG	       
+       #if DEBUG
        // The fake program, used when LiveUpdate is activated and a program change has been made
-       module AppLiveUpdate = 
+       module AppLiveUpdate =
            open App
 
-           let mockHelper1 () = ... 
+           let mockHelper1 () = ...
 
-           let mockHelper2 () = ... 
+           let mockHelper2 () = ...
 
            let programLiveUpdate = Program.mkProgram init (update (mockHelper1, mockHelper2)) view
        #endif
