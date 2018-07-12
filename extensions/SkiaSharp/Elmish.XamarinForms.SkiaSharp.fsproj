@@ -10,7 +10,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <PackageReference Update="FSharp.Core" Version="4.5.0" />
+    <PackageReference Include="FSharp.Core" Version="4.5.0" />
     <PackageReference Include="Xamarin.Forms" Version="3.0.0.482510" />
     <PackageReference Include="SkiaSharp" Version="1.60.2" />
     <PackageReference Include="SkiaSharp.Views.Forms" Version="1.60.2" />

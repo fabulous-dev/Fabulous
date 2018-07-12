@@ -15,7 +15,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Elmish.XamarinForms\Elmish.XamarinForms.fsproj" />
-    <PackageReference Update="FSharp.Core" Version="4.5.0" />
+    <PackageReference Include="FSharp.Core" Version="4.5.0" />
     <PackageReference Include="Xamarin.Forms" Version="3.0.0.482510" />
   </ItemGroup>
 </Project>

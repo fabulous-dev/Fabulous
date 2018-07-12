@@ -10,7 +10,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Elmish.XamarinForms\Elmish.XamarinForms.fsproj" />
     <ProjectReference Include="..\..\..\Elmish.XamarinForms.LiveUpdate\Elmish.XamarinForms.LiveUpdate.fsproj" />
-    <PackageReference Update="FSharp.Core" Version="4.5.0" />
+    <PackageReference Include="FSharp.Core" Version="4.5.0" />
     <PackageReference Include="FsPickler" Version="5.2.0" />
     <PackageReference Include="FsPickler.Json" Version="5.2.0" />
     <PackageReference Include="Xamarin.Forms" Version="3.0.0.482510" />
