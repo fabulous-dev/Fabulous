@@ -1,3 +1,6 @@
+#### 0.13.10
+* Fix compilation of template on OSX
+
 #### 0.13.8
 * Fix packaging problem with fscd tools
 

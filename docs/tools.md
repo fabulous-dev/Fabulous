@@ -14,7 +14,7 @@ to see the effect of adjusting of visual options.
 Some manual set-up is required.  The following assumes your app is called `SqueakyApp`:
 
 1. Check your projects have a reference to nuget package `Elmish.XamarinForms.LiveUpdate` for all projects in your app.
-   This is the default for apps created with templates 0.13.8 and higher. Do a clean build.
+   This is the default for apps created with templates 0.13.10 and higher. Do a clean build.
 
 2. Uncomment or add the code in the `#if` section below in `SqueakyApp\SqueakyApp\SqueayApp.fs`:
 
@@ -39,12 +39,12 @@ Some manual set-up is required.  The following assumes your app is called `Squea
        Windows:
 
            cd SqueakyApp\SqueakyApp
-           %USERPROFILE%\.nuget\packages\Elmish.XamarinForms.LiveUpdate\0.13.8\tools\fscd.exe --watch --webhook:http://localhost:9867/update 
+           %USERPROFILE%\.nuget\packages\Elmish.XamarinForms.LiveUpdate\0.13.10\tools\fscd.exe --watch --webhook:http://localhost:9867/update 
 
        Unix and OSX (untested):
 
            cd SqueakyApp/SqueakyApp
-           mono ~/.nuget/packages/Elmish.XamarinForms.LiveUpdate/0.13.8/tools/fscd.exe --watch --webhook:http://localhost:9867/update  
+           mono ~/.nuget/packages/Elmish.XamarinForms.LiveUpdate/0.13.10/tools/fscd.exe --watch --webhook:http://localhost:9867/update  
 
 Now, whenever you save a file in your core project directory, the `fscd.exe` daemon will attempt to recompile your changed file and
 send a representation of its contents to your app via a PUT request to the given webhook.  The app then deserializes this representation and
