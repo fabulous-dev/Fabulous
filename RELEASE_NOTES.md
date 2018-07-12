@@ -1,4 +1,8 @@
 #### 0.13.2
+* Fix sample look and feel
+* Fix repeated live updates
+
+#### 0.13.0
 * Add experimental LiveUpdate
 
 #### 0.12.10
