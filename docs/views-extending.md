@@ -44,7 +44,7 @@ module MyViewExtensions =
     let Prop1AttribKey = AttributeKey<seq<ViewElement>> "ABC_Prop1"
     let Prop2AttribKey = AttributeKey<bool> "ABC_Prop2"
 
-    type Xaml with
+    type View with
         /// Describes a ABC in the view
         static member ABC(?prop1: seq<ViewElement>, ?prop2: bool, ... inherited attributes ... ) =
 
@@ -54,7 +54,7 @@ module MyViewExtensions =
             let attribCount = match prop2 with Some _ -> attribCount + 1 | None -> attribCount
 
             // Populate the attributes of the base element
-            let attribs = Xaml._BuildBASE(attribCount, ... inherited attributes ... )
+            let attribs = View._BuildBASE(attribCount, ... inherited attributes ... )
 
             // Add our own attributes.
             match prop1 with None -> () | Some v -> attribs.Add (Prop1AttribKey, v)
@@ -66,7 +66,7 @@ module MyViewExtensions =
 
             // The incremental update method
             let update (prev: ViewElement voption) (source: ViewElement) (target: ABC) =
-                Xaml._UpdateBASE (prev, source, target)
+                View._UpdateBASE (prev, source, target)
                 source.UpdateElementCollection (prev, rop1AttribKey, target.Prop1)
                 source.UpdatePrimitive (prev, target, Prop2AttribKey, (fun target -> target.Prop2), (fun target v -> target.Prop2 <- v))
                 ...
@@ -77,7 +77,7 @@ module MyViewExtensions =
 The control is then used as follows:
 
 ```fsharp
-    Xaml.ABC(Prop1 = [ Xaml.Label("hello") ], prop2 = true, property3 = "Yo!")
+    View.ABC(Prop1 = [ View.Label("hello") ], prop2 = true, property3 = "Yo!")
 ```
 
 The `update` method of the extension is specified using:
@@ -126,7 +126,7 @@ module MapsExtension =
     let PinTypeAttribKey = AttributeKey "Pin_PinType"
     let PinAddressAttribKey = AttributeKey "Pin_Address"
 
-    type Xaml with
+    type View with
         /// Describes a Map in the view
         static member inline Map(?pins: seq<ViewElement>, ?isShowingUser: bool, ?mapType: MapType,
                                  ?hasScrollEnabled: bool, ?hasZoomEnabled: bool, ?requestedRegion: MapSpan,
@@ -147,7 +147,7 @@ module MapsExtension =
 
             // Count and populate the inherited attributes
             let attribs =
-                Xaml.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions,
+                View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions,
                                ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY,
                                ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent,
                                ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest,
@@ -166,7 +166,7 @@ module MapsExtension =
 
             // The update method
             let update (prevOpt: ViewElement voption) (source: ViewElement) (target: Map) =
-                Xaml.UpdateView(prevOpt, source, target)
+                View.UpdateView(prevOpt, source, target)
                 source.UpdatePrimitive(prevOpt, target, MapHasScrollEnabledAttribKey, (fun target v -> target.HasScrollEnabled <- v))
                 source.UpdatePrimitive(prevOpt, target, MapHasZoomEnabledAttribKey, (fun target v -> target.HasZoomEnabled <- v))
                 source.UpdatePrimitive(prevOpt, target, MapIsShowingUserAttribKey, (fun target v -> target.IsShowingUser <- v))
@@ -210,7 +210,7 @@ In the above example, inherited properties from `View` (such as `margin` or `hor
 need not be added, you can set them on elements using the helper `With`, usable for all `View` properties:
 
 ```fsharp
-    Xaml.Map(hasZoomEnabled = true, hasScrollEnabled = true).With(horizontalOptions = LayoutOptions.FillAndExpand)
+    View.Map(hasZoomEnabled = true, hasScrollEnabled = true).With(horizontalOptions = LayoutOptions.FillAndExpand)
 ```
 
 See also:

@@ -23,7 +23,7 @@ draw a circle and respond to touch events:
 ```fsharp
 open Elmish.XamarinForms.DynamicViews
 
-Xaml.SKCanvasView(enableTouchEvents = true,
+View.SKCanvasView(enableTouchEvents = true,
     paintSurface = (fun args ->
         let info = args.Info
         let surface = args.Surface

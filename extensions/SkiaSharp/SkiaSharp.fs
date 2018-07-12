@@ -15,7 +15,7 @@ module MapsExtension =
     let PaintSurfaceAttribKey = AttributeKey<_> "SKCanvas_PaintSurface"
     let TouchAttribKey = AttributeKey<_> "SKCanvas_Touch"
 
-    type Xaml with
+    type View with
         /// Describes a Map in the view
         static member SKCanvasView(?paintSurface: (SKPaintSurfaceEventArgs -> unit), ?touch: (SKTouchEventArgs -> unit), ?enableTouchEvents: bool, ?ignorePixelScaling: bool,
                                    // inherited attributes common to all views
@@ -33,7 +33,7 @@ module MapsExtension =
 
             // Populate the attributes of the base element
             let attribs = 
-                Xaml.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, 
+                View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, 
                                ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, 
                                ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, 
                                ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest,
@@ -53,7 +53,7 @@ module MapsExtension =
 
             // The update method
             let update (prevOpt: ViewElement voption) (source: ViewElement) (target: SKCanvasView) = 
-                Xaml.UpdateView (prevOpt, source, target)
+                View.UpdateView (prevOpt, source, target)
                 source.UpdatePrimitive(prevOpt, target, CanvasEnableTouchEventsAttribKey, (fun target v -> target.EnableTouchEvents <- v))
                 source.UpdatePrimitive(prevOpt, target, IgnorePixelScalingAttribKey, (fun target v -> target.IgnorePixelScaling <- v))
                 source.UpdateEvent(prevOpt, PaintSurfaceAttribKey, target.PaintSurface)
@@ -68,10 +68,10 @@ module MapsExtension =
           mutable paints: int }
 
     let sample1 = 
-        Xaml.Stateful(
+        View.Stateful(
             (fun () -> { touches = 0; paints = 0 }), 
             (fun state -> 
-                Xaml.SKCanvasView(enableTouchEvents = true, 
+                View.SKCanvasView(enableTouchEvents = true, 
                     paintSurface = (fun args -> 
                         let info = args.Info
                         let surface = args.Surface

@@ -21,7 +21,7 @@ module MapsExtension =
     let PinTypeAttribKey = AttributeKey "Pin_PinType"
     let PinAddressAttribKey = AttributeKey "Pin_Address"
 
-    type Xaml with
+    type View with
         /// Describes a Map in the view
         static member inline Map(?pins: seq<ViewElement>, ?isShowingUser: bool, ?mapType: MapType, ?hasScrollEnabled: bool,
                                  ?hasZoomEnabled: bool, ?requestedRegion: MapSpan,
@@ -42,7 +42,7 @@ module MapsExtension =
 
             // Count and populate the inherited attributes
             let attribs = 
-                Xaml.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, 
+                View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, 
                               ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, 
                               ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, 
                               ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest,
@@ -61,7 +61,7 @@ module MapsExtension =
 
             // The update method
             let update (prevOpt: ViewElement voption) (source: ViewElement) (target: Map) = 
-                Xaml.UpdateView (prevOpt, source, target)
+                View.UpdateView (prevOpt, source, target)
                 source.UpdatePrimitive(prevOpt, target, MapHasScrollEnabledAttribKey, (fun target v -> target.HasScrollEnabled <- v))
                 source.UpdatePrimitive(prevOpt, target, MapHasZoomEnabledAttribKey, (fun target v -> target.HasZoomEnabled <- v))
                 source.UpdatePrimitive(prevOpt, target, MapIsShowingUserAttribKey, (fun target v -> target.IsShowingUser <- v))
@@ -101,19 +101,19 @@ module MapsExtension =
             ViewElement.Create<Xamarin.Forms.Maps.Pin>(Pin, update, attribs)
 
 #if DEBUG 
-    let sample1 = Xaml.Map(hasZoomEnabled = true, hasScrollEnabled = true)
+    let sample1 = View.Map(hasZoomEnabled = true, hasScrollEnabled = true)
 
     let sample2 = 
         let timbuktu = Position(16.7666, -3.0026)
-        Xaml.Map(hasZoomEnabled = true, hasScrollEnabled = true,
+        View.Map(hasZoomEnabled = true, hasScrollEnabled = true,
                  requestedRegion = MapSpan.FromCenterAndRadius(timbuktu, Distance.FromKilometers(1.0)))
 
     let sample3 = 
         let paris = Position(48.8566, 2.3522)
         let london = Position(51.5074, -0.1278)
         let calais = Position(50.9513, 1.8587)
-        Xaml.Map(hasZoomEnabled = true, hasScrollEnabled = true, 
-                 pins = [ Xaml.Pin(paris, label="Paris", pinType = PinType.Place)
-                          Xaml.Pin(london, label="London", pinType = PinType.Place) ] ,
+        View.Map(hasZoomEnabled = true, hasScrollEnabled = true, 
+                 pins = [ View.Pin(paris, label="Paris", pinType = PinType.Place)
+                          View.Pin(london, label="London", pinType = PinType.Place) ] ,
                  requestedRegion = MapSpan.FromCenterAndRadius(calais, Distance.FromKilometers(300.0)))
 #endif

@@ -4,6 +4,9 @@ namespace Elmish.XamarinForms.DynamicViews
 open Elmish.XamarinForms.DynamicViews
 open System.Collections.Generic
 
+[<System.Obsolete("Please change 'Xaml.XYZ' to 'View.XYZ'", error=false)>]
+type Xaml = Elmish.XamarinForms.DynamicViews.View 
+
 [<AutoOpen>]
 module SimplerHelpers = 
     open Xamarin.Forms
@@ -110,7 +113,7 @@ module SimplerHelpers =
 
     let localStateTable = System.Runtime.CompilerServices.ConditionalWeakTable<obj, obj option>()
 
-    type Xaml with
+    type View with
 
         /// Describes an element in the view which uses localized mutable state unrelated to the model
         /// (and hence un-persisted), and can optionally access the underlying control. The 'init'
@@ -142,17 +145,17 @@ module SimplerHelpers =
             ViewElement.Create(create, update, attribs)
 
         static member OnCreate (contents : ViewElement, onCreate: (obj -> unit)) =
-            Xaml.Stateful (init = (fun () -> ()), contents = (fun _ -> contents), onCreate = (fun _ obj -> onCreate obj))
+            View.Stateful (init = (fun () -> ()), contents = (fun _ -> contents), onCreate = (fun _ obj -> onCreate obj))
 
         static member WithInternalModel(init: (unit -> 'InternalModel), 
                                         update: ('InternalMessage -> 'InternalModel -> 'InternalModel), 
                                         view : ('InternalModel -> ('InternalMessage -> unit) -> ViewElement)) =
             let internalDispatch (state: 'InternalModel ref) msg = state.Value <- update msg state.Value
-            Xaml.Stateful (init = (fun () -> ref (init ())), contents = (fun state -> view state.Value (internalDispatch state)))
+            View.Stateful (init = (fun () -> ref (init ())), contents = (fun state -> view state.Value (internalDispatch state)))
 
     // Keep a table to make sure we create a unique ViewElement for each external object
     let externalsTable = System.Runtime.CompilerServices.ConditionalWeakTable<obj, obj>()
-    type Xaml with
+    type View with
 
         /// Describes an element in the view implemented by an external object, e.g. an external
         /// Xamarin.Forms Page or View. The element must have a type appropriate for the place in

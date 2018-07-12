@@ -15,7 +15,7 @@ module OxyPlotExtension =
     let ModelAttribKey = AttributeKey<_> "OxyPlot_Model"
     let ControllerAttribKey = AttributeKey<_> "OxyPlot_Controller"
 
-    type Xaml with
+    type View with
         /// Describes a Map in the view
         static member inline PlotView
             (model: PlotModel, ?controller: PlotController, 
@@ -31,7 +31,7 @@ module OxyPlotExtension =
 
             // Populate the attributes of the base element
             let attribs =
-                Xaml.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions,
+                View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions,
                                ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY,
                                ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent,
                                ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest,
@@ -49,7 +49,7 @@ module OxyPlotExtension =
 
             // The update method
             let update (prevOpt: ViewElement voption) (source: ViewElement) (target: PlotView) = 
-                Xaml.UpdateView (prevOpt, source, target)
+                View.UpdateView (prevOpt, source, target)
                 source.UpdatePrimitive(prevOpt, target, ModelAttribKey, (fun target v -> target.Model <- v))
                 source.UpdatePrimitive(prevOpt, target, ControllerAttribKey, (fun target v -> target.Controller <- v))
 
@@ -78,10 +78,10 @@ module OxyPlotExtension =
         let plotModels = [ plotModelCos; plotModelHeatMap ]
 
         let sample = 
-            Xaml.CarouselPage(children=
+            View.CarouselPage(children=
                 [ for m in plotModels ->
-                        Xaml.ContentPage(content =
-                        Xaml.PlotView(model=m,
+                        View.ContentPage(content =
+                        View.PlotView(model=m,
                                         horizontalOptions=LayoutOptions.FillAndExpand, 
                                         verticalOptions=LayoutOptions.FillAndExpand)) ])
 #endif

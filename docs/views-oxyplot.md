@@ -35,10 +35,10 @@ let plotModelHeatMap =
 let plotModels = [ plotModelCos; plotModelHeatMap ]
 
 let view (model: Model) dispatch =
-    Xaml.CarouselPage(children=
+    View.CarouselPage(children=
         [ for m in plotModels ->
-                Xaml.ContentPage(content =
-                Xaml.PlotView(model=m,
+                View.ContentPage(content =
+                View.PlotView(model=m,
                                 horizontalOptions=LayoutOptions.FillAndExpand,
                                 verticalOptions=LayoutOptions.FillAndExpand)) ])
 ```

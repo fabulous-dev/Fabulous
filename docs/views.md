@@ -10,13 +10,13 @@ The `view` function is a function returning your view elements based on the curr
 
 ```fsharp
 let view model dispatch =
-    Xaml.ContentPage(
+    View.ContentPage(
         title = "Pocket Piggy Bank",
-        content= Xaml.Label(text = sprintf "Hello world!")
+        content= View.Label(text = sprintf "Hello world!")
     )
 ```
 
-The view function is normal F# code that returns elements created using the `Xaml.*` method calls.
+The view function is normal F# code that returns elements created using the `View.*` method calls.
 
 View functions are particuarly useful when the the existence, characteristics and layout of the view depends on information
 in the model. Differential update is used to efficiently update the Xamarin.Forms display based on the previous
@@ -42,21 +42,21 @@ let update msg model =
     | Login user -> { model with User = user }, Cmd.none
 
 let view model dispatch =
-    Xaml.ContentPage(
+    View.ContentPage(
         title="Pocket Piggy Bank",
-        content=Xaml.StackLayout(padding=20.0,
+        content=View.StackLayout(padding=20.0,
             horizontalOptions=LayoutOptions.Center,
             verticalOptions=LayoutOptions.CenterAndExpand,
             children = [
                 match model.User with
                 | Some user ->
-                    yield Xaml.Label(text=sprintf "Logged in as : %s" user)
-                    yield Xaml.Label(text=sprintf "Balance: %s%.2f" model.CurrencySymbol model.Balance)
-                    yield Xaml.Button(text="Withdraw", command=(fun () -> dispatch (Spend 10.0m)), canExecute=(model.Balance > 0.0m))
-                    yield Xaml.Button(text="Deposit", command=(fun () -> dispatch (Add 10.0m)))
-                    yield Xaml.Button(text="Logout", command=(fun () -> dispatch (Login None)))
+                    yield View.Label(text=sprintf "Logged in as : %s" user)
+                    yield View.Label(text=sprintf "Balance: %s%.2f" model.CurrencySymbol model.Balance)
+                    yield View.Button(text="Withdraw", command=(fun () -> dispatch (Spend 10.0m)), canExecute=(model.Balance > 0.0m))
+                    yield View.Button(text="Deposit", command=(fun () -> dispatch (Add 10.0m)))
+                    yield View.Button(text="Logout", command=(fun () -> dispatch (Login None)))
                 | None ->
-                    yield Xaml.Button(text="Login", command=(fun () -> dispatch (Login (Some "user"))))
+                    yield View.Button(text="Login", command=(fun () -> dispatch (Login (Some "user"))))
             ]))
 ```
 

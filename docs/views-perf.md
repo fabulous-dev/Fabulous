@@ -23,13 +23,13 @@ Here is an example for a 6x6 Grid that depends on nothing, i.e. never changes:
 let view model dispatch =
     ...
     dependsOn () (fun model () -> 
-        Xaml.StackLayout(
+        View.StackLayout(
           children=
-            [ Xaml.Label(text=sprintf "Grid (6x6, auto):")
-              Xaml.Grid(rowdefs= [for i in 1 .. 6 -> box "auto"],
+            [ View.Label(text=sprintf "Grid (6x6, auto):")
+              View.Grid(rowdefs= [for i in 1 .. 6 -> box "auto"],
                 coldefs=[for i in 1 .. 6 -> box "auto"], 
                 children = [ for i in 1 .. 6 do for j in 1 .. 6 -> 
-                                Xaml.BoxView(Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0) )
+                                View.BoxView(Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0) )
                                         .GridRow(i-1).GridColumn(j-1) ] )
             ])
 ```
@@ -38,7 +38,7 @@ Inside the function - the one passed to `dependsOn` - the `model` is rebound to 
 let view model dispatch =
     ...
     dependsOn (model.CountForSlider, model.StepForSlider) (fun model (count, step) -> 
-        Xaml.Slider(minimum=0.0, maximum=10.0, value= double step, 
+        View.Slider(minimum=0.0, maximum=10.0, value= double step, 
                     valueChanged=(fun args -> dispatch (SliderValueChanged (int (args.NewValue + 0.5)))))) 
     ...
 ```
