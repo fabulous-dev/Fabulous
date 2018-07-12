@@ -423,7 +423,7 @@ type EvalContext ()  =
                 let paramTypes = membDef.Parameters |> Array.map (fun p -> p.Type)
                 let paramTypesR = ctxt.ResolveTypes(env, paramTypes)
                 let thunk = ctxt.EvalMethodLambda (envEmpty, (membDef.Name = ".ctor"), membDef.IsInstance, membDef.GenericParameters, membDef.Parameters, body)
-                members.[(ty, membDef.Name, paramTypesR)] <-  Value thunk
+                members.[(ty, membDef.Name, paramTypesR)] <- Value thunk
             | _ -> ()
 
     member ctxt.EvalMethodLambda(env, isCtor, isInstance, typeParameters, parameters: DLocalDef[], body) = 
