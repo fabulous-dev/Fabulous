@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\fscd\ProjectCracker.fs" Link="ProjectCracker.fs" />
     <Compile Include="..\fscd\CodeModel.fs" Link="CodeModel.fs" />
     <Compile Include="..\fscd\Interpreter.fs" Link="Interpreter.fs" />
     <Compile Include="..\fscd\FromCompilerService.fs" Link="FromCompilerService.fs" />
@@ -17,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Dotnet.ProjInfo" Version="0.9.0" />
     <PackageReference Include="FSharp.Core" Version="4.5.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.2.1" />

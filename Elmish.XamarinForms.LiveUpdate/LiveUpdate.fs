@@ -127,8 +127,9 @@ type HttpServer(?port) =
         <pre>    adb -e forward  tcp:PORT tcp:PORT  (Emulator)</pre>
         <p>  then</p>
         <pre>    cd MyApp\MyApp</pre>
-        <pre>    %USERPROFILE%\.nuget\packages\Elmish.XamarinForms.LiveUpdate\0.13.0\tools\fscd.exe --watch --webhook:http://localhost:PORT/update -- @proj.args</pre>
-        <p>where proj.args contains the compilation arguments for your project (you must currently create this manually)</p>
+        <pre>    %USERPROFILE%\.nuget\packages\Elmish.XamarinForms.LiveUpdate\0.13.2\tools\fscd.exe --watch --webhook:http://localhost:PORT/update</pre>
+        <pre>    mono ~/.nuget/packages/Elmish.XamarinForms.LiveUpdate/0.13.2/tools/fscd.exe --watch --webhook:http://localhost:PORT/update</pre>
+        <p>in your project directoty</p>
     </body>
 </html>"""
                                         |> fun s -> s.Replace("PORT", string port)
@@ -142,7 +143,7 @@ type HttpServer(?port) =
 
                     with ex -> 
                         let msg = "<html><body><pre>" + ex.ToString() + "</pre></body></html>"
-                        printfn "setting response code to 500, msg = %s" msg
+                        printfn "LiveUpdate: setting response code to 500, msg = %s" msg
                         let bytes = Encoding.UTF8.GetBytes msg
                         resp.StatusCode <- 500
                         resp.ContentLength64 <- bytes.LongLength

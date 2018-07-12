@@ -1,4 +1,4 @@
-namespace fscd.Tests
+namespace FSharpDaemon.Tests
 
 open System
 open System.IO
@@ -169,18 +169,18 @@ module TestCode
 """ + code)
         createNetStandardProjectArgs name ""
 
-        Assert.AreEqual(0, fscd.Driver.main( [| "dummy.exe"; "--eval"; "@" + name + ".args.txt" |]))
+        Assert.AreEqual(0, FSharpDaemon.Driver.main( [| "dummy.exe"; "--eval"; "@" + name + ".args.txt" |]))
     [<TestMethod>]
     member this.TestCanEvaluateCounterApp () =
         Environment.CurrentDirectory <- __SOURCE_DIRECTORY__ + "/../Samples/CounterApp/CounterApp"
         createNetStandardProjectArgs "CounterApp"  elmishExtraRefs
-        Assert.AreEqual(0, fscd.Driver.main( [| "dummy.exe"; "--eval"; "@CounterApp.args.txt" |]))
+        Assert.AreEqual(0, FSharpDaemon.Driver.main( [| "dummy.exe"; "--eval"; "@CounterApp.args.txt" |]))
 
     [<TestMethod>]
     member this.TestCanEvaluateTicTacToeApp () =
         Environment.CurrentDirectory <- __SOURCE_DIRECTORY__ + "/../Samples/TicTacToe/TicTacToe"
         createNetStandardProjectArgs "TicTacToe" elmishExtraRefs
-        Assert.AreEqual(0, fscd.Driver.main( [| "dummy.exe"; "--eval"; "@TicTacToe.args.txt" |]))
+        Assert.AreEqual(0, FSharpDaemon.Driver.main( [| "dummy.exe"; "--eval"; "@TicTacToe.args.txt" |]))
 
     [<TestMethod>]
     member this.TestTuples () =

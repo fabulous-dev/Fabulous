@@ -9,7 +9,7 @@
 // dotnet run --project ..\..\..\fscd\fscd.fsproj -- --eval @out.args
 // dotnet run --project ..\..\..\fscd\fscd.fsproj -- --watch --webhook:http://localhost:9867/update @out.args
 
-module fscd.Driver
+module FSharpDaemon.Driver
 
 open FSharp.Compiler.PortaCode.CodeModel
 open FSharp.Compiler.PortaCode.Interpreter
@@ -63,15 +63,16 @@ module MockForms =
 
 let checker = FSharpChecker.Create(keepAssemblyContents = true)
 
+
 #if !TEST
 [<EntryPoint>]
 #endif
 let main (argv: string[]) =
     try 
-        printfn "hello! argv = %A" argv
 #if TEST
         MockForms.Init()
 #endif
+        let mutable fsproj = None
         let mutable eval = false
         let mutable watch = false
         let mutable webhook = None
@@ -85,20 +86,46 @@ let main (argv: string[]) =
                          let line = line.Trim()
                          if not (String.IsNullOrWhiteSpace(line)) then
                              yield line
+                 elif arg.EndsWith(".fsproj") then 
+                     fsproj <- Some arg
                  elif arg = "--" then haveDashes <- true
                  elif arg = "--watch" then watch <- true
                  elif arg = "--eval" then eval <- true
                  elif arg.StartsWith "--webhook:" then webhook  <- Some arg.["--webhook:".Length ..]
                  else yield arg  |]
 
-        //for arg in args do 
-        //    printfn "arg %s" arg
-        let sourceFiles, otherFlags = args |> Array.partition (fun arg -> arg.EndsWith(".fs") || arg.EndsWith(".fsi") || arg.EndsWith(".fsx"))
-        let sourceFiles = sourceFiles |> Array.map Path.GetFullPath 
+        if args.Length = 0 && fsproj.IsNone then 
+            match Seq.toList (Directory.EnumerateFiles(Environment.CurrentDirectory, "*.fsproj")) with 
+            | [ ] -> 
+                failwith "no project file found, no compilation arguments given" 
+            | [ file ] -> 
+                printfn "fscd: using implicit project file '%s'" file
+                fsproj <- Some file
+            | _ -> 
+                failwith "multiple project files found" 
+
+        let options = 
+            match fsproj with 
+            | Some fsprojFile -> 
+                if args.Length > 1 then failwith "can't give both project file and compilation arguments"
+                match FSharpDaemon.ProjectCracker.load (new System.Collections.Concurrent.ConcurrentDictionary<_,_>()) fsprojFile with 
+                | Ok (options, sourceFiles, _log) -> 
+                    let options = { options with SourceFiles = Array.ofList sourceFiles }
+                    let sourceFilesSet = Set.ofList sourceFiles
+                    let options = { options with OtherOptions = options.OtherOptions |> Array.filter (fun s -> not (sourceFilesSet.Contains(s))) }
+                    options
+                | Error err -> 
+                   failwithf "Couldn't parse project file: %A" err
+            
+            | None -> 
+                let sourceFiles, otherFlags = args |> Array.partition (fun arg -> arg.EndsWith(".fs") || arg.EndsWith(".fsi") || arg.EndsWith(".fsx"))
+                let sourceFiles = sourceFiles |> Array.map Path.GetFullPath 
         
-        printfn "CurrentDirectory = %s" Environment.CurrentDirectory
-        let options = checker.GetProjectOptionsFromCommandLineArgs("tmp.fsproj", otherFlags)
-        let options = { options with SourceFiles = sourceFiles }
+                printfn "CurrentDirectory = %s" Environment.CurrentDirectory
+                let options = checker.GetProjectOptionsFromCommandLineArgs("tmp.fsproj", otherFlags)
+                let options = { options with SourceFiles = sourceFiles }
+                options
+
         //printfn "options = %A" options
 
         let rec checkFile count sourceFile =         
@@ -137,7 +164,7 @@ let main (argv: string[]) =
 
         if watch then 
             let watchers = 
-                [ for sourceFile in sourceFiles do
+                [ for sourceFile in options.SourceFiles do
                      let path = Path.GetDirectoryName(sourceFile)
                      let fileName = Path.GetFileName(sourceFile)
                      printfn "fscd: WATCHING %s in %s" fileName path 
@@ -185,8 +212,11 @@ let main (argv: string[]) =
                watcher.EnableRaisingEvents <- true
 
         else
+            printfn "compiling, options = %A" options
+            for o in options.OtherOptions do 
+               printfn "compiling, option %s" o
             let fileContents = 
-               [| for sourceFile in sourceFiles do
+               [| for sourceFile in options.SourceFiles do
                     match checkFile 0 sourceFile with 
                     | Result.Error _ -> failwith "errors"
                     | Result.Ok iopt -> 
