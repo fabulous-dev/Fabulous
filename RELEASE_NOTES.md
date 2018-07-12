@@ -1,4 +1,4 @@
-#### 0.13.0
+#### 0.13.2
 * Add experimental LiveUpdate
 
 #### 0.12.10

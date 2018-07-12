@@ -127,7 +127,7 @@ type HttpServer(?port) =
         <pre>    adb -e forward  tcp:PORT tcp:PORT  (Emulator)</pre>
         <p>  then</p>
         <pre>    cd MyApp\MyApp</pre>
-        <pre>    %USERPROFILE%\.nuget\packages\Elmish.XamarinForms.LiveUpdate\0.13.0\tools\fscd.exe --watch --webhook:http://localhost:PORT/update -- @proj.args</pre>
+        <pre>    %USERPROFILE%\.nuget\packages\Elmish.XamarinForms.LiveUpdate\0.13.2\tools\fscd.exe --watch --webhook:http://localhost:PORT/update -- @proj.args</pre>
         <p>where proj.args contains the compilation arguments for your project (you must currently create this manually)</p>
     </body>
 </html>"""
