@@ -171,6 +171,9 @@
     <Reference Include="Elmish.XamarinForms">
       <HintPath>$(SolutionDir)/packages/Elmish.XamarinForms.ElmishXamarinFormsPkg/lib/netstandard2.0/Elmish.XamarinForms.dll</HintPath>
     </Reference>
+    <Reference Include="Elmish.XamarinForms.LiveUpdate">
+      <HintPath>$(SolutionDir)/packages/Elmish.XamarinForms.LiveUpdate.ElmishXamarinFormsPkg/lib/netstandard2.0/Elmish.XamarinForms.LiveUpdate.dll</HintPath>
+    </Reference>
     <Reference Include="FsPickler">
       <HintPath>$(SolutionDir)/packages/FsPickler.FsPicklerPkg/lib/netstandard2.0/FsPickler.dll</HintPath>
     </Reference>
