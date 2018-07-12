@@ -2,20 +2,36 @@
 
 ## Dev Notes - Building
 
-```fsharp
-    .\build NuGet
+On OSX:
 
-    .\build Test
+```fsharp
+mono .paket/paket.exe restore
+dotnet restore
+open Elmish.XamarinForms.sln
+./build.sh NuGet
+./build.sh Test
+```
+
+On Windows:
+
+```
+.paket\paket.exe restore
+dotnet restore
+start Elmish.XamarinForms.sln
+.\build NuGet
+.\build Test
 ```
 
 ## Dev Notes - Releasing
 
 Use this:
 
-    .\build NuGet
-    set APIKEY=...
-    .nuget\NuGet.exe push build_output\Elmish.XamarinForms.*.nupkg  %APIKEY% -Source https://www.nuget.org
-    copy build_output\Elmish.XamarinForms.*.nupkg  %USERPROFILE%\Downloads
+```
+.\build NuGet
+set APIKEY=...
+.nuget\NuGet.exe push build_output\Elmish.XamarinForms.*.nupkg  %APIKEY% -Source https://www.nuget.org
+copy build_output\Elmish.XamarinForms.*.nupkg  %USERPROFILE%\Downloads
+```
 
 ## Dev Notes - Checking App Size
 
