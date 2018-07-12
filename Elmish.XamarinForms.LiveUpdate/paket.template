@@ -25,7 +25,7 @@ files
 	../build_output/tools/FSharp.Compiler.Service.dll ==> tools
 	../build_output/tools/System.Collections.Immutable.dll ==> tools
 	../build_output/tools/System.Reflection.Metadata.dll ==> tools
-	../build_output/tools/System.ValueTUple.dll ==> tools
+	../build_output/tools/System.ValueTuple.dll ==> tools
 dependencies
   FSharp.Core >= LOCKEDVERSION-neutral
   Xamarin.Forms >= LOCKEDVERSION-neutral
