@@ -13,7 +13,8 @@ to see the effect of adjusting of visual options.
 
 Some manual set-up is required.  The following assumes your app is called `SqueakyApp`:
 
-1. Check your projects have a reference to nuget package `Elmish.XamarinForms.LiveUpdate` for all projects in your app. Do a clean build.
+1. Check your projects have a reference to nuget package `Elmish.XamarinForms.LiveUpdate` for all projects in your app.
+   This is the default for apps created with templates 0.13.8 and higher. Do a clean build.
 
 2. Uncomment or add the code in the `#if` section below in `SqueakyApp\SqueakyApp\SqueayApp.fs`:
 
@@ -102,8 +103,8 @@ The model state of the app is re-initialized.
        #endif
 
        type App (helper1, helper2) = 
-	       inherit Application()
-		   ....
+           inherit Application()
+           ....
 
            // The real program, used when LiveUpdate is not activated or a program change has not been made
            let program = Program.mkProgram App.init (App.update (helper1, helper2)) App.view
@@ -117,4 +118,3 @@ The LiveUpdate mechanism is very experimental.
 - Debug output is printed to app-output by the on-device web server
 
 Please contribute documentation, updates and fixes to make the experience simpler.
-
