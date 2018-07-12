@@ -3,6 +3,7 @@
 ## Dev Notes - Building
 
 On OSX:
+
 ```fsharp
 mono .paket/paket.exe restore
 dotnet restore
@@ -10,7 +11,9 @@ open Elmish.XamarinForms.sln
 ./build.sh NuGet
 ./build.sh Test
 ```
+
 On Windows:
+
 ```
 .paket\paket.exe restore
 dotnet restore
@@ -22,6 +25,7 @@ start Elmish.XamarinForms.sln
 ## Dev Notes - Releasing
 
 Use this:
+
 ```
 .\build NuGet
 set APIKEY=...
