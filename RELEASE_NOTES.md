@@ -1,4 +1,4 @@
-#### 0.13.6
+#### 0.13.8
 * Fix packaging problem with fscd tools
 
 #### 0.13.4
