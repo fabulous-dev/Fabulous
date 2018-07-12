@@ -1,3 +1,6 @@
+#### 0.13.6
+* Fix packaging problem with fscd tools
+
 #### 0.13.4
 * Fix errors raised by interpreter
 
