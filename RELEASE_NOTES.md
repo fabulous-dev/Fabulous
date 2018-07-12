@@ -1,3 +1,9 @@
+#### 0.13.8
+* Fix packaging problem with fscd tools
+
+#### 0.13.4
+* Fix errors raised by interpreter
+
 #### 0.13.2
 * Fix sample look and feel
 * Fix repeated live updates

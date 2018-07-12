@@ -9,17 +9,18 @@ Live Update
 There is an experimental LiveUpdate mechanism available.  The aim of this is primarily to enable modifying the `view` function in order
 to see the effect of adjusting of visual options.
 
-At the time of writing this has only been trialled with Android.
+**At the time of writing this has only been trialled with Android.**
 
 Some manual set-up is required.  The following assumes your app is called `SqueakyApp`:
 
-1. Add a reference to nuget package `Elmish.XamarinForms.LiveUpdate` to all projects in your app. Do a clean build.
+1. Check your projects have a reference to nuget package `Elmish.XamarinForms.LiveUpdate` for all projects in your app.
+   This is the default for apps created with templates 0.13.8 and higher. Do a clean build.
 
-2. Add the code in the `#if` section below in `SqueakyApp\SqueakyApp\SqueayApp.fs`:
+2. Uncomment or add the code in the `#if` section below in `SqueakyApp\SqueakyApp\SqueayApp.fs`:
 
-       type App () = 
-	       inherit Application()
-		   ....
+       type App () =
+           inherit Application()
+           ....
        #if DEBUG
            do runner.EnableLiveUpdate ()
        #endif
@@ -37,17 +38,17 @@ Some manual set-up is required.  The following assumes your app is called `Squea
 
        Windows:
 
-           %USERPROFILE%\.nuget\packages\Elmish.XamarinForms.LiveUpdate\0.13.2\tools\fscd.exe --watch --webhook:http://localhost:9867/update SqueakyApp\SqueakyApp\SqueayApp.fsproj
+           %USERPROFILE%\.nuget\packages\Elmish.XamarinForms.LiveUpdate\0.13.8\tools\fscd.exe --watch --webhook:http://localhost:9867/update SqueakyApp\SqueakyApp\SqueayApp.fsproj
 
        Unix and OSX (untested):
 
-           mono ~/.nuget/packages/Elmish.XamarinForms.LiveUpdate/0.13.2/tools/fscd.exe --watch --webhook:http://localhost:9867/update  SqueakyApp\SqueakyApp\SqueayApp.fsproj
+           mono ~/.nuget/packages/Elmish.XamarinForms.LiveUpdate/0.13.8/tools/fscd.exe --watch --webhook:http://localhost:9867/update  SqueakyApp\SqueakyApp\SqueayApp.fsproj
 
 Now, whenever you save a file in your core project directory, the `fscd.exe` daemon will attempt to recompile your changed file and
 send a representation of its contents to your app via a PUT request to the given webhook.  The app then deserializes this representation and
 adds the declarations to an F# interpreter. This interpreter will make some reflective calls into the existing libraries on device.
 
-To take effect, your code must have a single declaration in some module called `programLiveUpdate` or `program` taking no arguments.  For example:
+**To take effect as app changes, your code must have a single declaration in some module called `programLiveUpdate` or `program` taking no arguments.**  For example:
 
 ```fsharp
 module App =
@@ -102,8 +103,8 @@ The model state of the app is re-initialized.
        #endif
 
        type App (helper1, helper2) = 
-	       inherit Application()
-		   ....
+           inherit Application()
+           ....
 
            // The real program, used when LiveUpdate is not activated or a program change has not been made
            let program = Program.mkProgram App.init (App.update (helper1, helper2)) App.view
@@ -117,4 +118,3 @@ The LiveUpdate mechanism is very experimental.
 - Debug output is printed to app-output by the on-device web server
 
 Please contribute documentation, updates and fixes to make the experience simpler.
-
