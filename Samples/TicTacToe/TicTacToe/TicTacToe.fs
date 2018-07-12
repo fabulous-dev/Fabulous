@@ -161,25 +161,25 @@ module App =
 
     /// The dynamic 'view' function giving the updated content for the view
     let view model dispatch =
-      Xaml.NavigationPage(barBackgroundColor = Color.LightBlue, 
+      View.NavigationPage(barBackgroundColor = Color.LightBlue, 
         barTextColor = Color.Black,
         pages=
-          [Xaml.ContentPage(
-            Xaml.Grid(rowdefs=[ "*"; "auto"; "auto" ],
+          [View.ContentPage(
+            View.Grid(rowdefs=[ "*"; "auto"; "auto" ],
               children=[
-                Xaml.Grid(rowdefs=[ "*"; 5.0; "*"; 5.0; "*" ], coldefs=[ "*"; 5.0; "*"; 5.0; "*" ],
+                View.Grid(rowdefs=[ "*"; 5.0; "*"; 5.0; "*" ], coldefs=[ "*"; 5.0; "*"; 5.0; "*" ],
                     children=[
-                        yield Xaml.BoxView(Color.Black).GridRow(1).GridColumnSpan(5)
-                        yield Xaml.BoxView(Color.Black).GridRow(3).GridColumnSpan(5)
-                        yield Xaml.BoxView(Color.Black).GridColumn(1).GridRowSpan(5)
-                        yield Xaml.BoxView(Color.Black).GridColumn(3).GridRowSpan(5)
+                        yield View.BoxView(Color.Black).GridRow(1).GridColumnSpan(5)
+                        yield View.BoxView(Color.Black).GridRow(3).GridColumnSpan(5)
+                        yield View.BoxView(Color.Black).GridColumn(1).GridRowSpan(5)
+                        yield View.BoxView(Color.Black).GridColumn(3).GridRowSpan(5)
 
                         for ((row,col) as pos) in positions ->
                             let item = 
                                 if canPlay model model.Board.[pos] then 
-                                    Xaml.Button(command=(fun () -> dispatch (Play pos)), backgroundColor=Color.LightBlue)
+                                    View.Button(command=(fun () -> dispatch (Play pos)), backgroundColor=Color.LightBlue)
                                 else
-                                    Xaml.Image(source=imageForPos model.Board.[pos], margin=10.0)
+                                    View.Image(source=imageForPos model.Board.[pos], margin=10.0)
                             item.GridRow(row*2).GridColumn(col*2) ],
 
                     rowSpacing=0.0,
@@ -189,12 +189,12 @@ module App =
                     ?widthRequest = model.VisualBoardSize,
                     ?heightRequest = model.VisualBoardSize).GridRow(0)
 
-                Xaml.Label(text=getMessage model, margin=10.0, textColor=Color.Black, 
+                View.Label(text=getMessage model, margin=10.0, textColor=Color.Black, 
                     horizontalOptions=LayoutOptions.Center,
                     verticalOptions=LayoutOptions.Center,
                     horizontalTextAlignment=TextAlignment.Center, verticalTextAlignment=TextAlignment.Center, fontSize="Large").GridRow(1)
 
-                Xaml.Button(command=(fun () -> dispatch Restart), text="Restart game", backgroundColor=Color.LightBlue, textColor=Color.Black, fontSize="Large").GridRow(2)
+                View.Button(command=(fun () -> dispatch Restart), text="Restart game", backgroundColor=Color.LightBlue, textColor=Color.Black, fontSize="Large").GridRow(2)
               ]),
 
              // This requests a square board based on the width we get allocated on the device 

@@ -562,7 +562,7 @@
 					"elementType": "Xamarin.Forms.RowDefinition",
 					"modelType": "ViewElement[]",
 					"inputType": "obj list",
-					"convToModel": "(fun es -> es |> Array.ofList |> Array.map (fun h -> Xaml.RowDefinition(height=h)))"
+					"convToModel": "(fun es -> es |> Array.ofList |> Array.map (fun h -> View.RowDefinition(height=h)))"
 				},
 				{
 					"name": "ColumnDefinitions",
@@ -572,7 +572,7 @@
 					"elementType": "Xamarin.Forms.ColumnDefinition",
 					"modelType": "ViewElement[]",
 					"inputType": "obj list",
-					"convToModel": "(fun es -> es |> Array.ofList |> Array.map (fun h -> Xaml.ColumnDefinition(width=h)))"
+					"convToModel": "(fun es -> es |> Array.ofList |> Array.map (fun h -> View.ColumnDefinition(width=h)))"
 				},
 				{
 					"name": "RowSpacing",

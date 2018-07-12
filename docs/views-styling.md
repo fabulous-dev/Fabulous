@@ -14,7 +14,7 @@ various parts of your view logic.
 For example, if a set of Labels share the same margin and color you can write this:
 ```fsharp
 let Label text = 
-	Xaml.Label(text=text, margin=Thickness(0.0, 4.0), textColor=Color.Black)
+	View.Label(text=text, margin=Thickness(0.0, 4.0), textColor=Color.Black)
 
 Label(text="This monkey is laid back and relaxed, and likes to watch the world go by.")
 Label(text="  - Often smiles mysteriously")
@@ -66,9 +66,9 @@ type App () as app =
 ```
 Set the style classes as follows:
 ```fsharp
-    Xaml.Label(text="Hello", styleClass="detailPageTitle")
+    View.Label(text="Hello", styleClass="detailPageTitle")
     ...
-    Xaml.Label(text="Main Page", styleClass="mainPageTitle")
+    View.Label(text="Main Page", styleClass="mainPageTitle")
 ```
 
 You can also add style sheets for particular elements and their contents by using the `styleSheets` property for each visual element. For example:
@@ -78,7 +78,7 @@ You can also add style sheets for particular elements and their contents by usin
 let styleSheet = StyleSheet.FromAssemblyResource(Assembly.GetExecutingAssembly(),"MyProject.Assets.styles.css")
 
 let view model disptch = 
-    Xaml.ContentPage(styleSheets=[myStyleSheet], ...)
+    View.ContentPage(styleSheets=[myStyleSheet], ...)
 ```
 
 ### "Xaml" coding via explicit `Style` objects
@@ -90,7 +90,7 @@ and attaching them to your application.   We don't go into details here
 // Always define your styles as static values, sine their object identity is signficant!
 let style = Style...
 let view model disptch = 
-    Xaml.ContentPage(styles=[myStyle], ...)
+    View.ContentPage(styles=[myStyle], ...)
 ```
 
 ### Resource Dictionaries

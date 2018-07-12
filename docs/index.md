@@ -57,9 +57,9 @@ let update (msg:Msg) (model:Model) =
 /// The view function giving updated content for the page
 let view (model: Model) dispatch =
     if model.Pressed then
-        Xaml.Label(text="I was pressed!")
+        View.Label(text="I was pressed!")
     else
-        Xaml.Button(text="Press Me!", command=(fun () -> dispatch Pressed))
+        View.Button(text="Press Me!", command=(fun () -> dispatch Pressed))
 
 type App () =
     inherit Application ()

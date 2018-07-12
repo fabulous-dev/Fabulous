@@ -1,4 +1,4 @@
-#### 0.13.10
+#### 0.14.0
 * Fix compilation of template on OSX
 
 #### 0.13.8

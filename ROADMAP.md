@@ -1,7 +1,7 @@
 ## Roadmap
 
 * Programming model: 
-  * Change `Xaml.` to `UI.` or `XF.` or `X.`
+  * Change `View.` to `UI.` or `XF.` or `X.`
   * Move to `seq<_>` as the de-facto model type
   * Add `Animation`
   * Add `OpenGLView`
@@ -32,7 +32,7 @@
   * Automatically save function values that do not capture any arguments
   * Allow a default unnamed argument for `children` so the argument name doesn't have to be given explicitly
   * Allow the use of struct options for optional arguments (to reduce allocations)
-  * Implement the C# 5.0 "open static classes" feature in F# to allow the `Xaml.` prefix to be dropped
+  * Implement the C# 5.0 "open static classes" feature in F# to allow the `View.` prefix to be dropped
 
 * App size:
   * Remove F# resources in linker, see https://github.com/fsprojects/Elmish.XamarinForms/issues/94

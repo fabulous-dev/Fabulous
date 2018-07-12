@@ -91,7 +91,7 @@ module StaticView =
 /// Program module - functions to manipulate program instances
 [<RequireQualifiedAccess; CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module Program =
-    /// Add navigation to an application, used only for Half-Elmish Static Xaml.
+    /// Add navigation to an application, used only for Half-Elmish Static View.
     let withNavigation (program: Program<_,_,_>) = 
         { init = program.init
           update = program.update

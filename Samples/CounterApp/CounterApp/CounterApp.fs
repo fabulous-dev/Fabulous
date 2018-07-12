@@ -39,20 +39,20 @@ module App =
         | TimedTick -> if model.TimerOn then { model with Count = model.Count + model.Step }, timerCmd() else model, Cmd.none 
 
     let view (model: Model) dispatch = 
-        Xaml.ContentPage(
-          content=Xaml.StackLayout(padding=30.0,verticalOptions = LayoutOptions.Center,
+        View.ContentPage(
+          content=View.StackLayout(padding=30.0,verticalOptions = LayoutOptions.Center,
             children=[ 
               // If you want the button to disappear when in the initial condition then use this:
-              yield Xaml.Label(text= sprintf "%d" model.Count, horizontalOptions=LayoutOptions.Center, fontSize = "Large")
-              yield Xaml.Button(text="Increment", command= (fun () -> dispatch Increment))
-              yield Xaml.Button(text="Decrement", command= (fun () -> dispatch Decrement)) 
-              yield Xaml.StackLayout(padding=20.0, orientation=StackOrientation.Horizontal, horizontalOptions=LayoutOptions.Center,
-                              children = [ Xaml.Label(text="Timer")
-                                           Xaml.Switch(isToggled=model.TimerOn, toggled=(fun on -> dispatch (TimerToggled on.Value))) ])
-              yield Xaml.Slider(minimum=0.0, maximum=10.0, value= double model.Step, valueChanged=(fun args -> dispatch (SetStep (int (args.NewValue + 0.5)))))
-              yield Xaml.Label(text=sprintf "Step size: %d" model.Step, horizontalOptions=LayoutOptions.Center) 
+              yield View.Label(text= sprintf "%d" model.Count, horizontalOptions=LayoutOptions.Center, fontSize = "Large")
+              yield View.Button(text="Increment", command= (fun () -> dispatch Increment))
+              yield View.Button(text="Decrement", command= (fun () -> dispatch Decrement)) 
+              yield View.StackLayout(padding=20.0, orientation=StackOrientation.Horizontal, horizontalOptions=LayoutOptions.Center,
+                              children = [ View.Label(text="Timer")
+                                           View.Switch(isToggled=model.TimerOn, toggled=(fun on -> dispatch (TimerToggled on.Value))) ])
+              yield View.Slider(minimum=0.0, maximum=10.0, value= double model.Step, valueChanged=(fun args -> dispatch (SetStep (int (args.NewValue + 0.5)))))
+              yield View.Label(text=sprintf "Step size: %d" model.Step, horizontalOptions=LayoutOptions.Center) 
               //if model <> initModel () then 
-              yield Xaml.Button(text="Reset", horizontalOptions=LayoutOptions.Center, command=fixf(fun () -> dispatch Reset), canExecute = (model <> initModel () ))
+              yield View.Button(text="Reset", horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch Reset), canExecute = (model <> initModel () ))
             ]))   
              
     let program = 

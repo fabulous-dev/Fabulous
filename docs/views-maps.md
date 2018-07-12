@@ -25,14 +25,14 @@ After these steps you can use maps in your `view` function as follows:
 open Xamarin.Forms.Maps
 open Elmish.XamarinForms
 
-Xaml.Map(hasZoomEnabled = true, hasScrollEnabled = true)
+View.Map(hasZoomEnabled = true, hasScrollEnabled = true)
 ```
 
 Next, a map with requested region around Timbuktu:
 
 ```fsharp
 let timbuktu = Position(16.7666, -3.0026)
-Xaml.Map(hasZoomEnabled = true, hasScrollEnabled = true,
+View.Map(hasZoomEnabled = true, hasScrollEnabled = true,
          requestedRegion = MapSpan.FromCenterAndRadius(timbuktu, Distance.FromKilometers(1.0)))
 ```
 
@@ -42,9 +42,9 @@ Next, a map with two pins for Paris and London:
 let paris = Position(48.8566, 2.3522)
 let london = Position(51.5074, -0.1278)
 let calais = Position(50.9513, 1.8587)
-Xaml.Map(hasZoomEnabled = true, hasScrollEnabled = true,
-         pins = [ Xaml.Pin(paris, label="Paris", pinType = PinType.Place)
-                  Xaml.Pin(london, label="London", pinType = PinType.Place) ],
+View.Map(hasZoomEnabled = true, hasScrollEnabled = true,
+         pins = [ View.Pin(paris, label="Paris", pinType = PinType.Place)
+                  View.Pin(london, label="London", pinType = PinType.Place) ],
          requestedRegion = MapSpan.FromCenterAndRadius(calais, Distance.FromKilometers(300.0)))
 ```
 

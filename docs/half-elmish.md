@@ -21,7 +21,7 @@ Static Xaml + bindings has signifcant pros:
 * Con: there are  more failure points (e.g. magic strings to link the Xaml to the code through binding etc.).  
 * Con: the Xaml is static, and only made dynamic through the addition of control bindings to turn elements on/off
 
-If you want to use static Xaml, then you will need to do bindings to that Xaml.
+If you want to use static Xaml, then you will need to do bindings to that View.
 Bindings in your XAML code will look like typical bindings, but a bit of extra code is needed to
 map those bindings to your Elmish model. These are the viewBindings, which expose parts of the model to the view.
 
