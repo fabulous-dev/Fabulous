@@ -9,17 +9,17 @@ Live Update
 There is an experimental LiveUpdate mechanism available.  The aim of this is primarily to enable modifying the `view` function in order
 to see the effect of adjusting of visual options.
 
-At the time of writing this has only been trialled with Android.
+**At the time of writing this has only been trialled with Android.**
 
 Some manual set-up is required.  The following assumes your app is called `SqueakyApp`:
 
-1. Add a reference to nuget package `Elmish.XamarinForms.LiveUpdate` to all projects in your app. Do a clean build.
+1. Check your projects have a reference to nuget package `Elmish.XamarinForms.LiveUpdate` for all projects in your app. Do a clean build.
 
-2. Add the code in the `#if` section below in `SqueakyApp\SqueakyApp\SqueayApp.fs`:
+2. Uncomment or add the code in the `#if` section below in `SqueakyApp\SqueakyApp\SqueayApp.fs`:
 
-       type App () = 
-	       inherit Application()
-		   ....
+       type App () =
+           inherit Application()
+           ....
        #if DEBUG
            do runner.EnableLiveUpdate ()
        #endif
@@ -47,7 +47,7 @@ Now, whenever you save a file in your core project directory, the `fscd.exe` dae
 send a representation of its contents to your app via a PUT request to the given webhook.  The app then deserializes this representation and
 adds the declarations to an F# interpreter. This interpreter will make some reflective calls into the existing libraries on device.
 
-To take effect, your code must have a single declaration in some module called `programLiveUpdate` or `program` taking no arguments.  For example:
+**To take effect as app changes, your code must have a single declaration in some module called `programLiveUpdate` or `program` taking no arguments.**  For example:
 
 ```fsharp
 module App =
