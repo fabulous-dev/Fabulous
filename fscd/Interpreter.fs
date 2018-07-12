@@ -46,6 +46,19 @@ and ResolvedMember =
     | RPrim_lor
     | RPrim_lxor
     | RPrim_lneg
+    | RPrim_checked_int32
+    | RPrim_checked_int
+    | RPrim_checked_int16
+    | RPrim_checked_int64
+    | RPrim_checked_byte
+    | RPrim_checked_uint16
+    | RPrim_checked_uint32
+    | RPrim_checked_uint64
+    | RPrim_checked_unativeint
+    | RPrim_checked_nativeint
+    | RPrim_checked_char
+    | RPrim_checked_minus
+    | RPrim_checked_mul
     | RMethod of System.Reflection.MemberInfo
     | UMember of Value
 
@@ -57,7 +70,8 @@ and ResolvedField =
     | RField of MemberInfo
     | UField of int * ResolvedType * string
 
-and [<Struct>] Value = Value of obj
+and Value = 
+   { mutable Value: obj }
 
 // TODO: intercept ToString, comparison
 and RecordValue = RecordValue of obj[]
@@ -65,6 +79,8 @@ and UnionValue = UnionValue of int * string * obj[]
 and MethodLambdaValue = MethodLambdaValue of (Type[] * obj[] -> obj)
 and ObjectValue = ObjectValue of Map<string,obj> ref
 
+let (|Value|) (v: Value) = v.Value
+let Value (v: obj) = { Value = v }
 let getVal (Value v) = v
 let bindAll = BindingFlags.Public ||| BindingFlags.NonPublic ||| BindingFlags.Instance ||| BindingFlags.Static
 let (|RTypeOrObj|) xR = match xR with RType xV -> xV | _ -> typeof<obj>
@@ -81,13 +97,9 @@ let envEmpty =
 let bindByName (env: Env) varName value = 
     { env with Vals = env.Vals.Add(varName, value) }
 
-let bind (env: Env) (var: DLocalDef) value = 
-    let value2 = 
-        if var.IsMutable then 
-            Value (ref (getVal value))
-        else 
-            value
-    bindByName env var.Name value2
+let bind (env: Env) (var: DLocalDef) value = bindByName env var.Name value
+
+let bindMany env vars values  = (env, vars, values) |||> Array.fold2 bind
 
 let bindty (env: Env) (var : DGenericParameterDef) value = 
     { env with Types = env.Types.Add(var.Name, value) }
@@ -177,8 +189,21 @@ type EvalContext ()  =
     let op_lor = methinfoof <@ (|||) @> 
     let op_lxor = methinfoof <@ (^^^) @> 
     let op_lneg = methinfoof <@ (~~~) @> 
+
+    let op_checked_int32 = methinfoof <@ Operators.Checked.int32 @> 
+    let op_checked_int = methinfoof <@ Operators.Checked.int @> 
+    let op_checked_int16 = methinfoof <@ Operators.Checked.int16 @> 
+    let op_checked_int64 = methinfoof <@ Operators.Checked.int64 @> 
+    let op_checked_byte = methinfoof <@ Operators.Checked.byte @> 
+    let op_checked_uint16 = methinfoof <@ Operators.Checked.uint16 @> 
+    let op_checked_uint32 = methinfoof <@ Operators.Checked.uint32 @> 
+    let op_checked_uint64 = methinfoof <@ Operators.Checked.uint64 @> 
+    let op_checked_unativeint = methinfoof <@ Operators.Checked.unativeint @> 
+    let op_checked_nativeint = methinfoof <@ Operators.Checked.nativeint @> 
+    let op_checked_char = methinfoof <@ Operators.Checked.char @> 
+    let op_checked_minus = methinfoof <@ Operators.Checked.(-) @> 
+    let op_checked_mul = methinfoof <@ Operators.Checked.(*) @> 
 (*
- TODO: + Checked versions of operators
  TODO:
             let inline absImpl (x: ^T) : ^T = 
             let inline  acosImpl(x: ^T) : ^T = 
@@ -329,6 +354,19 @@ type EvalContext ()  =
         elif m = op_lor then RPrim_lor
         elif m = op_lxor then RPrim_lxor
         elif m = op_lneg then RPrim_lneg
+        elif m = op_checked_int32 then RPrim_checked_int32
+        elif m = op_checked_int then RPrim_checked_int
+        elif m = op_checked_int16 then RPrim_checked_int16
+        elif m = op_checked_int64 then RPrim_checked_int64
+        elif m = op_checked_byte then RPrim_checked_byte
+        elif m = op_checked_uint16 then RPrim_checked_uint16
+        elif m = op_checked_uint32 then RPrim_checked_uint32
+        elif m = op_checked_uint64 then RPrim_checked_uint64
+        elif m = op_checked_unativeint then RPrim_checked_unativeint
+        elif m = op_checked_nativeint then RPrim_checked_nativeint
+        elif m = op_checked_char then RPrim_checked_char
+        elif m = op_checked_minus then RPrim_checked_minus
+        elif m = op_checked_mul then RPrim_checked_mul
         else RMethod m
 
     member ctxt.InterpMethod(formalEnv, eR, nm, paramTys) = 
@@ -372,7 +410,6 @@ type EvalContext ()  =
     member ctxt.AddDecls(decls: DDecl[]) = 
         
         let env = envEmpty
-        entityResolutions.Clear()
         for decl in decls do
             match decl with 
             | DDeclEntity (entityDef, subDecls) -> 
@@ -429,6 +466,7 @@ type EvalContext ()  =
         | DExpr.Lambda(domainTy, rangeTy, lambdaVar, bodyExpr) -> ctxt.EvalLambda(env, domainTy, rangeTy, lambdaVar, bodyExpr)
         | DExpr.TypeLambda(genericParams, bodyExpr) -> ctxt.EvalTypeLambda(env, genericParams, bodyExpr)
         | DExpr.Let((bindingVar, bindingExpr), bodyExpr) -> ctxt.EvalLet(env, (bindingVar, bindingExpr), bodyExpr)
+        | DExpr.LetRec(recursiveBindings, bodyExpr) -> ctxt.EvalLetRec(env, recursiveBindings, bodyExpr)
         | DExpr.NewObject(objCtor, typeArgs, argExprs) -> ctxt.EvalNewObject(env, objCtor, typeArgs, argExprs)
         | DExpr.NewRecord(recordType, argExprs) ->  ctxt.EvalNewRecord(env, recordType, argExprs)
         | DExpr.NewUnionCase(unionType, unionCase, argExprs) -> ctxt.EvalNewUnionCase(env, unionType, unionCase, argExprs)
@@ -454,7 +492,6 @@ type EvalContext ()  =
 // TODO:
         | DExpr.AddressOf(lvalueExpr) -> ctxt.EvalAddressOf(convExpr lvalueExpr)
         | DExpr.AddressSet(lvalueExpr, rvalueExpr) -> ctxt.EvalAddressSet(convExpr lvalueExpr, convExpr rvalueExpr)
-        | DExpr.LetRec(recursiveBindings, bodyExpr) -> ctxt.EvalLetRec(List.map (map2 convValue convExpr) recursiveBindings, convExpr bodyExpr)
         | DExpr.NewDelegate(delegateType, delegateBodyExpr) -> ctxt.EvalNewDelegate(convType delegateType, convExpr delegateBodyExpr)
         | DExpr.Quote(quotedExpr) -> ctxt.EvalQuote(convExpr quotedExpr)
         | DExpr.DefaultValue defaultType -> ctxt.EvalDefaultValue (convType defaultType)
@@ -481,7 +518,7 @@ type EvalContext ()  =
                 | _ -> failwithf "didn't find this value in the environment" 
             elif isMutable then 
                 match env.Vals.TryGetValue v with 
-                | true, Value (:? ref<obj> as rv) -> Value rv.Value
+                | true, rv -> Value rv.Value
                 | _ -> failwithf "didn't find mutable value in the environment" 
             else
                 match env.Vals.TryGetValue v with 
@@ -572,6 +609,14 @@ type EvalContext ()  =
         let env = bind env bindingVar bindingExprV
         ctxt.EvalExpr (env, bodyExpr)
 
+    member ctxt.EvalLetRec(env, recursiveBindings, bodyExpr) =
+        let valueThunks = recursiveBindings |> Array.map (fun _ -> { Value = null })
+        let envInner = bindMany env (Array.map fst recursiveBindings) valueThunks
+        (valueThunks, recursiveBindings) ||> Array.iter2 (fun valueThunk (_,recursiveBindingExpr) -> 
+            let v = ctxt.EvalExpr(env, recursiveBindingExpr) |> getVal 
+            valueThunk.Value <- v)
+        ctxt.EvalExpr (envInner, bodyExpr)
+
     member ctxt.EvalCall(env, objExprOpt, memberOrFunc, typeArgs1, typeArgs2, argExprs) =
         let objOptV = ctxt.EvalExprOpt (env, objExprOpt)
         let argsV = ctxt.EvalExprs (env, argExprs)
@@ -604,6 +649,19 @@ type EvalContext ()  =
         | RPrim_lor -> logicBinOp argsV (|||) (|||) (|||) (|||) (|||) (|||) (|||) (|||)
         | RPrim_lxor -> logicBinOp argsV (^^^) (^^^) (^^^) (^^^) (^^^) (^^^) (^^^) (^^^)
         | RPrim_lneg -> logicUnOp argsV (~~~) (~~~) (~~~) (~~~) (~~~) (~~~) (~~~) (~~~)
+        | RPrim_checked_int32 -> Value (Convert.ToInt32 argsV.[0])
+        | RPrim_checked_int -> Value (Convert.ToInt32 argsV.[0])
+        | RPrim_checked_int16 -> Value (Convert.ToInt16 argsV.[0])
+        | RPrim_checked_int64 -> Value (Convert.ToInt64 argsV.[0])
+        | RPrim_checked_byte -> Value (Convert.ToByte argsV.[0])
+        | RPrim_checked_uint16 -> Value (Convert.ToUInt16 argsV.[0])
+        | RPrim_checked_uint32 -> Value (Convert.ToUInt32 argsV.[0])
+        | RPrim_checked_uint64 -> Value (Convert.ToUInt64 argsV.[0])
+        //| RPrim_checked_unativeint -> Value (Convert.ToUIntPtr argsV.[0])
+        //| RPrim_checked_nativeint -> Value (Convert.ToIntPtr argsV.[0])
+        | RPrim_checked_char -> Value (Convert.ToChar argsV.[0])
+        | RPrim_checked_minus -> binOp argsV Checked.(-) Checked.(-) Checked.(-) Checked.(-) Checked.(-) Checked.(-) Checked.(-) Checked.(-) Checked.(-) Checked.(-) Checked.(-)
+        | RPrim_checked_mul -> binOp argsV Checked.(*) Checked.(*) Checked.(*) Checked.(*) Checked.(*) Checked.(*) Checked.(*) Checked.(*) Checked.(*) Checked.(*) Checked.(*)
         | _ ->
 
         let typeArgs1R = ctxt.ResolveTypes (env, typeArgs1)

@@ -9,6 +9,8 @@ Live Update
 There is an experimental LiveUpdate mechanism available.  The aim of this is primarily to enable modifying the `view` function in order
 to see the effect of adjusting of visual options.
 
+At the time of writing this has only been trialled with Android.
+
 Some manual set-up is required.  The following assumes your app is called `SqueakyApp`:
 
 1. Add a reference to nuget package `Elmish.XamarinForms.LiveUpdate` to all projects in your app. Do a clean build.
@@ -18,33 +20,28 @@ Some manual set-up is required.  The following assumes your app is called `Squea
        type App () = 
 	       inherit Application()
 		   ....
-           #if DEBUG
+       #if DEBUG
            do runner.EnableLiveUpdate ()
-           #endif
+       #endif
 
-3. In your core project directory (e.g. `SqueakyApp\SqueakyApp`), create `proj.args` containing the project options used to compile the core of your app. It should look something like [this](https://github.com/fsprojects/Elmish.XamarinForms/blob/f3a591bfe4a7a70059ec8d74a3843968b200b91b/Samples/CounterApp/CounterApp/out.args).
-
-       dotnet build -v:n SqueayApp.fsproj > proj.args
-       <manually edit `proj.args` to contain only the compilation arguments>
-
-4. If running on Android, forward requests from localhost to the Android Debug Bridge:
+3. If running on Android, forward requests from localhost to the Android Debug Bridge:
 
        USB:
            adb -d forward  tcp:9867 tcp:9867
        EMULATOR:
            adb -e forward  tcp:9867 tcp:9867
 
-5. Launch your app in Debug mode (you can use Release mode but must set Linking options to `None` rather than `SDK Assemblies`)
+4. Launch your app in Debug mode (note: you can use Release mode but must set Linking options to `None` rather than `SDK Assemblies`)
 
-6. Run the following from your core project directory (e.g. `SqueakyApp\SqueakyApp`)
+5. Run the following from your core project directory (e.g. `SqueakyApp\SqueakyApp`)
 
        Windows:
 
-           %USERPROFILE%\.nuget\packages\Elmish.XamarinForms.LiveUpdate\0.13.2\tools\fscd.exe --watch --webhook:http://localhost:9867/update -- @proj.args
+           %USERPROFILE%\.nuget\packages\Elmish.XamarinForms.LiveUpdate\0.13.2\tools\fscd.exe --watch --webhook:http://localhost:9867/update SqueakyApp\SqueakyApp\SqueayApp.fsproj
 
        Unix and OSX (untested):
 
-           mono ~/.nuget/packages/Elmish.XamarinForms.LiveUpdate/0.13.2/tools/fscd.exe --watch --webhook:http://localhost:9867/update -- @proj.args
+           mono ~/.nuget/packages/Elmish.XamarinForms.LiveUpdate/0.13.2/tools/fscd.exe --watch --webhook:http://localhost:9867/update  SqueakyApp\SqueakyApp\SqueayApp.fsproj
 
 Now, whenever you save a file in your core project directory, the `fscd.exe` daemon will attempt to recompile your changed file and
 send a representation of its contents to your app via a PUT request to the given webhook.  The app then deserializes this representation and

@@ -125,7 +125,11 @@ and convMemberDef (memb: FSharpMemberOrFunctionOrValue) : DMemberDef =
 and convMemberRef (memb: FSharpMemberOrFunctionOrValue) = 
     if not (memb.IsMember || memb.IsModuleValueOrMember) then failwith "can't convert non-member ref"
     let paramTypesR = convParamTypes memb.CurriedParameterGroups
-    if memb.IsExtensionMember && memb.ApparentEnclosingEntity.GenericParameters.Count > 0 then failwithf "NYI: extension of generic type, needs FCS support: %A" memb
+
+    // TODO: extensions of generic type
+    if memb.IsExtensionMember && memb.ApparentEnclosingEntity.GenericParameters.Count > 0 && not (memb.CompiledName = "ProgramRunner`2.EnableLiveUpdate") then 
+       failwithf "NYI: extension of generic type, needs FCS support: %s" memb.CompiledName
+
     let paramTypesR = if memb.IsExtensionMember then Array.append [| DNamedType (convEntityRef memb.ApparentEnclosingEntity, [| |]) |] paramTypesR else paramTypesR
     DMemberRef (convEntityRef memb.DeclaringEntity.Value, memb.CompiledName, memb.GenericParameters.Count, paramTypesR, convReturnType memb)
 
