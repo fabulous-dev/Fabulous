@@ -142,7 +142,7 @@ type HttpServer(?port) =
 
                     with ex -> 
                         let msg = "<html><body><pre>" + ex.ToString() + "</pre></body></html>"
-                        printfn "setting response code to 500, msg = %s" msg
+                        printfn "LiveUpdate: setting response code to 500, msg = %s" msg
                         let bytes = Encoding.UTF8.GetBytes msg
                         resp.StatusCode <- 500
                         resp.ContentLength64 <- bytes.LongLength
