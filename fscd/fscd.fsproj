@@ -1,10 +1,6 @@
-﻿<Project>
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\netfx.props" />
 
-  <PropertyGroup>
-    <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
-  </PropertyGroup>
-  <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.props" />
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net46</TargetFramework>
@@ -25,6 +21,5 @@
     <PackageReference Include="FsPickler" Version="5.2.0" />
     <PackageReference Include="FsPickler.Json" Version="5.2.0" />
   </ItemGroup>
-  <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.targets" />
 
 </Project>
