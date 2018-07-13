@@ -94,6 +94,8 @@ The external sample [PocketPiggyBank](https://github.com/jimbobbennett/PocketPig
 Further Resources
 --------
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/si9YdWhbwSI?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 **General Docs**
 
 * [Xamarin](https://docs.microsoft.com/xamarin/)
