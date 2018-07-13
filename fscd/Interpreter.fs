@@ -528,8 +528,8 @@ type EvalContext ()  =
         | DExpr.ValueSet(DLocalRef (valToSet, _, _), valueExpr) -> 
             let valueExprV : obj = ctxt.EvalExpr(env, valueExpr) |> getVal
             match env.Vals.TryGetValue valToSet with 
-            | true, Value (:? ref<obj> as rv) -> 
-                rv := valueExprV
+            | true, rv -> 
+                rv.Value <- valueExprV
                 Value null
             | _ -> failwithf "didn't find mutable value in the environment" 
 
@@ -613,7 +613,7 @@ type EvalContext ()  =
         let valueThunks = recursiveBindings |> Array.map (fun _ -> { Value = null })
         let envInner = bindMany env (Array.map fst recursiveBindings) valueThunks
         (valueThunks, recursiveBindings) ||> Array.iter2 (fun valueThunk (_,recursiveBindingExpr) -> 
-            let v = ctxt.EvalExpr(env, recursiveBindingExpr) |> getVal 
+            let v = ctxt.EvalExpr(envInner, recursiveBindingExpr) |> getVal 
             valueThunk.Value <- v)
         ctxt.EvalExpr (envInner, bodyExpr)
 

@@ -5,13 +5,13 @@ open System.Reflection
 [<assembly: AssemblyTitleAttribute("Elmish.XamarinForms.OxyPlot")>]
 [<assembly: AssemblyProductAttribute("Elmish.XamarinForms.OxyPlot")>]
 [<assembly: AssemblyDescriptionAttribute("Elmish.XamarinForms extension for OxyPlot")>]
-[<assembly: AssemblyVersionAttribute("0.14.0")>]
-[<assembly: AssemblyFileVersionAttribute("0.14.0")>]
+[<assembly: AssemblyVersionAttribute("0.14.4")>]
+[<assembly: AssemblyFileVersionAttribute("0.14.4")>]
 do ()
 
 module internal AssemblyVersionInformation =
     let [<Literal>] AssemblyTitle = "Elmish.XamarinForms.OxyPlot"
     let [<Literal>] AssemblyProduct = "Elmish.XamarinForms.OxyPlot"
     let [<Literal>] AssemblyDescription = "Elmish.XamarinForms extension for OxyPlot"
-    let [<Literal>] AssemblyVersion = "0.14.0"
-    let [<Literal>] AssemblyFileVersion = "0.14.0"
+    let [<Literal>] AssemblyVersion = "0.14.4"
+    let [<Literal>] AssemblyFileVersion = "0.14.4"

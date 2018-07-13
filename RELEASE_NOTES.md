@@ -1,4 +1,11 @@
-#### 0.14.0
+#### 0.14.4
+* Add 'let rec' to code accepted by LiveUpdate
+* Add local mutables to code accepted by LiveUpdate
+
+#### 0.14.2
+* Rename Xaml.* --> View.*
+
+#### 0.13.10
 * Fix compilation of template on OSX
 
 #### 0.13.8
