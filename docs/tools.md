@@ -42,17 +42,17 @@ Some manual set-up is required.  The following assumes your app is called `Squea
        Windows (Android):
 
            cd SqueakyApp\SqueakyApp
-           %USERPROFILE%\.nuget\packages\Elmish.XamarinForms.LiveUpdate\0.14.4\tools\fscd.exe --watch --webhook:http://localhost:9867/update 
+           %USERPROFILE%\.nuget\packages\Elmish.XamarinForms.LiveUpdate\0.14.6\tools\fscd.exe --watch --webhook:http://localhost:9867/update 
 
        OSX (Android):
 
            cd SqueakyApp/SqueakyApp
-           mono ~/.nuget/packages/Elmish.XamarinForms.LiveUpdate/0.14.4/tools/fscd.exe --watch --webhook:http://localhost:9867/update  
+           mono ~/.nuget/packages/Elmish.XamarinForms.LiveUpdate/0.14.6/tools/fscd.exe --watch --webhook:http://localhost:9867/update  
 
        OSX (iOS): Similar except use the explicit IP address of the emulator or device, e.g. 192.168.1.8, see the application log from launch
 
            cd SqueakyApp/SqueakyApp
-           mono ~/.nuget/packages/Elmish.XamarinForms.LiveUpdate/0.14.4/tools/fscd.exe --watch --webhook:http://192.168.1.8:9867/update
+           mono ~/.nuget/packages/Elmish.XamarinForms.LiveUpdate/0.14.6/tools/fscd.exe --watch --webhook:http://192.168.1.8:9867/update
 
 Now, whenever you save a file in your core project directory, the `fscd.exe` daemon will attempt to recompile your changed file and
 send a representation of its contents to your app via a PUT request to the given webhook.  The app then deserializes this representation and

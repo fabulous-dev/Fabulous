@@ -5,13 +5,13 @@ open System.Reflection
 [<assembly: AssemblyTitleAttribute("Elmish.XamarinForms.Maps")>]
 [<assembly: AssemblyProductAttribute("Elmish.XamarinForms.Maps")>]
 [<assembly: AssemblyDescriptionAttribute("Elmish.XamarinForms extension for Xamarin.Forms.Maps")>]
-[<assembly: AssemblyVersionAttribute("0.14.4")>]
-[<assembly: AssemblyFileVersionAttribute("0.14.4")>]
+[<assembly: AssemblyVersionAttribute("0.14.6")>]
+[<assembly: AssemblyFileVersionAttribute("0.14.6")>]
 do ()
 
 module internal AssemblyVersionInformation =
     let [<Literal>] AssemblyTitle = "Elmish.XamarinForms.Maps"
     let [<Literal>] AssemblyProduct = "Elmish.XamarinForms.Maps"
     let [<Literal>] AssemblyDescription = "Elmish.XamarinForms extension for Xamarin.Forms.Maps"
-    let [<Literal>] AssemblyVersion = "0.14.4"
-    let [<Literal>] AssemblyFileVersion = "0.14.4"
+    let [<Literal>] AssemblyVersion = "0.14.6"
+    let [<Literal>] AssemblyFileVersion = "0.14.6"
