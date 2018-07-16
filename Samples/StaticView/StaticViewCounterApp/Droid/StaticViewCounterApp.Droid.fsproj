@@ -87,7 +87,7 @@
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\Elmish.XamarinForms\Elmish.XamarinForms.fsproj">
       <Project>{AE045D79-7FF3-45F3-BFD0-305542A1C728}</Project>
-      <Name>TicTacToe</Name>
+      <Name>Elmish.XamarinForms</Name>
     </ProjectReference>
     <Reference Include="Xamarin.Android.FSharp.ResourceProvider.Runtime">
       <HintPath>../../../../packages/androidapp/Xamarin.Android.FSharp.ResourceProvider/lib/Xamarin.Android.FSharp.ResourceProvider.Runtime.dll</HintPath>

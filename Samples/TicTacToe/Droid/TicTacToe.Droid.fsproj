@@ -195,7 +195,7 @@
     </ProjectReference>
     <ProjectReference Include="..\..\..\Elmish.XamarinForms\Elmish.XamarinForms.fsproj">
       <Project>{AE045D79-7FF3-45F3-BFD0-305542A1C728}</Project>
-      <Name>TicTacToe</Name>
+      <Name>Elmish.XamarinForms</Name>
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
