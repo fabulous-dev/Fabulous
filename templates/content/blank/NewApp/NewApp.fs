@@ -80,7 +80,7 @@ type App () as app =
 #endif    
 //+:cnd:noEmit
 
-    // Uncomment this code to save the applciation state to app.Properties using Newtonsoft.Json
+    // Uncomment this code to save the application state to app.Properties using Newtonsoft.Json
 //-:cnd:noEmit
 #if APPSAVE
     let modelId = "model"
