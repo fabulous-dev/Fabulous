@@ -112,3 +112,4 @@ type App () as app =
     override app.OnStart() = app.OnResume()
 #endif
 //+:cnd:noEmit
+
