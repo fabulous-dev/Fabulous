@@ -154,8 +154,7 @@ PROJ.fs"""
             """
 -r:CWD/../../../Elmish.XamarinForms/bin/Debug/netstandard2.0/Elmish.XamarinForms.dll
 -r:CWD/../../../Elmish.XamarinForms.LiveUpdate/bin/Debug/netstandard2.0/Elmish.XamarinForms.LiveUpdate.dll
--r:PACKAGEDIR/fspickler/5.2.0/lib/netstandard2.0/FsPickler.dll
--r:PACKAGEDIR/fspickler.json/5.2.0/lib/netstandard2.0/FsPickler.Json.dll
+-r:PACKAGEDIR/newtonsoft.json/11.0.2/lib/netstandard2.0/Newtonsoft.Json.dll
 -r:PACKAGEDIR/xamarin.forms/3.0.0.482510/lib/netstandard2.0/Xamarin.Forms.Core.dll
 -r:PACKAGEDIR/xamarin.forms/3.0.0.482510/lib/netstandard2.0/Xamarin.Forms.Platform.dll
 -r:PACKAGEDIR/xamarin.forms/3.0.0.482510/lib/netstandard2.0/Xamarin.Forms.Xaml.dll

@@ -38,7 +38,7 @@ module App =
         | TimerToggled on -> { model with TimerOn = on }, (if on then timerCmd() else Cmd.none)
         | TimedTick -> if model.TimerOn then { model with Count = model.Count + model.Step }, timerCmd() else model, Cmd.none 
 
-    let view (model: Model) dispatch = 
+    let view (model: Model) dispatch =  
         View.ContentPage(
           content=View.StackLayout(padding=30.0,verticalOptions = LayoutOptions.Center,
             children=[ 
@@ -74,14 +74,11 @@ type CounterApp () as app =
 #endif
 
 
-(*
-#if !NO_SAVE_MODEL_WITH_JSON
+#if !NO_SAVE_MODEL_WITH_JSON && !TESTEVAL
     let modelId = "model"
-    let serializer = MBrace.FsPickler.Json.FsPickler.CreateJsonSerializer()
-
     override __.OnSleep() = 
 
-        let json = serializer.PickleToString(runner.CurrentModel)
+        let json = Newtonsoft.Json.JsonConvert.SerializeObject(runner.CurrentModel)
         Debug.WriteLine("OnSleep: saving model into app.Properties, json = {0}", json)
 
         app.Properties.[modelId] <- json
@@ -93,16 +90,17 @@ type CounterApp () as app =
             | true, (:? string as json) -> 
 
                 Debug.WriteLine("OnResume: restoring model from app.Properties, json = {0}", json)
-                let model = serializer.UnPickleOfString<App.Model>(json)
+                let model = Newtonsoft.Json.JsonConvert.DeserializeObject<App.Model>(json)
 
                 Debug.WriteLine("OnResume: restoring model from app.Properties, model = {0}", (sprintf "%0A" model))
                 runner.SetCurrentModel (model, Cmd.none)
 
             | _ -> ()
         with ex -> 
-            program.onError("Error while restoring model found in app.Properties", ex)
+            App.program.onError("Error while restoring model found in app.Properties", ex)
 
-    override this.OnStart() = this.OnResume()
+    override this.OnStart() = 
+        Debug.WriteLine "OnStart: using same logic as OnResume()"
+        this.OnResume()
 
 #endif
-*)

@@ -155,12 +155,6 @@
             "replaces": "FSharpCorePkg",
             "defaultValue": "4.5.0"
         },
-        "FsPicklerPkg": {
-            "type": "parameter",
-            "dataType": "string",
-            "replaces": "FsPicklerPkg",
-            "defaultValue": "5.2"
-        },
         "ProjectID": {
             "type": "generated",
             "generator": "guid",

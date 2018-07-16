@@ -1,8 +1,8 @@
-﻿namespace CounterApp
+﻿namespace StaticViewCounterApp
 open System.Reflection
 open System.Runtime.CompilerServices
 
-[<assembly: AssemblyTitle("CounterApp")>]
+[<assembly: AssemblyTitle("StaticViewCounterApp")>]
 [<assembly: AssemblyDescription("")>]
 [<assembly: AssemblyConfiguration("")>]
 [<assembly: AssemblyCompany("")>]
