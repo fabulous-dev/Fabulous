@@ -44,16 +44,16 @@ module App =
 
     let view (model: Model) dispatch =
         View.ContentPage(
-          content=View.StackLayout(padding=20.0, verticalOptions=LayoutOptions.Center,
-            children=[ 
-                View.Label(text=sprintf "%d" model.Count, horizontalOptions=LayoutOptions.Center, fontSize="Large")
-                View.Button(text="Increment", command=(fun () -> dispatch Increment))
-                View.Button(text="Decrement", command=(fun () -> dispatch Decrement))
-                View.Label(text="Timer")
-                View.Switch(isToggled=model.TimerOn, toggled=(fun on -> dispatch (TimerToggled on.Value)))
-                View.Slider(minimum=0.0, maximum=10.0, value=double model.Step, valueChanged=(fun args -> dispatch (SetStep (int (args.NewValue + 0.5)))))
-                View.Label(text=sprintf "Step size: %d" model.Step, horizontalOptions=LayoutOptions.Center) 
-                View.Button(text="Reset", horizontalOptions=LayoutOptions.Center, command= (fun () -> dispatch Reset), canExecute = (model <> initModel))
+          content = View.StackLayout(padding = 20.0, verticalOptions = LayoutOptions.Center,
+            children = [ 
+                View.Label(text = sprintf "%d" model.Count, horizontalOptions = LayoutOptions.Center, fontSize = "Large")
+                View.Button(text = "Increment", command = (fun () -> dispatch Increment))
+                View.Button(text = "Decrement", command = (fun () -> dispatch Decrement))
+                View.Label(text = "Timer")
+                View.Switch(isToggled = model.TimerOn, toggled = (fun on -> dispatch (TimerToggled on.Value)))
+                View.Slider(minimum = 0.0, maximum = 10.0, value = double model.Step, valueChanged = (fun args -> dispatch (SetStep (int (args.NewValue + 0.5)))))
+                View.Label(text = sprintf "Step size: %d" model.Step, horizontalOptions = LayoutOptions.Center) 
+                View.Button(text = "Reset", horizontalOptions = LayoutOptions.Center, command = (fun () -> dispatch Reset), canExecute = (model <> initModel))
             ]))
 
     // Note, this declaration is needed if you enable LiveUpdate
@@ -64,20 +64,25 @@ type App () as app =
 
     let runner = 
         App.program
+//-:cnd:noEmit
 #if DEBUG
         |> Program.withConsoleTrace
 #endif
+//+:cnd:noEmit
         |> Program.runWithDynamicView app
 
+//-:cnd:noEmit
 #if DEBUG
     // Uncomment this line to enable live update in debug mode. See https://fsprojects.github.io/Elmish.XamarinForms/tools.html
     // for further setup instructions.
     //
     //do runner.EnableLiveUpdate()
 #endif    
+//+:cnd:noEmit
 
     // Uncomment this code to save the applciation state to app.Properties using FsPickler
- #if APPSAVE
+//-:cnd:noEmit
+#if APPSAVE
     let modelId = "model"
     let serializer = MBrace.FsPickler.Json.FsPickler.CreateJsonSerializer()
 
@@ -106,3 +111,4 @@ type App () as app =
 
     override app.OnStart() = app.OnResume()
 #endif
+//+:cnd:noEmit
