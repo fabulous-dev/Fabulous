@@ -1,5 +1,5 @@
 ﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
-namespace CounterApp
+namespace StaticViewCounterApp
 
 open Elmish.XamarinForms
 open Elmish.XamarinForms.StaticViews
@@ -15,7 +15,7 @@ type Msg =
     | Reset
     | SetStep of int
 
-type CounterApp () = 
+type StaticViewCounterApp () = 
     inherit Application ()
 
     let init () = { Count = 0; Step = 3 }

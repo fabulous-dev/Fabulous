@@ -19,8 +19,7 @@
     <PackageReference Include="FSharp.Core" Version="4.5.0" />
     <PackageReference Update="FSharp.Core" Version="4.5.0" /> <!-- workaround for VSMac bug https://github.com/mono/monodevelop/pull/5137 --> 
     <PackageReference Include="FSharp.Compiler.Service" Version="23.0.3" />
-    <PackageReference Include="FsPickler" Version="5.2.0" />
-    <PackageReference Include="FsPickler.Json" Version="5.2.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 
 </Project>

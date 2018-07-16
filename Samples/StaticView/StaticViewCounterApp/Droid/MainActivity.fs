@@ -19,5 +19,5 @@ type MainActivity() =
 
         Xamarin.Forms.Forms.Init (this, bundle)
 
-        this.LoadApplication (new CounterApp.CounterApp ())
+        this.LoadApplication (new StaticViewCounterApp.StaticViewCounterApp ())
 

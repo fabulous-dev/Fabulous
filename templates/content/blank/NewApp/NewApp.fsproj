@@ -14,8 +14,7 @@
     <PackageReference Include="Elmish.XamarinForms" Version="ElmishXamarinFormsPkg" />
     <PackageReference Include="Elmish.XamarinForms.LiveUpdate" Version="ElmishXamarinFormsPkg" />
     <PackageReference Include="FSharp.Core" Version="FSharpCorePkg" />
-    <PackageReference Update="FSharp.Core" Version="4.5.0" /> <!-- workaround for VSMac bug https://github.com/mono/monodevelop/pull/5137 --> 
-    <PackageReference Include="FsPickler" Version="FsPicklerPkg" />
-    <PackageReference Include="FsPickler.Json" Version="FsPicklerPkg" />
+    <PackageReference Update="FSharp.Core" Version="FSharpCorePkg" /> <!-- workaround for VSMac bug https://github.com/mono/monodevelop/pull/5137 --> 
+    <PackageReference Include="Newtonsoft.Json" Version="NewtonsoftJsonPkg" />
   </ItemGroup>
 </Project>

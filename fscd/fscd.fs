@@ -157,8 +157,7 @@ let main (argv: string[]) =
             
         let jsonFile (i: FSharpImplementationFileContents) =         
             let data = convFile  i
-            let serializer = MBrace.FsPickler.Json.FsPickler.CreateJsonSerializer( (* indent=true *) )
-            let json = serializer.PickleToString(data)
+            let json = Newtonsoft.Json.JsonConvert.SerializeObject(data)
             json
 
 

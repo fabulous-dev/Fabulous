@@ -10,7 +10,7 @@
     <Compile Include="CounterPage.xaml.fs">
       <DependentUpon>CounterPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CounterApp.fs" />
+    <Compile Include="StaticViewCounterApp.fs" />
     <Compile Include="AssemblyInfo.fs" />
   </ItemGroup>
   <ItemGroup>

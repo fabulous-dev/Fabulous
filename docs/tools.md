@@ -9,12 +9,15 @@ Live Update
 There is an experimental LiveUpdate mechanism available.  The aim of this is primarily to enable modifying the `view` function in order
 to see the effect of adjusting of visual options.
 
-**At the time of writing this has only been trialled with Android.**
+At the time of writing this has been trialled with
+* Visual Studio + Android (USB Device or Emulator)
+* Visual Studio for Mac + Android (USB Device or Emulator)
+* Visual Studio for Mac + iOS (USB Device or Emulator)
 
 Some manual set-up is required.  The following assumes your app is called `SqueakyApp`:
 
 1. Check your projects have a reference to nuget package `Elmish.XamarinForms.LiveUpdate` for all projects in your app.
-   This is the default for apps created with templates 0.14.4 and higher. Do a clean build.
+   This is the default for apps created with templates 0.13.10 and higher. Do a clean build.
 
 2. Uncomment or add the code in the `#if` section below in `SqueakyApp\SqueakyApp\SqueayApp.fs`:
 
@@ -36,15 +39,20 @@ Some manual set-up is required.  The following assumes your app is called `Squea
 
 5. Run the following from your core project directory (e.g. `SqueakyApp\SqueakyApp`)
 
-       Windows:
+       Windows (Android):
 
            cd SqueakyApp\SqueakyApp
-           %USERPROFILE%\.nuget\packages\Elmish.XamarinForms.LiveUpdate\0.14.4\tools\fscd.exe --watch --webhook:http://localhost:9867/update 
+           %USERPROFILE%\.nuget\packages\Elmish.XamarinForms.LiveUpdate\0.14.6\tools\fscd.exe --watch --webhook:http://localhost:9867/update 
 
-       Unix and OSX (untested):
+       OSX (Android):
 
            cd SqueakyApp/SqueakyApp
-           mono ~/.nuget/packages/Elmish.XamarinForms.LiveUpdate/0.14.4/tools/fscd.exe --watch --webhook:http://localhost:9867/update  
+           mono ~/.nuget/packages/Elmish.XamarinForms.LiveUpdate/0.14.6/tools/fscd.exe --watch --webhook:http://localhost:9867/update  
+
+       OSX (iOS): Similar except use the explicit IP address of the emulator or device, e.g. 192.168.1.8, see the application log from launch
+
+           cd SqueakyApp/SqueakyApp
+           mono ~/.nuget/packages/Elmish.XamarinForms.LiveUpdate/0.14.6/tools/fscd.exe --watch --webhook:http://192.168.1.8:9867/update
 
 Now, whenever you save a file in your core project directory, the `fscd.exe` daemon will attempt to recompile your changed file and
 send a representation of its contents to your app via a PUT request to the given webhook.  The app then deserializes this representation and
@@ -80,9 +88,11 @@ The model state of the app is re-initialized.
 
 2. Changes to the resources in a project (e.g. images) require a rebuild
 
-3. Changes to Android and iOS require a rebuild
+3. Changes to Android and iOS projects require a rebuild
 
-4. You may need to mock any platform-specific helpers you pass through, e.g.
+4. You can't debug interpreted code from the IDE using breakpoints, stack inspection etc.  Restart for that.
+
+5. You may need to mock any platform-specific helpers you pass through, e.g.
 
        module App =
            ...

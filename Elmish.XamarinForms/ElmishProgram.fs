@@ -49,7 +49,7 @@ type ProgramRunner<'model, 'msg>(app: Application, program: Program<'model, 'msg
 
     // If the view is dynamic, create the initial page
     let viewInfo, mainPage = 
-        let pageElement : ViewElement = program.view initialModel dispatch
+        let pageElement = program.view initialModel dispatch
         let pageObj = pageElement.Create()
         let mainPage = 
             match pageObj with 
@@ -82,7 +82,7 @@ type ProgramRunner<'model, 'msg>(app: Application, program: Program<'model, 'msg
             lastViewDataOpt <- Some viewInfo
 
         | Some prevPageElement ->
-            let newPageElement: ViewElement = program.view updatedModel dispatch
+            let newPageElement = program.view updatedModel dispatch
             if canReuseChild prevPageElement newPageElement then
                 newPageElement.UpdateIncremental (prevPageElement, app.MainPage)
             else
@@ -170,39 +170,41 @@ module Program =
         { program with subscribe = sub }
 
     /// Trace all the updates to the console
-    let withConsoleTrace (program: Program<'model, 'msg, 'view>) =
+    let withConsoleTrace (program: Program<'model, 'msg, _>) =
         let traceInit () =
-            let initModel,cmd = program.init ()
-            Console.WriteLine (sprintf "Initial model: %0A" initModel)
-            initModel,cmd
+            try 
+                let initModel,cmd = program.init ()
+                Console.WriteLine (sprintf "Initial model: %0A" initModel)
+                initModel,cmd
+            with e -> 
+                Console.WriteLine (sprintf "Error in init function: %0A" e)
+                reraise ()
 
         let traceUpdate msg model =
             Console.WriteLine (sprintf "Message: %0A" msg)
-            let newModel,cmd = program.update msg model
-            Console.WriteLine (sprintf "Updated model: %0A" newModel)
-            newModel,cmd
+            try 
+                let newModel,cmd = program.update msg model
+                Console.WriteLine (sprintf "Updated model: %0A" newModel)
+                newModel,cmd
+            with e -> 
+                Console.WriteLine (sprintf "Error in model function: %0A" e)
+                reraise ()
 
+        let traceView model dispatch =
+            Console.WriteLine (sprintf "View, model = %0A" model)
+            try 
+                let info = program.view model dispatch
+                Console.WriteLine (sprintf "View result: %0A" info)
+                info
+            with e -> 
+                Console.WriteLine (sprintf "Error in view function: %0A" e)
+                reraise ()
+                
         { program with
             init = traceInit 
-            update = traceUpdate }
+            update = traceUpdate
+            view = traceView }
 
-
-    /// Trace all the updates to the console
-    let withLiveReload (program: Program<'model, 'msg, 'view>) =
-        let traceInit () =
-            let initModel,cmd = program.init ()
-            Console.WriteLine (sprintf "Initial model: %0A" initModel)
-            initModel,cmd
-
-        let traceUpdate msg model =
-            Console.WriteLine (sprintf "Message: %0A" msg)
-            let newModel,cmd = program.update msg model
-            Console.WriteLine (sprintf "Updated model: %0A" newModel)
-            newModel,cmd
-
-        { program with
-            init = traceInit 
-            update = traceUpdate }
 
     /// Trace all the messages as they update the model
     let withTrace trace (program: Program<'model, 'msg, 'view>) =

@@ -81,13 +81,13 @@
     <Reference Include="System.Numerics" />
     <Reference Include="mscorlib" />
     <Reference Include="Mono.Android" />
-    <ProjectReference Include="..\CounterApp\CounterApp.fsproj">
+    <ProjectReference Include="..\StaticViewCounterApp\StaticViewCounterApp.fsproj">
       <Project>{4282E90F-2519-46D0-B593-D57CFCA36A2D}</Project>
-      <Name>CounterApp</Name>
+      <Name>StaticViewCounterApp</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\Elmish.XamarinForms\Elmish.XamarinForms.fsproj">
       <Project>{AE045D79-7FF3-45F3-BFD0-305542A1C728}</Project>
-      <Name>TicTacToe</Name>
+      <Name>Elmish.XamarinForms</Name>
     </ProjectReference>
     <Reference Include="Xamarin.Android.FSharp.ResourceProvider.Runtime">
       <HintPath>../../../../packages/androidapp/Xamarin.Android.FSharp.ResourceProvider/lib/Xamarin.Android.FSharp.ResourceProvider.Runtime.dll</HintPath>

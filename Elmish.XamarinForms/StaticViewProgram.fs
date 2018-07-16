@@ -1,6 +1,7 @@
 ﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
 namespace Elmish.XamarinForms.StaticViews
 
+open System
 open System.Diagnostics
 open Elmish.XamarinForms
 open Xamarin.Forms
@@ -116,4 +117,41 @@ module Program =
                   let page, bindings = program.view ()
                   ((page :> Page), bindings)) }
         StaticView.StaticViewProgramRunner(program)
+
+    /// Trace all the updates to the console
+    let withConsoleTrace (program: Program<'model, 'msg, _>) =
+        let traceInit () =
+            try 
+                let initModel,cmd = program.init ()
+                Console.WriteLine (sprintf "Initial model: %0A" initModel)
+                initModel,cmd
+            with e -> 
+                Console.WriteLine (sprintf "Error in init function: %0A" e)
+                reraise ()
+
+        let traceUpdate msg model =
+            Console.WriteLine (sprintf "Message: %0A" msg)
+            try 
+                let newModel,cmd = program.update msg model
+                Console.WriteLine (sprintf "Updated model: %0A" newModel)
+                newModel,cmd
+            with e -> 
+                Console.WriteLine (sprintf "Error in model function: %0A" e)
+                reraise ()
+
+        let traceView () =
+            Console.WriteLine (sprintf "View function")
+            try 
+                let info = program.view ()
+                Console.WriteLine (sprintf "View result: %0A" info)
+                info
+            with e -> 
+                Console.WriteLine (sprintf "Error in view function: %0A" e)
+                reraise ()
+                
+        { program with
+            init = traceInit 
+            update = traceUpdate
+            view = traceView }
+
 

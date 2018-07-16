@@ -9,6 +9,7 @@
     <RootNamespace>iOS</RootNamespace>
     <AssemblyName>iOS</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <AutoGenerateBindingRedirects>Resources</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -113,12 +114,6 @@
     <Reference Include="FSharp.Core">
       <HintPath>..\..\..\packages\iosapp\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll</HintPath>
     </Reference>
-    <Reference Include="FsPickler">
-      <HintPath>..\..\..\packages\neutral\FsPickler\lib\netstandard2.0\FsPickler.dll</HintPath>
-    </Reference>
-    <Reference Include="FsPickler.Json">
-      <HintPath>..\..\..\packages\neutral\FsPickler.Json\lib\netstandard2.0\FsPickler.Json.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\packages\neutral\Newtonsoft.Json\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -135,9 +130,8 @@
       <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\CounterApp\CounterApp.fsproj">
-      <Name>CounterApp (Samples\CounterApp\CounterApp)</Name>
-      <Project>{ac36b11a-383d-45a3-8999-4f6475e9dd13}</Project>
-      <Private>True</Private>
+      <Project>{AC36B11A-383D-45A3-8999-4F6475E9DD13}</Project>
+      <Name>CounterApp</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets" Condition="Exists('$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets')" />

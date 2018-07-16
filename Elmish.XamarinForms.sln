@@ -17,13 +17,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{FB19
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StaticView", "StaticView", "{FB194A8D-00A6-4416-AA8D-A89C1541935C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CounterApp", "CounterApp", "{A832662D-05EB-4582-B871-143798897673}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StaticViewCounterApp", "StaticViewCounterApp", "{A832662D-05EB-4582-B871-143798897673}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "CounterApp", "Samples\StaticView\CounterApp\CounterApp\CounterApp.fsproj", "{4282E90F-2519-46D0-B593-D57CFCA36A2D}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "StaticViewCounterApp", "Samples\StaticView\StaticViewCounterApp\StaticViewCounterApp\StaticViewCounterApp.fsproj", "{4282E90F-2519-46D0-B593-D57CFCA36A2D}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CounterApp.Droid", "Samples\StaticView\CounterApp\Droid\CounterApp.Droid.fsproj", "{2D3CBBD7-118F-4457-817E-0D60E03C5534}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "StaticViewCounterApp.Droid", "Samples\StaticView\StaticViewCounterApp\Droid\StaticViewCounterApp.Droid.fsproj", "{2D3CBBD7-118F-4457-817E-0D60E03C5534}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CounterApp.iOS", "Samples\StaticView\CounterApp\iOS\CounterApp.iOS.fsproj", "{71C30453-89CF-4955-8DFA-F09231DD99ED}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "StaticViewCounterApp.iOS", "Samples\StaticView\StaticViewCounterApp\iOS\StaticViewCounterApp.iOS.fsproj", "{71C30453-89CF-4955-8DFA-F09231DD99ED}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TicTacToe", "TicTacToe", "{9869E35B-39CD-490C-A843-842C09938630}"
 EndProject

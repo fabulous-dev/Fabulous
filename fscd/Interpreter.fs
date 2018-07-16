@@ -235,7 +235,14 @@ type EvalContext ()  =
             let (DEntityRef typeName) = entityRef
             let res = 
                 match System.Type.GetType(typeName) with 
-                | null -> failwithf "couldn't resolve type %A" typeName
+                | null -> 
+                    if typeName.Contains("netstandard") then
+                        let otherTypeName = typeName.Replace("netstandard", "mscorlib").Replace("cc7b13ffcd2ddd51", "b77a5c561934e089").Replace("2.0.0.0", "4.0.0.0")
+                        match System.Type.GetType(otherTypeName) with 
+                        | null -> failwithf "couldn't resolve type %A, also tried %A" typeName otherTypeName
+                        | t -> REntity t
+                    else
+                        failwithf "couldn't resolve type %A" typeName
                 | t -> REntity t
             entityResolutions.[entityRef] <- res
             res
@@ -533,8 +540,24 @@ type EvalContext ()  =
                 Value null
             | _ -> failwithf "didn't find mutable value in the environment" 
 
-        | DExpr.Const(constValueObj, _constType) -> 
-            Value constValueObj
+        | DExpr.Const(constValueObj, constType) -> 
+            let (RTypeOrObj constTypeR) = ctxt.ResolveType (env, constType)
+            match constTypeR with 
+            | ty when ty = typeof<byte> -> Value (Convert.ToByte (constValueObj))
+            | ty when ty = typeof<uint16> -> Value (Convert.ToUInt16 (constValueObj))
+            | ty when ty = typeof<uint32> -> Value (Convert.ToUInt32 (constValueObj))
+            | ty when ty = typeof<uint64> -> Value (Convert.ToUInt64 (constValueObj))
+            | ty when ty = typeof<sbyte> -> Value (Convert.ToSByte (constValueObj))
+            | ty when ty = typeof<int16> -> Value (Convert.ToInt16 (constValueObj))
+            | ty when ty = typeof<int32> -> Value (Convert.ToInt32 (constValueObj))
+            | ty when ty = typeof<int64> -> Value (Convert.ToInt64 (constValueObj))
+            | ty when ty = typeof<single> -> Value (Convert.ToSingle (constValueObj))
+            | ty when ty = typeof<double> -> Value (Convert.ToDouble (constValueObj))
+            | ty when ty = typeof<decimal> -> Value (Convert.ToDecimal (constValueObj))
+            | ty when ty = typeof<char> -> Value (Convert.ToChar (constValueObj))
+            | ty when ty.IsEnum  -> Value ( Enum.ToObject(ty, constValueObj))
+            | _ -> Value (Convert.ChangeType(constValueObj, constTypeR))
+            //| _ -> Value constValueObj
         | _ -> failwithf "unrecognized %+A" expr
 
     member ctxt.EvalExprs(env, argExprs) =

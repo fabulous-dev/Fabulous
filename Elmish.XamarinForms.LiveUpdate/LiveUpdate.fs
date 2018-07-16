@@ -29,51 +29,61 @@ type BroadcasterAddress =
       Interface : string }
 
 [<CLIMutable>]
-type Broadcaster = 
+type BroadcastInfo = 
     { DeviceName: string
       Addresses : BroadcasterAddress[] 
       DeviceModel : string }
 
     static member Start(?httpPort) = 
-        let broadcastEndpoint = new IPEndPoint(IPAddress.Broadcast, Ports.BroadcasterReceiverPort)
+        //let broadcastEndpoint = new IPEndPoint(IPAddress.Broadcast, Ports.BroadcasterReceiverPort)
 
         let httpPort = defaultArg httpPort Ports.DefaultPort
-        let serializer = MBrace.FsPickler.Json.FsPickler.CreateJsonSerializer()
         do 
             async { 
-                while true do
-                    let client = new UdpClient (Ports.BroadcasterPort, EnableBroadcast = true)
-                    let iips = 
-                        [| for x in NetworkInterface.GetAllNetworkInterfaces () do 
-                             if x.NetworkInterfaceType <> NetworkInterfaceType.Loopback &&
-                                not (x.Name.StartsWith ("pdp_ip", StringComparison.Ordinal)) &&
-                                x.OperationalStatus = OperationalStatus.Up then
-                                 for y in x.GetIPProperties().UnicastAddresses do
-                                    if y.Address.AddressFamily = AddressFamily.InterNetwork then 
-                                         yield { Address = y.Address.ToString ()
-                                                 Port = httpPort
-                                                 Interface = x.Name } |]
-                    let broadcast = 
-                        {  DeviceName = "Device"
-                           DeviceModel = "Model"
-                           Addresses = iips }
-
-                    for iip in iips do
-                         printfn "LiveUpdate: broadcasting address %s. Access via http://localhost:%d/ if you have run 'adb -d forward  tcp:%d tcp:%d'" iip.Address httpPort httpPort httpPort 
-
-                    let json = serializer.PickleToString (broadcast)
-                    let bytes = System.Text.Encoding.UTF8.GetBytes (json)
-
+               // while true do
                     try 
-                        client.Send (bytes, bytes.Length, broadcastEndpoint)  |> ignore
+                        //let client = new UdpClient (Ports.BroadcasterPort, EnableBroadcast = true)
+                        let iips = 
+                            [| for x in NetworkInterface.GetAllNetworkInterfaces () do 
+                                 if x.NetworkInterfaceType <> NetworkInterfaceType.Loopback &&
+                                    not (x.Name.StartsWith ("pdp_ip", StringComparison.Ordinal)) &&
+                                    x.OperationalStatus = OperationalStatus.Up then
+                                     for y in x.GetIPProperties().UnicastAddresses do
+                                        if y.Address.AddressFamily = AddressFamily.InterNetwork then 
+                                             yield { Address = y.Address.ToString ()
+                                                     Port = httpPort
+                                                     Interface = x.Name } |]
+                        //let broadcast = 
+                        //    {  DeviceName = "Device"
+                        //       DeviceModel = "Model"
+                        //       Addresses = iips }
+
+                        if iips.Length > 0 then 
+                            printfn "LiveUpdate: On iOS connect using one of:"
+                            for iip in iips do
+                                printfn "    fscd.exe --watch --webhook:http://%s:%d/" iip.Address httpPort
+                            printfn "LiveUpdate: On Android USB connect using:"
+                            printfn "    adb -d forward  tcp:%d tcp:%d (USB)" httpPort httpPort
+                            printfn "    fscd.exe --watch --webhook:http://localhost:%d/" httpPort
+                            printfn "LiveUpdate: On Android Emulator connect using:"
+                            printfn "    adb -d forward  tcp:%d tcp:%d (USB)" httpPort httpPort
+                            printfn "    fscd.exe --watch --webhook:http://localhost:%d/" httpPort
+                            printfn "See https://fsprojects.github.io/Elmish.XamarinForms/tools.html for more details"
+                        else 
+                            printfn "LiveUpdate: Couldn't find a network interface to recommend"
+                                
+                        //let json = Newtonsoft.Json.JsonConvert.SerializeObject(broadcast)
+                        //let bytes = System.Text.Encoding.UTF8.GetBytes (json)
+
+                        //client.Send (bytes, bytes.Length, broadcastEndpoint)  |> ignore
                     with e -> 
                         printfn "LiveUpdate: error on broadcast: %A" e.Message
-                    do! Async.Sleep 5000 } |> Async.Start
+                    do! Async.Sleep 10000 } |> Async.Start
 
 
 type HttpServer(?port) = 
     let port = defaultArg port Ports.DefaultPort
-    do Broadcaster.Start()
+    do BroadcastInfo.Start()
     member x.Run (switchD) =
 
         let _syncCtxt = System.Threading.SynchronizationContext.Current
@@ -88,7 +98,6 @@ type HttpServer(?port) =
               *)
             // netsh http add urlacl url=http://*:9867/ user=System.Environment.UserDomainName
             let url = sprintf "http://*:%d/" port
-            let serializer = MBrace.FsPickler.Json.FsPickler.CreateJsonSerializer()
 
             let listener = new HttpListener ()
             listener.Prefixes.Add (url)
@@ -112,9 +121,10 @@ type HttpServer(?port) =
                                 if (path = "/update") then
                                     let reader = new StreamReader (c.Request.InputStream, Encoding.UTF8)
                                     let! requestText = reader.ReadToEndAsync () |> Async.AwaitTask
-                                    let req = serializer.UnPickleOfString<DFile>(requestText)
+                                    let req = Newtonsoft.Json.JsonConvert.DeserializeObject<DFile>(requestText)
+                                    //let req = serializer.UnPickleOfString<DFile>(requestText)
                                     let resp = switchD req
-                                    return serializer.PickleToString resp
+                                    return Newtonsoft.Json.JsonConvert.SerializeObject resp
                                 else 
                                     return """
 <html>
@@ -127,8 +137,8 @@ type HttpServer(?port) =
         <pre>    adb -e forward  tcp:PORT tcp:PORT  (Emulator)</pre>
         <p>  then</p>
         <pre>    cd MyApp\MyApp</pre>
-        <pre>    %USERPROFILE%\.nuget\packages\Elmish.XamarinForms.LiveUpdate\0.14.4\tools\fscd.exe --watch --webhook:http://localhost:PORT/update</pre>
-        <pre>    mono ~/.nuget/packages/Elmish.XamarinForms.LiveUpdate/0.14.4/tools/fscd.exe --watch --webhook:http://localhost:PORT/update</pre>
+        <pre>    %USERPROFILE%\.nuget\packages\Elmish.XamarinForms.LiveUpdate\0.14.6\tools\fscd.exe --watch --webhook:http://localhost:PORT/update</pre>
+        <pre>    mono ~/.nuget/packages/Elmish.XamarinForms.LiveUpdate/0.14.6/tools/fscd.exe --watch --webhook:http://localhost:PORT/update</pre>
         <p>in your project directoty</p>
     </body>
 </html>"""
@@ -219,7 +229,7 @@ module Extensions =
                             // Stop the running program 
                             printfn "changing running program...."
                             runner.ChangeProgram(programErased)
-                            printfn "*** LiveUpdate failure:"
+                            printfn "*** LiveUpdate success:"
                             printfn "***   [x] got code pacakge"
                             printfn "***   [x] found declaration called 'programLiveUpdate' or 'program'"
                             printfn "***   [x] it had no parameters (good!)"

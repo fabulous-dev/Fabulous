@@ -21,6 +21,7 @@
     <SelectedDevice>Google Pixel 2</SelectedDevice>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <DefaultDevice>emulator_pixel</DefaultDevice>
+    <AndroidLinkMode>None</AndroidLinkMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,7 +30,6 @@
     <OutputPath>bin\Debug</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <AndroidLinkMode>None</AndroidLinkMode>
     <PlatformTarget>
     </PlatformTarget>
   </PropertyGroup>
@@ -44,7 +44,6 @@
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <GenerateTailCalls>true</GenerateTailCalls>
-    <AndroidLinkMode>None</AndroidLinkMode>
     <PlatformTarget>
     </PlatformTarget>
   </PropertyGroup>
@@ -87,27 +86,13 @@
       <Project>{b459afad-bb5b-43c3-bd86-609e8db3e3fd}</Project>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\CounterApp\CounterApp.fsproj">
-      <Name>CounterApp (Samples\CounterApp\CounterApp)</Name>
-      <Project>{ac36b11a-383d-45a3-8999-4f6475e9dd13}</Project>
-      <Private>True</Private>
-    </ProjectReference>
     <Reference Include="FSharp.Core">
       <HintPath>..\..\..\packages\androidapp\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll</HintPath>
     </Reference>
-    <Reference Include="FsPickler">
-      <HintPath>..\..\..\packages\neutral\FsPickler\lib\netstandard2.0\FsPickler.dll</HintPath>
-    </Reference>
-    <Reference Include="FsPickler">
-      <HintPath>..\..\..\packages\neutral\FsPickler\lib\netstandard2.0\FsPickler.dll</HintPath>
-    </Reference>
-    <Reference Include="FsPickler.Json">
-      <HintPath>..\..\..\packages\neutral\FsPickler.Json\lib\netstandard2.0\FsPickler.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\packages\neutral\Newtonsoft.Json\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
@@ -193,5 +178,9 @@
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>../../../packages/androidapp/Xamarin.Forms/lib/MonoAndroid10/Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
+    <ProjectReference Include="..\CounterApp\CounterApp.fsproj">
+      <Project>{AC36B11A-383D-45A3-8999-4F6475E9DD13}</Project>
+      <Name>CounterApp</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

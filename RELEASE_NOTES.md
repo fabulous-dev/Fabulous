@@ -1,3 +1,7 @@
+#### 0.14.6
+* Fixed LiveUpdate for iOS
+* Moved to Newtonsoft.Json instead of FsPickler
+
 #### 0.14.4
 * Add 'let rec' to code accepted by LiveUpdate
 * Add local mutables to code accepted by LiveUpdate

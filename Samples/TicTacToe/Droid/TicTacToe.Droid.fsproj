@@ -179,15 +179,6 @@
     <Reference Include="FSharp.Core">
       <HintPath>../../../packages/androidapp/FSharp.Core/lib/netstandard1.6/FSharp.Core.dll</HintPath>
     </Reference>
-    <Reference Include="FsPickler">
-      <HintPath>..\..\..\packages\neutral\FsPickler\lib\netstandard2.0\FsPickler.dll</HintPath>
-    </Reference>
-    <Reference Include="FsPickler">
-      <HintPath>..\..\..\packages\neutral\FsPickler\lib\netstandard2.0\FsPickler.dll</HintPath>
-    </Reference>
-    <Reference Include="FsPickler.Json">
-      <HintPath>..\..\..\packages\neutral\FsPickler.Json\lib\netstandard2.0\FsPickler.Json.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\packages\neutral\Newtonsoft.Json\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
@@ -204,7 +195,7 @@
     </ProjectReference>
     <ProjectReference Include="..\..\..\Elmish.XamarinForms\Elmish.XamarinForms.fsproj">
       <Project>{AE045D79-7FF3-45F3-BFD0-305542A1C728}</Project>
-      <Name>TicTacToe</Name>
+      <Name>Elmish.XamarinForms</Name>
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>

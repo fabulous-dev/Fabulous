@@ -167,12 +167,6 @@
     <Reference Include="Elmish.XamarinForms">
       <HintPath>$(SolutionDir)/packages/Elmish.XamarinForms.ElmishXamarinFormsPkg/lib/netstandard2.0/Elmish.XamarinForms.dll</HintPath>
     </Reference>
-    <Reference Include="FsPickler">
-      <HintPath>$(SolutionDir)/packages/FsPickler.FsPicklerPkg/lib/netstandard2.0/FsPickler.dll</HintPath>
-    </Reference>
-    <Reference Include="FsPickler.Json">
-      <HintPath>$(SolutionDir)/packages/FsPickler.Json.FsPicklerPkg/lib/netstandard2.0/FsPickler.Json.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>$(SolutionDir)/packages/Newtonsoft.Json.NewtonsoftJsonPkg/lib/netstandard1.3/Newtonsoft.Json.dll</HintPath>
     </Reference>

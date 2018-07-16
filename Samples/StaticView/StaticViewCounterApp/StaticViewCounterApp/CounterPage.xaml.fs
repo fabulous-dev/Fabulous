@@ -1,5 +1,5 @@
 ﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
-namespace CounterApp
+namespace StaticViewCounterApp
 
 open Xamarin.Forms
 open Xamarin.Forms.Xaml
