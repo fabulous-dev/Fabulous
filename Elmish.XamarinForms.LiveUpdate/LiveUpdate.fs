@@ -40,7 +40,7 @@ type BroadcastInfo =
         let httpPort = defaultArg httpPort Ports.DefaultPort
         do 
             async { 
-               // while true do
+               for i in 0 .. 3 do
                     try 
                         //let client = new UdpClient (Ports.BroadcasterPort, EnableBroadcast = true)
                         let iips = 
@@ -59,18 +59,25 @@ type BroadcastInfo =
                         //       Addresses = iips }
 
                         if iips.Length > 0 then 
-                            printfn "LiveUpdate: On iOS connect using one of:"
+                            printfn "----------"
+                            printfn "  LiveUpdate: Ready for connection. Will show this message %d more times." (3 - i)
+                            printfn "  "
+                            printfn "  LiveUpdate: On iOS connect using:"
                             for iip in iips do
-                                printfn "    fscd.exe --watch --webhook:http://%s:%d/" iip.Address httpPort
-                            printfn "LiveUpdate: On Android USB connect using:"
-                            printfn "    adb -d forward  tcp:%d tcp:%d (USB)" httpPort httpPort
-                            printfn "    fscd.exe --watch --webhook:http://localhost:%d/" httpPort
-                            printfn "LiveUpdate: On Android Emulator connect using:"
-                            printfn "    adb -d forward  tcp:%d tcp:%d (USB)" httpPort httpPort
-                            printfn "    fscd.exe --watch --webhook:http://localhost:%d/" httpPort
-                            printfn "See https://fsprojects.github.io/Elmish.XamarinForms/tools.html for more details"
+                                printfn "      fscd.exe --watch --webhook:http://%s:%d/update" iip.Address httpPort
+                            printfn "  "
+                            printfn "  LiveUpdate: On Android USB connect using:"
+                            printfn "      adb -d forward  tcp:%d tcp:%d (USB)" httpPort httpPort
+                            printfn "      fscd.exe --watch --webhook:http://localhost:%d/update" httpPort
+                            printfn "  "
+                            printfn "  LiveUpdate: On Android Emulator connect using:"
+                            printfn "      adb -d forward  tcp:%d tcp:%d (USB)" httpPort httpPort
+                            printfn "      fscd.exe --watch --webhook:http://localhost:%d/update" httpPort
+                            printfn "  "
+                            printfn "  See https://fsprojects.github.io/Elmish.XamarinForms/tools.html for more details"
+                            printfn "----------"
                         else 
-                            printfn "LiveUpdate: Couldn't find a network interface to recommend"
+                            printfn "LiveUpdate: Couldn't find a network interface to recommend."
                                 
                         //let json = Newtonsoft.Json.JsonConvert.SerializeObject(broadcast)
                         //let bytes = System.Text.Encoding.UTF8.GetBytes (json)
@@ -137,8 +144,8 @@ type HttpServer(?port) =
         <pre>    adb -e forward  tcp:PORT tcp:PORT  (Emulator)</pre>
         <p>  then</p>
         <pre>    cd MyApp\MyApp</pre>
-        <pre>    %USERPROFILE%\.nuget\packages\Elmish.XamarinForms.LiveUpdate\0.14.6\tools\fscd.exe --watch --webhook:http://localhost:PORT/update</pre>
-        <pre>    mono ~/.nuget/packages/Elmish.XamarinForms.LiveUpdate/0.14.6/tools/fscd.exe --watch --webhook:http://localhost:PORT/update</pre>
+        <pre>    %USERPROFILE%\.nuget\packages\Elmish.XamarinForms.LiveUpdate\0.14.8\tools\fscd.exe --watch --webhook:http://localhost:PORT/update</pre>
+        <pre>    mono ~/.nuget/packages/Elmish.XamarinForms.LiveUpdate/0.14.8/tools/fscd.exe --watch --webhook:http://localhost:PORT/update</pre>
         <p>in your project directoty</p>
     </body>
 </html>"""

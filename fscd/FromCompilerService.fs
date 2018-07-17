@@ -166,6 +166,7 @@ and convType (typ: FSharpType) =
     elif typ.IsStructTupleType then DTupleType (true, convTypes typ.GenericArguments)
     elif typ.IsGenericParameter then DVariableType typ.GenericParameter.Name
     elif typ.TypeDefinition.IsArrayType then DArrayType (typ.TypeDefinition.ArrayRank, convType typ.GenericArguments.[0])
+    elif typ.TypeDefinition.IsByRef then DByRefType (convType typ.GenericArguments.[0])
     else DNamedType (convEntityRef typ.TypeDefinition, convTypes typ.GenericArguments)
 and convTypes (typs: seq<FSharpType>) = typs |> Seq.toArray |> Array.map convType 
 and convGenericParamDef (gp: FSharpGenericParameter) : DGenericParameterDef = { Name = gp.Name }

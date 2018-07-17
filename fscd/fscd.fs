@@ -19,6 +19,7 @@ open System.IO
 open System.Collections.Generic
 open Microsoft.FSharp.Compiler.SourceCodeServices
 open System.Net
+open System.Text
 
 #if TEST
 module MockForms = 
@@ -186,9 +187,9 @@ let main (argv: string[]) =
                                      match webhook with 
                                      | Some hook -> 
                                          try 
-                                             use webClient = new WebClient()
+                                             use webClient = new WebClient(Encoding = Encoding.UTF8)
                                              printfn "fscd: SENDING TO WEBHOOK... " // : <<<%s>>>... --> %s" json.[0 .. min (json.Length - 1) 100] hook
-                                             let resp = webClient.UploadString(hook,"Put",json)
+                                             let resp = webClient.UploadString (hook,"Put",json)
                                              printfn "fscd: RESP FROM WEBHOOK: %s" resp
                                          with err -> 
                                              printfn "fscd: ERROR SENDING TO WEBHOOK: %A" (err.ToString())

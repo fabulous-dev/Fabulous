@@ -47,11 +47,11 @@ module App =
           content = View.StackLayout(padding = 20.0, verticalOptions = LayoutOptions.Center,
             children = [ 
                 View.Label(text = sprintf "%d" model.Count, horizontalOptions = LayoutOptions.Center, fontSize = "Large")
-                View.Button(text = "Increment", command = (fun () -> dispatch Increment))
-                View.Button(text = "Decrement", command = (fun () -> dispatch Decrement))
-                View.Label(text = "Timer")
-                View.Switch(isToggled = model.TimerOn, toggled = (fun on -> dispatch (TimerToggled on.Value)))
-                View.Slider(minimum = 0.0, maximum = 10.0, value = double model.Step, valueChanged = (fun args -> dispatch (SetStep (int (args.NewValue + 0.5)))))
+                View.Button(text = "Increment", command = (fun () -> dispatch Increment), horizontalOptions = LayoutOptions.Center)
+                View.Button(text = "Decrement", command = (fun () -> dispatch Decrement), horizontalOptions = LayoutOptions.Center)
+                View.Label(text = "Timer", horizontalOptions = LayoutOptions.Center)
+                View.Switch(isToggled = model.TimerOn, toggled = (fun on -> dispatch (TimerToggled on.Value)), horizontalOptions = LayoutOptions.Center)
+                View.Slider(minimum = 0.0, maximum = 10.0, value = double model.Step, valueChanged = (fun args -> dispatch (SetStep (int (args.NewValue + 0.5)))), horizontalOptions = LayoutOptions.Center)
                 View.Label(text = sprintf "Step size: %d" model.Step, horizontalOptions = LayoutOptions.Center) 
                 View.Button(text = "Reset", horizontalOptions = LayoutOptions.Center, command = (fun () -> dispatch Reset), canExecute = (model <> initModel))
             ]))
@@ -73,34 +73,35 @@ type App () as app =
 
 //-:cnd:noEmit
 #if DEBUG
-    // Uncomment this line to enable live update in debug mode. See https://fsprojects.github.io/Elmish.XamarinForms/tools.html
-    // for further setup instructions.
+    // Uncomment this line to enable live update in debug mode. 
+    // See https://fsprojects.github.io/Elmish.XamarinForms/tools.html for further  instructions.
     //
     //do runner.EnableLiveUpdate()
 #endif    
 //+:cnd:noEmit
 
     // Uncomment this code to save the application state to app.Properties using Newtonsoft.Json
+    // See https://fsprojects.github.io/Elmish.XamarinForms/models.html for further  instructions.
 //-:cnd:noEmit
 #if APPSAVE
     let modelId = "model"
     override __.OnSleep() = 
 
         let json = Newtonsoft.Json.JsonConvert.SerializeObject(runner.CurrentModel)
-        Debug.WriteLine("OnSleep: saving model into app.Properties, json = {0}", json)
+        Console.WriteLine("OnSleep: saving model into app.Properties, json = {0}", json)
 
         app.Properties.[modelId] <- json
 
     override __.OnResume() = 
-        Debug.WriteLine "OnResume: checking for model in app.Properties"
+        Console.WriteLine "OnResume: checking for model in app.Properties"
         try 
             match app.Properties.TryGetValue modelId with
             | true, (:? string as json) -> 
 
-                Debug.WriteLine("OnResume: restoring model from app.Properties, json = {0}", json)
+                Console.WriteLine("OnResume: restoring model from app.Properties, json = {0}", json)
                 let model = Newtonsoft.Json.JsonConvert.DeserializeObject<App.Model>(json)
 
-                Debug.WriteLine("OnResume: restoring model from app.Properties, model = {0}", (sprintf "%0A" model))
+                Console.WriteLine("OnResume: restoring model from app.Properties, model = {0}", (sprintf "%0A" model))
                 runner.SetCurrentModel (model, Cmd.none)
 
             | _ -> ()
@@ -108,7 +109,7 @@ type App () as app =
             App.program.onError("Error while restoring model found in app.Properties", ex)
 
     override this.OnStart() = 
-        Debug.WriteLine "OnStart: using same logic as OnResume()"
+        Console.WriteLine "OnStart: using same logic as OnResume()"
         this.OnResume()
 #endif
 //+:cnd:noEmit
