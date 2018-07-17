@@ -132,7 +132,9 @@ type ProgramRunner<'model, 'msg>(app: Application, program: Program<'model, 'msg
     member __.SetCurrentModel(model, cmd: Cmd<_>) =
         Device.BeginInvokeOnMainThread(fun () -> 
             match alternativeRunner with 
-            | Some _ -> failwith "SetCurrentModel: can't access runner after ChangeProgram has been called"
+            | Some _ -> 
+                // TODO: transmogrify the resurrected model
+                printfn "SetCurrentModel: ignoring (can't the model after ChangeProgram has been called)"
             | None -> 
                 Debug.WriteLine "updating the view after setting the model"
                 lastModel <- model
