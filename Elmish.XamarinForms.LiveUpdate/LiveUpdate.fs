@@ -71,7 +71,7 @@ type BroadcastInfo =
                             printfn "      fscd.exe --watch --webhook:http://localhost:%d/update" httpPort
                             printfn "  "
                             printfn "  LiveUpdate: On Android Emulator connect using:"
-                            printfn "      adb -d forward  tcp:%d tcp:%d (USB)" httpPort httpPort
+                            printfn "      adb -e forward  tcp:%d tcp:%d (USB)" httpPort httpPort
                             printfn "      fscd.exe --watch --webhook:http://localhost:%d/update" httpPort
                             printfn "  "
                             printfn "  See https://fsprojects.github.io/Elmish.XamarinForms/tools.html for more details"
