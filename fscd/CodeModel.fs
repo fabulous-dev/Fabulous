@@ -54,6 +54,7 @@ and DType =
     | DFunctionType of DType * DType
     | DTupleType of bool * DType[]
     | DArrayType of int * DType
+    | DByRefType of DType
     | DVariableType of string
 and DLocalDef = 
     { Name: string; IsMutable: bool; Type: DType }

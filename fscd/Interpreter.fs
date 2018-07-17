@@ -256,6 +256,9 @@ type EvalContext ()  =
 
     member ctxt.ResolveType(env, ty: DType) = 
         match ty with 
+        | DByRefType(elemType) -> 
+            match ctxt.ResolveType (env, elemType) with 
+            | RTypeOrObj t -> RType (t.MakeByRefType())
         | DArrayType(1, elemType) -> 
             match ctxt.ResolveType (env, elemType) with 
             | RTypeOrObj t -> RType (t.MakeArrayType())
@@ -376,9 +379,9 @@ type EvalContext ()  =
         elif m = op_checked_mul then RPrim_checked_mul
         else RMethod m
 
-    member ctxt.InterpMethod(formalEnv, eR, nm, paramTys) = 
+    member ctxt.InterpMethod(formalEnv, entityR, methodName, paramTys) = 
         let paramTysR = ctxt.ResolveTypes (formalEnv, paramTys)
-        let key = (eR, nm, paramTysR)
+        let key = (entityR, methodName, paramTysR)
         if not (members.ContainsKey(key)) then failwithf "No member found for key %A" key
         let minfo = members.[key]
         UMember minfo
@@ -433,7 +436,7 @@ type EvalContext ()  =
                 members.[(ty, membDef.Name, paramTypesR)] <- Value thunk
             | _ -> ()
 
-    member ctxt.EvalMethodLambda(env, isCtor, isInstance, typeParameters, parameters: DLocalDef[], body) = 
+    member ctxt.EvalMethodLambda(env, isCtor, isInstance, typeParameters, parameters: DLocalDef[], bodyExpr) = 
         MethodLambdaValue
           (FuncConvert.FromFunc<Type[] * obj[],obj>(fun (tyargs, args) -> 
             if parameters.Length + (if isInstance then 1 else 0) <> args.Length then failwithf "arg/parameter mismatch for method with arguments %A" parameters
@@ -443,10 +446,10 @@ type EvalContext ()  =
             if isCtor then 
                 let objV = ObjectValue (ref Map.empty)
                 let env = bindByName env "$this" (Value objV) 
-                ctxt.EvalExpr(env, body) |> ignore
+                ctxt.EvalExpr(env, bodyExpr) |> ignore
                 box objV
             else  
-                let retV = ctxt.EvalExpr(env, body) |> getVal
+                let retV = ctxt.EvalExpr(env, bodyExpr) |> getVal
                 box retV))
 
     member ctxt.EvalDecls(env, decls: DDecl[]) = 
@@ -494,22 +497,27 @@ type EvalContext ()  =
         | DExpr.UnionCaseGet(unionExpr, unionType, unionCase, unionCaseField) -> ctxt.EvalUnionCaseGet(env, unionExpr, unionType, unionCase, unionCaseField)
         | DExpr.UnionCaseTag(unionExpr, unionType) -> ctxt.EvalUnionCaseTag(env, unionExpr, unionType)
         | DExpr.TypeTest(ty, inpExpr) -> ctxt.EvalTypeTest(env, ty, inpExpr)
+        | DExpr.DefaultValue defaultType -> ctxt.EvalDefaultValue (env, defaultType)
+        | DExpr.AddressOf(lvalueExpr) -> 
+            // Note, we use copy-in, copy-oput for byref arguments
+            ctxt.EvalExpr(env, lvalueExpr)
         //| DExpr.FastIntegerForLoop(startExpr, limitExpr, consumeExpr, isUp) -> ctxt.EvalFastIntegerForLoop(env, startExpr, limitExpr, consumeExpr, isUp)
 (*
 // TODO:
-        | DExpr.AddressOf(lvalueExpr) -> ctxt.EvalAddressOf(convExpr lvalueExpr)
-        | DExpr.AddressSet(lvalueExpr, rvalueExpr) -> ctxt.EvalAddressSet(convExpr lvalueExpr, convExpr rvalueExpr)
+        // Need more work:
         | DExpr.NewDelegate(delegateType, delegateBodyExpr) -> ctxt.EvalNewDelegate(convType delegateType, convExpr delegateBodyExpr)
         | DExpr.Quote(quotedExpr) -> ctxt.EvalQuote(convExpr quotedExpr)
-        | DExpr.DefaultValue defaultType -> ctxt.EvalDefaultValue (convType defaultType)
 
         // Not really possible:
+        | DExpr.AddressSet(lvalueExpr, rvalueExpr) -> ctxt.EvalAddressSet(convExpr lvalueExpr, convExpr rvalueExpr)
         | DExpr.ObjectExpr(objType, baseCallExpr, overrides, interfaceImplementations) -> ctxt.EvalObjectExpr(convType objType, convExpr baseCallExpr, List.map convObjMember overrides, List.map (map2 convType (List.map convObjMember)) interfaceImplementations)
-
-        // Not needed:
         | DExpr.TraitCall(sourceTypes, traitName, typeArgs, typeInstantiation, argTypes, argExprs) -> ctxt.EvalTraitCall(sourceTypes, traitName, typeArgs, typeInstantiation, argTypes, argExprs)
+
+        // Library only:
         | DExpr.UnionCaseSet(unionExpr, unionType, unionCase, unionCaseField, valueExpr) -> ctxt.EvalUnionCaseSet(convExpr unionExpr, convType unionType, convUnionCase unionCase, convField unionCaseField, convExpr valueExpr)
         | DExpr.ILAsm(asmCode, typeArgs, argExprs) -> ctxt.EvalILAsm(asmCode, convTypes typeArgs, convExprs argExprs)
+
+        // Very rare:
         | DExpr.ILFieldSet (objExprOpt, fieldType, fieldName, valueExpr) -> ctxt.EvalILFieldSet (convExprOpt objExprOpt, convType fieldType, fieldName, convExpr valueExpr)
 *)
         | DExpr.BaseValue _thisType 
@@ -567,6 +575,14 @@ type EvalContext ()  =
     member ctxt.EvalExprOpt(env, objExprOpt) =
         let objValOpt = objExprOpt |> Option.map (fun objExpr -> ctxt.EvalExpr(env, objExpr))
         objValOpt |> Option.map getVal |> Option.toObj
+
+    member ctxt.EvalDefaultValue(env, defaultType) =
+        let defaultTypeR = ctxt.ResolveType (env, defaultType)
+        let v = 
+            match defaultTypeR with
+            | RType ty -> if ty.IsValueType then Activator.CreateInstance(ty) else null
+            | UNamedType _ -> null
+        Value v
 
     member ctxt.EvalNewObject(env, objCtor, typeArgs, argExprs) =
         let argsV = ctxt.EvalExprs(env, argExprs)
@@ -706,9 +722,24 @@ type EvalContext ()  =
                 elif minfo.IsGenericMethod then 
                     minfo.MakeGenericMethod(typeArgs2V) 
                 else minfo
-            try iminfo.Invoke(objOptV, argsV) |> Value
-            with :? TargetInvocationException as e -> 
-                raise e.InnerException
+            let res = 
+                try iminfo.Invoke(objOptV, argsV) |> Value
+                with :? TargetInvocationException as e -> 
+                    raise e.InnerException
+
+            // Copy back the out parameters - note that argsV will have been mutates
+            let parameters = minfo.GetParameters()
+            for i in 0 .. parameters.Length - 1 do 
+                if parameters.[i].ParameterType.IsByRef then 
+                    match argExprs.[i] with 
+                    | DExpr.AddressOf (DExpr.Value (DLocalRef (valToSet, isThisValue, isMutable))) when not isThisValue && isMutable ->
+                        match env.Vals.TryGetValue valToSet with 
+                        | true, rv -> 
+                            rv.Value <- argsV.[i]
+                        | _ -> failwithf "didn't find mutable value in the environment" 
+                    | _ -> failwithf "can't yet interpret passing fields byref" 
+                    
+            res
 
         | RMethod (:? ConstructorInfo as cinfo), RTypesOrObj _typeArgs1V, RTypesOrObj _typeArgs2V -> 
             try cinfo.Invoke(argsV) |> Value
@@ -737,6 +768,7 @@ type EvalContext ()  =
         | RField _ -> failwith "unexpected field resolution"
         | UField (i, _ty, nm) ->
             match objOptV with 
+
             | :? RecordValue as recdV -> 
                 let (RecordValue argsV) = recdV 
                 argsV.[i] |> Value
@@ -746,6 +778,10 @@ type EvalContext ()  =
                 match argsV.Value.TryGetValue nm with
                 | true, v -> v |> Value
                 | _ -> failwithf "field not found: %s" nm
+
+            | null -> 
+                // TODO: for struct records this should return the default value
+                raise (NullReferenceException("EvalFieldGet: The record value was null"))
 
             | _ -> 
                 failwithf "unexpected kind of interpreted value %A while getting field %s"  objOptV nm 
@@ -762,6 +798,7 @@ type EvalContext ()  =
         | RField _ -> failwith "unexpected field resolution"
         | UField (i, _ty, nm) ->
             match objOptV with 
+
             | :? RecordValue as recdV -> 
                 let (RecordValue argsV) = recdV 
                 argsV.[i] <- argExprV
@@ -770,6 +807,10 @@ type EvalContext ()  =
                 let (ObjectValue argsV) = objV
                 let newArgsV = argsV.Value.Add(nm, argExprV)
                 argsV.Value <- newArgsV
+
+            | null -> 
+                // TODO: for struct records this should return the default value
+                raise (NullReferenceException("EvalFieldSet: The record value was null"))
 
             | _ -> failwithf "unexpected kind of interpreted value %A while setting field %s"  objOptV nm 
 
@@ -848,7 +889,8 @@ type EvalContext ()  =
         
     member ctxt.EvalDecisionTreeSuccess(env, decisionTargetIdx, decisionTargetExprs) =
         let (locals, expr) = env.Targets.[decisionTargetIdx]
-        let env = (env, locals, decisionTargetExprs) |||> Array.fold2 (fun env p a -> bind env p (Value a))
+        let decisionTargetExprsV = ctxt.EvalExprs (env, decisionTargetExprs)
+        let env = (env, locals, decisionTargetExprsV) |||> Array.fold2 (fun env p a -> bind env p (Value a))
         ctxt.EvalExpr (env, expr)
 
     member ctxt.EvalSequential(env, firstExpr, secondExpr) =
@@ -922,6 +964,11 @@ type EvalContext ()  =
                 | :? UnionValue as p -> 
                     let (UnionValue(tag2, _nm, _fields)) = p 
                     tag = tag2
+
+                | null -> 
+                    // TODO: for struct unions this should return the default value
+                    raise (NullReferenceException("EvalUnionCaseTest: The union case value was null"))
+
                 | _ -> failwithf "unexpected value '%A' in EvalUnionCaseTest" unionV
         Value (box res)
 
