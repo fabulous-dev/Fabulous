@@ -62,7 +62,7 @@ type CustomListView() =
     inherit ListView(ItemTemplate=DataTemplate(typeof<ViewElementCell>))
 
 type CustomGroupListView() = 
-    inherit ListView(ItemTemplate=DataTemplate(typeof<ViewElementCell>), GroupHeaderTemplate=DataTemplate(typeof<ViewElementCell>))
+    inherit ListView(ItemTemplate=DataTemplate(typeof<ViewElementCell>), GroupHeaderTemplate=DataTemplate(typeof<ViewElementCell>), IsGroupingEnabled=true)
 
 type CustomContentPage() as self = 
     inherit ContentPage()

@@ -5750,13 +5750,12 @@ type View() =
 
     /// Builds the attributes for a ListViewGrouped in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildListViewGrouped(attribCount: int, ?items: (ViewElement * ViewElement list) list, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: (int * int) option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: int * int option -> unit, ?itemDisappearing: int * int option -> unit, ?itemSelected: (int * int) option -> unit, ?itemTapped: int * int -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildListViewGrouped(attribCount: int, ?items: (ViewElement * ViewElement list) list, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: (int * int) option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: int * int option -> unit, ?itemDisappearing: int * int option -> unit, ?itemSelected: (int * int) option -> unit, ?itemTapped: int * int -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match items with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match footer with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match hasUnevenRows with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match header with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match isGroupingEnabled with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match isPullToRefreshEnabled with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match isRefreshing with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match refreshCommand with Some _ -> attribCount + 1 | None -> attribCount
@@ -5775,7 +5774,6 @@ type View() =
         match footer with None -> () | Some v -> attribBuilder.Add(View._FooterAttribKey, (v)) 
         match hasUnevenRows with None -> () | Some v -> attribBuilder.Add(View._HasUnevenRowsAttribKey, (v)) 
         match header with None -> () | Some v -> attribBuilder.Add(View._HeaderAttribKey, (v)) 
-        match isGroupingEnabled with None -> () | Some v -> attribBuilder.Add(View._IsGroupingEnabledAttribKey, (v)) 
         match isPullToRefreshEnabled with None -> () | Some v -> attribBuilder.Add(View._IsPullToRefreshEnabledAttribKey, (v)) 
         match isRefreshing with None -> () | Some v -> attribBuilder.Add(View._IsRefreshingAttribKey, (v)) 
         match refreshCommand with None -> () | Some v -> attribBuilder.Add(View._RefreshCommandAttribKey, makeCommand(v)) 
@@ -5813,8 +5811,6 @@ type View() =
         let mutable currHasUnevenRowsOpt = ValueNone
         let mutable prevHeaderOpt = ValueNone
         let mutable currHeaderOpt = ValueNone
-        let mutable prevIsGroupingEnabledOpt = ValueNone
-        let mutable currIsGroupingEnabledOpt = ValueNone
         let mutable prevIsPullToRefreshEnabledOpt = ValueNone
         let mutable currIsPullToRefreshEnabledOpt = ValueNone
         let mutable prevIsRefreshingOpt = ValueNone
@@ -5848,8 +5844,6 @@ type View() =
                 currHasUnevenRowsOpt <- ValueSome (kvp.Value :?> bool)
             if kvp.Key = View._HeaderAttribKey.KeyValue then 
                 currHeaderOpt <- ValueSome (kvp.Value :?> System.Object)
-            if kvp.Key = View._IsGroupingEnabledAttribKey.KeyValue then 
-                currIsGroupingEnabledOpt <- ValueSome (kvp.Value :?> bool)
             if kvp.Key = View._IsPullToRefreshEnabledAttribKey.KeyValue then 
                 currIsPullToRefreshEnabledOpt <- ValueSome (kvp.Value :?> bool)
             if kvp.Key = View._IsRefreshingAttribKey.KeyValue then 
@@ -5886,8 +5880,6 @@ type View() =
                     prevHasUnevenRowsOpt <- ValueSome (kvp.Value :?> bool)
                 if kvp.Key = View._HeaderAttribKey.KeyValue then 
                     prevHeaderOpt <- ValueSome (kvp.Value :?> System.Object)
-                if kvp.Key = View._IsGroupingEnabledAttribKey.KeyValue then 
-                    prevIsGroupingEnabledOpt <- ValueSome (kvp.Value :?> bool)
                 if kvp.Key = View._IsPullToRefreshEnabledAttribKey.KeyValue then 
                     prevIsPullToRefreshEnabledOpt <- ValueSome (kvp.Value :?> bool)
                 if kvp.Key = View._IsRefreshingAttribKey.KeyValue then 
@@ -5927,11 +5919,6 @@ type View() =
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.Header <-  currValue
         | ValueSome _, ValueNone -> target.Header <- null
-        | ValueNone, ValueNone -> ()
-        match prevIsGroupingEnabledOpt, currIsGroupingEnabledOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.IsGroupingEnabled <-  currValue
-        | ValueSome _, ValueNone -> target.IsGroupingEnabled <- false
         | ValueNone, ValueNone -> ()
         match prevIsPullToRefreshEnabledOpt, currIsPullToRefreshEnabledOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
@@ -6000,9 +5987,9 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a ListViewGrouped in the view
-    static member inline ListViewGrouped(?items: (ViewElement * ViewElement list) list, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: (int * int) option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: int * int option -> unit, ?itemDisappearing: int * int option -> unit, ?itemSelected: (int * int) option -> unit, ?itemTapped: int * int -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline ListViewGrouped(?items: (ViewElement * ViewElement list) list, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: (int * int) option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: int * int option -> unit, ?itemDisappearing: int * int option -> unit, ?itemSelected: (int * int) option -> unit, ?itemTapped: int * int -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
-        let attribBuilder = View.BuildListViewGrouped(0, ?items=items, ?footer=footer, ?hasUnevenRows=hasUnevenRows, ?header=header, ?isGroupingEnabled=isGroupingEnabled, ?isPullToRefreshEnabled=isPullToRefreshEnabled, ?isRefreshing=isRefreshing, ?refreshCommand=refreshCommand, ?rowHeight=rowHeight, ?selectedItem=selectedItem, ?separatorVisibility=separatorVisibility, ?separatorColor=separatorColor, ?itemAppearing=itemAppearing, ?itemDisappearing=itemDisappearing, ?itemSelected=itemSelected, ?itemTapped=itemTapped, ?refreshing=refreshing, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+        let attribBuilder = View.BuildListViewGrouped(0, ?items=items, ?footer=footer, ?hasUnevenRows=hasUnevenRows, ?header=header, ?isPullToRefreshEnabled=isPullToRefreshEnabled, ?isRefreshing=isRefreshing, ?refreshCommand=refreshCommand, ?rowHeight=rowHeight, ?selectedItem=selectedItem, ?separatorVisibility=separatorVisibility, ?separatorColor=separatorColor, ?itemAppearing=itemAppearing, ?itemDisappearing=itemDisappearing, ?itemSelected=itemSelected, ?itemTapped=itemTapped, ?refreshing=refreshing, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
         ViewElement.Create<Xamarin.Forms.ListView>(View.CreateFuncListViewGrouped, View.UpdateFuncListViewGrouped, attribBuilder)
 

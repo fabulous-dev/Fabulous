@@ -1682,10 +1682,6 @@
 				//	"defaultValue": "null"
 				//},
 				{
-					"name": "IsGroupingEnabled",
-					"defaultValue": "false"
-				},
-				{
 					"name": "IsPullToRefreshEnabled",
 					"defaultValue": "false"
 				},
