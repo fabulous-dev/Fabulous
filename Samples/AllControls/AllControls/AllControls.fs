@@ -465,8 +465,7 @@ module App =
                                 [ View.Label "Europe", [ View.Label "Russia"; View.Label "Germany"; View.Label "Poland"; View.Label "Greece"   ]
                                   View.Label "Asia", [ View.Label "China"; View.Label "Japan"; View.Label "North Korea"; View.Label "South Korea"   ]
                                   View.Label "Australasia", [ View.Label "Australia"; View.Label "New Zealand"; View.Label "Fiji" ] ], 
-                             horizontalOptions=LayoutOptions.CenterAndExpand, 
-                             isGroupingEnabled=true, 
+                             horizontalOptions=LayoutOptions.CenterAndExpand,
                              itemSelected=(fun idx -> dispatch (ListViewGroupedSelectedItemChanged idx)))
                    ]))
 
