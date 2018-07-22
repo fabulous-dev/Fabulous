@@ -454,7 +454,17 @@ module Converters =
             items |> Seq.tryFindIndex (fun item2 -> identical item.Key item2.Key)
         | _ -> None
 
-    let tryFindGroupedListViewItem (sender: obj) (item: obj) =
+    let tryFindGroupedListViewItemIndex (items: System.Collections.Generic.IList<ListGroupData<ViewElement>>) (item: ListElementData<ViewElement>) =
+        // POSSIBLE IMPROVEMENT: don't use a linear search
+        items 
+        |> Seq.indexed 
+        |> Seq.tryPick (fun (i,items2) -> 
+            // POSSIBLE IMPROVEMENT: don't use a linear search
+            items2 
+            |> Seq.indexed 
+            |> Seq.tryPick (fun (j,item2) -> if identical item.Key item2.Key then Some (i,j) else None))
+
+    let tryFindGroupedListViewItemOrGroupItem (sender: obj) (item: obj) = 
         match item with 
         | null -> None
         | :? ListGroupData<ViewElement> as item ->
@@ -462,9 +472,19 @@ module Converters =
             // POSSIBLE IMPROVEMENT: don't use a linear search
             items 
             |> Seq.indexed 
-            |> Seq.tryPick (fun (i,items2) -> 
-                // POSSIBLE IMPROVEMENT: don't use a linear search
-                items2 
-                |> Seq.indexed 
-                |> Seq.tryPick (fun (j,item2) -> if identical item.Key item2.Key then Some (i,j) else None))
+            |> Seq.tryPick (fun (i, item2) -> if identical item.Key item2.Key then Some (i, None) else None)
+        | :? ListElementData<ViewElement> as item ->
+            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData<ViewElement>> 
+            tryFindGroupedListViewItemIndex items item
+            |> (function
+                | None -> None
+                | Some (i, j) -> Some (i, Some j))
+        | _ -> None
+
+    let tryFindGroupedListViewItem (sender: obj) (item: obj) =
+        match item with 
+        | null -> None
+        | :? ListElementData<ViewElement> as item ->
+            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData<ViewElement>> 
+            tryFindGroupedListViewItemIndex items item
         | _ -> None
