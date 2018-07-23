@@ -62,7 +62,7 @@ type CustomListView() =
     inherit ListView(ItemTemplate=DataTemplate(typeof<ViewElementCell>))
 
 type CustomGroupListView() = 
-    inherit ListView(ItemTemplate=DataTemplate(typeof<ViewElementCell>), GroupHeaderTemplate=DataTemplate(typeof<ViewElementCell>))
+    inherit ListView(ItemTemplate=DataTemplate(typeof<ViewElementCell>), GroupHeaderTemplate=DataTemplate(typeof<ViewElementCell>), IsGroupingEnabled=true)
 
 type CustomContentPage() as self = 
     inherit ContentPage()
@@ -98,7 +98,11 @@ module Converters =
             member x.CanExecute _ = k
             member x.Execute _ = f() }
 
-    let makeImageSource (image: string) = ImageSource.op_Implicit image
+    let makeImageSource (v: obj) =
+        match v with
+        | :? string as path -> ImageSource.op_Implicit path
+        | :? ImageSource as imageSource -> imageSource
+        | _ -> failwithf "makeImageSource: invalid argument %O" v
 
     let makeAccelerator (accelerator: string) = Accelerator.op_Implicit accelerator
 
@@ -454,7 +458,17 @@ module Converters =
             items |> Seq.tryFindIndex (fun item2 -> identical item.Key item2.Key)
         | _ -> None
 
-    let tryFindGroupedListViewItem (sender: obj) (item: obj) =
+    let tryFindGroupedListViewItemIndex (items: System.Collections.Generic.IList<ListGroupData<ViewElement>>) (item: ListElementData<ViewElement>) =
+        // POSSIBLE IMPROVEMENT: don't use a linear search
+        items 
+        |> Seq.indexed 
+        |> Seq.tryPick (fun (i,items2) -> 
+            // POSSIBLE IMPROVEMENT: don't use a linear search
+            items2 
+            |> Seq.indexed 
+            |> Seq.tryPick (fun (j,item2) -> if identical item.Key item2.Key then Some (i,j) else None))
+
+    let tryFindGroupedListViewItemOrGroupItem (sender: obj) (item: obj) = 
         match item with 
         | null -> None
         | :? ListGroupData<ViewElement> as item ->
@@ -462,9 +476,19 @@ module Converters =
             // POSSIBLE IMPROVEMENT: don't use a linear search
             items 
             |> Seq.indexed 
-            |> Seq.tryPick (fun (i,items2) -> 
-                // POSSIBLE IMPROVEMENT: don't use a linear search
-                items2 
-                |> Seq.indexed 
-                |> Seq.tryPick (fun (j,item2) -> if identical item.Key item2.Key then Some (i,j) else None))
+            |> Seq.tryPick (fun (i, item2) -> if identical item.Key item2.Key then Some (i, None) else None)
+        | :? ListElementData<ViewElement> as item ->
+            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData<ViewElement>> 
+            tryFindGroupedListViewItemIndex items item
+            |> (function
+                | None -> None
+                | Some (i, j) -> Some (i, Some j))
+        | _ -> None
+
+    let tryFindGroupedListViewItem (sender: obj) (item: obj) =
+        match item with 
+        | null -> None
+        | :? ListElementData<ViewElement> as item ->
+            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData<ViewElement>> 
+            tryFindGroupedListViewItemIndex items item
         | _ -> None

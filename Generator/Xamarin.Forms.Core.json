@@ -874,8 +874,8 @@
 				{
 					"name": "Source",
 					"uniqueName": "ImageSource",
-					"inputType": "string",
-					"modelType": "string",
+					"inputType": "obj",
+					"modelType": "obj",
 					"convToValue": "makeImageSource",
 					"defaultValue": "null"
 				},
@@ -1505,8 +1505,8 @@
 			"members": [
 				{
 					"name": "ImageSource",
-					"inputType": "string",
-					"modelType": "string",
+					"inputType": "obj",
+					"modelType": "obj",
 					"convToValue": "makeImageSource",
 					"defaultValue": "null"
 				}
@@ -1686,10 +1686,6 @@
 				//	"defaultValue": "null"
 				//},
 				{
-					"name": "IsGroupingEnabled",
-					"defaultValue": "false"
-				},
-				{
 					"name": "IsPullToRefreshEnabled",
 					"defaultValue": "false"
 				},
@@ -1727,15 +1723,15 @@
 					"name": "ItemAppearing",
 					"uniqueName": "ListViewGrouped_ItemAppearing",
 					"defaultValue": "null",
-					"inputType": "int * int -> unit",
-					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.Item).Value))"
+					"inputType": "int * int option -> unit",
+					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItemOrGroupItem sender args.Item).Value))"
 				},
 				{
 					"name": "ItemDisappearing",
 					"uniqueName": "ListViewGrouped_ItemDisappearing",
 					"defaultValue": "null",
-					"inputType": "int * int -> unit",
-					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.Item).Value))"
+					"inputType": "int * int option -> unit",
+					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItemOrGroupItem sender args.Item).Value))"
 				},
 				{
 					"name": "ItemSelected",

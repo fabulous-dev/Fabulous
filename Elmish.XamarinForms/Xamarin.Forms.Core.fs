@@ -3294,7 +3294,7 @@ type View() =
 
     /// Builds the attributes for a Image in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildImage(attribCount: int, ?source: string, ?aspect: Xamarin.Forms.Aspect, ?isOpaque: bool, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string) = 
+    static member inline BuildImage(attribCount: int, ?source: obj, ?aspect: Xamarin.Forms.Aspect, ?isOpaque: bool, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string) = 
 
         let attribCount = match source with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match aspect with Some _ -> attribCount + 1 | None -> attribCount
@@ -3329,7 +3329,7 @@ type View() =
         let mutable currIsOpaqueOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = View._ImageSourceAttribKey.KeyValue then 
-                currImageSourceOpt <- ValueSome (kvp.Value :?> string)
+                currImageSourceOpt <- ValueSome (kvp.Value :?> obj)
             if kvp.Key = View._AspectAttribKey.KeyValue then 
                 currAspectOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Aspect)
             if kvp.Key = View._IsOpaqueAttribKey.KeyValue then 
@@ -3339,7 +3339,7 @@ type View() =
         | ValueSome prev ->
             for kvp in prev.AttributesKeyed do
                 if kvp.Key = View._ImageSourceAttribKey.KeyValue then 
-                    prevImageSourceOpt <- ValueSome (kvp.Value :?> string)
+                    prevImageSourceOpt <- ValueSome (kvp.Value :?> obj)
                 if kvp.Key = View._AspectAttribKey.KeyValue then 
                     prevAspectOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Aspect)
                 if kvp.Key = View._IsOpaqueAttribKey.KeyValue then 
@@ -3361,7 +3361,7 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a Image in the view
-    static member inline Image(?source: string, ?aspect: Xamarin.Forms.Aspect, ?isOpaque: bool, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string) = 
+    static member inline Image(?source: obj, ?aspect: Xamarin.Forms.Aspect, ?isOpaque: bool, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string) = 
 
         let attribBuilder = View.BuildImage(0, ?source=source, ?aspect=aspect, ?isOpaque=isOpaque, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId)
 
@@ -5382,7 +5382,7 @@ type View() =
 
     /// Builds the attributes for a ImageCell in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildImageCell(attribCount: int, ?imageSource: string, ?text: string, ?detail: string, ?textColor: Xamarin.Forms.Color, ?detailColor: Xamarin.Forms.Color, ?command: unit -> unit, ?canExecute: bool, ?commandParameter: System.Object, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string, ?automationId: string) = 
+    static member inline BuildImageCell(attribCount: int, ?imageSource: obj, ?text: string, ?detail: string, ?textColor: Xamarin.Forms.Color, ?detailColor: Xamarin.Forms.Color, ?command: unit -> unit, ?canExecute: bool, ?commandParameter: System.Object, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string, ?automationId: string) = 
 
         let attribCount = match imageSource with Some _ -> attribCount + 1 | None -> attribCount
 
@@ -5409,13 +5409,13 @@ type View() =
         let mutable currImageSourceOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = View._ImageSourceAttribKey.KeyValue then 
-                currImageSourceOpt <- ValueSome (kvp.Value :?> string)
+                currImageSourceOpt <- ValueSome (kvp.Value :?> obj)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
             for kvp in prev.AttributesKeyed do
                 if kvp.Key = View._ImageSourceAttribKey.KeyValue then 
-                    prevImageSourceOpt <- ValueSome (kvp.Value :?> string)
+                    prevImageSourceOpt <- ValueSome (kvp.Value :?> obj)
         match prevImageSourceOpt, currImageSourceOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.ImageSource <- makeImageSource  currValue
@@ -5423,7 +5423,7 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a ImageCell in the view
-    static member inline ImageCell(?imageSource: string, ?text: string, ?detail: string, ?textColor: Xamarin.Forms.Color, ?detailColor: Xamarin.Forms.Color, ?command: unit -> unit, ?canExecute: bool, ?commandParameter: System.Object, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string, ?automationId: string) = 
+    static member inline ImageCell(?imageSource: obj, ?text: string, ?detail: string, ?textColor: Xamarin.Forms.Color, ?detailColor: Xamarin.Forms.Color, ?command: unit -> unit, ?canExecute: bool, ?commandParameter: System.Object, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string, ?automationId: string) = 
 
         let attribBuilder = View.BuildImageCell(0, ?imageSource=imageSource, ?text=text, ?detail=detail, ?textColor=textColor, ?detailColor=detailColor, ?command=command, ?canExecute=canExecute, ?commandParameter=commandParameter, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId, ?automationId=automationId)
 
@@ -5765,13 +5765,12 @@ type View() =
 
     /// Builds the attributes for a ListViewGrouped in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildListViewGrouped(attribCount: int, ?items: (ViewElement * ViewElement list) list, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: (int * int) option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: int * int -> unit, ?itemDisappearing: int * int -> unit, ?itemSelected: (int * int) option -> unit, ?itemTapped: int * int -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string) = 
+    static member inline BuildListViewGrouped(attribCount: int, ?items: (ViewElement * ViewElement list) list, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: (int * int) option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: int * int option -> unit, ?itemDisappearing: int * int option -> unit, ?itemSelected: (int * int) option -> unit, ?itemTapped: int * int -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string) = 
 
         let attribCount = match items with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match footer with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match hasUnevenRows with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match header with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match isGroupingEnabled with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match isPullToRefreshEnabled with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match isRefreshing with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match refreshCommand with Some _ -> attribCount + 1 | None -> attribCount
@@ -5790,7 +5789,6 @@ type View() =
         match footer with None -> () | Some v -> attribBuilder.Add(View._FooterAttribKey, (v)) 
         match hasUnevenRows with None -> () | Some v -> attribBuilder.Add(View._HasUnevenRowsAttribKey, (v)) 
         match header with None -> () | Some v -> attribBuilder.Add(View._HeaderAttribKey, (v)) 
-        match isGroupingEnabled with None -> () | Some v -> attribBuilder.Add(View._IsGroupingEnabledAttribKey, (v)) 
         match isPullToRefreshEnabled with None -> () | Some v -> attribBuilder.Add(View._IsPullToRefreshEnabledAttribKey, (v)) 
         match isRefreshing with None -> () | Some v -> attribBuilder.Add(View._IsRefreshingAttribKey, (v)) 
         match refreshCommand with None -> () | Some v -> attribBuilder.Add(View._RefreshCommandAttribKey, makeCommand(v)) 
@@ -5798,8 +5796,8 @@ type View() =
         match selectedItem with None -> () | Some v -> attribBuilder.Add(View._ListViewGrouped_SelectedItemAttribKey, (v)) 
         match separatorVisibility with None -> () | Some v -> attribBuilder.Add(View._SeparatorVisibilityAttribKey, (v)) 
         match separatorColor with None -> () | Some v -> attribBuilder.Add(View._SeparatorColorAttribKey, (v)) 
-        match itemAppearing with None -> () | Some v -> attribBuilder.Add(View._ListViewGrouped_ItemAppearingAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.Item).Value))(v)) 
-        match itemDisappearing with None -> () | Some v -> attribBuilder.Add(View._ListViewGrouped_ItemDisappearingAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.Item).Value))(v)) 
+        match itemAppearing with None -> () | Some v -> attribBuilder.Add(View._ListViewGrouped_ItemAppearingAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItemOrGroupItem sender args.Item).Value))(v)) 
+        match itemDisappearing with None -> () | Some v -> attribBuilder.Add(View._ListViewGrouped_ItemDisappearingAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItemOrGroupItem sender args.Item).Value))(v)) 
         match itemSelected with None -> () | Some v -> attribBuilder.Add(View._ListViewGrouped_ItemSelectedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.SelectedItem)))(v)) 
         match itemTapped with None -> () | Some v -> attribBuilder.Add(View._ListViewGrouped_ItemTappedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.Item).Value))(v)) 
         match refreshing with None -> () | Some v -> attribBuilder.Add(View._RefreshingAttribKey, (fun f -> System.EventHandler(fun sender args -> f ()))(v)) 
@@ -5828,8 +5826,6 @@ type View() =
         let mutable currHasUnevenRowsOpt = ValueNone
         let mutable prevHeaderOpt = ValueNone
         let mutable currHeaderOpt = ValueNone
-        let mutable prevIsGroupingEnabledOpt = ValueNone
-        let mutable currIsGroupingEnabledOpt = ValueNone
         let mutable prevIsPullToRefreshEnabledOpt = ValueNone
         let mutable currIsPullToRefreshEnabledOpt = ValueNone
         let mutable prevIsRefreshingOpt = ValueNone
@@ -5863,8 +5859,6 @@ type View() =
                 currHasUnevenRowsOpt <- ValueSome (kvp.Value :?> bool)
             if kvp.Key = View._HeaderAttribKey.KeyValue then 
                 currHeaderOpt <- ValueSome (kvp.Value :?> System.Object)
-            if kvp.Key = View._IsGroupingEnabledAttribKey.KeyValue then 
-                currIsGroupingEnabledOpt <- ValueSome (kvp.Value :?> bool)
             if kvp.Key = View._IsPullToRefreshEnabledAttribKey.KeyValue then 
                 currIsPullToRefreshEnabledOpt <- ValueSome (kvp.Value :?> bool)
             if kvp.Key = View._IsRefreshingAttribKey.KeyValue then 
@@ -5901,8 +5895,6 @@ type View() =
                     prevHasUnevenRowsOpt <- ValueSome (kvp.Value :?> bool)
                 if kvp.Key = View._HeaderAttribKey.KeyValue then 
                     prevHeaderOpt <- ValueSome (kvp.Value :?> System.Object)
-                if kvp.Key = View._IsGroupingEnabledAttribKey.KeyValue then 
-                    prevIsGroupingEnabledOpt <- ValueSome (kvp.Value :?> bool)
                 if kvp.Key = View._IsPullToRefreshEnabledAttribKey.KeyValue then 
                     prevIsPullToRefreshEnabledOpt <- ValueSome (kvp.Value :?> bool)
                 if kvp.Key = View._IsRefreshingAttribKey.KeyValue then 
@@ -5942,11 +5934,6 @@ type View() =
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.Header <-  currValue
         | ValueSome _, ValueNone -> target.Header <- null
-        | ValueNone, ValueNone -> ()
-        match prevIsGroupingEnabledOpt, currIsGroupingEnabledOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.IsGroupingEnabled <-  currValue
-        | ValueSome _, ValueNone -> target.IsGroupingEnabled <- false
         | ValueNone, ValueNone -> ()
         match prevIsPullToRefreshEnabledOpt, currIsPullToRefreshEnabledOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
@@ -6015,9 +6002,9 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a ListViewGrouped in the view
-    static member inline ListViewGrouped(?items: (ViewElement * ViewElement list) list, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: (int * int) option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: int * int -> unit, ?itemDisappearing: int * int -> unit, ?itemSelected: (int * int) option -> unit, ?itemTapped: int * int -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string) = 
+    static member inline ListViewGrouped(?items: (ViewElement * ViewElement list) list, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: (int * int) option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: int * int option -> unit, ?itemDisappearing: int * int option -> unit, ?itemSelected: (int * int) option -> unit, ?itemTapped: int * int -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string) = 
 
-        let attribBuilder = View.BuildListViewGrouped(0, ?items=items, ?footer=footer, ?hasUnevenRows=hasUnevenRows, ?header=header, ?isGroupingEnabled=isGroupingEnabled, ?isPullToRefreshEnabled=isPullToRefreshEnabled, ?isRefreshing=isRefreshing, ?refreshCommand=refreshCommand, ?rowHeight=rowHeight, ?selectedItem=selectedItem, ?separatorVisibility=separatorVisibility, ?separatorColor=separatorColor, ?itemAppearing=itemAppearing, ?itemDisappearing=itemDisappearing, ?itemSelected=itemSelected, ?itemTapped=itemTapped, ?refreshing=refreshing, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId)
+        let attribBuilder = View.BuildListViewGrouped(0, ?items=items, ?footer=footer, ?hasUnevenRows=hasUnevenRows, ?header=header, ?isPullToRefreshEnabled=isPullToRefreshEnabled, ?isRefreshing=isRefreshing, ?refreshCommand=refreshCommand, ?rowHeight=rowHeight, ?selectedItem=selectedItem, ?separatorVisibility=separatorVisibility, ?separatorColor=separatorColor, ?itemAppearing=itemAppearing, ?itemDisappearing=itemDisappearing, ?itemSelected=itemSelected, ?itemTapped=itemTapped, ?refreshing=refreshing, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId)
 
         ViewElement.Create<Xamarin.Forms.ListView>(View.CreateFuncListViewGrouped, View.UpdateFuncListViewGrouped, attribBuilder)
 
@@ -6378,7 +6365,7 @@ module ViewElementExtensions =
         member x.HasShadow(value: bool) = x.WithAttribute(View._HasShadowAttribKey, (value))
 
         /// Adjusts the ImageSource property in the visual element
-        member x.ImageSource(value: string) = x.WithAttribute(View._ImageSourceAttribKey, (value))
+        member x.ImageSource(value: obj) = x.WithAttribute(View._ImageSourceAttribKey, (value))
 
         /// Adjusts the Aspect property in the visual element
         member x.Aspect(value: Xamarin.Forms.Aspect) = x.WithAttribute(View._AspectAttribKey, (value))
@@ -6603,10 +6590,10 @@ module ViewElementExtensions =
         member x.SeparatorColor(value: Xamarin.Forms.Color) = x.WithAttribute(View._SeparatorColorAttribKey, (value))
 
         /// Adjusts the ListViewGrouped_ItemAppearing property in the visual element
-        member x.ListViewGrouped_ItemAppearing(value: int * int -> unit) = x.WithAttribute(View._ListViewGrouped_ItemAppearingAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.Item).Value))(value))
+        member x.ListViewGrouped_ItemAppearing(value: int * int option -> unit) = x.WithAttribute(View._ListViewGrouped_ItemAppearingAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItemOrGroupItem sender args.Item).Value))(value))
 
         /// Adjusts the ListViewGrouped_ItemDisappearing property in the visual element
-        member x.ListViewGrouped_ItemDisappearing(value: int * int -> unit) = x.WithAttribute(View._ListViewGrouped_ItemDisappearingAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.Item).Value))(value))
+        member x.ListViewGrouped_ItemDisappearing(value: int * int option -> unit) = x.WithAttribute(View._ListViewGrouped_ItemDisappearingAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItemOrGroupItem sender args.Item).Value))(value))
 
         /// Adjusts the ListViewGrouped_ItemSelected property in the visual element
         member x.ListViewGrouped_ItemSelected(value: (int * int) option -> unit) = x.WithAttribute(View._ListViewGrouped_ItemSelectedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.SelectedItem)))(value))
@@ -6967,7 +6954,7 @@ module ViewElementExtensions =
     let hasShadow (value: bool) (x: ViewElement) = x.HasShadow(value)
 
     /// Adjusts the ImageSource property in the visual element
-    let imageSource (value: string) (x: ViewElement) = x.ImageSource(value)
+    let imageSource (value: obj) (x: ViewElement) = x.ImageSource(value)
 
     /// Adjusts the Aspect property in the visual element
     let aspect (value: Xamarin.Forms.Aspect) (x: ViewElement) = x.Aspect(value)
@@ -7192,10 +7179,10 @@ module ViewElementExtensions =
     let separatorColor (value: Xamarin.Forms.Color) (x: ViewElement) = x.SeparatorColor(value)
 
     /// Adjusts the ListViewGrouped_ItemAppearing property in the visual element
-    let listViewGrouped_ItemAppearing (value: int * int -> unit) (x: ViewElement) = x.ListViewGrouped_ItemAppearing(value)
+    let listViewGrouped_ItemAppearing (value: int * int option -> unit) (x: ViewElement) = x.ListViewGrouped_ItemAppearing(value)
 
     /// Adjusts the ListViewGrouped_ItemDisappearing property in the visual element
-    let listViewGrouped_ItemDisappearing (value: int * int -> unit) (x: ViewElement) = x.ListViewGrouped_ItemDisappearing(value)
+    let listViewGrouped_ItemDisappearing (value: int * int option -> unit) (x: ViewElement) = x.ListViewGrouped_ItemDisappearing(value)
 
     /// Adjusts the ListViewGrouped_ItemSelected property in the visual element
     let listViewGrouped_ItemSelected (value: (int * int) option -> unit) (x: ViewElement) = x.ListViewGrouped_ItemSelected(value)
