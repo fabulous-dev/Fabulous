@@ -1682,10 +1682,6 @@
 				//	"defaultValue": "null"
 				//},
 				{
-					"name": "IsGroupingEnabled",
-					"defaultValue": "false"
-				},
-				{
 					"name": "IsPullToRefreshEnabled",
 					"defaultValue": "false"
 				},
@@ -1723,15 +1719,15 @@
 					"name": "ItemAppearing",
 					"uniqueName": "ListViewGrouped_ItemAppearing",
 					"defaultValue": "null",
-					"inputType": "int * int -> unit",
-					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.Item).Value))"
+					"inputType": "int * int option -> unit",
+					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItemOrGroupItem sender args.Item).Value))"
 				},
 				{
 					"name": "ItemDisappearing",
 					"uniqueName": "ListViewGrouped_ItemDisappearing",
 					"defaultValue": "null",
-					"inputType": "int * int -> unit",
-					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.Item).Value))"
+					"inputType": "int * int option -> unit",
+					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItemOrGroupItem sender args.Item).Value))"
 				},
 				{
 					"name": "ItemSelected",
