@@ -3279,7 +3279,7 @@ type View() =
 
     /// Builds the attributes for a Image in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildImage(attribCount: int, ?source: string, ?aspect: Xamarin.Forms.Aspect, ?isOpaque: bool, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline BuildImage(attribCount: int, ?source: obj, ?aspect: Xamarin.Forms.Aspect, ?isOpaque: bool, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribCount = match source with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match aspect with Some _ -> attribCount + 1 | None -> attribCount
@@ -3314,7 +3314,7 @@ type View() =
         let mutable currIsOpaqueOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = View._ImageSourceAttribKey.KeyValue then 
-                currImageSourceOpt <- ValueSome (kvp.Value :?> string)
+                currImageSourceOpt <- ValueSome (kvp.Value :?> obj)
             if kvp.Key = View._AspectAttribKey.KeyValue then 
                 currAspectOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Aspect)
             if kvp.Key = View._IsOpaqueAttribKey.KeyValue then 
@@ -3324,7 +3324,7 @@ type View() =
         | ValueSome prev ->
             for kvp in prev.AttributesKeyed do
                 if kvp.Key = View._ImageSourceAttribKey.KeyValue then 
-                    prevImageSourceOpt <- ValueSome (kvp.Value :?> string)
+                    prevImageSourceOpt <- ValueSome (kvp.Value :?> obj)
                 if kvp.Key = View._AspectAttribKey.KeyValue then 
                     prevAspectOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Aspect)
                 if kvp.Key = View._IsOpaqueAttribKey.KeyValue then 
@@ -3346,7 +3346,7 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a Image in the view
-    static member inline Image(?source: string, ?aspect: Xamarin.Forms.Aspect, ?isOpaque: bool, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
+    static member inline Image(?source: obj, ?aspect: Xamarin.Forms.Aspect, ?isOpaque: bool, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string) = 
 
         let attribBuilder = View.BuildImage(0, ?source=source, ?aspect=aspect, ?isOpaque=isOpaque, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
 
@@ -5367,7 +5367,7 @@ type View() =
 
     /// Builds the attributes for a ImageCell in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildImageCell(attribCount: int, ?imageSource: string, ?text: string, ?detail: string, ?textColor: Xamarin.Forms.Color, ?detailColor: Xamarin.Forms.Color, ?command: unit -> unit, ?canExecute: bool, ?commandParameter: System.Object, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
+    static member inline BuildImageCell(attribCount: int, ?imageSource: obj, ?text: string, ?detail: string, ?textColor: Xamarin.Forms.Color, ?detailColor: Xamarin.Forms.Color, ?command: unit -> unit, ?canExecute: bool, ?commandParameter: System.Object, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
 
         let attribCount = match imageSource with Some _ -> attribCount + 1 | None -> attribCount
 
@@ -5394,13 +5394,13 @@ type View() =
         let mutable currImageSourceOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = View._ImageSourceAttribKey.KeyValue then 
-                currImageSourceOpt <- ValueSome (kvp.Value :?> string)
+                currImageSourceOpt <- ValueSome (kvp.Value :?> obj)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
             for kvp in prev.AttributesKeyed do
                 if kvp.Key = View._ImageSourceAttribKey.KeyValue then 
-                    prevImageSourceOpt <- ValueSome (kvp.Value :?> string)
+                    prevImageSourceOpt <- ValueSome (kvp.Value :?> obj)
         match prevImageSourceOpt, currImageSourceOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.ImageSource <- makeImageSource  currValue
@@ -5408,7 +5408,7 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a ImageCell in the view
-    static member inline ImageCell(?imageSource: string, ?text: string, ?detail: string, ?textColor: Xamarin.Forms.Color, ?detailColor: Xamarin.Forms.Color, ?command: unit -> unit, ?canExecute: bool, ?commandParameter: System.Object, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
+    static member inline ImageCell(?imageSource: obj, ?text: string, ?detail: string, ?textColor: Xamarin.Forms.Color, ?detailColor: Xamarin.Forms.Color, ?command: unit -> unit, ?canExecute: bool, ?commandParameter: System.Object, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string) = 
 
         let attribBuilder = View.BuildImageCell(0, ?imageSource=imageSource, ?text=text, ?detail=detail, ?textColor=textColor, ?detailColor=detailColor, ?command=command, ?canExecute=canExecute, ?commandParameter=commandParameter, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId)
 
@@ -6360,7 +6360,7 @@ module ViewElementExtensions =
         member x.HasShadow(value: bool) = x.WithAttribute(View._HasShadowAttribKey, (value))
 
         /// Adjusts the ImageSource property in the visual element
-        member x.ImageSource(value: string) = x.WithAttribute(View._ImageSourceAttribKey, (value))
+        member x.ImageSource(value: obj) = x.WithAttribute(View._ImageSourceAttribKey, (value))
 
         /// Adjusts the Aspect property in the visual element
         member x.Aspect(value: Xamarin.Forms.Aspect) = x.WithAttribute(View._AspectAttribKey, (value))
@@ -6946,7 +6946,7 @@ module ViewElementExtensions =
     let hasShadow (value: bool) (x: ViewElement) = x.HasShadow(value)
 
     /// Adjusts the ImageSource property in the visual element
-    let imageSource (value: string) (x: ViewElement) = x.ImageSource(value)
+    let imageSource (value: obj) (x: ViewElement) = x.ImageSource(value)
 
     /// Adjusts the Aspect property in the visual element
     let aspect (value: Xamarin.Forms.Aspect) (x: ViewElement) = x.Aspect(value)

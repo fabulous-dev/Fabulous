@@ -98,7 +98,11 @@ module Converters =
             member x.CanExecute _ = k
             member x.Execute _ = f() }
 
-    let makeImageSource (image: string) = ImageSource.op_Implicit image
+    let makeImageSource (v: obj) =
+        match v with
+        | :? string as path -> ImageSource.op_Implicit path
+        | :? ImageSource as imageSource -> imageSource
+        | _ -> failwithf "makeImageSource: invalid argument %O" v
 
     let makeAccelerator (accelerator: string) = Accelerator.op_Implicit accelerator
 
