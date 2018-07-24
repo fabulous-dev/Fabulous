@@ -417,10 +417,14 @@ module App =
 
                dependsOn () (fun model () -> 
                  View.NonScrollingContentPage("Image", 
-                     [ View.Label(text="Image:")
+                     [ View.Label(text="Image (URL):")
                        View.Image(source="http://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg", 
                            horizontalOptions=LayoutOptions.FillAndExpand,
-                           verticalOptions=LayoutOptions.FillAndExpand) ]))
+                           verticalOptions=LayoutOptions.FillAndExpand)
+                       View.Label(text="Image (Embedded):", margin=Thickness(0., 20., 0., 0.))
+                       View.Image(source=ImageSource.FromResource("AllControls.Baboon_Serengeti.jpg", typeof<RootPageKind>.Assembly), 
+                              horizontalOptions=LayoutOptions.FillAndExpand,
+                              verticalOptions=LayoutOptions.FillAndExpand) ]))
              ])
 
         | Tabbed2 ->
