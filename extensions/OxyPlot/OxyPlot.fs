@@ -15,7 +15,7 @@ module OxyPlotExtension =
     let ModelAttribKey = AttributeKey<_> "OxyPlot_Model"
     let ControllerAttribKey = AttributeKey<_> "OxyPlot_Controller"
 
-    type View with
+    type Elmish.XamarinForms.DynamicViews.View with
         /// Describes a Map in the view
         static member inline PlotView
             (model: PlotModel, ?controller: PlotController, 

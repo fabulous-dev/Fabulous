@@ -44,7 +44,9 @@ module MyViewExtensions =
     let Prop1AttribKey = AttributeKey<seq<ViewElement>> "ABC_Prop1"
     let Prop2AttribKey = AttributeKey<bool> "ABC_Prop2"
 
-    type View with
+    // Fully-qualified name to avoid extending by mistake
+    // another View class (like Xamarin.Forms.View)
+    type Elmish.XamarinForms.DynamicViews.View with
         /// Describes a ABC in the view
         static member ABC(?prop1: seq<ViewElement>, ?prop2: bool, ... inherited attributes ... ) =
 
@@ -126,7 +128,7 @@ module MapsExtension =
     let PinTypeAttribKey = AttributeKey "Pin_PinType"
     let PinAddressAttribKey = AttributeKey "Pin_Address"
 
-    type View with
+    type Elmish.XamarinForms.DynamicViews.View with
         /// Describes a Map in the view
         static member inline Map(?pins: seq<ViewElement>, ?isShowingUser: bool, ?mapType: MapType,
                                  ?hasScrollEnabled: bool, ?hasZoomEnabled: bool, ?requestedRegion: MapSpan,

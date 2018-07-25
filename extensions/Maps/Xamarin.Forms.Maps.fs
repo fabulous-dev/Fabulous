@@ -21,7 +21,7 @@ module MapsExtension =
     let PinTypeAttribKey = AttributeKey "Pin_PinType"
     let PinAddressAttribKey = AttributeKey "Pin_Address"
 
-    type View with
+    type Elmish.XamarinForms.DynamicViews.View with
         /// Describes a Map in the view
         static member inline Map(?pins: seq<ViewElement>, ?isShowingUser: bool, ?mapType: MapType, ?hasScrollEnabled: bool,
                                  ?hasZoomEnabled: bool, ?requestedRegion: MapSpan,
