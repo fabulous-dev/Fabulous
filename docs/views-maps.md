@@ -23,7 +23,7 @@ After these steps you can use maps in your `view` function as follows:
 
 ```fsharp
 open Xamarin.Forms.Maps
-open Elmish.XamarinForms
+open Elmish.XamarinForms.DynamicViews
 
 View.Map(hasZoomEnabled = true, hasScrollEnabled = true)
 ```

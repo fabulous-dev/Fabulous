@@ -15,7 +15,7 @@ module MapsExtension =
     let PaintSurfaceAttribKey = AttributeKey<_> "SKCanvas_PaintSurface"
     let TouchAttribKey = AttributeKey<_> "SKCanvas_Touch"
 
-    type View with
+    type Elmish.XamarinForms.DynamicViews.View with
         /// Describes a Map in the view
         static member SKCanvasView(?paintSurface: (SKPaintSurfaceEventArgs -> unit), ?touch: (SKTouchEventArgs -> unit), ?enableTouchEvents: bool, ?ignorePixelScaling: bool,
                                    // inherited attributes common to all views
