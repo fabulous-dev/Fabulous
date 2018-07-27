@@ -23,10 +23,11 @@ type ListElementData<'T>(key:'T) =
     member x.Key = key
 
 [<AllowNullLiteral>]
-type ListGroupData<'T>(key:'T, coll: 'T[]) = 
+type ListGroupData<'T>(shortName: string, key:'T, coll: 'T[]) = 
     inherit System.Collections.Generic.List<ListElementData<'T>>(Seq.map ListElementData coll)
     interface IListElement with member x.Key = box key
     member x.Key = key
+    member x.ShortName = shortName
     member x.Items = coll
 
 
@@ -253,7 +254,7 @@ module Converters =
                 oc
         updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetColl ListElementData (fun _ _ _ -> ()) (fun _ _ -> false) (fun _ _ _ -> failwith "no element reuse") 
 
-    let updateListViewGroupedItems (prevCollOpt: ('T * 'T[])[] voption) (collOpt: ('T * 'T[])[] voption) (target: Xamarin.Forms.ListView) = 
+    let updateListViewGroupedItems (prevCollOpt: (string * 'T * 'T[])[] voption) (collOpt: (string * 'T * 'T[])[] voption) (target: Xamarin.Forms.ListView) = 
         let targetColl = 
             match target.ItemsSource with 
             | :? ObservableCollection<ListGroupData<'T>> as oc -> oc
@@ -262,6 +263,15 @@ module Converters =
                 target.ItemsSource <- oc
                 oc
         updateCollectionGeneric prevCollOpt collOpt targetColl ListGroupData (fun _ _ _ -> ()) (fun _ _ -> false) (fun _ _ _ -> failwith "no element reuse")
+
+    let updateListViewGroupedShowJumpList (prevOpt: bool voption) (currOpt: bool voption) (target: Xamarin.Forms.ListView) =
+        let updateTarget enableJumpList = target.GroupShortNameBinding <- (if enableJumpList then new Binding("ShortName") else null)
+
+        match (prevOpt, currOpt) with
+        | ValueNone, ValueSome curr -> updateTarget curr
+        | ValueSome prev, ValueSome curr when prev <> curr -> updateTarget curr
+        | ValueSome _, ValueNone -> target.GroupShortNameBinding <- null
+        | _, _ -> ()
 
     let updateTableViewItems (prevCollOpt: (string * 'T[])[] voption) (collOpt: (string * 'T[])[] voption) (target: Xamarin.Forms.TableView) = 
         let create (desc: ViewElement) = (desc.Create() :?> Cell)

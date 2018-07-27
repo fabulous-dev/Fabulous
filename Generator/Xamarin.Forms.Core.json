@@ -1652,10 +1652,18 @@
 					"name": "ItemsSource",
 					"uniqueName": "ListViewGrouped_ItemsSource",
 					"shortName": "items",
-					"inputType": "(ViewElement * ViewElement list) list",
-					"modelType": "(ViewElement * ViewElement[])[]",
-					"convToModel": "(fun es -> es |> Array.ofList |> Array.map (fun (e,l) -> (e, Array.ofList l)))",
+					"inputType": "(string * ViewElement * ViewElement list) list",
+					"modelType": "(string * ViewElement * ViewElement[])[]",
+					"convToModel": "(fun es -> es |> Array.ofList |> Array.map (fun (g, e, l) -> (g, e, Array.ofList l)))",
 					"updateCode": "updateListViewGroupedItems"
+				},
+				{
+					"name": "ShowJumpList",
+					"uniqueName": "ListViewGrouped_ShowJumpList",
+					"inputType": "bool",
+					"modelType": "bool",
+					"defaultValue": "false",
+					"updateCode": "updateListViewGroupedShowJumpList"
 				},
 				//{
 				//	"name": "ItemTemplate",

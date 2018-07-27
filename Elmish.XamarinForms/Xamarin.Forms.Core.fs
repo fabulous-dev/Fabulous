@@ -383,6 +383,8 @@ type View() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _ListViewGrouped_ItemsSourceAttribKey : AttributeKey<_> = AttributeKey<_>("ListViewGrouped_ItemsSource")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member val _ListViewGrouped_ShowJumpListAttribKey : AttributeKey<_> = AttributeKey<_>("ListViewGrouped_ShowJumpList")
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _ListViewGrouped_SelectedItemAttribKey : AttributeKey<_> = AttributeKey<_>("ListViewGrouped_SelectedItem")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _SeparatorVisibilityAttribKey : AttributeKey<_> = AttributeKey<_>("SeparatorVisibility")
@@ -5765,9 +5767,10 @@ type View() =
 
     /// Builds the attributes for a ListViewGrouped in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildListViewGrouped(attribCount: int, ?items: (ViewElement * ViewElement list) list, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: (int * int) option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: int * int option -> unit, ?itemDisappearing: int * int option -> unit, ?itemSelected: (int * int) option -> unit, ?itemTapped: int * int -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string) = 
+    static member inline BuildListViewGrouped(attribCount: int, ?items: (string * ViewElement * ViewElement list) list, ?showJumpList: bool, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: (int * int) option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: int * int option -> unit, ?itemDisappearing: int * int option -> unit, ?itemSelected: (int * int) option -> unit, ?itemTapped: int * int -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string) = 
 
         let attribCount = match items with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match showJumpList with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match footer with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match hasUnevenRows with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match header with Some _ -> attribCount + 1 | None -> attribCount
@@ -5785,7 +5788,8 @@ type View() =
         let attribCount = match refreshing with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId)
-        match items with None -> () | Some v -> attribBuilder.Add(View._ListViewGrouped_ItemsSourceAttribKey, (fun es -> es |> Array.ofList |> Array.map (fun (e,l) -> (e, Array.ofList l)))(v)) 
+        match items with None -> () | Some v -> attribBuilder.Add(View._ListViewGrouped_ItemsSourceAttribKey, (fun es -> es |> Array.ofList |> Array.map (fun (g, e, l) -> (g, e, Array.ofList l)))(v)) 
+        match showJumpList with None -> () | Some v -> attribBuilder.Add(View._ListViewGrouped_ShowJumpListAttribKey, (v)) 
         match footer with None -> () | Some v -> attribBuilder.Add(View._FooterAttribKey, (v)) 
         match hasUnevenRows with None -> () | Some v -> attribBuilder.Add(View._HasUnevenRowsAttribKey, (v)) 
         match header with None -> () | Some v -> attribBuilder.Add(View._HeaderAttribKey, (v)) 
@@ -5820,6 +5824,8 @@ type View() =
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevListViewGrouped_ItemsSourceOpt = ValueNone
         let mutable currListViewGrouped_ItemsSourceOpt = ValueNone
+        let mutable prevListViewGrouped_ShowJumpListOpt = ValueNone
+        let mutable currListViewGrouped_ShowJumpListOpt = ValueNone
         let mutable prevFooterOpt = ValueNone
         let mutable currFooterOpt = ValueNone
         let mutable prevHasUnevenRowsOpt = ValueNone
@@ -5852,7 +5858,9 @@ type View() =
         let mutable currRefreshingOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = View._ListViewGrouped_ItemsSourceAttribKey.KeyValue then 
-                currListViewGrouped_ItemsSourceOpt <- ValueSome (kvp.Value :?> (ViewElement * ViewElement[])[])
+                currListViewGrouped_ItemsSourceOpt <- ValueSome (kvp.Value :?> (string * ViewElement * ViewElement[])[])
+            if kvp.Key = View._ListViewGrouped_ShowJumpListAttribKey.KeyValue then 
+                currListViewGrouped_ShowJumpListOpt <- ValueSome (kvp.Value :?> bool)
             if kvp.Key = View._FooterAttribKey.KeyValue then 
                 currFooterOpt <- ValueSome (kvp.Value :?> System.Object)
             if kvp.Key = View._HasUnevenRowsAttribKey.KeyValue then 
@@ -5888,7 +5896,9 @@ type View() =
         | ValueSome prev ->
             for kvp in prev.AttributesKeyed do
                 if kvp.Key = View._ListViewGrouped_ItemsSourceAttribKey.KeyValue then 
-                    prevListViewGrouped_ItemsSourceOpt <- ValueSome (kvp.Value :?> (ViewElement * ViewElement[])[])
+                    prevListViewGrouped_ItemsSourceOpt <- ValueSome (kvp.Value :?> (string * ViewElement * ViewElement[])[])
+                if kvp.Key = View._ListViewGrouped_ShowJumpListAttribKey.KeyValue then 
+                    prevListViewGrouped_ShowJumpListOpt <- ValueSome (kvp.Value :?> bool)
                 if kvp.Key = View._FooterAttribKey.KeyValue then 
                     prevFooterOpt <- ValueSome (kvp.Value :?> System.Object)
                 if kvp.Key = View._HasUnevenRowsAttribKey.KeyValue then 
@@ -5920,6 +5930,7 @@ type View() =
                 if kvp.Key = View._RefreshingAttribKey.KeyValue then 
                     prevRefreshingOpt <- ValueSome (kvp.Value :?> System.EventHandler)
         updateListViewGroupedItems prevListViewGrouped_ItemsSourceOpt currListViewGrouped_ItemsSourceOpt target
+        updateListViewGroupedShowJumpList prevListViewGrouped_ShowJumpListOpt currListViewGrouped_ShowJumpListOpt target
         match prevFooterOpt, currFooterOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.Footer <-  currValue
@@ -6002,9 +6013,9 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a ListViewGrouped in the view
-    static member inline ListViewGrouped(?items: (ViewElement * ViewElement list) list, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: (int * int) option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: int * int option -> unit, ?itemDisappearing: int * int option -> unit, ?itemSelected: (int * int) option -> unit, ?itemTapped: int * int -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string) = 
+    static member inline ListViewGrouped(?items: (string * ViewElement * ViewElement list) list, ?showJumpList: bool, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: (int * int) option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: int * int option -> unit, ?itemDisappearing: int * int option -> unit, ?itemSelected: (int * int) option -> unit, ?itemTapped: int * int -> unit, ?refreshing: unit -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string) = 
 
-        let attribBuilder = View.BuildListViewGrouped(0, ?items=items, ?footer=footer, ?hasUnevenRows=hasUnevenRows, ?header=header, ?isPullToRefreshEnabled=isPullToRefreshEnabled, ?isRefreshing=isRefreshing, ?refreshCommand=refreshCommand, ?rowHeight=rowHeight, ?selectedItem=selectedItem, ?separatorVisibility=separatorVisibility, ?separatorColor=separatorColor, ?itemAppearing=itemAppearing, ?itemDisappearing=itemDisappearing, ?itemSelected=itemSelected, ?itemTapped=itemTapped, ?refreshing=refreshing, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId)
+        let attribBuilder = View.BuildListViewGrouped(0, ?items=items, ?showJumpList=showJumpList, ?footer=footer, ?hasUnevenRows=hasUnevenRows, ?header=header, ?isPullToRefreshEnabled=isPullToRefreshEnabled, ?isRefreshing=isRefreshing, ?refreshCommand=refreshCommand, ?rowHeight=rowHeight, ?selectedItem=selectedItem, ?separatorVisibility=separatorVisibility, ?separatorColor=separatorColor, ?itemAppearing=itemAppearing, ?itemDisappearing=itemDisappearing, ?itemSelected=itemSelected, ?itemTapped=itemTapped, ?refreshing=refreshing, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId)
 
         ViewElement.Create<Xamarin.Forms.ListView>(View.CreateFuncListViewGrouped, View.UpdateFuncListViewGrouped, attribBuilder)
 
@@ -6578,7 +6589,10 @@ module ViewElementExtensions =
         member x.ListView_Refreshing(value: unit -> unit) = x.WithAttribute(View._ListView_RefreshingAttribKey, (fun f -> System.EventHandler(fun sender args -> f ()))(value))
 
         /// Adjusts the ListViewGrouped_ItemsSource property in the visual element
-        member x.ListViewGrouped_ItemsSource(value: (ViewElement * ViewElement list) list) = x.WithAttribute(View._ListViewGrouped_ItemsSourceAttribKey, (fun es -> es |> Array.ofList |> Array.map (fun (e,l) -> (e, Array.ofList l)))(value))
+        member x.ListViewGrouped_ItemsSource(value: (string * ViewElement * ViewElement list) list) = x.WithAttribute(View._ListViewGrouped_ItemsSourceAttribKey, (fun es -> es |> Array.ofList |> Array.map (fun (g, e, l) -> (g, e, Array.ofList l)))(value))
+
+        /// Adjusts the ListViewGrouped_ShowJumpList property in the visual element
+        member x.ListViewGrouped_ShowJumpList(value: bool) = x.WithAttribute(View._ListViewGrouped_ShowJumpListAttribKey, (value))
 
         /// Adjusts the ListViewGrouped_SelectedItem property in the visual element
         member x.ListViewGrouped_SelectedItem(value: (int * int) option) = x.WithAttribute(View._ListViewGrouped_SelectedItemAttribKey, (value))
@@ -7167,7 +7181,10 @@ module ViewElementExtensions =
     let listView_Refreshing (value: unit -> unit) (x: ViewElement) = x.ListView_Refreshing(value)
 
     /// Adjusts the ListViewGrouped_ItemsSource property in the visual element
-    let listViewGrouped_ItemsSource (value: (ViewElement * ViewElement list) list) (x: ViewElement) = x.ListViewGrouped_ItemsSource(value)
+    let listViewGrouped_ItemsSource (value: (string * ViewElement * ViewElement list) list) (x: ViewElement) = x.ListViewGrouped_ItemsSource(value)
+
+    /// Adjusts the ListViewGrouped_ShowJumpList property in the visual element
+    let listViewGrouped_ShowJumpList (value: bool) (x: ViewElement) = x.ListViewGrouped_ShowJumpList(value)
 
     /// Adjusts the ListViewGrouped_SelectedItem property in the visual element
     let listViewGrouped_SelectedItem (value: (int * int) option) (x: ViewElement) = x.ListViewGrouped_SelectedItem(value)

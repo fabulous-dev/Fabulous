@@ -462,13 +462,23 @@ module App =
                        View.Label(text="You searched for " + searchTerm) ]))
 
                dependsOn () (fun model () -> 
-                   View.ScrollingContentPage("ListViewGrouped", 
+                   View.NonScrollingContentPage("ListViewGrouped", 
                        [ View.Label(text="ListView (grouped):")
                          View.ListViewGrouped(
+                             showJumpList=true,
                              items= 
-                                [ View.Label "Europe", [ View.Label "Russia"; View.Label "Germany"; View.Label "Poland"; View.Label "Greece"   ]
-                                  View.Label "Asia", [ View.Label "China"; View.Label "Japan"; View.Label "North Korea"; View.Label "South Korea"   ]
-                                  View.Label "Australasia", [ View.Label "Australia"; View.Label "New Zealand"; View.Label "Fiji" ] ], 
+                                [ 
+                                    "B", View.Label "B", [ View.Label "Baboon"; View.Label "Blue Monkey" ]
+                                    "C", View.Label "C", [ View.Label "Capuchin Monkey"; View.Label "Common Marmoset" ]
+                                    "G", View.Label "G", [ View.Label "Gibbon"; View.Label "Golden Lion Tamarin" ]
+                                    "H", View.Label "H", [ View.Label "Howler Monkey" ]
+                                    "J", View.Label "J", [ View.Label "Japanese Macaque" ]
+                                    "M", View.Label "M", [ View.Label "Mandrill" ]
+                                    "P", View.Label "P", [ View.Label "Proboscis Monkey"; View.Label "Pygmy Marmoset" ]
+                                    "R", View.Label "R", [ View.Label "Rhesus Macaque" ]
+                                    "S", View.Label "S", [ View.Label "Spider Monkey"; View.Label "Squirrel Monkey" ]
+                                    "V", View.Label "V", [ View.Label "Vervet Monkey" ]
+                                ], 
                              horizontalOptions=LayoutOptions.CenterAndExpand,
                              itemSelected=(fun idx -> dispatch (ListViewGroupedSelectedItemChanged idx)))
                    ]))
