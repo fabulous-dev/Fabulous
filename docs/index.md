@@ -91,6 +91,9 @@ The external sample [Calculator](https://github.com/nosami/Elmish.Calculator/) i
 
 The external sample [PocketPiggyBank](https://github.com/jimbobbennett/PocketPiggyBank) is a small client-server app with login authentication. (Note: because this is an external sample it may not be up-to-date with the latest version of this library.)
 
+The external sample [ElmishContacts](https://github.com/TimLariviere/ElmishContacts) is a multi-page contacts app featuring maps, group-lists and cross-page messages. (Note: because this is an external sample it may not be up-to-date with the latest version of this library.)
+
+
 Further Resources
 --------
 
