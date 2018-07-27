@@ -1062,6 +1062,10 @@
 				{
 					"name": "FormattedText",
 					"defaultValue": "null"
+				},
+				{
+					"name": "LineBreakMode",
+					"defaultValue": "Xamarin.Forms.LineBreakMode.WordWrap"
 				}
 			]
 		},
