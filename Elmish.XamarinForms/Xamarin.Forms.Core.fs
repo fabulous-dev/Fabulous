@@ -261,6 +261,8 @@ type View() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _FormattedTextAttribKey : AttributeKey<_> = AttributeKey<_>("FormattedText")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member val _LineBreakModeAttribKey : AttributeKey<_> = AttributeKey<_>("LineBreakMode")
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _StackOrientationAttribKey : AttributeKey<_> = AttributeKey<_>("StackOrientation")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _SpacingAttribKey : AttributeKey<_> = AttributeKey<_>("Spacing")
@@ -3860,7 +3862,7 @@ type View() =
 
     /// Builds the attributes for a Label in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildLabel(attribCount: int, ?text: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?verticalTextAlignment: Xamarin.Forms.TextAlignment, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?formattedText: ViewElement, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string) = 
+    static member inline BuildLabel(attribCount: int, ?text: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?verticalTextAlignment: Xamarin.Forms.TextAlignment, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?formattedText: ViewElement, ?lineBreakMode: Xamarin.Forms.LineBreakMode, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string) = 
 
         let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match horizontalTextAlignment with Some _ -> attribCount + 1 | None -> attribCount
@@ -3870,6 +3872,7 @@ type View() =
         let attribCount = match fontAttributes with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match textColor with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match formattedText with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match lineBreakMode with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId)
         match text with None -> () | Some v -> attribBuilder.Add(View._TextAttribKey, (v)) 
@@ -3880,6 +3883,7 @@ type View() =
         match fontAttributes with None -> () | Some v -> attribBuilder.Add(View._FontAttributesAttribKey, (v)) 
         match textColor with None -> () | Some v -> attribBuilder.Add(View._TextColorAttribKey, (v)) 
         match formattedText with None -> () | Some v -> attribBuilder.Add(View._FormattedTextAttribKey, (v)) 
+        match lineBreakMode with None -> () | Some v -> attribBuilder.Add(View._LineBreakModeAttribKey, (v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -3913,6 +3917,8 @@ type View() =
         let mutable currTextColorOpt = ValueNone
         let mutable prevFormattedTextOpt = ValueNone
         let mutable currFormattedTextOpt = ValueNone
+        let mutable prevLineBreakModeOpt = ValueNone
+        let mutable currLineBreakModeOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = View._TextAttribKey.KeyValue then 
                 currTextOpt <- ValueSome (kvp.Value :?> string)
@@ -3930,6 +3936,8 @@ type View() =
                 currTextColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
             if kvp.Key = View._FormattedTextAttribKey.KeyValue then 
                 currFormattedTextOpt <- ValueSome (kvp.Value :?> ViewElement)
+            if kvp.Key = View._LineBreakModeAttribKey.KeyValue then 
+                currLineBreakModeOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.LineBreakMode)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
@@ -3950,6 +3958,8 @@ type View() =
                     prevTextColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
                 if kvp.Key = View._FormattedTextAttribKey.KeyValue then 
                     prevFormattedTextOpt <- ValueSome (kvp.Value :?> ViewElement)
+                if kvp.Key = View._LineBreakModeAttribKey.KeyValue then 
+                    prevLineBreakModeOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.LineBreakMode)
         match prevTextOpt, currTextOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.Text <-  currValue
@@ -3995,11 +4005,16 @@ type View() =
         | ValueSome _, ValueNone ->
             target.FormattedText <- null
         | ValueNone, ValueNone -> ()
+        match prevLineBreakModeOpt, currLineBreakModeOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.LineBreakMode <-  currValue
+        | ValueSome _, ValueNone -> target.LineBreakMode <- Xamarin.Forms.LineBreakMode.WordWrap
+        | ValueNone, ValueNone -> ()
 
     /// Describes a Label in the view
-    static member inline Label(?text: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?verticalTextAlignment: Xamarin.Forms.TextAlignment, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?formattedText: ViewElement, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string) = 
+    static member inline Label(?text: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?verticalTextAlignment: Xamarin.Forms.TextAlignment, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?formattedText: ViewElement, ?lineBreakMode: Xamarin.Forms.LineBreakMode, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string) = 
 
-        let attribBuilder = View.BuildLabel(0, ?text=text, ?horizontalTextAlignment=horizontalTextAlignment, ?verticalTextAlignment=verticalTextAlignment, ?fontSize=fontSize, ?fontFamily=fontFamily, ?fontAttributes=fontAttributes, ?textColor=textColor, ?formattedText=formattedText, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId)
+        let attribBuilder = View.BuildLabel(0, ?text=text, ?horizontalTextAlignment=horizontalTextAlignment, ?verticalTextAlignment=verticalTextAlignment, ?fontSize=fontSize, ?fontFamily=fontFamily, ?fontAttributes=fontAttributes, ?textColor=textColor, ?formattedText=formattedText, ?lineBreakMode=lineBreakMode, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId)
 
         ViewElement.Create<Xamarin.Forms.Label>(View.CreateFuncLabel, View.UpdateFuncLabel, attribBuilder)
 
@@ -6408,6 +6423,9 @@ module ViewElementExtensions =
         /// Adjusts the FormattedText property in the visual element
         member x.FormattedText(value: ViewElement) = x.WithAttribute(View._FormattedTextAttribKey, (value))
 
+        /// Adjusts the LineBreakMode property in the visual element
+        member x.LineBreakMode(value: Xamarin.Forms.LineBreakMode) = x.WithAttribute(View._LineBreakModeAttribKey, (value))
+
         /// Adjusts the StackOrientation property in the visual element
         member x.StackOrientation(value: Xamarin.Forms.StackOrientation) = x.WithAttribute(View._StackOrientationAttribKey, (value))
 
@@ -6999,6 +7017,9 @@ module ViewElementExtensions =
 
     /// Adjusts the FormattedText property in the visual element
     let formattedText (value: ViewElement) (x: ViewElement) = x.FormattedText(value)
+
+    /// Adjusts the LineBreakMode property in the visual element
+    let lineBreakMode (value: Xamarin.Forms.LineBreakMode) (x: ViewElement) = x.LineBreakMode(value)
 
     /// Adjusts the StackOrientation property in the visual element
     let stackOrientation (value: Xamarin.Forms.StackOrientation) (x: ViewElement) = x.StackOrientation(value)
