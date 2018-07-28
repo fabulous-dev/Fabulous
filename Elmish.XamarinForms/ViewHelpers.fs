@@ -172,3 +172,12 @@ module SimplerHelpers =
                 externalsTable.Add(externalObj, res)
                 res
 
+    type View with
+        static member displayAlert title message cancel =
+            Application.Current.MainPage.DisplayAlert(title, message, cancel) |> Async.AwaitTask
+
+        static member displayAlertWithConfirm title message accept cancel =
+            Application.Current.MainPage.DisplayAlert(title, message, accept, cancel) |> Async.AwaitTask
+            
+        static member displayActionSheet title cancel destruction buttons =
+            Application.Current.MainPage.DisplayActionSheet(title, cancel, destruction, buttons) |> Async.AwaitTask
