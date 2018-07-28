@@ -211,7 +211,7 @@ module App =
     // this dependency out to allow unit testing of the 'update' function. 
 
     let gameOver msg =
-        Application.Current.MainPage.DisplayAlert("Game over", msg, "OK") |> ignore
+        View.displayAlert "Game over" msg "OK" |> ignore
 
     let program = 
         Program.mkSimple init (update gameOver) view
