@@ -135,8 +135,26 @@ module Converters =
 
     let identical (x: 'T) (y:'T) = System.Object.ReferenceEquals(x, y)
 
-    let canReuseChild (prevChild:ViewElement) (newChild:ViewElement) = 
-        (prevChild.TargetType = newChild.TargetType)
+    // NavigationPage can be reused only if the already existing pages don't change type (added/removed pages don't enter into account)
+    // E.g. If the first page switch from ContentPage to TabbedPage, the NavigationPage can't be reused; otherwise it can.
+    let canReuseNavigationPage (prevChild:ViewElement) (newChild:ViewElement) =
+        let prevPages = prevChild.TryGetAttribute<ViewElement[]>("Pages")
+        let newPages = newChild.TryGetAttribute<ViewElement[]>("Pages")
+
+        match prevPages, newPages with
+        | ValueSome prevPages, ValueSome newPages ->
+            Array.zip prevPages newPages
+            |> Array.fold (fun canReuse pages -> canReuse && (fst pages).TargetType = (snd pages).TargetType) true
+        | _, _ -> true
+
+    let canReuseChild (prevChild:ViewElement) (newChild:ViewElement) =
+        if prevChild.TargetType = newChild.TargetType then
+            if newChild.TargetType = typeof<NavigationPage> then
+                canReuseNavigationPage prevChild newChild
+            else
+                true
+        else
+            false
 
     let updateChild (prevChild:ViewElement) (newChild:ViewElement) targetChild = 
         newChild.UpdateIncremental(prevChild, targetChild)
