@@ -143,8 +143,8 @@ module Converters =
 
         match prevPages, newPages with
         | ValueSome prevPages, ValueSome newPages ->
-            Array.zip prevPages newPages
-            |> Array.fold (fun canReuse pages -> canReuse && (fst pages).TargetType = (snd pages).TargetType) true
+            Seq.zip (prevPages |> Seq.ofArray) (newPages |> Seq.ofArray)
+            |> Seq.fold (fun canReuse pages -> canReuse && (fst pages).TargetType = (snd pages).TargetType) true
         | _, _ -> true
 
     let canReuseChild (prevChild:ViewElement) (newChild:ViewElement) =
