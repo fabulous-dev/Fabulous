@@ -6,6 +6,7 @@
   * [Lists and Tables](views-elements.html#lists-and-tables)
   * [Other Core Elements](views-elements.html#other-core-elements)
   * [Gestures](views-elements.html#gestures)
+  * [Pop-ups](views-elements.html#pop-ups)
   * [Performance hints](views-perf.html)
   * [Multi-page applications and Navigation](views-navigation.html)
   * [Styling](views-styling.html)
