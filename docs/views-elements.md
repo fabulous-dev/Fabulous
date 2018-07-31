@@ -564,5 +564,5 @@ See https://github.com/fsprojects/Elmish.XamarinForms/pull/147 for more informat
 See also:
 
 * [Displaying Pop-ups](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/app-fundamentals/navigation/pop-ups)
-* [Xamarin.Forms.Core.Page.DisplayAlert](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.page.displayalert)
-* [Xamarin.Forms.Core.Page.DisplayActionSheet](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.page.displayactionsheet)
+* [`Xamarin.Forms.Core.Page.DisplayAlert`](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.page.displayalert)
+* [`Xamarin.Forms.Core.Page.DisplayActionSheet`](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.page.displayactionsheet)
