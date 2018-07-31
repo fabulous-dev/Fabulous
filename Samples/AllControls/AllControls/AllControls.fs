@@ -81,6 +81,7 @@ type Msg =
     // For InfiniteScroll page demo. It's not really an "infinite" scroll, just a growing set of "data"
     | SetInfiniteScrollMaxIndex of int
     | ExecuteSearch of string
+    | ShowPopup
 
 [<AutoOpen>]
 module MyExtension = 
@@ -198,6 +199,10 @@ module App =
         // For selection page
         | SetRootPageKind kind -> { model with RootPageKind = kind }
         | ExecuteSearch search -> { model with SearchTerm = search }
+        // For pop-ups
+        | ShowPopup ->
+            Application.Current.MainPage.DisplayAlert("Clicked", "You clicked the button", "OK") |> ignore
+            model
 
     let pickerItems = 
         [| ("Aqua", Color.Aqua); ("Black", Color.Black);
@@ -226,6 +231,7 @@ module App =
                                  View.Button(text = "NavigationPage with push/pop", command=(fun () -> dispatch (SetRootPageKind Navigation)))
                                  View.Button(text = "MasterDetail Page", command=(fun () -> dispatch (SetRootPageKind MasterDetail)))
                                  View.Button(text = "Infinite scrolling ListView", command=(fun () -> dispatch (SetRootPageKind InfiniteScrollList)))
+                                 View.Button(text = "Pop-up", command=(fun () -> dispatch ShowPopup))
                             ]))
                      .ToolbarItems([View.ToolbarItem(text="About", command=(fun () -> dispatch (SetRootPageKind (Choice true))))] )
                   if showAbout then 

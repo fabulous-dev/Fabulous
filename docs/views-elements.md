@@ -546,13 +546,20 @@ Instead, we can use the static property `Application.Current.MainPage` exposed b
 
 Here is an example of the use of a confirmation pop-up.
 ```fsharp
-let! confirm = Application.Current.MainPage.DisplayAlert("Share this contact", "Are you sure you want to share this contact?", "Yes", "No")
-              |> Async.AwaitTask
+let! confirm = Application.Current.MainPage.DisplayAlert(
+                   "Share this contact",
+                   "Are you sure you want to share this contact?",
+                   "Yes", "No")
+               |> Async.AwaitTask
 
 match confirm with
 | true -> (...)
 | false -> (...)
 ```
+
+_Why don't we add an Elmish.XamarinForms wrapper for those?_  
+Doing so would only end up duplicating the existing methods and compel us to maintain these in sync with Xamarin.Forms.  
+See https://github.com/fsprojects/Elmish.XamarinForms/pull/147 for more information
 
 See also:
 
