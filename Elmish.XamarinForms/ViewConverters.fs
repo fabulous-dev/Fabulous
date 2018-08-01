@@ -135,7 +135,7 @@ module Converters =
 
     let identical (x: 'T) (y:'T) = System.Object.ReferenceEquals(x, y)
 
-    // NavigationPage can be reused only if the already existing pages don't change type (added/removed pages don't enter into account)
+    // NavigationPage can be reused only if the already existing pages don't change type (added/removed pages don't prevent reuse)
     // E.g. If the first page switch from ContentPage to TabbedPage, the NavigationPage can't be reused; otherwise it can.
     let canReuseNavigationPage (prevChild:ViewElement) (newChild:ViewElement) =
         let prevPages = prevChild.TryGetAttribute<ViewElement[]>("Pages")
@@ -143,8 +143,9 @@ module Converters =
 
         match prevPages, newPages with
         | ValueSome prevPages, ValueSome newPages ->
-            Seq.zip (prevPages |> Seq.ofArray) (newPages |> Seq.ofArray)
-            |> Seq.fold (fun canReuse pages -> canReuse && (fst pages).TargetType = (snd pages).TargetType) true
+            let prevSeq = Seq.ofArray prevPages
+            let newSeq = Seq.ofArray newPages
+            Seq.forall2 (fun (prev: ViewElement) (curr: ViewElement) -> prev.TargetType = curr.TargetType) prevSeq newSeq
         | _, _ -> true
 
     let canReuseChild (prevChild:ViewElement) (newChild:ViewElement) =
