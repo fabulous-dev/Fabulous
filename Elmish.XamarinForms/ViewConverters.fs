@@ -135,27 +135,24 @@ module Converters =
 
     let identical (x: 'T) (y:'T) = System.Object.ReferenceEquals(x, y)
 
-    // NavigationPage can be reused only if the already existing pages don't change type (added/removed pages don't prevent reuse)
-    // E.g. If the first page switch from ContentPage to TabbedPage, the NavigationPage can't be reused; otherwise it can.
-    let canReuseNavigationPage (prevChild:ViewElement) (newChild:ViewElement) =
-        let prevPages = prevChild.TryGetAttribute<ViewElement[]>("Pages")
-        let newPages = newChild.TryGetAttribute<ViewElement[]>("Pages")
-
-        match prevPages, newPages with
-        | ValueSome prevPages, ValueSome newPages ->
-            let prevSeq = Seq.ofArray prevPages
-            let newSeq = Seq.ofArray newPages
-            Seq.forall2 (fun (prev: ViewElement) (curr: ViewElement) -> prev.TargetType = curr.TargetType) prevSeq newSeq
-        | _, _ -> true
-
-    let canReuseChild (prevChild:ViewElement) (newChild:ViewElement) =
+    let rec canReuseChild (prevChild:ViewElement) (newChild:ViewElement) =
         if prevChild.TargetType = newChild.TargetType then
-            if newChild.TargetType = typeof<NavigationPage> then
+            if newChild.TargetType.IsAssignableFrom(typeof<NavigationPage>) then
                 canReuseNavigationPage prevChild newChild
             else
                 true
         else
             false
+
+    // NavigationPage can be reused only if the pages don't change their type (added/removed pages don't prevent reuse)
+    // E.g. If the first page switch from ContentPage to TabbedPage, the NavigationPage can't be reused.
+    and canReuseNavigationPage (prevChild:ViewElement) (newChild:ViewElement) =
+        let prevPages = prevChild.TryGetAttribute<ViewElement[]>("Pages")
+        let newPages = newChild.TryGetAttribute<ViewElement[]>("Pages")
+
+        match prevPages, newPages with
+        | ValueSome prevPages, ValueSome newPages -> (prevPages, newPages) ||> Seq.forall2 canReuseChild
+        | _, _ -> true
 
     let updateChild (prevChild:ViewElement) (newChild:ViewElement) targetChild = 
         newChild.UpdateIncremental(prevChild, targetChild)
