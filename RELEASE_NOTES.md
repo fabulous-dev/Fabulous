@@ -1,3 +1,7 @@
+#### 0.14.8
+* Fixed LiveUpdate for CalculatorApp (AddressOf, out args, pattern matching)
+* Fixed templates so you can update Xamarin Forms
+
 #### 0.14.6
 * Fixed LiveUpdate for iOS
 * Moved to Newtonsoft.Json instead of FsPickler

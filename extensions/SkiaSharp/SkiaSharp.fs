@@ -15,14 +15,14 @@ module MapsExtension =
     let PaintSurfaceAttribKey = AttributeKey<_> "SKCanvas_PaintSurface"
     let TouchAttribKey = AttributeKey<_> "SKCanvas_Touch"
 
-    type View with
+    type Elmish.XamarinForms.DynamicViews.View with
         /// Describes a Map in the view
         static member SKCanvasView(?paintSurface: (SKPaintSurfaceEventArgs -> unit), ?touch: (SKTouchEventArgs -> unit), ?enableTouchEvents: bool, ?ignorePixelScaling: bool,
                                    // inherited attributes common to all views
                                    ?horizontalOptions, ?verticalOptions, ?margin, ?gestureRecognizers, ?anchorX, ?anchorY, ?backgroundColor,
                                    ?heightRequest, ?inputTransparent, ?isEnabled, ?isVisible, ?minimumHeightRequest, ?minimumWidthRequest,
                                    ?opacity, ?rotation, ?rotationX, ?rotationY, ?scale, ?style, ?translationX, ?translationY, ?widthRequest,
-                                   ?resources, ?styles, ?styleSheets, ?classId, ?styleId) =
+                                   ?resources, ?styles, ?styleSheets, ?classId, ?styleId, ?automationId) =
 
             // Count the number of additional attributes
             let attribCount = 0
@@ -40,7 +40,7 @@ module MapsExtension =
                                ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, 
                                ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, 
                                ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, 
-                               ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId)
+                               ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId)
 
             // Add our own attributes. They must have unique names which must match the names below.
             match enableTouchEvents with None -> () | Some v -> attribs.Add(CanvasEnableTouchEventsAttribKey, v) 

@@ -19,7 +19,7 @@ open System.IO
 open System.Collections.Generic
 open Microsoft.FSharp.Compiler.SourceCodeServices
 open System.Net
-open FSharp.FSW
+open System.Text
 
 #if TEST
 module MockForms = 
@@ -168,11 +168,8 @@ let main (argv: string[]) =
                      let path = Path.GetDirectoryName(sourceFile)
                      let fileName = Path.GetFileName(sourceFile)
                      printfn "fscd: WATCHING %s in %s" fileName path 
-                     let watcher = new FileSystemWrapper(path, fileName)
-                     NotifyFilters.Attributes ||| NotifyFilters.CreationTime ||| NotifyFilters.FileName ||| NotifyFilters.LastAccess ||| NotifyFilters.LastWrite ||| NotifyFilters.Size ||| NotifyFilters.Security
-                     |> watcher.NotifyFilter
-                     //let watcher = new FileSystemWatcher(path, fileName)
-                     //watcher.NotifyFilter <- NotifyFilters.Attributes ||| NotifyFilters.CreationTime ||| NotifyFilters.FileName ||| NotifyFilters.LastAccess ||| NotifyFilters.LastWrite ||| NotifyFilters.Size ||| NotifyFilters.Security;
+                     let watcher = new FileSystemWatcher(path, fileName)
+                     watcher.NotifyFilter <- NotifyFilters.Attributes ||| NotifyFilters.CreationTime ||| NotifyFilters.FileName ||| NotifyFilters.LastAccess ||| NotifyFilters.LastWrite ||| NotifyFilters.Size ||| NotifyFilters.Security;
                      let changed = (fun (ev: FileSystemEventArgs) -> 
                          try 
                              printfn "fscd: CHANGE DETECTED for %s, COMPILING...." sourceFile
@@ -190,9 +187,9 @@ let main (argv: string[]) =
                                      match webhook with 
                                      | Some hook -> 
                                          try 
-                                             use webClient = new WebClient()
+                                             use webClient = new WebClient(Encoding = Encoding.UTF8)
                                              printfn "fscd: SENDING TO WEBHOOK... " // : <<<%s>>>... --> %s" json.[0 .. min (json.Length - 1) 100] hook
-                                             let resp = webClient.UploadString(hook,"Put",json)
+                                             let resp = webClient.UploadString (hook,"Put",json)
                                              printfn "fscd: RESP FROM WEBHOOK: %s" resp
                                          with err -> 
                                              printfn "fscd: ERROR SENDING TO WEBHOOK: %A" (err.ToString())
@@ -201,21 +198,18 @@ let main (argv: string[]) =
                                          ()
                          with err -> 
                              printfn "fscd: exception: %A" (err.ToString()) )
-                     //watcher.Changed.Add changed 
-                     watcher.AddChangedHandler changed
+                     watcher.Changed.Add changed 
                      //watcher.Created.Add changed
                      //watcher.Deleted.Add changed
                      yield watcher ]
 
             for watcher in watchers do
-               //watcher.EnableRaisingEvents <- true
-               watcher.EnableRaisingEvents true
+               watcher.EnableRaisingEvents <- true
 
             printfn "Waiting for changes..." 
             System.Console.ReadLine() |> ignore
             for watcher in watchers do
-               //watcher.EnableRaisingEvents <- true
-               watcher.EnableRaisingEvents true
+               watcher.EnableRaisingEvents <- true
 
         else
             printfn "compiling, options = %A" options

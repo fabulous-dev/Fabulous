@@ -23,10 +23,11 @@ type ListElementData<'T>(key:'T) =
     member x.Key = key
 
 [<AllowNullLiteral>]
-type ListGroupData<'T>(key:'T, coll: 'T[]) = 
+type ListGroupData<'T>(shortName: string, key:'T, coll: 'T[]) = 
     inherit System.Collections.Generic.List<ListElementData<'T>>(Seq.map ListElementData coll)
     interface IListElement with member x.Key = box key
     member x.Key = key
+    member x.ShortName = shortName
     member x.Items = coll
 
 
@@ -62,7 +63,7 @@ type CustomListView() =
     inherit ListView(ItemTemplate=DataTemplate(typeof<ViewElementCell>))
 
 type CustomGroupListView() = 
-    inherit ListView(ItemTemplate=DataTemplate(typeof<ViewElementCell>), GroupHeaderTemplate=DataTemplate(typeof<ViewElementCell>))
+    inherit ListView(ItemTemplate=DataTemplate(typeof<ViewElementCell>), GroupHeaderTemplate=DataTemplate(typeof<ViewElementCell>), IsGroupingEnabled=true)
 
 type CustomContentPage() as self = 
     inherit ContentPage()
@@ -98,7 +99,11 @@ module Converters =
             member x.CanExecute _ = k
             member x.Execute _ = f() }
 
-    let makeImageSource (image: string) = ImageSource.op_Implicit image
+    let makeImageSource (v: obj) =
+        match v with
+        | :? string as path -> ImageSource.op_Implicit path
+        | :? ImageSource as imageSource -> imageSource
+        | _ -> failwithf "makeImageSource: invalid argument %O" v
 
     let makeAccelerator (accelerator: string) = Accelerator.op_Implicit accelerator
 
@@ -130,8 +135,24 @@ module Converters =
 
     let identical (x: 'T) (y:'T) = System.Object.ReferenceEquals(x, y)
 
-    let canReuseChild (prevChild:ViewElement) (newChild:ViewElement) = 
-        (prevChild.TargetType = newChild.TargetType)
+    let rec canReuseChild (prevChild:ViewElement) (newChild:ViewElement) =
+        if prevChild.TargetType = newChild.TargetType then
+            if newChild.TargetType.IsAssignableFrom(typeof<NavigationPage>) then
+                canReuseNavigationPage prevChild newChild
+            else
+                true
+        else
+            false
+
+    // NavigationPage can be reused only if the pages don't change their type (added/removed pages don't prevent reuse)
+    // E.g. If the first page switch from ContentPage to TabbedPage, the NavigationPage can't be reused.
+    and canReuseNavigationPage (prevChild:ViewElement) (newChild:ViewElement) =
+        let prevPages = prevChild.TryGetAttribute<ViewElement[]>("Pages")
+        let newPages = newChild.TryGetAttribute<ViewElement[]>("Pages")
+
+        match prevPages, newPages with
+        | ValueSome prevPages, ValueSome newPages -> (prevPages, newPages) ||> Seq.forall2 canReuseChild
+        | _, _ -> true
 
     let updateChild (prevChild:ViewElement) (newChild:ViewElement) targetChild = 
         newChild.UpdateIncremental(prevChild, targetChild)
@@ -249,7 +270,7 @@ module Converters =
                 oc
         updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetColl ListElementData (fun _ _ _ -> ()) (fun _ _ -> false) (fun _ _ _ -> failwith "no element reuse") 
 
-    let updateListViewGroupedItems (prevCollOpt: ('T * 'T[])[] voption) (collOpt: ('T * 'T[])[] voption) (target: Xamarin.Forms.ListView) = 
+    let updateListViewGroupedItems (prevCollOpt: (string * 'T * 'T[])[] voption) (collOpt: (string * 'T * 'T[])[] voption) (target: Xamarin.Forms.ListView) = 
         let targetColl = 
             match target.ItemsSource with 
             | :? ObservableCollection<ListGroupData<'T>> as oc -> oc
@@ -258,6 +279,15 @@ module Converters =
                 target.ItemsSource <- oc
                 oc
         updateCollectionGeneric prevCollOpt collOpt targetColl ListGroupData (fun _ _ _ -> ()) (fun _ _ -> false) (fun _ _ _ -> failwith "no element reuse")
+
+    let updateListViewGroupedShowJumpList (prevOpt: bool voption) (currOpt: bool voption) (target: Xamarin.Forms.ListView) =
+        let updateTarget enableJumpList = target.GroupShortNameBinding <- (if enableJumpList then new Binding("ShortName") else null)
+
+        match (prevOpt, currOpt) with
+        | ValueNone, ValueSome curr -> updateTarget curr
+        | ValueSome prev, ValueSome curr when prev <> curr -> updateTarget curr
+        | ValueSome _, ValueNone -> target.GroupShortNameBinding <- null
+        | _, _ -> ()
 
     let updateTableViewItems (prevCollOpt: (string * 'T[])[] voption) (collOpt: (string * 'T[])[] voption) (target: Xamarin.Forms.TableView) = 
         let create (desc: ViewElement) = (desc.Create() :?> Cell)
@@ -454,7 +484,17 @@ module Converters =
             items |> Seq.tryFindIndex (fun item2 -> identical item.Key item2.Key)
         | _ -> None
 
-    let tryFindGroupedListViewItem (sender: obj) (item: obj) =
+    let tryFindGroupedListViewItemIndex (items: System.Collections.Generic.IList<ListGroupData<ViewElement>>) (item: ListElementData<ViewElement>) =
+        // POSSIBLE IMPROVEMENT: don't use a linear search
+        items 
+        |> Seq.indexed 
+        |> Seq.tryPick (fun (i,items2) -> 
+            // POSSIBLE IMPROVEMENT: don't use a linear search
+            items2 
+            |> Seq.indexed 
+            |> Seq.tryPick (fun (j,item2) -> if identical item.Key item2.Key then Some (i,j) else None))
+
+    let tryFindGroupedListViewItemOrGroupItem (sender: obj) (item: obj) = 
         match item with 
         | null -> None
         | :? ListGroupData<ViewElement> as item ->
@@ -462,9 +502,19 @@ module Converters =
             // POSSIBLE IMPROVEMENT: don't use a linear search
             items 
             |> Seq.indexed 
-            |> Seq.tryPick (fun (i,items2) -> 
-                // POSSIBLE IMPROVEMENT: don't use a linear search
-                items2 
-                |> Seq.indexed 
-                |> Seq.tryPick (fun (j,item2) -> if identical item.Key item2.Key then Some (i,j) else None))
+            |> Seq.tryPick (fun (i, item2) -> if identical item.Key item2.Key then Some (i, None) else None)
+        | :? ListElementData<ViewElement> as item ->
+            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData<ViewElement>> 
+            tryFindGroupedListViewItemIndex items item
+            |> (function
+                | None -> None
+                | Some (i, j) -> Some (i, Some j))
+        | _ -> None
+
+    let tryFindGroupedListViewItem (sender: obj) (item: obj) =
+        match item with 
+        | null -> None
+        | :? ListElementData<ViewElement> as item ->
+            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData<ViewElement>> 
+            tryFindGroupedListViewItemIndex items item
         | _ -> None

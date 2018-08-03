@@ -81,6 +81,7 @@ type Msg =
     // For InfiniteScroll page demo. It's not really an "infinite" scroll, just a growing set of "data"
     | SetInfiniteScrollMaxIndex of int
     | ExecuteSearch of string
+    | ShowPopup
 
 [<AutoOpen>]
 module MyExtension = 
@@ -198,6 +199,10 @@ module App =
         // For selection page
         | SetRootPageKind kind -> { model with RootPageKind = kind }
         | ExecuteSearch search -> { model with SearchTerm = search }
+        // For pop-ups
+        | ShowPopup ->
+            Application.Current.MainPage.DisplayAlert("Clicked", "You clicked the button", "OK") |> ignore
+            model
 
     let pickerItems = 
         [| ("Aqua", Color.Aqua); ("Black", Color.Black);
@@ -226,6 +231,7 @@ module App =
                                  View.Button(text = "NavigationPage with push/pop", command=(fun () -> dispatch (SetRootPageKind Navigation)))
                                  View.Button(text = "MasterDetail Page", command=(fun () -> dispatch (SetRootPageKind MasterDetail)))
                                  View.Button(text = "Infinite scrolling ListView", command=(fun () -> dispatch (SetRootPageKind InfiniteScrollList)))
+                                 View.Button(text = "Pop-up", command=(fun () -> dispatch ShowPopup))
                             ]))
                      .ToolbarItems([View.ToolbarItem(text="About", command=(fun () -> dispatch (SetRootPageKind (Choice true))))] )
                   if showAbout then 
@@ -417,10 +423,14 @@ module App =
 
                dependsOn () (fun model () -> 
                  View.NonScrollingContentPage("Image", 
-                     [ View.Label(text="Image:")
+                     [ View.Label(text="Image (URL):")
                        View.Image(source="http://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anubis_%28Serengeti%2C_2009%29.jpg/200px-Papio_anubis_%28Serengeti%2C_2009%29.jpg", 
                            horizontalOptions=LayoutOptions.FillAndExpand,
-                           verticalOptions=LayoutOptions.FillAndExpand) ]))
+                           verticalOptions=LayoutOptions.FillAndExpand)
+                       View.Label(text="Image (Embedded):", margin=Thickness(0., 20., 0., 0.))
+                       View.Image(source=ImageSource.FromResource("AllControls.Baboon_Serengeti.jpg", typeof<RootPageKind>.Assembly), 
+                              horizontalOptions=LayoutOptions.FillAndExpand,
+                              verticalOptions=LayoutOptions.FillAndExpand) ]))
              ])
 
         | Tabbed2 ->
@@ -458,15 +468,24 @@ module App =
                        View.Label(text="You searched for " + searchTerm) ]))
 
                dependsOn () (fun model () -> 
-                   View.ScrollingContentPage("ListViewGrouped", 
+                   View.NonScrollingContentPage("ListViewGrouped", 
                        [ View.Label(text="ListView (grouped):")
                          View.ListViewGrouped(
+                             showJumpList=true,
                              items= 
-                                [ View.Label "Europe", [ View.Label "Russia"; View.Label "Germany"; View.Label "Poland"; View.Label "Greece"   ]
-                                  View.Label "Asia", [ View.Label "China"; View.Label "Japan"; View.Label "North Korea"; View.Label "South Korea"   ]
-                                  View.Label "Australasia", [ View.Label "Australia"; View.Label "New Zealand"; View.Label "Fiji" ] ], 
-                             horizontalOptions=LayoutOptions.CenterAndExpand, 
-                             isGroupingEnabled=true, 
+                                [ 
+                                    "B", View.Label "B", [ View.Label "Baboon"; View.Label "Blue Monkey" ]
+                                    "C", View.Label "C", [ View.Label "Capuchin Monkey"; View.Label "Common Marmoset" ]
+                                    "G", View.Label "G", [ View.Label "Gibbon"; View.Label "Golden Lion Tamarin" ]
+                                    "H", View.Label "H", [ View.Label "Howler Monkey" ]
+                                    "J", View.Label "J", [ View.Label "Japanese Macaque" ]
+                                    "M", View.Label "M", [ View.Label "Mandrill" ]
+                                    "P", View.Label "P", [ View.Label "Proboscis Monkey"; View.Label "Pygmy Marmoset" ]
+                                    "R", View.Label "R", [ View.Label "Rhesus Macaque" ]
+                                    "S", View.Label "S", [ View.Label "Spider Monkey"; View.Label "Squirrel Monkey" ]
+                                    "V", View.Label "V", [ View.Label "Vervet Monkey" ]
+                                ], 
+                             horizontalOptions=LayoutOptions.CenterAndExpand,
                              itemSelected=(fun idx -> dispatch (ListViewGroupedSelectedItemChanged idx)))
                    ]))
 

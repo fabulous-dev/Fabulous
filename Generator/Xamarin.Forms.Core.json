@@ -14,7 +14,11 @@
 				{
 					"name": "StyleId",
 					"defaultValue": "null"
-				}
+				},
+				{  
+				  "name": "AutomationId",  
+				  "defaultValue": "null"  
+				} 
 			]
 		},
 		{
@@ -870,8 +874,8 @@
 				{
 					"name": "Source",
 					"uniqueName": "ImageSource",
-					"inputType": "string",
-					"modelType": "string",
+					"inputType": "obj",
+					"modelType": "obj",
 					"convToValue": "makeImageSource",
 					"defaultValue": "null"
 				},
@@ -1058,6 +1062,10 @@
 				{
 					"name": "FormattedText",
 					"defaultValue": "null"
+				},
+				{
+					"name": "LineBreakMode",
+					"defaultValue": "Xamarin.Forms.LineBreakMode.WordWrap"
 				}
 			]
 		},
@@ -1501,8 +1509,8 @@
 			"members": [
 				{
 					"name": "ImageSource",
-					"inputType": "string",
-					"modelType": "string",
+					"inputType": "obj",
+					"modelType": "obj",
 					"convToValue": "makeImageSource",
 					"defaultValue": "null"
 				}
@@ -1648,10 +1656,18 @@
 					"name": "ItemsSource",
 					"uniqueName": "ListViewGrouped_ItemsSource",
 					"shortName": "items",
-					"inputType": "(ViewElement * ViewElement list) list",
-					"modelType": "(ViewElement * ViewElement[])[]",
-					"convToModel": "(fun es -> es |> Array.ofList |> Array.map (fun (e,l) -> (e, Array.ofList l)))",
+					"inputType": "(string * ViewElement * ViewElement list) list",
+					"modelType": "(string * ViewElement * ViewElement[])[]",
+					"convToModel": "(fun es -> es |> Array.ofList |> Array.map (fun (g, e, l) -> (g, e, Array.ofList l)))",
 					"updateCode": "updateListViewGroupedItems"
+				},
+				{
+					"name": "ShowJumpList",
+					"uniqueName": "ListViewGrouped_ShowJumpList",
+					"inputType": "bool",
+					"modelType": "bool",
+					"defaultValue": "false",
+					"updateCode": "updateListViewGroupedShowJumpList"
 				},
 				//{
 				//	"name": "ItemTemplate",
@@ -1681,10 +1697,6 @@
 				//	"name": "HeaderTemplate",
 				//	"defaultValue": "null"
 				//},
-				{
-					"name": "IsGroupingEnabled",
-					"defaultValue": "false"
-				},
 				{
 					"name": "IsPullToRefreshEnabled",
 					"defaultValue": "false"
@@ -1723,15 +1735,15 @@
 					"name": "ItemAppearing",
 					"uniqueName": "ListViewGrouped_ItemAppearing",
 					"defaultValue": "null",
-					"inputType": "int * int -> unit",
-					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.Item).Value))"
+					"inputType": "int * int option -> unit",
+					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItemOrGroupItem sender args.Item).Value))"
 				},
 				{
 					"name": "ItemDisappearing",
 					"uniqueName": "ListViewGrouped_ItemDisappearing",
 					"defaultValue": "null",
-					"inputType": "int * int -> unit",
-					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.Item).Value))"
+					"inputType": "int * int option -> unit",
+					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItemOrGroupItem sender args.Item).Value))"
 				},
 				{
 					"name": "ItemSelected",
