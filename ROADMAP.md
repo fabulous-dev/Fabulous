@@ -9,7 +9,6 @@
   * Generate `///` docs in code generator
 
 * Programming efficiency
-  * Support a Live Player reload
   * Support hot-reloading of the saved model, reapplying to the same app where possible
 
 
