@@ -11,6 +11,7 @@
     <Compile Include="CodeModel.fs" />
     <Compile Include="Interpreter.fs" />
     <Compile Include="FromCompilerService.fs" />
+    <Compile Include="FileSystemWrapper.fs" />
     <Compile Include="fscd.fs" />
   </ItemGroup>
 
