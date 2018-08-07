@@ -6,3 +6,5 @@ bin
 packages
 paket-files
 *.dll
+
+build_output/
