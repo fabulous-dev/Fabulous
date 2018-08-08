@@ -93,7 +93,8 @@ let runner =
         
 ```
 Likewise, the general pattern to subscribe to external event sources is as follows:
-```let subscribeToPushEvent dispatch = 
+```fsharp
+let subscribeToPushEvent dispatch = 
      ...
      call dispatch in some closure
      ...
@@ -122,6 +123,7 @@ If necessary, explicitly off-load and then dispatch at the end, e.g.
 let backgroundCmd =
     Cmd.ofAsyncMsg (async { 
         do! Async.SwitchToThreadPool()
-        let res = ..
+        let res = ...
         return msg
-    })```
+    })
+```
