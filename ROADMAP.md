@@ -9,15 +9,12 @@
   * Generate `///` docs in code generator
 
 * Programming efficiency
-  * Support a Live Player reload
   * Support hot-reloading of the saved model, reapplying to the same app where possible
 
 
 ## Ideas
 
 * Consider allowing explicit static Xaml through a type provider, e.g `xaml<"""<StackLayout Padding="20">...</StackLayout>""">`, evaluating to a `ViewElement`
-
-* Possibly switch to a type provider (see [this comment](https://github.com/fsprojects/Elmish.XamarinForms/issues/50#issuecomment-390396365))
 
 * Performance:
   * Do better list comparison/diffing
@@ -35,6 +32,11 @@
 
 * App size:
   * Remove F# resources in linker, see https://github.com/fsprojects/Elmish.XamarinForms/issues/94
+
+## Discarded Ideas
+
+* Possibly switch to a type provider (see [this comment](https://github.com/fsprojects/Elmish.XamarinForms/issues/50#issuecomment-390396365))
+
 
 ## Bugs:
   * Fix issue for slider where minimum = 1.0, maximum=10.0 (i.e. when value=0 and minimum gets set before maximum?)
