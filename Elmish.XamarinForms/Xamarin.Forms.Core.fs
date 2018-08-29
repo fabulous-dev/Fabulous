@@ -115,6 +115,8 @@ type View() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _TextColorAttribKey : AttributeKey<_> = AttributeKey<_>("TextColor")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member val _SearchBarTextChangedAttribKey : AttributeKey<_> = AttributeKey<_>("SearchBarTextChanged")
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _ButtonCommandAttribKey : AttributeKey<_> = AttributeKey<_>("ButtonCommand")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _ButtonCanExecuteAttribKey : AttributeKey<_> = AttributeKey<_>("ButtonCanExecute")
@@ -1482,7 +1484,7 @@ type View() =
 
     /// Builds the attributes for a SearchBar in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildSearchBar(attribCount: int, ?cancelButtonColor: Xamarin.Forms.Color, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?placeholder: string, ?placeholderColor: Xamarin.Forms.Color, ?searchCommand: string -> unit, ?canExecute: bool, ?text: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string) = 
+    static member inline BuildSearchBar(attribCount: int, ?cancelButtonColor: Xamarin.Forms.Color, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?placeholder: string, ?placeholderColor: Xamarin.Forms.Color, ?searchCommand: string -> unit, ?canExecute: bool, ?text: string, ?textColor: Xamarin.Forms.Color, ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string) = 
 
         let attribCount = match cancelButtonColor with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match fontFamily with Some _ -> attribCount + 1 | None -> attribCount
@@ -1495,6 +1497,7 @@ type View() =
         let attribCount = match canExecute with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match textColor with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match textChanged with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId)
         match cancelButtonColor with None -> () | Some v -> attribBuilder.Add(View._CancelButtonColorAttribKey, (v)) 
@@ -1508,6 +1511,7 @@ type View() =
         match canExecute with None -> () | Some v -> attribBuilder.Add(View._SearchBarCanExecuteAttribKey, (v)) 
         match text with None -> () | Some v -> attribBuilder.Add(View._TextAttribKey, (v)) 
         match textColor with None -> () | Some v -> attribBuilder.Add(View._TextColorAttribKey, (v)) 
+        match textChanged with None -> () | Some v -> attribBuilder.Add(View._SearchBarTextChangedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))(v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -1547,6 +1551,8 @@ type View() =
         let mutable currTextOpt = ValueNone
         let mutable prevTextColorOpt = ValueNone
         let mutable currTextColorOpt = ValueNone
+        let mutable prevSearchBarTextChangedOpt = ValueNone
+        let mutable currSearchBarTextChangedOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = View._CancelButtonColorAttribKey.KeyValue then 
                 currCancelButtonColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
@@ -1570,6 +1576,8 @@ type View() =
                 currTextOpt <- ValueSome (kvp.Value :?> string)
             if kvp.Key = View._TextColorAttribKey.KeyValue then 
                 currTextColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
+            if kvp.Key = View._SearchBarTextChangedAttribKey.KeyValue then 
+                currSearchBarTextChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
@@ -1596,6 +1604,8 @@ type View() =
                     prevTextOpt <- ValueSome (kvp.Value :?> string)
                 if kvp.Key = View._TextColorAttribKey.KeyValue then 
                     prevTextColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
+                if kvp.Key = View._SearchBarTextChangedAttribKey.KeyValue then 
+                    prevSearchBarTextChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>)
         match prevCancelButtonColorOpt, currCancelButtonColorOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.CancelButtonColor <-  currValue
@@ -1643,11 +1653,17 @@ type View() =
         | _, ValueSome currValue -> target.TextColor <-  currValue
         | ValueSome _, ValueNone -> target.TextColor <- Xamarin.Forms.Color.Default
         | ValueNone, ValueNone -> ()
+        match prevSearchBarTextChangedOpt, currSearchBarTextChangedOpt with
+        | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
+        | ValueSome prevValue, ValueSome currValue -> target.TextChanged.RemoveHandler(prevValue); target.TextChanged.AddHandler(currValue)
+        | ValueNone, ValueSome currValue -> target.TextChanged.AddHandler(currValue)
+        | ValueSome prevValue, ValueNone -> target.TextChanged.RemoveHandler(prevValue)
+        | ValueNone, ValueNone -> ()
 
     /// Describes a SearchBar in the view
-    static member inline SearchBar(?cancelButtonColor: Xamarin.Forms.Color, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?placeholder: string, ?placeholderColor: Xamarin.Forms.Color, ?searchCommand: string -> unit, ?canExecute: bool, ?text: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string) = 
+    static member inline SearchBar(?cancelButtonColor: Xamarin.Forms.Color, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?placeholder: string, ?placeholderColor: Xamarin.Forms.Color, ?searchCommand: string -> unit, ?canExecute: bool, ?text: string, ?textColor: Xamarin.Forms.Color, ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string) = 
 
-        let attribBuilder = View.BuildSearchBar(0, ?cancelButtonColor=cancelButtonColor, ?fontFamily=fontFamily, ?fontAttributes=fontAttributes, ?fontSize=fontSize, ?horizontalTextAlignment=horizontalTextAlignment, ?placeholder=placeholder, ?placeholderColor=placeholderColor, ?searchCommand=searchCommand, ?canExecute=canExecute, ?text=text, ?textColor=textColor, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId)
+        let attribBuilder = View.BuildSearchBar(0, ?cancelButtonColor=cancelButtonColor, ?fontFamily=fontFamily, ?fontAttributes=fontAttributes, ?fontSize=fontSize, ?horizontalTextAlignment=horizontalTextAlignment, ?placeholder=placeholder, ?placeholderColor=placeholderColor, ?searchCommand=searchCommand, ?canExecute=canExecute, ?text=text, ?textColor=textColor, ?textChanged=textChanged, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId)
 
         ViewElement.Create<Xamarin.Forms.SearchBar>(View.CreateFuncSearchBar, View.UpdateFuncSearchBar, attribBuilder)
 
@@ -6204,6 +6220,9 @@ module ViewElementExtensions =
         /// Adjusts the TextColor property in the visual element
         member x.TextColor(value: Xamarin.Forms.Color) = x.WithAttribute(View._TextColorAttribKey, (value))
 
+        /// Adjusts the SearchBarTextChanged property in the visual element
+        member x.SearchBarTextChanged(value: Xamarin.Forms.TextChangedEventArgs -> unit) = x.WithAttribute(View._SearchBarTextChangedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))(value))
+
         /// Adjusts the ButtonCommand property in the visual element
         member x.ButtonCommand(value: unit -> unit) = x.WithAttribute(View._ButtonCommandAttribKey, (value))
 
@@ -6798,6 +6817,9 @@ module ViewElementExtensions =
 
     /// Adjusts the TextColor property in the visual element
     let textColor (value: Xamarin.Forms.Color) (x: ViewElement) = x.TextColor(value)
+
+    /// Adjusts the SearchBarTextChanged property in the visual element
+    let searchBarTextChanged (value: Xamarin.Forms.TextChangedEventArgs -> unit) (x: ViewElement) = x.SearchBarTextChanged(value)
 
     /// Adjusts the ButtonCommand property in the visual element
     let buttonCommand (value: unit -> unit) (x: ViewElement) = x.ButtonCommand(value)

@@ -330,6 +330,13 @@
 				{
 					"name": "TextColor",
 					"defaultValue": "Xamarin.Forms.Color.Default"
+				},
+				{
+					"name": "TextChanged",
+					"uniqueName": "SearchBarTextChanged",
+					"defaultValue": "null",
+					"inputType": "Xamarin.Forms.TextChangedEventArgs -> unit",
+					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))"
 				}
 			]
 		},
