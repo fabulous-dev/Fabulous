@@ -2,7 +2,7 @@
 namespace Elmish.XamarinForms.DynamicViews 
 
 [<AutoOpen>]
-module MapsExtension = 
+module SkiaSharpExtension = 
 
     open Elmish.XamarinForms.DynamicViews
 
