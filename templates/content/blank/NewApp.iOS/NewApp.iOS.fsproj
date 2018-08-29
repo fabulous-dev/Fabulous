@@ -169,6 +169,9 @@
     <Reference Include="Elmish.XamarinForms">
       <HintPath>..\packages\Elmish.XamarinForms.ElmishXamarinFormsPkg\lib\netstandard2.0\Elmish.XamarinForms.dll</HintPath>
     </Reference>
+    <Reference Include="Elmish.XamarinForms.LiveUpdate">
+      <HintPath>..\packages\Elmish.XamarinForms.LiveUpdate.ElmishXamarinFormsPkg\lib\netstandard2.0\Elmish.XamarinForms.LiveUpdate.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.NewtonsoftJsonPkg\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
     </Reference>
