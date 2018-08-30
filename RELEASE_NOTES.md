@@ -1,3 +1,9 @@
+#### 0.17.0
+
+* Added TextChanged on SearchBar
+* Fixed module name for SkiaSharp extension
+* Added LiveUpdate to the iOS template by default
+
 #### 0.16.0
 
 * Added AutomationId property on all controls
