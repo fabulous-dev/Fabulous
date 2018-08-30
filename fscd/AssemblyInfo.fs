@@ -5,13 +5,13 @@ open System.Reflection
 [<assembly: AssemblyTitleAttribute("fscd")>]
 [<assembly: AssemblyProductAttribute("fscd")>]
 [<assembly: AssemblyDescriptionAttribute("F# Compiler Daemon")>]
-[<assembly: AssemblyVersionAttribute("0.16.0")>]
-[<assembly: AssemblyFileVersionAttribute("0.16.0")>]
+[<assembly: AssemblyVersionAttribute("0.17.0")>]
+[<assembly: AssemblyFileVersionAttribute("0.17.0")>]
 do ()
 
 module internal AssemblyVersionInformation =
     let [<Literal>] AssemblyTitle = "fscd"
     let [<Literal>] AssemblyProduct = "fscd"
     let [<Literal>] AssemblyDescription = "F# Compiler Daemon"
-    let [<Literal>] AssemblyVersion = "0.16.0"
-    let [<Literal>] AssemblyFileVersion = "0.16.0"
+    let [<Literal>] AssemblyVersion = "0.17.0"
+    let [<Literal>] AssemblyFileVersion = "0.17.0"
