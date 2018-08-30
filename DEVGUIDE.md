@@ -31,6 +31,10 @@ Before releasing a new version, the version number need to be updated in several
 * Update the default value of `ElmishXamarinFormsPkg` in [template.json](templates/content/blank/.template.config/template.json)
 * Replace the old version number in [LiveUpdate.fs](Elmish.XamarinForms.LiveUpdate/LiveUpdate.fs)
 
+NB.: If you're releasing the same version, you might need to do the following first:
+* Run `git clean -xfd .`
+* Remove all `Elmish.XamarinForms*` folders from `.nuget`
+
 Once done, open a terminal to build the NuGet packages:
 
 On OSX:
@@ -51,7 +55,7 @@ On OSX:
 ```
 APIKEY=[Your personal NuGet API KEY]
 
-.nuget/NuGet.exe push build_output/Elmish.XamarinForms.*.nupkg $APIKEY -Source https://www.nuget.org
+mono .nuget/NuGet.exe push "build_output/Elmish.XamarinForms.*.nupkg" $APIKEY -Source https://www.nuget.org
 
 cp build_output/Elmish.XamarinForms.*.nupkg  ~/Downloads
 ```
