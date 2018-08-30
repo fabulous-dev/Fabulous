@@ -31,13 +31,19 @@ Before releasing a new version, the version number need to be updated in several
 * Update the default value of `ElmishXamarinFormsPkg` in [template.json](templates/content/blank/.template.config/template.json)
 * Replace the old version number in [LiveUpdate.fs](Elmish.XamarinForms.LiveUpdate/LiveUpdate.fs)
 
-Once done, open a terminal to build:
+Once done, open a terminal to build the NuGet packages:
 
+On OSX:
+```
+./build.sh NuGet
+```
+
+On Windows:
 ```
 .\build NuGet
 ```
 
-FAKE will have updated all the `AssemblyVersion.fs` files. Commit all changes.
+FAKE will have updated all the `AssemblyInfo.fs` files. Commit all changes.
 
 Lastly, publish all the generated packages to NuGet by running these commands:
 
@@ -45,9 +51,9 @@ On OSX:
 ```
 APIKEY=...
 
-.nuget\NuGet.exe push build_output\Elmish.XamarinForms.*.nupkg $APIKEY -Source https://www.nuget.org
+.nuget/NuGet.exe push build_output/Elmish.XamarinForms.*.nupkg $APIKEY -Source https://www.nuget.org
 
-cp build_output\Elmish.XamarinForms.*.nupkg  ~\Downloads
+cp build_output/Elmish.XamarinForms.*.nupkg  ~/Downloads
 ```
 
 On Windows (console):
