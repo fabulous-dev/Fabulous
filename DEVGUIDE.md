@@ -49,7 +49,7 @@ Lastly, publish all the generated packages to NuGet by running these commands:
 
 On OSX:
 ```
-APIKEY=...
+APIKEY=[Your personal NuGet API KEY]
 
 .nuget/NuGet.exe push build_output/Elmish.XamarinForms.*.nupkg $APIKEY -Source https://www.nuget.org
 
@@ -58,7 +58,7 @@ cp build_output/Elmish.XamarinForms.*.nupkg  ~/Downloads
 
 On Windows (console):
 ```
-set APIKEY=...
+set APIKEY=[Your personal NuGet API KEY]
 
 .nuget\NuGet.exe push build_output\Elmish.XamarinForms.*.nupkg  %APIKEY% -Source https://www.nuget.org
 
