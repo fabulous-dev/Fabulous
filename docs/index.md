@@ -49,7 +49,7 @@ type Model =
 /// Returns the initial state
 let init() = { Pressed=false }
 
-/// The funtion to update the view
+/// The function to update the view
 let update (msg:Msg) (model:Model) =
     match msg with
     | Pressed -> { model with Pressed = true }
@@ -92,6 +92,9 @@ The external sample [Calculator](https://github.com/nosami/Elmish.Calculator/) i
 The external sample [PocketPiggyBank](https://github.com/jimbobbennett/PocketPiggyBank) is a small client-server app with login authentication. (Note: because this is an external sample it may not be up-to-date with the latest version of this library.)
 
 The external sample [ElmishContacts](https://github.com/TimLariviere/ElmishContacts) is a multi-page contacts app featuring maps, group-lists and cross-page messages. (Note: because this is an external sample it may not be up-to-date with the latest version of this library.)
+
+The external sample [ElmishPlanets](https://github.com/TimLariviere/ElmishPlanets) is a multi-page contacts app featuring facts on the planets in the Solar System. It uses Urho3D and Elmish.XamarinForms (Note: because this is an external sample it may not be up-to-date with the latest version of this library.)
+
 
 
 Further Resources
