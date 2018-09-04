@@ -181,10 +181,10 @@ A simple `ListView` is as follows:
 ```fsharp
 View.ListView(
     items = [ View.Label "Ionide"
-                View.Label "Visual Studio"
-                View.Label "Emacs"
-                View.Label "Visual Studio Code"
-                View.Label "JetBrains Rider"],
+              View.Label "Visual Studio"
+              View.Label "Emacs"
+              View.Label "Visual Studio Code"
+              View.Label "JetBrains Rider"],
     itemSelected=(fun idx -> dispatch (ListViewSelectedItemChanged idx)))
 ```
 
