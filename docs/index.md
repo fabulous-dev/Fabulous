@@ -100,9 +100,11 @@ See also the curated list [awesome EXF](http://aka.ms/AwesomeEXF).
 Further Resources
 --------
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/si9YdWhbwSI?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
 Presentation: [Making Mobile App Development Simple with F#](https://twitter.com/dsyme/status/1037119834969067522)
+
+Presentation: Building mobile apps with F# using Xamarin - Jim Bennett - Xamarin University Guest Lecture
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/si9YdWhbwSI?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 **General Docs**
 
