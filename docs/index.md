@@ -93,7 +93,7 @@ The external sample [PocketPiggyBank](https://github.com/jimbobbennett/PocketPig
 
 The external sample [ElmishContacts](https://github.com/TimLariviere/ElmishContacts) is a multi-page contacts app featuring maps, group-lists and cross-page messages. (Note: because this is an external sample it may not be up-to-date with the latest version of this library.)
 
-The external sample [ElmishPlanets](https://github.com/TimLariviere/ElmishPlanets) is a multi-page contacts app featuring facts on the planets in the Solar System. It uses Urho3D and EXF (Note: because this is an external sample it may not be up-to-date with the latest version of this library.)
+The external sample [ElmishPlanets](https://github.com/TimLariviere/ElmishPlanets) is a multi-page app featuring facts on the planets in the Solar System. It uses Urho3D and EXF (Note: because this is an external sample it may not be up-to-date with the latest version of this library.)
 
 See also the curated list [awesome EXF](http://aka.ms/AwesomeEXF).
 
