@@ -129,4 +129,29 @@ The LiveUpdate mechanism is very experimental.
 - Debug output is printed to console by `fscd.exe`
 - Debug output is printed to app-output by the on-device web server
 
+### Design
+
+The fscd.exe daemon does this:
+
+1. Cracks project options, listens for changes, then uses FSharp.Compiler.Service to compile
+
+2. converts code output to PortaCode code model 
+
+3. serializes PortaCode using json.net
+
+4. sends to device by http. 
+
+Device app does this:
+
+5. starts httplistener, which gets http request
+
+6. deserializes PortaCode
+
+7. uses Interpreter.fs to run.
+
+8. looks for a "program" declaration in interpreted code and hacks into the currently running Elmish app and replaces the Elmish "program" ie view/update/init logic. 
+
+Device app continues to use whatever library dlls are on device via reflection.
+
+
 Please contribute documentation, updates and fixes to make the experience simpler.
