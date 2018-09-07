@@ -26,6 +26,10 @@
         {
             "condition": "CreateiOSProject",
             "path": "NewApp.iOS\\NewApp.iOS.fsproj"
+        },
+        {
+            "condition": "CreateWPFProject",
+            "path": "NewApp.WPF\\NewApp.WPF.fsproj"
         }
         //{
         //    "condition": "CreateBackendProject",
@@ -43,7 +47,8 @@
         "8D9F8CF0-E178-402D-8D40-A88B7B5F3D42", // Android project identity
         "91D74A40-E440-42AD-B51F-C2D641C49384", // iOS project identity
         "B445DF73-AC9E-4276-9FBA-7CB5AD5D2518", // macOS project identity
-        "3EA9E612-E717-4E55-9034-C415CD62AF9A" // UWP project identity
+        "3EA9E612-E717-4E55-9034-C415CD62AF9A", // UWP project identity
+        "3EA9E612-E717-4E55-9034-DE653429FEFD" // WPF  project identity
     ],
     "symbols": {
         "kind": {
@@ -183,6 +188,11 @@
             "dataType": "bool",
             "defaultValue": "false"
         },
+        "CreateWPFProject": {
+            "type": "parameter",
+            "dataType": "bool",
+            "defaultValue": "false"
+        },
         "CreateAndroidProject": {
             "type": "parameter",
             "dataType": "bool",
@@ -205,16 +215,16 @@
        // }
     },
     "postActions": [
-        {
-            "condition": "(HostIdentifier != \"dotnetcli\" && HostIdentifier != \"dotnetcli-preview\")",
-            "description": "Opens NewApp.fs in the editor.",
-            "manualInstructions": [],
-            "actionId": "84C0DA21-51C8-4541-9940-6CA19AF04EE6",
-            "args": {
-                "files": "0"
-            },
-            "continueOnError": true
-        }
+//        {
+            //"condition": "(HostIdentifier != \"dotnetcli\" && HostIdentifier != \"dotnetcli-preview\")",
+            //"description": "Opens NewApp.fs in the editor.",
+            //"manualInstructions": [],
+            //"actionId": "84C0DA21-51C8-4541-9940-6CA19AF04EE6",
+            //"args": {
+            //    "files": "0"
+           // },
+           // "continueOnError": true
+        //}
     ],
     "sources": [
         {
@@ -227,6 +237,12 @@
                     "condition": "(!CreateiOSProject)",
                     "exclude": [
                         "NewApp.iOS/**/*"
+                    ]
+                },
+                {
+                    "condition": "(!CreateWPFProject)",
+                    "exclude": [
+                        "NewApp.WPF/**/*"
                     ]
                 },
                 {
@@ -275,6 +291,12 @@
                     "condition": "(!CreateAndroidProject)",
                     "exclude": [
                         "NewApp.Android/**/*"
+                    ]
+                },
+                {
+                    "condition": "(!CreateWPFProject)",
+                    "exclude": [
+                        "NewApp.WPF/**/*"
                     ]
                 },
                 //{
