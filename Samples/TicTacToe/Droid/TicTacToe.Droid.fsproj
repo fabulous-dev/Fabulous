@@ -193,7 +193,7 @@
       <Name>TicTacToe</Name>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Fabulous\Fabulous.Core.fsproj">
+    <ProjectReference Include="..\..\..\Fabulous.Core\Fabulous.Core.fsproj">
       <Project>{AE045D79-7FF3-45F3-BFD0-305542A1C728}</Project>
       <Name>Fabulous</Name>
       <Private>True</Private>

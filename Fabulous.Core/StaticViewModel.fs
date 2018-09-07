@@ -6,7 +6,6 @@ open System.Collections.Generic
 open System.ComponentModel
 open System.Diagnostics
 open Xamarin.Forms
-open Elmish
 open Fabulous
 
 /// The internal representation of a binding in the ViewModel for static Xaml
