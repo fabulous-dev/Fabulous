@@ -1,9 +1,9 @@
-﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
+﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
 namespace AllControls
 
 open System
-open Elmish.XamarinForms
-open Elmish.XamarinForms.DynamicViews
+open Fabulous
+open Fabulous.DynamicViews
 open Xamarin.Forms
 
 type RootPageKind = 
@@ -240,7 +240,7 @@ module App =
                             padding = new Thickness (10.0, 20.0, 10.0, 5.0), 
                             content= View.StackLayout(
                                children=[ 
-                                   View.TestLabel(text = "Elmish.XamarinForms, version " + string (typeof<ViewElement>.Assembly.GetName().Version))
+                                   View.TestLabel(text = "Fabulous, version " + string (typeof<ViewElement>.Assembly.GetName().Version))
                                    View.Button(text = "Continue", command=(fun () -> dispatch (SetRootPageKind (Choice false)) ))
                                ]))
                 ])

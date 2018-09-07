@@ -1,11 +1,11 @@
-﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
-namespace Elmish.XamarinForms
+﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
+namespace Fabulous
 
 open System
 open System.Diagnostics
-open Elmish.XamarinForms
-open Elmish.XamarinForms.StaticViews
-open Elmish.XamarinForms.DynamicViews
+open Fabulous
+open Fabulous.StaticViews
+open Fabulous.DynamicViews
 open Xamarin.Forms
 
 [<RequireQualifiedAccess>]

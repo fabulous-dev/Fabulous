@@ -22,7 +22,7 @@ Getting started
 
 2. Install the template pack:
 
-       dotnet new -i Elmish.XamarinForms.Templates
+       dotnet new -i Fabulous.Templates
 
 3. Create a blank F# Functional Xamarin Forms app:
 
@@ -81,11 +81,11 @@ Some advantages of using an immutable model are:
 Samples
 ------
 
-The sample [CounterApp](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Samples/CounterApp/CounterApp/CounterApp.fs) contains a slightly larger example of Button/Label/Slider elements.
+The sample [CounterApp](https://github.com/fsprojects/Fabulous/blob/master/Samples/CounterApp/CounterApp/CounterApp.fs) contains a slightly larger example of Button/Label/Slider elements.
 
-The sample [TicTacToe](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Samples/TicTacToe/TicTacToe/TicTacToe.fs) contains examples of the Grid and Image elements.
+The sample [TicTacToe](https://github.com/fsprojects/Fabulous/blob/master/Samples/TicTacToe/TicTacToe/TicTacToe.fs) contains examples of the Grid and Image elements.
 
-The sample [AllControls](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Samples/AllControls/AllControls/AllControls.fs) contains examples of instantiating most elements in `Xamarin.Forms.Core`.
+The sample [AllControls](https://github.com/fsprojects/Fabulous/blob/master/Samples/AllControls/AllControls/AllControls.fs) contains examples of instantiating most elements in `Xamarin.Forms.Core`.
 
 The external sample [Calculator](https://github.com/nosami/Elmish.Calculator/) is a small calculator app. (Note: because this is an external sample it may not be up-to-date with the latest version of his library.)
 
@@ -133,4 +133,4 @@ Contributing
 
 Please contribute to this library through issue reports, pull requests, code reviews and discussion.
 
-* [Submit a fix to this guide](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/docs)
+* [Submit a fix to this guide](https://github.com/fsprojects/Fabulous/tree/master/docs)

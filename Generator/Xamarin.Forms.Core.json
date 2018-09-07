@@ -2,7 +2,7 @@
 	"assemblies": [
 		"packages/neutral/Xamarin.Forms/lib/netstandard1.0/Xamarin.Forms.Core.dll"
 	],
-	"outputNamespace": "Elmish.XamarinForms.DynamicViews",
+	"outputNamespace": "Fabulous.DynamicViews",
 	"types": [
 		{
 			"name": "Xamarin.Forms.Element",
@@ -1375,7 +1375,7 @@
 		},
 		{
 			"name": "Xamarin.Forms.ContentPage",
-			"customType": "Elmish.XamarinForms.DynamicViews.CustomContentPage",
+			"customType": "Fabulous.DynamicViews.CustomContentPage",
 			"members": [
 				{
 					"name": "Content",
@@ -1534,7 +1534,7 @@
 		},
 		{
 			"name": "Xamarin.Forms.ListView",
-			"customType": "Elmish.XamarinForms.DynamicViews.CustomListView",
+			"customType": "Fabulous.DynamicViews.CustomListView",
 			"members": [
 				{
 					"name": "ItemsSource",
@@ -1657,7 +1657,7 @@
 		{
 			"name": "Xamarin.Forms.ListView",
 			"modelName": "ListViewGrouped",
-			"customType": "Elmish.XamarinForms.DynamicViews.CustomGroupListView",
+			"customType": "Fabulous.DynamicViews.CustomGroupListView",
 			"members": [
 				{
 					"name": "ItemsSource",

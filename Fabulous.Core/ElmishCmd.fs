@@ -1,5 +1,5 @@
-﻿// Copyright 2018 Elmish and Elmish.XamarinForms contributors. See LICENSE.md for license.
-namespace Elmish.XamarinForms
+﻿// Copyright 2018 Elmish and Fabulous contributors. See LICENSE.md for license.
+namespace Fabulous
 
 /// Dispatch - feed new message into the processing loop
 type Dispatch<'msg> = 'msg -> unit

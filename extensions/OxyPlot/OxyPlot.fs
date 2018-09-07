@@ -1,5 +1,5 @@
-// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
-namespace Elmish.XamarinForms.DynamicViews 
+// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
+namespace Fabulous.DynamicViews 
 
 [<AutoOpen>]
 module OxyPlotExtension = 
@@ -10,12 +10,12 @@ module OxyPlotExtension =
     open OxyPlot.Axes
     open OxyPlot.Series
     open OxyPlot.Xamarin.Forms
-    open Elmish.XamarinForms.DynamicViews
+    open Fabulous.DynamicViews
 
     let ModelAttribKey = AttributeKey<_> "OxyPlot_Model"
     let ControllerAttribKey = AttributeKey<_> "OxyPlot_Controller"
 
-    type Elmish.XamarinForms.DynamicViews.View with
+    type Fabulous.DynamicViews.View with
         /// Describes a Map in the view
         static member inline PlotView
             (model: PlotModel, ?controller: PlotController, 

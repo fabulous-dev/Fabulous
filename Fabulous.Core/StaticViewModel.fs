@@ -1,5 +1,5 @@
-﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
-namespace Elmish.XamarinForms.StaticViews
+﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
+namespace Fabulous.StaticViews
 
 open System
 open System.Collections.Generic
@@ -7,7 +7,7 @@ open System.ComponentModel
 open System.Diagnostics
 open Xamarin.Forms
 open Elmish
-open Elmish.XamarinForms
+open Fabulous
 
 /// The internal representation of a binding in the ViewModel for static Xaml
 type internal PropertyBinding<'model, 'msg> =

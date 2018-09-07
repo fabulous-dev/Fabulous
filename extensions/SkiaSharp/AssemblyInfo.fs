@@ -2,16 +2,16 @@
 namespace System
 open System.Reflection
 
-[<assembly: AssemblyTitleAttribute("Elmish.XamarinForms.SkiaSharp")>]
-[<assembly: AssemblyProductAttribute("Elmish.XamarinForms.SkiaSharp")>]
-[<assembly: AssemblyDescriptionAttribute("Elmish.XamarinForms extension for SkiaSharp")>]
+[<assembly: AssemblyTitleAttribute("Fabulous.SkiaSharp")>]
+[<assembly: AssemblyProductAttribute("Fabulous.SkiaSharp")>]
+[<assembly: AssemblyDescriptionAttribute("Fabulous extension for SkiaSharp")>]
 [<assembly: AssemblyVersionAttribute("0.17.0")>]
 [<assembly: AssemblyFileVersionAttribute("0.17.0")>]
 do ()
 
 module internal AssemblyVersionInformation =
-    let [<Literal>] AssemblyTitle = "Elmish.XamarinForms.SkiaSharp"
-    let [<Literal>] AssemblyProduct = "Elmish.XamarinForms.SkiaSharp"
-    let [<Literal>] AssemblyDescription = "Elmish.XamarinForms extension for SkiaSharp"
+    let [<Literal>] AssemblyTitle = "Fabulous.SkiaSharp"
+    let [<Literal>] AssemblyProduct = "Fabulous.SkiaSharp"
+    let [<Literal>] AssemblyDescription = "Fabulous extension for SkiaSharp"
     let [<Literal>] AssemblyVersion = "0.17.0"
     let [<Literal>] AssemblyFileVersion = "0.17.0"

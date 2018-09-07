@@ -1,12 +1,12 @@
 ﻿{
     "author": "fsprojects",
     "classifications": [
-        "Elmish.XamarinForms",
+        "Fabulous",
         "Cross-platform"
     ],
-    "name": "Elmish.XamarinForms App",
-    "groupIdentity": "Elmish.XamarinForms.App",
-    "identity": "Elmish.XamarinForms.FSharp",
+    "name": "Fabulous App",
+    "groupIdentity": "Fabulous.App",
+    "identity": "Fabulous.FSharp",
     "shortName": "elmish-forms-app",
     "tags": {
         "language": "F#",
@@ -51,7 +51,7 @@
             "choices": [
                 {
                     "choice": "blank",
-                    "description": "An empty Elmish.XamarinForms app"
+                    "description": "An empty Fabulous app"
                 }
             ]
         },

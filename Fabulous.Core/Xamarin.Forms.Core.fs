@@ -1,4 +1,4 @@
-namespace Elmish.XamarinForms.DynamicViews 
+namespace Fabulous.DynamicViews 
 
 #nowarn "59" // cast always holds
 #nowarn "66" // cast always holds
@@ -4958,7 +4958,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateContentPage () : Xamarin.Forms.ContentPage = 
-            upcast (new Elmish.XamarinForms.DynamicViews.CustomContentPage())
+            upcast (new Fabulous.DynamicViews.CustomContentPage())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncContentPage = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.ContentPage) -> View.UpdateContentPage (prevOpt, curr, target)) 
@@ -5571,7 +5571,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateListView () : Xamarin.Forms.ListView = 
-            upcast (new Elmish.XamarinForms.DynamicViews.CustomListView())
+            upcast (new Fabulous.DynamicViews.CustomListView())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncListView = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.ListView) -> View.UpdateListView (prevOpt, curr, target)) 
@@ -5843,7 +5843,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateListViewGrouped () : Xamarin.Forms.ListView = 
-            upcast (new Elmish.XamarinForms.DynamicViews.CustomGroupListView())
+            upcast (new Fabulous.DynamicViews.CustomGroupListView())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncListViewGrouped = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.ListView) -> View.UpdateListViewGrouped (prevOpt, curr, target)) 

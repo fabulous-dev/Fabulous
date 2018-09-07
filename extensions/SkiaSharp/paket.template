@@ -1,21 +1,21 @@
 type file
-id Elmish.XamarinForms.SkiaSharp
+id Fabulous.SkiaSharp
 version 0.0
-authors Elmish.XamarinForms Contributors
+authors Fabulous Contributors
 description
-    Elmish.XamarinForms extension for SkiaSharp
+    Fabulous extension for SkiaSharp
 tags
 	Xamarin.Forms F# Elmish Elm SkiaSharp Drawing 2D
 projectUrl
-	https://github.com/fsprojects/Elmish.XamarinForms
+	https://github.com/fsprojects/Fabulous
 licenseUrl
-	https://github.com/fsprojects/Elmish.XamarinForms/blob/master/LICENSE.md
+	https://github.com/fsprojects/Fabulous/blob/master/LICENSE.md
 requireLicenseAcceptance false
 files
-	../../build_output/Elmish.XamarinForms.SkiaSharp.dll ==> lib/netstandard2.0
+	../../build_output/Fabulous.SkiaSharp.dll ==> lib/netstandard2.0
 dependencies
   FSharp.Core >= LOCKEDVERSION-neutral
   Xamarin.Forms >= LOCKEDVERSION-neutral
   SkiaSharp >= LOCKEDVERSION-neutral
   SkiaSharp.Views.Forms >= LOCKEDVERSION-neutral
-  Elmish.XamarinForms ~> CURRENTVERSION
+  Fabulous ~> CURRENTVERSION

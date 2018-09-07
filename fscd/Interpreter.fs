@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
+﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
 module FSharp.Compiler.PortaCode.Interpreter
 
 open System

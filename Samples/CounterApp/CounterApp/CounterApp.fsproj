@@ -8,8 +8,8 @@
     <Compile Include="AssemblyInfo.fs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Elmish.XamarinForms\Elmish.XamarinForms.fsproj" />
-    <ProjectReference Include="..\..\..\Elmish.XamarinForms.LiveUpdate\Elmish.XamarinForms.LiveUpdate.fsproj" />
+    <ProjectReference Include="..\..\..\Fabulous\Fabulous.Core.fsproj" />
+    <ProjectReference Include="..\..\..\Fabulous.LiveUpdate\Fabulous.LiveUpdate.fsproj" />
     <PackageReference Include="FSharp.Core" Version="4.5.0" />
     <PackageReference Update="FSharp.Core" Version="4.5.0" /> <!-- workaround for VSMac bug https://github.com/mono/monodevelop/pull/5137 --> 
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />

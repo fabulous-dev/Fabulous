@@ -1,4 +1,4 @@
-Elmish.XamarinForms Guide
+Fabulous Guide
 =======
 
 {% include_relative contents-views.md %}
@@ -72,7 +72,7 @@ let view model dispatch =
         View.ContentPage(title = "About",
             content= View.StackLayout(
                 children = [
-                    View.Label(text = "Elmish.XamarinForms!")
+                    View.Label(text = "Fabulous!")
                     View.Button(text = "Continue", command = (fun () -> dispatch (ShowAbout false) ))
                 ]))
 

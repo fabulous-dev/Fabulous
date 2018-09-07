@@ -1,5 +1,5 @@
-﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
-namespace Elmish.XamarinForms.StaticViews
+﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
+namespace Fabulous.StaticViews
   
 type internal Getter<'model> = 
     'model -> obj

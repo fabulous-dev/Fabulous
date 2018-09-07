@@ -1,9 +1,9 @@
-﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
+﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
 namespace NewApp
 
 open System.Diagnostics
-open Elmish.XamarinForms
-open Elmish.XamarinForms.DynamicViews
+open Fabulous
+open Fabulous.DynamicViews
 open Xamarin.Forms
 
 module App = 
@@ -74,14 +74,14 @@ type App () as app =
 //-:cnd:noEmit
 #if DEBUG
     // Uncomment this line to enable live update in debug mode. 
-    // See https://fsprojects.github.io/Elmish.XamarinForms/tools.html for further  instructions.
+    // See https://fsprojects.github.io/Fabulous/tools.html for further  instructions.
     //
     //do runner.EnableLiveUpdate()
 #endif    
 //+:cnd:noEmit
 
     // Uncomment this code to save the application state to app.Properties using Newtonsoft.Json
-    // See https://fsprojects.github.io/Elmish.XamarinForms/models.html for further  instructions.
+    // See https://fsprojects.github.io/Fabulous/models.html for further  instructions.
 //-:cnd:noEmit
 #if APPSAVE
     let modelId = "model"

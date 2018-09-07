@@ -11,8 +11,8 @@
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="XamarinFormsSdk" />
     <PackageReference Include="Xamarin.Essentials" Version="XamarinEssentialsSdk" />
-    <PackageReference Include="Elmish.XamarinForms" Version="ElmishXamarinFormsPkg" />
-    <PackageReference Include="Elmish.XamarinForms.LiveUpdate" Version="ElmishXamarinFormsPkg" />
+    <PackageReference Include="Fabulous" Version="ElmishXamarinFormsPkg" />
+    <PackageReference Include="Fabulous.LiveUpdate" Version="ElmishXamarinFormsPkg" />
     <PackageReference Include="FSharp.Core" Version="FSharpCorePkg" />
     <PackageReference Update="FSharp.Core" Version="FSharpCorePkg" /> <!-- workaround for VSMac bug https://github.com/mono/monodevelop/pull/5137 --> 
     <PackageReference Include="Newtonsoft.Json" Version="NewtonsoftJsonPkg" />

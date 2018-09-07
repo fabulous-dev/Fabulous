@@ -1,4 +1,4 @@
-Elmish.XamarinForms Guide
+Fabulous Guide
 =======
 
 {% include_relative contents-views.md %}
@@ -96,7 +96,7 @@ let view model disptch =
 ### Resource Dictionaries
 
 In Xamarin.Forms documentation you may see references to resource dictionaries.
-In Elmish.XamarinForms, resources dictionaries are replaced by "simple F# programming", e.g.
+In Fabulous, resources dictionaries are replaced by "simple F# programming", e.g.
 ```fsharp
 let horzOptions = LayoutOptions.Center
 let vertOptions = LayoutOptions.CenterAndExpand

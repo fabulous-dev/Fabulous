@@ -1,4 +1,4 @@
-Elmish.XamarinForms Guide
+Fabulous Guide
 =======
 
 {% include_relative contents.md %}

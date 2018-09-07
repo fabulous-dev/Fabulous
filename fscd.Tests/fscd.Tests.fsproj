@@ -29,7 +29,7 @@
 </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Elmish.XamarinForms\Elmish.XamarinForms.fsproj" />
+    <ProjectReference Include="..\Fabulous\Fabulous.Core.fsproj" />
   </ItemGroup>
 
 </Project>

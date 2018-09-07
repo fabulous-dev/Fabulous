@@ -1,20 +1,20 @@
 type file
-id Elmish.XamarinForms.Maps
+id Fabulous.Maps
 version 0.0
-authors Elmish.XamarinForms Contributors
+authors Fabulous Contributors
 description
-    Elmish.XamarinForms extension for Xamarin.Forms.Maps
+    Fabulous extension for Xamarin.Forms.Maps
 tags
 	Xamarin.Forms F# Elmish Elm Maps
 projectUrl
-	https://github.com/fsprojects/Elmish.XamarinForms
+	https://github.com/fsprojects/Fabulous
 licenseUrl
-	https://github.com/fsprojects/Elmish.XamarinForms/blob/master/LICENSE.md
+	https://github.com/fsprojects/Fabulous/blob/master/LICENSE.md
 requireLicenseAcceptance false
 files
-	../../build_output/Elmish.XamarinForms.Maps.dll ==> lib/netstandard2.0
+	../../build_output/Fabulous.Maps.dll ==> lib/netstandard2.0
 dependencies
   FSharp.Core >= LOCKEDVERSION-neutral
   Xamarin.Forms >= LOCKEDVERSION-neutral
   Xamarin.Forms.Maps >= LOCKEDVERSION-neutral
-  Elmish.XamarinForms ~> CURRENTVERSION
+  Fabulous ~> CURRENTVERSION

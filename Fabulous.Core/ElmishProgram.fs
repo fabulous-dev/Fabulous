@@ -1,10 +1,10 @@
-﻿// Copyright 2018 Elmish and Elmish.XamarinForms contributors. See LICENSE.md for license.
-namespace Elmish.XamarinForms
+﻿// Copyright 2018 Elmish and Fabulous contributors. See LICENSE.md for license.
+namespace Fabulous
 
 open System
 open System.Diagnostics
-open Elmish.XamarinForms
-open Elmish.XamarinForms.DynamicViews
+open Fabulous
+open Fabulous.DynamicViews
 open Xamarin.Forms
 
 [<AutoOpen>]
@@ -235,6 +235,6 @@ module Program =
     let withDynamicView _app (_program: Program<'model, 'msg, _>) = failwith ""
 
     /// Add dynamic views associated with a specific application
-    [<Obsolete("Please open Elmish.XamarinForms.StaticViews and use Program.runWithStaticView", true)>]
+    [<Obsolete("Please open Fabulous.StaticViews and use Program.runWithStaticView", true)>]
     let withStaticView (_program: Program<'model, 'msg, _>) = failwith ""
 
