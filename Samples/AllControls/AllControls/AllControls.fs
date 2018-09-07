@@ -2,7 +2,7 @@
 namespace AllControls
 
 open System
-open Fabulous
+open Fabulous.Core
 open Fabulous.DynamicViews
 open Xamarin.Forms
 

@@ -1,4 +1,4 @@
-Fabulous Guide
+Fabulous - Guide
 =======
 
 {% include_relative contents-views.md %}
@@ -37,7 +37,7 @@ The view element inherits attributes and update functionality from BASE via prot
 [<AutoOpen>]
 module MyViewExtensions =
 
-    open Fabulous
+    open Fabulous.Core
     open Fabulous.DynamicViews
 
     // Define keys for the possible attributes

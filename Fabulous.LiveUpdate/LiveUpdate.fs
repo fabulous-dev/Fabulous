@@ -1,5 +1,5 @@
 ﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
-namespace Fabulous
+namespace Fabulous.Core
 
 open System
 open System.Net
@@ -7,7 +7,7 @@ open System.Net.Sockets
 open System.Net.NetworkInformation
 open System.IO
 open System.Text
-open Fabulous
+open Fabulous.Core
 open Fabulous.DynamicViews
 open FSharp.Compiler.PortaCode.CodeModel
 open FSharp.Compiler.PortaCode.Interpreter

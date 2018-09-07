@@ -2,12 +2,14 @@
     "author": "fsprojects",
     "classifications": [
         "Fabulous",
+        "Mobile",
+        "Elmish",
         "Cross-platform"
     ],
     "name": "Fabulous App",
     "groupIdentity": "Fabulous.App",
     "identity": "Fabulous.FSharp",
-    "shortName": "elmish-forms-app",
+    "shortName": "fabulous-app",
     "tags": {
         "language": "F#",
         "type": "project"
@@ -153,7 +155,7 @@
             "type": "parameter",
             "dataType": "string",
             "replaces": "FSharpCorePkg",
-            "defaultValue": "4.5.0"
+            "defaultValue": "4.5.2"
         },
         "ProjectID": {
             "type": "generated",

@@ -3,7 +3,8 @@ namespace Fabulous.StaticViews
 
 open System
 open System.Diagnostics
-open Fabulous
+open Fabulous.Core
+open Fabulous.StaticViews
 open Xamarin.Forms
 
 [<RequireQualifiedAccess>]

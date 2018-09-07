@@ -1,7 +1,7 @@
 ﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
 namespace StaticViewCounterApp
 
-open Fabulous
+open Fabulous.Core
 open Fabulous.StaticViews
 open Xamarin.Forms
 

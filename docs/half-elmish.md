@@ -30,8 +30,7 @@ Here is a full example (excluding Xaml):
 ```fsharp
 namespace CounterApp
 
-open Elmish
-open Fabulous
+open Fabulous.Core
 open Fabulous.StaticViews
 open Xamarin.Forms
 

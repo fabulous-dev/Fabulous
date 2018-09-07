@@ -101,7 +101,7 @@ Target "TestTemplatesNuGet" (fun _ ->
     let testAppName = "testapp2" + string (abs (hash System.DateTime.Now.Ticks) % 100)
     // Instantiate the template. TODO: additional parameters and variations
     CleanDir testAppName
-    DotNetCli.RunCommand id (sprintf "new elmish-forms-app -n %s -lang F#" testAppName)
+    DotNetCli.RunCommand id (sprintf "new fabulous-app -n %s -lang F#" testAppName)
 
     let pkgs = Path.GetFullPath(buildDir true)
     // When restoring, using the build_output as a package source to pick up the package we just compiled
@@ -116,11 +116,11 @@ Target "TestTemplatesNuGet" (fun _ ->
         .\build LibraryNuGet
         dotnet new -i  templates
         rmdir /s /q testapp2
-        dotnet new elmish-forms-app -n testapp2 -lang F#
+        dotnet new fabulous-app -n testapp2 -lang F#
         dotnet restore testapp2/testapp2/testapp2.fsproj -s build_output/
-        dotnet new -i  templates && rmdir /s /q testapp2 && dotnet new elmish-forms-app -n testapp2 -lang F# && dotnet restore testapp2/testapp2/testapp2.fsproj && msbuild testapp2/testapp2.Android/testapp2.Android.fsproj /t:RestorePackages && msbuild testapp2/testapp2.Android/testapp2.Android.fsproj
-        dotnet new -i  templates && rmdir /s /q testapp2 && dotnet new elmish-forms-app -n testapp2 -lang F# && dotnet restore testapp2/testapp2/testapp2.fsproj && msbuild testapp2/testapp2.iOS/testapp2.iOS.fsproj /t:RestorePackages  && msbuild testapp2/testapp2.iOS/testapp2.iOS.fsproj
-        dotnet new -i  templates && rmdir /s /q testapp2 && dotnet new elmish-forms-app -n testapp2 -lang F# --CreateMacProject && dotnet restore testapp2/testapp2/testapp2.fsproj && msbuild testapp2/testapp2.macOS/testapp2.macOS.fsproj /t:RestorePackages  && msbuild testapp2/testapp2.macOS/testapp2.macOS.fsproj
+        dotnet new -i  templates && rmdir /s /q testapp2 && dotnet new fabulous-app -n testapp2 -lang F# && dotnet restore testapp2/testapp2/testapp2.fsproj && msbuild testapp2/testapp2.Android/testapp2.Android.fsproj /t:RestorePackages && msbuild testapp2/testapp2.Android/testapp2.Android.fsproj
+        dotnet new -i  templates && rmdir /s /q testapp2 && dotnet new fabulous-app -n testapp2 -lang F# && dotnet restore testapp2/testapp2/testapp2.fsproj && msbuild testapp2/testapp2.iOS/testapp2.iOS.fsproj /t:RestorePackages  && msbuild testapp2/testapp2.iOS/testapp2.iOS.fsproj
+        dotnet new -i  templates && rmdir /s /q testapp2 && dotnet new fabulous-app -n testapp2 -lang F# --CreateMacProject && dotnet restore testapp2/testapp2/testapp2.fsproj && msbuild testapp2/testapp2.macOS/testapp2.macOS.fsproj /t:RestorePackages  && msbuild testapp2/testapp2.macOS/testapp2.macOS.fsproj
         *)
 
 )

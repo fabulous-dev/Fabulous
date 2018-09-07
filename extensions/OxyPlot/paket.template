@@ -18,4 +18,4 @@ dependencies
   Xamarin.Forms >= LOCKEDVERSION-neutral
   OxyPlot.Core >= LOCKEDVERSION-neutral
   OxyPlot.Xamarin.Forms >= LOCKEDVERSION-neutral
-  Fabulous ~> CURRENTVERSION
+  Fabulous.Core ~> CURRENTVERSION

@@ -1,7 +1,9 @@
 #### 0.20.0
 
-* Rename Elmish.XamarinForms --> Fabulous
-* Rename Elmish.XamarinForms.dll --> Fabulous.Core.dll
+* Rename project Elmish.XamarinForms --> Fabulous
+* Rename namespace Elmish.XamarinForms --> Fabulous.Core
+* Rename dll Elmish.XamarinForms.dll --> Fabulous.Core.dll
+* Rename package Elmish.XamarinForms --> Fabulous.Core
 
 #### 0.17.0
 

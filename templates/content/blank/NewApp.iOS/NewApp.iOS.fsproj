@@ -166,7 +166,7 @@
     <Reference Include="FSharp.Core">
       <HintPath>..\packages\FSharp.Core.FSharpCorePkg\lib\netstandard1.6\FSharp.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Fabulous">
+    <Reference Include="Fabulous.Core">
       <HintPath>..\packages\Fabulous.ElmishXamarinFormsPkg\lib\netstandard2.0\Fabulous.Core.dll</HintPath>
     </Reference>
     <Reference Include="Fabulous.LiveUpdate">

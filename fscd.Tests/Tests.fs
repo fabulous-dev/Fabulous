@@ -17,7 +17,7 @@ type TestClass () =
 --define:DEBUG
 --define:NETSTANDARD2_0
 --optimize-
--r:PACKAGEDIR/fsharp.core/4.5.0/lib/netstandard1.6/FSharp.Core.dll
+-r:PACKAGEDIR/fsharp.core/4.5.2/lib/netstandard1.6/FSharp.Core.dll
 -r:PACKAGEDIR/microsoft.csharp/4.3.0/ref/netstandard1.0/Microsoft.CSharp.dll
 -r:PACKAGEDIR/netstandard.library/2.0.1/build/netstandard2.0/ref/Microsoft.Win32.Primitives.dll
 -r:PACKAGEDIR/netstandard.library/2.0.1/build/netstandard2.0/ref/mscorlib.dll

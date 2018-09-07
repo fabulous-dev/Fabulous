@@ -26,7 +26,7 @@ Getting started
 
 3. Create a blank F# Functional Xamarin Forms app:
 
-       dotnet new elmish-forms-app -lang F# -n SqueakyApp
+       dotnet new fabulous-app -lang F# -n SqueakyApp
 
 4. Open, edit, build and deploy in Visual Studio, Visual Studio for Mac and/or "msbuild" command line
 

@@ -1,9 +1,9 @@
 type file
-id Fabulous
+id Fabulous.Core
 version 0.0
 authors Fabulous Contributors
 description
-    F# bindings for using elmish in Xamarin.Forms 
+    F# Functional App Development using Xamrin.Forms
 tags
 	Xamarin.Forms F# Elmish Elm
 projectUrl

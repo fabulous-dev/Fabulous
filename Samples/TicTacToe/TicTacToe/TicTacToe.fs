@@ -2,7 +2,7 @@
 
 namespace TicTacToe
 
-open Fabulous
+open Fabulous.Core
 open Fabulous.DynamicViews
 open Xamarin.Forms
 

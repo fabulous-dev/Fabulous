@@ -1,4 +1,4 @@
-Fabulous Guide
+Fabulous - Guide
 =======
 
 {% include_relative contents.md %}

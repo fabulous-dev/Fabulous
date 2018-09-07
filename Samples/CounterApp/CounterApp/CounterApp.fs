@@ -2,7 +2,7 @@
 namespace CounterApp
 
 open System.Diagnostics
-open Fabulous 
+open Fabulous.Core
 open Fabulous.DynamicViews
 open Xamarin.Forms
 

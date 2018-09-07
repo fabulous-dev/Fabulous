@@ -6,7 +6,7 @@ open System.Collections.Generic
 open System.ComponentModel
 open System.Diagnostics
 open Xamarin.Forms
-open Fabulous
+open Fabulous.Core
 
 /// The internal representation of a binding in the ViewModel for static Xaml
 type internal PropertyBinding<'model, 'msg> =

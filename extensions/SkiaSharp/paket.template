@@ -18,4 +18,4 @@ dependencies
   Xamarin.Forms >= LOCKEDVERSION-neutral
   SkiaSharp >= LOCKEDVERSION-neutral
   SkiaSharp.Views.Forms >= LOCKEDVERSION-neutral
-  Fabulous ~> CURRENTVERSION
+  Fabulous.Core ~> CURRENTVERSION
