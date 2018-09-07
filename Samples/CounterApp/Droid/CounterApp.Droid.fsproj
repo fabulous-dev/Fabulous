@@ -10,15 +10,18 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Droid</RootNamespace>
     <AssemblyName>Droid</AssemblyName>
-    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
+    <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
     <SelectedDevice>Google Pixel 2</SelectedDevice>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <DefaultDevice>emulator_pixel</DefaultDevice>
+    <AndroidLinkMode>None</AndroidLinkMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -27,7 +30,6 @@
     <OutputPath>bin\Debug</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <AndroidLinkMode>None</AndroidLinkMode>
     <PlatformTarget>
     </PlatformTarget>
   </PropertyGroup>
@@ -72,33 +74,25 @@
     <Compile Include="Properties\AssemblyInfo.fs" />
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="Assets\AboutAssets.txt" />
-    <Content Include="packages.config" />
-    <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Elmish.XamarinForms\Elmish.XamarinForms.fsproj">
-      <Name>Elmish.XamarinForms</Name>
+    <ProjectReference Include="..\..\..\Fabulous.LiveUpdate\Fabulous.LiveUpdate.fsproj">
+      <Name>Fabulous.LiveUpdate</Name>
+      <Project>{b459afad-bb5b-43c3-bd86-609e8db3e3f1}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Fabulous.Core\Fabulous.Core.fsproj">
+      <Name>Fabulous</Name>
       <Project>{b459afad-bb5b-43c3-bd86-609e8db3e3fd}</Project>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\CounterApp\CounterApp.fsproj">
-      <Name>CounterApp (Samples\CounterApp\CounterApp)</Name>
-      <Project>{ac36b11a-383d-45a3-8999-4f6475e9dd13}</Project>
-      <Private>True</Private>
-    </ProjectReference>
     <Reference Include="FSharp.Core">
-      <HintPath>..\..\..\packages\FSharp.Core.4.3.2\lib\netstandard1.6\FSharp.Core.dll</HintPath>
+      <HintPath>..\..\..\packages\androidapp\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll</HintPath>
     </Reference>
-    <Reference Include="FsPickler">
-      <HintPath>..\..\..\packages\neutral\FsPickler\lib\netstandard2.0\FsPickler.dll</HintPath>
-    </Reference>
-    <Reference Include="FsPickler.Json">
-      <HintPath>..\..\..\packages\neutral\FsPickler.Json\lib\netstandard2.0\FsPickler.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\packages\neutral\Newtonsoft.Json\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
@@ -106,53 +100,68 @@
     <Reference Include="System.Numerics" />
     <Reference Include="mscorlib" />
     <Reference Include="Mono.Android" />
+    <Reference Include="Xamarin.Android.FSharp.ResourceProvider.Runtime">
+      <HintPath>../../../packages/androidapp/Xamarin.Android.FSharp.ResourceProvider/lib/Xamarin.Android.FSharp.ResourceProvider.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Arch.Core.Common">
+      <HintPath>../../../packages/androidapp/Xamarin.Android.Arch.Core.Common/lib/MonoAndroid80/Xamarin.Android.Arch.Core.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Arch.Core.Runtime">
+      <HintPath>../../../packages/androidapp/Xamarin.Android.Arch.Core.Runtime/lib/MonoAndroid80/Xamarin.Android.Arch.Core.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Arch.Lifecycle.Common">
+      <HintPath>../../../packages/androidapp/Xamarin.Android.Arch.Lifecycle.Common/lib/MonoAndroid80/Xamarin.Android.Arch.Lifecycle.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Arch.Lifecycle.Runtime">
+      <HintPath>../../../packages/androidapp/Xamarin.Android.Arch.Lifecycle.Runtime/lib/MonoAndroid80/Xamarin.Android.Arch.Lifecycle.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="Xamarin.Android.Support.Animated.Vector.Drawable">
-      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.Animated.Vector.Drawable/lib/MonoAndroid70/Xamarin.Android.Support.Animated.Vector.Drawable.dll</HintPath>
+      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.Animated.Vector.Drawable/lib/MonoAndroid81/Xamarin.Android.Support.Animated.Vector.Drawable.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.Annotations">
-      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.Annotations/lib/MonoAndroid70/Xamarin.Android.Support.Annotations.dll</HintPath>
+      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.Annotations/lib/MonoAndroid81/Xamarin.Android.Support.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.Compat">
-      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.Compat/lib/MonoAndroid70/Xamarin.Android.Support.Compat.dll</HintPath>
+      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.Compat/lib/MonoAndroid81/Xamarin.Android.Support.Compat.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.Core.UI">
-      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.Core.UI/lib/MonoAndroid70/Xamarin.Android.Support.Core.UI.dll</HintPath>
+      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.Core.UI/lib/MonoAndroid81/Xamarin.Android.Support.Core.UI.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.Core.Utils">
-      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.Core.Utils/lib/MonoAndroid70/Xamarin.Android.Support.Core.Utils.dll</HintPath>
+      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.Core.Utils/lib/MonoAndroid81/Xamarin.Android.Support.Core.Utils.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.Design">
-      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.Design/lib/MonoAndroid70/Xamarin.Android.Support.Design.dll</HintPath>
+      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.Design/lib/MonoAndroid81/Xamarin.Android.Support.Design.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.Fragment">
-      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.Fragment/lib/MonoAndroid70/Xamarin.Android.Support.Fragment.dll</HintPath>
+      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.Fragment/lib/MonoAndroid81/Xamarin.Android.Support.Fragment.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.Media.Compat">
-      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.Media.Compat/lib/MonoAndroid70/Xamarin.Android.Support.Media.Compat.dll</HintPath>
+      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.Media.Compat/lib/MonoAndroid81/Xamarin.Android.Support.Media.Compat.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.Transition">
-      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.Transition/lib/MonoAndroid70/Xamarin.Android.Support.Transition.dll</HintPath>
+      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.Transition/lib/MonoAndroid81/Xamarin.Android.Support.Transition.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.v4">
-      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.v4/lib/MonoAndroid70/Xamarin.Android.Support.v4.dll</HintPath>
+      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.v4/lib/MonoAndroid81/Xamarin.Android.Support.v4.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.v7.AppCompat">
-      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.v7.AppCompat/lib/MonoAndroid70/Xamarin.Android.Support.v7.AppCompat.dll</HintPath>
+      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.v7.AppCompat/lib/MonoAndroid81/Xamarin.Android.Support.v7.AppCompat.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.v7.CardView">
-      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.v7.CardView/lib/MonoAndroid70/Xamarin.Android.Support.v7.CardView.dll</HintPath>
+      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.v7.CardView/lib/MonoAndroid81/Xamarin.Android.Support.v7.CardView.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.v7.MediaRouter">
-      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.v7.MediaRouter/lib/MonoAndroid70/Xamarin.Android.Support.v7.MediaRouter.dll</HintPath>
+      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.v7.MediaRouter/lib/MonoAndroid81/Xamarin.Android.Support.v7.MediaRouter.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.v7.Palette">
-      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.v7.Palette/lib/MonoAndroid70/Xamarin.Android.Support.v7.Palette.dll</HintPath>
+      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.v7.Palette/lib/MonoAndroid81/Xamarin.Android.Support.v7.Palette.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.v7.RecyclerView">
-      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.v7.RecyclerView/lib/MonoAndroid70/Xamarin.Android.Support.v7.RecyclerView.dll</HintPath>
+      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.v7.RecyclerView/lib/MonoAndroid81/Xamarin.Android.Support.v7.RecyclerView.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.Vector.Drawable">
-      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.Vector.Drawable/lib/MonoAndroid70/Xamarin.Android.Support.Vector.Drawable.dll</HintPath>
+      <HintPath>../../../packages/androidapp/Xamarin.Android.Support.Vector.Drawable/lib/MonoAndroid81/Xamarin.Android.Support.Vector.Drawable.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Core">
       <HintPath>../../../packages/androidapp/Xamarin.Forms/lib/MonoAndroid10/Xamarin.Forms.Core.dll</HintPath>
@@ -169,5 +178,9 @@
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>../../../packages/androidapp/Xamarin.Forms/lib/MonoAndroid10/Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
+    <ProjectReference Include="..\CounterApp\CounterApp.fsproj">
+      <Project>{AC36B11A-383D-45A3-8999-4F6475E9DD13}</Project>
+      <Name>CounterApp</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="StaticViewCounterApp.CounterPage">
+	<ContentPage.Content>
+        <StackLayout Padding="20">
+          <StackLayout Padding="20" VerticalOptions="Center">
+            <Label Text="{Binding Path=[CounterValue], StringFormat=' value 1: {0}'}" HorizontalOptions="Center" TextColor="Blue"     />
+            <Label Text="{Binding Path=[CounterValue2], StringFormat=' value 2: {0}'}" HorizontalOptions="Center" TextColor="Green"     />
+            <Button Text="Increment" Command="{Binding Path=[IncrementCommand]}"   />
+            <Button Text="Decrement" Command="{Binding Path=[DecrementCommand]}" />
+            <Slider Maximum="10" Minimum="1" Value="{Binding Path=[StepValue]}" />
+            <Label Text="{Binding Path=[StepValue], StringFormat='Step size: {0}'}" HorizontalOptions="Center" />
+            <!-- This is included to show how the visibility of controls is controlled --> 
+        </StackLayout>
+        <Button Text="Reset"  IsVisible="{Binding Path=[ResetVisible]}" HorizontalOptions="Center" Command="{Binding Path=[ResetCommand]}" />
+      </StackLayout>
+	</ContentPage.Content>
+</ContentPage>

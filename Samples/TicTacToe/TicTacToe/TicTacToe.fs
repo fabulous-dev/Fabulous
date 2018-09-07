@@ -1,11 +1,9 @@
-﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
+﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
 
 namespace TicTacToe
 
-open Elmish
-open Elmish.XamarinForms
-open Elmish.XamarinForms.DynamicViews
-open Elmish.XamarinForms.DynamicViews.SimplerHelpers
+open Fabulous.Core
+open Fabulous.DynamicViews
 open Xamarin.Forms
 
 /// Represents a player and a player's move
@@ -13,6 +11,7 @@ type Player =
     | X 
     | O 
     member p.Swap = match p with X -> O | O -> X
+    member p.Name = match p with X -> "X" | Y -> "Y"
 
 /// Represents the game state contents of a single cell
 type GameCell = 
@@ -49,6 +48,9 @@ type Model =
 
       /// The state of play on the board
       Board: Board
+
+      /// The state of play on the board
+      GameScore: (int * int)
       
       /// The model occasionally includes things related to the view.  In this case,
       /// we track the desired visual size of the board, to ensure a square, in response to
@@ -73,6 +75,7 @@ module App =
     let init () = 
         { NextUp = X
           Board = initialBoard
+          GameScore = (0,0)
           VisualBoardSize = None }
 
     /// Check if there are any more moves available in the game
@@ -110,8 +113,8 @@ module App =
     /// Get a message to show the current game result
     let getMessage model = 
         match getGameResult model with 
-        | StillPlaying -> sprintf "%O's turn" model.NextUp
-        | Win p -> sprintf "%O wins!" p
+        | StillPlaying -> sprintf "%s's turn" model.NextUp.Name
+        | Win p -> sprintf "%s wins!" p.Name
         | Draw -> "It is a draw!"
 
     /// The 'update' function to update the model
@@ -131,14 +134,21 @@ module App =
         if result <> StillPlaying then 
             gameOver (getMessage newModel)
 
+        let newModel2 = 
+            let (x,y) = newModel.GameScore
+            match result with 
+            | Win p -> { newModel with GameScore = (if p = X then (x+1, y) else (x, y+1)) }
+            | _ -> newModel
+            
         // Return the new model.
-        newModel
+        newModel2
 
     /// A helper used in the 'view' function to get the name 
     /// of the Xaml resource for the image for a player
     let imageForPos cell =
         match cell with
-        | Full X -> "Cross"
+        // Revert this once https://github.com/fsprojects/Fabulous/pull/51 is reverted
+        | Full X -> "icon"
         | Full O -> "Nought"
         | Empty -> ""
 
@@ -151,25 +161,25 @@ module App =
 
     /// The dynamic 'view' function giving the updated content for the view
     let view model dispatch =
-      Xaml.NavigationPage(barBackgroundColor = Color.LightBlue, 
+      View.NavigationPage(barBackgroundColor = Color.LightBlue, 
         barTextColor = Color.Black,
         pages=
-          [Xaml.ContentPage(
-            Xaml.Grid(rowdefs=[ "*"; "auto"; "auto" ],
+          [View.ContentPage(
+            View.Grid(rowdefs=[ "*"; "auto"; "auto" ],
               children=[
-                Xaml.Grid(rowdefs=[ "*"; 5.0; "*"; 5.0; "*" ], coldefs=[ "*"; 5.0; "*"; 5.0; "*" ],
+                View.Grid(rowdefs=[ "*"; 5.0; "*"; 5.0; "*" ], coldefs=[ "*"; 5.0; "*"; 5.0; "*" ],
                     children=[
-                        yield Xaml.BoxView(Color.Black).GridRow(1).GridColumnSpan(5)
-                        yield Xaml.BoxView(Color.Black).GridRow(3).GridColumnSpan(5)
-                        yield Xaml.BoxView(Color.Black).GridColumn(1).GridRowSpan(5)
-                        yield Xaml.BoxView(Color.Black).GridColumn(3).GridRowSpan(5)
+                        yield View.BoxView(Color.Black).GridRow(1).GridColumnSpan(5)
+                        yield View.BoxView(Color.Black).GridRow(3).GridColumnSpan(5)
+                        yield View.BoxView(Color.Black).GridColumn(1).GridRowSpan(5)
+                        yield View.BoxView(Color.Black).GridColumn(3).GridRowSpan(5)
 
                         for ((row,col) as pos) in positions ->
                             let item = 
                                 if canPlay model model.Board.[pos] then 
-                                    Xaml.Button(command=(fun () -> dispatch (Play pos)), backgroundColor=Color.LightBlue)
+                                    View.Button(command=(fun () -> dispatch (Play pos)), backgroundColor=Color.LightBlue)
                                 else
-                                    Xaml.Image(source=imageForPos model.Board.[pos], margin=10.0)
+                                    View.Image(source=imageForPos model.Board.[pos], margin=10.0)
                             item.GridRow(row*2).GridColumn(col*2) ],
 
                     rowSpacing=0.0,
@@ -179,29 +189,47 @@ module App =
                     ?widthRequest = model.VisualBoardSize,
                     ?heightRequest = model.VisualBoardSize).GridRow(0)
 
-                Xaml.Label(text=getMessage model, margin=10.0, textColor=Color.Black, horizontalTextAlignment=TextAlignment.Center, fontSize="Large").GridRow(1)
-                Xaml.Button(command=(fun () -> dispatch Restart), text="Restart game", backgroundColor=Color.LightBlue, textColor=Color.Black, fontSize="Large").GridRow(2)
+                View.Label(text=getMessage model, margin=10.0, textColor=Color.Black, 
+                    horizontalOptions=LayoutOptions.Center,
+                    verticalOptions=LayoutOptions.Center,
+                    horizontalTextAlignment=TextAlignment.Center, verticalTextAlignment=TextAlignment.Center, fontSize="Large").GridRow(1)
+
+                View.Button(command=(fun () -> dispatch Restart), text="Restart game", backgroundColor=Color.LightBlue, textColor=Color.Black, fontSize="Large").GridRow(2)
               ]),
 
              // This requests a square board based on the width we get allocated on the device 
              onSizeAllocated=(fun (width, height) ->
-               if model.VisualBoardSize.IsNone then 
+               match model.VisualBoardSize with 
+               | None -> 
                    let sz = min width height - 80.0
-                   dispatch (SetVisualBoardSize sz)))])
+                   dispatch (SetVisualBoardSize sz)
+               | Some _ -> 
+                   () ))])
+
+    // Display a modal message giving the game result. This is doing a UI
+    // action in the model update, which is ok for modal messages. We factor
+    // this dependency out to allow unit testing of the 'update' function. 
+
+    let gameOver msg =
+        Application.Current.MainPage.DisplayAlert("Game over", msg, "OK") |> ignore
+
+    let program = 
+        Program.mkSimple init (update gameOver) view
+        |> Program.withConsoleTrace
+
+#if TESTEVAL
+    let testInit = init ()
+    let testView = view testInit (fun _ -> ())
+#endif
 
 /// Stitch the model, update and view content into a single app.
 type App() as app =
     inherit Application()
 
-    // Display a modal message giving the game result. This is doing a UI
-    // action in the model update, which is ok for modal messages. We factor
-    // this dependency out to allow unit testing of the 'update' function. 
-    let gameOver msg =
-        Application.Current.MainPage.DisplayAlert("Game over", msg, "OK") |> ignore
-
     let runner = 
-        Program.mkSimple App.init (App.update gameOver) App.view
-        |> Program.withConsoleTrace
-        |> Program.withDynamicView app
-        |> Program.run
+        App.program
+        |> Program.runWithDynamicView app
         
+#if DEBUG && !TESTEVAL
+    do runner.EnableLiveUpdate ()
+#endif
