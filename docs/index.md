@@ -18,7 +18,7 @@ to build Xamarin.Forms applications for iOS, Android, Mac and more.  The approac
 Getting started
 ------
 
-1. Enable Xamarin support in Visual Studio or Visual Studio for Mac.
+1. Install Visual Studio or Visual Studio for Mac and enable both Xamarin and .NET Core support.
 
 2. Install the template pack:
 
