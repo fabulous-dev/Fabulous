@@ -133,11 +133,11 @@
             "replaces": "XamarinFormsSdk",
             "defaultValue": "3.0.0.482510"
         },
-        "ElmishXamarinFormsPkg": {
+        "FabulousPkgsVersion": {
             "type": "parameter",
             "dataType": "string",
-            "replaces": "ElmishXamarinFormsPkg",
-            "defaultValue": "0.17.0"
+            "replaces": "FabulousPkgsVersion",
+            "defaultValue": "0.20.0"
         },
         "NewtonsoftJsonPkg": {
             "type": "parameter",
@@ -151,10 +151,10 @@
             "replaces": "XamarinAndroidFSharpResourceProviderPkg",
             "defaultValue": "1.0.0.25"
         },
-        "FSharpCorePkg": {
+        "FSharpCorePkgVersion": {
             "type": "parameter",
             "dataType": "string",
-            "replaces": "FSharpCorePkg",
+            "replaces": "FSharpCorePkgVersion",
             "defaultValue": "4.5.2"
         },
         "ProjectID": {

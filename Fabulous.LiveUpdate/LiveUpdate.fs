@@ -144,8 +144,8 @@ type HttpServer(?port) =
         <pre>    adb -e forward  tcp:PORT tcp:PORT  (Emulator)</pre>
         <p>  then</p>
         <pre>    cd MyApp\MyApp</pre>
-        <pre>    %USERPROFILE%\.nuget\packages\Fabulous.LiveUpdate\0.17.0\tools\fscd.exe --watch --webhook:http://localhost:PORT/update</pre>
-        <pre>    mono ~/.nuget/packages/Fabulous.LiveUpdate/0.17.0/tools/fscd.exe --watch --webhook:http://localhost:PORT/update</pre>
+        <pre>    %USERPROFILE%\.nuget\packages\Fabulous.LiveUpdate\0.20.0\tools\fscd.exe --watch --webhook:http://localhost:PORT/update</pre>
+        <pre>    mono ~/.nuget/packages/Fabulous.LiveUpdate/0.20.0/tools/fscd.exe --watch --webhook:http://localhost:PORT/update</pre>
         <p>in your project directoty</p>
     </body>
 </html>"""

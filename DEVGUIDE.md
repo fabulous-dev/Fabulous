@@ -28,7 +28,7 @@ Before releasing a new version, the version number need to be updated in several
 
 * Add a new entry at the top of [RELEASE_NOTES.md](RELEASE_NOTES.md) (FAKE will use that version when building)
 * Replace the old version number in [tools.md](docs/tools.md)
-* Update the default value of `ElmishXamarinFormsPkg` in [template.json](templates/content/blank/.template.config/template.json)
+* Update the default value of `FabulousPkgsVersion` in [template.json](templates/content/blank/.template.config/template.json)
 * Replace the old version number in [LiveUpdate.fs](Fabulous.LiveUpdate/LiveUpdate.fs)
 
 NB.: If you're releasing the same version, you might need to do the following first:
