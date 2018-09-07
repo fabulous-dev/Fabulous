@@ -42,7 +42,16 @@ Target "BuildSamples" (fun _ ->
           |> Log "SamplesRestoreDebug-Output: "
 
     // build the apps debug
-    !! "Fabulous.sln"
+    [ yield @"Samples\AllControls\Droid\AllControls.Droid.fsproj";
+      yield @"Samples\AllControls\iOS\AllControls.iOS.fsproj";
+      if isWindows then
+           yield @"Samples\AllControls\WPF\AllControls.WPF.fsproj";
+      yield @"Samples\TicTacToe\Droid\TicTacToe.Droid.fsproj";
+      yield @"Samples\TicTacToe\iOS\TicTacToe.iOS.fsproj";
+      yield @"Samples\CounterApp\Droid\CounterApp.Droid.fsproj";
+      yield @"Samples\CounterApp\iOS\CounterApp.iOS.fsproj";
+      yield @"Samples\StaticView\StaticViewCounterApp\Droid\StaticViewCounterApp.Droid.fsproj";
+      yield @"Samples\StaticView\StaticViewCounterApp\iOS\StaticViewCounterApp.iOS.fsproj"; ]
           |> MSBuildDebug null "Build"
           |> Log "SamplesBuildDebug-Output: "
 )
