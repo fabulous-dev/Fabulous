@@ -82,7 +82,7 @@
       <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Fabulous.Core\Fabulous.Core.fsproj">
-      <Name>Fabulous</Name>
+      <Name>Fabulous.Core</Name>
       <Project>{b459afad-bb5b-43c3-bd86-609e8db3e3fd}</Project>
       <Private>True</Private>
     </ProjectReference>
