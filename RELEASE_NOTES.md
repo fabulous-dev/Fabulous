@@ -1,3 +1,8 @@
+#### 0.20.0
+
+* Rename Elmish.XamarinForms --> Fabulous
+* Rename Elmish.XamarinForms.dll --> Fabulous.Core.dll
+
 #### 0.17.0
 
 * Added TextChanged on SearchBar
