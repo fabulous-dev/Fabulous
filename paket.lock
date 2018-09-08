@@ -7,7 +7,7 @@ GROUP androidapp
 RESTRICTION: == monoandroid7.1
 NUGET
   remote: https://www.nuget.org/api/v2
-    FSharp.Core (4.5)
+    FSharp.Core (4.5.2)
       System.Collections (>= 4.0.11)
       System.Console (>= 4.0)
       System.Diagnostics.Debug (>= 4.0.11)
@@ -169,7 +169,7 @@ GROUP iosapp
 RESTRICTION: == monotouch
 NUGET
   remote: https://www.nuget.org/api/v2
-    FSharp.Core (4.5)
+    FSharp.Core (4.5.2)
       System.Collections (>= 4.0.11)
       System.Console (>= 4.0)
       System.Diagnostics.Debug (>= 4.0.11)
@@ -305,7 +305,7 @@ GROUP macos
 RESTRICTION: == xamarinmac
 NUGET
   remote: https://www.nuget.org/api/v2
-    FSharp.Core (4.5)
+    FSharp.Core (4.5.2)
       System.Collections (>= 4.0.11)
       System.Console (>= 4.0)
       System.Diagnostics.Debug (>= 4.0.11)
@@ -441,7 +441,7 @@ GROUP neutral
 RESTRICTION: == netstandard2.0
 NUGET
   remote: https://www.nuget.org/api/v2
-    FSharp.Core (4.5)
+    FSharp.Core (4.5.2)
     Newtonsoft.Json (11.0.2)
     OxyPlot.Core (2.0.0-unstable0956)
     SkiaSharp (1.60.2)
