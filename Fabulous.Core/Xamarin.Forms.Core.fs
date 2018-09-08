@@ -842,12 +842,12 @@ type View() =
         match prevHorizontalOptionsOpt, currHorizontalOptionsOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.HorizontalOptions <-  currValue
-        | ValueSome _, ValueNone -> target.HorizontalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
+        | ValueSome _, ValueNone -> target.HorizontalOptions <- Xamarin.Forms.LayoutOptions.Fill
         | ValueNone, ValueNone -> ()
         match prevVerticalOptionsOpt, currVerticalOptionsOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.VerticalOptions <-  currValue
-        | ValueSome _, ValueNone -> target.VerticalOptions <- Unchecked.defaultof<Xamarin.Forms.LayoutOptions>
+        | ValueSome _, ValueNone -> target.VerticalOptions <- Xamarin.Forms.LayoutOptions.Fill
         | ValueNone, ValueNone -> ()
         match prevMarginOpt, currMarginOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()

@@ -124,11 +124,11 @@
 			"members": [
 				{
 					"name": "HorizontalOptions",
-					"defaultValue": "Unchecked.defaultof<Xamarin.Forms.LayoutOptions>"
+					"defaultValue": "Xamarin.Forms.LayoutOptions.Fill"
 				},
 				{
 					"name": "VerticalOptions",
-					"defaultValue": "Unchecked.defaultof<Xamarin.Forms.LayoutOptions>"
+					"defaultValue": "Xamarin.Forms.LayoutOptions.Fill"
 				},
 				{
 					"name": "Margin",
