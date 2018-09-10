@@ -273,6 +273,14 @@
 					"name": "Orientation",
 					"uniqueName": "ScrollOrientation",
 					"defaultValue": "Unchecked.defaultof<Xamarin.Forms.ScrollOrientation>"
+				},
+				{
+					"name": "HorizontalScrollBarVisibility",
+					"defaultValue": "Xamarin.Forms.ScrollBarVisibility.Default"
+				},
+				{
+					"name": "VerticalScrollBarVisibility",
+					"defaultValue": "Xamarin.Forms.ScrollBarVisibility.Default"
 				}
 			]
 		},
@@ -474,6 +482,10 @@
 					"defaultValue": "null",
 					"inputType": "Xamarin.Forms.ToggledEventArgs -> unit",
 					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ToggledEventArgs>(fun _sender args -> f args))"
+				},
+				{
+					"name": "OnColor",
+					"defaultValue": "Xamarin.Forms.Color.Default"
 				}
 			]
 		},
@@ -942,6 +954,10 @@
 					"defaultValue": "null",
 					"inputType": "Xamarin.Forms.TextChangedEventArgs -> unit",
 					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))"
+				},
+				{
+					"name": "AutoSize",
+					"defaultValue": "Xamarin.Forms.EditorAutoSizeOption.Disabled"
 				}
 			]
 		},
@@ -998,6 +1014,20 @@
 					"defaultValue": "null",
 					"inputType": "Xamarin.Forms.TextChangedEventArgs -> unit",
 					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))"
+				},
+				{
+					"name": "IsTextPredictionEnabled",
+					"defaultValue": "true"
+				},
+				{
+					"name": "ReturnType",
+					"defaultValue": "Xamarin.Forms.ReturnType.Default"
+				},
+				{
+					"name": "ReturnCommand",
+					"defaultValue": "null",
+					"inputType": "unit -> unit",
+					"convToModel": "makeCommand"
 				}
 			]
 		},
@@ -1651,6 +1681,10 @@
 					"defaultValue": "null",
 					"inputType": "unit -> unit",
 					"convToModel": "(fun f -> System.EventHandler(fun sender args -> f ()))"
+				},
+				{
+					"name": "SelectionMode",
+					"defaultValue": "Xamarin.Forms.ListViewSelectionMode.Single"
 				}
 			]
 		},
