@@ -8,3 +8,4 @@ paket-files
 *.dll
 
 build_output/
+.idea/
