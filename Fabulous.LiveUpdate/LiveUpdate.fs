@@ -154,7 +154,7 @@ type HttpServer(?port) =
         <pre>    cd MyApp\MyApp</pre>
         <pre>    %USERPROFILE%\.nuget\packages\Fabulous.LiveUpdate\FABULOUS_VERSION\tools\fscd.exe --watch --webhook:http://localhost:PORT/update</pre>
         <pre>    mono ~/.nuget/packages/Fabulous.LiveUpdate/FABULOUS_VERSION/tools/fscd.exe --watch --webhook:http://localhost:PORT/update</pre>
-        <p>in your project directoty</p>
+        <p>in your project directory</p>
     </body>
 </html>"""
                                         |> fun s -> s.Replace("FABULOUS_VERSION", AssemblyVersionInformation.AssemblyVersion)
