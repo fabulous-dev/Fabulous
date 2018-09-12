@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
+// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.Core
 
 open System
@@ -11,6 +11,7 @@ open Fabulous.Core
 open Fabulous.DynamicViews
 open FSharp.Compiler.PortaCode.CodeModel
 open FSharp.Compiler.PortaCode.Interpreter
+open Xamarin.Forms
 
 module Ports = 
     let DefaultPort = 9867
@@ -62,17 +63,24 @@ type BroadcastInfo =
                             printfn "----------"
                             printfn "  LiveUpdate: Ready for connection. Will show this message %d more times." (3 - i)
                             printfn "  "
-                            printfn "  LiveUpdate: On iOS connect using:"
-                            for iip in iips do
-                                printfn "      fscd.exe --watch --webhook:http://%s:%d/update" iip.Address httpPort
-                            printfn "  "
-                            printfn "  LiveUpdate: On Android USB connect using:"
-                            printfn "      adb -d forward  tcp:%d tcp:%d (USB)" httpPort httpPort
-                            printfn "      fscd.exe --watch --webhook:http://localhost:%d/update" httpPort
-                            printfn "  "
-                            printfn "  LiveUpdate: On Android Emulator connect using:"
-                            printfn "      adb -e forward  tcp:%d tcp:%d (USB)" httpPort httpPort
-                            printfn "      fscd.exe --watch --webhook:http://localhost:%d/update" httpPort
+
+                            if Device.RuntimePlatform = Device.iOS then
+                                printfn "  LiveUpdate: Connect using:"
+                                for iip in iips do
+                                    printfn "      fscd.exe --watch --webhook:http://%s:%d/update" iip.Address httpPort
+                            elif Device.RuntimePlatform = Device.Android then
+                                printfn "  LiveUpdate: On USB connect using:"
+                                printfn "      adb -d forward  tcp:%d tcp:%d" httpPort httpPort
+                                printfn "      fscd.exe --watch --webhook:http://localhost:%d/update" httpPort
+                                printfn "  "
+                                printfn "  LiveUpdate: On Emulator connect using:"
+                                printfn "      adb -e forward  tcp:%d tcp:%d" httpPort httpPort
+                                printfn "      fscd.exe --watch --webhook:http://localhost:%d/update" httpPort
+                            else
+                                printfn "  LiveUpdate: %s is not officially supported" Device.RuntimePlatform 
+                                printfn "  LiveUpdate: You can still try to connect using:" 
+                                printfn "      fscd.exe --watch --webhook:http://localhost:%d/update" httpPort
+
                             printfn "  "
                             printfn "  See https://fsprojects.github.io/Fabulous/tools.html for more details"
                             printfn "----------"
@@ -132,7 +140,7 @@ type HttpServer(?port) =
                                     //let req = serializer.UnPickleOfString<DFile>(requestText)
                                     let resp = switchD req
                                     return Newtonsoft.Json.JsonConvert.SerializeObject resp
-                                else 
+                                else
                                     return """
 <html>
     <body>
@@ -144,11 +152,12 @@ type HttpServer(?port) =
         <pre>    adb -e forward  tcp:PORT tcp:PORT  (Emulator)</pre>
         <p>  then</p>
         <pre>    cd MyApp\MyApp</pre>
-        <pre>    %USERPROFILE%\.nuget\packages\Fabulous.LiveUpdate\0.20.0\tools\fscd.exe --watch --webhook:http://localhost:PORT/update</pre>
-        <pre>    mono ~/.nuget/packages/Fabulous.LiveUpdate/0.20.0/tools/fscd.exe --watch --webhook:http://localhost:PORT/update</pre>
+        <pre>    %USERPROFILE%\.nuget\packages\Fabulous.LiveUpdate\FABULOUS_VERSION\tools\fscd.exe --watch --webhook:http://localhost:PORT/update</pre>
+        <pre>    mono ~/.nuget/packages/Fabulous.LiveUpdate/FABULOUS_VERSION/tools/fscd.exe --watch --webhook:http://localhost:PORT/update</pre>
         <p>in your project directoty</p>
     </body>
 </html>"""
+                                        |> fun s -> s.Replace("FABULOUS_VERSION", AssemblyVersionInformation.AssemblyVersion)
                                         |> fun s -> s.Replace("PORT", string port)
                             }
 
