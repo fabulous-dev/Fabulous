@@ -158,7 +158,7 @@ type HttpServer(?port) =
     </body>
 </html>"""
                                         |> fun s -> s.Replace("FABULOUS_VERSION", AssemblyVersionInformation.AssemblyVersion)
-                                        |> fun s -> s.Replace("PORT", string port)
+                                                     .Replace("PORT", string port)
                             }
 
                         printfn "LiveUpdate: setting response code to 200, response = %s" resString
