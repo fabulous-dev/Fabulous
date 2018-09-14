@@ -1,4 +1,4 @@
-Elmish.XamarinForms Guide
+Fabulous - Guide
 =======
 
 {% include_relative contents.md %}
@@ -16,7 +16,7 @@ At the time of writing this has been trialled with
 
 Some manual set-up is required.  The following assumes your app is called `SqueakyApp`:
 
-1. Check your projects have a reference to nuget package `Elmish.XamarinForms.LiveUpdate` for all projects in your app.
+1. Check your projects have a reference to nuget package `Fabulous.LiveUpdate` for all projects in your app.
    This is the default for apps created with templates 0.13.10 and higher. Do a clean build.
 
 2. Uncomment or add the code in the `#if` section below in `SqueakyApp\SqueakyApp\SqueayApp.fs`:
@@ -42,17 +42,17 @@ Some manual set-up is required.  The following assumes your app is called `Squea
        Windows (Android):
 
            cd SqueakyApp\SqueakyApp
-           %USERPROFILE%\.nuget\packages\Elmish.XamarinForms.LiveUpdate\0.16.0\tools\fscd.exe --watch --webhook:http://localhost:9867/update 
+           %USERPROFILE%\.nuget\packages\Fabulous.LiveUpdate\0.20.0\tools\fscd.exe --watch --webhook:http://localhost:9867/update 
 
        OSX (Android):
 
            cd SqueakyApp/SqueakyApp
-           mono ~/.nuget/packages/Elmish.XamarinForms.LiveUpdate/0.16.0/tools/fscd.exe --watch --webhook:http://localhost:9867/update  
+           mono ~/.nuget/packages/Fabulous.LiveUpdate/0.20.0/tools/fscd.exe --watch --webhook:http://localhost:9867/update  
 
        OSX (iOS): Similar except use the explicit IP address of the emulator or device, e.g. 192.168.1.8, see the application log from launch
 
            cd SqueakyApp/SqueakyApp
-           mono ~/.nuget/packages/Elmish.XamarinForms.LiveUpdate/0.16.0/tools/fscd.exe --watch --webhook:http://192.168.1.8:9867/update
+           mono ~/.nuget/packages/Fabulous.LiveUpdate/0.20.0/tools/fscd.exe --watch --webhook:http://192.168.1.8:9867/update
 
 Now, whenever you save a file in your core project directory, the `fscd.exe` daemon will attempt to recompile your changed file and
 send a representation of its contents to your app via a PUT request to the given webhook.  The app then deserializes this representation and
@@ -128,5 +128,30 @@ The model state of the app is re-initialized.
 The LiveUpdate mechanism is very experimental.
 - Debug output is printed to console by `fscd.exe`
 - Debug output is printed to app-output by the on-device web server
+
+### Design
+
+The fscd.exe daemon does this:
+
+1. Cracks project options, listens for changes, then uses FSharp.Compiler.Service to compile
+
+2. converts code output to PortaCode code model 
+
+3. serializes PortaCode using json.net
+
+4. sends to device by http. 
+
+Device app does this:
+
+5. starts httplistener, which gets http request
+
+6. deserializes PortaCode
+
+7. uses Interpreter.fs to run.
+
+8. looks for a "program" declaration in interpreted code and hacks into the currently running Elmish app and replaces the Elmish "program" ie view/update/init logic. 
+
+Device app continues to use whatever library dlls are on device via reflection.
+
 
 Please contribute documentation, updates and fixes to make the experience simpler.

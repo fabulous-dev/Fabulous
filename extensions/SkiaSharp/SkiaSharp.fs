@@ -1,10 +1,10 @@
-// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
-namespace Elmish.XamarinForms.DynamicViews 
+// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
+namespace Fabulous.DynamicViews 
 
 [<AutoOpen>]
-module MapsExtension = 
+module SkiaSharpExtension = 
 
-    open Elmish.XamarinForms.DynamicViews
+    open Fabulous.DynamicViews
 
     open Xamarin.Forms
     open SkiaSharp
@@ -15,7 +15,7 @@ module MapsExtension =
     let PaintSurfaceAttribKey = AttributeKey<_> "SKCanvas_PaintSurface"
     let TouchAttribKey = AttributeKey<_> "SKCanvas_Touch"
 
-    type Elmish.XamarinForms.DynamicViews.View with
+    type Fabulous.DynamicViews.View with
         /// Describes a Map in the view
         static member SKCanvasView(?paintSurface: (SKPaintSurfaceEventArgs -> unit), ?touch: (SKTouchEventArgs -> unit), ?enableTouchEvents: bool, ?ignorePixelScaling: bool,
                                    // inherited attributes common to all views

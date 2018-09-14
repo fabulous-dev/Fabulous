@@ -1,11 +1,11 @@
-﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
-namespace Elmish.XamarinForms.DynamicViews 
+﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
+namespace Fabulous.DynamicViews 
 
-open Elmish.XamarinForms.DynamicViews
+open Fabulous.DynamicViews
 open System.Collections.Generic
 
 [<System.Obsolete("Please change 'Xaml.XYZ' to 'View.XYZ'", error=false)>]
-type Xaml = Elmish.XamarinForms.DynamicViews.View 
+type Xaml = Fabulous.DynamicViews.View 
 
 [<AutoOpen>]
 module SimplerHelpers = 

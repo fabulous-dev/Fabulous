@@ -1,6 +1,8 @@
-﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
+﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
 
-// dotnet build -c Release Generator\Generator.fsproj && dotnet Generator\bin\Release\netcoreapp2.0\Generator.dll Generator\Xamarin.Forms.Core.json Elmish.XamarinForms\Xamarin.Forms.Core.fs 
+// Windows: dotnet build -c Release Generator\Generator.fsproj && dotnet Generator\bin\Release\netcoreapp2.0\Generator.dll Generator\Xamarin.Forms.Core.json Fabulous.Core\Xamarin.Forms.Core.fs
+
+// OSX: dotnet build -c Release Generator/Generator.fsproj && dotnet Generator/bin/Release/netcoreapp2.0/Generator.dll Generator/Xamarin.Forms.Core.json Fabulous.Core/Xamarin.Forms.Core.fs
 
 module Generator
 

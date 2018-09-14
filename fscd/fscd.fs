@@ -1,10 +1,10 @@
-﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
+﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
 
 // F# Compiler Daemon sample
 //
 // Sample use, assumes app has a reference to ELmish.XamrinForms.LiveUpdate:
 //
-// cd Elmish.XamarinForms\Samples\CounterApp\CounterApp
+// cd Fabulous\Samples\CounterApp\CounterApp
 //   adb -d forward  tcp:9867 tcp:9867
 // dotnet run --project ..\..\..\fscd\fscd.fsproj -- --eval @out.args
 // dotnet run --project ..\..\..\fscd\fscd.fsproj -- --watch --webhook:http://localhost:9867/update @out.args

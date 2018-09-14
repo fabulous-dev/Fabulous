@@ -7,7 +7,7 @@ Never write a ViewModel class again!  Conquer the world with clean dynamic UIs!
 <img src="https://user-images.githubusercontent.com/7204669/39318922-57c95174-4977-11e8-94a9-cc385101ce5d.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318926-59f844e6-4977-11e8-9834-325a6517ced6.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318929-5b66c776-4977-11e8-8317-ee1c121301d4.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318934-5cbe3c3a-4977-11e8-92aa-c3fdf644b01c.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318936-5e2380bc-4977-11e8-8912-f078744a2bde.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318938-5f6ec4f4-4977-11e8-97a9-779edd3594bc.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318941-60c1b0f0-4977-11e8-8a4a-57e17ef8c6ec.png" width="100">
 
 This library allows you to use a variation of [elmish](https://elmish.github.io/), an Elm architecture implemented in F#,
-to build Xamarin.Forms applications for iOS, Android, Mac and more.
+to build Xamarin.Forms applications for iOS, Android, Mac and more.  The approach to app development is similar to Redux and Flow but targets Xamarin and Xamarin.Forms.
 
 > The amount of code I'm *not* writing is great!  [@jimbobbennett](https://github.com/jimbobbennett/)
 
@@ -18,15 +18,15 @@ to build Xamarin.Forms applications for iOS, Android, Mac and more.
 Getting started
 ------
 
-1. Enable Xamarin support in Visual Studio or Visual Studio for Mac.
+1. Install Visual Studio or Visual Studio for Mac and enable both Xamarin and .NET Core support.
 
 2. Install the template pack:
 
-       dotnet new -i Elmish.XamarinForms.Templates
+       dotnet new -i Fabulous.Templates
 
 3. Create a blank F# Functional Xamarin Forms app:
 
-       dotnet new elmish-forms-app -lang F# -n SqueakyApp
+       dotnet new fabulous-app -lang F# -n SqueakyApp
 
 4. Open, edit, build and deploy in Visual Studio, Visual Studio for Mac and/or "msbuild" command line
 
@@ -49,7 +49,7 @@ type Model =
 /// Returns the initial state
 let init() = { Pressed=false }
 
-/// The funtion to update the view
+/// The function to update the view
 let update (msg:Msg) (model:Model) =
     match msg with
     | Pressed -> { model with Pressed = true }
@@ -81,11 +81,11 @@ Some advantages of using an immutable model are:
 Samples
 ------
 
-The sample [CounterApp](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Samples/CounterApp/CounterApp/CounterApp.fs) contains a slightly larger example of Button/Label/Slider elements.
+The sample [CounterApp](https://github.com/fsprojects/Fabulous/blob/master/Samples/CounterApp/CounterApp/CounterApp.fs) contains a slightly larger example of Button/Label/Slider elements.
 
-The sample [TicTacToe](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Samples/TicTacToe/TicTacToe/TicTacToe.fs) contains examples of the Grid and Image elements.
+The sample [TicTacToe](https://github.com/fsprojects/Fabulous/blob/master/Samples/TicTacToe/TicTacToe/TicTacToe.fs) contains examples of the Grid and Image elements.
 
-The sample [AllControls](https://github.com/fsprojects/Elmish.XamarinForms/blob/master/Samples/AllControls/AllControls/AllControls.fs) contains examples of instantiating most elements in `Xamarin.Forms.Core`.
+The sample [AllControls](https://github.com/fsprojects/Fabulous/blob/master/Samples/AllControls/AllControls/AllControls.fs) contains examples of instantiating most elements in `Xamarin.Forms.Core`.
 
 The external sample [Calculator](https://github.com/nosami/Elmish.Calculator/) is a small calculator app. (Note: because this is an external sample it may not be up-to-date with the latest version of his library.)
 
@@ -93,9 +93,16 @@ The external sample [PocketPiggyBank](https://github.com/jimbobbennett/PocketPig
 
 The external sample [ElmishContacts](https://github.com/TimLariviere/ElmishContacts) is a multi-page contacts app featuring maps, group-lists and cross-page messages. (Note: because this is an external sample it may not be up-to-date with the latest version of this library.)
 
+The external sample [ElmishPlanets](https://github.com/TimLariviere/ElmishPlanets) is a multi-page app featuring facts on the planets in the Solar System. It uses Urho3D and EXF (Note: because this is an external sample it may not be up-to-date with the latest version of this library.)
+
+See also the curated list [awesome EXF](http://aka.ms/AwesomeEXF).
 
 Further Resources
 --------
+
+Presentation: [Making Mobile App Development Simple with F#](https://twitter.com/dsyme/status/1037119834969067522)
+
+Presentation: Building mobile apps with F# using Xamarin - Jim Bennett - Xamarin University Guest Lecture
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/si9YdWhbwSI?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
@@ -126,4 +133,5 @@ Contributing
 
 Please contribute to this library through issue reports, pull requests, code reviews and discussion.
 
-* [Submit a fix to this guide](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/docs)
+* [Submit a fix to this guide](https://github.com/fsprojects/Fabulous/tree/master/docs)
+

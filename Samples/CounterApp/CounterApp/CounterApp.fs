@@ -1,9 +1,9 @@
-﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
+﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
 namespace CounterApp
 
 open System.Diagnostics
-open Elmish.XamarinForms 
-open Elmish.XamarinForms.DynamicViews
+open Fabulous.Core
+open Fabulous.DynamicViews
 open Xamarin.Forms
 
 module App = 

@@ -1,6 +1,6 @@
-// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
+// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
 
-namespace Elmish.XamarinForms.DynamicViews
+namespace Fabulous.DynamicViews
 
 #nowarn "67" // cast always holds
 

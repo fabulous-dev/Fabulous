@@ -11,12 +11,12 @@ let buildDir nuget = if nuget then "./build_output" else "./build_output/tools"
 let release = LoadReleaseNotes "RELEASE_NOTES.md"
 
 let projects = 
-    [ ("Elmish.XamarinForms/Elmish.XamarinForms.fsproj", "Elmish.XamarinForms", "F# Functional App Dev Framework", true)
-      ("extensions/Maps/Elmish.XamarinForms.Maps.fsproj", "Elmish.XamarinForms.Maps", "Elmish.XamarinForms extension for Xamarin.Forms.Maps", true) 
-      ("extensions/SkiaSharp/Elmish.XamarinForms.SkiaSharp.fsproj", "Elmish.XamarinForms.SkiaSharp", "Elmish.XamarinForms extension for SkiaSharp", true)
-      ("extensions/OxyPlot/Elmish.XamarinForms.OxyPlot.fsproj", "Elmish.XamarinForms.OxyPlot", "Elmish.XamarinForms extension for OxyPlot", true) 
+    [ ("Fabulous.Core/Fabulous.Core.fsproj", "Fabulous.Core", "F# Functional App Dev Framework", true)
+      ("extensions/Maps/Fabulous.Maps.fsproj", "Fabulous.Maps", "Fabulous extension for Xamarin.Forms.Maps", true) 
+      ("extensions/SkiaSharp/Fabulous.SkiaSharp.fsproj", "Fabulous.SkiaSharp", "Fabulous extension for SkiaSharp", true)
+      ("extensions/OxyPlot/Fabulous.OxyPlot.fsproj", "Fabulous.OxyPlot", "Fabulous extension for OxyPlot", true) 
       ("fscd/fscd.fsproj", "fscd", "F# Compiler Daemon", false)
-      ("Elmish.XamarinForms.LiveUpdate/Elmish.XamarinForms.LiveUpdate.fsproj", "Elmish.XamarinForms.LiveUpdate", "F# Functional App Dev Framework Live Update", true) ]
+      ("Fabulous.LiveUpdate/Fabulous.LiveUpdate.fsproj", "Fabulous.LiveUpdate", "F# Functional App Dev Framework Live Update", true) ]
 
 Target "Build" (fun _ ->
 
@@ -34,15 +34,15 @@ Target "Build" (fun _ ->
 Target "BuildSamples" (fun _ ->
 
     // needed or else 'project.assets.json' not found'
-    DotNetCli.Restore (fun p -> { p with Project = "Elmish.XamarinForms.sln" })
+    DotNetCli.Restore (fun p -> { p with Project = "Fabulous.sln" })
 
     // restore the apps debug
-    !! "Elmish.XamarinForms.sln"
+    !! "Fabulous.sln"
           |> MSBuildDebug null "Restore"
           |> Log "SamplesRestoreDebug-Output: "
 
     // build the apps debug
-    !! "Elmish.XamarinForms.sln"
+    !! "Fabulous.sln"
           |> MSBuildDebug null "Build"
           |> Log "SamplesBuildDebug-Output: "
 )
@@ -87,7 +87,7 @@ Target "TemplatesNuGet" (fun _ ->
             WorkingDir = "templates"
             OutputPath = buildDir true + "/"
             Version = release.NugetVersion
-            ReleaseNotes = toLines release.Notes}) @"templates/Elmish.XamarinForms.Templates.nuspec"
+            ReleaseNotes = toLines release.Notes}) @"templates/Fabulous.Templates.nuspec"
 )
 let exec exe args =
     let code = Shell.Exec(exe, args) 
@@ -96,12 +96,12 @@ let exec exe args =
 Target "TestTemplatesNuGet" (fun _ ->
 
     // Globally install the templates from the template nuget package we just built
-    DotNetCli.RunCommand id ("new -i " + buildDir true + "/Elmish.XamarinForms.Templates." + release.NugetVersion + ".nupkg")
+    DotNetCli.RunCommand id ("new -i " + buildDir true + "/Fabulous.Templates." + release.NugetVersion + ".nupkg")
 
     let testAppName = "testapp2" + string (abs (hash System.DateTime.Now.Ticks) % 100)
     // Instantiate the template. TODO: additional parameters and variations
     CleanDir testAppName
-    DotNetCli.RunCommand id (sprintf "new elmish-forms-app -n %s -lang F#" testAppName)
+    DotNetCli.RunCommand id (sprintf "new fabulous-app -n %s -lang F#" testAppName)
 
     let pkgs = Path.GetFullPath(buildDir true)
     // When restoring, using the build_output as a package source to pick up the package we just compiled
@@ -116,11 +116,11 @@ Target "TestTemplatesNuGet" (fun _ ->
         .\build LibraryNuGet
         dotnet new -i  templates
         rmdir /s /q testapp2
-        dotnet new elmish-forms-app -n testapp2 -lang F#
+        dotnet new fabulous-app -n testapp2 -lang F#
         dotnet restore testapp2/testapp2/testapp2.fsproj -s build_output/
-        dotnet new -i  templates && rmdir /s /q testapp2 && dotnet new elmish-forms-app -n testapp2 -lang F# && dotnet restore testapp2/testapp2/testapp2.fsproj && msbuild testapp2/testapp2.Android/testapp2.Android.fsproj /t:RestorePackages && msbuild testapp2/testapp2.Android/testapp2.Android.fsproj
-        dotnet new -i  templates && rmdir /s /q testapp2 && dotnet new elmish-forms-app -n testapp2 -lang F# && dotnet restore testapp2/testapp2/testapp2.fsproj && msbuild testapp2/testapp2.iOS/testapp2.iOS.fsproj /t:RestorePackages  && msbuild testapp2/testapp2.iOS/testapp2.iOS.fsproj
-        dotnet new -i  templates && rmdir /s /q testapp2 && dotnet new elmish-forms-app -n testapp2 -lang F# --CreateMacProject && dotnet restore testapp2/testapp2/testapp2.fsproj && msbuild testapp2/testapp2.macOS/testapp2.macOS.fsproj /t:RestorePackages  && msbuild testapp2/testapp2.macOS/testapp2.macOS.fsproj
+        dotnet new -i  templates && rmdir /s /q testapp2 && dotnet new fabulous-app -n testapp2 -lang F# && dotnet restore testapp2/testapp2/testapp2.fsproj && msbuild testapp2/testapp2.Android/testapp2.Android.fsproj /t:RestorePackages && msbuild testapp2/testapp2.Android/testapp2.Android.fsproj
+        dotnet new -i  templates && rmdir /s /q testapp2 && dotnet new fabulous-app -n testapp2 -lang F# && dotnet restore testapp2/testapp2/testapp2.fsproj && msbuild testapp2/testapp2.iOS/testapp2.iOS.fsproj /t:RestorePackages  && msbuild testapp2/testapp2.iOS/testapp2.iOS.fsproj
+        dotnet new -i  templates && rmdir /s /q testapp2 && dotnet new fabulous-app -n testapp2 -lang F# --CreateMacProject && dotnet restore testapp2/testapp2/testapp2.fsproj && msbuild testapp2/testapp2.macOS/testapp2.macOS.fsproj /t:RestorePackages  && msbuild testapp2/testapp2.macOS/testapp2.macOS.fsproj
         *)
 
 )

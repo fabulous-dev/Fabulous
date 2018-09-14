@@ -1,9 +1,9 @@
-﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
+﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
 
 namespace TicTacToe
 
-open Elmish.XamarinForms
-open Elmish.XamarinForms.DynamicViews
+open Fabulous.Core
+open Fabulous.DynamicViews
 open Xamarin.Forms
 
 /// Represents a player and a player's move
@@ -147,7 +147,7 @@ module App =
     /// of the Xaml resource for the image for a player
     let imageForPos cell =
         match cell with
-        // Revert this once https://github.com/fsprojects/Elmish.XamarinForms/pull/51 is reverted
+        // Revert this once https://github.com/fsprojects/Fabulous/pull/51 is reverted
         | Full X -> "icon"
         | Full O -> "Nought"
         | Empty -> ""

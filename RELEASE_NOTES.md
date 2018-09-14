@@ -1,3 +1,16 @@
+#### 0.20.0
+
+* Rename project Elmish.XamarinForms --> Fabulous
+* Rename namespace Elmish.XamarinForms --> Fabulous.Core
+* Rename dll Elmish.XamarinForms.dll --> Fabulous.Core.dll
+* Rename package Elmish.XamarinForms --> Fabulous.Core
+
+#### 0.17.0
+
+* Added TextChanged on SearchBar
+* Fixed module name for SkiaSharp extension
+* Added LiveUpdate to the iOS template by default
+
 #### 0.16.0
 
 * Added AutomationId property on all controls
@@ -69,12 +82,12 @@
 #### 0.12.0
 
 * Adjust extension API to be more type safe
-* Add Elmish.XamarinForms.SkiaSharp
+* Add Fabulous.SkiaSharp
 
 #### 0.10.0
 
 * Adjust extension API to require use of attribute keys
-* Add Elmish.XamarinForms.Maps
+* Add Fabulous.Maps
 
 #### 0.9.4
 
@@ -104,7 +117,7 @@
 
 * Rename `XamlElement` --> `ViewElement`
 * Rejig  `XamlElement` to store an immutable array of attributes rather than a `Map`
-* Using `open Elmish.XamarinForms.StaticViews` is now necessary to use static Xaml bindings and the `Nav.*` type
+* Using `open Fabulous.StaticViews` is now necessary to use static Xaml bindings and the `Nav.*` type
 * Obsolete `Program.withDynamicView` and `Program.withStaticView` in favour of `Program.runWithDynamicView` and `Program.runWithStaticView`
 * Remove `StaticXaml/MasterDetailApp` sample since it's not a great sample anyway
 * Add template
@@ -144,7 +157,7 @@
 
 #### 0.4.4
 
-* [Fix UpdateIncremental when types of Old and New object differs](https://github.com/fsprojects/Elmish.XamarinForms/pull/53)
+* [Fix UpdateIncremental when types of Old and New object differs](https://github.com/fsprojects/Fabulous/pull/53)
 
 #### 0.4.3
 

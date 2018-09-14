@@ -1,4 +1,4 @@
-Elmish.XamarinForms Guide
+Fabulous - Guide
 =======
 
 {% include_relative contents-views.md %}
@@ -9,7 +9,7 @@ Using OxyPlot Charts
 Below is an example of an extension for [OxyPlot](http://docs.oxyplot.org/). To use the extension:
 
 1. Follow the instructions to [add references and initialize renderers](ttp://docs.oxyplot.org/en/latest/getting-started/hello-xamarin-forms.html)
-2. Add a reference to the `Elmish.XamarinForms.OxyPlot` package across your solution.
+2. Add a reference to the `Fabulous.OxyPlot` package across your solution.
 
 [![OxyPlot example](https://user-images.githubusercontent.com/7204669/42291878-777cb47c-7fc6-11e8-9eaa-4dfd784bddf2.png)](https://user-images.githubusercontent.com/7204669/42291878-777cb47c-7fc6-11e8-9eaa-4dfd784bddf2.png)
 

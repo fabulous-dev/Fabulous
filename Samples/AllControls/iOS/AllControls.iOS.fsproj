@@ -116,9 +116,9 @@
       <Project>{13F140D6-2D21-41BE-AC90-4B14D8C16A47}</Project>
       <Name>AllControls</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Elmish.XamarinForms\Elmish.XamarinForms.fsproj">
+    <ProjectReference Include="..\..\..\Fabulous.Core\Fabulous.Core.fsproj">
       <Project>{AE045D79-7FF3-45F3-BFD0-305542A1C728}</Project>
-      <Name>Elmish.XamarinForms</Name>
+      <Name>Fabulous</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets" Condition="Exists('$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets')" />

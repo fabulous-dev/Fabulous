@@ -1,4 +1,4 @@
-Elmish.XamarinForms: Static Views and "Half Elmish"
+Fabulous: Static Views and "Half Elmish"
 =======
 
 {% include_relative contents.md %}
@@ -30,9 +30,8 @@ Here is a full example (excluding Xaml):
 ```fsharp
 namespace CounterApp
 
-open Elmish
-open Elmish.XamarinForms
-open Elmish.XamarinForms.StaticViews
+open Fabulous.Core
+open Fabulous.StaticViews
 open Xamarin.Forms
 
 type Model =

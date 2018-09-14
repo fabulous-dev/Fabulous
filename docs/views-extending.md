@@ -1,4 +1,4 @@
-Elmish.XamarinForms Guide
+Fabulous - Guide
 =======
 
 {% include_relative contents-views.md %}
@@ -7,7 +7,7 @@ View Extensions
 ------
 
 Many open source and 3rd-party libraries of Xamarin.Forms controls exist. To use other controls, a small amount of wrapper code
-is typically needed to define a corresponding view element using the incremental-update model used by Elmish.XamarinForms.
+is typically needed to define a corresponding view element using the incremental-update model used by Fabulous.
 
 The following additional view elements are available as pre-built nuget libraries:
 
@@ -16,9 +16,9 @@ The following additional view elements are available as pre-built nuget librarie
 * [OxyPlot](views-oxyplot.md) for charting (in preparation)
 
 To use other Xamarin.Forms controls, a small amount of wrapper code must
-be written to convert the control to an Elmish.XamarinForms view element.
+be written to convert the control to an Fabulous view element.
 
-> Please consider contributing your extensions to [this repository](https://github.com/fsprojects/Elmish.XamarinForms/).
+> Please consider contributing your extensions to [this repository](https://github.com/fsprojects/Fabulous/).
 
 The basic shape of an extension view component is shown below. Here we assume the Xamarin.Forms control defines one extra element
 called ABC deriving from existing element kind BASE, and that ABC has one additional
@@ -37,8 +37,8 @@ The view element inherits attributes and update functionality from BASE via prot
 [<AutoOpen>]
 module MyViewExtensions =
 
-    open Elmish.XamarinForms
-    open Elmish.XamarinForms.DynamicViews
+    open Fabulous.Core
+    open Fabulous.DynamicViews
 
     // Define keys for the possible attributes
     let Prop1AttribKey = AttributeKey<seq<ViewElement>> "ABC_Prop1"
@@ -46,7 +46,7 @@ module MyViewExtensions =
 
     // Fully-qualified name to avoid extending by mistake
     // another View class (like Xamarin.Forms.View)
-    type Elmish.XamarinForms.DynamicViews.View with
+    type Fabulous.DynamicViews.View with
         /// Describes a ABC in the view
         static member ABC(?prop1: seq<ViewElement>, ?prop2: bool, ... inherited attributes ... ) =
 
@@ -104,14 +104,14 @@ optional arguments.
 ### Example: Authoring the Xamarin.Forms.Maps Extension
 
 The implementation of an extension for `Xamarin.Forms.Maps` is shown below - this is the same extension as that
-available in `Elmish.XamarinForms.Maps.dll`. The sample implements the extension for the types [Map](https://docs.microsoft.com/dotnet/api/xamarin.forms.maps.map?view=xamarin-forms]) and
+available in `Fabulous.Maps.dll`. The sample implements the extension for the types [Map](https://docs.microsoft.com/dotnet/api/xamarin.forms.maps.map?view=xamarin-forms]) and
 [Pin](https://docs.microsoft.com/en-gb/dotnet/api/xamarin.forms.maps.pin?view=xamarin-forms).
 
 ```fsharp
 [<AutoOpen>]
 module MapsExtension =
 
-    open Elmish.XamarinForms.DynamicViews
+    open Fabulous.DynamicViews
 
     open Xamarin.Forms
     open Xamarin.Forms.Maps
@@ -128,7 +128,7 @@ module MapsExtension =
     let PinTypeAttribKey = AttributeKey "Pin_PinType"
     let PinAddressAttribKey = AttributeKey "Pin_Address"
 
-    type Elmish.XamarinForms.DynamicViews.View with
+    type Fabulous.DynamicViews.View with
         /// Describes a Map in the view
         static member inline Map(?pins: seq<ViewElement>, ?isShowingUser: bool, ?mapType: MapType,
                                  ?hasScrollEnabled: bool, ?hasZoomEnabled: bool, ?requestedRegion: MapSpan,
@@ -220,5 +220,5 @@ See also:
 * [Core Elements](views-elements.md)
 * [Maps](views-maps.md)
 * [SkiaSharp](views-skiasharp.md)
-* [Source for the Maps extension](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/extensions/Maps)
-* [Source for the SkiaSharp extension](https://github.com/fsprojects/Elmish.XamarinForms/tree/master/extensions/SkiaSharp)
+* [Source for the Maps extension](https://github.com/fsprojects/Fabulous/tree/master/extensions/Maps)
+* [Source for the SkiaSharp extension](https://github.com/fsprojects/Fabulous/tree/master/extensions/SkiaSharp)

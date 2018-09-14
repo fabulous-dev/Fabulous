@@ -1,10 +1,10 @@
-Elmish.XamarinForms Guide
+Fabulous - Guide
 =======
 
 {% include_relative contents.md %}
 
 This guide augments the primary [Xamarin.Forms documentation](https://docs.microsoft.com/xamarin/xamarin-forms/) with information
-specific to the Elmish.XamarinForms programming model.
+specific to the Fabulous programming model.
 
 > NOTE: A comprehensive guide to Xamarin.Forms programming is available for free
 in the [Creating Mobile Apps with Xamarin.Forms](https://docs.microsoft.com/xamarin/xamarin-forms/creating-mobile-apps-xamarin-forms/) ebook.

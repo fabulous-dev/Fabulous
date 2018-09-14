@@ -1,10 +1,10 @@
-// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
-namespace Elmish.XamarinForms.DynamicViews 
+// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
+namespace Fabulous.DynamicViews 
 
 [<AutoOpen>]
 module MapsExtension = 
 
-    open Elmish.XamarinForms.DynamicViews
+    open Fabulous.DynamicViews
 
     open Xamarin.Forms
     open Xamarin.Forms.Maps
@@ -21,7 +21,7 @@ module MapsExtension =
     let PinTypeAttribKey = AttributeKey "Pin_PinType"
     let PinAddressAttribKey = AttributeKey "Pin_Address"
 
-    type Elmish.XamarinForms.DynamicViews.View with
+    type Fabulous.DynamicViews.View with
         /// Describes a Map in the view
         static member inline Map(?pins: seq<ViewElement>, ?isShowingUser: bool, ?mapType: MapType, ?hasScrollEnabled: bool,
                                  ?hasZoomEnabled: bool, ?requestedRegion: MapSpan,

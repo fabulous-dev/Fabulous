@@ -1,4 +1,4 @@
-Elmish.XamarinForms Guide
+Fabulous - Guide
 =======
 
 {% include_relative contents-views.md %}
@@ -181,10 +181,10 @@ A simple `ListView` is as follows:
 ```fsharp
 View.ListView(
     items = [ View.Label "Ionide"
-                View.Label "Visual Studio"
-                View.Label "Emacs"
-                View.Label "Visual Studio Code"
-                View.Label "JetBrains Rider"],
+              View.Label "Visual Studio"
+              View.Label "Emacs"
+              View.Label "Visual Studio Code"
+              View.Label "JetBrains Rider"],
     itemSelected=(fun idx -> dispatch (ListViewSelectedItemChanged idx)))
 ```
 
@@ -534,13 +534,13 @@ See also:
 Pop-ups
 -------------------
 
-Pop-ups are a special case in Elmish.XamarinForms.  
+Pop-ups are a special case in Fabulous.  
 They are part of the view, but don't follow the same lifecycle as the rest of the UI.
 
 In Xamarin.Forms, those pop-ups are exposed through 2 methods of the current page, `DisplayAlert` and `DisplayActionSheet`.
 
-In Elmish.XamarinForms, we only describe what a page should look like and have no access to UI elements.  
-As such, there is no direct implementation of those 2 methods in Elmish.XamarinForms.
+In Fabulous, we only describe what a page should look like and have no access to UI elements.  
+As such, there is no direct implementation of those 2 methods in Fabulous.
 
 Instead, we can use the static property `Application.Current.MainPage` exposed by Xamarin.Forms.
 
@@ -557,9 +557,9 @@ match confirm with
 | false -> (...)
 ```
 
-_Why don't we add an Elmish.XamarinForms wrapper for those?_  
+_Why don't we add an Fabulous wrapper for those?_  
 Doing so would only end up duplicating the existing methods and compel us to maintain these in sync with Xamarin.Forms.  
-See https://github.com/fsprojects/Elmish.XamarinForms/pull/147 for more information
+See https://github.com/fsprojects/Fabulous/pull/147 for more information
 
 See also:
 

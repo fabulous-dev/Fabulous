@@ -2,7 +2,7 @@
 	"assemblies": [
 		"packages/neutral/Xamarin.Forms/lib/netstandard1.0/Xamarin.Forms.Core.dll"
 	],
-	"outputNamespace": "Elmish.XamarinForms.DynamicViews",
+	"outputNamespace": "Fabulous.DynamicViews",
 	"types": [
 		{
 			"name": "Xamarin.Forms.Element",
@@ -124,11 +124,11 @@
 			"members": [
 				{
 					"name": "HorizontalOptions",
-					"defaultValue": "Unchecked.defaultof<Xamarin.Forms.LayoutOptions>"
+					"defaultValue": "Xamarin.Forms.LayoutOptions.Fill"
 				},
 				{
 					"name": "VerticalOptions",
-					"defaultValue": "Unchecked.defaultof<Xamarin.Forms.LayoutOptions>"
+					"defaultValue": "Xamarin.Forms.LayoutOptions.Fill"
 				},
 				{
 					"name": "Margin",
@@ -273,6 +273,14 @@
 					"name": "Orientation",
 					"uniqueName": "ScrollOrientation",
 					"defaultValue": "Unchecked.defaultof<Xamarin.Forms.ScrollOrientation>"
+				},
+				{
+					"name": "HorizontalScrollBarVisibility",
+					"defaultValue": "Xamarin.Forms.ScrollBarVisibility.Default"
+				},
+				{
+					"name": "VerticalScrollBarVisibility",
+					"defaultValue": "Xamarin.Forms.ScrollBarVisibility.Default"
 				}
 			]
 		},
@@ -330,6 +338,13 @@
 				{
 					"name": "TextColor",
 					"defaultValue": "Xamarin.Forms.Color.Default"
+				},
+				{
+					"name": "TextChanged",
+					"uniqueName": "SearchBarTextChanged",
+					"defaultValue": "null",
+					"inputType": "Xamarin.Forms.TextChangedEventArgs -> unit",
+					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))"
 				}
 			]
 		},
@@ -467,6 +482,10 @@
 					"defaultValue": "null",
 					"inputType": "Xamarin.Forms.ToggledEventArgs -> unit",
 					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ToggledEventArgs>(fun _sender args -> f args))"
+				},
+				{
+					"name": "OnColor",
+					"defaultValue": "Xamarin.Forms.Color.Default"
 				}
 			]
 		},
@@ -935,6 +954,10 @@
 					"defaultValue": "null",
 					"inputType": "Xamarin.Forms.TextChangedEventArgs -> unit",
 					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))"
+				},
+				{
+					"name": "AutoSize",
+					"defaultValue": "Xamarin.Forms.EditorAutoSizeOption.Disabled"
 				}
 			]
 		},
@@ -991,6 +1014,20 @@
 					"defaultValue": "null",
 					"inputType": "Xamarin.Forms.TextChangedEventArgs -> unit",
 					"convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))"
+				},
+				{
+					"name": "IsTextPredictionEnabled",
+					"defaultValue": "true"
+				},
+				{
+					"name": "ReturnType",
+					"defaultValue": "Xamarin.Forms.ReturnType.Default"
+				},
+				{
+					"name": "ReturnCommand",
+					"defaultValue": "null",
+					"inputType": "unit -> unit",
+					"convToModel": "makeCommand"
 				}
 			]
 		},
@@ -1368,7 +1405,7 @@
 		},
 		{
 			"name": "Xamarin.Forms.ContentPage",
-			"customType": "Elmish.XamarinForms.DynamicViews.CustomContentPage",
+			"customType": "Fabulous.DynamicViews.CustomContentPage",
 			"members": [
 				{
 					"name": "Content",
@@ -1527,7 +1564,7 @@
 		},
 		{
 			"name": "Xamarin.Forms.ListView",
-			"customType": "Elmish.XamarinForms.DynamicViews.CustomListView",
+			"customType": "Fabulous.DynamicViews.CustomListView",
 			"members": [
 				{
 					"name": "ItemsSource",
@@ -1644,13 +1681,17 @@
 					"defaultValue": "null",
 					"inputType": "unit -> unit",
 					"convToModel": "(fun f -> System.EventHandler(fun sender args -> f ()))"
+				},
+				{
+					"name": "SelectionMode",
+					"defaultValue": "Xamarin.Forms.ListViewSelectionMode.Single"
 				}
 			]
 		},
 		{
 			"name": "Xamarin.Forms.ListView",
 			"modelName": "ListViewGrouped",
-			"customType": "Elmish.XamarinForms.DynamicViews.CustomGroupListView",
+			"customType": "Fabulous.DynamicViews.CustomGroupListView",
 			"members": [
 				{
 					"name": "ItemsSource",

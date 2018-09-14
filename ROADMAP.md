@@ -31,11 +31,11 @@
   * Implement the C# 5.0 "open static classes" feature in F# to allow the `View.` prefix to be dropped
 
 * App size:
-  * Remove F# resources in linker, see https://github.com/fsprojects/Elmish.XamarinForms/issues/94
+  * Remove F# resources in linker, see https://github.com/fsprojects/Fabulous/issues/94
 
 ## Discarded Ideas
 
-* Possibly switch to a type provider (see [this comment](https://github.com/fsprojects/Elmish.XamarinForms/issues/50#issuecomment-390396365))
+* Possibly switch to a type provider (see [this comment](https://github.com/fsprojects/Fabulous/issues/50#issuecomment-390396365))
 
 
 ## Bugs:

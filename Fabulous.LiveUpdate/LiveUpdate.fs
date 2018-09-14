@@ -1,5 +1,5 @@
-﻿// Copyright 2018 Elmish.XamarinForms contributors. See LICENSE.md for license.
-namespace Elmish.XamarinForms
+﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
+namespace Fabulous.Core
 
 open System
 open System.Net
@@ -7,8 +7,8 @@ open System.Net.Sockets
 open System.Net.NetworkInformation
 open System.IO
 open System.Text
-open Elmish.XamarinForms
-open Elmish.XamarinForms.DynamicViews
+open Fabulous.Core
+open Fabulous.DynamicViews
 open FSharp.Compiler.PortaCode.CodeModel
 open FSharp.Compiler.PortaCode.Interpreter
 
@@ -74,7 +74,7 @@ type BroadcastInfo =
                             printfn "      adb -e forward  tcp:%d tcp:%d (USB)" httpPort httpPort
                             printfn "      fscd.exe --watch --webhook:http://localhost:%d/update" httpPort
                             printfn "  "
-                            printfn "  See https://fsprojects.github.io/Elmish.XamarinForms/tools.html for more details"
+                            printfn "  See https://fsprojects.github.io/Fabulous/tools.html for more details"
                             printfn "----------"
                         else 
                             printfn "LiveUpdate: Couldn't find a network interface to recommend."
@@ -144,8 +144,8 @@ type HttpServer(?port) =
         <pre>    adb -e forward  tcp:PORT tcp:PORT  (Emulator)</pre>
         <p>  then</p>
         <pre>    cd MyApp\MyApp</pre>
-        <pre>    %USERPROFILE%\.nuget\packages\Elmish.XamarinForms.LiveUpdate\0.16.0\tools\fscd.exe --watch --webhook:http://localhost:PORT/update</pre>
-        <pre>    mono ~/.nuget/packages/Elmish.XamarinForms.LiveUpdate/0.16.0/tools/fscd.exe --watch --webhook:http://localhost:PORT/update</pre>
+        <pre>    %USERPROFILE%\.nuget\packages\Fabulous.LiveUpdate\0.20.0\tools\fscd.exe --watch --webhook:http://localhost:PORT/update</pre>
+        <pre>    mono ~/.nuget/packages/Fabulous.LiveUpdate/0.20.0/tools/fscd.exe --watch --webhook:http://localhost:PORT/update</pre>
         <p>in your project directoty</p>
     </body>
 </html>"""
