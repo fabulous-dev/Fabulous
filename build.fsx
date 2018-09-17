@@ -1,11 +1,13 @@
 // include Fake lib
 #I "packages/FAKE/tools"
 #r "packages/FAKE/tools/FakeLib.dll"
+#r "packages/FAKE/tools/Newtonsoft.Json.dll"
 open Fake
-open System
 open System.IO
 open Fake.AssemblyInfoFile
 open Fake.ReleaseNotesHelper
+open Newtonsoft.Json
+open Newtonsoft.Json.Linq
 
 let buildDir nuget = if nuget then "./build_output" else "./build_output/tools"
 let release = LoadReleaseNotes "RELEASE_NOTES.md"
@@ -17,6 +19,8 @@ let projects =
       ("extensions/OxyPlot/Fabulous.OxyPlot.fsproj", "Fabulous.OxyPlot", "Fabulous extension for OxyPlot", true) 
       ("fscd/fscd.fsproj", "fscd", "F# Compiler Daemon", false)
       ("Fabulous.LiveUpdate/Fabulous.LiveUpdate.fsproj", "Fabulous.LiveUpdate", "F# Functional App Dev Framework Live Update", true) ]
+
+let templateFiles = "templates/**/.template.config/template.json"
 
 Target "Build" (fun _ ->
 
@@ -64,6 +68,22 @@ Target "AssemblyInfo" (fun _ ->
             Attribute.FileVersion release.AssemblyVersion ]
 
         CreateFSharpAssemblyInfo (projFolder @@ "AssemblyInfo.fs") projDetails
+)
+
+// Update the template.json files with the latest version
+Target "TemplatesVersion" (fun _ ->
+    let files = !! templateFiles
+
+    for file in files do
+        StringHelper.ReadFileAsString file
+        |> JObject.Parse
+        |> (fun o -> 
+                let prop = o.["symbols"].["FabulousPkgsVersion"].["defaultValue"] :?> JValue
+                prop.Value <- release.AssemblyVersion
+                o
+        )
+        |> (fun o -> JsonConvert.SerializeObject(o, Formatting.Indented))
+        |> StringHelper.WriteStringToFile false file
 )
 
 // Build a NuGet package
@@ -131,6 +151,7 @@ Target "Test" DoNothing
 
 "Clean"
   ==> "AssemblyInfo"
+  ==> "TemplatesVersion"
   ==> "Build"
   ==> "LibraryNuGet" 
   ==> "TemplatesNuGet" 
