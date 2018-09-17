@@ -1,3 +1,9 @@
+#### 0.21.0
+
+* Fixed https://github.com/fsprojects/Fabulous/issues/136
+* Updated to Xamarin.Forms 3.1
+* Changed LiveUpdate to only display corresponding indications based on the current platform (Android, iOS, other)
+
 #### 0.20.0
 
 * Rename project Elmish.XamarinForms --> Fabulous

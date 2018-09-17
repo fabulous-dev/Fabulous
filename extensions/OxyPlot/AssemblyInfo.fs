@@ -5,13 +5,13 @@ open System.Reflection
 [<assembly: AssemblyTitleAttribute("Fabulous.OxyPlot")>]
 [<assembly: AssemblyProductAttribute("Fabulous.OxyPlot")>]
 [<assembly: AssemblyDescriptionAttribute("Fabulous extension for OxyPlot")>]
-[<assembly: AssemblyVersionAttribute("0.20.0")>]
-[<assembly: AssemblyFileVersionAttribute("0.20.0")>]
+[<assembly: AssemblyVersionAttribute("0.21.0")>]
+[<assembly: AssemblyFileVersionAttribute("0.21.0")>]
 do ()
 
 module internal AssemblyVersionInformation =
     let [<Literal>] AssemblyTitle = "Fabulous.OxyPlot"
     let [<Literal>] AssemblyProduct = "Fabulous.OxyPlot"
     let [<Literal>] AssemblyDescription = "Fabulous extension for OxyPlot"
-    let [<Literal>] AssemblyVersion = "0.20.0"
-    let [<Literal>] AssemblyFileVersion = "0.20.0"
+    let [<Literal>] AssemblyVersion = "0.21.0"
+    let [<Literal>] AssemblyFileVersion = "0.21.0"
