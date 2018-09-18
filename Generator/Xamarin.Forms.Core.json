@@ -1805,6 +1805,10 @@
 					"defaultValue": "null",
 					"inputType": "unit -> unit",
 					"convToModel": "(fun f -> System.EventHandler(fun sender args -> f ()))"
+				},
+				{
+					"name": "SelectionMode",
+					"defaultValue": "Xamarin.Forms.ListViewSelectionMode.Single"
 				}
 			]
 		}
