@@ -1,4 +1,4 @@
-﻿{
+{
   "author": "fsprojects",
   "classifications": [
     "Fabulous",
@@ -129,7 +129,7 @@
       "type": "parameter",
       "dataType": "string",
       "replaces": "FabulousPkgsVersion",
-      "defaultValue": "0.21.0"
+      "defaultValue": "0.21.1"
     },
     "NewtonsoftJsonPkg": {
       "type": "parameter",
