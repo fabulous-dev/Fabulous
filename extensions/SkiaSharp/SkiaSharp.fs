@@ -30,9 +30,9 @@ module SkiaSharpExtension =
             let attribCount = 0
             let attribCount = match enableTouchEvents with Some _ -> attribCount + 1 | None -> attribCount
             let attribCount = match ignorePixelScaling with Some _ -> attribCount + 1 | None -> attribCount
+            let attribCount = match invalidate with Some _ -> attribCount + 1 | None -> attribCount
             let attribCount = match paintSurface with Some _ -> attribCount + 1 | None -> attribCount
             let attribCount = match touch with Some _ -> attribCount + 1 | None -> attribCount
-            let attribCount = match invalidate with Some _ -> attribCount + 1 | None -> attribCount
 
             // Populate the attributes of the base element
             let attribs = 
@@ -49,9 +49,9 @@ module SkiaSharpExtension =
             // Add our own attributes. They must have unique names which must match the names below.
             match enableTouchEvents with None -> () | Some v -> attribs.Add(CanvasEnableTouchEventsAttribKey, v) 
             match ignorePixelScaling with None -> () | Some v -> attribs.Add(IgnorePixelScalingAttribKey, v) 
+            match invalidate with None -> () | Some v -> attribs.Add(InvalidateAttribKey, v)
             match paintSurface with None -> () | Some v -> attribs.Add(PaintSurfaceAttribKey, System.EventHandler<_>(fun _sender args -> v args))
             match touch with None -> () | Some v -> attribs.Add(TouchAttribKey, System.EventHandler<_>(fun _sender args -> v args))
-            match invalidate with None -> () | Some v -> attribs.Add(TouchAttribKey, System.EventHandler<_>(fun _sender args -> v args))
 
             // The create method
             let create () = new SkiaSharp.Views.Forms.SKCanvasView()
