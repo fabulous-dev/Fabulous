@@ -36,6 +36,7 @@ type AttributeKey<'T> internal (keyv: int) =
         | true, keyv -> keyv
         | false, _ -> failwithf "unregistered attribute key %d" keyv
 
+
 /// A description of a visual element
 type ViewElement internal (targetType: Type, create: (unit -> obj), update: (ViewElement voption -> ViewElement -> obj -> unit), attribs: KeyValuePair<int,obj>[]) = 
     
@@ -44,6 +45,9 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
 
     static member Create (create: (unit -> 'T), update: (ViewElement voption -> ViewElement -> 'T -> unit), attribsBuilder: AttributesBuilder) =
         ViewElement(typeof<'T>, (create >> box), (fun prev curr target -> update prev curr (unbox target)), attribsBuilder.Close())
+
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member val _CreatedAttribKey : AttributeKey<obj -> unit> = AttributeKey<_>("ElementCreated")
 
     /// Get the type created by the visual element
     member x.TargetType = targetType
@@ -80,6 +84,9 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
         Debug.WriteLine (sprintf "Create %O" x.TargetType)
         let target = create()
         x.Update(target)
+        match x.TryGetAttributeKeyed(ViewElement._CreatedAttribKey) with
+        | ValueSome f -> f target
+        | ValueNone -> ()
         target
 
     /// Produce a new visual element with an adjusted attribute

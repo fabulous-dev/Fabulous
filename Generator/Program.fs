@@ -601,7 +601,7 @@ let Main(args: string[]) =
                     | Some e -> yield (m, (e :> MemberReference))
                     | None -> 
                       if (String.IsNullOrWhiteSpace(m.UpdateCode))  then
-                        Console.WriteLine(sprintf "Could not find member '%s'") ]
+                        Console.WriteLine(sprintf "Could not find member '%s'" m.Name) ]
                |> dict
             let code = BindTypes (bindings, resolutions, memberResolutions)
 
