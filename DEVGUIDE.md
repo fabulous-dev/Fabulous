@@ -24,12 +24,7 @@ start Fabulous.sln
 
 ## Dev Notes - Releasing
 
-Before releasing a new version, the version number need to be updated in several places:
-
-* Add a new entry at the top of [RELEASE_NOTES.md](RELEASE_NOTES.md) (FAKE will use that version when building)
-* Replace the old version number in [tools.md](docs/tools.md)
-* Update the default value of `FabulousPkgsVersion` in [template.json](templates/content/blank/.template.config/template.json)
-* Replace the old version number in [LiveUpdate.fs](Fabulous.LiveUpdate/LiveUpdate.fs)
+Before releasing a new version, add a new entry at the top of [RELEASE_NOTES.md](RELEASE_NOTES.md) (FAKE will use that version when building).
 
 NB.: If you're releasing the same version, you might need to do the following first:
 * Run `git clean -xfd .`
@@ -47,7 +42,7 @@ On Windows:
 .\build NuGet
 ```
 
-FAKE will have updated all the `AssemblyInfo.fs` files. Commit all changes.
+FAKE will have updated all the `AssemblyInfo.fs` files and `template.json`. Commit all changes.
 
 Lastly, publish all the generated packages to NuGet by running these commands:
 

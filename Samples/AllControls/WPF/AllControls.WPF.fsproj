@@ -23,8 +23,8 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="3.0.0.482510" />
-    <PackageReference Include="Xamarin.Forms.Platform.WPF" Version="3.0.0.482510" />
+    <PackageReference Include="Xamarin.Forms" Version="3.1.0.697729" />
+    <PackageReference Include="Xamarin.Forms.Platform.WPF" Version="3.1.0.697729" />
     <PackageReference Include="FSharp.Core" Version="4.5.2" />
     <PackageReference Update="FSharp.Core" Version="4.5.2" /> <!-- workaround for VSMac bug https://github.com/mono/monodevelop/pull/5137 --> 
     <ProjectReference Include="..\AllControls\AllControls.fsproj">

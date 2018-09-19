@@ -3,7 +3,7 @@ id Fabulous.Core
 version 0.0
 authors Fabulous Contributors
 description
-    F# Functional App Development using Xamrin.Forms
+    F# Functional App Development using Xamarin.Forms
 tags
 	Xamarin.Forms F# Elmish Elm
 projectUrl

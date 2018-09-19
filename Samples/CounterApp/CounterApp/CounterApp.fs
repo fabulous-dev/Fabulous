@@ -153,7 +153,7 @@ module App =
           content=View.StackLayout(padding=30.0,verticalOptions = LayoutOptions.Center,
             children=[ 
               // If you want the button to disappear when in the initial condition then use this:
-              yield View.Label(text= sprintf "%d" model.Count, horizontalOptions=LayoutOptions.Center, fontSize = "Large")
+              yield View.Label(text = sprintf "%d" model.Count, horizontalOptions = LayoutOptions.Center, widthRequest=200.0, horizontalTextAlignment=TextAlignment.Center)
               yield View.Button(text="Increment", command= (fun () -> dispatch Increment))
               yield View.Button(text="Decrement", command= (fun () -> dispatch Decrement)) 
               yield View.StackLayout(padding=20.0, orientation=StackOrientation.Horizontal, horizontalOptions=LayoutOptions.Center,

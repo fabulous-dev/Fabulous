@@ -1,12 +1,12 @@
-﻿namespace AllControls.WindowsWPFClassic
+﻿namespace NewApp.WindowsWPFClassic
 open System.Reflection
 open System.Runtime.CompilerServices
 
 // the name of the type here needs to match the name inside the ResourceDesigner attribute
-//type Resources = AllControls.Droid.Resource
-//[<assembly: Android.Runtime.ResourceDesigner("AllControls.WindowsWPFClassic.Resources", IsApplication=true)>]
+//type Resources = NewApp.Droid.Resource
+//[<assembly: Android.Runtime.ResourceDesigner("NewApp.WindowsWPFClassic.Resources", IsApplication=true)>]
 
-[<assembly: AssemblyTitle("AllControls.WindowsWPFClassic")>]
+[<assembly: AssemblyTitle("NewApp.WindowsWPFClassic")>]
 [<assembly: AssemblyDescription("")>]
 [<assembly: AssemblyConfiguration("")>]
 [<assembly: AssemblyCompany("")>]
