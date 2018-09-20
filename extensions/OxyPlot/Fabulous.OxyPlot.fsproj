@@ -1,20 +1,24 @@
-<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <OtherFlags>/warnon:1182</OtherFlags>
-  </PropertyGroup>
-  <ItemGroup>
-    <None Include="paket.template" />
-    <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="OxyPlot.fs" />
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <PackageReference Include="FSharp.Core" Version="4.5.2" />
-    <PackageReference Update="FSharp.Core" Version="4.5.2" /> <!-- workaround for VSMac bug https://github.com/mono/monodevelop/pull/5137 --> 
-    <PackageReference Include="Xamarin.Forms" Version="3.1.0.697729" />
-    <PackageReference Include="OxyPlot.Core" Version="2.0.0-unstable0956" />
-    <PackageReference Include="OxyPlot.Xamarin.Forms" Version="1.1.0-unstable0013" />
-    <ProjectReference Include="..\..\src\Fabulous.Core\Fabulous.Core.fsproj" />
-  </ItemGroup>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <NoWarn>NU1701;NU5104</NoWarn>
+    </PropertyGroup>
+    <PropertyGroup>
+        <PackageId>Fabulous.OxyPlot</PackageId>
+        <Description>Fabulous extension for OxyPlot</Description>
+        <PackageTags>OxyPlot;Charting;2D</PackageTags>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="OxyPlot.fs" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="FSharp.Core" />
+        <PackageReference Include="Xamarin.Forms" />
+        <PackageReference Include="OxyPlot.Core" />
+        <PackageReference Include="OxyPlot.Xamarin.Forms" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\Fabulous.Core\Fabulous.Core.fsproj" />
+    </ItemGroup>
+    <Import Project="..\..\Packages.targets" />
 </Project>

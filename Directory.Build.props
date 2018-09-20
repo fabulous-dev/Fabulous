@@ -1,0 +1,27 @@
+<Project>
+  <!-- NuGet Specs -->
+  <PropertyGroup>
+    <Version>0.22.0</Version>
+    <Description>Add WPF to template</Description>
+    <Authors>Fabulous Contributors</Authors>
+    <PackageVersion>0.22.0</PackageVersion>
+    <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+    <PackageLicenseUrl>https://github.com/fsprojects/Fabulous/blob/master/LICENSE.md</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/fsprojects/Fabulous</PackageProjectUrl>
+    <PackageTags>Xamarin.Forms;F#;Elmish;Elm;$(PackageTags)</PackageTags>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
+    <DisableImplicitSystemValueTupleReference>true</DisableImplicitSystemValueTupleReference>
+  </PropertyGroup>
+  <PropertyGroup>
+    <!-- Support for arbitrary value in AssemblyInformationalVersionAttribute https://github.com/Microsoft/visualfsharp/issues/4822 -->
+    <NoWarn>FS2003</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework) == 'netstandard2.0' OR $(TargetFramework) == 'netcoreapp2.0'">
+    <OtherFlags>/warnon:1182</OtherFlags>
+  </PropertyGroup>
+</Project>

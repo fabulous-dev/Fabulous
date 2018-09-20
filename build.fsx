@@ -1,148 +1,182 @@
-// include Fake lib
-#I "packages/FAKE/tools"
-#r "packages/FAKE/tools/FakeLib.dll"
-#r "packages/FAKE/tools/Newtonsoft.Json.dll"
-open Fake
+#r "paket:
+nuget Fake.Core.ReleaseNotes
+nuget Fake.Core.Target
+nuget Fake.Core.Xml
+nuget Fake.DotNet.Cli
+nuget Fake.DotNet.MSBuild
+nuget Fake.Dotnet.NuGet
+nuget Fake.DotNet.Paket
+nuget Fake.DotNet.Testing.VSTest
+nuget Fake.IO.FileSystem
+nuget Newtonsoft.Json //"
+#load "./.fake/build.fsx/intellisense.fsx"
+
+open Fake.Core
+open Fake.DotNet
+open Fake.DotNet.NuGet
+open Fake.DotNet.Testing
+open Fake.IO
+open Fake.IO.Globbing.Operators
 open System.IO
-open Fake.AssemblyInfoFile
-open Fake.ReleaseNotesHelper
 open Newtonsoft.Json
 open Newtonsoft.Json.Linq
 
-let buildDir nuget = if nuget then "./build_output" else "./build_output/tools"
-let release = LoadReleaseNotes "RELEASE_NOTES.md"
+type BuildType =
+    | Debug
+    | Release
 
-let projects = 
-    [ ("src/Fabulous.Core/Fabulous.Core.fsproj", "Fabulous.Core", "F# Functional App Dev Framework", true)
-      ("extensions/Maps/Fabulous.Maps.fsproj", "Fabulous.Maps", "Fabulous extension for Xamarin.Forms.Maps", true) 
-      ("extensions/SkiaSharp/Fabulous.SkiaSharp.fsproj", "Fabulous.SkiaSharp", "Fabulous extension for SkiaSharp", true)
-      ("extensions/OxyPlot/Fabulous.OxyPlot.fsproj", "Fabulous.OxyPlot", "Fabulous extension for OxyPlot", true) 
-      ("tools/fscd/fscd.fsproj", "fscd", "F# Compiler Daemon", false)
-      ("src/Fabulous.LiveUpdate/Fabulous.LiveUpdate.fsproj", "Fabulous.LiveUpdate", "F# Functional App Dev Framework Live Update", true) ]
+type BuildAction =
+    | MSBuild of BuildType
+    | DotNetPack
+    | NuGetPack
 
-let templateFiles = "templates/**/.template.config/template.json"
+[<NoComparison>]
+type ProjectDefinition =
+    {
+        Name: string
+        Path: IGlobbingPattern
+        Action: BuildAction
+        OutputPath: string
+    }
 
-Target "Build" (fun _ ->
+let release = ReleaseNotes.load "RELEASE_NOTES.MD"
+let buildDir = Path.getFullName "./build_output"
 
-    // needed or else 'project.assets.json' not found'
-    for (projFile, _project, _summary, _nuget) in projects do
-        DotNetCli.Restore (fun p -> { p with Project = projFile })
+let removeIncompatiblePlatformProjects pattern = 
+    if not Environment.isWindows then
+        pattern
+        -- "samples/AllControls/WPF/AllControls.WPF.fsproj"
+    else    
+        pattern
 
-    for (projFile, _project, _summary, nuget) in projects do
-        !! projFile |> MSBuildRelease (buildDir nuget) "Restore" |> Log "LibraryRestore-Output: "
+let projects = [
+    { Name = "Tools";       Path = !! "tools/**/*.fsproj";      Action = MSBuild Release;    OutputPath = buildDir + "/tools" }
+    { Name = "Src";         Path = !! "src/**/*.fsproj";        Action = DotNetPack;         OutputPath = buildDir }
+    { Name = "Extensions";  Path = !! "extensions/**/*.fsproj"; Action = DotNetPack;         OutputPath = buildDir }
+    { Name = "Tests";       Path = !! "tests/**/*.fsproj";      Action = MSBuild Release;    OutputPath = buildDir + "/tests" }
+    { Name = "Templates";   Path = !! "templates/**/*.nuspec";  Action = NuGetPack;          OutputPath = buildDir }
+]
+let samples = { Name = "Samples"; Path = (!! "samples/**/*.fsproj" |> removeIncompatiblePlatformProjects); Action = MSBuild Debug; OutputPath = buildDir + "/samples" } 
 
-    for (projFile, _project, _summary, nuget) in projects do
-        !! projFile |> MSBuildRelease (buildDir nuget) "Build" |> Log "LibraryBuild-Output: "
+
+let getOutputDir basePath proj =
+    let folderName = Path.GetFileNameWithoutExtension(proj)
+    sprintf "%s/%s/" basePath folderName
+
+let msbuild (buildType: BuildType) (definition: ProjectDefinition) =
+    let configuration = match buildType with Debug -> "Debug" | Release -> "Release"
+    let properties = [ ("Configuration", configuration); ("AndroidSdkDirectory", Environment.environVar("ANDROID_SDK_PATH")) ] 
+
+    for project in definition.Path do
+        let outputDir = getOutputDir definition.OutputPath project
+        MSBuild.run id outputDir "Restore" properties [project] |> Trace.logItems (definition.Name + "Restore-Output: ")
+        MSBuild.run id outputDir "Build" properties [project] |> Trace.logItems (definition.Name + "Build-Output: ")
+
+let dotnetPack (definition: ProjectDefinition) =
+    let createPackageParam includeVersion project =
+        let p = sprintf "\"%s\" package Microsoft.SourceLink.Github" project
+        match includeVersion with true -> (p + " -v 1.0.0-beta-63127-02") | false -> p
+
+    // Inject SourceLink before packaging and remove it afterwards
+    // Could have been set in fsproj, but Visual Studio for Mac can't reliably ignore SourceLink when not packaging
+    for project in definition.Path do
+        DotNet.exec id "add" (createPackageParam true project) |> ignore
+        DotNet.restore id project
+        DotNet.pack (fun opt ->
+            { opt with
+                Configuration = DotNet.BuildConfiguration.Release
+                OutputPath = Some definition.OutputPath }) project
+        DotNet.exec id "remove" (createPackageParam false project) |> ignore
+
+let nugetPack (definition: ProjectDefinition) =
+    for nuspec in definition.Path do
+        NuGet.NuGetPack (fun opt ->
+            { opt with
+                WorkingDir = "templates"
+                OutputPath = definition.OutputPath
+                Version = release.NugetVersion
+                ReleaseNotes = (String.toLines release.Notes) }) nuspec
+
+let buildProject (definition: ProjectDefinition) =    
+    match definition.Action with
+    | MSBuild buildType -> msbuild buildType definition
+    | DotNetPack -> dotnetPack definition
+    | NuGetPack -> nugetPack definition
+
+
+Target.create "Clean" (fun _ ->
+    Shell.cleanDir buildDir
 )
 
-Target "BuildSamples" (fun _ ->
+Target.create "UpdateVersion" (fun _ ->
+    // Updates Directory.Build.props
+    let props = "./Directory.Build.props"
+    Xml.loadDoc props
+    |> Xml.replaceXPath "//Version/text()" release.AssemblyVersion
+    |> Xml.replaceXPath "//Description/text()" (String.toLines release.Notes)
+    |> Xml.replaceXPath "//PackageVersion/text()" release.NugetVersion
+    |> Xml.saveDoc props
 
-    // needed or else 'project.assets.json' not found'
-    DotNetCli.Restore (fun p -> { p with Project = "Fabulous.sln" })
-
-    // restore the apps debug
-    !! "Fabulous.sln"
-          |> MSBuildDebug null "Restore"
-          |> Log "SamplesRestoreDebug-Output: "
-
-    // build the apps debug
-    [ yield "Samples/AllControls/Droid/AllControls.Droid.fsproj";
-      yield "Samples/AllControls/iOS/AllControls.iOS.fsproj";
-      if isWindows then
-           yield "Samples/AllControls/WPF/AllControls.WPF.fsproj";
-      yield "Samples/TicTacToe/Droid/TicTacToe.Droid.fsproj";
-      yield "Samples/TicTacToe/iOS/TicTacToe.iOS.fsproj";
-      yield "Samples/CounterApp/Droid/CounterApp.Droid.fsproj";
-      yield "Samples/CounterApp/iOS/CounterApp.iOS.fsproj";
-      yield "Samples/StaticView/StaticViewCounterApp/Droid/StaticViewCounterApp.Droid.fsproj";
-      yield "Samples/StaticView/StaticViewCounterApp/iOS/StaticViewCounterApp.iOS.fsproj"; ]
-          |> MSBuildDebug null "Build"
-          |> Log "SamplesBuildDebug-Output: "
-)
-
-Target "Clean" (fun _ ->
-    CleanDir (buildDir true)
-)
-
-// Generate assembly info files with the right version & up-to-date information
-Target "AssemblyInfo" (fun _ ->
-
-    for (projFile, projName, summary, _nuget) in projects do
-        let projFolder = Path.GetDirectoryName(projFile)
-        let projDetails = 
-          [ Attribute.Title projName
-            Attribute.Product projName
-            Attribute.Description summary
-            Attribute.Version release.AssemblyVersion
-            Attribute.FileVersion release.AssemblyVersion ]
-
-        CreateFSharpAssemblyInfo (projFolder @@ "AssemblyInfo.fs") projDetails
-)
-
-// Update the template.json files with the latest version
-Target "TemplatesVersion" (fun _ ->
-    let files = !! templateFiles
-
-    for file in files do
-        StringHelper.ReadFileAsString file
+    // Updates template.json
+    let templates = !! "templates/**/.template.config/template.json"
+    for template in templates do
+        File.readAsString template
         |> JObject.Parse
         |> (fun o -> 
                 let prop = o.["symbols"].["FabulousPkgsVersion"].["defaultValue"] :?> JValue
-                prop.Value <- release.AssemblyVersion
+                prop.Value <- release.NugetVersion
                 o
         )
         |> (fun o -> JsonConvert.SerializeObject(o, Formatting.Indented))
-        |> StringHelper.WriteStringToFile false file
+        |> File.writeString false template
 )
 
-// Build a NuGet package
-Target "LibraryNuGet" (fun _ ->
-    for (projFile, _projName, _summary, nuget) in projects do
-        if nuget then 
-            let projFolder = Path.GetDirectoryName(projFile)
-            Paket.Pack(fun p -> 
-                { p with
-                    OutputPath = buildDir nuget + "/"
-                    TemplateFile = projFolder + "/paket.template"
-                    Version = release.NugetVersion
-                    ReleaseNotes = toLines release.Notes})
+Target.create "Restore" (fun _ ->
+    Paket.restore id
+    DotNet.restore id "Fabulous.sln"
 )
 
-// Build a NuGet package
-Target "TemplatesNuGet" (fun _ ->
-
-    NuGetHelper.NuGetPack (fun p -> 
-        { p with
-            WorkingDir = "templates"
-            OutputPath = buildDir true + "/"
-            Version = release.NugetVersion
-            ReleaseNotes = toLines release.Notes}) @"templates/Fabulous.Templates.nuspec"
+Target.create "Build" (fun _ -> 
+    projects |> List.iter buildProject
 )
-let exec exe args =
-    let code = Shell.Exec(exe, args) 
-    if code <> 0 then failwithf "%s %s failed, error code %d" exe args code
 
-Target "TestTemplatesNuGet" (fun _ ->
+Target.create "BuildSamples" (fun _ ->
+    samples |> buildProject
+)
 
+Target.create "RunTests" (fun _ ->
+    !! (buildDir + "/tests/*test*.dll")
+    -- "**/*TestAdapter*.dll"
+    -- "**/*TestFramework*.dll" 
+    |> VSTest.run (fun opt ->
+        { opt with
+             Logger = "trx"
+             TestAdapterPath = (Path.getFullName "./packages") }
+    )
+)
+
+Target.create "TestTemplatesNuGet" (fun _ ->
     // Globally install the templates from the template nuget package we just built
-    DotNetCli.RunCommand id ("new -i " + buildDir true + "/Fabulous.Templates." + release.NugetVersion + ".nupkg")
+    DotNet.exec id "new" ("-i " + buildDir + "/Fabulous.Templates." + release.NugetVersion + ".nupkg") |> ignore
 
     let testAppName = "testapp2" + string (abs (hash System.DateTime.Now.Ticks) % 100)
     // Instantiate the template. TODO: additional parameters and variations
-    CleanDir testAppName
-    let extraArgs = if isUnix then "" else " --WPF"
-    DotNetCli.RunCommand id (sprintf "new fabulous-app -n %s -lang F#%s" testAppName extraArgs)
+    Shell.cleanDir testAppName
+    let extraArgs = if Environment.isUnix then "" else " --WPF"
+    DotNet.exec id "new fabulous-app" (sprintf "-n %s -lang F#%s" testAppName extraArgs) |> ignore
 
-    let pkgs = Path.GetFullPath(buildDir true)
+    let pkgs = Path.GetFullPath(buildDir)
     // When restoring, using the build_output as a package source to pick up the package we just compiled
-    DotNetCli.RunCommand id (sprintf "restore %s/%s/%s.fsproj  --source https://api.nuget.org/v3/index.json --source %s" testAppName testAppName testAppName pkgs)
-    if not isUnix then 
-        DotNetCli.RunCommand id (sprintf "restore %s/%s.WPF/%s.WPF.fsproj  --source https://api.nuget.org/v3/index.json --source %s" testAppName testAppName testAppName pkgs)
+    DotNet.exec id "restore" (sprintf "%s/%s/%s.fsproj  --source https://api.nuget.org/v3/index.json --source %s" testAppName testAppName testAppName pkgs) |> ignore
+    if not Environment.isUnix then 
+        DotNet.exec id "restore" (sprintf "%s/%s.WPF/%s.WPF.fsproj  --source https://api.nuget.org/v3/index.json --source %s" testAppName testAppName testAppName pkgs) |> ignore
     
-    let slash = if isUnix then "\\" else ""
+    let slash = if Environment.isUnix then "\\" else ""
     for c in ["Debug"; "Release"] do 
-        for p in ["Any CPU"; "iPhoneSimulator"] do 
-            exec "msbuild" (sprintf "%s/%s.sln /p:Platform=\"%s\" /p:Configuration=%s /p:PackageSources=%s\"https://api.nuget.org/v3/index.json%s;%s%s\"" testAppName testAppName p c  slash slash pkgs slash)
+        for p in ["Any CPU"; "iPhoneSimulator"] do
+            let args = (sprintf "%s/%s.sln /p:Platform=\"%s\" /p:Configuration=%s /p:PackageSources=%s\"https://api.nuget.org/v3/index.json%s;%s%s\"" testAppName testAppName p c  slash slash pkgs slash)
+            let code = Shell.Exec("msbuild", args) 
+            if code <> 0 then failwithf "%s %s failed, error code %d" "msbuild" args code
 
     (* Manual steps without building nupkg
         .\build LibraryNuGet
@@ -156,29 +190,24 @@ Target "TestTemplatesNuGet" (fun _ ->
 
         dotnet restore testapp265/testapp265.WPF/testapp265.WPF.fsproj --source https://api.nuget.org/v3/index.json -s build_output
         *)
-
 )
 
+Target.create "Test" ignore
 
-Target "NuGet" DoNothing
-Target "Test" DoNothing
+open Fake.Core.TargetOperators
 
 "Clean"
-  ==> "AssemblyInfo"
-  ==> "TemplatesVersion"
+  ==> "Restore"
+  ==> "UpdateVersion"
   ==> "Build"
-  ==> "LibraryNuGet" 
-  ==> "TemplatesNuGet" 
-  ==> "NuGet"
 
 "Build"
+  // =?> ("RunTests", Environment.isWindows) // Can't be run on OSX
   ==> "BuildSamples"
   ==> "Test"
 
-"NuGet" 
+"Build"
   ==> "TestTemplatesNuGet"
   ==> "Test"
 
-
-// start build
-RunTargetOrDefault "Build"
+Target.runOrDefault "Build"

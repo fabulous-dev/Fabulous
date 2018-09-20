@@ -2,23 +2,39 @@
 
 ## Dev Notes - Building
 
+Make sure you have FAKE 5 installed as a global tool
+
+```
+dotnet tool install fake-cli -g
+```
+
+If you only want to open Fabulous with an IDE (Visual Studio or other), you'll need to run restore for both Paket and NuGet.
+
+Otherwise, just run the following command:
+
 On OSX:
 
-```fsharp
-mono .paket/paket.exe restore
-dotnet restore
-open Fabulous.sln
-./build.sh NuGet
+```
+./build.sh
+```
+
+On Windows:
+
+```
+.\build
+```
+
+## Dev Notes - Testing
+
+On OSX:
+
+```
 ./build.sh Test
 ```
 
 On Windows:
 
 ```
-.paket\paket.exe restore
-dotnet restore
-start Fabulous.sln
-.\build NuGet
 .\build Test
 ```
 
@@ -34,15 +50,15 @@ Once done, open a terminal to build the NuGet packages:
 
 On OSX:
 ```
-./build.sh NuGet
+./build.sh
 ```
 
 On Windows:
 ```
-.\build NuGet
+.\build
 ```
 
-FAKE will have updated all the `AssemblyInfo.fs` files and `template.json`. Commit all changes.
+FAKE will have updated `Directory.Build.props` and `template.json`. Commit all changes.
 
 Lastly, publish all the generated packages to NuGet by running these commands:
 
@@ -51,8 +67,6 @@ On OSX:
 APIKEY=[Your personal NuGet API KEY]
 
 mono .nuget/NuGet.exe push "build_output/Fabulous.*.nupkg" $APIKEY -Source https://www.nuget.org
-
-cp build_output/Fabulous.*.nupkg  ~/Downloads
 ```
 
 On Windows (console):
@@ -60,8 +74,6 @@ On Windows (console):
 set APIKEY=[Your personal NuGet API KEY]
 
 .nuget\NuGet.exe push build_output\Fabulous.*.nupkg  %APIKEY% -Source https://www.nuget.org
-
-copy build_output\Fabulous.*.nupkg  %USERPROFILE%\Downloads
 ```
 
 ## Dev Notes - Checking App Size
