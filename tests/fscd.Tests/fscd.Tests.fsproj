@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
@@ -9,11 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\fscd\ProjectCracker.fs" Link="ProjectCracker.fs" />
-    <Compile Include="..\fscd\CodeModel.fs" Link="CodeModel.fs" />
-    <Compile Include="..\fscd\Interpreter.fs" Link="Interpreter.fs" />
-    <Compile Include="..\fscd\FromCompilerService.fs" Link="FromCompilerService.fs" />
-    <Compile Include="..\fscd\fscd.fs" Link="fscd.fs" />
+    <Compile Include="..\..\tools\fscd\ProjectCracker.fs" Link="ProjectCracker.fs" />
+    <Compile Include="..\..\tools\fscd\CodeModel.fs" Link="CodeModel.fs" />
+    <Compile Include="..\..\tools\fscd\Interpreter.fs" Link="Interpreter.fs" />
+    <Compile Include="..\..\tools\fscd\FromCompilerService.fs" Link="FromCompilerService.fs" />
+    <Compile Include="..\..\tools\fscd\fscd.fs" Link="fscd.fs" />
     <Compile Include="Tests.fs" />
   </ItemGroup>
 
@@ -29,7 +29,7 @@
 </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Fabulous.Core\Fabulous.Core.fsproj" />
+    <ProjectReference Include="..\..\src\Fabulous.Core\Fabulous.Core.fsproj" />
   </ItemGroup>
 
 </Project>
