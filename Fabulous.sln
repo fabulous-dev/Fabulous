@@ -62,7 +62,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1199BA9F-BF79-477F-8E25-FD0E0CBC962A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "extensions", "extensions", "{13C0EB5D-E38E-4714-9421-77CD9C53A067}"
->>>>>>> ffa57df98cb44b1cd7126c235d1525445fa7a26b
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
