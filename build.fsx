@@ -130,7 +130,7 @@ Target "TestTemplatesNuGet" (fun _ ->
     let testAppName = "testapp2" + string (abs (hash System.DateTime.Now.Ticks) % 100)
     // Instantiate the template. TODO: additional parameters and variations
     CleanDir testAppName
-    let extraArgs = if isUnix then "--macOS" else " --WPF"
+    let extraArgs = if isUnix then "" else " --WPF"
     DotNetCli.RunCommand id (sprintf "new fabulous-app -n %s -lang F#%s" testAppName extraArgs)
 
     let pkgs = Path.GetFullPath(buildDir true)
