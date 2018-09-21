@@ -13,12 +13,12 @@ let buildDir nuget = if nuget then "./build_output" else "./build_output/tools"
 let release = LoadReleaseNotes "RELEASE_NOTES.md"
 
 let projects = 
-    [ ("Fabulous.Core/Fabulous.Core.fsproj", "Fabulous.Core", "F# Functional App Dev Framework", true)
+    [ ("src/Fabulous.Core/Fabulous.Core.fsproj", "Fabulous.Core", "F# Functional App Dev Framework", true)
       ("extensions/Maps/Fabulous.Maps.fsproj", "Fabulous.Maps", "Fabulous extension for Xamarin.Forms.Maps", true) 
       ("extensions/SkiaSharp/Fabulous.SkiaSharp.fsproj", "Fabulous.SkiaSharp", "Fabulous extension for SkiaSharp", true)
       ("extensions/OxyPlot/Fabulous.OxyPlot.fsproj", "Fabulous.OxyPlot", "Fabulous extension for OxyPlot", true) 
-      ("fscd/fscd.fsproj", "fscd", "F# Compiler Daemon", false)
-      ("Fabulous.LiveUpdate/Fabulous.LiveUpdate.fsproj", "Fabulous.LiveUpdate", "F# Functional App Dev Framework Live Update", true) ]
+      ("tools/fscd/fscd.fsproj", "fscd", "F# Compiler Daemon", false)
+      ("src/Fabulous.LiveUpdate/Fabulous.LiveUpdate.fsproj", "Fabulous.LiveUpdate", "F# Functional App Dev Framework Live Update", true) ]
 
 let templateFiles = "templates/**/.template.config/template.json"
 
