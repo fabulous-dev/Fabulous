@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2006
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fabulous.Core", "Fabulous.Core\Fabulous.Core.fsproj", "{B459AFAD-BB5B-43C3-BD86-609E8DB3E3FD}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fabulous.Core", "src\Fabulous.Core\Fabulous.Core.fsproj", "{B459AFAD-BB5B-43C3-BD86-609E8DB3E3FD}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fabulous.LiveUpdate", "Fabulous.LiveUpdate\Fabulous.LiveUpdate.fsproj", "{B459AFAD-BB5B-43C3-BD86-609E8DB3E3F1}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fabulous.LiveUpdate", "src\Fabulous.LiveUpdate\Fabulous.LiveUpdate.fsproj", "{B459AFAD-BB5B-43C3-BD86-609E8DB3E3F1}"
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fabulous.Maps", "extensions\Maps\Fabulous.Maps.fsproj", "{B459AFAD-BB5B-43C3-BD86-609E8DB3E3FE}"
 EndProject
@@ -13,47 +13,53 @@ Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fabulous.SkiaSharp", "exten
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fabulous.OxyPlot", "extensions\OxyPlot\Fabulous.OxyPlot.fsproj", "{B459AFAD-BB5B-43C3-BD86-609E8DB3E3F0}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{FB194A8D-00A6-4416-AA8D-A89C1541935B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{FB194A8D-00A6-4416-AA8D-A89C1541935B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StaticView", "StaticView", "{FB194A8D-00A6-4416-AA8D-A89C1541935C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StaticViewCounterApp", "StaticViewCounterApp", "{A832662D-05EB-4582-B871-143798897673}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "StaticViewCounterApp", "Samples\StaticView\StaticViewCounterApp\StaticViewCounterApp\StaticViewCounterApp.fsproj", "{4282E90F-2519-46D0-B593-D57CFCA36A2D}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "StaticViewCounterApp", "samples\StaticView\StaticViewCounterApp\StaticViewCounterApp\StaticViewCounterApp.fsproj", "{4282E90F-2519-46D0-B593-D57CFCA36A2D}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "StaticViewCounterApp.Droid", "Samples\StaticView\StaticViewCounterApp\Droid\StaticViewCounterApp.Droid.fsproj", "{2D3CBBD7-118F-4457-817E-0D60E03C5534}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "StaticViewCounterApp.Droid", "samples\StaticView\StaticViewCounterApp\Droid\StaticViewCounterApp.Droid.fsproj", "{2D3CBBD7-118F-4457-817E-0D60E03C5534}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "StaticViewCounterApp.iOS", "Samples\StaticView\StaticViewCounterApp\iOS\StaticViewCounterApp.iOS.fsproj", "{71C30453-89CF-4955-8DFA-F09231DD99ED}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "StaticViewCounterApp.iOS", "samples\StaticView\StaticViewCounterApp\iOS\StaticViewCounterApp.iOS.fsproj", "{71C30453-89CF-4955-8DFA-F09231DD99ED}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TicTacToe", "TicTacToe", "{9869E35B-39CD-490C-A843-842C09938630}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "TicTacToe", "Samples\TicTacToe\TicTacToe\TicTacToe.fsproj", "{AE045D79-7FF3-45F3-BFD0-305542A1C728}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "TicTacToe", "samples\TicTacToe\TicTacToe\TicTacToe.fsproj", "{AE045D79-7FF3-45F3-BFD0-305542A1C728}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TicTacToe.iOS", "Samples\TicTacToe\iOS\TicTacToe.iOS.fsproj", "{E43D02E6-04E7-4E4E-A527-3C5D00D9D826}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TicTacToe.iOS", "samples\TicTacToe\iOS\TicTacToe.iOS.fsproj", "{E43D02E6-04E7-4E4E-A527-3C5D00D9D826}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TicTacToe.Droid", "Samples\TicTacToe\Droid\TicTacToe.Droid.fsproj", "{8E482415-A728-4B35-9C9A-31F4D3AE1D54}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TicTacToe.Droid", "samples\TicTacToe\Droid\TicTacToe.Droid.fsproj", "{8E482415-A728-4B35-9C9A-31F4D3AE1D54}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllControls", "AllControls", "{12D18417-809C-4CA9-AD3E-474333B181BC}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "AllControls", "Samples\AllControls\AllControls\AllControls.fsproj", "{13F140D6-2D21-41BE-AC90-4B14D8C16A47}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "AllControls", "samples\AllControls\AllControls\AllControls.fsproj", "{13F140D6-2D21-41BE-AC90-4B14D8C16A47}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AllControls.Droid", "Samples\AllControls\Droid\AllControls.Droid.fsproj", "{5CCD3C0C-3434-434C-B8C2-7FFDEDCC2437}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AllControls.Droid", "samples\AllControls\Droid\AllControls.Droid.fsproj", "{5CCD3C0C-3434-434C-B8C2-7FFDEDCC2437}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AllControls.iOS", "Samples\AllControls\iOS\AllControls.iOS.fsproj", "{9031246B-4B08-47C9-A500-30334A245272}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AllControls.iOS", "samples\AllControls\iOS\AllControls.iOS.fsproj", "{9031246B-4B08-47C9-A500-30334A245272}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CounterApp", "CounterApp", "{A61655CB-26DF-47E7-BCC0-91FD9A7D83AA}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "CounterApp", "Samples\CounterApp\CounterApp\CounterApp.fsproj", "{AC36B11A-383D-45A3-8999-4F6475E9DD13}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "CounterApp", "samples\CounterApp\CounterApp\CounterApp.fsproj", "{AC36B11A-383D-45A3-8999-4F6475E9DD13}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CounterApp.Droid", "Samples\CounterApp\Droid\CounterApp.Droid.fsproj", "{13181907-1C53-47C1-BDF0-DBECCC2ED92E}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CounterApp.Droid", "samples\CounterApp\Droid\CounterApp.Droid.fsproj", "{13181907-1C53-47C1-BDF0-DBECCC2ED92E}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CounterApp.iOS", "Samples\CounterApp\iOS\CounterApp.iOS.fsproj", "{F557905B-B099-44AB-939C-AB169499A36E}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CounterApp.iOS", "samples\CounterApp\iOS\CounterApp.iOS.fsproj", "{F557905B-B099-44AB-939C-AB169499A36E}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Generator", "Generator\Generator.fsproj", "{10DF5D2F-17FA-43DE-9549-B84E6CF26602}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Generator", "tools\Generator\Generator.fsproj", "{10DF5D2F-17FA-43DE-9549-B84E6CF26602}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "fscd", "fscd\fscd.fsproj", "{23640E46-E830-4AB7-9289-E527F6429435}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "fscd", "tools\fscd\fscd.fsproj", "{23640E46-E830-4AB7-9289-E527F6429435}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "fscd.Tests", "fscd.Tests\fscd.Tests.fsproj", "{810EEB40-5042-4946-B695-5B13E9957807}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "fscd.Tests", "tests\fscd.Tests\fscd.Tests.fsproj", "{810EEB40-5042-4946-B695-5B13E9957807}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{E75EAD35-1041-42CC-8AA4-01DB58FA467C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1199BA9F-BF79-477F-8E25-FD0E0CBC962A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "extensions", "extensions", "{13C0EB5D-E38E-4714-9421-77CD9C53A067}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -404,6 +410,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{B459AFAD-BB5B-43C3-BD86-609E8DB3E3FE} = {13C0EB5D-E38E-4714-9421-77CD9C53A067}
+		{B459AFAD-BB5B-43C3-BD86-609E8DB3E3FF} = {13C0EB5D-E38E-4714-9421-77CD9C53A067}
+		{B459AFAD-BB5B-43C3-BD86-609E8DB3E3F0} = {13C0EB5D-E38E-4714-9421-77CD9C53A067}
 		{FB194A8D-00A6-4416-AA8D-A89C1541935C} = {FB194A8D-00A6-4416-AA8D-A89C1541935B}
 		{A832662D-05EB-4582-B871-143798897673} = {FB194A8D-00A6-4416-AA8D-A89C1541935C}
 		{4282E90F-2519-46D0-B593-D57CFCA36A2D} = {A832662D-05EB-4582-B871-143798897673}
@@ -421,6 +430,9 @@ Global
 		{AC36B11A-383D-45A3-8999-4F6475E9DD13} = {A61655CB-26DF-47E7-BCC0-91FD9A7D83AA}
 		{13181907-1C53-47C1-BDF0-DBECCC2ED92E} = {A61655CB-26DF-47E7-BCC0-91FD9A7D83AA}
 		{F557905B-B099-44AB-939C-AB169499A36E} = {A61655CB-26DF-47E7-BCC0-91FD9A7D83AA}
+		{10DF5D2F-17FA-43DE-9549-B84E6CF26602} = {E75EAD35-1041-42CC-8AA4-01DB58FA467C}
+		{23640E46-E830-4AB7-9289-E527F6429435} = {E75EAD35-1041-42CC-8AA4-01DB58FA467C}
+		{810EEB40-5042-4946-B695-5B13E9957807} = {1199BA9F-BF79-477F-8E25-FD0E0CBC962A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E142F9FB-7EA9-4866-81D4-718660BDCAEB}
