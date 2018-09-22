@@ -26,11 +26,17 @@ Getting started
 
 3. Create a blank F# Functional Xamarin Forms app:
 
-       dotnet new fabulous-app -lang F# -n SqueakyApp
+       dotnet new fabulous-app -n SqueakyApp
 
 4. Open, edit, build and deploy in Visual Studio, Visual Studio for Mac and/or "msbuild" command line
 
        SqueakyApp/SqueakyApp.sln
+
+By default iOS and Android projects are created. For WPF apps use `--WPF`, for example:
+
+   Android only: dotnet new fabulous-app -n SqueakyApp --iOS=false
+   iOS only:     dotnet new fabulous-app -n SqueakyApp --Android=false
+   WPF only:     dotnet new fabulous-app -n SqueakyApp --WPF --Android=false --iOS=false
 
 A Basic Example
 ------

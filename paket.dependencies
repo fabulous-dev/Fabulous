@@ -61,3 +61,11 @@ group macos
   nuget FSharp.Core 4.5.2
   nuget Xamarin.Forms 3.1.0.697729
   nuget Newtonsoft.Json 11.0.2
+
+group wpfapp
+  framework: net461
+  source https://www.nuget.org/api/v2
+  nuget FSharp.Core 4.5.2
+  nuget Xamarin.Forms 3.1.0.697729 
+  nuget Newtonsoft.Json 11.0.2
+  nuget Xamarin.Forms.Platform.WPF

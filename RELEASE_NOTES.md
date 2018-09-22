@@ -1,3 +1,7 @@
+#### 0.22.0
+
+* Add WPF to template
+
 #### 0.21.1
 
 * Fixed bad dependency for Fabulous.Maps package (https://github.com/fsprojects/Fabulous/pull/188)

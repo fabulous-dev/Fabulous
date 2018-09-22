@@ -116,7 +116,7 @@
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\src\Fabulous.Core\Fabulous.Core.fsproj">
       <Project>{AE045D79-7FF3-45F3-BFD0-305542A1C728}</Project>
-      <Name>Fabulous</Name>
+      <Name>Fabulous.Core</Name>
     </ProjectReference>
     <Reference Include="FSharp.Core">
       <HintPath>..\..\..\..\packages\iosapp\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll</HintPath>
