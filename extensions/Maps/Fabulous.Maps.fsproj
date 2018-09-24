@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <OtherFlags>/warnon:1182</OtherFlags>
@@ -14,6 +14,6 @@
     <PackageReference Update="FSharp.Core" Version="4.5.2" /> <!-- workaround for VSMac bug https://github.com/mono/monodevelop/pull/5137 --> 
     <PackageReference Include="Xamarin.Forms" Version="3.1.0.697729" />
     <PackageReference Include="Xamarin.Forms.Maps" Version="3.1.0.697729" />
-    <ProjectReference Include="..\..\Fabulous.Core\Fabulous.Core.fsproj" />
+    <ProjectReference Include="..\..\src\Fabulous.Core\Fabulous.Core.fsproj" />
   </ItemGroup>
 </Project>

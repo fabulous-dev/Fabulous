@@ -1,3 +1,18 @@
+#### 0.22.0
+
+* Add WPF to template
+
+#### 0.21.1
+
+* Fixed bad dependency for Fabulous.Maps package (https://github.com/fsprojects/Fabulous/pull/188)
+* Fixed missing SelectionMode property on ListViewGrouped
+
+#### 0.21.0
+
+* Fixed https://github.com/fsprojects/Fabulous/issues/136
+* Updated to Xamarin.Forms 3.1
+* Changed LiveUpdate to only display corresponding indications based on the current platform (Android, iOS, other)
+
 #### 0.20.0
 
 * Rename project Elmish.XamarinForms --> Fabulous
