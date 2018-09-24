@@ -688,7 +688,7 @@ module App =
 
          | Animations -> 
                View.ScrollingContentPage("Animations", 
-                  [ View.Label(text="Rotate", ref=animatedLabelRef, created=(fun l -> l.RotateTo (360.0, 2000.0) |> ignore)) ] ))
+                  [ View.Label(text="Rotate", ref=animatedLabelRef, created=(fun l -> l.RotateTo (360.0, 2000u) |> ignore)) ] ))
 
 type App () as app = 
     inherit Application ()
