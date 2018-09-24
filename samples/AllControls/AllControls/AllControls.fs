@@ -83,6 +83,7 @@ type Msg =
     | SetInfiniteScrollMaxIndex of int
     | ExecuteSearch of string
     | ShowPopup
+    | AnimationPoked
 
 [<AutoOpen>]
 module MyExtension = 
@@ -150,6 +151,7 @@ module App =
           InfiniteScrollMaxRequested = 10 
           SearchTerm = "nothing!"}
 
+    let animatedLabelRef = ViewRef<Label>()
     let update msg model =
         match msg with
         | Increment -> { model with Count = model.Count + 1 }
@@ -204,8 +206,10 @@ module App =
         | ShowPopup ->
             Application.Current.MainPage.DisplayAlert("Clicked", "You clicked the button", "OK") |> ignore
             model
+        | AnimationPoked -> 
+            animatedLabelRef.Value.RotateTo (360.0, 2000u) |> ignore
+            model
 
-    let animatedLabelRef = ViewRef<Label>()
     let pickerItems = 
         [| ("Aqua", Color.Aqua); ("Black", Color.Black);
            ("Blue", Color.Blue); ("Fucshia", Color.Fuchsia);
@@ -688,7 +692,9 @@ module App =
 
          | Animations -> 
                View.ScrollingContentPage("Animations", 
-                  [ View.Label(text="Rotate", ref=animatedLabelRef, created=(fun l -> l.RotateTo (360.0, 2000u) |> ignore)) ] ))
+                  [ View.Label(text="Rotate", created=(fun l -> l.RotateTo (360.0, 2000u) |> ignore)) 
+                    View.Label(text="Hello!", ref=animatedLabelRef) 
+                    View.Button(text="Poke", command=(fun () -> dispatch AnimationPoked)) ] )
 
 type App () as app = 
     inherit Application ()
