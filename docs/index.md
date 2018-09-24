@@ -39,9 +39,13 @@ By default iOS and Android projects are created. For WPF apps use `--WPF`, for e
    WPF only:     dotnet new fabulous-app -n SqueakyApp --WPF --Android=false --iOS=false
    
 5. If you are using Visual Studio for Mac and you want to start with File -> New make sure you target ".NE Standard" to add the references to Fabulous:
+       
        File -> New Solution
+       
        Multiplatform App -> Blank Forms App (F#)
+       
        Shared Code -> Use .NET Standard
+       
        <img src="https://user-images.githubusercontent.com/7204669/9c43285c-bfcf-44ef-b0f5-e912f179e406.png" width="100"> 
 
 A Basic Example
