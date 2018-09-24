@@ -15,6 +15,7 @@ type RootPageKind =
     | Carousel 
     | MasterDetail
     | InfiniteScrollList
+    | Animations
 
 type Model = 
   { RootPageKind: RootPageKind
@@ -231,6 +232,7 @@ module App =
                                  View.Button(text = "NavigationPage with push/pop", command=(fun () -> dispatch (SetRootPageKind Navigation)))
                                  View.Button(text = "MasterDetail Page", command=(fun () -> dispatch (SetRootPageKind MasterDetail)))
                                  View.Button(text = "Infinite scrolling ListView", command=(fun () -> dispatch (SetRootPageKind InfiniteScrollList)))
+                                 View.Button(text = "Animations", command=(fun () -> dispatch (SetRootPageKind Animations)))
                                  View.Button(text = "Pop-up", command=(fun () -> dispatch ShowPopup))
                             ]))
                      .ToolbarItems([View.ToolbarItem(text="About", command=(fun () -> dispatch (SetRootPageKind (Choice true))))] )
@@ -681,8 +683,11 @@ module App =
                                itemAppearing=(fun idx -> if idx >= max - 2 then dispatch (SetInfiniteScrollMaxIndex (idx + 10) ) )  )
                  View.Button(text="Main page", command=(fun () -> dispatch (SetRootPageKind (Choice false))), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)
                 
-                ]))
+                ] ))
 
+         | Animations -> 
+               View.ScrollingContentPage("Animations", 
+                  [ View.Label(text="InfiniteScrollList:", ref=animatedLabel) ] ))
 
 type App () as app = 
     inherit Application ()

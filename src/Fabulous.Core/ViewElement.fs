@@ -50,7 +50,7 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
     static member val _CreatedAttribKey : AttributeKey<obj -> unit> = AttributeKey<_>("ElementCreated")
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ViewRefAttribKey : AttributeKey<ViewRef<obj>> = AttributeKey<_>("ElementViewRef")
+    static member val _ViewRefAttribKey : AttributeKey<ViewRef> = AttributeKey<_>("ElementViewRef")
 
     /// Get the type created by the visual element
     member x.TargetType = targetType
@@ -91,7 +91,7 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
         | ValueSome f -> f target
         | ValueNone -> ()
         match x.TryGetAttributeKeyed(ViewElement._ViewRefAttribKey) with
-        | ValueSome f -> f.Set target
+        | ValueSome f -> f.Set (box target)
         | ValueNone -> ()
         target
 
@@ -131,20 +131,32 @@ and AttributesBuilder (attribCount: int) =
         count <- count + 1
 
 
-and ViewRef<'T when 'T : not struct>() = 
-    let handle = System.WeakReference<'T option>(None)
+and ViewRef() = 
+    let handle = System.WeakReference<obj>(null)
 
-    member __.Set(target: 'T) : unit = 
-        handle.SetTarget(Some target)
-
-    member __.Value = 
-        match handle.TryGetTarget() with 
-        | true, res -> match res with None -> failwith "view reference target not initialized" | Some v -> v
-        | _ -> failwith "view reference target has been collected"
+    member __.Set(target: obj) : unit = 
+        handle.SetTarget(target)
 
     member __.TryValue = 
         match handle.TryGetTarget() with 
-        | true, res -> res 
+        | true, null -> None
+        | true, res -> Some res 
+        | _ -> None
+
+and ViewRef<'T when 'T : not struct>() = 
+    let handle = ViewRef()
+
+    member __.Set(target: 'T) : unit =  handle.Set(box target)
+    member __.Value : 'T = 
+        match handle.TryValue with 
+        | Some res -> unbox res
+        | None -> failwith "view reference target has been collected or was not set"
+
+    member __.Unbox = handle
+
+    member __.TryValue = 
+        match handle.TryValue with 
+        | Some res -> unbox res 
         | _ -> None
 
 

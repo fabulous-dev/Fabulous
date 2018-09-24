@@ -1,6 +1,6 @@
 ﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
 
-// Windows: dotnet build -c Release Generator\Generator.fsproj && dotnet Generator\bin\Release\netcoreapp2.0\Generator.dll Generator\Xamarin.Forms.Core.json Fabulous.Core\Xamarin.Forms.Core.fs
+// Windows: dotnet build -c Release tools\Generator\Generator.fsproj && dotnet tools\Generator\bin\Release\netcoreapp2.0\Generator.dll tools\Generator\Xamarin.Forms.Core.json src\Fabulous.Core\Xamarin.Forms.Core.fs
 
 // OSX: dotnet build -c Release Generator/Generator.fsproj && dotnet Generator/bin/Release/netcoreapp2.0/Generator.dll Generator/Xamarin.Forms.Core.json Fabulous.Core/Xamarin.Forms.Core.fs
 
@@ -520,13 +520,24 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
         allMembers |> iterSep ", " (fun head m -> 
             let inputType = m.GetInputType(bindings, memberResolutions, null)
 
-            w.printf "%s?%s: %s" head m.LowerBoundShortName inputType)
+            if m.LowerBoundShortName = "created" then
+                w.printf "%s?%s: (%s -> unit)" head m.LowerBoundShortName tdef.FullName
+            elif m.LowerBoundShortName = "ref" then
+                w.printf "%s?%s: ViewRef<%s>" head m.LowerBoundShortName tdef.FullName
+            else
+                w.printf "%s?%s: %s" head m.LowerBoundShortName inputType)
 
         w.printfn ") = "
         w.printfn ""
         w.printf "        let attribBuilder = View.Build%s(0" nameOfCreator
         if allMembers.Length > 0 then w.printf ", "
-        allMembers |> iterSep ", " (fun head m -> w.printf "%s?%s=%s" head m.LowerBoundShortName m.LowerBoundShortName)
+        allMembers |> iterSep ", " (fun head m -> 
+            if m.LowerBoundShortName = "created" then
+                w.printf "%s?%s=(match %s with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<%s> target)))" head m.LowerBoundShortName m.LowerBoundShortName tdef.FullName 
+            elif m.LowerBoundShortName = "ref" then
+                w.printf "%s?%s=(match %s with None -> None | Some (ref: ViewRef<%s>) -> Some ref.Unbox)" head m.LowerBoundShortName m.LowerBoundShortName tdef.FullName 
+            else
+                w.printf "%s?%s=%s" head m.LowerBoundShortName m.LowerBoundShortName)
         w.printfn ")"
         w.printfn ""
         w.printfn "        ViewElement.Create<%s>(View.CreateFunc%s, View.UpdateFunc%s, attribBuilder)" tdef.FullName nameOfCreator nameOfCreator
@@ -544,7 +555,7 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
 
     for ms in allMembersInAllTypesGroupedByName do
         let m = ms.First()
-        if not m.IsParam then
+        if not m.IsParam && m.LowerBoundShortName <> "created" && m.LowerBoundShortName <> "ref" then
             w.printfn ""
             w.printfn "        /// Adjusts the %s property in the visual element" m.BoundUniqueName
             let conv = if String.IsNullOrWhiteSpace(m.ConvToModel) then "" else m.ConvToModel
@@ -554,7 +565,7 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
     w.printfn ""
     for ms in allMembersInAllTypesGroupedByName do
         let m = ms.First()
-        if not m.IsParam then
+        if not m.IsParam && m.LowerBoundShortName <> "created" && m.LowerBoundShortName <> "ref" then
             let inputType = m.GetInputType(bindings, memberResolutions, null)
             w.printfn ""
             w.printfn "    /// Adjusts the %s property in the visual element" m.BoundUniqueName

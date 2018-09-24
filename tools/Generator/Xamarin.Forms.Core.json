@@ -22,9 +22,15 @@
 				{  
 				  "name": "Created",  
 					"uniqueName": "ElementCreated",
-					"defaultValue": "Unchecked.defaultof<_>",
 					"inputType": "obj -> unit",
 					"modelType": "obj -> unit",
+					"updateCode": "(fun _ _ _ -> ())"
+				},
+				{  
+				  "name": "Ref",  
+					"uniqueName": "ElementViewRef",
+					"inputType": "ViewRef",
+					"modelType": "ViewRef",
 					"updateCode": "(fun _ _ _ -> ())"
 				} 
 			]
