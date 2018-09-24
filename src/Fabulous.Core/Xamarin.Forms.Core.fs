@@ -427,7 +427,12 @@ type View() =
 
     /// Builds the attributes for a Element in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildElement(attribCount: int, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildElement(attribCount: int,
+                                      ?classId: string,
+                                      ?styleId: string,
+                                      ?automationId: string,
+                                      ?created: obj -> unit,
+                                      ?ref: ViewRef) = 
 
         let attribCount = match classId with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match styleId with Some _ -> attribCount + 1 | None -> attribCount
@@ -508,9 +513,18 @@ type View() =
         (fun _ _ _ -> ()) prevElementViewRefOpt currElementViewRefOpt target
 
     /// Describes a Element in the view
-    static member inline Element(?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.Element -> unit), ?ref: ViewRef<Xamarin.Forms.Element>) = 
+    static member inline Element(?classId: string,
+                                 ?styleId: string,
+                                 ?automationId: string,
+                                 ?created: (Xamarin.Forms.Element -> unit),
+                                 ?ref: ViewRef<Xamarin.Forms.Element>) = 
 
-        let attribBuilder = View.BuildElement(0, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Element> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Element>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildElement(0,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Element> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Element>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.Element>(View.CreateFuncElement, View.UpdateFuncElement, attribBuilder)
 
@@ -519,7 +533,33 @@ type View() =
 
     /// Builds the attributes for a VisualElement in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildVisualElement(attribCount: int, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildVisualElement(attribCount: int,
+                                            ?anchorX: double,
+                                            ?anchorY: double,
+                                            ?backgroundColor: Xamarin.Forms.Color,
+                                            ?heightRequest: double,
+                                            ?inputTransparent: bool,
+                                            ?isEnabled: bool,
+                                            ?isVisible: bool,
+                                            ?minimumHeightRequest: double,
+                                            ?minimumWidthRequest: double,
+                                            ?opacity: double,
+                                            ?rotation: double,
+                                            ?rotationX: double,
+                                            ?rotationY: double,
+                                            ?scale: double,
+                                            ?style: Xamarin.Forms.Style,
+                                            ?translationX: double,
+                                            ?translationY: double,
+                                            ?widthRequest: double,
+                                            ?resources: (string * obj) list,
+                                            ?styles: Xamarin.Forms.Style list,
+                                            ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                            ?classId: string,
+                                            ?styleId: string,
+                                            ?automationId: string,
+                                            ?created: obj -> unit,
+                                            ?ref: ViewRef) = 
 
         let attribCount = match anchorX with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match anchorY with Some _ -> attribCount + 1 | None -> attribCount
@@ -808,9 +848,60 @@ type View() =
         updateStyleSheets prevStyleSheetsOpt currStyleSheetsOpt target
 
     /// Describes a VisualElement in the view
-    static member inline VisualElement(?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.VisualElement -> unit), ?ref: ViewRef<Xamarin.Forms.VisualElement>) = 
+    static member inline VisualElement(?anchorX: double,
+                                       ?anchorY: double,
+                                       ?backgroundColor: Xamarin.Forms.Color,
+                                       ?heightRequest: double,
+                                       ?inputTransparent: bool,
+                                       ?isEnabled: bool,
+                                       ?isVisible: bool,
+                                       ?minimumHeightRequest: double,
+                                       ?minimumWidthRequest: double,
+                                       ?opacity: double,
+                                       ?rotation: double,
+                                       ?rotationX: double,
+                                       ?rotationY: double,
+                                       ?scale: double,
+                                       ?style: Xamarin.Forms.Style,
+                                       ?translationX: double,
+                                       ?translationY: double,
+                                       ?widthRequest: double,
+                                       ?resources: (string * obj) list,
+                                       ?styles: Xamarin.Forms.Style list,
+                                       ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                       ?classId: string,
+                                       ?styleId: string,
+                                       ?automationId: string,
+                                       ?created: (Xamarin.Forms.VisualElement -> unit),
+                                       ?ref: ViewRef<Xamarin.Forms.VisualElement>) = 
 
-        let attribBuilder = View.BuildVisualElement(0, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.VisualElement> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.VisualElement>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildVisualElement(0,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.VisualElement> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.VisualElement>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.VisualElement>(View.CreateFuncVisualElement, View.UpdateFuncVisualElement, attribBuilder)
 
@@ -819,7 +910,37 @@ type View() =
 
     /// Builds the attributes for a View in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildView(attribCount: int, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildView(attribCount: int,
+                                   ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                   ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                   ?margin: obj,
+                                   ?gestureRecognizers: ViewElement list,
+                                   ?anchorX: double,
+                                   ?anchorY: double,
+                                   ?backgroundColor: Xamarin.Forms.Color,
+                                   ?heightRequest: double,
+                                   ?inputTransparent: bool,
+                                   ?isEnabled: bool,
+                                   ?isVisible: bool,
+                                   ?minimumHeightRequest: double,
+                                   ?minimumWidthRequest: double,
+                                   ?opacity: double,
+                                   ?rotation: double,
+                                   ?rotationX: double,
+                                   ?rotationY: double,
+                                   ?scale: double,
+                                   ?style: Xamarin.Forms.Style,
+                                   ?translationX: double,
+                                   ?translationY: double,
+                                   ?widthRequest: double,
+                                   ?resources: (string * obj) list,
+                                   ?styles: Xamarin.Forms.Style list,
+                                   ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                   ?classId: string,
+                                   ?styleId: string,
+                                   ?automationId: string,
+                                   ?created: obj -> unit,
+                                   ?ref: ViewRef) = 
 
         let attribCount = match horizontalOptions with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match verticalOptions with Some _ -> attribCount + 1 | None -> attribCount
@@ -899,9 +1020,68 @@ type View() =
             updateChild
 
     /// Describes a View in the view
-    static member inline View(?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.View -> unit), ?ref: ViewRef<Xamarin.Forms.View>) = 
+    static member inline View(?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                              ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                              ?margin: obj,
+                              ?gestureRecognizers: ViewElement list,
+                              ?anchorX: double,
+                              ?anchorY: double,
+                              ?backgroundColor: Xamarin.Forms.Color,
+                              ?heightRequest: double,
+                              ?inputTransparent: bool,
+                              ?isEnabled: bool,
+                              ?isVisible: bool,
+                              ?minimumHeightRequest: double,
+                              ?minimumWidthRequest: double,
+                              ?opacity: double,
+                              ?rotation: double,
+                              ?rotationX: double,
+                              ?rotationY: double,
+                              ?scale: double,
+                              ?style: Xamarin.Forms.Style,
+                              ?translationX: double,
+                              ?translationY: double,
+                              ?widthRequest: double,
+                              ?resources: (string * obj) list,
+                              ?styles: Xamarin.Forms.Style list,
+                              ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                              ?classId: string,
+                              ?styleId: string,
+                              ?automationId: string,
+                              ?created: (Xamarin.Forms.View -> unit),
+                              ?ref: ViewRef<Xamarin.Forms.View>) = 
 
-        let attribBuilder = View.BuildView(0, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.View> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.View>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildView(0,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.View> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.View>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.View>(View.CreateFuncView, View.UpdateFuncView, attribBuilder)
 
@@ -943,7 +1123,14 @@ type View() =
 
     /// Builds the attributes for a PanGestureRecognizer in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildPanGestureRecognizer(attribCount: int, ?touchPoints: int, ?panUpdated: Xamarin.Forms.PanUpdatedEventArgs -> unit, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildPanGestureRecognizer(attribCount: int,
+                                                   ?touchPoints: int,
+                                                   ?panUpdated: Xamarin.Forms.PanUpdatedEventArgs -> unit,
+                                                   ?classId: string,
+                                                   ?styleId: string,
+                                                   ?automationId: string,
+                                                   ?created: obj -> unit,
+                                                   ?ref: ViewRef) = 
 
         let attribCount = match touchPoints with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match panUpdated with Some _ -> attribCount + 1 | None -> attribCount
@@ -998,9 +1185,22 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a PanGestureRecognizer in the view
-    static member inline PanGestureRecognizer(?touchPoints: int, ?panUpdated: Xamarin.Forms.PanUpdatedEventArgs -> unit, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.PanGestureRecognizer -> unit), ?ref: ViewRef<Xamarin.Forms.PanGestureRecognizer>) = 
+    static member inline PanGestureRecognizer(?touchPoints: int,
+                                              ?panUpdated: Xamarin.Forms.PanUpdatedEventArgs -> unit,
+                                              ?classId: string,
+                                              ?styleId: string,
+                                              ?automationId: string,
+                                              ?created: (Xamarin.Forms.PanGestureRecognizer -> unit),
+                                              ?ref: ViewRef<Xamarin.Forms.PanGestureRecognizer>) = 
 
-        let attribBuilder = View.BuildPanGestureRecognizer(0, ?touchPoints=touchPoints, ?panUpdated=panUpdated, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.PanGestureRecognizer> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.PanGestureRecognizer>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildPanGestureRecognizer(0,
+                               ?touchPoints=touchPoints,
+                               ?panUpdated=panUpdated,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.PanGestureRecognizer> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.PanGestureRecognizer>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.PanGestureRecognizer>(View.CreateFuncPanGestureRecognizer, View.UpdateFuncPanGestureRecognizer, attribBuilder)
 
@@ -1009,7 +1209,14 @@ type View() =
 
     /// Builds the attributes for a TapGestureRecognizer in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildTapGestureRecognizer(attribCount: int, ?command: unit -> unit, ?numberOfTapsRequired: int, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildTapGestureRecognizer(attribCount: int,
+                                                   ?command: unit -> unit,
+                                                   ?numberOfTapsRequired: int,
+                                                   ?classId: string,
+                                                   ?styleId: string,
+                                                   ?automationId: string,
+                                                   ?created: obj -> unit,
+                                                   ?ref: ViewRef) = 
 
         let attribCount = match command with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match numberOfTapsRequired with Some _ -> attribCount + 1 | None -> attribCount
@@ -1063,9 +1270,22 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a TapGestureRecognizer in the view
-    static member inline TapGestureRecognizer(?command: unit -> unit, ?numberOfTapsRequired: int, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.TapGestureRecognizer -> unit), ?ref: ViewRef<Xamarin.Forms.TapGestureRecognizer>) = 
+    static member inline TapGestureRecognizer(?command: unit -> unit,
+                                              ?numberOfTapsRequired: int,
+                                              ?classId: string,
+                                              ?styleId: string,
+                                              ?automationId: string,
+                                              ?created: (Xamarin.Forms.TapGestureRecognizer -> unit),
+                                              ?ref: ViewRef<Xamarin.Forms.TapGestureRecognizer>) = 
 
-        let attribBuilder = View.BuildTapGestureRecognizer(0, ?command=command, ?numberOfTapsRequired=numberOfTapsRequired, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.TapGestureRecognizer> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.TapGestureRecognizer>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildTapGestureRecognizer(0,
+                               ?command=command,
+                               ?numberOfTapsRequired=numberOfTapsRequired,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.TapGestureRecognizer> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.TapGestureRecognizer>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.TapGestureRecognizer>(View.CreateFuncTapGestureRecognizer, View.UpdateFuncTapGestureRecognizer, attribBuilder)
 
@@ -1074,7 +1294,15 @@ type View() =
 
     /// Builds the attributes for a ClickGestureRecognizer in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildClickGestureRecognizer(attribCount: int, ?command: unit -> unit, ?numberOfClicksRequired: int, ?buttons: Xamarin.Forms.ButtonsMask, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildClickGestureRecognizer(attribCount: int,
+                                                     ?command: unit -> unit,
+                                                     ?numberOfClicksRequired: int,
+                                                     ?buttons: Xamarin.Forms.ButtonsMask,
+                                                     ?classId: string,
+                                                     ?styleId: string,
+                                                     ?automationId: string,
+                                                     ?created: obj -> unit,
+                                                     ?ref: ViewRef) = 
 
         let attribCount = match command with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match numberOfClicksRequired with Some _ -> attribCount + 1 | None -> attribCount
@@ -1141,9 +1369,24 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a ClickGestureRecognizer in the view
-    static member inline ClickGestureRecognizer(?command: unit -> unit, ?numberOfClicksRequired: int, ?buttons: Xamarin.Forms.ButtonsMask, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.ClickGestureRecognizer -> unit), ?ref: ViewRef<Xamarin.Forms.ClickGestureRecognizer>) = 
+    static member inline ClickGestureRecognizer(?command: unit -> unit,
+                                                ?numberOfClicksRequired: int,
+                                                ?buttons: Xamarin.Forms.ButtonsMask,
+                                                ?classId: string,
+                                                ?styleId: string,
+                                                ?automationId: string,
+                                                ?created: (Xamarin.Forms.ClickGestureRecognizer -> unit),
+                                                ?ref: ViewRef<Xamarin.Forms.ClickGestureRecognizer>) = 
 
-        let attribBuilder = View.BuildClickGestureRecognizer(0, ?command=command, ?numberOfClicksRequired=numberOfClicksRequired, ?buttons=buttons, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ClickGestureRecognizer> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ClickGestureRecognizer>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildClickGestureRecognizer(0,
+                               ?command=command,
+                               ?numberOfClicksRequired=numberOfClicksRequired,
+                               ?buttons=buttons,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ClickGestureRecognizer> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ClickGestureRecognizer>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.ClickGestureRecognizer>(View.CreateFuncClickGestureRecognizer, View.UpdateFuncClickGestureRecognizer, attribBuilder)
 
@@ -1152,7 +1395,14 @@ type View() =
 
     /// Builds the attributes for a PinchGestureRecognizer in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildPinchGestureRecognizer(attribCount: int, ?isPinching: bool, ?pinchUpdated: Xamarin.Forms.PinchGestureUpdatedEventArgs -> unit, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildPinchGestureRecognizer(attribCount: int,
+                                                     ?isPinching: bool,
+                                                     ?pinchUpdated: Xamarin.Forms.PinchGestureUpdatedEventArgs -> unit,
+                                                     ?classId: string,
+                                                     ?styleId: string,
+                                                     ?automationId: string,
+                                                     ?created: obj -> unit,
+                                                     ?ref: ViewRef) = 
 
         let attribCount = match isPinching with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match pinchUpdated with Some _ -> attribCount + 1 | None -> attribCount
@@ -1207,9 +1457,22 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a PinchGestureRecognizer in the view
-    static member inline PinchGestureRecognizer(?isPinching: bool, ?pinchUpdated: Xamarin.Forms.PinchGestureUpdatedEventArgs -> unit, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.PinchGestureRecognizer -> unit), ?ref: ViewRef<Xamarin.Forms.PinchGestureRecognizer>) = 
+    static member inline PinchGestureRecognizer(?isPinching: bool,
+                                                ?pinchUpdated: Xamarin.Forms.PinchGestureUpdatedEventArgs -> unit,
+                                                ?classId: string,
+                                                ?styleId: string,
+                                                ?automationId: string,
+                                                ?created: (Xamarin.Forms.PinchGestureRecognizer -> unit),
+                                                ?ref: ViewRef<Xamarin.Forms.PinchGestureRecognizer>) = 
 
-        let attribBuilder = View.BuildPinchGestureRecognizer(0, ?isPinching=isPinching, ?pinchUpdated=pinchUpdated, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.PinchGestureRecognizer> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.PinchGestureRecognizer>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildPinchGestureRecognizer(0,
+                               ?isPinching=isPinching,
+                               ?pinchUpdated=pinchUpdated,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.PinchGestureRecognizer> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.PinchGestureRecognizer>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.PinchGestureRecognizer>(View.CreateFuncPinchGestureRecognizer, View.UpdateFuncPinchGestureRecognizer, attribBuilder)
 
@@ -1218,7 +1481,39 @@ type View() =
 
     /// Builds the attributes for a ActivityIndicator in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildActivityIndicator(attribCount: int, ?color: Xamarin.Forms.Color, ?isRunning: bool, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildActivityIndicator(attribCount: int,
+                                                ?color: Xamarin.Forms.Color,
+                                                ?isRunning: bool,
+                                                ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                                ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                                ?margin: obj,
+                                                ?gestureRecognizers: ViewElement list,
+                                                ?anchorX: double,
+                                                ?anchorY: double,
+                                                ?backgroundColor: Xamarin.Forms.Color,
+                                                ?heightRequest: double,
+                                                ?inputTransparent: bool,
+                                                ?isEnabled: bool,
+                                                ?isVisible: bool,
+                                                ?minimumHeightRequest: double,
+                                                ?minimumWidthRequest: double,
+                                                ?opacity: double,
+                                                ?rotation: double,
+                                                ?rotationX: double,
+                                                ?rotationY: double,
+                                                ?scale: double,
+                                                ?style: Xamarin.Forms.Style,
+                                                ?translationX: double,
+                                                ?translationY: double,
+                                                ?widthRequest: double,
+                                                ?resources: (string * obj) list,
+                                                ?styles: Xamarin.Forms.Style list,
+                                                ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                                ?classId: string,
+                                                ?styleId: string,
+                                                ?automationId: string,
+                                                ?created: obj -> unit,
+                                                ?ref: ViewRef) = 
 
         let attribCount = match color with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match isRunning with Some _ -> attribCount + 1 | None -> attribCount
@@ -1272,9 +1567,72 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a ActivityIndicator in the view
-    static member inline ActivityIndicator(?color: Xamarin.Forms.Color, ?isRunning: bool, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.ActivityIndicator -> unit), ?ref: ViewRef<Xamarin.Forms.ActivityIndicator>) = 
+    static member inline ActivityIndicator(?color: Xamarin.Forms.Color,
+                                           ?isRunning: bool,
+                                           ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                           ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                           ?margin: obj,
+                                           ?gestureRecognizers: ViewElement list,
+                                           ?anchorX: double,
+                                           ?anchorY: double,
+                                           ?backgroundColor: Xamarin.Forms.Color,
+                                           ?heightRequest: double,
+                                           ?inputTransparent: bool,
+                                           ?isEnabled: bool,
+                                           ?isVisible: bool,
+                                           ?minimumHeightRequest: double,
+                                           ?minimumWidthRequest: double,
+                                           ?opacity: double,
+                                           ?rotation: double,
+                                           ?rotationX: double,
+                                           ?rotationY: double,
+                                           ?scale: double,
+                                           ?style: Xamarin.Forms.Style,
+                                           ?translationX: double,
+                                           ?translationY: double,
+                                           ?widthRequest: double,
+                                           ?resources: (string * obj) list,
+                                           ?styles: Xamarin.Forms.Style list,
+                                           ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                           ?classId: string,
+                                           ?styleId: string,
+                                           ?automationId: string,
+                                           ?created: (Xamarin.Forms.ActivityIndicator -> unit),
+                                           ?ref: ViewRef<Xamarin.Forms.ActivityIndicator>) = 
 
-        let attribBuilder = View.BuildActivityIndicator(0, ?color=color, ?isRunning=isRunning, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ActivityIndicator> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ActivityIndicator>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildActivityIndicator(0,
+                               ?color=color,
+                               ?isRunning=isRunning,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ActivityIndicator> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ActivityIndicator>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.ActivityIndicator>(View.CreateFuncActivityIndicator, View.UpdateFuncActivityIndicator, attribBuilder)
 
@@ -1283,7 +1641,38 @@ type View() =
 
     /// Builds the attributes for a BoxView in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildBoxView(attribCount: int, ?color: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildBoxView(attribCount: int,
+                                      ?color: Xamarin.Forms.Color,
+                                      ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                      ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                      ?margin: obj,
+                                      ?gestureRecognizers: ViewElement list,
+                                      ?anchorX: double,
+                                      ?anchorY: double,
+                                      ?backgroundColor: Xamarin.Forms.Color,
+                                      ?heightRequest: double,
+                                      ?inputTransparent: bool,
+                                      ?isEnabled: bool,
+                                      ?isVisible: bool,
+                                      ?minimumHeightRequest: double,
+                                      ?minimumWidthRequest: double,
+                                      ?opacity: double,
+                                      ?rotation: double,
+                                      ?rotationX: double,
+                                      ?rotationY: double,
+                                      ?scale: double,
+                                      ?style: Xamarin.Forms.Style,
+                                      ?translationX: double,
+                                      ?translationY: double,
+                                      ?widthRequest: double,
+                                      ?resources: (string * obj) list,
+                                      ?styles: Xamarin.Forms.Style list,
+                                      ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                      ?classId: string,
+                                      ?styleId: string,
+                                      ?automationId: string,
+                                      ?created: obj -> unit,
+                                      ?ref: ViewRef) = 
 
         let attribCount = match color with Some _ -> attribCount + 1 | None -> attribCount
 
@@ -1324,9 +1713,70 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a BoxView in the view
-    static member inline BoxView(?color: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.BoxView -> unit), ?ref: ViewRef<Xamarin.Forms.BoxView>) = 
+    static member inline BoxView(?color: Xamarin.Forms.Color,
+                                 ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                 ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                 ?margin: obj,
+                                 ?gestureRecognizers: ViewElement list,
+                                 ?anchorX: double,
+                                 ?anchorY: double,
+                                 ?backgroundColor: Xamarin.Forms.Color,
+                                 ?heightRequest: double,
+                                 ?inputTransparent: bool,
+                                 ?isEnabled: bool,
+                                 ?isVisible: bool,
+                                 ?minimumHeightRequest: double,
+                                 ?minimumWidthRequest: double,
+                                 ?opacity: double,
+                                 ?rotation: double,
+                                 ?rotationX: double,
+                                 ?rotationY: double,
+                                 ?scale: double,
+                                 ?style: Xamarin.Forms.Style,
+                                 ?translationX: double,
+                                 ?translationY: double,
+                                 ?widthRequest: double,
+                                 ?resources: (string * obj) list,
+                                 ?styles: Xamarin.Forms.Style list,
+                                 ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                 ?classId: string,
+                                 ?styleId: string,
+                                 ?automationId: string,
+                                 ?created: (Xamarin.Forms.BoxView -> unit),
+                                 ?ref: ViewRef<Xamarin.Forms.BoxView>) = 
 
-        let attribBuilder = View.BuildBoxView(0, ?color=color, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.BoxView> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.BoxView>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildBoxView(0,
+                               ?color=color,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.BoxView> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.BoxView>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.BoxView>(View.CreateFuncBoxView, View.UpdateFuncBoxView, attribBuilder)
 
@@ -1335,7 +1785,38 @@ type View() =
 
     /// Builds the attributes for a ProgressBar in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildProgressBar(attribCount: int, ?progress: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildProgressBar(attribCount: int,
+                                          ?progress: double,
+                                          ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                          ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                          ?margin: obj,
+                                          ?gestureRecognizers: ViewElement list,
+                                          ?anchorX: double,
+                                          ?anchorY: double,
+                                          ?backgroundColor: Xamarin.Forms.Color,
+                                          ?heightRequest: double,
+                                          ?inputTransparent: bool,
+                                          ?isEnabled: bool,
+                                          ?isVisible: bool,
+                                          ?minimumHeightRequest: double,
+                                          ?minimumWidthRequest: double,
+                                          ?opacity: double,
+                                          ?rotation: double,
+                                          ?rotationX: double,
+                                          ?rotationY: double,
+                                          ?scale: double,
+                                          ?style: Xamarin.Forms.Style,
+                                          ?translationX: double,
+                                          ?translationY: double,
+                                          ?widthRequest: double,
+                                          ?resources: (string * obj) list,
+                                          ?styles: Xamarin.Forms.Style list,
+                                          ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                          ?classId: string,
+                                          ?styleId: string,
+                                          ?automationId: string,
+                                          ?created: obj -> unit,
+                                          ?ref: ViewRef) = 
 
         let attribCount = match progress with Some _ -> attribCount + 1 | None -> attribCount
 
@@ -1376,9 +1857,70 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a ProgressBar in the view
-    static member inline ProgressBar(?progress: double, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.ProgressBar -> unit), ?ref: ViewRef<Xamarin.Forms.ProgressBar>) = 
+    static member inline ProgressBar(?progress: double,
+                                     ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                     ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                     ?margin: obj,
+                                     ?gestureRecognizers: ViewElement list,
+                                     ?anchorX: double,
+                                     ?anchorY: double,
+                                     ?backgroundColor: Xamarin.Forms.Color,
+                                     ?heightRequest: double,
+                                     ?inputTransparent: bool,
+                                     ?isEnabled: bool,
+                                     ?isVisible: bool,
+                                     ?minimumHeightRequest: double,
+                                     ?minimumWidthRequest: double,
+                                     ?opacity: double,
+                                     ?rotation: double,
+                                     ?rotationX: double,
+                                     ?rotationY: double,
+                                     ?scale: double,
+                                     ?style: Xamarin.Forms.Style,
+                                     ?translationX: double,
+                                     ?translationY: double,
+                                     ?widthRequest: double,
+                                     ?resources: (string * obj) list,
+                                     ?styles: Xamarin.Forms.Style list,
+                                     ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                     ?classId: string,
+                                     ?styleId: string,
+                                     ?automationId: string,
+                                     ?created: (Xamarin.Forms.ProgressBar -> unit),
+                                     ?ref: ViewRef<Xamarin.Forms.ProgressBar>) = 
 
-        let attribBuilder = View.BuildProgressBar(0, ?progress=progress, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ProgressBar> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ProgressBar>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildProgressBar(0,
+                               ?progress=progress,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ProgressBar> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ProgressBar>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.ProgressBar>(View.CreateFuncProgressBar, View.UpdateFuncProgressBar, attribBuilder)
 
@@ -1387,7 +1929,39 @@ type View() =
 
     /// Builds the attributes for a Layout in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildLayout(attribCount: int, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildLayout(attribCount: int,
+                                     ?isClippedToBounds: bool,
+                                     ?padding: obj,
+                                     ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                     ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                     ?margin: obj,
+                                     ?gestureRecognizers: ViewElement list,
+                                     ?anchorX: double,
+                                     ?anchorY: double,
+                                     ?backgroundColor: Xamarin.Forms.Color,
+                                     ?heightRequest: double,
+                                     ?inputTransparent: bool,
+                                     ?isEnabled: bool,
+                                     ?isVisible: bool,
+                                     ?minimumHeightRequest: double,
+                                     ?minimumWidthRequest: double,
+                                     ?opacity: double,
+                                     ?rotation: double,
+                                     ?rotationX: double,
+                                     ?rotationY: double,
+                                     ?scale: double,
+                                     ?style: Xamarin.Forms.Style,
+                                     ?translationX: double,
+                                     ?translationY: double,
+                                     ?widthRequest: double,
+                                     ?resources: (string * obj) list,
+                                     ?styles: Xamarin.Forms.Style list,
+                                     ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                     ?classId: string,
+                                     ?styleId: string,
+                                     ?automationId: string,
+                                     ?created: obj -> unit,
+                                     ?ref: ViewRef) = 
 
         let attribCount = match isClippedToBounds with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match padding with Some _ -> attribCount + 1 | None -> attribCount
@@ -1441,9 +2015,72 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a Layout in the view
-    static member inline Layout(?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.Layout -> unit), ?ref: ViewRef<Xamarin.Forms.Layout>) = 
+    static member inline Layout(?isClippedToBounds: bool,
+                                ?padding: obj,
+                                ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                ?margin: obj,
+                                ?gestureRecognizers: ViewElement list,
+                                ?anchorX: double,
+                                ?anchorY: double,
+                                ?backgroundColor: Xamarin.Forms.Color,
+                                ?heightRequest: double,
+                                ?inputTransparent: bool,
+                                ?isEnabled: bool,
+                                ?isVisible: bool,
+                                ?minimumHeightRequest: double,
+                                ?minimumWidthRequest: double,
+                                ?opacity: double,
+                                ?rotation: double,
+                                ?rotationX: double,
+                                ?rotationY: double,
+                                ?scale: double,
+                                ?style: Xamarin.Forms.Style,
+                                ?translationX: double,
+                                ?translationY: double,
+                                ?widthRequest: double,
+                                ?resources: (string * obj) list,
+                                ?styles: Xamarin.Forms.Style list,
+                                ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                ?classId: string,
+                                ?styleId: string,
+                                ?automationId: string,
+                                ?created: (Xamarin.Forms.Layout -> unit),
+                                ?ref: ViewRef<Xamarin.Forms.Layout>) = 
 
-        let attribBuilder = View.BuildLayout(0, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Layout> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Layout>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildLayout(0,
+                               ?isClippedToBounds=isClippedToBounds,
+                               ?padding=padding,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Layout> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Layout>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.Layout>(View.CreateFuncLayout, View.UpdateFuncLayout, attribBuilder)
 
@@ -1452,7 +2089,43 @@ type View() =
 
     /// Builds the attributes for a ScrollView in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildScrollView(attribCount: int, ?content: ViewElement, ?orientation: Xamarin.Forms.ScrollOrientation, ?horizontalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility, ?verticalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildScrollView(attribCount: int,
+                                         ?content: ViewElement,
+                                         ?orientation: Xamarin.Forms.ScrollOrientation,
+                                         ?horizontalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility,
+                                         ?verticalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility,
+                                         ?isClippedToBounds: bool,
+                                         ?padding: obj,
+                                         ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                         ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                         ?margin: obj,
+                                         ?gestureRecognizers: ViewElement list,
+                                         ?anchorX: double,
+                                         ?anchorY: double,
+                                         ?backgroundColor: Xamarin.Forms.Color,
+                                         ?heightRequest: double,
+                                         ?inputTransparent: bool,
+                                         ?isEnabled: bool,
+                                         ?isVisible: bool,
+                                         ?minimumHeightRequest: double,
+                                         ?minimumWidthRequest: double,
+                                         ?opacity: double,
+                                         ?rotation: double,
+                                         ?rotationX: double,
+                                         ?rotationY: double,
+                                         ?scale: double,
+                                         ?style: Xamarin.Forms.Style,
+                                         ?translationX: double,
+                                         ?translationY: double,
+                                         ?widthRequest: double,
+                                         ?resources: (string * obj) list,
+                                         ?styles: Xamarin.Forms.Style list,
+                                         ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                         ?classId: string,
+                                         ?styleId: string,
+                                         ?automationId: string,
+                                         ?created: obj -> unit,
+                                         ?ref: ViewRef) = 
 
         let attribCount = match content with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match orientation with Some _ -> attribCount + 1 | None -> attribCount
@@ -1537,9 +2210,80 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a ScrollView in the view
-    static member inline ScrollView(?content: ViewElement, ?orientation: Xamarin.Forms.ScrollOrientation, ?horizontalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility, ?verticalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.ScrollView -> unit), ?ref: ViewRef<Xamarin.Forms.ScrollView>) = 
+    static member inline ScrollView(?content: ViewElement,
+                                    ?orientation: Xamarin.Forms.ScrollOrientation,
+                                    ?horizontalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility,
+                                    ?verticalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility,
+                                    ?isClippedToBounds: bool,
+                                    ?padding: obj,
+                                    ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                    ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                    ?margin: obj,
+                                    ?gestureRecognizers: ViewElement list,
+                                    ?anchorX: double,
+                                    ?anchorY: double,
+                                    ?backgroundColor: Xamarin.Forms.Color,
+                                    ?heightRequest: double,
+                                    ?inputTransparent: bool,
+                                    ?isEnabled: bool,
+                                    ?isVisible: bool,
+                                    ?minimumHeightRequest: double,
+                                    ?minimumWidthRequest: double,
+                                    ?opacity: double,
+                                    ?rotation: double,
+                                    ?rotationX: double,
+                                    ?rotationY: double,
+                                    ?scale: double,
+                                    ?style: Xamarin.Forms.Style,
+                                    ?translationX: double,
+                                    ?translationY: double,
+                                    ?widthRequest: double,
+                                    ?resources: (string * obj) list,
+                                    ?styles: Xamarin.Forms.Style list,
+                                    ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                    ?classId: string,
+                                    ?styleId: string,
+                                    ?automationId: string,
+                                    ?created: (Xamarin.Forms.ScrollView -> unit),
+                                    ?ref: ViewRef<Xamarin.Forms.ScrollView>) = 
 
-        let attribBuilder = View.BuildScrollView(0, ?content=content, ?orientation=orientation, ?horizontalScrollBarVisibility=horizontalScrollBarVisibility, ?verticalScrollBarVisibility=verticalScrollBarVisibility, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ScrollView> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ScrollView>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildScrollView(0,
+                               ?content=content,
+                               ?orientation=orientation,
+                               ?horizontalScrollBarVisibility=horizontalScrollBarVisibility,
+                               ?verticalScrollBarVisibility=verticalScrollBarVisibility,
+                               ?isClippedToBounds=isClippedToBounds,
+                               ?padding=padding,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ScrollView> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ScrollView>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.ScrollView>(View.CreateFuncScrollView, View.UpdateFuncScrollView, attribBuilder)
 
@@ -1548,7 +2292,49 @@ type View() =
 
     /// Builds the attributes for a SearchBar in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildSearchBar(attribCount: int, ?cancelButtonColor: Xamarin.Forms.Color, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?placeholder: string, ?placeholderColor: Xamarin.Forms.Color, ?searchCommand: string -> unit, ?canExecute: bool, ?text: string, ?textColor: Xamarin.Forms.Color, ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildSearchBar(attribCount: int,
+                                        ?cancelButtonColor: Xamarin.Forms.Color,
+                                        ?fontFamily: string,
+                                        ?fontAttributes: Xamarin.Forms.FontAttributes,
+                                        ?fontSize: obj,
+                                        ?horizontalTextAlignment: Xamarin.Forms.TextAlignment,
+                                        ?placeholder: string,
+                                        ?placeholderColor: Xamarin.Forms.Color,
+                                        ?searchCommand: string -> unit,
+                                        ?canExecute: bool,
+                                        ?text: string,
+                                        ?textColor: Xamarin.Forms.Color,
+                                        ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit,
+                                        ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                        ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                        ?margin: obj,
+                                        ?gestureRecognizers: ViewElement list,
+                                        ?anchorX: double,
+                                        ?anchorY: double,
+                                        ?backgroundColor: Xamarin.Forms.Color,
+                                        ?heightRequest: double,
+                                        ?inputTransparent: bool,
+                                        ?isEnabled: bool,
+                                        ?isVisible: bool,
+                                        ?minimumHeightRequest: double,
+                                        ?minimumWidthRequest: double,
+                                        ?opacity: double,
+                                        ?rotation: double,
+                                        ?rotationX: double,
+                                        ?rotationY: double,
+                                        ?scale: double,
+                                        ?style: Xamarin.Forms.Style,
+                                        ?translationX: double,
+                                        ?translationY: double,
+                                        ?widthRequest: double,
+                                        ?resources: (string * obj) list,
+                                        ?styles: Xamarin.Forms.Style list,
+                                        ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                        ?classId: string,
+                                        ?styleId: string,
+                                        ?automationId: string,
+                                        ?created: obj -> unit,
+                                        ?ref: ViewRef) = 
 
         let attribCount = match cancelButtonColor with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match fontFamily with Some _ -> attribCount + 1 | None -> attribCount
@@ -1725,9 +2511,92 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a SearchBar in the view
-    static member inline SearchBar(?cancelButtonColor: Xamarin.Forms.Color, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?placeholder: string, ?placeholderColor: Xamarin.Forms.Color, ?searchCommand: string -> unit, ?canExecute: bool, ?text: string, ?textColor: Xamarin.Forms.Color, ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.SearchBar -> unit), ?ref: ViewRef<Xamarin.Forms.SearchBar>) = 
+    static member inline SearchBar(?cancelButtonColor: Xamarin.Forms.Color,
+                                   ?fontFamily: string,
+                                   ?fontAttributes: Xamarin.Forms.FontAttributes,
+                                   ?fontSize: obj,
+                                   ?horizontalTextAlignment: Xamarin.Forms.TextAlignment,
+                                   ?placeholder: string,
+                                   ?placeholderColor: Xamarin.Forms.Color,
+                                   ?searchCommand: string -> unit,
+                                   ?canExecute: bool,
+                                   ?text: string,
+                                   ?textColor: Xamarin.Forms.Color,
+                                   ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit,
+                                   ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                   ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                   ?margin: obj,
+                                   ?gestureRecognizers: ViewElement list,
+                                   ?anchorX: double,
+                                   ?anchorY: double,
+                                   ?backgroundColor: Xamarin.Forms.Color,
+                                   ?heightRequest: double,
+                                   ?inputTransparent: bool,
+                                   ?isEnabled: bool,
+                                   ?isVisible: bool,
+                                   ?minimumHeightRequest: double,
+                                   ?minimumWidthRequest: double,
+                                   ?opacity: double,
+                                   ?rotation: double,
+                                   ?rotationX: double,
+                                   ?rotationY: double,
+                                   ?scale: double,
+                                   ?style: Xamarin.Forms.Style,
+                                   ?translationX: double,
+                                   ?translationY: double,
+                                   ?widthRequest: double,
+                                   ?resources: (string * obj) list,
+                                   ?styles: Xamarin.Forms.Style list,
+                                   ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                   ?classId: string,
+                                   ?styleId: string,
+                                   ?automationId: string,
+                                   ?created: (Xamarin.Forms.SearchBar -> unit),
+                                   ?ref: ViewRef<Xamarin.Forms.SearchBar>) = 
 
-        let attribBuilder = View.BuildSearchBar(0, ?cancelButtonColor=cancelButtonColor, ?fontFamily=fontFamily, ?fontAttributes=fontAttributes, ?fontSize=fontSize, ?horizontalTextAlignment=horizontalTextAlignment, ?placeholder=placeholder, ?placeholderColor=placeholderColor, ?searchCommand=searchCommand, ?canExecute=canExecute, ?text=text, ?textColor=textColor, ?textChanged=textChanged, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.SearchBar> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.SearchBar>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildSearchBar(0,
+                               ?cancelButtonColor=cancelButtonColor,
+                               ?fontFamily=fontFamily,
+                               ?fontAttributes=fontAttributes,
+                               ?fontSize=fontSize,
+                               ?horizontalTextAlignment=horizontalTextAlignment,
+                               ?placeholder=placeholder,
+                               ?placeholderColor=placeholderColor,
+                               ?searchCommand=searchCommand,
+                               ?canExecute=canExecute,
+                               ?text=text,
+                               ?textColor=textColor,
+                               ?textChanged=textChanged,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.SearchBar> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.SearchBar>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.SearchBar>(View.CreateFuncSearchBar, View.UpdateFuncSearchBar, attribBuilder)
 
@@ -1736,7 +2605,50 @@ type View() =
 
     /// Builds the attributes for a Button in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildButton(attribCount: int, ?text: string, ?command: unit -> unit, ?canExecute: bool, ?borderColor: Xamarin.Forms.Color, ?borderWidth: double, ?commandParameter: System.Object, ?contentLayout: Xamarin.Forms.Button.ButtonContentLayout, ?cornerRadius: int, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?image: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildButton(attribCount: int,
+                                     ?text: string,
+                                     ?command: unit -> unit,
+                                     ?canExecute: bool,
+                                     ?borderColor: Xamarin.Forms.Color,
+                                     ?borderWidth: double,
+                                     ?commandParameter: System.Object,
+                                     ?contentLayout: Xamarin.Forms.Button.ButtonContentLayout,
+                                     ?cornerRadius: int,
+                                     ?fontFamily: string,
+                                     ?fontAttributes: Xamarin.Forms.FontAttributes,
+                                     ?fontSize: obj,
+                                     ?image: string,
+                                     ?textColor: Xamarin.Forms.Color,
+                                     ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                     ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                     ?margin: obj,
+                                     ?gestureRecognizers: ViewElement list,
+                                     ?anchorX: double,
+                                     ?anchorY: double,
+                                     ?backgroundColor: Xamarin.Forms.Color,
+                                     ?heightRequest: double,
+                                     ?inputTransparent: bool,
+                                     ?isEnabled: bool,
+                                     ?isVisible: bool,
+                                     ?minimumHeightRequest: double,
+                                     ?minimumWidthRequest: double,
+                                     ?opacity: double,
+                                     ?rotation: double,
+                                     ?rotationX: double,
+                                     ?rotationY: double,
+                                     ?scale: double,
+                                     ?style: Xamarin.Forms.Style,
+                                     ?translationX: double,
+                                     ?translationY: double,
+                                     ?widthRequest: double,
+                                     ?resources: (string * obj) list,
+                                     ?styles: Xamarin.Forms.Style list,
+                                     ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                     ?classId: string,
+                                     ?styleId: string,
+                                     ?automationId: string,
+                                     ?created: obj -> unit,
+                                     ?ref: ViewRef) = 
 
         let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match command with Some _ -> attribCount + 1 | None -> attribCount
@@ -1925,9 +2837,94 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a Button in the view
-    static member inline Button(?text: string, ?command: unit -> unit, ?canExecute: bool, ?borderColor: Xamarin.Forms.Color, ?borderWidth: double, ?commandParameter: System.Object, ?contentLayout: Xamarin.Forms.Button.ButtonContentLayout, ?cornerRadius: int, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?image: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.Button -> unit), ?ref: ViewRef<Xamarin.Forms.Button>) = 
+    static member inline Button(?text: string,
+                                ?command: unit -> unit,
+                                ?canExecute: bool,
+                                ?borderColor: Xamarin.Forms.Color,
+                                ?borderWidth: double,
+                                ?commandParameter: System.Object,
+                                ?contentLayout: Xamarin.Forms.Button.ButtonContentLayout,
+                                ?cornerRadius: int,
+                                ?fontFamily: string,
+                                ?fontAttributes: Xamarin.Forms.FontAttributes,
+                                ?fontSize: obj,
+                                ?image: string,
+                                ?textColor: Xamarin.Forms.Color,
+                                ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                ?margin: obj,
+                                ?gestureRecognizers: ViewElement list,
+                                ?anchorX: double,
+                                ?anchorY: double,
+                                ?backgroundColor: Xamarin.Forms.Color,
+                                ?heightRequest: double,
+                                ?inputTransparent: bool,
+                                ?isEnabled: bool,
+                                ?isVisible: bool,
+                                ?minimumHeightRequest: double,
+                                ?minimumWidthRequest: double,
+                                ?opacity: double,
+                                ?rotation: double,
+                                ?rotationX: double,
+                                ?rotationY: double,
+                                ?scale: double,
+                                ?style: Xamarin.Forms.Style,
+                                ?translationX: double,
+                                ?translationY: double,
+                                ?widthRequest: double,
+                                ?resources: (string * obj) list,
+                                ?styles: Xamarin.Forms.Style list,
+                                ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                ?classId: string,
+                                ?styleId: string,
+                                ?automationId: string,
+                                ?created: (Xamarin.Forms.Button -> unit),
+                                ?ref: ViewRef<Xamarin.Forms.Button>) = 
 
-        let attribBuilder = View.BuildButton(0, ?text=text, ?command=command, ?canExecute=canExecute, ?borderColor=borderColor, ?borderWidth=borderWidth, ?commandParameter=commandParameter, ?contentLayout=contentLayout, ?cornerRadius=cornerRadius, ?fontFamily=fontFamily, ?fontAttributes=fontAttributes, ?fontSize=fontSize, ?image=image, ?textColor=textColor, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Button> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Button>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildButton(0,
+                               ?text=text,
+                               ?command=command,
+                               ?canExecute=canExecute,
+                               ?borderColor=borderColor,
+                               ?borderWidth=borderWidth,
+                               ?commandParameter=commandParameter,
+                               ?contentLayout=contentLayout,
+                               ?cornerRadius=cornerRadius,
+                               ?fontFamily=fontFamily,
+                               ?fontAttributes=fontAttributes,
+                               ?fontSize=fontSize,
+                               ?image=image,
+                               ?textColor=textColor,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Button> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Button>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.Button>(View.CreateFuncButton, View.UpdateFuncButton, attribBuilder)
 
@@ -1936,7 +2933,41 @@ type View() =
 
     /// Builds the attributes for a Slider in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildSlider(attribCount: int, ?minimum: double, ?maximum: double, ?value: double, ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildSlider(attribCount: int,
+                                     ?minimum: double,
+                                     ?maximum: double,
+                                     ?value: double,
+                                     ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit,
+                                     ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                     ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                     ?margin: obj,
+                                     ?gestureRecognizers: ViewElement list,
+                                     ?anchorX: double,
+                                     ?anchorY: double,
+                                     ?backgroundColor: Xamarin.Forms.Color,
+                                     ?heightRequest: double,
+                                     ?inputTransparent: bool,
+                                     ?isEnabled: bool,
+                                     ?isVisible: bool,
+                                     ?minimumHeightRequest: double,
+                                     ?minimumWidthRequest: double,
+                                     ?opacity: double,
+                                     ?rotation: double,
+                                     ?rotationX: double,
+                                     ?rotationY: double,
+                                     ?scale: double,
+                                     ?style: Xamarin.Forms.Style,
+                                     ?translationX: double,
+                                     ?translationY: double,
+                                     ?widthRequest: double,
+                                     ?resources: (string * obj) list,
+                                     ?styles: Xamarin.Forms.Style list,
+                                     ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                     ?classId: string,
+                                     ?styleId: string,
+                                     ?automationId: string,
+                                     ?created: obj -> unit,
+                                     ?ref: ViewRef) = 
 
         let attribCount = match minimum with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match maximum with Some _ -> attribCount + 1 | None -> attribCount
@@ -2017,9 +3048,76 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a Slider in the view
-    static member inline Slider(?minimum: double, ?maximum: double, ?value: double, ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.Slider -> unit), ?ref: ViewRef<Xamarin.Forms.Slider>) = 
+    static member inline Slider(?minimum: double,
+                                ?maximum: double,
+                                ?value: double,
+                                ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit,
+                                ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                ?margin: obj,
+                                ?gestureRecognizers: ViewElement list,
+                                ?anchorX: double,
+                                ?anchorY: double,
+                                ?backgroundColor: Xamarin.Forms.Color,
+                                ?heightRequest: double,
+                                ?inputTransparent: bool,
+                                ?isEnabled: bool,
+                                ?isVisible: bool,
+                                ?minimumHeightRequest: double,
+                                ?minimumWidthRequest: double,
+                                ?opacity: double,
+                                ?rotation: double,
+                                ?rotationX: double,
+                                ?rotationY: double,
+                                ?scale: double,
+                                ?style: Xamarin.Forms.Style,
+                                ?translationX: double,
+                                ?translationY: double,
+                                ?widthRequest: double,
+                                ?resources: (string * obj) list,
+                                ?styles: Xamarin.Forms.Style list,
+                                ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                ?classId: string,
+                                ?styleId: string,
+                                ?automationId: string,
+                                ?created: (Xamarin.Forms.Slider -> unit),
+                                ?ref: ViewRef<Xamarin.Forms.Slider>) = 
 
-        let attribBuilder = View.BuildSlider(0, ?minimum=minimum, ?maximum=maximum, ?value=value, ?valueChanged=valueChanged, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Slider> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Slider>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildSlider(0,
+                               ?minimum=minimum,
+                               ?maximum=maximum,
+                               ?value=value,
+                               ?valueChanged=valueChanged,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Slider> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Slider>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.Slider>(View.CreateFuncSlider, View.UpdateFuncSlider, attribBuilder)
 
@@ -2028,7 +3126,42 @@ type View() =
 
     /// Builds the attributes for a Stepper in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildStepper(attribCount: int, ?minimum: double, ?maximum: double, ?value: double, ?increment: double, ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildStepper(attribCount: int,
+                                      ?minimum: double,
+                                      ?maximum: double,
+                                      ?value: double,
+                                      ?increment: double,
+                                      ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit,
+                                      ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                      ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                      ?margin: obj,
+                                      ?gestureRecognizers: ViewElement list,
+                                      ?anchorX: double,
+                                      ?anchorY: double,
+                                      ?backgroundColor: Xamarin.Forms.Color,
+                                      ?heightRequest: double,
+                                      ?inputTransparent: bool,
+                                      ?isEnabled: bool,
+                                      ?isVisible: bool,
+                                      ?minimumHeightRequest: double,
+                                      ?minimumWidthRequest: double,
+                                      ?opacity: double,
+                                      ?rotation: double,
+                                      ?rotationX: double,
+                                      ?rotationY: double,
+                                      ?scale: double,
+                                      ?style: Xamarin.Forms.Style,
+                                      ?translationX: double,
+                                      ?translationY: double,
+                                      ?widthRequest: double,
+                                      ?resources: (string * obj) list,
+                                      ?styles: Xamarin.Forms.Style list,
+                                      ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                      ?classId: string,
+                                      ?styleId: string,
+                                      ?automationId: string,
+                                      ?created: obj -> unit,
+                                      ?ref: ViewRef) = 
 
         let attribCount = match minimum with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match maximum with Some _ -> attribCount + 1 | None -> attribCount
@@ -2122,9 +3255,78 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a Stepper in the view
-    static member inline Stepper(?minimum: double, ?maximum: double, ?value: double, ?increment: double, ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.Stepper -> unit), ?ref: ViewRef<Xamarin.Forms.Stepper>) = 
+    static member inline Stepper(?minimum: double,
+                                 ?maximum: double,
+                                 ?value: double,
+                                 ?increment: double,
+                                 ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit,
+                                 ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                 ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                 ?margin: obj,
+                                 ?gestureRecognizers: ViewElement list,
+                                 ?anchorX: double,
+                                 ?anchorY: double,
+                                 ?backgroundColor: Xamarin.Forms.Color,
+                                 ?heightRequest: double,
+                                 ?inputTransparent: bool,
+                                 ?isEnabled: bool,
+                                 ?isVisible: bool,
+                                 ?minimumHeightRequest: double,
+                                 ?minimumWidthRequest: double,
+                                 ?opacity: double,
+                                 ?rotation: double,
+                                 ?rotationX: double,
+                                 ?rotationY: double,
+                                 ?scale: double,
+                                 ?style: Xamarin.Forms.Style,
+                                 ?translationX: double,
+                                 ?translationY: double,
+                                 ?widthRequest: double,
+                                 ?resources: (string * obj) list,
+                                 ?styles: Xamarin.Forms.Style list,
+                                 ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                 ?classId: string,
+                                 ?styleId: string,
+                                 ?automationId: string,
+                                 ?created: (Xamarin.Forms.Stepper -> unit),
+                                 ?ref: ViewRef<Xamarin.Forms.Stepper>) = 
 
-        let attribBuilder = View.BuildStepper(0, ?minimum=minimum, ?maximum=maximum, ?value=value, ?increment=increment, ?valueChanged=valueChanged, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Stepper> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Stepper>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildStepper(0,
+                               ?minimum=minimum,
+                               ?maximum=maximum,
+                               ?value=value,
+                               ?increment=increment,
+                               ?valueChanged=valueChanged,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Stepper> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Stepper>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.Stepper>(View.CreateFuncStepper, View.UpdateFuncStepper, attribBuilder)
 
@@ -2133,7 +3335,40 @@ type View() =
 
     /// Builds the attributes for a Switch in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildSwitch(attribCount: int, ?isToggled: bool, ?toggled: Xamarin.Forms.ToggledEventArgs -> unit, ?onColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildSwitch(attribCount: int,
+                                     ?isToggled: bool,
+                                     ?toggled: Xamarin.Forms.ToggledEventArgs -> unit,
+                                     ?onColor: Xamarin.Forms.Color,
+                                     ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                     ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                     ?margin: obj,
+                                     ?gestureRecognizers: ViewElement list,
+                                     ?anchorX: double,
+                                     ?anchorY: double,
+                                     ?backgroundColor: Xamarin.Forms.Color,
+                                     ?heightRequest: double,
+                                     ?inputTransparent: bool,
+                                     ?isEnabled: bool,
+                                     ?isVisible: bool,
+                                     ?minimumHeightRequest: double,
+                                     ?minimumWidthRequest: double,
+                                     ?opacity: double,
+                                     ?rotation: double,
+                                     ?rotationX: double,
+                                     ?rotationY: double,
+                                     ?scale: double,
+                                     ?style: Xamarin.Forms.Style,
+                                     ?translationX: double,
+                                     ?translationY: double,
+                                     ?widthRequest: double,
+                                     ?resources: (string * obj) list,
+                                     ?styles: Xamarin.Forms.Style list,
+                                     ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                     ?classId: string,
+                                     ?styleId: string,
+                                     ?automationId: string,
+                                     ?created: obj -> unit,
+                                     ?ref: ViewRef) = 
 
         let attribCount = match isToggled with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match toggled with Some _ -> attribCount + 1 | None -> attribCount
@@ -2201,9 +3436,74 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a Switch in the view
-    static member inline Switch(?isToggled: bool, ?toggled: Xamarin.Forms.ToggledEventArgs -> unit, ?onColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.Switch -> unit), ?ref: ViewRef<Xamarin.Forms.Switch>) = 
+    static member inline Switch(?isToggled: bool,
+                                ?toggled: Xamarin.Forms.ToggledEventArgs -> unit,
+                                ?onColor: Xamarin.Forms.Color,
+                                ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                ?margin: obj,
+                                ?gestureRecognizers: ViewElement list,
+                                ?anchorX: double,
+                                ?anchorY: double,
+                                ?backgroundColor: Xamarin.Forms.Color,
+                                ?heightRequest: double,
+                                ?inputTransparent: bool,
+                                ?isEnabled: bool,
+                                ?isVisible: bool,
+                                ?minimumHeightRequest: double,
+                                ?minimumWidthRequest: double,
+                                ?opacity: double,
+                                ?rotation: double,
+                                ?rotationX: double,
+                                ?rotationY: double,
+                                ?scale: double,
+                                ?style: Xamarin.Forms.Style,
+                                ?translationX: double,
+                                ?translationY: double,
+                                ?widthRequest: double,
+                                ?resources: (string * obj) list,
+                                ?styles: Xamarin.Forms.Style list,
+                                ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                ?classId: string,
+                                ?styleId: string,
+                                ?automationId: string,
+                                ?created: (Xamarin.Forms.Switch -> unit),
+                                ?ref: ViewRef<Xamarin.Forms.Switch>) = 
 
-        let attribBuilder = View.BuildSwitch(0, ?isToggled=isToggled, ?toggled=toggled, ?onColor=onColor, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Switch> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Switch>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildSwitch(0,
+                               ?isToggled=isToggled,
+                               ?toggled=toggled,
+                               ?onColor=onColor,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Switch> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Switch>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.Switch>(View.CreateFuncSwitch, View.UpdateFuncSwitch, attribBuilder)
 
@@ -2212,7 +3512,14 @@ type View() =
 
     /// Builds the attributes for a Cell in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildCell(attribCount: int, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildCell(attribCount: int,
+                                   ?height: double,
+                                   ?isEnabled: bool,
+                                   ?classId: string,
+                                   ?styleId: string,
+                                   ?automationId: string,
+                                   ?created: obj -> unit,
+                                   ?ref: ViewRef) = 
 
         let attribCount = match height with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match isEnabled with Some _ -> attribCount + 1 | None -> attribCount
@@ -2266,9 +3573,22 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a Cell in the view
-    static member inline Cell(?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.Cell -> unit), ?ref: ViewRef<Xamarin.Forms.Cell>) = 
+    static member inline Cell(?height: double,
+                              ?isEnabled: bool,
+                              ?classId: string,
+                              ?styleId: string,
+                              ?automationId: string,
+                              ?created: (Xamarin.Forms.Cell -> unit),
+                              ?ref: ViewRef<Xamarin.Forms.Cell>) = 
 
-        let attribBuilder = View.BuildCell(0, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Cell> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Cell>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildCell(0,
+                               ?height=height,
+                               ?isEnabled=isEnabled,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Cell> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Cell>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.Cell>(View.CreateFuncCell, View.UpdateFuncCell, attribBuilder)
 
@@ -2277,7 +3597,17 @@ type View() =
 
     /// Builds the attributes for a SwitchCell in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildSwitchCell(attribCount: int, ?on: bool, ?text: string, ?onChanged: Xamarin.Forms.ToggledEventArgs -> unit, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildSwitchCell(attribCount: int,
+                                         ?on: bool,
+                                         ?text: string,
+                                         ?onChanged: Xamarin.Forms.ToggledEventArgs -> unit,
+                                         ?height: double,
+                                         ?isEnabled: bool,
+                                         ?classId: string,
+                                         ?styleId: string,
+                                         ?automationId: string,
+                                         ?created: obj -> unit,
+                                         ?ref: ViewRef) = 
 
         let attribCount = match on with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
@@ -2345,9 +3675,28 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a SwitchCell in the view
-    static member inline SwitchCell(?on: bool, ?text: string, ?onChanged: Xamarin.Forms.ToggledEventArgs -> unit, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.SwitchCell -> unit), ?ref: ViewRef<Xamarin.Forms.SwitchCell>) = 
+    static member inline SwitchCell(?on: bool,
+                                    ?text: string,
+                                    ?onChanged: Xamarin.Forms.ToggledEventArgs -> unit,
+                                    ?height: double,
+                                    ?isEnabled: bool,
+                                    ?classId: string,
+                                    ?styleId: string,
+                                    ?automationId: string,
+                                    ?created: (Xamarin.Forms.SwitchCell -> unit),
+                                    ?ref: ViewRef<Xamarin.Forms.SwitchCell>) = 
 
-        let attribBuilder = View.BuildSwitchCell(0, ?on=on, ?text=text, ?onChanged=onChanged, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.SwitchCell> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.SwitchCell>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildSwitchCell(0,
+                               ?on=on,
+                               ?text=text,
+                               ?onChanged=onChanged,
+                               ?height=height,
+                               ?isEnabled=isEnabled,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.SwitchCell> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.SwitchCell>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.SwitchCell>(View.CreateFuncSwitchCell, View.UpdateFuncSwitchCell, attribBuilder)
 
@@ -2356,7 +3705,41 @@ type View() =
 
     /// Builds the attributes for a TableView in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildTableView(attribCount: int, ?intent: Xamarin.Forms.TableIntent, ?hasUnevenRows: bool, ?rowHeight: int, ?items: (string * ViewElement list) list, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildTableView(attribCount: int,
+                                        ?intent: Xamarin.Forms.TableIntent,
+                                        ?hasUnevenRows: bool,
+                                        ?rowHeight: int,
+                                        ?items: (string * ViewElement list) list,
+                                        ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                        ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                        ?margin: obj,
+                                        ?gestureRecognizers: ViewElement list,
+                                        ?anchorX: double,
+                                        ?anchorY: double,
+                                        ?backgroundColor: Xamarin.Forms.Color,
+                                        ?heightRequest: double,
+                                        ?inputTransparent: bool,
+                                        ?isEnabled: bool,
+                                        ?isVisible: bool,
+                                        ?minimumHeightRequest: double,
+                                        ?minimumWidthRequest: double,
+                                        ?opacity: double,
+                                        ?rotation: double,
+                                        ?rotationX: double,
+                                        ?rotationY: double,
+                                        ?scale: double,
+                                        ?style: Xamarin.Forms.Style,
+                                        ?translationX: double,
+                                        ?translationY: double,
+                                        ?widthRequest: double,
+                                        ?resources: (string * obj) list,
+                                        ?styles: Xamarin.Forms.Style list,
+                                        ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                        ?classId: string,
+                                        ?styleId: string,
+                                        ?automationId: string,
+                                        ?created: obj -> unit,
+                                        ?ref: ViewRef) = 
 
         let attribCount = match intent with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match hasUnevenRows with Some _ -> attribCount + 1 | None -> attribCount
@@ -2432,9 +3815,76 @@ type View() =
         updateTableViewItems prevTableRootOpt currTableRootOpt target
 
     /// Describes a TableView in the view
-    static member inline TableView(?intent: Xamarin.Forms.TableIntent, ?hasUnevenRows: bool, ?rowHeight: int, ?items: (string * ViewElement list) list, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.TableView -> unit), ?ref: ViewRef<Xamarin.Forms.TableView>) = 
+    static member inline TableView(?intent: Xamarin.Forms.TableIntent,
+                                   ?hasUnevenRows: bool,
+                                   ?rowHeight: int,
+                                   ?items: (string * ViewElement list) list,
+                                   ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                   ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                   ?margin: obj,
+                                   ?gestureRecognizers: ViewElement list,
+                                   ?anchorX: double,
+                                   ?anchorY: double,
+                                   ?backgroundColor: Xamarin.Forms.Color,
+                                   ?heightRequest: double,
+                                   ?inputTransparent: bool,
+                                   ?isEnabled: bool,
+                                   ?isVisible: bool,
+                                   ?minimumHeightRequest: double,
+                                   ?minimumWidthRequest: double,
+                                   ?opacity: double,
+                                   ?rotation: double,
+                                   ?rotationX: double,
+                                   ?rotationY: double,
+                                   ?scale: double,
+                                   ?style: Xamarin.Forms.Style,
+                                   ?translationX: double,
+                                   ?translationY: double,
+                                   ?widthRequest: double,
+                                   ?resources: (string * obj) list,
+                                   ?styles: Xamarin.Forms.Style list,
+                                   ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                   ?classId: string,
+                                   ?styleId: string,
+                                   ?automationId: string,
+                                   ?created: (Xamarin.Forms.TableView -> unit),
+                                   ?ref: ViewRef<Xamarin.Forms.TableView>) = 
 
-        let attribBuilder = View.BuildTableView(0, ?intent=intent, ?hasUnevenRows=hasUnevenRows, ?rowHeight=rowHeight, ?items=items, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.TableView> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.TableView>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildTableView(0,
+                               ?intent=intent,
+                               ?hasUnevenRows=hasUnevenRows,
+                               ?rowHeight=rowHeight,
+                               ?items=items,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.TableView> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.TableView>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.TableView>(View.CreateFuncTableView, View.UpdateFuncTableView, attribBuilder)
 
@@ -2443,7 +3893,8 @@ type View() =
 
     /// Builds the attributes for a RowDefinition in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildRowDefinition(attribCount: int, ?height: obj) = 
+    static member inline BuildRowDefinition(attribCount: int,
+                                            ?height: obj) = 
 
         let attribCount = match height with Some _ -> attribCount + 1 | None -> attribCount
         let attribBuilder = new AttributesBuilder(attribCount)
@@ -2482,7 +3933,8 @@ type View() =
     /// Describes a RowDefinition in the view
     static member inline RowDefinition(?height: obj) = 
 
-        let attribBuilder = View.BuildRowDefinition(0, ?height=height)
+        let attribBuilder = View.BuildRowDefinition(0,
+                               ?height=height)
 
         ViewElement.Create<Xamarin.Forms.RowDefinition>(View.CreateFuncRowDefinition, View.UpdateFuncRowDefinition, attribBuilder)
 
@@ -2491,7 +3943,8 @@ type View() =
 
     /// Builds the attributes for a ColumnDefinition in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildColumnDefinition(attribCount: int, ?width: obj) = 
+    static member inline BuildColumnDefinition(attribCount: int,
+                                               ?width: obj) = 
 
         let attribCount = match width with Some _ -> attribCount + 1 | None -> attribCount
         let attribBuilder = new AttributesBuilder(attribCount)
@@ -2530,7 +3983,8 @@ type View() =
     /// Describes a ColumnDefinition in the view
     static member inline ColumnDefinition(?width: obj) = 
 
-        let attribBuilder = View.BuildColumnDefinition(0, ?width=width)
+        let attribBuilder = View.BuildColumnDefinition(0,
+                               ?width=width)
 
         ViewElement.Create<Xamarin.Forms.ColumnDefinition>(View.CreateFuncColumnDefinition, View.UpdateFuncColumnDefinition, attribBuilder)
 
@@ -2539,7 +3993,44 @@ type View() =
 
     /// Builds the attributes for a Grid in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildGrid(attribCount: int, ?rowdefs: obj list, ?coldefs: obj list, ?rowSpacing: double, ?columnSpacing: double, ?children: ViewElement list, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildGrid(attribCount: int,
+                                   ?rowdefs: obj list,
+                                   ?coldefs: obj list,
+                                   ?rowSpacing: double,
+                                   ?columnSpacing: double,
+                                   ?children: ViewElement list,
+                                   ?isClippedToBounds: bool,
+                                   ?padding: obj,
+                                   ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                   ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                   ?margin: obj,
+                                   ?gestureRecognizers: ViewElement list,
+                                   ?anchorX: double,
+                                   ?anchorY: double,
+                                   ?backgroundColor: Xamarin.Forms.Color,
+                                   ?heightRequest: double,
+                                   ?inputTransparent: bool,
+                                   ?isEnabled: bool,
+                                   ?isVisible: bool,
+                                   ?minimumHeightRequest: double,
+                                   ?minimumWidthRequest: double,
+                                   ?opacity: double,
+                                   ?rotation: double,
+                                   ?rotationX: double,
+                                   ?rotationY: double,
+                                   ?scale: double,
+                                   ?style: Xamarin.Forms.Style,
+                                   ?translationX: double,
+                                   ?translationY: double,
+                                   ?widthRequest: double,
+                                   ?resources: (string * obj) list,
+                                   ?styles: Xamarin.Forms.Style list,
+                                   ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                   ?classId: string,
+                                   ?styleId: string,
+                                   ?automationId: string,
+                                   ?created: obj -> unit,
+                                   ?ref: ViewRef) = 
 
         let attribCount = match rowdefs with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match coldefs with Some _ -> attribCount + 1 | None -> attribCount
@@ -2665,9 +4156,82 @@ type View() =
             updateChild
 
     /// Describes a Grid in the view
-    static member inline Grid(?rowdefs: obj list, ?coldefs: obj list, ?rowSpacing: double, ?columnSpacing: double, ?children: ViewElement list, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.Grid -> unit), ?ref: ViewRef<Xamarin.Forms.Grid>) = 
+    static member inline Grid(?rowdefs: obj list,
+                              ?coldefs: obj list,
+                              ?rowSpacing: double,
+                              ?columnSpacing: double,
+                              ?children: ViewElement list,
+                              ?isClippedToBounds: bool,
+                              ?padding: obj,
+                              ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                              ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                              ?margin: obj,
+                              ?gestureRecognizers: ViewElement list,
+                              ?anchorX: double,
+                              ?anchorY: double,
+                              ?backgroundColor: Xamarin.Forms.Color,
+                              ?heightRequest: double,
+                              ?inputTransparent: bool,
+                              ?isEnabled: bool,
+                              ?isVisible: bool,
+                              ?minimumHeightRequest: double,
+                              ?minimumWidthRequest: double,
+                              ?opacity: double,
+                              ?rotation: double,
+                              ?rotationX: double,
+                              ?rotationY: double,
+                              ?scale: double,
+                              ?style: Xamarin.Forms.Style,
+                              ?translationX: double,
+                              ?translationY: double,
+                              ?widthRequest: double,
+                              ?resources: (string * obj) list,
+                              ?styles: Xamarin.Forms.Style list,
+                              ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                              ?classId: string,
+                              ?styleId: string,
+                              ?automationId: string,
+                              ?created: (Xamarin.Forms.Grid -> unit),
+                              ?ref: ViewRef<Xamarin.Forms.Grid>) = 
 
-        let attribBuilder = View.BuildGrid(0, ?rowdefs=rowdefs, ?coldefs=coldefs, ?rowSpacing=rowSpacing, ?columnSpacing=columnSpacing, ?children=children, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Grid> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Grid>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildGrid(0,
+                               ?rowdefs=rowdefs,
+                               ?coldefs=coldefs,
+                               ?rowSpacing=rowSpacing,
+                               ?columnSpacing=columnSpacing,
+                               ?children=children,
+                               ?isClippedToBounds=isClippedToBounds,
+                               ?padding=padding,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Grid> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Grid>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.Grid>(View.CreateFuncGrid, View.UpdateFuncGrid, attribBuilder)
 
@@ -2676,7 +4240,40 @@ type View() =
 
     /// Builds the attributes for a AbsoluteLayout in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildAbsoluteLayout(attribCount: int, ?children: ViewElement list, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildAbsoluteLayout(attribCount: int,
+                                             ?children: ViewElement list,
+                                             ?isClippedToBounds: bool,
+                                             ?padding: obj,
+                                             ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                             ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                             ?margin: obj,
+                                             ?gestureRecognizers: ViewElement list,
+                                             ?anchorX: double,
+                                             ?anchorY: double,
+                                             ?backgroundColor: Xamarin.Forms.Color,
+                                             ?heightRequest: double,
+                                             ?inputTransparent: bool,
+                                             ?isEnabled: bool,
+                                             ?isVisible: bool,
+                                             ?minimumHeightRequest: double,
+                                             ?minimumWidthRequest: double,
+                                             ?opacity: double,
+                                             ?rotation: double,
+                                             ?rotationX: double,
+                                             ?rotationY: double,
+                                             ?scale: double,
+                                             ?style: Xamarin.Forms.Style,
+                                             ?translationX: double,
+                                             ?translationY: double,
+                                             ?widthRequest: double,
+                                             ?resources: (string * obj) list,
+                                             ?styles: Xamarin.Forms.Style list,
+                                             ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                             ?classId: string,
+                                             ?styleId: string,
+                                             ?automationId: string,
+                                             ?created: obj -> unit,
+                                             ?ref: ViewRef) = 
 
         let attribCount = match children with Some _ -> attribCount + 1 | None -> attribCount
 
@@ -2734,9 +4331,74 @@ type View() =
             updateChild
 
     /// Describes a AbsoluteLayout in the view
-    static member inline AbsoluteLayout(?children: ViewElement list, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.AbsoluteLayout -> unit), ?ref: ViewRef<Xamarin.Forms.AbsoluteLayout>) = 
+    static member inline AbsoluteLayout(?children: ViewElement list,
+                                        ?isClippedToBounds: bool,
+                                        ?padding: obj,
+                                        ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                        ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                        ?margin: obj,
+                                        ?gestureRecognizers: ViewElement list,
+                                        ?anchorX: double,
+                                        ?anchorY: double,
+                                        ?backgroundColor: Xamarin.Forms.Color,
+                                        ?heightRequest: double,
+                                        ?inputTransparent: bool,
+                                        ?isEnabled: bool,
+                                        ?isVisible: bool,
+                                        ?minimumHeightRequest: double,
+                                        ?minimumWidthRequest: double,
+                                        ?opacity: double,
+                                        ?rotation: double,
+                                        ?rotationX: double,
+                                        ?rotationY: double,
+                                        ?scale: double,
+                                        ?style: Xamarin.Forms.Style,
+                                        ?translationX: double,
+                                        ?translationY: double,
+                                        ?widthRequest: double,
+                                        ?resources: (string * obj) list,
+                                        ?styles: Xamarin.Forms.Style list,
+                                        ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                        ?classId: string,
+                                        ?styleId: string,
+                                        ?automationId: string,
+                                        ?created: (Xamarin.Forms.AbsoluteLayout -> unit),
+                                        ?ref: ViewRef<Xamarin.Forms.AbsoluteLayout>) = 
 
-        let attribBuilder = View.BuildAbsoluteLayout(0, ?children=children, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.AbsoluteLayout> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.AbsoluteLayout>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildAbsoluteLayout(0,
+                               ?children=children,
+                               ?isClippedToBounds=isClippedToBounds,
+                               ?padding=padding,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.AbsoluteLayout> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.AbsoluteLayout>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.AbsoluteLayout>(View.CreateFuncAbsoluteLayout, View.UpdateFuncAbsoluteLayout, attribBuilder)
 
@@ -2745,7 +4407,40 @@ type View() =
 
     /// Builds the attributes for a RelativeLayout in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildRelativeLayout(attribCount: int, ?children: ViewElement list, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildRelativeLayout(attribCount: int,
+                                             ?children: ViewElement list,
+                                             ?isClippedToBounds: bool,
+                                             ?padding: obj,
+                                             ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                             ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                             ?margin: obj,
+                                             ?gestureRecognizers: ViewElement list,
+                                             ?anchorX: double,
+                                             ?anchorY: double,
+                                             ?backgroundColor: Xamarin.Forms.Color,
+                                             ?heightRequest: double,
+                                             ?inputTransparent: bool,
+                                             ?isEnabled: bool,
+                                             ?isVisible: bool,
+                                             ?minimumHeightRequest: double,
+                                             ?minimumWidthRequest: double,
+                                             ?opacity: double,
+                                             ?rotation: double,
+                                             ?rotationX: double,
+                                             ?rotationY: double,
+                                             ?scale: double,
+                                             ?style: Xamarin.Forms.Style,
+                                             ?translationX: double,
+                                             ?translationY: double,
+                                             ?widthRequest: double,
+                                             ?resources: (string * obj) list,
+                                             ?styles: Xamarin.Forms.Style list,
+                                             ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                             ?classId: string,
+                                             ?styleId: string,
+                                             ?automationId: string,
+                                             ?created: obj -> unit,
+                                             ?ref: ViewRef) = 
 
         let attribCount = match children with Some _ -> attribCount + 1 | None -> attribCount
 
@@ -2827,9 +4522,74 @@ type View() =
             updateChild
 
     /// Describes a RelativeLayout in the view
-    static member inline RelativeLayout(?children: ViewElement list, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.RelativeLayout -> unit), ?ref: ViewRef<Xamarin.Forms.RelativeLayout>) = 
+    static member inline RelativeLayout(?children: ViewElement list,
+                                        ?isClippedToBounds: bool,
+                                        ?padding: obj,
+                                        ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                        ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                        ?margin: obj,
+                                        ?gestureRecognizers: ViewElement list,
+                                        ?anchorX: double,
+                                        ?anchorY: double,
+                                        ?backgroundColor: Xamarin.Forms.Color,
+                                        ?heightRequest: double,
+                                        ?inputTransparent: bool,
+                                        ?isEnabled: bool,
+                                        ?isVisible: bool,
+                                        ?minimumHeightRequest: double,
+                                        ?minimumWidthRequest: double,
+                                        ?opacity: double,
+                                        ?rotation: double,
+                                        ?rotationX: double,
+                                        ?rotationY: double,
+                                        ?scale: double,
+                                        ?style: Xamarin.Forms.Style,
+                                        ?translationX: double,
+                                        ?translationY: double,
+                                        ?widthRequest: double,
+                                        ?resources: (string * obj) list,
+                                        ?styles: Xamarin.Forms.Style list,
+                                        ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                        ?classId: string,
+                                        ?styleId: string,
+                                        ?automationId: string,
+                                        ?created: (Xamarin.Forms.RelativeLayout -> unit),
+                                        ?ref: ViewRef<Xamarin.Forms.RelativeLayout>) = 
 
-        let attribBuilder = View.BuildRelativeLayout(0, ?children=children, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.RelativeLayout> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.RelativeLayout>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildRelativeLayout(0,
+                               ?children=children,
+                               ?isClippedToBounds=isClippedToBounds,
+                               ?padding=padding,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.RelativeLayout> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.RelativeLayout>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.RelativeLayout>(View.CreateFuncRelativeLayout, View.UpdateFuncRelativeLayout, attribBuilder)
 
@@ -2838,7 +4598,46 @@ type View() =
 
     /// Builds the attributes for a FlexLayout in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildFlexLayout(attribCount: int, ?alignContent: Xamarin.Forms.FlexAlignContent, ?alignItems: Xamarin.Forms.FlexAlignItems, ?direction: Xamarin.Forms.FlexDirection, ?position: Xamarin.Forms.FlexPosition, ?wrap: Xamarin.Forms.FlexWrap, ?justifyContent: Xamarin.Forms.FlexJustify, ?children: ViewElement list, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildFlexLayout(attribCount: int,
+                                         ?alignContent: Xamarin.Forms.FlexAlignContent,
+                                         ?alignItems: Xamarin.Forms.FlexAlignItems,
+                                         ?direction: Xamarin.Forms.FlexDirection,
+                                         ?position: Xamarin.Forms.FlexPosition,
+                                         ?wrap: Xamarin.Forms.FlexWrap,
+                                         ?justifyContent: Xamarin.Forms.FlexJustify,
+                                         ?children: ViewElement list,
+                                         ?isClippedToBounds: bool,
+                                         ?padding: obj,
+                                         ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                         ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                         ?margin: obj,
+                                         ?gestureRecognizers: ViewElement list,
+                                         ?anchorX: double,
+                                         ?anchorY: double,
+                                         ?backgroundColor: Xamarin.Forms.Color,
+                                         ?heightRequest: double,
+                                         ?inputTransparent: bool,
+                                         ?isEnabled: bool,
+                                         ?isVisible: bool,
+                                         ?minimumHeightRequest: double,
+                                         ?minimumWidthRequest: double,
+                                         ?opacity: double,
+                                         ?rotation: double,
+                                         ?rotationX: double,
+                                         ?rotationY: double,
+                                         ?scale: double,
+                                         ?style: Xamarin.Forms.Style,
+                                         ?translationX: double,
+                                         ?translationY: double,
+                                         ?widthRequest: double,
+                                         ?resources: (string * obj) list,
+                                         ?styles: Xamarin.Forms.Style list,
+                                         ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                         ?classId: string,
+                                         ?styleId: string,
+                                         ?automationId: string,
+                                         ?created: obj -> unit,
+                                         ?ref: ViewRef) = 
 
         let attribCount = match alignContent with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match alignItems with Some _ -> attribCount + 1 | None -> attribCount
@@ -2998,9 +4797,86 @@ type View() =
             updateChild
 
     /// Describes a FlexLayout in the view
-    static member inline FlexLayout(?alignContent: Xamarin.Forms.FlexAlignContent, ?alignItems: Xamarin.Forms.FlexAlignItems, ?direction: Xamarin.Forms.FlexDirection, ?position: Xamarin.Forms.FlexPosition, ?wrap: Xamarin.Forms.FlexWrap, ?justifyContent: Xamarin.Forms.FlexJustify, ?children: ViewElement list, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.FlexLayout -> unit), ?ref: ViewRef<Xamarin.Forms.FlexLayout>) = 
+    static member inline FlexLayout(?alignContent: Xamarin.Forms.FlexAlignContent,
+                                    ?alignItems: Xamarin.Forms.FlexAlignItems,
+                                    ?direction: Xamarin.Forms.FlexDirection,
+                                    ?position: Xamarin.Forms.FlexPosition,
+                                    ?wrap: Xamarin.Forms.FlexWrap,
+                                    ?justifyContent: Xamarin.Forms.FlexJustify,
+                                    ?children: ViewElement list,
+                                    ?isClippedToBounds: bool,
+                                    ?padding: obj,
+                                    ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                    ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                    ?margin: obj,
+                                    ?gestureRecognizers: ViewElement list,
+                                    ?anchorX: double,
+                                    ?anchorY: double,
+                                    ?backgroundColor: Xamarin.Forms.Color,
+                                    ?heightRequest: double,
+                                    ?inputTransparent: bool,
+                                    ?isEnabled: bool,
+                                    ?isVisible: bool,
+                                    ?minimumHeightRequest: double,
+                                    ?minimumWidthRequest: double,
+                                    ?opacity: double,
+                                    ?rotation: double,
+                                    ?rotationX: double,
+                                    ?rotationY: double,
+                                    ?scale: double,
+                                    ?style: Xamarin.Forms.Style,
+                                    ?translationX: double,
+                                    ?translationY: double,
+                                    ?widthRequest: double,
+                                    ?resources: (string * obj) list,
+                                    ?styles: Xamarin.Forms.Style list,
+                                    ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                    ?classId: string,
+                                    ?styleId: string,
+                                    ?automationId: string,
+                                    ?created: (Xamarin.Forms.FlexLayout -> unit),
+                                    ?ref: ViewRef<Xamarin.Forms.FlexLayout>) = 
 
-        let attribBuilder = View.BuildFlexLayout(0, ?alignContent=alignContent, ?alignItems=alignItems, ?direction=direction, ?position=position, ?wrap=wrap, ?justifyContent=justifyContent, ?children=children, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.FlexLayout> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.FlexLayout>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildFlexLayout(0,
+                               ?alignContent=alignContent,
+                               ?alignItems=alignItems,
+                               ?direction=direction,
+                               ?position=position,
+                               ?wrap=wrap,
+                               ?justifyContent=justifyContent,
+                               ?children=children,
+                               ?isClippedToBounds=isClippedToBounds,
+                               ?padding=padding,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.FlexLayout> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.FlexLayout>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.FlexLayout>(View.CreateFuncFlexLayout, View.UpdateFuncFlexLayout, attribBuilder)
 
@@ -3009,7 +4885,39 @@ type View() =
 
     /// Builds the attributes for a TemplatedView in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildTemplatedView(attribCount: int, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildTemplatedView(attribCount: int,
+                                            ?isClippedToBounds: bool,
+                                            ?padding: obj,
+                                            ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                            ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                            ?margin: obj,
+                                            ?gestureRecognizers: ViewElement list,
+                                            ?anchorX: double,
+                                            ?anchorY: double,
+                                            ?backgroundColor: Xamarin.Forms.Color,
+                                            ?heightRequest: double,
+                                            ?inputTransparent: bool,
+                                            ?isEnabled: bool,
+                                            ?isVisible: bool,
+                                            ?minimumHeightRequest: double,
+                                            ?minimumWidthRequest: double,
+                                            ?opacity: double,
+                                            ?rotation: double,
+                                            ?rotationX: double,
+                                            ?rotationY: double,
+                                            ?scale: double,
+                                            ?style: Xamarin.Forms.Style,
+                                            ?translationX: double,
+                                            ?translationY: double,
+                                            ?widthRequest: double,
+                                            ?resources: (string * obj) list,
+                                            ?styles: Xamarin.Forms.Style list,
+                                            ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                            ?classId: string,
+                                            ?styleId: string,
+                                            ?automationId: string,
+                                            ?created: obj -> unit,
+                                            ?ref: ViewRef) = 
 
 
         let attribBuilder = View.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
@@ -3035,9 +4943,72 @@ type View() =
         ignore target
 
     /// Describes a TemplatedView in the view
-    static member inline TemplatedView(?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.TemplatedView -> unit), ?ref: ViewRef<Xamarin.Forms.TemplatedView>) = 
+    static member inline TemplatedView(?isClippedToBounds: bool,
+                                       ?padding: obj,
+                                       ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                       ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                       ?margin: obj,
+                                       ?gestureRecognizers: ViewElement list,
+                                       ?anchorX: double,
+                                       ?anchorY: double,
+                                       ?backgroundColor: Xamarin.Forms.Color,
+                                       ?heightRequest: double,
+                                       ?inputTransparent: bool,
+                                       ?isEnabled: bool,
+                                       ?isVisible: bool,
+                                       ?minimumHeightRequest: double,
+                                       ?minimumWidthRequest: double,
+                                       ?opacity: double,
+                                       ?rotation: double,
+                                       ?rotationX: double,
+                                       ?rotationY: double,
+                                       ?scale: double,
+                                       ?style: Xamarin.Forms.Style,
+                                       ?translationX: double,
+                                       ?translationY: double,
+                                       ?widthRequest: double,
+                                       ?resources: (string * obj) list,
+                                       ?styles: Xamarin.Forms.Style list,
+                                       ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                       ?classId: string,
+                                       ?styleId: string,
+                                       ?automationId: string,
+                                       ?created: (Xamarin.Forms.TemplatedView -> unit),
+                                       ?ref: ViewRef<Xamarin.Forms.TemplatedView>) = 
 
-        let attribBuilder = View.BuildTemplatedView(0, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.TemplatedView> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.TemplatedView>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildTemplatedView(0,
+                               ?isClippedToBounds=isClippedToBounds,
+                               ?padding=padding,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.TemplatedView> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.TemplatedView>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.TemplatedView>(View.CreateFuncTemplatedView, View.UpdateFuncTemplatedView, attribBuilder)
 
@@ -3046,7 +5017,40 @@ type View() =
 
     /// Builds the attributes for a ContentView in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildContentView(attribCount: int, ?content: ViewElement, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildContentView(attribCount: int,
+                                          ?content: ViewElement,
+                                          ?isClippedToBounds: bool,
+                                          ?padding: obj,
+                                          ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                          ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                          ?margin: obj,
+                                          ?gestureRecognizers: ViewElement list,
+                                          ?anchorX: double,
+                                          ?anchorY: double,
+                                          ?backgroundColor: Xamarin.Forms.Color,
+                                          ?heightRequest: double,
+                                          ?inputTransparent: bool,
+                                          ?isEnabled: bool,
+                                          ?isVisible: bool,
+                                          ?minimumHeightRequest: double,
+                                          ?minimumWidthRequest: double,
+                                          ?opacity: double,
+                                          ?rotation: double,
+                                          ?rotationX: double,
+                                          ?rotationY: double,
+                                          ?scale: double,
+                                          ?style: Xamarin.Forms.Style,
+                                          ?translationX: double,
+                                          ?translationY: double,
+                                          ?widthRequest: double,
+                                          ?resources: (string * obj) list,
+                                          ?styles: Xamarin.Forms.Style list,
+                                          ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                          ?classId: string,
+                                          ?styleId: string,
+                                          ?automationId: string,
+                                          ?created: obj -> unit,
+                                          ?ref: ViewRef) = 
 
         let attribCount = match content with Some _ -> attribCount + 1 | None -> attribCount
 
@@ -3092,9 +5096,74 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a ContentView in the view
-    static member inline ContentView(?content: ViewElement, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.ContentView -> unit), ?ref: ViewRef<Xamarin.Forms.ContentView>) = 
+    static member inline ContentView(?content: ViewElement,
+                                     ?isClippedToBounds: bool,
+                                     ?padding: obj,
+                                     ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                     ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                     ?margin: obj,
+                                     ?gestureRecognizers: ViewElement list,
+                                     ?anchorX: double,
+                                     ?anchorY: double,
+                                     ?backgroundColor: Xamarin.Forms.Color,
+                                     ?heightRequest: double,
+                                     ?inputTransparent: bool,
+                                     ?isEnabled: bool,
+                                     ?isVisible: bool,
+                                     ?minimumHeightRequest: double,
+                                     ?minimumWidthRequest: double,
+                                     ?opacity: double,
+                                     ?rotation: double,
+                                     ?rotationX: double,
+                                     ?rotationY: double,
+                                     ?scale: double,
+                                     ?style: Xamarin.Forms.Style,
+                                     ?translationX: double,
+                                     ?translationY: double,
+                                     ?widthRequest: double,
+                                     ?resources: (string * obj) list,
+                                     ?styles: Xamarin.Forms.Style list,
+                                     ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                     ?classId: string,
+                                     ?styleId: string,
+                                     ?automationId: string,
+                                     ?created: (Xamarin.Forms.ContentView -> unit),
+                                     ?ref: ViewRef<Xamarin.Forms.ContentView>) = 
 
-        let attribBuilder = View.BuildContentView(0, ?content=content, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ContentView> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ContentView>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildContentView(0,
+                               ?content=content,
+                               ?isClippedToBounds=isClippedToBounds,
+                               ?padding=padding,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ContentView> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ContentView>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.ContentView>(View.CreateFuncContentView, View.UpdateFuncContentView, attribBuilder)
 
@@ -3103,7 +5172,42 @@ type View() =
 
     /// Builds the attributes for a DatePicker in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildDatePicker(attribCount: int, ?date: System.DateTime, ?format: string, ?minimumDate: System.DateTime, ?maximumDate: System.DateTime, ?dateSelected: Xamarin.Forms.DateChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildDatePicker(attribCount: int,
+                                         ?date: System.DateTime,
+                                         ?format: string,
+                                         ?minimumDate: System.DateTime,
+                                         ?maximumDate: System.DateTime,
+                                         ?dateSelected: Xamarin.Forms.DateChangedEventArgs -> unit,
+                                         ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                         ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                         ?margin: obj,
+                                         ?gestureRecognizers: ViewElement list,
+                                         ?anchorX: double,
+                                         ?anchorY: double,
+                                         ?backgroundColor: Xamarin.Forms.Color,
+                                         ?heightRequest: double,
+                                         ?inputTransparent: bool,
+                                         ?isEnabled: bool,
+                                         ?isVisible: bool,
+                                         ?minimumHeightRequest: double,
+                                         ?minimumWidthRequest: double,
+                                         ?opacity: double,
+                                         ?rotation: double,
+                                         ?rotationX: double,
+                                         ?rotationY: double,
+                                         ?scale: double,
+                                         ?style: Xamarin.Forms.Style,
+                                         ?translationX: double,
+                                         ?translationY: double,
+                                         ?widthRequest: double,
+                                         ?resources: (string * obj) list,
+                                         ?styles: Xamarin.Forms.Style list,
+                                         ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                         ?classId: string,
+                                         ?styleId: string,
+                                         ?automationId: string,
+                                         ?created: obj -> unit,
+                                         ?ref: ViewRef) = 
 
         let attribCount = match date with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match format with Some _ -> attribCount + 1 | None -> attribCount
@@ -3197,9 +5301,78 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a DatePicker in the view
-    static member inline DatePicker(?date: System.DateTime, ?format: string, ?minimumDate: System.DateTime, ?maximumDate: System.DateTime, ?dateSelected: Xamarin.Forms.DateChangedEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.DatePicker -> unit), ?ref: ViewRef<Xamarin.Forms.DatePicker>) = 
+    static member inline DatePicker(?date: System.DateTime,
+                                    ?format: string,
+                                    ?minimumDate: System.DateTime,
+                                    ?maximumDate: System.DateTime,
+                                    ?dateSelected: Xamarin.Forms.DateChangedEventArgs -> unit,
+                                    ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                    ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                    ?margin: obj,
+                                    ?gestureRecognizers: ViewElement list,
+                                    ?anchorX: double,
+                                    ?anchorY: double,
+                                    ?backgroundColor: Xamarin.Forms.Color,
+                                    ?heightRequest: double,
+                                    ?inputTransparent: bool,
+                                    ?isEnabled: bool,
+                                    ?isVisible: bool,
+                                    ?minimumHeightRequest: double,
+                                    ?minimumWidthRequest: double,
+                                    ?opacity: double,
+                                    ?rotation: double,
+                                    ?rotationX: double,
+                                    ?rotationY: double,
+                                    ?scale: double,
+                                    ?style: Xamarin.Forms.Style,
+                                    ?translationX: double,
+                                    ?translationY: double,
+                                    ?widthRequest: double,
+                                    ?resources: (string * obj) list,
+                                    ?styles: Xamarin.Forms.Style list,
+                                    ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                    ?classId: string,
+                                    ?styleId: string,
+                                    ?automationId: string,
+                                    ?created: (Xamarin.Forms.DatePicker -> unit),
+                                    ?ref: ViewRef<Xamarin.Forms.DatePicker>) = 
 
-        let attribBuilder = View.BuildDatePicker(0, ?date=date, ?format=format, ?minimumDate=minimumDate, ?maximumDate=maximumDate, ?dateSelected=dateSelected, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.DatePicker> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.DatePicker>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildDatePicker(0,
+                               ?date=date,
+                               ?format=format,
+                               ?minimumDate=minimumDate,
+                               ?maximumDate=maximumDate,
+                               ?dateSelected=dateSelected,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.DatePicker> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.DatePicker>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.DatePicker>(View.CreateFuncDatePicker, View.UpdateFuncDatePicker, attribBuilder)
 
@@ -3208,7 +5381,42 @@ type View() =
 
     /// Builds the attributes for a Picker in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildPicker(attribCount: int, ?itemsSource: seq<'T>, ?selectedIndex: int, ?title: string, ?textColor: Xamarin.Forms.Color, ?selectedIndexChanged: (int * 'T option) -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildPicker(attribCount: int,
+                                     ?itemsSource: seq<'T>,
+                                     ?selectedIndex: int,
+                                     ?title: string,
+                                     ?textColor: Xamarin.Forms.Color,
+                                     ?selectedIndexChanged: (int * 'T option) -> unit,
+                                     ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                     ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                     ?margin: obj,
+                                     ?gestureRecognizers: ViewElement list,
+                                     ?anchorX: double,
+                                     ?anchorY: double,
+                                     ?backgroundColor: Xamarin.Forms.Color,
+                                     ?heightRequest: double,
+                                     ?inputTransparent: bool,
+                                     ?isEnabled: bool,
+                                     ?isVisible: bool,
+                                     ?minimumHeightRequest: double,
+                                     ?minimumWidthRequest: double,
+                                     ?opacity: double,
+                                     ?rotation: double,
+                                     ?rotationX: double,
+                                     ?rotationY: double,
+                                     ?scale: double,
+                                     ?style: Xamarin.Forms.Style,
+                                     ?translationX: double,
+                                     ?translationY: double,
+                                     ?widthRequest: double,
+                                     ?resources: (string * obj) list,
+                                     ?styles: Xamarin.Forms.Style list,
+                                     ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                     ?classId: string,
+                                     ?styleId: string,
+                                     ?automationId: string,
+                                     ?created: obj -> unit,
+                                     ?ref: ViewRef) = 
 
         let attribCount = match itemsSource with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match selectedIndex with Some _ -> attribCount + 1 | None -> attribCount
@@ -3302,9 +5510,78 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a Picker in the view
-    static member inline Picker(?itemsSource: seq<'T>, ?selectedIndex: int, ?title: string, ?textColor: Xamarin.Forms.Color, ?selectedIndexChanged: (int * 'T option) -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.Picker -> unit), ?ref: ViewRef<Xamarin.Forms.Picker>) = 
+    static member inline Picker(?itemsSource: seq<'T>,
+                                ?selectedIndex: int,
+                                ?title: string,
+                                ?textColor: Xamarin.Forms.Color,
+                                ?selectedIndexChanged: (int * 'T option) -> unit,
+                                ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                ?margin: obj,
+                                ?gestureRecognizers: ViewElement list,
+                                ?anchorX: double,
+                                ?anchorY: double,
+                                ?backgroundColor: Xamarin.Forms.Color,
+                                ?heightRequest: double,
+                                ?inputTransparent: bool,
+                                ?isEnabled: bool,
+                                ?isVisible: bool,
+                                ?minimumHeightRequest: double,
+                                ?minimumWidthRequest: double,
+                                ?opacity: double,
+                                ?rotation: double,
+                                ?rotationX: double,
+                                ?rotationY: double,
+                                ?scale: double,
+                                ?style: Xamarin.Forms.Style,
+                                ?translationX: double,
+                                ?translationY: double,
+                                ?widthRequest: double,
+                                ?resources: (string * obj) list,
+                                ?styles: Xamarin.Forms.Style list,
+                                ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                ?classId: string,
+                                ?styleId: string,
+                                ?automationId: string,
+                                ?created: (Xamarin.Forms.Picker -> unit),
+                                ?ref: ViewRef<Xamarin.Forms.Picker>) = 
 
-        let attribBuilder = View.BuildPicker(0, ?itemsSource=itemsSource, ?selectedIndex=selectedIndex, ?title=title, ?textColor=textColor, ?selectedIndexChanged=selectedIndexChanged, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Picker> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Picker>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildPicker(0,
+                               ?itemsSource=itemsSource,
+                               ?selectedIndex=selectedIndex,
+                               ?title=title,
+                               ?textColor=textColor,
+                               ?selectedIndexChanged=selectedIndexChanged,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Picker> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Picker>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.Picker>(View.CreateFuncPicker, View.UpdateFuncPicker, attribBuilder)
 
@@ -3313,7 +5590,43 @@ type View() =
 
     /// Builds the attributes for a Frame in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildFrame(attribCount: int, ?borderColor: Xamarin.Forms.Color, ?cornerRadius: double, ?hasShadow: bool, ?content: ViewElement, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildFrame(attribCount: int,
+                                    ?borderColor: Xamarin.Forms.Color,
+                                    ?cornerRadius: double,
+                                    ?hasShadow: bool,
+                                    ?content: ViewElement,
+                                    ?isClippedToBounds: bool,
+                                    ?padding: obj,
+                                    ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                    ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                    ?margin: obj,
+                                    ?gestureRecognizers: ViewElement list,
+                                    ?anchorX: double,
+                                    ?anchorY: double,
+                                    ?backgroundColor: Xamarin.Forms.Color,
+                                    ?heightRequest: double,
+                                    ?inputTransparent: bool,
+                                    ?isEnabled: bool,
+                                    ?isVisible: bool,
+                                    ?minimumHeightRequest: double,
+                                    ?minimumWidthRequest: double,
+                                    ?opacity: double,
+                                    ?rotation: double,
+                                    ?rotationX: double,
+                                    ?rotationY: double,
+                                    ?scale: double,
+                                    ?style: Xamarin.Forms.Style,
+                                    ?translationX: double,
+                                    ?translationY: double,
+                                    ?widthRequest: double,
+                                    ?resources: (string * obj) list,
+                                    ?styles: Xamarin.Forms.Style list,
+                                    ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                    ?classId: string,
+                                    ?styleId: string,
+                                    ?automationId: string,
+                                    ?created: obj -> unit,
+                                    ?ref: ViewRef) = 
 
         let attribCount = match borderColor with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match cornerRadius with Some _ -> attribCount + 1 | None -> attribCount
@@ -3380,9 +5693,80 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a Frame in the view
-    static member inline Frame(?borderColor: Xamarin.Forms.Color, ?cornerRadius: double, ?hasShadow: bool, ?content: ViewElement, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.Frame -> unit), ?ref: ViewRef<Xamarin.Forms.Frame>) = 
+    static member inline Frame(?borderColor: Xamarin.Forms.Color,
+                               ?cornerRadius: double,
+                               ?hasShadow: bool,
+                               ?content: ViewElement,
+                               ?isClippedToBounds: bool,
+                               ?padding: obj,
+                               ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                               ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                               ?margin: obj,
+                               ?gestureRecognizers: ViewElement list,
+                               ?anchorX: double,
+                               ?anchorY: double,
+                               ?backgroundColor: Xamarin.Forms.Color,
+                               ?heightRequest: double,
+                               ?inputTransparent: bool,
+                               ?isEnabled: bool,
+                               ?isVisible: bool,
+                               ?minimumHeightRequest: double,
+                               ?minimumWidthRequest: double,
+                               ?opacity: double,
+                               ?rotation: double,
+                               ?rotationX: double,
+                               ?rotationY: double,
+                               ?scale: double,
+                               ?style: Xamarin.Forms.Style,
+                               ?translationX: double,
+                               ?translationY: double,
+                               ?widthRequest: double,
+                               ?resources: (string * obj) list,
+                               ?styles: Xamarin.Forms.Style list,
+                               ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                               ?classId: string,
+                               ?styleId: string,
+                               ?automationId: string,
+                               ?created: (Xamarin.Forms.Frame -> unit),
+                               ?ref: ViewRef<Xamarin.Forms.Frame>) = 
 
-        let attribBuilder = View.BuildFrame(0, ?borderColor=borderColor, ?cornerRadius=cornerRadius, ?hasShadow=hasShadow, ?content=content, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Frame> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Frame>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildFrame(0,
+                               ?borderColor=borderColor,
+                               ?cornerRadius=cornerRadius,
+                               ?hasShadow=hasShadow,
+                               ?content=content,
+                               ?isClippedToBounds=isClippedToBounds,
+                               ?padding=padding,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Frame> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Frame>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.Frame>(View.CreateFuncFrame, View.UpdateFuncFrame, attribBuilder)
 
@@ -3391,7 +5775,40 @@ type View() =
 
     /// Builds the attributes for a Image in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildImage(attribCount: int, ?source: obj, ?aspect: Xamarin.Forms.Aspect, ?isOpaque: bool, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildImage(attribCount: int,
+                                    ?source: obj,
+                                    ?aspect: Xamarin.Forms.Aspect,
+                                    ?isOpaque: bool,
+                                    ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                    ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                    ?margin: obj,
+                                    ?gestureRecognizers: ViewElement list,
+                                    ?anchorX: double,
+                                    ?anchorY: double,
+                                    ?backgroundColor: Xamarin.Forms.Color,
+                                    ?heightRequest: double,
+                                    ?inputTransparent: bool,
+                                    ?isEnabled: bool,
+                                    ?isVisible: bool,
+                                    ?minimumHeightRequest: double,
+                                    ?minimumWidthRequest: double,
+                                    ?opacity: double,
+                                    ?rotation: double,
+                                    ?rotationX: double,
+                                    ?rotationY: double,
+                                    ?scale: double,
+                                    ?style: Xamarin.Forms.Style,
+                                    ?translationX: double,
+                                    ?translationY: double,
+                                    ?widthRequest: double,
+                                    ?resources: (string * obj) list,
+                                    ?styles: Xamarin.Forms.Style list,
+                                    ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                    ?classId: string,
+                                    ?styleId: string,
+                                    ?automationId: string,
+                                    ?created: obj -> unit,
+                                    ?ref: ViewRef) = 
 
         let attribCount = match source with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match aspect with Some _ -> attribCount + 1 | None -> attribCount
@@ -3458,9 +5875,74 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a Image in the view
-    static member inline Image(?source: obj, ?aspect: Xamarin.Forms.Aspect, ?isOpaque: bool, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.Image -> unit), ?ref: ViewRef<Xamarin.Forms.Image>) = 
+    static member inline Image(?source: obj,
+                               ?aspect: Xamarin.Forms.Aspect,
+                               ?isOpaque: bool,
+                               ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                               ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                               ?margin: obj,
+                               ?gestureRecognizers: ViewElement list,
+                               ?anchorX: double,
+                               ?anchorY: double,
+                               ?backgroundColor: Xamarin.Forms.Color,
+                               ?heightRequest: double,
+                               ?inputTransparent: bool,
+                               ?isEnabled: bool,
+                               ?isVisible: bool,
+                               ?minimumHeightRequest: double,
+                               ?minimumWidthRequest: double,
+                               ?opacity: double,
+                               ?rotation: double,
+                               ?rotationX: double,
+                               ?rotationY: double,
+                               ?scale: double,
+                               ?style: Xamarin.Forms.Style,
+                               ?translationX: double,
+                               ?translationY: double,
+                               ?widthRequest: double,
+                               ?resources: (string * obj) list,
+                               ?styles: Xamarin.Forms.Style list,
+                               ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                               ?classId: string,
+                               ?styleId: string,
+                               ?automationId: string,
+                               ?created: (Xamarin.Forms.Image -> unit),
+                               ?ref: ViewRef<Xamarin.Forms.Image>) = 
 
-        let attribBuilder = View.BuildImage(0, ?source=source, ?aspect=aspect, ?isOpaque=isOpaque, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Image> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Image>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildImage(0,
+                               ?source=source,
+                               ?aspect=aspect,
+                               ?isOpaque=isOpaque,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Image> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Image>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.Image>(View.CreateFuncImage, View.UpdateFuncImage, attribBuilder)
 
@@ -3469,7 +5951,38 @@ type View() =
 
     /// Builds the attributes for a InputView in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildInputView(attribCount: int, ?keyboard: Xamarin.Forms.Keyboard, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildInputView(attribCount: int,
+                                        ?keyboard: Xamarin.Forms.Keyboard,
+                                        ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                        ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                        ?margin: obj,
+                                        ?gestureRecognizers: ViewElement list,
+                                        ?anchorX: double,
+                                        ?anchorY: double,
+                                        ?backgroundColor: Xamarin.Forms.Color,
+                                        ?heightRequest: double,
+                                        ?inputTransparent: bool,
+                                        ?isEnabled: bool,
+                                        ?isVisible: bool,
+                                        ?minimumHeightRequest: double,
+                                        ?minimumWidthRequest: double,
+                                        ?opacity: double,
+                                        ?rotation: double,
+                                        ?rotationX: double,
+                                        ?rotationY: double,
+                                        ?scale: double,
+                                        ?style: Xamarin.Forms.Style,
+                                        ?translationX: double,
+                                        ?translationY: double,
+                                        ?widthRequest: double,
+                                        ?resources: (string * obj) list,
+                                        ?styles: Xamarin.Forms.Style list,
+                                        ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                        ?classId: string,
+                                        ?styleId: string,
+                                        ?automationId: string,
+                                        ?created: obj -> unit,
+                                        ?ref: ViewRef) = 
 
         let attribCount = match keyboard with Some _ -> attribCount + 1 | None -> attribCount
 
@@ -3510,9 +6023,70 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a InputView in the view
-    static member inline InputView(?keyboard: Xamarin.Forms.Keyboard, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.InputView -> unit), ?ref: ViewRef<Xamarin.Forms.InputView>) = 
+    static member inline InputView(?keyboard: Xamarin.Forms.Keyboard,
+                                   ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                   ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                   ?margin: obj,
+                                   ?gestureRecognizers: ViewElement list,
+                                   ?anchorX: double,
+                                   ?anchorY: double,
+                                   ?backgroundColor: Xamarin.Forms.Color,
+                                   ?heightRequest: double,
+                                   ?inputTransparent: bool,
+                                   ?isEnabled: bool,
+                                   ?isVisible: bool,
+                                   ?minimumHeightRequest: double,
+                                   ?minimumWidthRequest: double,
+                                   ?opacity: double,
+                                   ?rotation: double,
+                                   ?rotationX: double,
+                                   ?rotationY: double,
+                                   ?scale: double,
+                                   ?style: Xamarin.Forms.Style,
+                                   ?translationX: double,
+                                   ?translationY: double,
+                                   ?widthRequest: double,
+                                   ?resources: (string * obj) list,
+                                   ?styles: Xamarin.Forms.Style list,
+                                   ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                   ?classId: string,
+                                   ?styleId: string,
+                                   ?automationId: string,
+                                   ?created: (Xamarin.Forms.InputView -> unit),
+                                   ?ref: ViewRef<Xamarin.Forms.InputView>) = 
 
-        let attribBuilder = View.BuildInputView(0, ?keyboard=keyboard, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.InputView> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.InputView>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildInputView(0,
+                               ?keyboard=keyboard,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.InputView> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.InputView>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.InputView>(View.CreateFuncInputView, View.UpdateFuncInputView, attribBuilder)
 
@@ -3521,7 +6095,46 @@ type View() =
 
     /// Builds the attributes for a Editor in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildEditor(attribCount: int, ?text: string, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?completed: string -> unit, ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?autoSize: Xamarin.Forms.EditorAutoSizeOption, ?keyboard: Xamarin.Forms.Keyboard, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildEditor(attribCount: int,
+                                     ?text: string,
+                                     ?fontSize: obj,
+                                     ?fontFamily: string,
+                                     ?fontAttributes: Xamarin.Forms.FontAttributes,
+                                     ?textColor: Xamarin.Forms.Color,
+                                     ?completed: string -> unit,
+                                     ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit,
+                                     ?autoSize: Xamarin.Forms.EditorAutoSizeOption,
+                                     ?keyboard: Xamarin.Forms.Keyboard,
+                                     ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                     ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                     ?margin: obj,
+                                     ?gestureRecognizers: ViewElement list,
+                                     ?anchorX: double,
+                                     ?anchorY: double,
+                                     ?backgroundColor: Xamarin.Forms.Color,
+                                     ?heightRequest: double,
+                                     ?inputTransparent: bool,
+                                     ?isEnabled: bool,
+                                     ?isVisible: bool,
+                                     ?minimumHeightRequest: double,
+                                     ?minimumWidthRequest: double,
+                                     ?opacity: double,
+                                     ?rotation: double,
+                                     ?rotationX: double,
+                                     ?rotationY: double,
+                                     ?scale: double,
+                                     ?style: Xamarin.Forms.Style,
+                                     ?translationX: double,
+                                     ?translationY: double,
+                                     ?widthRequest: double,
+                                     ?resources: (string * obj) list,
+                                     ?styles: Xamarin.Forms.Style list,
+                                     ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                     ?classId: string,
+                                     ?styleId: string,
+                                     ?automationId: string,
+                                     ?created: obj -> unit,
+                                     ?ref: ViewRef) = 
 
         let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match fontSize with Some _ -> attribCount + 1 | None -> attribCount
@@ -3655,9 +6268,86 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a Editor in the view
-    static member inline Editor(?text: string, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?completed: string -> unit, ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?autoSize: Xamarin.Forms.EditorAutoSizeOption, ?keyboard: Xamarin.Forms.Keyboard, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.Editor -> unit), ?ref: ViewRef<Xamarin.Forms.Editor>) = 
+    static member inline Editor(?text: string,
+                                ?fontSize: obj,
+                                ?fontFamily: string,
+                                ?fontAttributes: Xamarin.Forms.FontAttributes,
+                                ?textColor: Xamarin.Forms.Color,
+                                ?completed: string -> unit,
+                                ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit,
+                                ?autoSize: Xamarin.Forms.EditorAutoSizeOption,
+                                ?keyboard: Xamarin.Forms.Keyboard,
+                                ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                ?margin: obj,
+                                ?gestureRecognizers: ViewElement list,
+                                ?anchorX: double,
+                                ?anchorY: double,
+                                ?backgroundColor: Xamarin.Forms.Color,
+                                ?heightRequest: double,
+                                ?inputTransparent: bool,
+                                ?isEnabled: bool,
+                                ?isVisible: bool,
+                                ?minimumHeightRequest: double,
+                                ?minimumWidthRequest: double,
+                                ?opacity: double,
+                                ?rotation: double,
+                                ?rotationX: double,
+                                ?rotationY: double,
+                                ?scale: double,
+                                ?style: Xamarin.Forms.Style,
+                                ?translationX: double,
+                                ?translationY: double,
+                                ?widthRequest: double,
+                                ?resources: (string * obj) list,
+                                ?styles: Xamarin.Forms.Style list,
+                                ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                ?classId: string,
+                                ?styleId: string,
+                                ?automationId: string,
+                                ?created: (Xamarin.Forms.Editor -> unit),
+                                ?ref: ViewRef<Xamarin.Forms.Editor>) = 
 
-        let attribBuilder = View.BuildEditor(0, ?text=text, ?fontSize=fontSize, ?fontFamily=fontFamily, ?fontAttributes=fontAttributes, ?textColor=textColor, ?completed=completed, ?textChanged=textChanged, ?autoSize=autoSize, ?keyboard=keyboard, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Editor> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Editor>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildEditor(0,
+                               ?text=text,
+                               ?fontSize=fontSize,
+                               ?fontFamily=fontFamily,
+                               ?fontAttributes=fontAttributes,
+                               ?textColor=textColor,
+                               ?completed=completed,
+                               ?textChanged=textChanged,
+                               ?autoSize=autoSize,
+                               ?keyboard=keyboard,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Editor> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Editor>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.Editor>(View.CreateFuncEditor, View.UpdateFuncEditor, attribBuilder)
 
@@ -3666,7 +6356,52 @@ type View() =
 
     /// Builds the attributes for a Entry in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildEntry(attribCount: int, ?text: string, ?placeholder: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?placeholderColor: Xamarin.Forms.Color, ?isPassword: bool, ?completed: string -> unit, ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?isTextPredictionEnabled: bool, ?returnType: Xamarin.Forms.ReturnType, ?returnCommand: unit -> unit, ?keyboard: Xamarin.Forms.Keyboard, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildEntry(attribCount: int,
+                                    ?text: string,
+                                    ?placeholder: string,
+                                    ?horizontalTextAlignment: Xamarin.Forms.TextAlignment,
+                                    ?fontSize: obj,
+                                    ?fontFamily: string,
+                                    ?fontAttributes: Xamarin.Forms.FontAttributes,
+                                    ?textColor: Xamarin.Forms.Color,
+                                    ?placeholderColor: Xamarin.Forms.Color,
+                                    ?isPassword: bool,
+                                    ?completed: string -> unit,
+                                    ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit,
+                                    ?isTextPredictionEnabled: bool,
+                                    ?returnType: Xamarin.Forms.ReturnType,
+                                    ?returnCommand: unit -> unit,
+                                    ?keyboard: Xamarin.Forms.Keyboard,
+                                    ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                    ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                    ?margin: obj,
+                                    ?gestureRecognizers: ViewElement list,
+                                    ?anchorX: double,
+                                    ?anchorY: double,
+                                    ?backgroundColor: Xamarin.Forms.Color,
+                                    ?heightRequest: double,
+                                    ?inputTransparent: bool,
+                                    ?isEnabled: bool,
+                                    ?isVisible: bool,
+                                    ?minimumHeightRequest: double,
+                                    ?minimumWidthRequest: double,
+                                    ?opacity: double,
+                                    ?rotation: double,
+                                    ?rotationX: double,
+                                    ?rotationY: double,
+                                    ?scale: double,
+                                    ?style: Xamarin.Forms.Style,
+                                    ?translationX: double,
+                                    ?translationY: double,
+                                    ?widthRequest: double,
+                                    ?resources: (string * obj) list,
+                                    ?styles: Xamarin.Forms.Style list,
+                                    ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                    ?classId: string,
+                                    ?styleId: string,
+                                    ?automationId: string,
+                                    ?created: obj -> unit,
+                                    ?ref: ViewRef) = 
 
         let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match placeholder with Some _ -> attribCount + 1 | None -> attribCount
@@ -3878,9 +6613,98 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a Entry in the view
-    static member inline Entry(?text: string, ?placeholder: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?placeholderColor: Xamarin.Forms.Color, ?isPassword: bool, ?completed: string -> unit, ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?isTextPredictionEnabled: bool, ?returnType: Xamarin.Forms.ReturnType, ?returnCommand: unit -> unit, ?keyboard: Xamarin.Forms.Keyboard, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.Entry -> unit), ?ref: ViewRef<Xamarin.Forms.Entry>) = 
+    static member inline Entry(?text: string,
+                               ?placeholder: string,
+                               ?horizontalTextAlignment: Xamarin.Forms.TextAlignment,
+                               ?fontSize: obj,
+                               ?fontFamily: string,
+                               ?fontAttributes: Xamarin.Forms.FontAttributes,
+                               ?textColor: Xamarin.Forms.Color,
+                               ?placeholderColor: Xamarin.Forms.Color,
+                               ?isPassword: bool,
+                               ?completed: string -> unit,
+                               ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit,
+                               ?isTextPredictionEnabled: bool,
+                               ?returnType: Xamarin.Forms.ReturnType,
+                               ?returnCommand: unit -> unit,
+                               ?keyboard: Xamarin.Forms.Keyboard,
+                               ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                               ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                               ?margin: obj,
+                               ?gestureRecognizers: ViewElement list,
+                               ?anchorX: double,
+                               ?anchorY: double,
+                               ?backgroundColor: Xamarin.Forms.Color,
+                               ?heightRequest: double,
+                               ?inputTransparent: bool,
+                               ?isEnabled: bool,
+                               ?isVisible: bool,
+                               ?minimumHeightRequest: double,
+                               ?minimumWidthRequest: double,
+                               ?opacity: double,
+                               ?rotation: double,
+                               ?rotationX: double,
+                               ?rotationY: double,
+                               ?scale: double,
+                               ?style: Xamarin.Forms.Style,
+                               ?translationX: double,
+                               ?translationY: double,
+                               ?widthRequest: double,
+                               ?resources: (string * obj) list,
+                               ?styles: Xamarin.Forms.Style list,
+                               ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                               ?classId: string,
+                               ?styleId: string,
+                               ?automationId: string,
+                               ?created: (Xamarin.Forms.Entry -> unit),
+                               ?ref: ViewRef<Xamarin.Forms.Entry>) = 
 
-        let attribBuilder = View.BuildEntry(0, ?text=text, ?placeholder=placeholder, ?horizontalTextAlignment=horizontalTextAlignment, ?fontSize=fontSize, ?fontFamily=fontFamily, ?fontAttributes=fontAttributes, ?textColor=textColor, ?placeholderColor=placeholderColor, ?isPassword=isPassword, ?completed=completed, ?textChanged=textChanged, ?isTextPredictionEnabled=isTextPredictionEnabled, ?returnType=returnType, ?returnCommand=returnCommand, ?keyboard=keyboard, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Entry> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Entry>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildEntry(0,
+                               ?text=text,
+                               ?placeholder=placeholder,
+                               ?horizontalTextAlignment=horizontalTextAlignment,
+                               ?fontSize=fontSize,
+                               ?fontFamily=fontFamily,
+                               ?fontAttributes=fontAttributes,
+                               ?textColor=textColor,
+                               ?placeholderColor=placeholderColor,
+                               ?isPassword=isPassword,
+                               ?completed=completed,
+                               ?textChanged=textChanged,
+                               ?isTextPredictionEnabled=isTextPredictionEnabled,
+                               ?returnType=returnType,
+                               ?returnCommand=returnCommand,
+                               ?keyboard=keyboard,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Entry> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Entry>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.Entry>(View.CreateFuncEntry, View.UpdateFuncEntry, attribBuilder)
 
@@ -3889,7 +6713,20 @@ type View() =
 
     /// Builds the attributes for a EntryCell in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildEntryCell(attribCount: int, ?label: string, ?text: string, ?keyboard: Xamarin.Forms.Keyboard, ?placeholder: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?completed: string -> unit, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildEntryCell(attribCount: int,
+                                        ?label: string,
+                                        ?text: string,
+                                        ?keyboard: Xamarin.Forms.Keyboard,
+                                        ?placeholder: string,
+                                        ?horizontalTextAlignment: Xamarin.Forms.TextAlignment,
+                                        ?completed: string -> unit,
+                                        ?height: double,
+                                        ?isEnabled: bool,
+                                        ?classId: string,
+                                        ?styleId: string,
+                                        ?automationId: string,
+                                        ?created: obj -> unit,
+                                        ?ref: ViewRef) = 
 
         let attribCount = match label with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
@@ -3996,9 +6833,34 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a EntryCell in the view
-    static member inline EntryCell(?label: string, ?text: string, ?keyboard: Xamarin.Forms.Keyboard, ?placeholder: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?completed: string -> unit, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.EntryCell -> unit), ?ref: ViewRef<Xamarin.Forms.EntryCell>) = 
+    static member inline EntryCell(?label: string,
+                                   ?text: string,
+                                   ?keyboard: Xamarin.Forms.Keyboard,
+                                   ?placeholder: string,
+                                   ?horizontalTextAlignment: Xamarin.Forms.TextAlignment,
+                                   ?completed: string -> unit,
+                                   ?height: double,
+                                   ?isEnabled: bool,
+                                   ?classId: string,
+                                   ?styleId: string,
+                                   ?automationId: string,
+                                   ?created: (Xamarin.Forms.EntryCell -> unit),
+                                   ?ref: ViewRef<Xamarin.Forms.EntryCell>) = 
 
-        let attribBuilder = View.BuildEntryCell(0, ?label=label, ?text=text, ?keyboard=keyboard, ?placeholder=placeholder, ?horizontalTextAlignment=horizontalTextAlignment, ?completed=completed, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.EntryCell> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.EntryCell>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildEntryCell(0,
+                               ?label=label,
+                               ?text=text,
+                               ?keyboard=keyboard,
+                               ?placeholder=placeholder,
+                               ?horizontalTextAlignment=horizontalTextAlignment,
+                               ?completed=completed,
+                               ?height=height,
+                               ?isEnabled=isEnabled,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.EntryCell> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.EntryCell>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.EntryCell>(View.CreateFuncEntryCell, View.UpdateFuncEntryCell, attribBuilder)
 
@@ -4007,7 +6869,46 @@ type View() =
 
     /// Builds the attributes for a Label in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildLabel(attribCount: int, ?text: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?verticalTextAlignment: Xamarin.Forms.TextAlignment, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?formattedText: ViewElement, ?lineBreakMode: Xamarin.Forms.LineBreakMode, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildLabel(attribCount: int,
+                                    ?text: string,
+                                    ?horizontalTextAlignment: Xamarin.Forms.TextAlignment,
+                                    ?verticalTextAlignment: Xamarin.Forms.TextAlignment,
+                                    ?fontSize: obj,
+                                    ?fontFamily: string,
+                                    ?fontAttributes: Xamarin.Forms.FontAttributes,
+                                    ?textColor: Xamarin.Forms.Color,
+                                    ?formattedText: ViewElement,
+                                    ?lineBreakMode: Xamarin.Forms.LineBreakMode,
+                                    ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                    ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                    ?margin: obj,
+                                    ?gestureRecognizers: ViewElement list,
+                                    ?anchorX: double,
+                                    ?anchorY: double,
+                                    ?backgroundColor: Xamarin.Forms.Color,
+                                    ?heightRequest: double,
+                                    ?inputTransparent: bool,
+                                    ?isEnabled: bool,
+                                    ?isVisible: bool,
+                                    ?minimumHeightRequest: double,
+                                    ?minimumWidthRequest: double,
+                                    ?opacity: double,
+                                    ?rotation: double,
+                                    ?rotationX: double,
+                                    ?rotationY: double,
+                                    ?scale: double,
+                                    ?style: Xamarin.Forms.Style,
+                                    ?translationX: double,
+                                    ?translationY: double,
+                                    ?widthRequest: double,
+                                    ?resources: (string * obj) list,
+                                    ?styles: Xamarin.Forms.Style list,
+                                    ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                    ?classId: string,
+                                    ?styleId: string,
+                                    ?automationId: string,
+                                    ?created: obj -> unit,
+                                    ?ref: ViewRef) = 
 
         let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match horizontalTextAlignment with Some _ -> attribCount + 1 | None -> attribCount
@@ -4157,9 +7058,86 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a Label in the view
-    static member inline Label(?text: string, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?verticalTextAlignment: Xamarin.Forms.TextAlignment, ?fontSize: obj, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?textColor: Xamarin.Forms.Color, ?formattedText: ViewElement, ?lineBreakMode: Xamarin.Forms.LineBreakMode, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.Label -> unit), ?ref: ViewRef<Xamarin.Forms.Label>) = 
+    static member inline Label(?text: string,
+                               ?horizontalTextAlignment: Xamarin.Forms.TextAlignment,
+                               ?verticalTextAlignment: Xamarin.Forms.TextAlignment,
+                               ?fontSize: obj,
+                               ?fontFamily: string,
+                               ?fontAttributes: Xamarin.Forms.FontAttributes,
+                               ?textColor: Xamarin.Forms.Color,
+                               ?formattedText: ViewElement,
+                               ?lineBreakMode: Xamarin.Forms.LineBreakMode,
+                               ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                               ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                               ?margin: obj,
+                               ?gestureRecognizers: ViewElement list,
+                               ?anchorX: double,
+                               ?anchorY: double,
+                               ?backgroundColor: Xamarin.Forms.Color,
+                               ?heightRequest: double,
+                               ?inputTransparent: bool,
+                               ?isEnabled: bool,
+                               ?isVisible: bool,
+                               ?minimumHeightRequest: double,
+                               ?minimumWidthRequest: double,
+                               ?opacity: double,
+                               ?rotation: double,
+                               ?rotationX: double,
+                               ?rotationY: double,
+                               ?scale: double,
+                               ?style: Xamarin.Forms.Style,
+                               ?translationX: double,
+                               ?translationY: double,
+                               ?widthRequest: double,
+                               ?resources: (string * obj) list,
+                               ?styles: Xamarin.Forms.Style list,
+                               ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                               ?classId: string,
+                               ?styleId: string,
+                               ?automationId: string,
+                               ?created: (Xamarin.Forms.Label -> unit),
+                               ?ref: ViewRef<Xamarin.Forms.Label>) = 
 
-        let attribBuilder = View.BuildLabel(0, ?text=text, ?horizontalTextAlignment=horizontalTextAlignment, ?verticalTextAlignment=verticalTextAlignment, ?fontSize=fontSize, ?fontFamily=fontFamily, ?fontAttributes=fontAttributes, ?textColor=textColor, ?formattedText=formattedText, ?lineBreakMode=lineBreakMode, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Label> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Label>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildLabel(0,
+                               ?text=text,
+                               ?horizontalTextAlignment=horizontalTextAlignment,
+                               ?verticalTextAlignment=verticalTextAlignment,
+                               ?fontSize=fontSize,
+                               ?fontFamily=fontFamily,
+                               ?fontAttributes=fontAttributes,
+                               ?textColor=textColor,
+                               ?formattedText=formattedText,
+                               ?lineBreakMode=lineBreakMode,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Label> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Label>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.Label>(View.CreateFuncLabel, View.UpdateFuncLabel, attribBuilder)
 
@@ -4168,7 +7146,42 @@ type View() =
 
     /// Builds the attributes for a StackLayout in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildStackLayout(attribCount: int, ?children: ViewElement list, ?orientation: Xamarin.Forms.StackOrientation, ?spacing: double, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildStackLayout(attribCount: int,
+                                          ?children: ViewElement list,
+                                          ?orientation: Xamarin.Forms.StackOrientation,
+                                          ?spacing: double,
+                                          ?isClippedToBounds: bool,
+                                          ?padding: obj,
+                                          ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                          ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                          ?margin: obj,
+                                          ?gestureRecognizers: ViewElement list,
+                                          ?anchorX: double,
+                                          ?anchorY: double,
+                                          ?backgroundColor: Xamarin.Forms.Color,
+                                          ?heightRequest: double,
+                                          ?inputTransparent: bool,
+                                          ?isEnabled: bool,
+                                          ?isVisible: bool,
+                                          ?minimumHeightRequest: double,
+                                          ?minimumWidthRequest: double,
+                                          ?opacity: double,
+                                          ?rotation: double,
+                                          ?rotationX: double,
+                                          ?rotationY: double,
+                                          ?scale: double,
+                                          ?style: Xamarin.Forms.Style,
+                                          ?translationX: double,
+                                          ?translationY: double,
+                                          ?widthRequest: double,
+                                          ?resources: (string * obj) list,
+                                          ?styles: Xamarin.Forms.Style list,
+                                          ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                          ?classId: string,
+                                          ?styleId: string,
+                                          ?automationId: string,
+                                          ?created: obj -> unit,
+                                          ?ref: ViewRef) = 
 
         let attribCount = match children with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match orientation with Some _ -> attribCount + 1 | None -> attribCount
@@ -4235,9 +7248,78 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a StackLayout in the view
-    static member inline StackLayout(?children: ViewElement list, ?orientation: Xamarin.Forms.StackOrientation, ?spacing: double, ?isClippedToBounds: bool, ?padding: obj, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.StackLayout -> unit), ?ref: ViewRef<Xamarin.Forms.StackLayout>) = 
+    static member inline StackLayout(?children: ViewElement list,
+                                     ?orientation: Xamarin.Forms.StackOrientation,
+                                     ?spacing: double,
+                                     ?isClippedToBounds: bool,
+                                     ?padding: obj,
+                                     ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                     ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                     ?margin: obj,
+                                     ?gestureRecognizers: ViewElement list,
+                                     ?anchorX: double,
+                                     ?anchorY: double,
+                                     ?backgroundColor: Xamarin.Forms.Color,
+                                     ?heightRequest: double,
+                                     ?inputTransparent: bool,
+                                     ?isEnabled: bool,
+                                     ?isVisible: bool,
+                                     ?minimumHeightRequest: double,
+                                     ?minimumWidthRequest: double,
+                                     ?opacity: double,
+                                     ?rotation: double,
+                                     ?rotationX: double,
+                                     ?rotationY: double,
+                                     ?scale: double,
+                                     ?style: Xamarin.Forms.Style,
+                                     ?translationX: double,
+                                     ?translationY: double,
+                                     ?widthRequest: double,
+                                     ?resources: (string * obj) list,
+                                     ?styles: Xamarin.Forms.Style list,
+                                     ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                     ?classId: string,
+                                     ?styleId: string,
+                                     ?automationId: string,
+                                     ?created: (Xamarin.Forms.StackLayout -> unit),
+                                     ?ref: ViewRef<Xamarin.Forms.StackLayout>) = 
 
-        let attribBuilder = View.BuildStackLayout(0, ?children=children, ?orientation=orientation, ?spacing=spacing, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.StackLayout> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.StackLayout>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildStackLayout(0,
+                               ?children=children,
+                               ?orientation=orientation,
+                               ?spacing=spacing,
+                               ?isClippedToBounds=isClippedToBounds,
+                               ?padding=padding,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.StackLayout> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.StackLayout>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.StackLayout>(View.CreateFuncStackLayout, View.UpdateFuncStackLayout, attribBuilder)
 
@@ -4246,7 +7328,19 @@ type View() =
 
     /// Builds the attributes for a Span in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildSpan(attribCount: int, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?backgroundColor: Xamarin.Forms.Color, ?foregroundColor: Xamarin.Forms.Color, ?text: string, ?propertyChanged: System.ComponentModel.PropertyChangedEventArgs -> unit, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildSpan(attribCount: int,
+                                   ?fontFamily: string,
+                                   ?fontAttributes: Xamarin.Forms.FontAttributes,
+                                   ?fontSize: obj,
+                                   ?backgroundColor: Xamarin.Forms.Color,
+                                   ?foregroundColor: Xamarin.Forms.Color,
+                                   ?text: string,
+                                   ?propertyChanged: System.ComponentModel.PropertyChangedEventArgs -> unit,
+                                   ?classId: string,
+                                   ?styleId: string,
+                                   ?automationId: string,
+                                   ?created: obj -> unit,
+                                   ?ref: ViewRef) = 
 
         let attribCount = match fontFamily with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match fontAttributes with Some _ -> attribCount + 1 | None -> attribCount
@@ -4366,9 +7460,32 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a Span in the view
-    static member inline Span(?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?backgroundColor: Xamarin.Forms.Color, ?foregroundColor: Xamarin.Forms.Color, ?text: string, ?propertyChanged: System.ComponentModel.PropertyChangedEventArgs -> unit, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.Span -> unit), ?ref: ViewRef<Xamarin.Forms.Span>) = 
+    static member inline Span(?fontFamily: string,
+                              ?fontAttributes: Xamarin.Forms.FontAttributes,
+                              ?fontSize: obj,
+                              ?backgroundColor: Xamarin.Forms.Color,
+                              ?foregroundColor: Xamarin.Forms.Color,
+                              ?text: string,
+                              ?propertyChanged: System.ComponentModel.PropertyChangedEventArgs -> unit,
+                              ?classId: string,
+                              ?styleId: string,
+                              ?automationId: string,
+                              ?created: (Xamarin.Forms.Span -> unit),
+                              ?ref: ViewRef<Xamarin.Forms.Span>) = 
 
-        let attribBuilder = View.BuildSpan(0, ?fontFamily=fontFamily, ?fontAttributes=fontAttributes, ?fontSize=fontSize, ?backgroundColor=backgroundColor, ?foregroundColor=foregroundColor, ?text=text, ?propertyChanged=propertyChanged, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Span> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Span>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildSpan(0,
+                               ?fontFamily=fontFamily,
+                               ?fontAttributes=fontAttributes,
+                               ?fontSize=fontSize,
+                               ?backgroundColor=backgroundColor,
+                               ?foregroundColor=foregroundColor,
+                               ?text=text,
+                               ?propertyChanged=propertyChanged,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Span> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Span>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.Span>(View.CreateFuncSpan, View.UpdateFuncSpan, attribBuilder)
 
@@ -4377,7 +7494,13 @@ type View() =
 
     /// Builds the attributes for a FormattedString in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildFormattedString(attribCount: int, ?spans: ViewElement[], ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildFormattedString(attribCount: int,
+                                              ?spans: ViewElement[],
+                                              ?classId: string,
+                                              ?styleId: string,
+                                              ?automationId: string,
+                                              ?created: obj -> unit,
+                                              ?ref: ViewRef) = 
 
         let attribCount = match spans with Some _ -> attribCount + 1 | None -> attribCount
 
@@ -4418,9 +7541,20 @@ type View() =
             updateChild
 
     /// Describes a FormattedString in the view
-    static member inline FormattedString(?spans: ViewElement[], ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.FormattedString -> unit), ?ref: ViewRef<Xamarin.Forms.FormattedString>) = 
+    static member inline FormattedString(?spans: ViewElement[],
+                                         ?classId: string,
+                                         ?styleId: string,
+                                         ?automationId: string,
+                                         ?created: (Xamarin.Forms.FormattedString -> unit),
+                                         ?ref: ViewRef<Xamarin.Forms.FormattedString>) = 
 
-        let attribBuilder = View.BuildFormattedString(0, ?spans=spans, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.FormattedString> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.FormattedString>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildFormattedString(0,
+                               ?spans=spans,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.FormattedString> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.FormattedString>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.FormattedString>(View.CreateFuncFormattedString, View.UpdateFuncFormattedString, attribBuilder)
 
@@ -4429,7 +7563,40 @@ type View() =
 
     /// Builds the attributes for a TimePicker in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildTimePicker(attribCount: int, ?time: System.TimeSpan, ?format: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildTimePicker(attribCount: int,
+                                         ?time: System.TimeSpan,
+                                         ?format: string,
+                                         ?textColor: Xamarin.Forms.Color,
+                                         ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                         ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                         ?margin: obj,
+                                         ?gestureRecognizers: ViewElement list,
+                                         ?anchorX: double,
+                                         ?anchorY: double,
+                                         ?backgroundColor: Xamarin.Forms.Color,
+                                         ?heightRequest: double,
+                                         ?inputTransparent: bool,
+                                         ?isEnabled: bool,
+                                         ?isVisible: bool,
+                                         ?minimumHeightRequest: double,
+                                         ?minimumWidthRequest: double,
+                                         ?opacity: double,
+                                         ?rotation: double,
+                                         ?rotationX: double,
+                                         ?rotationY: double,
+                                         ?scale: double,
+                                         ?style: Xamarin.Forms.Style,
+                                         ?translationX: double,
+                                         ?translationY: double,
+                                         ?widthRequest: double,
+                                         ?resources: (string * obj) list,
+                                         ?styles: Xamarin.Forms.Style list,
+                                         ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                         ?classId: string,
+                                         ?styleId: string,
+                                         ?automationId: string,
+                                         ?created: obj -> unit,
+                                         ?ref: ViewRef) = 
 
         let attribCount = match time with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match format with Some _ -> attribCount + 1 | None -> attribCount
@@ -4496,9 +7663,74 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a TimePicker in the view
-    static member inline TimePicker(?time: System.TimeSpan, ?format: string, ?textColor: Xamarin.Forms.Color, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.TimePicker -> unit), ?ref: ViewRef<Xamarin.Forms.TimePicker>) = 
+    static member inline TimePicker(?time: System.TimeSpan,
+                                    ?format: string,
+                                    ?textColor: Xamarin.Forms.Color,
+                                    ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                    ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                    ?margin: obj,
+                                    ?gestureRecognizers: ViewElement list,
+                                    ?anchorX: double,
+                                    ?anchorY: double,
+                                    ?backgroundColor: Xamarin.Forms.Color,
+                                    ?heightRequest: double,
+                                    ?inputTransparent: bool,
+                                    ?isEnabled: bool,
+                                    ?isVisible: bool,
+                                    ?minimumHeightRequest: double,
+                                    ?minimumWidthRequest: double,
+                                    ?opacity: double,
+                                    ?rotation: double,
+                                    ?rotationX: double,
+                                    ?rotationY: double,
+                                    ?scale: double,
+                                    ?style: Xamarin.Forms.Style,
+                                    ?translationX: double,
+                                    ?translationY: double,
+                                    ?widthRequest: double,
+                                    ?resources: (string * obj) list,
+                                    ?styles: Xamarin.Forms.Style list,
+                                    ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                    ?classId: string,
+                                    ?styleId: string,
+                                    ?automationId: string,
+                                    ?created: (Xamarin.Forms.TimePicker -> unit),
+                                    ?ref: ViewRef<Xamarin.Forms.TimePicker>) = 
 
-        let attribBuilder = View.BuildTimePicker(0, ?time=time, ?format=format, ?textColor=textColor, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.TimePicker> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.TimePicker>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildTimePicker(0,
+                               ?time=time,
+                               ?format=format,
+                               ?textColor=textColor,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.TimePicker> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.TimePicker>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.TimePicker>(View.CreateFuncTimePicker, View.UpdateFuncTimePicker, attribBuilder)
 
@@ -4507,7 +7739,40 @@ type View() =
 
     /// Builds the attributes for a WebView in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildWebView(attribCount: int, ?source: Xamarin.Forms.WebViewSource, ?navigated: Xamarin.Forms.WebNavigatedEventArgs -> unit, ?navigating: Xamarin.Forms.WebNavigatingEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildWebView(attribCount: int,
+                                      ?source: Xamarin.Forms.WebViewSource,
+                                      ?navigated: Xamarin.Forms.WebNavigatedEventArgs -> unit,
+                                      ?navigating: Xamarin.Forms.WebNavigatingEventArgs -> unit,
+                                      ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                      ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                      ?margin: obj,
+                                      ?gestureRecognizers: ViewElement list,
+                                      ?anchorX: double,
+                                      ?anchorY: double,
+                                      ?backgroundColor: Xamarin.Forms.Color,
+                                      ?heightRequest: double,
+                                      ?inputTransparent: bool,
+                                      ?isEnabled: bool,
+                                      ?isVisible: bool,
+                                      ?minimumHeightRequest: double,
+                                      ?minimumWidthRequest: double,
+                                      ?opacity: double,
+                                      ?rotation: double,
+                                      ?rotationX: double,
+                                      ?rotationY: double,
+                                      ?scale: double,
+                                      ?style: Xamarin.Forms.Style,
+                                      ?translationX: double,
+                                      ?translationY: double,
+                                      ?widthRequest: double,
+                                      ?resources: (string * obj) list,
+                                      ?styles: Xamarin.Forms.Style list,
+                                      ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                      ?classId: string,
+                                      ?styleId: string,
+                                      ?automationId: string,
+                                      ?created: obj -> unit,
+                                      ?ref: ViewRef) = 
 
         let attribCount = match source with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match navigated with Some _ -> attribCount + 1 | None -> attribCount
@@ -4576,9 +7841,74 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a WebView in the view
-    static member inline WebView(?source: Xamarin.Forms.WebViewSource, ?navigated: Xamarin.Forms.WebNavigatedEventArgs -> unit, ?navigating: Xamarin.Forms.WebNavigatingEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.WebView -> unit), ?ref: ViewRef<Xamarin.Forms.WebView>) = 
+    static member inline WebView(?source: Xamarin.Forms.WebViewSource,
+                                 ?navigated: Xamarin.Forms.WebNavigatedEventArgs -> unit,
+                                 ?navigating: Xamarin.Forms.WebNavigatingEventArgs -> unit,
+                                 ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                 ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                 ?margin: obj,
+                                 ?gestureRecognizers: ViewElement list,
+                                 ?anchorX: double,
+                                 ?anchorY: double,
+                                 ?backgroundColor: Xamarin.Forms.Color,
+                                 ?heightRequest: double,
+                                 ?inputTransparent: bool,
+                                 ?isEnabled: bool,
+                                 ?isVisible: bool,
+                                 ?minimumHeightRequest: double,
+                                 ?minimumWidthRequest: double,
+                                 ?opacity: double,
+                                 ?rotation: double,
+                                 ?rotationX: double,
+                                 ?rotationY: double,
+                                 ?scale: double,
+                                 ?style: Xamarin.Forms.Style,
+                                 ?translationX: double,
+                                 ?translationY: double,
+                                 ?widthRequest: double,
+                                 ?resources: (string * obj) list,
+                                 ?styles: Xamarin.Forms.Style list,
+                                 ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                 ?classId: string,
+                                 ?styleId: string,
+                                 ?automationId: string,
+                                 ?created: (Xamarin.Forms.WebView -> unit),
+                                 ?ref: ViewRef<Xamarin.Forms.WebView>) = 
 
-        let attribBuilder = View.BuildWebView(0, ?source=source, ?navigated=navigated, ?navigating=navigating, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.WebView> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.WebView>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildWebView(0,
+                               ?source=source,
+                               ?navigated=navigated,
+                               ?navigating=navigating,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.WebView> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.WebView>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.WebView>(View.CreateFuncWebView, View.UpdateFuncWebView, attribBuilder)
 
@@ -4587,7 +7917,43 @@ type View() =
 
     /// Builds the attributes for a Page in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildPage(attribCount: int, ?title: string, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?padding: obj, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?appearing: unit -> unit, ?disappearing: unit -> unit, ?layoutChanged: unit -> unit, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildPage(attribCount: int,
+                                   ?title: string,
+                                   ?backgroundImage: string,
+                                   ?icon: string,
+                                   ?isBusy: bool,
+                                   ?padding: obj,
+                                   ?toolbarItems: ViewElement list,
+                                   ?useSafeArea: bool,
+                                   ?appearing: unit -> unit,
+                                   ?disappearing: unit -> unit,
+                                   ?layoutChanged: unit -> unit,
+                                   ?anchorX: double,
+                                   ?anchorY: double,
+                                   ?backgroundColor: Xamarin.Forms.Color,
+                                   ?heightRequest: double,
+                                   ?inputTransparent: bool,
+                                   ?isEnabled: bool,
+                                   ?isVisible: bool,
+                                   ?minimumHeightRequest: double,
+                                   ?minimumWidthRequest: double,
+                                   ?opacity: double,
+                                   ?rotation: double,
+                                   ?rotationX: double,
+                                   ?rotationY: double,
+                                   ?scale: double,
+                                   ?style: Xamarin.Forms.Style,
+                                   ?translationX: double,
+                                   ?translationY: double,
+                                   ?widthRequest: double,
+                                   ?resources: (string * obj) list,
+                                   ?styles: Xamarin.Forms.Style list,
+                                   ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                   ?classId: string,
+                                   ?styleId: string,
+                                   ?automationId: string,
+                                   ?created: obj -> unit,
+                                   ?ref: ViewRef) = 
 
         let attribCount = match title with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match backgroundImage with Some _ -> attribCount + 1 | None -> attribCount
@@ -4744,9 +8110,80 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a Page in the view
-    static member inline Page(?title: string, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?padding: obj, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?appearing: unit -> unit, ?disappearing: unit -> unit, ?layoutChanged: unit -> unit, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.Page -> unit), ?ref: ViewRef<Xamarin.Forms.Page>) = 
+    static member inline Page(?title: string,
+                              ?backgroundImage: string,
+                              ?icon: string,
+                              ?isBusy: bool,
+                              ?padding: obj,
+                              ?toolbarItems: ViewElement list,
+                              ?useSafeArea: bool,
+                              ?appearing: unit -> unit,
+                              ?disappearing: unit -> unit,
+                              ?layoutChanged: unit -> unit,
+                              ?anchorX: double,
+                              ?anchorY: double,
+                              ?backgroundColor: Xamarin.Forms.Color,
+                              ?heightRequest: double,
+                              ?inputTransparent: bool,
+                              ?isEnabled: bool,
+                              ?isVisible: bool,
+                              ?minimumHeightRequest: double,
+                              ?minimumWidthRequest: double,
+                              ?opacity: double,
+                              ?rotation: double,
+                              ?rotationX: double,
+                              ?rotationY: double,
+                              ?scale: double,
+                              ?style: Xamarin.Forms.Style,
+                              ?translationX: double,
+                              ?translationY: double,
+                              ?widthRequest: double,
+                              ?resources: (string * obj) list,
+                              ?styles: Xamarin.Forms.Style list,
+                              ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                              ?classId: string,
+                              ?styleId: string,
+                              ?automationId: string,
+                              ?created: (Xamarin.Forms.Page -> unit),
+                              ?ref: ViewRef<Xamarin.Forms.Page>) = 
 
-        let attribBuilder = View.BuildPage(0, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Page> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Page>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildPage(0,
+                               ?title=title,
+                               ?backgroundImage=backgroundImage,
+                               ?icon=icon,
+                               ?isBusy=isBusy,
+                               ?padding=padding,
+                               ?toolbarItems=toolbarItems,
+                               ?useSafeArea=useSafeArea,
+                               ?appearing=appearing,
+                               ?disappearing=disappearing,
+                               ?layoutChanged=layoutChanged,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Page> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Page>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.Page>(View.CreateFuncPage, View.UpdateFuncPage, attribBuilder)
 
@@ -4755,7 +8192,47 @@ type View() =
 
     /// Builds the attributes for a CarouselPage in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildCarouselPage(attribCount: int, ?children: ViewElement list, ?selectedItem: System.Object, ?currentPage: ViewElement, ?currentPageChanged: 'T option -> unit, ?title: string, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?padding: obj, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?appearing: unit -> unit, ?disappearing: unit -> unit, ?layoutChanged: unit -> unit, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildCarouselPage(attribCount: int,
+                                           ?children: ViewElement list,
+                                           ?selectedItem: System.Object,
+                                           ?currentPage: ViewElement,
+                                           ?currentPageChanged: 'T option -> unit,
+                                           ?title: string,
+                                           ?backgroundImage: string,
+                                           ?icon: string,
+                                           ?isBusy: bool,
+                                           ?padding: obj,
+                                           ?toolbarItems: ViewElement list,
+                                           ?useSafeArea: bool,
+                                           ?appearing: unit -> unit,
+                                           ?disappearing: unit -> unit,
+                                           ?layoutChanged: unit -> unit,
+                                           ?anchorX: double,
+                                           ?anchorY: double,
+                                           ?backgroundColor: Xamarin.Forms.Color,
+                                           ?heightRequest: double,
+                                           ?inputTransparent: bool,
+                                           ?isEnabled: bool,
+                                           ?isVisible: bool,
+                                           ?minimumHeightRequest: double,
+                                           ?minimumWidthRequest: double,
+                                           ?opacity: double,
+                                           ?rotation: double,
+                                           ?rotationX: double,
+                                           ?rotationY: double,
+                                           ?scale: double,
+                                           ?style: Xamarin.Forms.Style,
+                                           ?translationX: double,
+                                           ?translationY: double,
+                                           ?widthRequest: double,
+                                           ?resources: (string * obj) list,
+                                           ?styles: Xamarin.Forms.Style list,
+                                           ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                           ?classId: string,
+                                           ?styleId: string,
+                                           ?automationId: string,
+                                           ?created: obj -> unit,
+                                           ?ref: ViewRef) = 
 
         let attribCount = match children with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match selectedItem with Some _ -> attribCount + 1 | None -> attribCount
@@ -4841,9 +8318,88 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a CarouselPage in the view
-    static member inline CarouselPage(?children: ViewElement list, ?selectedItem: System.Object, ?currentPage: ViewElement, ?currentPageChanged: 'T option -> unit, ?title: string, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?padding: obj, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?appearing: unit -> unit, ?disappearing: unit -> unit, ?layoutChanged: unit -> unit, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.CarouselPage -> unit), ?ref: ViewRef<Xamarin.Forms.CarouselPage>) = 
+    static member inline CarouselPage(?children: ViewElement list,
+                                      ?selectedItem: System.Object,
+                                      ?currentPage: ViewElement,
+                                      ?currentPageChanged: 'T option -> unit,
+                                      ?title: string,
+                                      ?backgroundImage: string,
+                                      ?icon: string,
+                                      ?isBusy: bool,
+                                      ?padding: obj,
+                                      ?toolbarItems: ViewElement list,
+                                      ?useSafeArea: bool,
+                                      ?appearing: unit -> unit,
+                                      ?disappearing: unit -> unit,
+                                      ?layoutChanged: unit -> unit,
+                                      ?anchorX: double,
+                                      ?anchorY: double,
+                                      ?backgroundColor: Xamarin.Forms.Color,
+                                      ?heightRequest: double,
+                                      ?inputTransparent: bool,
+                                      ?isEnabled: bool,
+                                      ?isVisible: bool,
+                                      ?minimumHeightRequest: double,
+                                      ?minimumWidthRequest: double,
+                                      ?opacity: double,
+                                      ?rotation: double,
+                                      ?rotationX: double,
+                                      ?rotationY: double,
+                                      ?scale: double,
+                                      ?style: Xamarin.Forms.Style,
+                                      ?translationX: double,
+                                      ?translationY: double,
+                                      ?widthRequest: double,
+                                      ?resources: (string * obj) list,
+                                      ?styles: Xamarin.Forms.Style list,
+                                      ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                      ?classId: string,
+                                      ?styleId: string,
+                                      ?automationId: string,
+                                      ?created: (Xamarin.Forms.CarouselPage -> unit),
+                                      ?ref: ViewRef<Xamarin.Forms.CarouselPage>) = 
 
-        let attribBuilder = View.BuildCarouselPage(0, ?children=children, ?selectedItem=selectedItem, ?currentPage=currentPage, ?currentPageChanged=currentPageChanged, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.CarouselPage> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.CarouselPage>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildCarouselPage(0,
+                               ?children=children,
+                               ?selectedItem=selectedItem,
+                               ?currentPage=currentPage,
+                               ?currentPageChanged=currentPageChanged,
+                               ?title=title,
+                               ?backgroundImage=backgroundImage,
+                               ?icon=icon,
+                               ?isBusy=isBusy,
+                               ?padding=padding,
+                               ?toolbarItems=toolbarItems,
+                               ?useSafeArea=useSafeArea,
+                               ?appearing=appearing,
+                               ?disappearing=disappearing,
+                               ?layoutChanged=layoutChanged,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.CarouselPage> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.CarouselPage>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.CarouselPage>(View.CreateFuncCarouselPage, View.UpdateFuncCarouselPage, attribBuilder)
 
@@ -4852,7 +8408,49 @@ type View() =
 
     /// Builds the attributes for a NavigationPage in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildNavigationPage(attribCount: int, ?pages: ViewElement list, ?barBackgroundColor: Xamarin.Forms.Color, ?barTextColor: Xamarin.Forms.Color, ?popped: Xamarin.Forms.NavigationEventArgs -> unit, ?poppedToRoot: Xamarin.Forms.NavigationEventArgs -> unit, ?pushed: Xamarin.Forms.NavigationEventArgs -> unit, ?title: string, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?padding: obj, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?appearing: unit -> unit, ?disappearing: unit -> unit, ?layoutChanged: unit -> unit, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildNavigationPage(attribCount: int,
+                                             ?pages: ViewElement list,
+                                             ?barBackgroundColor: Xamarin.Forms.Color,
+                                             ?barTextColor: Xamarin.Forms.Color,
+                                             ?popped: Xamarin.Forms.NavigationEventArgs -> unit,
+                                             ?poppedToRoot: Xamarin.Forms.NavigationEventArgs -> unit,
+                                             ?pushed: Xamarin.Forms.NavigationEventArgs -> unit,
+                                             ?title: string,
+                                             ?backgroundImage: string,
+                                             ?icon: string,
+                                             ?isBusy: bool,
+                                             ?padding: obj,
+                                             ?toolbarItems: ViewElement list,
+                                             ?useSafeArea: bool,
+                                             ?appearing: unit -> unit,
+                                             ?disappearing: unit -> unit,
+                                             ?layoutChanged: unit -> unit,
+                                             ?anchorX: double,
+                                             ?anchorY: double,
+                                             ?backgroundColor: Xamarin.Forms.Color,
+                                             ?heightRequest: double,
+                                             ?inputTransparent: bool,
+                                             ?isEnabled: bool,
+                                             ?isVisible: bool,
+                                             ?minimumHeightRequest: double,
+                                             ?minimumWidthRequest: double,
+                                             ?opacity: double,
+                                             ?rotation: double,
+                                             ?rotationX: double,
+                                             ?rotationY: double,
+                                             ?scale: double,
+                                             ?style: Xamarin.Forms.Style,
+                                             ?translationX: double,
+                                             ?translationY: double,
+                                             ?widthRequest: double,
+                                             ?resources: (string * obj) list,
+                                             ?styles: Xamarin.Forms.Style list,
+                                             ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                             ?classId: string,
+                                             ?styleId: string,
+                                             ?automationId: string,
+                                             ?created: obj -> unit,
+                                             ?ref: ViewRef) = 
 
         let attribCount = match pages with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match barBackgroundColor with Some _ -> attribCount + 1 | None -> attribCount
@@ -4991,9 +8589,92 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a NavigationPage in the view
-    static member inline NavigationPage(?pages: ViewElement list, ?barBackgroundColor: Xamarin.Forms.Color, ?barTextColor: Xamarin.Forms.Color, ?popped: Xamarin.Forms.NavigationEventArgs -> unit, ?poppedToRoot: Xamarin.Forms.NavigationEventArgs -> unit, ?pushed: Xamarin.Forms.NavigationEventArgs -> unit, ?title: string, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?padding: obj, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?appearing: unit -> unit, ?disappearing: unit -> unit, ?layoutChanged: unit -> unit, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.NavigationPage -> unit), ?ref: ViewRef<Xamarin.Forms.NavigationPage>) = 
+    static member inline NavigationPage(?pages: ViewElement list,
+                                        ?barBackgroundColor: Xamarin.Forms.Color,
+                                        ?barTextColor: Xamarin.Forms.Color,
+                                        ?popped: Xamarin.Forms.NavigationEventArgs -> unit,
+                                        ?poppedToRoot: Xamarin.Forms.NavigationEventArgs -> unit,
+                                        ?pushed: Xamarin.Forms.NavigationEventArgs -> unit,
+                                        ?title: string,
+                                        ?backgroundImage: string,
+                                        ?icon: string,
+                                        ?isBusy: bool,
+                                        ?padding: obj,
+                                        ?toolbarItems: ViewElement list,
+                                        ?useSafeArea: bool,
+                                        ?appearing: unit -> unit,
+                                        ?disappearing: unit -> unit,
+                                        ?layoutChanged: unit -> unit,
+                                        ?anchorX: double,
+                                        ?anchorY: double,
+                                        ?backgroundColor: Xamarin.Forms.Color,
+                                        ?heightRequest: double,
+                                        ?inputTransparent: bool,
+                                        ?isEnabled: bool,
+                                        ?isVisible: bool,
+                                        ?minimumHeightRequest: double,
+                                        ?minimumWidthRequest: double,
+                                        ?opacity: double,
+                                        ?rotation: double,
+                                        ?rotationX: double,
+                                        ?rotationY: double,
+                                        ?scale: double,
+                                        ?style: Xamarin.Forms.Style,
+                                        ?translationX: double,
+                                        ?translationY: double,
+                                        ?widthRequest: double,
+                                        ?resources: (string * obj) list,
+                                        ?styles: Xamarin.Forms.Style list,
+                                        ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                        ?classId: string,
+                                        ?styleId: string,
+                                        ?automationId: string,
+                                        ?created: (Xamarin.Forms.NavigationPage -> unit),
+                                        ?ref: ViewRef<Xamarin.Forms.NavigationPage>) = 
 
-        let attribBuilder = View.BuildNavigationPage(0, ?pages=pages, ?barBackgroundColor=barBackgroundColor, ?barTextColor=barTextColor, ?popped=popped, ?poppedToRoot=poppedToRoot, ?pushed=pushed, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.NavigationPage> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.NavigationPage>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildNavigationPage(0,
+                               ?pages=pages,
+                               ?barBackgroundColor=barBackgroundColor,
+                               ?barTextColor=barTextColor,
+                               ?popped=popped,
+                               ?poppedToRoot=poppedToRoot,
+                               ?pushed=pushed,
+                               ?title=title,
+                               ?backgroundImage=backgroundImage,
+                               ?icon=icon,
+                               ?isBusy=isBusy,
+                               ?padding=padding,
+                               ?toolbarItems=toolbarItems,
+                               ?useSafeArea=useSafeArea,
+                               ?appearing=appearing,
+                               ?disappearing=disappearing,
+                               ?layoutChanged=layoutChanged,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.NavigationPage> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.NavigationPage>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.NavigationPage>(View.CreateFuncNavigationPage, View.UpdateFuncNavigationPage, attribBuilder)
 
@@ -5002,7 +8683,46 @@ type View() =
 
     /// Builds the attributes for a TabbedPage in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildTabbedPage(attribCount: int, ?children: ViewElement list, ?barBackgroundColor: Xamarin.Forms.Color, ?barTextColor: Xamarin.Forms.Color, ?title: string, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?padding: obj, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?appearing: unit -> unit, ?disappearing: unit -> unit, ?layoutChanged: unit -> unit, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildTabbedPage(attribCount: int,
+                                         ?children: ViewElement list,
+                                         ?barBackgroundColor: Xamarin.Forms.Color,
+                                         ?barTextColor: Xamarin.Forms.Color,
+                                         ?title: string,
+                                         ?backgroundImage: string,
+                                         ?icon: string,
+                                         ?isBusy: bool,
+                                         ?padding: obj,
+                                         ?toolbarItems: ViewElement list,
+                                         ?useSafeArea: bool,
+                                         ?appearing: unit -> unit,
+                                         ?disappearing: unit -> unit,
+                                         ?layoutChanged: unit -> unit,
+                                         ?anchorX: double,
+                                         ?anchorY: double,
+                                         ?backgroundColor: Xamarin.Forms.Color,
+                                         ?heightRequest: double,
+                                         ?inputTransparent: bool,
+                                         ?isEnabled: bool,
+                                         ?isVisible: bool,
+                                         ?minimumHeightRequest: double,
+                                         ?minimumWidthRequest: double,
+                                         ?opacity: double,
+                                         ?rotation: double,
+                                         ?rotationX: double,
+                                         ?rotationY: double,
+                                         ?scale: double,
+                                         ?style: Xamarin.Forms.Style,
+                                         ?translationX: double,
+                                         ?translationY: double,
+                                         ?widthRequest: double,
+                                         ?resources: (string * obj) list,
+                                         ?styles: Xamarin.Forms.Style list,
+                                         ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                         ?classId: string,
+                                         ?styleId: string,
+                                         ?automationId: string,
+                                         ?created: obj -> unit,
+                                         ?ref: ViewRef) = 
 
         let attribCount = match children with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match barBackgroundColor with Some _ -> attribCount + 1 | None -> attribCount
@@ -5069,9 +8789,86 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a TabbedPage in the view
-    static member inline TabbedPage(?children: ViewElement list, ?barBackgroundColor: Xamarin.Forms.Color, ?barTextColor: Xamarin.Forms.Color, ?title: string, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?padding: obj, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?appearing: unit -> unit, ?disappearing: unit -> unit, ?layoutChanged: unit -> unit, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.TabbedPage -> unit), ?ref: ViewRef<Xamarin.Forms.TabbedPage>) = 
+    static member inline TabbedPage(?children: ViewElement list,
+                                    ?barBackgroundColor: Xamarin.Forms.Color,
+                                    ?barTextColor: Xamarin.Forms.Color,
+                                    ?title: string,
+                                    ?backgroundImage: string,
+                                    ?icon: string,
+                                    ?isBusy: bool,
+                                    ?padding: obj,
+                                    ?toolbarItems: ViewElement list,
+                                    ?useSafeArea: bool,
+                                    ?appearing: unit -> unit,
+                                    ?disappearing: unit -> unit,
+                                    ?layoutChanged: unit -> unit,
+                                    ?anchorX: double,
+                                    ?anchorY: double,
+                                    ?backgroundColor: Xamarin.Forms.Color,
+                                    ?heightRequest: double,
+                                    ?inputTransparent: bool,
+                                    ?isEnabled: bool,
+                                    ?isVisible: bool,
+                                    ?minimumHeightRequest: double,
+                                    ?minimumWidthRequest: double,
+                                    ?opacity: double,
+                                    ?rotation: double,
+                                    ?rotationX: double,
+                                    ?rotationY: double,
+                                    ?scale: double,
+                                    ?style: Xamarin.Forms.Style,
+                                    ?translationX: double,
+                                    ?translationY: double,
+                                    ?widthRequest: double,
+                                    ?resources: (string * obj) list,
+                                    ?styles: Xamarin.Forms.Style list,
+                                    ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                    ?classId: string,
+                                    ?styleId: string,
+                                    ?automationId: string,
+                                    ?created: (Xamarin.Forms.TabbedPage -> unit),
+                                    ?ref: ViewRef<Xamarin.Forms.TabbedPage>) = 
 
-        let attribBuilder = View.BuildTabbedPage(0, ?children=children, ?barBackgroundColor=barBackgroundColor, ?barTextColor=barTextColor, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.TabbedPage> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.TabbedPage>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildTabbedPage(0,
+                               ?children=children,
+                               ?barBackgroundColor=barBackgroundColor,
+                               ?barTextColor=barTextColor,
+                               ?title=title,
+                               ?backgroundImage=backgroundImage,
+                               ?icon=icon,
+                               ?isBusy=isBusy,
+                               ?padding=padding,
+                               ?toolbarItems=toolbarItems,
+                               ?useSafeArea=useSafeArea,
+                               ?appearing=appearing,
+                               ?disappearing=disappearing,
+                               ?layoutChanged=layoutChanged,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.TabbedPage> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.TabbedPage>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.TabbedPage>(View.CreateFuncTabbedPage, View.UpdateFuncTabbedPage, attribBuilder)
 
@@ -5080,7 +8877,45 @@ type View() =
 
     /// Builds the attributes for a ContentPage in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildContentPage(attribCount: int, ?content: ViewElement, ?onSizeAllocated: (double * double) -> unit, ?title: string, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?padding: obj, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?appearing: unit -> unit, ?disappearing: unit -> unit, ?layoutChanged: unit -> unit, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildContentPage(attribCount: int,
+                                          ?content: ViewElement,
+                                          ?onSizeAllocated: (double * double) -> unit,
+                                          ?title: string,
+                                          ?backgroundImage: string,
+                                          ?icon: string,
+                                          ?isBusy: bool,
+                                          ?padding: obj,
+                                          ?toolbarItems: ViewElement list,
+                                          ?useSafeArea: bool,
+                                          ?appearing: unit -> unit,
+                                          ?disappearing: unit -> unit,
+                                          ?layoutChanged: unit -> unit,
+                                          ?anchorX: double,
+                                          ?anchorY: double,
+                                          ?backgroundColor: Xamarin.Forms.Color,
+                                          ?heightRequest: double,
+                                          ?inputTransparent: bool,
+                                          ?isEnabled: bool,
+                                          ?isVisible: bool,
+                                          ?minimumHeightRequest: double,
+                                          ?minimumWidthRequest: double,
+                                          ?opacity: double,
+                                          ?rotation: double,
+                                          ?rotationX: double,
+                                          ?rotationY: double,
+                                          ?scale: double,
+                                          ?style: Xamarin.Forms.Style,
+                                          ?translationX: double,
+                                          ?translationY: double,
+                                          ?widthRequest: double,
+                                          ?resources: (string * obj) list,
+                                          ?styles: Xamarin.Forms.Style list,
+                                          ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                          ?classId: string,
+                                          ?styleId: string,
+                                          ?automationId: string,
+                                          ?created: obj -> unit,
+                                          ?ref: ViewRef) = 
 
         let attribCount = match content with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match onSizeAllocated with Some _ -> attribCount + 1 | None -> attribCount
@@ -5135,9 +8970,84 @@ type View() =
         updateOnSizeAllocated prevOnSizeAllocatedCallbackOpt currOnSizeAllocatedCallbackOpt target
 
     /// Describes a ContentPage in the view
-    static member inline ContentPage(?content: ViewElement, ?onSizeAllocated: (double * double) -> unit, ?title: string, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?padding: obj, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?appearing: unit -> unit, ?disappearing: unit -> unit, ?layoutChanged: unit -> unit, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.ContentPage -> unit), ?ref: ViewRef<Xamarin.Forms.ContentPage>) = 
+    static member inline ContentPage(?content: ViewElement,
+                                     ?onSizeAllocated: (double * double) -> unit,
+                                     ?title: string,
+                                     ?backgroundImage: string,
+                                     ?icon: string,
+                                     ?isBusy: bool,
+                                     ?padding: obj,
+                                     ?toolbarItems: ViewElement list,
+                                     ?useSafeArea: bool,
+                                     ?appearing: unit -> unit,
+                                     ?disappearing: unit -> unit,
+                                     ?layoutChanged: unit -> unit,
+                                     ?anchorX: double,
+                                     ?anchorY: double,
+                                     ?backgroundColor: Xamarin.Forms.Color,
+                                     ?heightRequest: double,
+                                     ?inputTransparent: bool,
+                                     ?isEnabled: bool,
+                                     ?isVisible: bool,
+                                     ?minimumHeightRequest: double,
+                                     ?minimumWidthRequest: double,
+                                     ?opacity: double,
+                                     ?rotation: double,
+                                     ?rotationX: double,
+                                     ?rotationY: double,
+                                     ?scale: double,
+                                     ?style: Xamarin.Forms.Style,
+                                     ?translationX: double,
+                                     ?translationY: double,
+                                     ?widthRequest: double,
+                                     ?resources: (string * obj) list,
+                                     ?styles: Xamarin.Forms.Style list,
+                                     ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                     ?classId: string,
+                                     ?styleId: string,
+                                     ?automationId: string,
+                                     ?created: (Xamarin.Forms.ContentPage -> unit),
+                                     ?ref: ViewRef<Xamarin.Forms.ContentPage>) = 
 
-        let attribBuilder = View.BuildContentPage(0, ?content=content, ?onSizeAllocated=onSizeAllocated, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ContentPage> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ContentPage>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildContentPage(0,
+                               ?content=content,
+                               ?onSizeAllocated=onSizeAllocated,
+                               ?title=title,
+                               ?backgroundImage=backgroundImage,
+                               ?icon=icon,
+                               ?isBusy=isBusy,
+                               ?padding=padding,
+                               ?toolbarItems=toolbarItems,
+                               ?useSafeArea=useSafeArea,
+                               ?appearing=appearing,
+                               ?disappearing=disappearing,
+                               ?layoutChanged=layoutChanged,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ContentPage> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ContentPage>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.ContentPage>(View.CreateFuncContentPage, View.UpdateFuncContentPage, attribBuilder)
 
@@ -5146,7 +9056,49 @@ type View() =
 
     /// Builds the attributes for a MasterDetailPage in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildMasterDetailPage(attribCount: int, ?master: ViewElement, ?detail: ViewElement, ?isGestureEnabled: bool, ?isPresented: bool, ?masterBehavior: Xamarin.Forms.MasterBehavior, ?isPresentedChanged: bool -> unit, ?title: string, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?padding: obj, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?appearing: unit -> unit, ?disappearing: unit -> unit, ?layoutChanged: unit -> unit, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildMasterDetailPage(attribCount: int,
+                                               ?master: ViewElement,
+                                               ?detail: ViewElement,
+                                               ?isGestureEnabled: bool,
+                                               ?isPresented: bool,
+                                               ?masterBehavior: Xamarin.Forms.MasterBehavior,
+                                               ?isPresentedChanged: bool -> unit,
+                                               ?title: string,
+                                               ?backgroundImage: string,
+                                               ?icon: string,
+                                               ?isBusy: bool,
+                                               ?padding: obj,
+                                               ?toolbarItems: ViewElement list,
+                                               ?useSafeArea: bool,
+                                               ?appearing: unit -> unit,
+                                               ?disappearing: unit -> unit,
+                                               ?layoutChanged: unit -> unit,
+                                               ?anchorX: double,
+                                               ?anchorY: double,
+                                               ?backgroundColor: Xamarin.Forms.Color,
+                                               ?heightRequest: double,
+                                               ?inputTransparent: bool,
+                                               ?isEnabled: bool,
+                                               ?isVisible: bool,
+                                               ?minimumHeightRequest: double,
+                                               ?minimumWidthRequest: double,
+                                               ?opacity: double,
+                                               ?rotation: double,
+                                               ?rotationX: double,
+                                               ?rotationY: double,
+                                               ?scale: double,
+                                               ?style: Xamarin.Forms.Style,
+                                               ?translationX: double,
+                                               ?translationY: double,
+                                               ?widthRequest: double,
+                                               ?resources: (string * obj) list,
+                                               ?styles: Xamarin.Forms.Style list,
+                                               ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                               ?classId: string,
+                                               ?styleId: string,
+                                               ?automationId: string,
+                                               ?created: obj -> unit,
+                                               ?ref: ViewRef) = 
 
         let attribCount = match master with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match detail with Some _ -> attribCount + 1 | None -> attribCount
@@ -5263,9 +9215,92 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a MasterDetailPage in the view
-    static member inline MasterDetailPage(?master: ViewElement, ?detail: ViewElement, ?isGestureEnabled: bool, ?isPresented: bool, ?masterBehavior: Xamarin.Forms.MasterBehavior, ?isPresentedChanged: bool -> unit, ?title: string, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?padding: obj, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?appearing: unit -> unit, ?disappearing: unit -> unit, ?layoutChanged: unit -> unit, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.MasterDetailPage -> unit), ?ref: ViewRef<Xamarin.Forms.MasterDetailPage>) = 
+    static member inline MasterDetailPage(?master: ViewElement,
+                                          ?detail: ViewElement,
+                                          ?isGestureEnabled: bool,
+                                          ?isPresented: bool,
+                                          ?masterBehavior: Xamarin.Forms.MasterBehavior,
+                                          ?isPresentedChanged: bool -> unit,
+                                          ?title: string,
+                                          ?backgroundImage: string,
+                                          ?icon: string,
+                                          ?isBusy: bool,
+                                          ?padding: obj,
+                                          ?toolbarItems: ViewElement list,
+                                          ?useSafeArea: bool,
+                                          ?appearing: unit -> unit,
+                                          ?disappearing: unit -> unit,
+                                          ?layoutChanged: unit -> unit,
+                                          ?anchorX: double,
+                                          ?anchorY: double,
+                                          ?backgroundColor: Xamarin.Forms.Color,
+                                          ?heightRequest: double,
+                                          ?inputTransparent: bool,
+                                          ?isEnabled: bool,
+                                          ?isVisible: bool,
+                                          ?minimumHeightRequest: double,
+                                          ?minimumWidthRequest: double,
+                                          ?opacity: double,
+                                          ?rotation: double,
+                                          ?rotationX: double,
+                                          ?rotationY: double,
+                                          ?scale: double,
+                                          ?style: Xamarin.Forms.Style,
+                                          ?translationX: double,
+                                          ?translationY: double,
+                                          ?widthRequest: double,
+                                          ?resources: (string * obj) list,
+                                          ?styles: Xamarin.Forms.Style list,
+                                          ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                          ?classId: string,
+                                          ?styleId: string,
+                                          ?automationId: string,
+                                          ?created: (Xamarin.Forms.MasterDetailPage -> unit),
+                                          ?ref: ViewRef<Xamarin.Forms.MasterDetailPage>) = 
 
-        let attribBuilder = View.BuildMasterDetailPage(0, ?master=master, ?detail=detail, ?isGestureEnabled=isGestureEnabled, ?isPresented=isPresented, ?masterBehavior=masterBehavior, ?isPresentedChanged=isPresentedChanged, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.MasterDetailPage> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.MasterDetailPage>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildMasterDetailPage(0,
+                               ?master=master,
+                               ?detail=detail,
+                               ?isGestureEnabled=isGestureEnabled,
+                               ?isPresented=isPresented,
+                               ?masterBehavior=masterBehavior,
+                               ?isPresentedChanged=isPresentedChanged,
+                               ?title=title,
+                               ?backgroundImage=backgroundImage,
+                               ?icon=icon,
+                               ?isBusy=isBusy,
+                               ?padding=padding,
+                               ?toolbarItems=toolbarItems,
+                               ?useSafeArea=useSafeArea,
+                               ?appearing=appearing,
+                               ?disappearing=disappearing,
+                               ?layoutChanged=layoutChanged,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.MasterDetailPage> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.MasterDetailPage>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.MasterDetailPage>(View.CreateFuncMasterDetailPage, View.UpdateFuncMasterDetailPage, attribBuilder)
 
@@ -5274,7 +9309,16 @@ type View() =
 
     /// Builds the attributes for a MenuItem in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildMenuItem(attribCount: int, ?text: string, ?command: unit -> unit, ?commandParameter: System.Object, ?icon: string, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildMenuItem(attribCount: int,
+                                       ?text: string,
+                                       ?command: unit -> unit,
+                                       ?commandParameter: System.Object,
+                                       ?icon: string,
+                                       ?classId: string,
+                                       ?styleId: string,
+                                       ?automationId: string,
+                                       ?created: obj -> unit,
+                                       ?ref: ViewRef) = 
 
         let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match command with Some _ -> attribCount + 1 | None -> attribCount
@@ -5354,9 +9398,26 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a MenuItem in the view
-    static member inline MenuItem(?text: string, ?command: unit -> unit, ?commandParameter: System.Object, ?icon: string, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.MenuItem -> unit), ?ref: ViewRef<Xamarin.Forms.MenuItem>) = 
+    static member inline MenuItem(?text: string,
+                                  ?command: unit -> unit,
+                                  ?commandParameter: System.Object,
+                                  ?icon: string,
+                                  ?classId: string,
+                                  ?styleId: string,
+                                  ?automationId: string,
+                                  ?created: (Xamarin.Forms.MenuItem -> unit),
+                                  ?ref: ViewRef<Xamarin.Forms.MenuItem>) = 
 
-        let attribBuilder = View.BuildMenuItem(0, ?text=text, ?command=command, ?commandParameter=commandParameter, ?icon=icon, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.MenuItem> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.MenuItem>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildMenuItem(0,
+                               ?text=text,
+                               ?command=command,
+                               ?commandParameter=commandParameter,
+                               ?icon=icon,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.MenuItem> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.MenuItem>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.MenuItem>(View.CreateFuncMenuItem, View.UpdateFuncMenuItem, attribBuilder)
 
@@ -5365,7 +9426,21 @@ type View() =
 
     /// Builds the attributes for a TextCell in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildTextCell(attribCount: int, ?text: string, ?detail: string, ?textColor: Xamarin.Forms.Color, ?detailColor: Xamarin.Forms.Color, ?command: unit -> unit, ?canExecute: bool, ?commandParameter: System.Object, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildTextCell(attribCount: int,
+                                       ?text: string,
+                                       ?detail: string,
+                                       ?textColor: Xamarin.Forms.Color,
+                                       ?detailColor: Xamarin.Forms.Color,
+                                       ?command: unit -> unit,
+                                       ?canExecute: bool,
+                                       ?commandParameter: System.Object,
+                                       ?height: double,
+                                       ?isEnabled: bool,
+                                       ?classId: string,
+                                       ?styleId: string,
+                                       ?automationId: string,
+                                       ?created: obj -> unit,
+                                       ?ref: ViewRef) = 
 
         let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match detail with Some _ -> attribCount + 1 | None -> attribCount
@@ -5476,9 +9551,36 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a TextCell in the view
-    static member inline TextCell(?text: string, ?detail: string, ?textColor: Xamarin.Forms.Color, ?detailColor: Xamarin.Forms.Color, ?command: unit -> unit, ?canExecute: bool, ?commandParameter: System.Object, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.TextCell -> unit), ?ref: ViewRef<Xamarin.Forms.TextCell>) = 
+    static member inline TextCell(?text: string,
+                                  ?detail: string,
+                                  ?textColor: Xamarin.Forms.Color,
+                                  ?detailColor: Xamarin.Forms.Color,
+                                  ?command: unit -> unit,
+                                  ?canExecute: bool,
+                                  ?commandParameter: System.Object,
+                                  ?height: double,
+                                  ?isEnabled: bool,
+                                  ?classId: string,
+                                  ?styleId: string,
+                                  ?automationId: string,
+                                  ?created: (Xamarin.Forms.TextCell -> unit),
+                                  ?ref: ViewRef<Xamarin.Forms.TextCell>) = 
 
-        let attribBuilder = View.BuildTextCell(0, ?text=text, ?detail=detail, ?textColor=textColor, ?detailColor=detailColor, ?command=command, ?canExecute=canExecute, ?commandParameter=commandParameter, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.TextCell> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.TextCell>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildTextCell(0,
+                               ?text=text,
+                               ?detail=detail,
+                               ?textColor=textColor,
+                               ?detailColor=detailColor,
+                               ?command=command,
+                               ?canExecute=canExecute,
+                               ?commandParameter=commandParameter,
+                               ?height=height,
+                               ?isEnabled=isEnabled,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.TextCell> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.TextCell>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.TextCell>(View.CreateFuncTextCell, View.UpdateFuncTextCell, attribBuilder)
 
@@ -5487,7 +9589,18 @@ type View() =
 
     /// Builds the attributes for a ToolbarItem in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildToolbarItem(attribCount: int, ?order: Xamarin.Forms.ToolbarItemOrder, ?priority: int, ?text: string, ?command: unit -> unit, ?commandParameter: System.Object, ?icon: string, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildToolbarItem(attribCount: int,
+                                          ?order: Xamarin.Forms.ToolbarItemOrder,
+                                          ?priority: int,
+                                          ?text: string,
+                                          ?command: unit -> unit,
+                                          ?commandParameter: System.Object,
+                                          ?icon: string,
+                                          ?classId: string,
+                                          ?styleId: string,
+                                          ?automationId: string,
+                                          ?created: obj -> unit,
+                                          ?ref: ViewRef) = 
 
         let attribCount = match order with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match priority with Some _ -> attribCount + 1 | None -> attribCount
@@ -5541,9 +9654,30 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a ToolbarItem in the view
-    static member inline ToolbarItem(?order: Xamarin.Forms.ToolbarItemOrder, ?priority: int, ?text: string, ?command: unit -> unit, ?commandParameter: System.Object, ?icon: string, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.ToolbarItem -> unit), ?ref: ViewRef<Xamarin.Forms.ToolbarItem>) = 
+    static member inline ToolbarItem(?order: Xamarin.Forms.ToolbarItemOrder,
+                                     ?priority: int,
+                                     ?text: string,
+                                     ?command: unit -> unit,
+                                     ?commandParameter: System.Object,
+                                     ?icon: string,
+                                     ?classId: string,
+                                     ?styleId: string,
+                                     ?automationId: string,
+                                     ?created: (Xamarin.Forms.ToolbarItem -> unit),
+                                     ?ref: ViewRef<Xamarin.Forms.ToolbarItem>) = 
 
-        let attribBuilder = View.BuildToolbarItem(0, ?order=order, ?priority=priority, ?text=text, ?command=command, ?commandParameter=commandParameter, ?icon=icon, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ToolbarItem> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ToolbarItem>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildToolbarItem(0,
+                               ?order=order,
+                               ?priority=priority,
+                               ?text=text,
+                               ?command=command,
+                               ?commandParameter=commandParameter,
+                               ?icon=icon,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ToolbarItem> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ToolbarItem>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.ToolbarItem>(View.CreateFuncToolbarItem, View.UpdateFuncToolbarItem, attribBuilder)
 
@@ -5552,7 +9686,22 @@ type View() =
 
     /// Builds the attributes for a ImageCell in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildImageCell(attribCount: int, ?imageSource: obj, ?text: string, ?detail: string, ?textColor: Xamarin.Forms.Color, ?detailColor: Xamarin.Forms.Color, ?command: unit -> unit, ?canExecute: bool, ?commandParameter: System.Object, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildImageCell(attribCount: int,
+                                        ?imageSource: obj,
+                                        ?text: string,
+                                        ?detail: string,
+                                        ?textColor: Xamarin.Forms.Color,
+                                        ?detailColor: Xamarin.Forms.Color,
+                                        ?command: unit -> unit,
+                                        ?canExecute: bool,
+                                        ?commandParameter: System.Object,
+                                        ?height: double,
+                                        ?isEnabled: bool,
+                                        ?classId: string,
+                                        ?styleId: string,
+                                        ?automationId: string,
+                                        ?created: obj -> unit,
+                                        ?ref: ViewRef) = 
 
         let attribCount = match imageSource with Some _ -> attribCount + 1 | None -> attribCount
 
@@ -5593,9 +9742,38 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a ImageCell in the view
-    static member inline ImageCell(?imageSource: obj, ?text: string, ?detail: string, ?textColor: Xamarin.Forms.Color, ?detailColor: Xamarin.Forms.Color, ?command: unit -> unit, ?canExecute: bool, ?commandParameter: System.Object, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.ImageCell -> unit), ?ref: ViewRef<Xamarin.Forms.ImageCell>) = 
+    static member inline ImageCell(?imageSource: obj,
+                                   ?text: string,
+                                   ?detail: string,
+                                   ?textColor: Xamarin.Forms.Color,
+                                   ?detailColor: Xamarin.Forms.Color,
+                                   ?command: unit -> unit,
+                                   ?canExecute: bool,
+                                   ?commandParameter: System.Object,
+                                   ?height: double,
+                                   ?isEnabled: bool,
+                                   ?classId: string,
+                                   ?styleId: string,
+                                   ?automationId: string,
+                                   ?created: (Xamarin.Forms.ImageCell -> unit),
+                                   ?ref: ViewRef<Xamarin.Forms.ImageCell>) = 
 
-        let attribBuilder = View.BuildImageCell(0, ?imageSource=imageSource, ?text=text, ?detail=detail, ?textColor=textColor, ?detailColor=detailColor, ?command=command, ?canExecute=canExecute, ?commandParameter=commandParameter, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ImageCell> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ImageCell>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildImageCell(0,
+                               ?imageSource=imageSource,
+                               ?text=text,
+                               ?detail=detail,
+                               ?textColor=textColor,
+                               ?detailColor=detailColor,
+                               ?command=command,
+                               ?canExecute=canExecute,
+                               ?commandParameter=commandParameter,
+                               ?height=height,
+                               ?isEnabled=isEnabled,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ImageCell> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ImageCell>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.ImageCell>(View.CreateFuncImageCell, View.UpdateFuncImageCell, attribBuilder)
 
@@ -5604,7 +9782,15 @@ type View() =
 
     /// Builds the attributes for a ViewCell in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildViewCell(attribCount: int, ?view: ViewElement, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildViewCell(attribCount: int,
+                                       ?view: ViewElement,
+                                       ?height: double,
+                                       ?isEnabled: bool,
+                                       ?classId: string,
+                                       ?styleId: string,
+                                       ?automationId: string,
+                                       ?created: obj -> unit,
+                                       ?ref: ViewRef) = 
 
         let attribCount = match view with Some _ -> attribCount + 1 | None -> attribCount
 
@@ -5650,9 +9836,24 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a ViewCell in the view
-    static member inline ViewCell(?view: ViewElement, ?height: double, ?isEnabled: bool, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.ViewCell -> unit), ?ref: ViewRef<Xamarin.Forms.ViewCell>) = 
+    static member inline ViewCell(?view: ViewElement,
+                                  ?height: double,
+                                  ?isEnabled: bool,
+                                  ?classId: string,
+                                  ?styleId: string,
+                                  ?automationId: string,
+                                  ?created: (Xamarin.Forms.ViewCell -> unit),
+                                  ?ref: ViewRef<Xamarin.Forms.ViewCell>) = 
 
-        let attribBuilder = View.BuildViewCell(0, ?view=view, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ViewCell> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ViewCell>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildViewCell(0,
+                               ?view=view,
+                               ?height=height,
+                               ?isEnabled=isEnabled,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ViewCell> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ViewCell>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.ViewCell>(View.CreateFuncViewCell, View.UpdateFuncViewCell, attribBuilder)
 
@@ -5661,7 +9862,56 @@ type View() =
 
     /// Builds the attributes for a ListView in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildListView(attribCount: int, ?items: seq<ViewElement>, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?headerTemplate: Xamarin.Forms.DataTemplate, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: int option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: int -> unit, ?itemDisappearing: int -> unit, ?itemSelected: int option -> unit, ?itemTapped: int -> unit, ?refreshing: unit -> unit, ?selectionMode: Xamarin.Forms.ListViewSelectionMode, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildListView(attribCount: int,
+                                       ?items: seq<ViewElement>,
+                                       ?footer: System.Object,
+                                       ?hasUnevenRows: bool,
+                                       ?header: System.Object,
+                                       ?headerTemplate: Xamarin.Forms.DataTemplate,
+                                       ?isGroupingEnabled: bool,
+                                       ?isPullToRefreshEnabled: bool,
+                                       ?isRefreshing: bool,
+                                       ?refreshCommand: unit -> unit,
+                                       ?rowHeight: int,
+                                       ?selectedItem: int option,
+                                       ?separatorVisibility: Xamarin.Forms.SeparatorVisibility,
+                                       ?separatorColor: Xamarin.Forms.Color,
+                                       ?itemAppearing: int -> unit,
+                                       ?itemDisappearing: int -> unit,
+                                       ?itemSelected: int option -> unit,
+                                       ?itemTapped: int -> unit,
+                                       ?refreshing: unit -> unit,
+                                       ?selectionMode: Xamarin.Forms.ListViewSelectionMode,
+                                       ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                       ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                       ?margin: obj,
+                                       ?gestureRecognizers: ViewElement list,
+                                       ?anchorX: double,
+                                       ?anchorY: double,
+                                       ?backgroundColor: Xamarin.Forms.Color,
+                                       ?heightRequest: double,
+                                       ?inputTransparent: bool,
+                                       ?isEnabled: bool,
+                                       ?isVisible: bool,
+                                       ?minimumHeightRequest: double,
+                                       ?minimumWidthRequest: double,
+                                       ?opacity: double,
+                                       ?rotation: double,
+                                       ?rotationX: double,
+                                       ?rotationY: double,
+                                       ?scale: double,
+                                       ?style: Xamarin.Forms.Style,
+                                       ?translationX: double,
+                                       ?translationY: double,
+                                       ?widthRequest: double,
+                                       ?resources: (string * obj) list,
+                                       ?styles: Xamarin.Forms.Style list,
+                                       ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                       ?classId: string,
+                                       ?styleId: string,
+                                       ?automationId: string,
+                                       ?created: obj -> unit,
+                                       ?ref: ViewRef) = 
 
         let attribCount = match items with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match footer with Some _ -> attribCount + 1 | None -> attribCount
@@ -5937,9 +10187,106 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a ListView in the view
-    static member inline ListView(?items: seq<ViewElement>, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?headerTemplate: Xamarin.Forms.DataTemplate, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: int option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: int -> unit, ?itemDisappearing: int -> unit, ?itemSelected: int option -> unit, ?itemTapped: int -> unit, ?refreshing: unit -> unit, ?selectionMode: Xamarin.Forms.ListViewSelectionMode, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.ListView -> unit), ?ref: ViewRef<Xamarin.Forms.ListView>) = 
+    static member inline ListView(?items: seq<ViewElement>,
+                                  ?footer: System.Object,
+                                  ?hasUnevenRows: bool,
+                                  ?header: System.Object,
+                                  ?headerTemplate: Xamarin.Forms.DataTemplate,
+                                  ?isGroupingEnabled: bool,
+                                  ?isPullToRefreshEnabled: bool,
+                                  ?isRefreshing: bool,
+                                  ?refreshCommand: unit -> unit,
+                                  ?rowHeight: int,
+                                  ?selectedItem: int option,
+                                  ?separatorVisibility: Xamarin.Forms.SeparatorVisibility,
+                                  ?separatorColor: Xamarin.Forms.Color,
+                                  ?itemAppearing: int -> unit,
+                                  ?itemDisappearing: int -> unit,
+                                  ?itemSelected: int option -> unit,
+                                  ?itemTapped: int -> unit,
+                                  ?refreshing: unit -> unit,
+                                  ?selectionMode: Xamarin.Forms.ListViewSelectionMode,
+                                  ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                  ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                  ?margin: obj,
+                                  ?gestureRecognizers: ViewElement list,
+                                  ?anchorX: double,
+                                  ?anchorY: double,
+                                  ?backgroundColor: Xamarin.Forms.Color,
+                                  ?heightRequest: double,
+                                  ?inputTransparent: bool,
+                                  ?isEnabled: bool,
+                                  ?isVisible: bool,
+                                  ?minimumHeightRequest: double,
+                                  ?minimumWidthRequest: double,
+                                  ?opacity: double,
+                                  ?rotation: double,
+                                  ?rotationX: double,
+                                  ?rotationY: double,
+                                  ?scale: double,
+                                  ?style: Xamarin.Forms.Style,
+                                  ?translationX: double,
+                                  ?translationY: double,
+                                  ?widthRequest: double,
+                                  ?resources: (string * obj) list,
+                                  ?styles: Xamarin.Forms.Style list,
+                                  ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                  ?classId: string,
+                                  ?styleId: string,
+                                  ?automationId: string,
+                                  ?created: (Xamarin.Forms.ListView -> unit),
+                                  ?ref: ViewRef<Xamarin.Forms.ListView>) = 
 
-        let attribBuilder = View.BuildListView(0, ?items=items, ?footer=footer, ?hasUnevenRows=hasUnevenRows, ?header=header, ?headerTemplate=headerTemplate, ?isGroupingEnabled=isGroupingEnabled, ?isPullToRefreshEnabled=isPullToRefreshEnabled, ?isRefreshing=isRefreshing, ?refreshCommand=refreshCommand, ?rowHeight=rowHeight, ?selectedItem=selectedItem, ?separatorVisibility=separatorVisibility, ?separatorColor=separatorColor, ?itemAppearing=itemAppearing, ?itemDisappearing=itemDisappearing, ?itemSelected=itemSelected, ?itemTapped=itemTapped, ?refreshing=refreshing, ?selectionMode=selectionMode, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ListView> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ListView>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildListView(0,
+                               ?items=items,
+                               ?footer=footer,
+                               ?hasUnevenRows=hasUnevenRows,
+                               ?header=header,
+                               ?headerTemplate=headerTemplate,
+                               ?isGroupingEnabled=isGroupingEnabled,
+                               ?isPullToRefreshEnabled=isPullToRefreshEnabled,
+                               ?isRefreshing=isRefreshing,
+                               ?refreshCommand=refreshCommand,
+                               ?rowHeight=rowHeight,
+                               ?selectedItem=selectedItem,
+                               ?separatorVisibility=separatorVisibility,
+                               ?separatorColor=separatorColor,
+                               ?itemAppearing=itemAppearing,
+                               ?itemDisappearing=itemDisappearing,
+                               ?itemSelected=itemSelected,
+                               ?itemTapped=itemTapped,
+                               ?refreshing=refreshing,
+                               ?selectionMode=selectionMode,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ListView> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ListView>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.ListView>(View.CreateFuncListView, View.UpdateFuncListView, attribBuilder)
 
@@ -5948,7 +10295,55 @@ type View() =
 
     /// Builds the attributes for a ListViewGrouped in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member inline BuildListViewGrouped(attribCount: int, ?items: (string * ViewElement * ViewElement list) list, ?showJumpList: bool, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: (int * int) option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: int * int option -> unit, ?itemDisappearing: int * int option -> unit, ?itemSelected: (int * int) option -> unit, ?itemTapped: int * int -> unit, ?refreshing: unit -> unit, ?selectionMode: Xamarin.Forms.ListViewSelectionMode, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: obj -> unit, ?ref: ViewRef) = 
+    static member inline BuildListViewGrouped(attribCount: int,
+                                              ?items: (string * ViewElement * ViewElement list) list,
+                                              ?showJumpList: bool,
+                                              ?footer: System.Object,
+                                              ?hasUnevenRows: bool,
+                                              ?header: System.Object,
+                                              ?isPullToRefreshEnabled: bool,
+                                              ?isRefreshing: bool,
+                                              ?refreshCommand: unit -> unit,
+                                              ?rowHeight: int,
+                                              ?selectedItem: (int * int) option,
+                                              ?separatorVisibility: Xamarin.Forms.SeparatorVisibility,
+                                              ?separatorColor: Xamarin.Forms.Color,
+                                              ?itemAppearing: int * int option -> unit,
+                                              ?itemDisappearing: int * int option -> unit,
+                                              ?itemSelected: (int * int) option -> unit,
+                                              ?itemTapped: int * int -> unit,
+                                              ?refreshing: unit -> unit,
+                                              ?selectionMode: Xamarin.Forms.ListViewSelectionMode,
+                                              ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                              ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                              ?margin: obj,
+                                              ?gestureRecognizers: ViewElement list,
+                                              ?anchorX: double,
+                                              ?anchorY: double,
+                                              ?backgroundColor: Xamarin.Forms.Color,
+                                              ?heightRequest: double,
+                                              ?inputTransparent: bool,
+                                              ?isEnabled: bool,
+                                              ?isVisible: bool,
+                                              ?minimumHeightRequest: double,
+                                              ?minimumWidthRequest: double,
+                                              ?opacity: double,
+                                              ?rotation: double,
+                                              ?rotationX: double,
+                                              ?rotationY: double,
+                                              ?scale: double,
+                                              ?style: Xamarin.Forms.Style,
+                                              ?translationX: double,
+                                              ?translationY: double,
+                                              ?widthRequest: double,
+                                              ?resources: (string * obj) list,
+                                              ?styles: Xamarin.Forms.Style list,
+                                              ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                              ?classId: string,
+                                              ?styleId: string,
+                                              ?automationId: string,
+                                              ?created: obj -> unit,
+                                              ?ref: ViewRef) = 
 
         let attribCount = match items with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match showJumpList with Some _ -> attribCount + 1 | None -> attribCount
@@ -6207,9 +10602,104 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a ListViewGrouped in the view
-    static member inline ListViewGrouped(?items: (string * ViewElement * ViewElement list) list, ?showJumpList: bool, ?footer: System.Object, ?hasUnevenRows: bool, ?header: System.Object, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?rowHeight: int, ?selectedItem: (int * int) option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?itemAppearing: int * int option -> unit, ?itemDisappearing: int * int option -> unit, ?itemSelected: (int * int) option -> unit, ?itemTapped: int * int -> unit, ?refreshing: unit -> unit, ?selectionMode: Xamarin.Forms.ListViewSelectionMode, ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?anchorX: double, ?anchorY: double, ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?translationX: double, ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, ?classId: string, ?styleId: string, ?automationId: string, ?created: (Xamarin.Forms.ListView -> unit), ?ref: ViewRef<Xamarin.Forms.ListView>) = 
+    static member inline ListViewGrouped(?items: (string * ViewElement * ViewElement list) list,
+                                         ?showJumpList: bool,
+                                         ?footer: System.Object,
+                                         ?hasUnevenRows: bool,
+                                         ?header: System.Object,
+                                         ?isPullToRefreshEnabled: bool,
+                                         ?isRefreshing: bool,
+                                         ?refreshCommand: unit -> unit,
+                                         ?rowHeight: int,
+                                         ?selectedItem: (int * int) option,
+                                         ?separatorVisibility: Xamarin.Forms.SeparatorVisibility,
+                                         ?separatorColor: Xamarin.Forms.Color,
+                                         ?itemAppearing: int * int option -> unit,
+                                         ?itemDisappearing: int * int option -> unit,
+                                         ?itemSelected: (int * int) option -> unit,
+                                         ?itemTapped: int * int -> unit,
+                                         ?refreshing: unit -> unit,
+                                         ?selectionMode: Xamarin.Forms.ListViewSelectionMode,
+                                         ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                         ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                         ?margin: obj,
+                                         ?gestureRecognizers: ViewElement list,
+                                         ?anchorX: double,
+                                         ?anchorY: double,
+                                         ?backgroundColor: Xamarin.Forms.Color,
+                                         ?heightRequest: double,
+                                         ?inputTransparent: bool,
+                                         ?isEnabled: bool,
+                                         ?isVisible: bool,
+                                         ?minimumHeightRequest: double,
+                                         ?minimumWidthRequest: double,
+                                         ?opacity: double,
+                                         ?rotation: double,
+                                         ?rotationX: double,
+                                         ?rotationY: double,
+                                         ?scale: double,
+                                         ?style: Xamarin.Forms.Style,
+                                         ?translationX: double,
+                                         ?translationY: double,
+                                         ?widthRequest: double,
+                                         ?resources: (string * obj) list,
+                                         ?styles: Xamarin.Forms.Style list,
+                                         ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                         ?classId: string,
+                                         ?styleId: string,
+                                         ?automationId: string,
+                                         ?created: (Xamarin.Forms.ListView -> unit),
+                                         ?ref: ViewRef<Xamarin.Forms.ListView>) = 
 
-        let attribBuilder = View.BuildListViewGrouped(0, ?items=items, ?showJumpList=showJumpList, ?footer=footer, ?hasUnevenRows=hasUnevenRows, ?header=header, ?isPullToRefreshEnabled=isPullToRefreshEnabled, ?isRefreshing=isRefreshing, ?refreshCommand=refreshCommand, ?rowHeight=rowHeight, ?selectedItem=selectedItem, ?separatorVisibility=separatorVisibility, ?separatorColor=separatorColor, ?itemAppearing=itemAppearing, ?itemDisappearing=itemDisappearing, ?itemSelected=itemSelected, ?itemTapped=itemTapped, ?refreshing=refreshing, ?selectionMode=selectionMode, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ListView> target))), ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ListView>) -> Some ref.Unbox))
+        let attribBuilder = View.BuildListViewGrouped(0,
+                               ?items=items,
+                               ?showJumpList=showJumpList,
+                               ?footer=footer,
+                               ?hasUnevenRows=hasUnevenRows,
+                               ?header=header,
+                               ?isPullToRefreshEnabled=isPullToRefreshEnabled,
+                               ?isRefreshing=isRefreshing,
+                               ?refreshCommand=refreshCommand,
+                               ?rowHeight=rowHeight,
+                               ?selectedItem=selectedItem,
+                               ?separatorVisibility=separatorVisibility,
+                               ?separatorColor=separatorColor,
+                               ?itemAppearing=itemAppearing,
+                               ?itemDisappearing=itemDisappearing,
+                               ?itemSelected=itemSelected,
+                               ?itemTapped=itemTapped,
+                               ?refreshing=refreshing,
+                               ?selectionMode=selectionMode,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ListView> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ListView>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.ListView>(View.CreateFuncListViewGrouped, View.UpdateFuncListViewGrouped, attribBuilder)
 

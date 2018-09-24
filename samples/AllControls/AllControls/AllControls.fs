@@ -205,6 +205,7 @@ module App =
             Application.Current.MainPage.DisplayAlert("Clicked", "You clicked the button", "OK") |> ignore
             model
 
+    let animatedLabelRef = ViewRef<Label>()
     let pickerItems = 
         [| ("Aqua", Color.Aqua); ("Black", Color.Black);
            ("Blue", Color.Blue); ("Fucshia", Color.Fuchsia);
@@ -687,7 +688,7 @@ module App =
 
          | Animations -> 
                View.ScrollingContentPage("Animations", 
-                  [ View.Label(text="InfiniteScrollList:", ref=animatedLabel) ] ))
+                  [ View.Label(text="Rotate", ref=animatedLabelRef, created=(fun l -> l.RotateTo (360, 2000) |> ignore)) ] ))
 
 type App () as app = 
     inherit Application ()

@@ -307,12 +307,14 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
         w.printfn ""
         w.printfn "    /// Builds the attributes for a %s in the view" nameOfCreator
         w.printfn "    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]"
-        w.printf "    static member inline Build%s(attribCount: int" nameOfCreator
-        if allMembers.Length > 0 then w.printf ", "
-        allMembers |> iterSep ", " (fun head m -> 
+        w.printf    "    static member inline Build%s(attribCount: int" nameOfCreator
+        let space = "                              " + String.replicate nameOfCreator.Length " " + " "
+        for m in allMembers do
             let inputType = m.GetInputType(bindings, memberResolutions, null)
 
-            w.printf "%s?%s: %s" head m.LowerBoundShortName inputType)
+            w.printfn "," 
+            w.printf "%s" space
+            w.printf "?%s: %s" m.LowerBoundShortName inputType
 
         w.printfn ") = "
         w.printfn ""
@@ -326,9 +328,8 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
         | Some nameOfBaseCreator ->
             w.printfn ""
             w.printf "        let attribBuilder = View.Build%s(attribCount" nameOfBaseCreator
-            if allBaseMembers.Length > 0 then w.printf ", "
-            allBaseMembers |> iterSep ", " (fun head m -> 
-                w.printf "%s?%s=%s" head m.LowerBoundShortName m.LowerBoundShortName)
+            for m in allBaseMembers do
+                w.printf ", ?%s=%s" m.LowerBoundShortName m.LowerBoundShortName
             w.printfn ")"
 
         for m in allImmediateMembers do
@@ -515,29 +516,33 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
         w.printfn ""
         w.printfn "    /// Describes a %s in the view" nameOfCreator
         //let qual = if hasCreate then "internal " else ""
-        let qual = ""
-        w.printf "    static member inline %s%s(" qual nameOfCreator
-        allMembers |> iterSep ", " (fun head m -> 
+        w.printf "    static member inline %s(" nameOfCreator
+        let space = "                         " + String.replicate nameOfCreator.Length " " + " "
+        allMembers |> iterSep "," (fun head m -> 
             let inputType = m.GetInputType(bindings, memberResolutions, null)
 
+            if head <> "" then 
+                w.printfn ","
+                w.printf "%s" space
             if m.LowerBoundShortName = "created" then
-                w.printf "%s?%s: (%s -> unit)" head m.LowerBoundShortName tdef.FullName
+                w.printf "?%s: (%s -> unit)" m.LowerBoundShortName tdef.FullName
             elif m.LowerBoundShortName = "ref" then
-                w.printf "%s?%s: ViewRef<%s>" head m.LowerBoundShortName tdef.FullName
+                w.printf "?%s: ViewRef<%s>"  m.LowerBoundShortName tdef.FullName
             else
-                w.printf "%s?%s: %s" head m.LowerBoundShortName inputType)
+                w.printf "?%s: %s" m.LowerBoundShortName inputType)
 
         w.printfn ") = "
         w.printfn ""
         w.printf "        let attribBuilder = View.Build%s(0" nameOfCreator
-        if allMembers.Length > 0 then w.printf ", "
-        allMembers |> iterSep ", " (fun head m -> 
+        for m in allMembers do
+            w.printfn ","
+            w.printf "                               "
             if m.LowerBoundShortName = "created" then
-                w.printf "%s?%s=(match %s with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<%s> target)))" head m.LowerBoundShortName m.LowerBoundShortName tdef.FullName 
+                w.printf "?%s=(match %s with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<%s> target)))" m.LowerBoundShortName m.LowerBoundShortName tdef.FullName 
             elif m.LowerBoundShortName = "ref" then
-                w.printf "%s?%s=(match %s with None -> None | Some (ref: ViewRef<%s>) -> Some ref.Unbox)" head m.LowerBoundShortName m.LowerBoundShortName tdef.FullName 
+                w.printf "?%s=(match %s with None -> None | Some (ref: ViewRef<%s>) -> Some ref.Unbox)" m.LowerBoundShortName m.LowerBoundShortName tdef.FullName 
             else
-                w.printf "%s?%s=%s" head m.LowerBoundShortName m.LowerBoundShortName)
+                w.printf "?%s=%s" m.LowerBoundShortName m.LowerBoundShortName
         w.printfn ")"
         w.printfn ""
         w.printfn "        ViewElement.Create<%s>(View.CreateFunc%s, View.UpdateFunc%s, attribBuilder)" tdef.FullName nameOfCreator nameOfCreator
