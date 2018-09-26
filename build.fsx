@@ -174,7 +174,7 @@ Target.create "TestTemplatesNuGet" (fun _ ->
     let slash = if Environment.isUnix then "\\" else ""
     for c in ["Debug"; "Release"] do 
         for p in ["Any CPU"; "iPhoneSimulator"] do
-            let args = (sprintf "%s/%s.sln /p:Platform=\"%s\" /p:Configuration=%s /p:PackageSources=%s\"https://api.nuget.org/v3/index.json%s;%s%s\"" testAppName testAppName p c  slash slash pkgs slash)
+            let args = (sprintf "%s/%s.sln /p:Platform=\"%s\" /p:Configuration=%s /p:PackageSources=%s\"https://api.nuget.org/v3/index.json;%s%s\"" testAppName testAppName p c slash pkgs slash)
             let code = Shell.Exec("msbuild", args) 
             if code <> 0 then failwithf "%s %s failed, error code %d" "msbuild" args code
 

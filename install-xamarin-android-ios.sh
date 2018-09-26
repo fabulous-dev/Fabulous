@@ -1,5 +1,5 @@
-XAMARIN_IOS_VERSION=12.0.0.15
-XAMARIN_ANDROID_VERSION=9.0.0-20
+XAMARIN_IOS_VERSION=11.10.1.178
+XAMARIN_ANDROID_VERSION=8.3.0-19
 
 installpkg() {
     sudo installer -pkg $1 -target /
@@ -7,7 +7,7 @@ installpkg() {
 
 # install Android SDK
 brew tap caskroom/cask
-brew cask install android-sdk > brew.cask.install.android-sdk.log
+brew cask install android-sdk
 
 mkdir ~/.android
 touch ~/.android/repositories.cfg
