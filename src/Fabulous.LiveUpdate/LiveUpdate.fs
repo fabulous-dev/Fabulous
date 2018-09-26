@@ -136,7 +136,7 @@ type HttpServer(?port) =
                                 if (path = "/update") then
                                     let reader = new StreamReader (c.Request.InputStream, Encoding.UTF8)
                                     let! requestText = reader.ReadToEndAsync () |> Async.AwaitTask
-                                    let req = Newtonsoft.Json.JsonConvert.DeserializeObject<DFile>(requestText)
+                                    let req = Newtonsoft.Json.JsonConvert.DeserializeObject<DFile[]>(requestText)
                                     //let req = serializer.UnPickleOfString<DFile>(requestText)
                                     let resp = switchD req
                                     return Newtonsoft.Json.JsonConvert.SerializeObject resp
@@ -202,19 +202,26 @@ module Extensions =
 
             let interp = EvalContext()
 
-            let switchD (arg: DFile) =
+            let switchD (files: DFile[]) =
               lock interp (fun () -> 
-                printfn "LiveUpdate: adding declarations...."
-                interp.AddDecls arg.Code
+                for file in files do
+                    printfn "LiveUpdate: adding declarations...."
+                    interp.AddDecls file.Code
 
-                printfn "LiveUpdate: evaluating decls in code package for side effects...."
-                interp.EvalDecls (envEmpty, arg.Code)
+                for file in files do
+                    printfn "LiveUpdate: evaluating decls in code package for side effects...."
+                    interp.EvalDecls (envEmpty, file.Code)
+
+                match files.Length with 
+                | 0 -> { Quacked = "couldn't quack! Files were empty!" }
+                | _ -> 
+                let file = Array.last files
 
                 let programOptD = 
-                    match tryFindMemberByName "programLiveUpdate" arg.Code with
+                    match tryFindMemberByName "programLiveUpdate" file.Code with
                     | Some d -> Some d
                     | None -> 
-                    match tryFindMemberByName "program" arg.Code with
+                    match tryFindMemberByName "program" file.Code with
                     | None -> None
                     | Some d -> Some d
 

@@ -84,6 +84,8 @@ type Msg =
     | ExecuteSearch of string
     | ShowPopup
     | AnimationPoked
+    | AnimationPoked2
+    | AnimationPoked3
 
 [<AutoOpen>]
 module MyExtension = 
@@ -207,6 +209,17 @@ module App =
             Application.Current.MainPage.DisplayAlert("Clicked", "You clicked the button", "OK") |> ignore
             model
         | AnimationPoked -> 
+            animatedLabelRef.Value.Rotation <- 0.0
+            animatedLabelRef.Value.RotateTo (360.0, 2000u) |> ignore
+            model
+        | AnimationPoked2 -> 
+            ViewExtensions.CancelAnimations (animatedLabelRef.Value)
+            animatedLabelRef.Value.Rotation <- 0.0
+            animatedLabelRef.Value.RotateTo (360.0, 2000u) |> ignore
+            model
+        | AnimationPoked3 -> 
+            ViewExtensions.CancelAnimations (animatedLabelRef.Value)
+            animatedLabelRef.Value.Rotation <- 0.0
             animatedLabelRef.Value.RotateTo (360.0, 2000u) |> ignore
             model
 
@@ -694,7 +707,11 @@ module App =
                View.ScrollingContentPage("Animations", 
                   [ View.Label(text="Rotate", created=(fun l -> l.RotateTo (360.0, 2000u) |> ignore)) 
                     View.Label(text="Hello!", ref=animatedLabelRef) 
-                    View.Button(text="Poke", command=(fun () -> dispatch AnimationPoked)) ] )
+                    View.Button(text="Poke", command=(fun () -> dispatch AnimationPoked))
+                    View.Button(text="Poke2", command=(fun () -> dispatch AnimationPoked2))
+                    View.Button(text="Poke3", command=(fun () -> dispatch AnimationPoked3))
+                    View.Button(text="Main page", cornerRadius=5, command=(fun () -> dispatch (SetRootPageKind (Choice false))), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)
+                    ] )
 
 type App () as app = 
     inherit Application ()
