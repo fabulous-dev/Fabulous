@@ -215,58 +215,62 @@ module Extensions =
                 match files.Length with 
                 | 0 -> { Quacked = "couldn't quack! Files were empty!" }
                 | _ -> 
-                let file = Array.last files
+                let result = 
+                    files |> Array.tryPick (fun file -> 
 
-                let programOptD = 
-                    match tryFindMemberByName "programLiveUpdate" file.Code with
-                    | Some d -> Some d
-                    | None -> 
-                    match tryFindMemberByName "program" file.Code with
-                    | None -> None
-                    | Some d -> Some d
+                        let programOptD = 
+                            match tryFindMemberByName "programLiveUpdate" file.Code with
+                            | Some d -> Some d
+                            | None -> 
+                            match tryFindMemberByName "program" file.Code with
+                            | None -> None
+                            | Some d -> Some d
 
-                match programOptD with 
+                        match programOptD with 
+                        | None -> None
+
+                        | Some (membDef, _) -> 
+                            if membDef.Parameters.Length > 0 then 
+                                printfn "*** LiveUpdate failure:"
+                                printfn "***   [x] got code pacakge"
+                                printfn "***   [x] found declaration called 'programLiveUpdate' or 'program'"
+                                printfn "***   FAIL: the declaration has parameters, it must be a single top-level value"
+                                Some { Quacked = "couldn't quack! Found declaration called 'program' or 'programLiveUpdate' but the declaration has parameters!" }
+
+                            else 
+
+                                printfn "LiveUpdate: evaluating 'program'...."
+                                let entity = interp.ResolveEntity(membDef.EnclosingEntity)
+                                let programObj = interp.GetExprDeclResult(entity, membDef.Name) 
+                                match getVal programObj with 
+                    
+                                | :? Program<obj, obj, obj -> (obj -> unit) -> ViewElement> as programErased -> 
+
+                                    // Stop the running program 
+                                    printfn "changing running program...."
+                                    runner.ChangeProgram(programErased)
+                                    printfn "*** LiveUpdate success:"
+                                    printfn "***   [x] got code pacakge"
+                                    printfn "***   [x] found declaration called 'programLiveUpdate' or 'program'"
+                                    printfn "***   [x] it had no parameters (good!)"
+                                    printfn "***   [x] the declaration had the right type"
+                                    printfn "***   [x] changed the running program"
+                                    Some { Quacked = "LiveUpdate quacked!" }
+                        
+                                | p -> 
+                                    printfn "*** LiveUpdate failure:"
+                                    printfn "***   [x] got code pacakge"
+                                    printfn "***   [x] found declaration called 'programLiveUpdate' or 'program'"
+                                    printfn "***   [x] it had no parameters (good!)"
+                                    printfn "***   FAIL: the declaration had the wrong type '%A', expected 'Program<Model, Msg, Model -> (Msg-> unit) -> ViewElement>'" (p.GetType())
+                                    Some { Quacked = "LiveUpdate couldn't quack! types mismatch!" })
+                match result with
                 | None -> 
                     printfn "*** LiveUpdate failure:"
                     printfn "***   [x] got code pacakge"
                     printfn "***   FAIL: couldn't find declaration called 'program' or 'programLiveUpdate'"
                     { Quacked = "couldn't quack! No declaration called 'program' or 'programLiveUpdate'!" }
-
-                | Some (membDef, _) -> 
-                    if membDef.Parameters.Length > 0 then 
-                        printfn "*** LiveUpdate failure:"
-                        printfn "***   [x] got code pacakge"
-                        printfn "***   [x] found declaration called 'programLiveUpdate' or 'program'"
-                        printfn "***   FAIL: the declaration has parameters, it must be a single top-level value"
-                        { Quacked = "couldn't quack! Found declaration called 'program' or 'programLiveUpdate' but the declaration has parameters!" }
-
-                    else 
-
-                        printfn "LiveUpdate: evaluating 'program'...."
-                        let entity = interp.ResolveEntity(membDef.EnclosingEntity)
-                        let programObj = interp.GetExprDeclResult(entity, membDef.Name) 
-                        match getVal programObj with 
-                    
-                        | :? Program<obj, obj, obj -> (obj -> unit) -> ViewElement> as programErased -> 
-
-                            // Stop the running program 
-                            printfn "changing running program...."
-                            runner.ChangeProgram(programErased)
-                            printfn "*** LiveUpdate success:"
-                            printfn "***   [x] got code pacakge"
-                            printfn "***   [x] found declaration called 'programLiveUpdate' or 'program'"
-                            printfn "***   [x] it had no parameters (good!)"
-                            printfn "***   [x] the declaration had the right type"
-                            printfn "***   [x] changed the running program"
-                            { Quacked = "LiveUpdate quacked!" }
-                        
-                        | p -> 
-                            printfn "*** LiveUpdate failure:"
-                            printfn "***   [x] got code pacakge"
-                            printfn "***   [x] found declaration called 'programLiveUpdate' or 'program'"
-                            printfn "***   [x] it had no parameters (good!)"
-                            printfn "***   FAIL: the declaration had the wrong type '%A', expected 'Program<Model, Msg, Model -> (Msg-> unit) -> ViewElement>'" (p.GetType())
-                            { Quacked = "LiveUpdate couldn't quack! types mismatch!" }
+                | Some res -> res
               )
 
             let server = HttpServer()
