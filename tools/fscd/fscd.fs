@@ -156,11 +156,10 @@ let main (argv: string[]) =
             //(i.QualifiedName, i.FileName
             { Code = convDecls i.Declarations }
             
-        let jsonFile (i: FSharpImplementationFileContents) =         
-            let data = convFile  i
+        let jsonFiles (impls: FSharpImplementationFileContents[]) =         
+            let data = Array.map convFile impls
             let json = Newtonsoft.Json.JsonConvert.SerializeObject(data)
             json
-
 
         if watch then 
             let watchers = 
@@ -173,31 +172,39 @@ let main (argv: string[]) =
                      let changed = (fun (ev: FileSystemEventArgs) -> 
                          try 
                              printfn "fscd: CHANGE DETECTED for %s, COMPILING...." sourceFile
-                             match checkFile 0 ev.FullPath  with 
-                             | Result.Error () -> 
-                                 printfn "fscd: ERRORS for %s" sourceFile
-                             | Result.Ok iopt -> 
-                                 printfn "fscd: COMPILED %s" sourceFile
-                                 match iopt with 
-                                 | None -> ()
-                                 | Some i -> 
-                                     printfn "fscd: GOT PortaCode for %s" sourceFile
-                                     let json = jsonFile i
-                                     printfn "fscd: GOT JSON for %s, length = %d" sourceFile json.Length
-                                     match webhook with 
-                                     | Some hook -> 
-                                         try 
-                                             use webClient = new WebClient(Encoding = Encoding.UTF8)
-                                             printfn "fscd: SENDING TO WEBHOOK... " // : <<<%s>>>... --> %s" json.[0 .. min (json.Length - 1) 100] hook
-                                             let resp = webClient.UploadString (hook,"Put",json)
-                                             printfn "fscd: RESP FROM WEBHOOK: %s" resp
-                                         with err -> 
-                                             printfn "fscd: ERROR SENDING TO WEBHOOK: %A" (err.ToString())
+                             let rec loop files acc = 
+                                match files with 
+                                | file :: rest -> 
+                                    match checkFile 0 (Path.GetFullPath(file)) with 
+                                    | Result.Error () -> 
+                                        printfn "fscd: ERRORS for %s" file
+                                    | Result.Ok iopt -> 
+                                        printfn "fscd: COMPILED %s" file
+                                        match iopt with 
+                                        | None -> ()
+                                        | Some i -> 
+                                            printfn "fscd: GOT PortaCode for %s" sourceFile
+                                            loop rest (i :: acc)
+                                 | [] -> 
+                                        let impls = List.rev acc 
+                                        match webhook with 
+                                        | Some hook -> 
+                                            try 
+                                                let json = jsonFiles (Array.ofList impls)
+                                                printfn "fscd: GOT JSON for %s, length = %d" sourceFile json.Length
+                                                use webClient = new WebClient(Encoding = Encoding.UTF8)
+                                                printfn "fscd: SENDING TO WEBHOOK... " // : <<<%s>>>... --> %s" json.[0 .. min (json.Length - 1) 100] hook
+                                                let resp = webClient.UploadString (hook,"Put",json)
+                                                printfn "fscd: RESP FROM WEBHOOK: %s" resp
+                                            with err -> 
+                                                printfn "fscd: ERROR SENDING TO WEBHOOK: %A" (err.ToString())
 
-                                     | None -> 
-                                         ()
+                                        | None -> 
+                                            ()
+                             loop (List.ofArray options.SourceFiles) []
+
                          with err -> 
-                             printfn "fscd: exception: %A" (err.ToString()) )
+                             printfn "fscd: exception: %A" (err.ToString()))
                      watcher.Changed.Add changed 
                      //watcher.Created.Add changed
                      //watcher.Deleted.Add changed
@@ -236,7 +243,7 @@ let main (argv: string[]) =
                     ctxt.EvalDecls (envEmpty, ds.Code)
 
             else
-                let fileConvContents = [| for i in fileContents -> jsonFile i |]
+                let fileConvContents = jsonFiles fileContents
 
                 printfn "%A" fileConvContents
         0
