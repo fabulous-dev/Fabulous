@@ -11,7 +11,6 @@ Animations and focus are specified by accessing the underlying Xamarin.Forms con
 Xamarin.Forms animation specifications. The underlying control is usually accessed
 via a `ViewRef`, akin to a `ref` in HTML/JavaScript and React. 
 
-
 * A `ViewRef` must have a sufficient scope that it lives long enough, e.g. a global scope
   or the scope of the model.  The `ViewRef` can be held in the model itself if necessary.
 
@@ -28,10 +27,23 @@ let view dispatch model =
     View.Label(text="Rotate", ref=animatedLabelRef) 
 ```
 
+The underlying control can also be accessed by using the `created` handler:
+
+```fsharp
+let mutable label = None
+
+View.Label(text="hello", created=(fun l ->  label <- Some l))
+```
+
+> NOTE: A `ViewRef` only holds a weak handle to the underlying control.  The `Value` property may thus fail if
+the underlying control has been collected.  As a result it is often sensible to use the `TryValue` property which
+returns an option.
+
+
 Animations
 ------
 
-Animations are specified by using a Xamarin.Forms animation spea `ViewRef`, e.g. 
+Animations are specified by using a Xamarin.Forms animation specification on the underlying control, e.g. 
 
 ```fsharp
 let animatedLabelRef = ViewRef<Label>()
