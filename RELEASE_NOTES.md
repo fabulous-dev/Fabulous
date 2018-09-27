@@ -1,6 +1,8 @@
 #### 0.22.0
 
-* Add WPF to template
+* Added support for Focus and Animations (access to the underlying control with "created" event & ViewRef)
+* Added "invalidate" flag to SkiaSharp extension
+* Added WPF to template
 
 #### 0.21.1
 

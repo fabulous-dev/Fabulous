@@ -28,7 +28,7 @@ Before releasing a new version, add a new entry at the top of [RELEASE_NOTES.md]
 
 NB.: If you're releasing the same version, you might need to do the following first:
 * Run `git clean -xfd .`
-* Remove all `Fabulous*` folders from `.nuget`
+* Remove all `Fabulous*` folders from `~/.nuget` (`%USERPROFILE%\.nuget` on Windows)
 
 Once done, open a terminal to build the NuGet packages:
 
