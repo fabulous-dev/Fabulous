@@ -65,7 +65,7 @@ let getOutputDir basePath proj =
 
 let msbuild (buildType: BuildType) (definition: ProjectDefinition) =
     let configuration = match buildType with Debug -> "Debug" | Release -> "Release"
-    let properties = [ ("Configuration", configuration); ("AndroidSdkDirectory", Environment.environVar("ANDROID_SDK_PATH")) ] 
+    let properties = [ ("Configuration", configuration) ] 
 
     for project in definition.Path do
         let outputDir = getOutputDir definition.OutputPath project
