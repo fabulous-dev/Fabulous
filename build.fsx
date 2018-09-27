@@ -73,20 +73,12 @@ let msbuild (buildType: BuildType) (definition: ProjectDefinition) =
         MSBuild.run id outputDir "Build" properties [project] |> Trace.logItems (definition.Name + "Build-Output: ")
 
 let dotnetPack (definition: ProjectDefinition) =
-    let createPackageParam includeVersion project =
-        let p = sprintf "\"%s\" package Microsoft.SourceLink.Github" project
-        match includeVersion with true -> (p + " -v 1.0.0-beta-63127-02") | false -> p
-
-    // Inject SourceLink before packaging and remove it afterwards
-    // Could have been set in fsproj, but Visual Studio for Mac can't reliably ignore SourceLink when not packaging
     for project in definition.Path do
-        DotNet.exec id "add" (createPackageParam true project) |> ignore
-        DotNet.restore id project
         DotNet.pack (fun opt ->
             { opt with
+                Common = { opt.Common with CustomParams = Some "-p:IncludeSourceLink=True" }
                 Configuration = DotNet.BuildConfiguration.Release
                 OutputPath = Some definition.OutputPath }) project
-        DotNet.exec id "remove" (createPackageParam false project) |> ignore
 
 let nugetPack (definition: ProjectDefinition) =
     for nuspec in definition.Path do
