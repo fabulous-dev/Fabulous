@@ -5,13 +5,13 @@ open System.Reflection
 [<assembly: AssemblyTitleAttribute("Fabulous.SkiaSharp")>]
 [<assembly: AssemblyProductAttribute("Fabulous.SkiaSharp")>]
 [<assembly: AssemblyDescriptionAttribute("Fabulous extension for SkiaSharp")>]
-[<assembly: AssemblyVersionAttribute("0.21.1")>]
-[<assembly: AssemblyFileVersionAttribute("0.21.1")>]
+[<assembly: AssemblyVersionAttribute("0.22.0")>]
+[<assembly: AssemblyFileVersionAttribute("0.22.0")>]
 do ()
 
 module internal AssemblyVersionInformation =
     let [<Literal>] AssemblyTitle = "Fabulous.SkiaSharp"
     let [<Literal>] AssemblyProduct = "Fabulous.SkiaSharp"
     let [<Literal>] AssemblyDescription = "Fabulous extension for SkiaSharp"
-    let [<Literal>] AssemblyVersion = "0.21.1"
-    let [<Literal>] AssemblyFileVersion = "0.21.1"
+    let [<Literal>] AssemblyVersion = "0.22.0"
+    let [<Literal>] AssemblyFileVersion = "0.22.0"

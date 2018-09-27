@@ -155,9 +155,9 @@ PROJ.fs"""
 -r:CWD/../../../Fabulous.Core/bin/Debug/netstandard2.0/Fabulous.Core.dll
 -r:CWD/../../../Fabulous.LiveUpdate/bin/Debug/netstandard2.0/Fabulous.LiveUpdate.dll
 -r:PACKAGEDIR/newtonsoft.json/11.0.2/lib/netstandard2.0/Newtonsoft.Json.dll
--r:PACKAGEDIR/xamarin.forms/3.0.0.482510/lib/netstandard2.0/Xamarin.Forms.Core.dll
--r:PACKAGEDIR/xamarin.forms/3.0.0.482510/lib/netstandard2.0/Xamarin.Forms.Platform.dll
--r:PACKAGEDIR/xamarin.forms/3.0.0.482510/lib/netstandard2.0/Xamarin.Forms.Xaml.dll
+-r:PACKAGEDIR/xamarin.forms/3.1.0.697729/lib/netstandard2.0/Xamarin.Forms.Core.dll
+-r:PACKAGEDIR/xamarin.forms/3.1.0.697729/lib/netstandard2.0/Xamarin.Forms.Platform.dll
+-r:PACKAGEDIR/xamarin.forms/3.1.0.697729/lib/netstandard2.0/Xamarin.Forms.Xaml.dll
 -r:PACKAGEDIR/newtonsoft.json/10.0.1/lib/netstandard1.3/Newtonsoft.Json.dll
 """
 

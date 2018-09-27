@@ -1,11 +1,11 @@
 F# Functional App Development, using Elmish and Xamarin.Forms 
 =======
 
-[![NuGet version](https://badge.fury.io/nu/Fabulous.Core.svg)](https://badge.fury.io/nu/Fabulous.Core) [![Build status (Windows)](https://ci.appveyor.com/api/projects/status/4qajefd4c6sbjfrt/branch/master?svg=true)](https://ci.appveyor.com/project/dsyme/elmish-xamarinforms/branch/master)  [![Build status (OSX)](https://ci.appveyor.com/api/projects/status/4qajefd4c6sbjfrt/branch/master?svg=true)](https://travis-ci.org/fsprojects/Fabulous.svg?branch=master) [![Join the chat at https://gitter.im/fsprojects/Fabulous](https://badges.gitter.im/fsprojects/Fabulous.svg)](https://gitter.im/fsprojects/Fabulous?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![NuGet version](https://badge.fury.io/nu/Fabulous.Core.svg)](https://badge.fury.io/nu/Fabulous.Core) [![Build status (Windows)](https://ci.appveyor.com/api/projects/status/4qajefd4c6sbjfrt/branch/master?svg=true)](https://ci.appveyor.com/project/dsyme/elmish-xamarinforms/branch/master)  [![Build status (OSX)](https://ci.appveyor.com/api/projects/status/4qajefd4c6sbjfrt/branch/master?svg=true)](https://travis-ci.org/fsprojects/Fabulous) [![Join the chat at https://gitter.im/fsprojects/Fabulous](https://badges.gitter.im/fsprojects/Fabulous.svg)](https://gitter.im/fsprojects/Fabulous?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Never write a ViewModel class again! Conquer the world with clean dynamic UIs!
 
-This library allows you to use the ultra-simple Model-View-Update architecture to build Xamarin.Forms applications for iOS, Android, Mac and more. It is a variation of [elmish](https://elmish.github.io/), an Elm architecture implemented in F#. Elmish was originally written for [Fable](https://github.com/fable-compiler) applications, however it is used here for mobile applications using Xamarin.Forms.
+This library allows you to use the ultra-simple Model-View-Update architecture to build applications for iOS, Android, Mac, WPF and more. It is a variation of [elmish](https://elmish.github.io/), an Elm architecture implemented in F#. Elmish was originally written for [Fable](https://github.com/fable-compiler) applications, however it is used here for applications using Xamarin.Forms.
 
 **This is a sample and may change.**
 

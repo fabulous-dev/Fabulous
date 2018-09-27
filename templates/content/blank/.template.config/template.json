@@ -20,12 +20,20 @@
       "path": "NewApp\\NewApp.fs"
     },
     {
-      "condition": "CreateAndroidProject",
+      "condition": "Android",
       "path": "NewApp.Android\\NewApp.Android.fsproj"
     },
     {
-      "condition": "CreateiOSProject",
+      "condition": "WPF",
+      "path": "NewApp.WPF\\NewApp.WPF.fsproj"
+    },
+    {
+      "condition": "iOS",
       "path": "NewApp.iOS\\NewApp.iOS.fsproj"
+    },
+    {
+      "condition": "macOS",
+      "path": "NewApp.macOS\\NewApp.macOS.fsproj"
     }
   ],
   "defaultName": "App",
@@ -35,6 +43,7 @@
     "8D9F8CF0-E178-402D-8D40-A88B7B5F3D42",
     "91D74A40-E440-42AD-B51F-C2D641C49384",
     "B445DF73-AC9E-4276-9FBA-7CB5AD5D2518",
+    "3EA9E612-E717-4E55-9034-DE653429FEFD",
     "3EA9E612-E717-4E55-9034-C415CD62AF9A"
   ],
   "symbols": {
@@ -129,7 +138,7 @@
       "type": "parameter",
       "dataType": "string",
       "replaces": "FabulousPkgsVersion",
-      "defaultValue": "0.21.1"
+      "defaultValue": "0.22.0"
     },
     "NewtonsoftJsonPkg": {
       "type": "parameter",
@@ -159,17 +168,22 @@
       "generator": "guid",
       "replaces": "User_ID"
     },
-    "CreateiOSProject": {
+    "iOS": {
       "type": "parameter",
       "dataType": "bool",
       "defaultValue": "true"
     },
-    "CreateMacProject": {
+    "macOS": {
       "type": "parameter",
       "dataType": "bool",
       "defaultValue": "false"
     },
-    "CreateAndroidProject": {
+    "WPF": {
+      "type": "parameter",
+      "dataType": "bool",
+      "defaultValue": "false"
+    },
+    "Android": {
       "type": "parameter",
       "dataType": "bool",
       "defaultValue": "true"
@@ -191,19 +205,25 @@
     {
       "modifiers": [
         {
-          "condition": "(!CreateiOSProject)",
+          "condition": "(!iOS)",
           "exclude": [
             "NewApp.iOS/**/*"
           ]
         },
         {
-          "condition": "(!CreateAndroidProject)",
+          "condition": "(!Android)",
           "exclude": [
             "NewApp.Android/**/*"
           ]
         },
         {
-          "condition": "(!CreateMacProject)",
+          "condition": "(!WPF)",
+          "exclude": [
+            "NewApp.WPF/**/*"
+          ]
+        },
+        {
+          "condition": "(!macOS)",
           "exclude": [
             "NewApp.macOS/**/*"
           ]
@@ -215,19 +235,25 @@
       "condition": "(kind == \"blank\")",
       "modifiers": [
         {
-          "condition": "(!CreateiOSProject)",
+          "condition": "(!iOS)",
           "exclude": [
             "NewApp.iOS/**/*"
           ]
         },
         {
-          "condition": "(!CreateAndroidProject)",
+          "condition": "(!Android)",
           "exclude": [
             "NewApp.Android/**/*"
           ]
         },
         {
-          "condition": "(!CreateMacProject)",
+          "condition": "(!WPF)",
+          "exclude": [
+            "NewApp.WPF/**/*"
+          ]
+        },
+        {
+          "condition": "(!macOS)",
           "exclude": [
             "NewApp.macOS/**/*"
           ]

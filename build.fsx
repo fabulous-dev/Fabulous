@@ -46,7 +46,16 @@ Target "BuildSamples" (fun _ ->
           |> Log "SamplesRestoreDebug-Output: "
 
     // build the apps debug
-    !! "Fabulous.sln"
+    [ yield "Samples/AllControls/Droid/AllControls.Droid.fsproj";
+      yield "Samples/AllControls/iOS/AllControls.iOS.fsproj";
+      if isWindows then
+           yield "Samples/AllControls/WPF/AllControls.WPF.fsproj";
+      yield "Samples/TicTacToe/Droid/TicTacToe.Droid.fsproj";
+      yield "Samples/TicTacToe/iOS/TicTacToe.iOS.fsproj";
+      yield "Samples/CounterApp/Droid/CounterApp.Droid.fsproj";
+      yield "Samples/CounterApp/iOS/CounterApp.iOS.fsproj";
+      yield "Samples/StaticView/StaticViewCounterApp/Droid/StaticViewCounterApp.Droid.fsproj";
+      yield "Samples/StaticView/StaticViewCounterApp/iOS/StaticViewCounterApp.iOS.fsproj"; ]
           |> MSBuildDebug null "Build"
           |> Log "SamplesBuildDebug-Output: "
 )
@@ -121,11 +130,14 @@ Target "TestTemplatesNuGet" (fun _ ->
     let testAppName = "testapp2" + string (abs (hash System.DateTime.Now.Ticks) % 100)
     // Instantiate the template. TODO: additional parameters and variations
     CleanDir testAppName
-    DotNetCli.RunCommand id (sprintf "new fabulous-app -n %s -lang F#" testAppName)
+    let extraArgs = if isUnix then "" else " --WPF"
+    DotNetCli.RunCommand id (sprintf "new fabulous-app -n %s -lang F#%s" testAppName extraArgs)
 
     let pkgs = Path.GetFullPath(buildDir true)
     // When restoring, using the build_output as a package source to pick up the package we just compiled
     DotNetCli.RunCommand id (sprintf "restore %s/%s/%s.fsproj  --source https://api.nuget.org/v3/index.json --source %s" testAppName testAppName testAppName pkgs)
+    if not isUnix then 
+        DotNetCli.RunCommand id (sprintf "restore %s/%s.WPF/%s.WPF.fsproj  --source https://api.nuget.org/v3/index.json --source %s" testAppName testAppName testAppName pkgs)
     
     let slash = if isUnix then "\\" else ""
     for c in ["Debug"; "Release"] do 
@@ -140,7 +152,9 @@ Target "TestTemplatesNuGet" (fun _ ->
         dotnet restore testapp2/testapp2/testapp2.fsproj -s build_output/
         dotnet new -i  templates && rmdir /s /q testapp2 && dotnet new fabulous-app -n testapp2 -lang F# && dotnet restore testapp2/testapp2/testapp2.fsproj && msbuild testapp2/testapp2.Android/testapp2.Android.fsproj /t:RestorePackages && msbuild testapp2/testapp2.Android/testapp2.Android.fsproj
         dotnet new -i  templates && rmdir /s /q testapp2 && dotnet new fabulous-app -n testapp2 -lang F# && dotnet restore testapp2/testapp2/testapp2.fsproj && msbuild testapp2/testapp2.iOS/testapp2.iOS.fsproj /t:RestorePackages  && msbuild testapp2/testapp2.iOS/testapp2.iOS.fsproj
-        dotnet new -i  templates && rmdir /s /q testapp2 && dotnet new fabulous-app -n testapp2 -lang F# --CreateMacProject && dotnet restore testapp2/testapp2/testapp2.fsproj && msbuild testapp2/testapp2.macOS/testapp2.macOS.fsproj /t:RestorePackages  && msbuild testapp2/testapp2.macOS/testapp2.macOS.fsproj
+        dotnet new -i  templates && rmdir /s /q testapp2 && dotnet new fabulous-app -n testapp2 -lang F# --macOS && dotnet restore testapp2/testapp2/testapp2.fsproj && msbuild testapp2/testapp2.macOS/testapp2.macOS.fsproj /t:RestorePackages  && msbuild testapp2/testapp2.macOS/testapp2.macOS.fsproj
+
+        dotnet restore testapp265/testapp265.WPF/testapp265.WPF.fsproj --source https://api.nuget.org/v3/index.json -s build_output
         *)
 
 )
