@@ -4,8 +4,8 @@
     <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="CounterApp.fs" />
     <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="CounterApp.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Fabulous.Core\Fabulous.Core.fsproj" />

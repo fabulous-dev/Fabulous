@@ -4,8 +4,8 @@
     <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AllControls.fs" />
     <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="AllControls.fs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Baboon_Serengeti.jpg" />

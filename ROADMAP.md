@@ -2,7 +2,6 @@
 
 * Programming model: 
   * Move to `seq<_>` as the de-facto model type
-  * Add `Animation`
   * Add `OpenGLView`
 
 * Docs

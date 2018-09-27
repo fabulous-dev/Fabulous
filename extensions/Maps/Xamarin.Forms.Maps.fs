@@ -29,7 +29,7 @@ module MapsExtension =
                                  ?horizontalOptions, ?verticalOptions, ?margin, ?gestureRecognizers, ?anchorX, ?anchorY, ?backgroundColor,
                                  ?heightRequest, ?inputTransparent, ?isEnabled, ?isVisible, ?minimumHeightRequest, ?minimumWidthRequest,
                                  ?opacity, ?rotation, ?rotationX, ?rotationY, ?scale, ?style, ?translationX, ?translationY, ?widthRequest,
-                                 ?resources, ?styles, ?styleSheets, ?classId, ?styleId, ?automationId) =
+                                 ?resources, ?styles, ?styleSheets, ?classId, ?styleId, ?automationId, ?created) =
 
             // Count the number of additional attributes
             let attribCount = 0
@@ -49,7 +49,8 @@ module MapsExtension =
                               ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, 
                               ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, 
                               ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, 
-                              ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId)
+                              ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId,
+                              ?automationId=automationId, ?created=created)
 
             // Add our own attributes. They must have unique names which must match the names below.
             match pins with None -> () | Some v -> attribs.Add(MapPinsAttribKey, v) 
