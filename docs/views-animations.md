@@ -50,7 +50,10 @@ let animatedLabelRef = ViewRef<Label>()
 
 let update msg model =
     match msg with 
-    | Poked -> animatedLabelRef.Value.RotateTo (360.0, 2000u) |> ignore
+    | Poked ->
+        match animatedLabelRef.TryValue with 
+        | None -> () 
+        | Some c -> c.RotateTo (360.0, 2000u) |> ignore
 
 let view dispatch model = 
     View.StackLayout [
