@@ -1,16 +1,29 @@
 # Dev Notes
 
+## Dev Notes - Prerequisites
+
+- Visual Studio 2017 / Visual Studio for Mac 7
+- Xamarin SDK (workload Mobile Development on Visual Studio)
+- .NET Core SDK 2.1.300 or newer
+
+For more information, please refer to the Xamarin.Forms requirements.
+https://docs.microsoft.com/en-us/xamarin/xamarin-forms/get-started/installation
+
+.NET Core SDK 2.1.300 or newer is required for SourceLink to work.
+https://github.com/dotnet/sourcelink#prerequisites
+
 ## Dev Notes - Building
 
-Make sure you have FAKE 5 installed as a global tool
+Fabulous is built with FAKE 5.  
+Make sure you have it installed as a global tool before attempting to build  
+https://fake.build/fake-gettingstarted.html
 
 ```
 dotnet tool install fake-cli -g
 ```
 
-If you only want to open Fabulous with an IDE (Visual Studio or other), you'll need to run restore for both Paket and NuGet.
-
-Otherwise, just run the following command:
+Once done, you can build Fabulous with a single command.  
+It will take care of every steps: clean, restore, build and pack.
 
 On OSX:
 
@@ -23,6 +36,10 @@ On Windows:
 ```
 .\build
 ```
+
+It is recommended to run this command at least once before working on Fabulous.
+
+Alternatively, you can run `.paket/paket.exe restore` and `dotnet restore` to ensure that you have all the dependencies before opening Visual Studio.
 
 ## Dev Notes - Testing
 
