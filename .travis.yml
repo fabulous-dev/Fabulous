@@ -13,7 +13,7 @@ env:
 mono: latest
 
 install:
-  - nuget restore
+  - dotnet tool install fake-cli -g
 
 script:
   - mkdir -p build_output

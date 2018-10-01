@@ -1,24 +1,57 @@
 # Dev Notes
 
+## Dev Notes - Prerequisites
+
+- Visual Studio 2017 / Visual Studio for Mac 7
+- Xamarin SDK (workload Mobile Development on Visual Studio)
+- .NET Core SDK 2.1.300 or newer
+
+For more information, please refer to the Xamarin.Forms requirements.
+https://docs.microsoft.com/en-us/xamarin/xamarin-forms/get-started/installation
+
+.NET Core SDK 2.1.300 or newer is required for SourceLink to work.
+https://github.com/dotnet/sourcelink#prerequisites
+
 ## Dev Notes - Building
+
+Fabulous is built with FAKE 5.  
+Make sure you have it installed as a global tool before attempting to build  
+https://fake.build/fake-gettingstarted.html
+
+```
+dotnet tool install fake-cli -g
+```
+
+Once done, you can build Fabulous with a single command.  
+It will take care of every steps: clean, restore, build and pack.
 
 On OSX:
 
-```fsharp
-mono .paket/paket.exe restore
-dotnet restore
-open Fabulous.sln
-./build.sh NuGet
+```
+./build.sh
+```
+
+On Windows:
+
+```
+.\build
+```
+
+It is recommended to run this command at least once before working on Fabulous.
+
+Alternatively, you can run `.paket/paket.exe restore` and `dotnet restore` to ensure that you have all the dependencies before opening Visual Studio.
+
+## Dev Notes - Testing
+
+On OSX:
+
+```
 ./build.sh Test
 ```
 
 On Windows:
 
 ```
-.paket\paket.exe restore
-dotnet restore
-start Fabulous.sln
-.\build NuGet
 .\build Test
 ```
 
@@ -34,15 +67,15 @@ Once done, open a terminal to build the NuGet packages:
 
 On OSX:
 ```
-./build.sh NuGet
+./build.sh
 ```
 
 On Windows:
 ```
-.\build NuGet
+.\build
 ```
 
-FAKE will have updated all the `AssemblyInfo.fs` files and `template.json`. Commit all changes.
+FAKE will have updated `Directory.Build.props` and `template.json`. Commit all changes.
 
 Lastly, publish all the generated packages to NuGet by running these commands:
 
@@ -51,8 +84,6 @@ On OSX:
 APIKEY=[Your personal NuGet API KEY]
 
 mono .nuget/NuGet.exe push "build_output/Fabulous.*.nupkg" $APIKEY -Source https://www.nuget.org
-
-cp build_output/Fabulous.*.nupkg  ~/Downloads
 ```
 
 On Windows (console):
@@ -60,8 +91,6 @@ On Windows (console):
 set APIKEY=[Your personal NuGet API KEY]
 
 .nuget\NuGet.exe push build_output\Fabulous.*.nupkg  %APIKEY% -Source https://www.nuget.org
-
-copy build_output\Fabulous.*.nupkg  %USERPROFILE%\Downloads
 ```
 
 ## Dev Notes - Checking App Size

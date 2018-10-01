@@ -1,7 +1,9 @@
-os: Visual Studio 2017
+image: Visual Studio 2017
+install:
+  - cinst fake
 
 build_script: 
-  - cmd: .\build.cmd Test
+  - cmd: fake.exe run build.fsx --parallel 3
 
 test: off
 version: '{build}'

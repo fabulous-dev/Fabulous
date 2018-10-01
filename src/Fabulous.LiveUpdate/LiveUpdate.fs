@@ -157,7 +157,7 @@ type HttpServer(?port) =
         <p>in your project directory</p>
     </body>
 </html>"""
-                                        |> fun s -> s.Replace("FABULOUS_VERSION", AssemblyVersionInformation.AssemblyVersion)
+                                        |> fun s -> s.Replace("FABULOUS_VERSION", ((System.Reflection.Assembly.GetExecutingAssembly()).GetName()).Version.ToString())
                                                      .Replace("PORT", string port)
                             }
 
