@@ -323,7 +323,7 @@ module Converters =
                 let oc = ObservableCollection<ListGroupData<'T>>()
                 target.ItemsSource <- oc
                 oc
-        updateCollectionGeneric prevCollOpt collOpt targetColl ListGroupData (fun _ _ _ -> ()) (fun _ _ -> false) (fun _ _ _ -> failwith "no element reuse")
+        updateCollectionGeneric prevCollOpt collOpt targetColl ListGroupData (fun _ _ _ -> ()) (fun (_, prevKey, _) (_, currKey, _) -> canReuseChild prevKey currKey) (fun _ (_, currKey, _) target -> target.Key <- currKey)
 
     let updateListViewGroupedShowJumpList (prevOpt: bool voption) (currOpt: bool voption) (target: Xamarin.Forms.ListView) =
         let updateTarget enableJumpList = target.GroupShortNameBinding <- (if enableJumpList then new Binding("ShortName") else null)
