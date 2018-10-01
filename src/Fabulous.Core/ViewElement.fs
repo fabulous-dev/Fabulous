@@ -154,7 +154,7 @@ and ViewRef<'T when 'T : not struct>() =
 
     member __.Unbox = handle
 
-    member __.TryValue = 
+    member __.TryValue : 'T option = 
         match handle.TryValue with 
         | Some res -> unbox res 
         | _ -> None
