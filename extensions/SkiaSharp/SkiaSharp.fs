@@ -43,8 +43,8 @@ module SkiaSharpExtension =
                                ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, 
                                ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, 
                                ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, 
-                              ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId,
-                              ?automationId=automationId, ?created=created)
+                               ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId,
+                               ?automationId=automationId, ?created=created)
 
             // Add our own attributes. They must have unique names which must match the names below.
             match enableTouchEvents with None -> () | Some v -> attribs.Add(CanvasEnableTouchEventsAttribKey, v) 
