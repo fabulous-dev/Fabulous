@@ -77,6 +77,7 @@ type ViewElementCell() =
         match args.PropertyName, listElementOpt, modelOpt with
         | "Key", Some curr, Some prevModel ->
             updateIncremental x.View prevModel curr.Key
+            modelOpt <- Some curr.Key
         | _ -> ()
     )
 
