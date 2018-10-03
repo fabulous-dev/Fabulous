@@ -1,3 +1,9 @@
+#### 0.23.0
+
+* Added support for SourceLink (https://github.com/dotnet/sourcelink)
+* Fixed wrong type for the new ViewRef
+* Fixed missing incremental update for ListView rows
+
 #### 0.22.0
 
 * Added support for Focus and Animations (access to the underlying control with "created" event & ViewRef)
