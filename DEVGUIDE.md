@@ -41,6 +41,23 @@ It is recommended to run this command at least once before working on Fabulous.
 
 Alternatively, you can run `.paket/paket.exe restore` and `dotnet restore` to ensure that you have all the dependencies before opening Visual Studio.
 
+## Dev Notes - Running the generator
+
+The Generator is built and run as part of the default build command
+If you only want to build the tools and run the generator, use the following commands:
+
+On OSX:
+
+```
+./build.sh RunGenerator
+```
+
+On Windows:
+
+```
+.\build RunGenerator
+```
+
 ## Dev Notes - Testing
 
 On OSX:
