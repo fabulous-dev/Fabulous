@@ -136,6 +136,11 @@ Target.create "BuildSamples" (fun _ ->
     samples |> buildProject
 )
 
+Target.create "RunGenerator" (fun _ ->
+    DotNet.build (fun p -> { p with Configuration = DotNet.BuildConfiguration.Release }) "tools/Generator/Generator.fsproj"
+    DotNet.exec id "tools/Generator/bin/Release/netcoreapp2.0/Generator.dll" "tools/Generator/Xamarin.Forms.Core.json src/Fabulous.Core/Xamarin.Forms.Core.fs" |> ignore
+)
+
 Target.create "RunTests" (fun _ ->
     !! (buildDir + "/tests/*test*.dll")
     -- "**/*TestAdapter*.dll"
