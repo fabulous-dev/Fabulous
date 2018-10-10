@@ -50,12 +50,12 @@ let removeIncompatiblePlatformProjects pattern =
         pattern
 
 let projects = [
-    { Name = "Tools";       Path = !! "tools/**/*.fsproj";      Action = MSBuild Release;    OutputPath = buildDir + "/tools" }
     { Name = "Src";         Path = !! "src/**/*.fsproj";        Action = DotNetPack;         OutputPath = buildDir }
     { Name = "Extensions";  Path = !! "extensions/**/*.fsproj"; Action = DotNetPack;         OutputPath = buildDir }
     { Name = "Tests";       Path = !! "tests/**/*.fsproj";      Action = MSBuild Release;    OutputPath = buildDir + "/tests" }
     { Name = "Templates";   Path = !! "templates/**/*.nuspec";  Action = NuGetPack;          OutputPath = buildDir }
 ]
+let tools = { Name = "Tools"; Path = !! "tools/**/*.fsproj"; Action = MSBuild Release; OutputPath = buildDir + "/tools" }
 let samples = { Name = "Samples"; Path = (!! "samples/**/*.fsproj" |> removeIncompatiblePlatformProjects); Action = MSBuild Debug; OutputPath = buildDir + "/samples" } 
 
 
@@ -128,6 +128,14 @@ Target.create "Restore" (fun _ ->
     DotNet.restore id "Fabulous.sln"
 )
 
+Target.create "BuildTools" (fun _ ->
+    tools |> buildProject
+)
+
+Target.create "RunGenerator" (fun _ ->
+    DotNet.exec id (tools.OutputPath + "/Generator/Generator.dll") "tools/Generator/Xamarin.Forms.Core.json src/Fabulous.Core/Xamarin.Forms.Core.fs" |> ignore
+)
+
 Target.create "Build" (fun _ -> 
     projects |> List.iter buildProject
 )
@@ -191,6 +199,8 @@ open Fake.Core.TargetOperators
 "Clean"
   ==> "Restore"
   ==> "UpdateVersion"
+  ==> "BuildTools"
+  ==> "RunGenerator"
   ==> "Build"
 
 "Build"

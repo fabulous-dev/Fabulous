@@ -2,7 +2,7 @@
 
 // Windows: dotnet build -c Release tools\Generator\Generator.fsproj && dotnet tools\Generator\bin\Release\netcoreapp2.0\Generator.dll tools\Generator\Xamarin.Forms.Core.json src\Fabulous.Core\Xamarin.Forms.Core.fs
 
-// OSX: dotnet build -c Release Generator/Generator.fsproj && dotnet Generator/bin/Release/netcoreapp2.0/Generator.dll Generator/Xamarin.Forms.Core.json Fabulous.Core/Xamarin.Forms.Core.fs
+// OSX: dotnet build -c Release tools/Generator/Generator.fsproj && dotnet tools/Generator/bin/Release/netcoreapp2.0/Generator.dll tools/Generator/Xamarin.Forms.Core.json src/Fabulous.Core/Xamarin.Forms.Core.fs
 
 module Generator
 
