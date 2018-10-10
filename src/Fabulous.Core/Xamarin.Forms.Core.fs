@@ -47,6 +47,8 @@ type View() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _StyleAttribKey : AttributeKey<_> = AttributeKey<_>("Style")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member val _StyleClassAttribKey : AttributeKey<_> = AttributeKey<_>("StyleClass")
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _TranslationXAttribKey : AttributeKey<_> = AttributeKey<_>("TranslationX")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _TranslationYAttribKey : AttributeKey<_> = AttributeKey<_>("TranslationY")
@@ -549,6 +551,7 @@ type View() =
                                             ?rotationY: double,
                                             ?scale: double,
                                             ?style: Xamarin.Forms.Style,
+                                            ?styleClass: obj,
                                             ?translationX: double,
                                             ?translationY: double,
                                             ?widthRequest: double,
@@ -576,6 +579,7 @@ type View() =
         let attribCount = match rotationY with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match scale with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match style with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match styleClass with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match translationX with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match translationY with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match widthRequest with Some _ -> attribCount + 1 | None -> attribCount
@@ -599,6 +603,7 @@ type View() =
         match rotationY with None -> () | Some v -> attribBuilder.Add(View._RotationYAttribKey, (v)) 
         match scale with None -> () | Some v -> attribBuilder.Add(View._ScaleAttribKey, (v)) 
         match style with None -> () | Some v -> attribBuilder.Add(View._StyleAttribKey, (v)) 
+        match styleClass with None -> () | Some v -> attribBuilder.Add(View._StyleClassAttribKey, makeStyleClass(v)) 
         match translationX with None -> () | Some v -> attribBuilder.Add(View._TranslationXAttribKey, (v)) 
         match translationY with None -> () | Some v -> attribBuilder.Add(View._TranslationYAttribKey, (v)) 
         match widthRequest with None -> () | Some v -> attribBuilder.Add(View._WidthRequestAttribKey, (v)) 
@@ -652,6 +657,8 @@ type View() =
         let mutable currScaleOpt = ValueNone
         let mutable prevStyleOpt = ValueNone
         let mutable currStyleOpt = ValueNone
+        let mutable prevStyleClassOpt = ValueNone
+        let mutable currStyleClassOpt = ValueNone
         let mutable prevTranslationXOpt = ValueNone
         let mutable currTranslationXOpt = ValueNone
         let mutable prevTranslationYOpt = ValueNone
@@ -695,6 +702,8 @@ type View() =
                 currScaleOpt <- ValueSome (kvp.Value :?> double)
             if kvp.Key = View._StyleAttribKey.KeyValue then 
                 currStyleOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Style)
+            if kvp.Key = View._StyleClassAttribKey.KeyValue then 
+                currStyleClassOpt <- ValueSome (kvp.Value :?> System.Collections.Generic.IList<string>)
             if kvp.Key = View._TranslationXAttribKey.KeyValue then 
                 currTranslationXOpt <- ValueSome (kvp.Value :?> double)
             if kvp.Key = View._TranslationYAttribKey.KeyValue then 
@@ -741,6 +750,8 @@ type View() =
                     prevScaleOpt <- ValueSome (kvp.Value :?> double)
                 if kvp.Key = View._StyleAttribKey.KeyValue then 
                     prevStyleOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Style)
+                if kvp.Key = View._StyleClassAttribKey.KeyValue then 
+                    prevStyleClassOpt <- ValueSome (kvp.Value :?> System.Collections.Generic.IList<string>)
                 if kvp.Key = View._TranslationXAttribKey.KeyValue then 
                     prevTranslationXOpt <- ValueSome (kvp.Value :?> double)
                 if kvp.Key = View._TranslationYAttribKey.KeyValue then 
@@ -828,6 +839,7 @@ type View() =
         | _, ValueSome currValue -> target.Style <-  currValue
         | ValueSome _, ValueNone -> target.Style <- null
         | ValueNone, ValueNone -> ()
+        updateStyleClass prevStyleClassOpt currStyleClassOpt target
         match prevTranslationXOpt, currTranslationXOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.TranslationX <-  currValue
@@ -863,6 +875,7 @@ type View() =
                                        ?rotationY: double,
                                        ?scale: double,
                                        ?style: Xamarin.Forms.Style,
+                                       ?styleClass: obj,
                                        ?translationX: double,
                                        ?translationY: double,
                                        ?widthRequest: double,
@@ -891,6 +904,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -930,6 +944,7 @@ type View() =
                                    ?rotationY: double,
                                    ?scale: double,
                                    ?style: Xamarin.Forms.Style,
+                                   ?styleClass: obj,
                                    ?translationX: double,
                                    ?translationY: double,
                                    ?widthRequest: double,
@@ -947,7 +962,7 @@ type View() =
         let attribCount = match margin with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match gestureRecognizers with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildVisualElement(attribCount, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildVisualElement(attribCount, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match horizontalOptions with None -> () | Some v -> attribBuilder.Add(View._HorizontalOptionsAttribKey, (v)) 
         match verticalOptions with None -> () | Some v -> attribBuilder.Add(View._VerticalOptionsAttribKey, (v)) 
         match margin with None -> () | Some v -> attribBuilder.Add(View._MarginAttribKey, makeThickness(v)) 
@@ -1039,6 +1054,7 @@ type View() =
                               ?rotationY: double,
                               ?scale: double,
                               ?style: Xamarin.Forms.Style,
+                              ?styleClass: obj,
                               ?translationX: double,
                               ?translationY: double,
                               ?widthRequest: double,
@@ -1071,6 +1087,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -1503,6 +1520,7 @@ type View() =
                                                 ?rotationY: double,
                                                 ?scale: double,
                                                 ?style: Xamarin.Forms.Style,
+                                                ?styleClass: obj,
                                                 ?translationX: double,
                                                 ?translationY: double,
                                                 ?widthRequest: double,
@@ -1518,7 +1536,7 @@ type View() =
         let attribCount = match color with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match isRunning with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match color with None -> () | Some v -> attribBuilder.Add(View._ColorAttribKey, (v)) 
         match isRunning with None -> () | Some v -> attribBuilder.Add(View._IsRunningAttribKey, (v)) 
         attribBuilder
@@ -1588,6 +1606,7 @@ type View() =
                                            ?rotationY: double,
                                            ?scale: double,
                                            ?style: Xamarin.Forms.Style,
+                                           ?styleClass: obj,
                                            ?translationX: double,
                                            ?translationY: double,
                                            ?widthRequest: double,
@@ -1622,6 +1641,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -1662,6 +1682,7 @@ type View() =
                                       ?rotationY: double,
                                       ?scale: double,
                                       ?style: Xamarin.Forms.Style,
+                                      ?styleClass: obj,
                                       ?translationX: double,
                                       ?translationY: double,
                                       ?widthRequest: double,
@@ -1676,7 +1697,7 @@ type View() =
 
         let attribCount = match color with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match color with None -> () | Some v -> attribBuilder.Add(View._ColorAttribKey, (v)) 
         attribBuilder
 
@@ -1733,6 +1754,7 @@ type View() =
                                  ?rotationY: double,
                                  ?scale: double,
                                  ?style: Xamarin.Forms.Style,
+                                 ?styleClass: obj,
                                  ?translationX: double,
                                  ?translationY: double,
                                  ?widthRequest: double,
@@ -1766,6 +1788,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -1806,6 +1829,7 @@ type View() =
                                           ?rotationY: double,
                                           ?scale: double,
                                           ?style: Xamarin.Forms.Style,
+                                          ?styleClass: obj,
                                           ?translationX: double,
                                           ?translationY: double,
                                           ?widthRequest: double,
@@ -1820,7 +1844,7 @@ type View() =
 
         let attribCount = match progress with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match progress with None -> () | Some v -> attribBuilder.Add(View._ProgressAttribKey, (v)) 
         attribBuilder
 
@@ -1877,6 +1901,7 @@ type View() =
                                      ?rotationY: double,
                                      ?scale: double,
                                      ?style: Xamarin.Forms.Style,
+                                     ?styleClass: obj,
                                      ?translationX: double,
                                      ?translationY: double,
                                      ?widthRequest: double,
@@ -1910,6 +1935,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -1951,6 +1977,7 @@ type View() =
                                      ?rotationY: double,
                                      ?scale: double,
                                      ?style: Xamarin.Forms.Style,
+                                     ?styleClass: obj,
                                      ?translationX: double,
                                      ?translationY: double,
                                      ?widthRequest: double,
@@ -1966,7 +1993,7 @@ type View() =
         let attribCount = match isClippedToBounds with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match padding with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match isClippedToBounds with None -> () | Some v -> attribBuilder.Add(View._IsClippedToBoundsAttribKey, (v)) 
         match padding with None -> () | Some v -> attribBuilder.Add(View._PaddingAttribKey, makeThickness(v)) 
         attribBuilder
@@ -2036,6 +2063,7 @@ type View() =
                                 ?rotationY: double,
                                 ?scale: double,
                                 ?style: Xamarin.Forms.Style,
+                                ?styleClass: obj,
                                 ?translationX: double,
                                 ?translationY: double,
                                 ?widthRequest: double,
@@ -2070,6 +2098,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -2115,6 +2144,7 @@ type View() =
                                          ?rotationY: double,
                                          ?scale: double,
                                          ?style: Xamarin.Forms.Style,
+                                         ?styleClass: obj,
                                          ?translationX: double,
                                          ?translationY: double,
                                          ?widthRequest: double,
@@ -2132,7 +2162,7 @@ type View() =
         let attribCount = match horizontalScrollBarVisibility with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match verticalScrollBarVisibility with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match content with None -> () | Some v -> attribBuilder.Add(View._ContentAttribKey, (v)) 
         match orientation with None -> () | Some v -> attribBuilder.Add(View._ScrollOrientationAttribKey, (v)) 
         match horizontalScrollBarVisibility with None -> () | Some v -> attribBuilder.Add(View._HorizontalScrollBarVisibilityAttribKey, (v)) 
@@ -2235,6 +2265,7 @@ type View() =
                                     ?rotationY: double,
                                     ?scale: double,
                                     ?style: Xamarin.Forms.Style,
+                                    ?styleClass: obj,
                                     ?translationX: double,
                                     ?translationY: double,
                                     ?widthRequest: double,
@@ -2273,6 +2304,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -2324,6 +2356,7 @@ type View() =
                                         ?rotationY: double,
                                         ?scale: double,
                                         ?style: Xamarin.Forms.Style,
+                                        ?styleClass: obj,
                                         ?translationX: double,
                                         ?translationY: double,
                                         ?widthRequest: double,
@@ -2349,7 +2382,7 @@ type View() =
         let attribCount = match textColor with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match textChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match cancelButtonColor with None -> () | Some v -> attribBuilder.Add(View._CancelButtonColorAttribKey, (v)) 
         match fontFamily with None -> () | Some v -> attribBuilder.Add(View._FontFamilyAttribKey, (v)) 
         match fontAttributes with None -> () | Some v -> attribBuilder.Add(View._FontAttributesAttribKey, (v)) 
@@ -2542,6 +2575,7 @@ type View() =
                                    ?rotationY: double,
                                    ?scale: double,
                                    ?style: Xamarin.Forms.Style,
+                                   ?styleClass: obj,
                                    ?translationX: double,
                                    ?translationY: double,
                                    ?widthRequest: double,
@@ -2586,6 +2620,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -2638,6 +2673,7 @@ type View() =
                                      ?rotationY: double,
                                      ?scale: double,
                                      ?style: Xamarin.Forms.Style,
+                                     ?styleClass: obj,
                                      ?translationX: double,
                                      ?translationY: double,
                                      ?widthRequest: double,
@@ -2664,7 +2700,7 @@ type View() =
         let attribCount = match image with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match textColor with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match text with None -> () | Some v -> attribBuilder.Add(View._TextAttribKey, (v)) 
         match command with None -> () | Some v -> attribBuilder.Add(View._ButtonCommandAttribKey, (v)) 
         match canExecute with None -> () | Some v -> attribBuilder.Add(View._ButtonCanExecuteAttribKey, (v)) 
@@ -2869,6 +2905,7 @@ type View() =
                                 ?rotationY: double,
                                 ?scale: double,
                                 ?style: Xamarin.Forms.Style,
+                                ?styleClass: obj,
                                 ?translationX: double,
                                 ?translationY: double,
                                 ?widthRequest: double,
@@ -2914,6 +2951,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -2957,6 +2995,7 @@ type View() =
                                      ?rotationY: double,
                                      ?scale: double,
                                      ?style: Xamarin.Forms.Style,
+                                     ?styleClass: obj,
                                      ?translationX: double,
                                      ?translationY: double,
                                      ?widthRequest: double,
@@ -2974,7 +3013,7 @@ type View() =
         let attribCount = match value with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match valueChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match minimum with None -> () | Some v -> attribBuilder.Add(View._MinimumAttribKey, (v)) 
         match maximum with None -> () | Some v -> attribBuilder.Add(View._MaximumAttribKey, (v)) 
         match value with None -> () | Some v -> attribBuilder.Add(View._ValueAttribKey, (v)) 
@@ -3071,6 +3110,7 @@ type View() =
                                 ?rotationY: double,
                                 ?scale: double,
                                 ?style: Xamarin.Forms.Style,
+                                ?styleClass: obj,
                                 ?translationX: double,
                                 ?translationY: double,
                                 ?widthRequest: double,
@@ -3107,6 +3147,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -3151,6 +3192,7 @@ type View() =
                                       ?rotationY: double,
                                       ?scale: double,
                                       ?style: Xamarin.Forms.Style,
+                                      ?styleClass: obj,
                                       ?translationX: double,
                                       ?translationY: double,
                                       ?widthRequest: double,
@@ -3169,7 +3211,7 @@ type View() =
         let attribCount = match increment with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match valueChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match minimum with None -> () | Some v -> attribBuilder.Add(View._MinimumAttribKey, (v)) 
         match maximum with None -> () | Some v -> attribBuilder.Add(View._MaximumAttribKey, (v)) 
         match value with None -> () | Some v -> attribBuilder.Add(View._ValueAttribKey, (v)) 
@@ -3279,6 +3321,7 @@ type View() =
                                  ?rotationY: double,
                                  ?scale: double,
                                  ?style: Xamarin.Forms.Style,
+                                 ?styleClass: obj,
                                  ?translationX: double,
                                  ?translationY: double,
                                  ?widthRequest: double,
@@ -3316,6 +3359,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -3358,6 +3402,7 @@ type View() =
                                      ?rotationY: double,
                                      ?scale: double,
                                      ?style: Xamarin.Forms.Style,
+                                     ?styleClass: obj,
                                      ?translationX: double,
                                      ?translationY: double,
                                      ?widthRequest: double,
@@ -3374,7 +3419,7 @@ type View() =
         let attribCount = match toggled with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match onColor with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match isToggled with None -> () | Some v -> attribBuilder.Add(View._IsToggledAttribKey, (v)) 
         match toggled with None -> () | Some v -> attribBuilder.Add(View._ToggledAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ToggledEventArgs>(fun _sender args -> f args))(v)) 
         match onColor with None -> () | Some v -> attribBuilder.Add(View._OnColorAttribKey, (v)) 
@@ -3458,6 +3503,7 @@ type View() =
                                 ?rotationY: double,
                                 ?scale: double,
                                 ?style: Xamarin.Forms.Style,
+                                ?styleClass: obj,
                                 ?translationX: double,
                                 ?translationY: double,
                                 ?widthRequest: double,
@@ -3493,6 +3539,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -3729,6 +3776,7 @@ type View() =
                                         ?rotationY: double,
                                         ?scale: double,
                                         ?style: Xamarin.Forms.Style,
+                                        ?styleClass: obj,
                                         ?translationX: double,
                                         ?translationY: double,
                                         ?widthRequest: double,
@@ -3746,7 +3794,7 @@ type View() =
         let attribCount = match rowHeight with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match items with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match intent with None -> () | Some v -> attribBuilder.Add(View._IntentAttribKey, (v)) 
         match hasUnevenRows with None -> () | Some v -> attribBuilder.Add(View._HasUnevenRowsAttribKey, (v)) 
         match rowHeight with None -> () | Some v -> attribBuilder.Add(View._RowHeightAttribKey, (v)) 
@@ -3838,6 +3886,7 @@ type View() =
                                    ?rotationY: double,
                                    ?scale: double,
                                    ?style: Xamarin.Forms.Style,
+                                   ?styleClass: obj,
                                    ?translationX: double,
                                    ?translationY: double,
                                    ?widthRequest: double,
@@ -3874,6 +3923,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -4020,6 +4070,7 @@ type View() =
                                    ?rotationY: double,
                                    ?scale: double,
                                    ?style: Xamarin.Forms.Style,
+                                   ?styleClass: obj,
                                    ?translationX: double,
                                    ?translationY: double,
                                    ?widthRequest: double,
@@ -4038,7 +4089,7 @@ type View() =
         let attribCount = match columnSpacing with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match children with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match rowdefs with None -> () | Some v -> attribBuilder.Add(View._GridRowDefinitionsAttribKey, (fun es -> es |> Array.ofList |> Array.map (fun h -> View.RowDefinition(height=h)))(v)) 
         match coldefs with None -> () | Some v -> attribBuilder.Add(View._GridColumnDefinitionsAttribKey, (fun es -> es |> Array.ofList |> Array.map (fun h -> View.ColumnDefinition(width=h)))(v)) 
         match rowSpacing with None -> () | Some v -> attribBuilder.Add(View._RowSpacingAttribKey, (v)) 
@@ -4182,6 +4233,7 @@ type View() =
                               ?rotationY: double,
                               ?scale: double,
                               ?style: Xamarin.Forms.Style,
+                              ?styleClass: obj,
                               ?translationX: double,
                               ?translationY: double,
                               ?widthRequest: double,
@@ -4221,6 +4273,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -4263,6 +4316,7 @@ type View() =
                                              ?rotationY: double,
                                              ?scale: double,
                                              ?style: Xamarin.Forms.Style,
+                                             ?styleClass: obj,
                                              ?translationX: double,
                                              ?translationY: double,
                                              ?widthRequest: double,
@@ -4277,7 +4331,7 @@ type View() =
 
         let attribCount = match children with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match children with None -> () | Some v -> attribBuilder.Add(View._ChildrenAttribKey, Array.ofList(v)) 
         attribBuilder
 
@@ -4353,6 +4407,7 @@ type View() =
                                         ?rotationY: double,
                                         ?scale: double,
                                         ?style: Xamarin.Forms.Style,
+                                        ?styleClass: obj,
                                         ?translationX: double,
                                         ?translationY: double,
                                         ?widthRequest: double,
@@ -4388,6 +4443,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -4430,6 +4486,7 @@ type View() =
                                              ?rotationY: double,
                                              ?scale: double,
                                              ?style: Xamarin.Forms.Style,
+                                             ?styleClass: obj,
                                              ?translationX: double,
                                              ?translationY: double,
                                              ?widthRequest: double,
@@ -4444,7 +4501,7 @@ type View() =
 
         let attribCount = match children with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match children with None -> () | Some v -> attribBuilder.Add(View._ChildrenAttribKey, Array.ofList(v)) 
         attribBuilder
 
@@ -4544,6 +4601,7 @@ type View() =
                                         ?rotationY: double,
                                         ?scale: double,
                                         ?style: Xamarin.Forms.Style,
+                                        ?styleClass: obj,
                                         ?translationX: double,
                                         ?translationY: double,
                                         ?widthRequest: double,
@@ -4579,6 +4637,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -4627,6 +4686,7 @@ type View() =
                                          ?rotationY: double,
                                          ?scale: double,
                                          ?style: Xamarin.Forms.Style,
+                                         ?styleClass: obj,
                                          ?translationX: double,
                                          ?translationY: double,
                                          ?widthRequest: double,
@@ -4647,7 +4707,7 @@ type View() =
         let attribCount = match justifyContent with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match children with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match alignContent with None -> () | Some v -> attribBuilder.Add(View._AlignContentAttribKey, (v)) 
         match alignItems with None -> () | Some v -> attribBuilder.Add(View._AlignItemsAttribKey, (v)) 
         match direction with None -> () | Some v -> attribBuilder.Add(View._DirectionAttribKey, (v)) 
@@ -4825,6 +4885,7 @@ type View() =
                                     ?rotationY: double,
                                     ?scale: double,
                                     ?style: Xamarin.Forms.Style,
+                                    ?styleClass: obj,
                                     ?translationX: double,
                                     ?translationY: double,
                                     ?widthRequest: double,
@@ -4866,6 +4927,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -4907,6 +4969,7 @@ type View() =
                                             ?rotationY: double,
                                             ?scale: double,
                                             ?style: Xamarin.Forms.Style,
+                                            ?styleClass: obj,
                                             ?translationX: double,
                                             ?translationY: double,
                                             ?widthRequest: double,
@@ -4920,7 +4983,7 @@ type View() =
                                             ?ref: ViewRef) = 
 
 
-        let attribBuilder = View.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -4964,6 +5027,7 @@ type View() =
                                        ?rotationY: double,
                                        ?scale: double,
                                        ?style: Xamarin.Forms.Style,
+                                       ?styleClass: obj,
                                        ?translationX: double,
                                        ?translationY: double,
                                        ?widthRequest: double,
@@ -4998,6 +5062,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -5040,6 +5105,7 @@ type View() =
                                           ?rotationY: double,
                                           ?scale: double,
                                           ?style: Xamarin.Forms.Style,
+                                          ?styleClass: obj,
                                           ?translationX: double,
                                           ?translationY: double,
                                           ?widthRequest: double,
@@ -5054,7 +5120,7 @@ type View() =
 
         let attribCount = match content with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildTemplatedView(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildTemplatedView(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match content with None -> () | Some v -> attribBuilder.Add(View._ContentAttribKey, (v)) 
         attribBuilder
 
@@ -5118,6 +5184,7 @@ type View() =
                                      ?rotationY: double,
                                      ?scale: double,
                                      ?style: Xamarin.Forms.Style,
+                                     ?styleClass: obj,
                                      ?translationX: double,
                                      ?translationY: double,
                                      ?widthRequest: double,
@@ -5153,6 +5220,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -5197,6 +5265,7 @@ type View() =
                                          ?rotationY: double,
                                          ?scale: double,
                                          ?style: Xamarin.Forms.Style,
+                                         ?styleClass: obj,
                                          ?translationX: double,
                                          ?translationY: double,
                                          ?widthRequest: double,
@@ -5215,7 +5284,7 @@ type View() =
         let attribCount = match maximumDate with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match dateSelected with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match date with None -> () | Some v -> attribBuilder.Add(View._DateAttribKey, (v)) 
         match format with None -> () | Some v -> attribBuilder.Add(View._FormatAttribKey, (v)) 
         match minimumDate with None -> () | Some v -> attribBuilder.Add(View._MinimumDateAttribKey, (v)) 
@@ -5325,6 +5394,7 @@ type View() =
                                     ?rotationY: double,
                                     ?scale: double,
                                     ?style: Xamarin.Forms.Style,
+                                    ?styleClass: obj,
                                     ?translationX: double,
                                     ?translationY: double,
                                     ?widthRequest: double,
@@ -5362,6 +5432,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -5406,6 +5477,7 @@ type View() =
                                      ?rotationY: double,
                                      ?scale: double,
                                      ?style: Xamarin.Forms.Style,
+                                     ?styleClass: obj,
                                      ?translationX: double,
                                      ?translationY: double,
                                      ?widthRequest: double,
@@ -5424,7 +5496,7 @@ type View() =
         let attribCount = match textColor with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match selectedIndexChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match itemsSource with None -> () | Some v -> attribBuilder.Add(View._PickerItemsSourceAttribKey, seqToIListUntyped(v)) 
         match selectedIndex with None -> () | Some v -> attribBuilder.Add(View._SelectedIndexAttribKey, (v)) 
         match title with None -> () | Some v -> attribBuilder.Add(View._TitleAttribKey, (v)) 
@@ -5534,6 +5606,7 @@ type View() =
                                 ?rotationY: double,
                                 ?scale: double,
                                 ?style: Xamarin.Forms.Style,
+                                ?styleClass: obj,
                                 ?translationX: double,
                                 ?translationY: double,
                                 ?widthRequest: double,
@@ -5571,6 +5644,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -5616,6 +5690,7 @@ type View() =
                                     ?rotationY: double,
                                     ?scale: double,
                                     ?style: Xamarin.Forms.Style,
+                                    ?styleClass: obj,
                                     ?translationX: double,
                                     ?translationY: double,
                                     ?widthRequest: double,
@@ -5632,7 +5707,7 @@ type View() =
         let attribCount = match cornerRadius with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match hasShadow with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildContentView(attribCount, ?content=content, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildContentView(attribCount, ?content=content, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match borderColor with None -> () | Some v -> attribBuilder.Add(View._BorderColorAttribKey, (v)) 
         match cornerRadius with None -> () | Some v -> attribBuilder.Add(View._FrameCornerRadiusAttribKey, single(v)) 
         match hasShadow with None -> () | Some v -> attribBuilder.Add(View._HasShadowAttribKey, (v)) 
@@ -5718,6 +5793,7 @@ type View() =
                                ?rotationY: double,
                                ?scale: double,
                                ?style: Xamarin.Forms.Style,
+                               ?styleClass: obj,
                                ?translationX: double,
                                ?translationY: double,
                                ?widthRequest: double,
@@ -5756,6 +5832,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -5798,6 +5875,7 @@ type View() =
                                     ?rotationY: double,
                                     ?scale: double,
                                     ?style: Xamarin.Forms.Style,
+                                    ?styleClass: obj,
                                     ?translationX: double,
                                     ?translationY: double,
                                     ?widthRequest: double,
@@ -5814,7 +5892,7 @@ type View() =
         let attribCount = match aspect with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match isOpaque with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match source with None -> () | Some v -> attribBuilder.Add(View._ImageSourceAttribKey, (v)) 
         match aspect with None -> () | Some v -> attribBuilder.Add(View._AspectAttribKey, (v)) 
         match isOpaque with None -> () | Some v -> attribBuilder.Add(View._IsOpaqueAttribKey, (v)) 
@@ -5897,6 +5975,7 @@ type View() =
                                ?rotationY: double,
                                ?scale: double,
                                ?style: Xamarin.Forms.Style,
+                               ?styleClass: obj,
                                ?translationX: double,
                                ?translationY: double,
                                ?widthRequest: double,
@@ -5932,6 +6011,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -5972,6 +6052,7 @@ type View() =
                                         ?rotationY: double,
                                         ?scale: double,
                                         ?style: Xamarin.Forms.Style,
+                                        ?styleClass: obj,
                                         ?translationX: double,
                                         ?translationY: double,
                                         ?widthRequest: double,
@@ -5986,7 +6067,7 @@ type View() =
 
         let attribCount = match keyboard with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match keyboard with None -> () | Some v -> attribBuilder.Add(View._KeyboardAttribKey, (v)) 
         attribBuilder
 
@@ -6043,6 +6124,7 @@ type View() =
                                    ?rotationY: double,
                                    ?scale: double,
                                    ?style: Xamarin.Forms.Style,
+                                   ?styleClass: obj,
                                    ?translationX: double,
                                    ?translationY: double,
                                    ?widthRequest: double,
@@ -6076,6 +6158,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -6124,6 +6207,7 @@ type View() =
                                      ?rotationY: double,
                                      ?scale: double,
                                      ?style: Xamarin.Forms.Style,
+                                     ?styleClass: obj,
                                      ?translationX: double,
                                      ?translationY: double,
                                      ?widthRequest: double,
@@ -6145,7 +6229,7 @@ type View() =
         let attribCount = match textChanged with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match autoSize with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildInputView(attribCount, ?keyboard=keyboard, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildInputView(attribCount, ?keyboard=keyboard, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match text with None -> () | Some v -> attribBuilder.Add(View._TextAttribKey, (v)) 
         match fontSize with None -> () | Some v -> attribBuilder.Add(View._FontSizeAttribKey, makeFontSize(v)) 
         match fontFamily with None -> () | Some v -> attribBuilder.Add(View._FontFamilyAttribKey, (v)) 
@@ -6296,6 +6380,7 @@ type View() =
                                 ?rotationY: double,
                                 ?scale: double,
                                 ?style: Xamarin.Forms.Style,
+                                ?styleClass: obj,
                                 ?translationX: double,
                                 ?translationY: double,
                                 ?widthRequest: double,
@@ -6337,6 +6422,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -6391,6 +6477,7 @@ type View() =
                                     ?rotationY: double,
                                     ?scale: double,
                                     ?style: Xamarin.Forms.Style,
+                                    ?styleClass: obj,
                                     ?translationX: double,
                                     ?translationY: double,
                                     ?widthRequest: double,
@@ -6418,7 +6505,7 @@ type View() =
         let attribCount = match returnType with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match returnCommand with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildInputView(attribCount, ?keyboard=keyboard, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildInputView(attribCount, ?keyboard=keyboard, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match text with None -> () | Some v -> attribBuilder.Add(View._TextAttribKey, (v)) 
         match placeholder with None -> () | Some v -> attribBuilder.Add(View._PlaceholderAttribKey, (v)) 
         match horizontalTextAlignment with None -> () | Some v -> attribBuilder.Add(View._HorizontalTextAlignmentAttribKey, (v)) 
@@ -6647,6 +6734,7 @@ type View() =
                                ?rotationY: double,
                                ?scale: double,
                                ?style: Xamarin.Forms.Style,
+                               ?styleClass: obj,
                                ?translationX: double,
                                ?translationY: double,
                                ?widthRequest: double,
@@ -6694,6 +6782,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -6898,6 +6987,7 @@ type View() =
                                     ?rotationY: double,
                                     ?scale: double,
                                     ?style: Xamarin.Forms.Style,
+                                    ?styleClass: obj,
                                     ?translationX: double,
                                     ?translationY: double,
                                     ?widthRequest: double,
@@ -6920,7 +7010,7 @@ type View() =
         let attribCount = match formattedText with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match lineBreakMode with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match text with None -> () | Some v -> attribBuilder.Add(View._TextAttribKey, (v)) 
         match horizontalTextAlignment with None -> () | Some v -> attribBuilder.Add(View._HorizontalTextAlignmentAttribKey, (v)) 
         match verticalTextAlignment with None -> () | Some v -> attribBuilder.Add(View._VerticalTextAlignmentAttribKey, (v)) 
@@ -7086,6 +7176,7 @@ type View() =
                                ?rotationY: double,
                                ?scale: double,
                                ?style: Xamarin.Forms.Style,
+                               ?styleClass: obj,
                                ?translationX: double,
                                ?translationY: double,
                                ?widthRequest: double,
@@ -7127,6 +7218,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -7171,6 +7263,7 @@ type View() =
                                           ?rotationY: double,
                                           ?scale: double,
                                           ?style: Xamarin.Forms.Style,
+                                          ?styleClass: obj,
                                           ?translationX: double,
                                           ?translationY: double,
                                           ?widthRequest: double,
@@ -7187,7 +7280,7 @@ type View() =
         let attribCount = match orientation with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match spacing with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match children with None -> () | Some v -> attribBuilder.Add(View._ChildrenAttribKey, Array.ofList(v)) 
         match orientation with None -> () | Some v -> attribBuilder.Add(View._StackOrientationAttribKey, (v)) 
         match spacing with None -> () | Some v -> attribBuilder.Add(View._SpacingAttribKey, (v)) 
@@ -7272,6 +7365,7 @@ type View() =
                                      ?rotationY: double,
                                      ?scale: double,
                                      ?style: Xamarin.Forms.Style,
+                                     ?styleClass: obj,
                                      ?translationX: double,
                                      ?translationY: double,
                                      ?widthRequest: double,
@@ -7309,6 +7403,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -7586,6 +7681,7 @@ type View() =
                                          ?rotationY: double,
                                          ?scale: double,
                                          ?style: Xamarin.Forms.Style,
+                                         ?styleClass: obj,
                                          ?translationX: double,
                                          ?translationY: double,
                                          ?widthRequest: double,
@@ -7602,7 +7698,7 @@ type View() =
         let attribCount = match format with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match textColor with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match time with None -> () | Some v -> attribBuilder.Add(View._TimeAttribKey, (v)) 
         match format with None -> () | Some v -> attribBuilder.Add(View._FormatAttribKey, (v)) 
         match textColor with None -> () | Some v -> attribBuilder.Add(View._TextColorAttribKey, (v)) 
@@ -7685,6 +7781,7 @@ type View() =
                                     ?rotationY: double,
                                     ?scale: double,
                                     ?style: Xamarin.Forms.Style,
+                                    ?styleClass: obj,
                                     ?translationX: double,
                                     ?translationY: double,
                                     ?widthRequest: double,
@@ -7720,6 +7817,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -7762,6 +7860,7 @@ type View() =
                                       ?rotationY: double,
                                       ?scale: double,
                                       ?style: Xamarin.Forms.Style,
+                                      ?styleClass: obj,
                                       ?translationX: double,
                                       ?translationY: double,
                                       ?widthRequest: double,
@@ -7778,7 +7877,7 @@ type View() =
         let attribCount = match navigated with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match navigating with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match source with None -> () | Some v -> attribBuilder.Add(View._WebSourceAttribKey, (v)) 
         match navigated with None -> () | Some v -> attribBuilder.Add(View._NavigatedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.WebNavigatedEventArgs>(fun _sender args -> f args))(v)) 
         match navigating with None -> () | Some v -> attribBuilder.Add(View._NavigatingAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.WebNavigatingEventArgs>(fun _sender args -> f args))(v)) 
@@ -7863,6 +7962,7 @@ type View() =
                                  ?rotationY: double,
                                  ?scale: double,
                                  ?style: Xamarin.Forms.Style,
+                                 ?styleClass: obj,
                                  ?translationX: double,
                                  ?translationY: double,
                                  ?widthRequest: double,
@@ -7898,6 +7998,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -7943,6 +8044,7 @@ type View() =
                                    ?rotationY: double,
                                    ?scale: double,
                                    ?style: Xamarin.Forms.Style,
+                                   ?styleClass: obj,
                                    ?translationX: double,
                                    ?translationY: double,
                                    ?widthRequest: double,
@@ -7966,7 +8068,7 @@ type View() =
         let attribCount = match disappearing with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match layoutChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildVisualElement(attribCount, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildVisualElement(attribCount, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match title with None -> () | Some v -> attribBuilder.Add(View._TitleAttribKey, (v)) 
         match backgroundImage with None -> () | Some v -> attribBuilder.Add(View._BackgroundImageAttribKey, (v)) 
         match icon with None -> () | Some v -> attribBuilder.Add(View._IconAttribKey, (v)) 
@@ -8135,6 +8237,7 @@ type View() =
                               ?rotationY: double,
                               ?scale: double,
                               ?style: Xamarin.Forms.Style,
+                              ?styleClass: obj,
                               ?translationX: double,
                               ?translationY: double,
                               ?widthRequest: double,
@@ -8173,6 +8276,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -8222,6 +8326,7 @@ type View() =
                                            ?rotationY: double,
                                            ?scale: double,
                                            ?style: Xamarin.Forms.Style,
+                                           ?styleClass: obj,
                                            ?translationX: double,
                                            ?translationY: double,
                                            ?widthRequest: double,
@@ -8239,7 +8344,7 @@ type View() =
         let attribCount = match currentPage with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match currentPageChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match children with None -> () | Some v -> attribBuilder.Add(View._ChildrenAttribKey, Array.ofList(v)) 
         match selectedItem with None -> () | Some v -> attribBuilder.Add(View._CarouselPage_SelectedItemAttribKey, (v)) 
         match currentPage with None -> () | Some v -> attribBuilder.Add(View._CurrentPageAttribKey, (v)) 
@@ -8347,6 +8452,7 @@ type View() =
                                       ?rotationY: double,
                                       ?scale: double,
                                       ?style: Xamarin.Forms.Style,
+                                      ?styleClass: obj,
                                       ?translationX: double,
                                       ?translationY: double,
                                       ?widthRequest: double,
@@ -8389,6 +8495,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -8440,6 +8547,7 @@ type View() =
                                              ?rotationY: double,
                                              ?scale: double,
                                              ?style: Xamarin.Forms.Style,
+                                             ?styleClass: obj,
                                              ?translationX: double,
                                              ?translationY: double,
                                              ?widthRequest: double,
@@ -8459,7 +8567,7 @@ type View() =
         let attribCount = match poppedToRoot with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match pushed with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match pages with None -> () | Some v -> attribBuilder.Add(View._PagesAttribKey, Array.ofList(v)) 
         match barBackgroundColor with None -> () | Some v -> attribBuilder.Add(View._BarBackgroundColorAttribKey, (v)) 
         match barTextColor with None -> () | Some v -> attribBuilder.Add(View._BarTextColorAttribKey, (v)) 
@@ -8620,6 +8728,7 @@ type View() =
                                         ?rotationY: double,
                                         ?scale: double,
                                         ?style: Xamarin.Forms.Style,
+                                        ?styleClass: obj,
                                         ?translationX: double,
                                         ?translationY: double,
                                         ?widthRequest: double,
@@ -8664,6 +8773,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -8712,6 +8822,7 @@ type View() =
                                          ?rotationY: double,
                                          ?scale: double,
                                          ?style: Xamarin.Forms.Style,
+                                         ?styleClass: obj,
                                          ?translationX: double,
                                          ?translationY: double,
                                          ?widthRequest: double,
@@ -8728,7 +8839,7 @@ type View() =
         let attribCount = match barBackgroundColor with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match barTextColor with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match children with None -> () | Some v -> attribBuilder.Add(View._ChildrenAttribKey, Array.ofList(v)) 
         match barBackgroundColor with None -> () | Some v -> attribBuilder.Add(View._BarBackgroundColorAttribKey, (v)) 
         match barTextColor with None -> () | Some v -> attribBuilder.Add(View._BarTextColorAttribKey, (v)) 
@@ -8817,6 +8928,7 @@ type View() =
                                     ?rotationY: double,
                                     ?scale: double,
                                     ?style: Xamarin.Forms.Style,
+                                    ?styleClass: obj,
                                     ?translationX: double,
                                     ?translationY: double,
                                     ?widthRequest: double,
@@ -8858,6 +8970,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -8905,6 +9018,7 @@ type View() =
                                           ?rotationY: double,
                                           ?scale: double,
                                           ?style: Xamarin.Forms.Style,
+                                          ?styleClass: obj,
                                           ?translationX: double,
                                           ?translationY: double,
                                           ?widthRequest: double,
@@ -8920,7 +9034,7 @@ type View() =
         let attribCount = match content with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match onSizeAllocated with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match content with None -> () | Some v -> attribBuilder.Add(View._ContentAttribKey, (v)) 
         match onSizeAllocated with None -> () | Some v -> attribBuilder.Add(View._OnSizeAllocatedCallbackAttribKey, (fun f -> FSharp.Control.Handler<_>(fun _sender args -> f args))(v)) 
         attribBuilder
@@ -8997,6 +9111,7 @@ type View() =
                                      ?rotationY: double,
                                      ?scale: double,
                                      ?style: Xamarin.Forms.Style,
+                                     ?styleClass: obj,
                                      ?translationX: double,
                                      ?translationY: double,
                                      ?widthRequest: double,
@@ -9037,6 +9152,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -9088,6 +9204,7 @@ type View() =
                                                ?rotationY: double,
                                                ?scale: double,
                                                ?style: Xamarin.Forms.Style,
+                                               ?styleClass: obj,
                                                ?translationX: double,
                                                ?translationY: double,
                                                ?widthRequest: double,
@@ -9107,7 +9224,7 @@ type View() =
         let attribCount = match masterBehavior with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match isPresentedChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match master with None -> () | Some v -> attribBuilder.Add(View._MasterAttribKey, (v)) 
         match detail with None -> () | Some v -> attribBuilder.Add(View._DetailAttribKey, (v)) 
         match isGestureEnabled with None -> () | Some v -> attribBuilder.Add(View._IsGestureEnabledAttribKey, (v)) 
@@ -9246,6 +9363,7 @@ type View() =
                                           ?rotationY: double,
                                           ?scale: double,
                                           ?style: Xamarin.Forms.Style,
+                                          ?styleClass: obj,
                                           ?translationX: double,
                                           ?translationY: double,
                                           ?widthRequest: double,
@@ -9290,6 +9408,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -9901,6 +10020,7 @@ type View() =
                                        ?rotationY: double,
                                        ?scale: double,
                                        ?style: Xamarin.Forms.Style,
+                                       ?styleClass: obj,
                                        ?translationX: double,
                                        ?translationY: double,
                                        ?widthRequest: double,
@@ -9933,7 +10053,7 @@ type View() =
         let attribCount = match refreshing with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match selectionMode with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match items with None -> () | Some v -> attribBuilder.Add(View._ListViewItemsAttribKey, (v)) 
         match footer with None -> () | Some v -> attribBuilder.Add(View._FooterAttribKey, (v)) 
         match hasUnevenRows with None -> () | Some v -> attribBuilder.Add(View._HasUnevenRowsAttribKey, (v)) 
@@ -10225,6 +10345,7 @@ type View() =
                                   ?rotationY: double,
                                   ?scale: double,
                                   ?style: Xamarin.Forms.Style,
+                                  ?styleClass: obj,
                                   ?translationX: double,
                                   ?translationY: double,
                                   ?widthRequest: double,
@@ -10276,6 +10397,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -10333,6 +10455,7 @@ type View() =
                                               ?rotationY: double,
                                               ?scale: double,
                                               ?style: Xamarin.Forms.Style,
+                                              ?styleClass: obj,
                                               ?translationX: double,
                                               ?translationY: double,
                                               ?widthRequest: double,
@@ -10364,7 +10487,7 @@ type View() =
         let attribCount = match refreshing with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match selectionMode with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match items with None -> () | Some v -> attribBuilder.Add(View._ListViewGrouped_ItemsSourceAttribKey, (fun es -> es |> Array.ofList |> Array.map (fun (g, e, l) -> (g, e, Array.ofList l)))(v)) 
         match showJumpList with None -> () | Some v -> attribBuilder.Add(View._ListViewGrouped_ShowJumpListAttribKey, (v)) 
         match footer with None -> () | Some v -> attribBuilder.Add(View._FooterAttribKey, (v)) 
@@ -10639,6 +10762,7 @@ type View() =
                                          ?rotationY: double,
                                          ?scale: double,
                                          ?style: Xamarin.Forms.Style,
+                                         ?styleClass: obj,
                                          ?translationX: double,
                                          ?translationY: double,
                                          ?widthRequest: double,
@@ -10689,6 +10813,7 @@ type View() =
                                ?rotationY=rotationY,
                                ?scale=scale,
                                ?style=style,
+                               ?styleClass=styleClass,
                                ?translationX=translationX,
                                ?translationY=translationY,
                                ?widthRequest=widthRequest,
@@ -10764,6 +10889,9 @@ module ViewElementExtensions =
 
         /// Adjusts the Style property in the visual element
         member x.Style(value: Xamarin.Forms.Style) = x.WithAttribute(View._StyleAttribKey, (value))
+
+        /// Adjusts the StyleClass property in the visual element
+        member x.StyleClass(value: obj) = x.WithAttribute(View._StyleClassAttribKey, makeStyleClass(value))
 
         /// Adjusts the TranslationX property in the visual element
         member x.TranslationX(value: double) = x.WithAttribute(View._TranslationXAttribKey, (value))
@@ -11386,6 +11514,9 @@ module ViewElementExtensions =
 
     /// Adjusts the Style property in the visual element
     let style (value: Xamarin.Forms.Style) (x: ViewElement) = x.Style(value)
+
+    /// Adjusts the StyleClass property in the visual element
+    let styleClass (value: obj) (x: ViewElement) = x.StyleClass(value)
 
     /// Adjusts the TranslationX property in the visual element
     let translationX (value: double) (x: ViewElement) = x.TranslationX(value)
