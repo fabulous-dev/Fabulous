@@ -37,109 +37,101 @@
 		},
 		{
 			"name": "Xamarin.Forms.VisualElement",
-      "members": [
-        {
-          "name": "AnchorX",
-          "defaultValue": "0.0"
-        },
-        {
-          "name": "AnchorY",
-          "defaultValue": "0.0"
-        },
-        {
-          "name": "BackgroundColor",
-          "defaultValue": "Xamarin.Forms.Color.Default"
-        },
-        {
-          "name": "HeightRequest",
-          "defaultValue": "-1.0"
-        },
-        {
-          "name": "InputTransparent",
-          "defaultValue": "false"
-        },
-        {
-          "name": "IsEnabled",
-          "defaultValue": "true"
-        },
-        {
-          "name": "IsVisible",
-          "defaultValue": "true"
-        },
-        {
-          "name": "MinimumHeightRequest",
-          "defaultValue": "-1.0"
-        },
-        {
-          "name": "MinimumWidthRequest",
-          "defaultValue": "-1.0"
-        },
-        {
-          "name": "Opacity",
-          "defaultValue": "1.0"
-        },
-        {
-          "name": "Rotation",
-          "defaultValue": "0.0"
-        },
-        {
-          "name": "RotationX",
-          "defaultValue": "0.0"
-        },
-        {
-          "name": "RotationY",
-          "defaultValue": "0.0"
-        },
-        {
-          "name": "Scale",
-          "defaultValue": "1.0"
-        },
-        {
-          "name": "Style",
-          "defaultValue": "null"
-        },
-        {
-          "name": "StyleClass",
-          "defaultValue": "null",
-          "inputType": "obj",
-          "modelType": "System.Collections.Generic.IList<string>",
-          "convToModel": "makeStyleClass",
-          "updateCode":  "updateStyleClass"
-        },
-        {
-          "name": "TranslationX",
-          "defaultValue": "0.0"
-        },
-        {
-          "name": "TranslationY",
-          "defaultValue": "0.0"
-        },
-        {
-          "name": "WidthRequest",
-          "defaultValue": "-1.0"
-        },
-        {
-          "name": "Resources",
-          "defaultValue": "null",
-          "inputType": "(string * obj) list",
-          "modelType": "(string * obj) list",
-          "updateCode": "updateResources"
-        },
-        {
-          "name": "Styles",
-          "defaultValue": "null",
-          "inputType": "Xamarin.Forms.Style list",
-          "modelType": "Xamarin.Forms.Style list",
-          "updateCode": "updateStyles"
-        },
-        {
-          "name": "StyleSheets",
-          "defaultValue": "null",
-          "inputType": "Xamarin.Forms.StyleSheets.StyleSheet list",
-          "modelType": "Xamarin.Forms.StyleSheets.StyleSheet list",
-          "updateCode": "updateStyleSheets"
-        }
-      ]
+			"members": [
+				{
+					"name": "AnchorX",
+					"defaultValue": "0.0"
+				},
+				{
+					"name": "AnchorY",
+					"defaultValue": "0.0"
+				},
+				{
+					"name": "BackgroundColor",
+					"defaultValue": "Xamarin.Forms.Color.Default"
+				},
+				{
+					"name": "HeightRequest",
+					"defaultValue": "-1.0"
+				},
+				{
+					"name": "InputTransparent",
+					"defaultValue": "false"
+				},
+				{
+					"name": "IsEnabled",
+					"defaultValue": "true"
+				},
+				{
+					"name": "IsVisible",
+					"defaultValue": "true"
+				},
+				{
+					"name": "MinimumHeightRequest",
+					"defaultValue": "-1.0"
+				},
+				{
+					"name": "MinimumWidthRequest",
+					"defaultValue": "-1.0"
+				},
+				{
+					"name": "Opacity",
+					"defaultValue": "1.0"
+				},
+				{
+					"name": "Rotation",
+					"defaultValue": "0.0"
+				},
+				{
+					"name": "RotationX",
+					"defaultValue": "0.0"
+				},
+				{
+					"name": "RotationY",
+					"defaultValue": "0.0"
+				},
+				{
+					"name": "Scale",
+					"defaultValue": "1.0"
+				},
+				{
+					"name": "Style",
+					"defaultValue": "null"
+				},
+				{
+					"name": "TranslationX",
+					"defaultValue": "0.0"
+				},
+				{
+					"name": "TranslationY",
+					"defaultValue": "0.0"
+				},
+				{
+					"name": "WidthRequest",
+					"defaultValue": "-1.0"
+				},
+				{
+					"name": "Resources",
+					"defaultValue": "null",
+					"inputType": "(string * obj) list",
+					"modelType": "(string * obj) list",
+					"updateCode": "updateResources"
+				},
+				{
+					"name": "Styles",
+					"defaultValue": "null",
+					"inputType": "Xamarin.Forms.Style list",
+					"modelType": "Xamarin.Forms.Style list",
+					"updateCode": "updateStyles"
+				},
+				{
+					"name": "StyleSheets",
+					"defaultValue": "null",
+					"inputType": "Xamarin.Forms.StyleSheets.StyleSheet list",
+					"modelType": "Xamarin.Forms.StyleSheets.StyleSheet list",
+					"updateCode": "updateStyleSheets"
+				}
+			]
 		},
 		{
 			"name": "Xamarin.Forms.View",
