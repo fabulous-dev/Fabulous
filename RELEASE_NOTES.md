@@ -1,3 +1,7 @@
+#### 0.24.0
+
+* Added StyleClass property (https://github.com/fsprojects/Fabulous/pull/209)
+
 #### 0.23.0
 
 * Added support for SourceLink (https://github.com/dotnet/sourcelink)

@@ -1,12 +1,10 @@
 <Project>
   <!-- NuGet Specs -->
   <PropertyGroup>
-    <Version>0.23.0</Version>
-    <Description>Added support for SourceLink (https://github.com/dotnet/sourcelink)
-Fixed wrong type for the new ViewRef
-Fixed missing incremental update for ListView rows</Description>
+    <Version>0.24.0</Version>
+    <Description>Added StyleClass property (https://github.com/fsprojects/Fabulous/pull/209)</Description>
     <Authors>Fabulous Contributors</Authors>
-    <PackageVersion>0.23.0</PackageVersion>
+    <PackageVersion>0.24.0</PackageVersion>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <PackageLicenseUrl>https://github.com/fsprojects/Fabulous/blob/master/LICENSE.md</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/fsprojects/Fabulous</PackageProjectUrl>
