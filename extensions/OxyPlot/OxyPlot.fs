@@ -23,7 +23,7 @@ module OxyPlotExtension =
              ?horizontalOptions, ?verticalOptions, ?margin, ?gestureRecognizers, ?anchorX, ?anchorY, ?backgroundColor, ?heightRequest,
              ?inputTransparent, ?isEnabled, ?isVisible, ?minimumHeightRequest, ?minimumWidthRequest, ?opacity,
              ?rotation, ?rotationX, ?rotationY, ?scale, ?style, ?translationX, ?translationY, ?widthRequest,
-             ?resources, ?styles, ?styleSheets, ?classId, ?styleId, ?automationId, ?created) =
+             ?resources, ?styles, ?styleSheets, ?classId, ?styleId, ?automationId, ?created, ?styleClass) =
 
             // Count the number of additional attributes
             let attribCount = 1
@@ -39,7 +39,7 @@ module OxyPlotExtension =
                                ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style,
                                ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest,
                                ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId,
-                               ?automationId=automationId, ?created=created)
+                               ?automationId=automationId, ?created=created, ?styleClass=styleClass)
 
             // Add our own attributes.
             attribs.Add(ModelAttribKey, model) 

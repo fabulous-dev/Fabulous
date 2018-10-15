@@ -261,6 +261,7 @@ module App =
                             content= View.StackLayout(
                                children=[ 
                                    View.TestLabel(text = "Fabulous, version " + string (typeof<ViewElement>.Assembly.GetName().Version))
+                                   View.Label(text = "Now with CSS styling", styleClass = "cssCallout")
                                    View.Button(text = "Continue", command=(fun () -> dispatch (SetRootPageKind (Choice false)) ))
                                ]))
                 ])
@@ -715,6 +716,7 @@ module App =
 
 type App () as app = 
     inherit Application ()
+    do app.Resources.Add(Xamarin.Forms.StyleSheets.StyleSheet.FromAssemblyResource(System.Reflection.Assembly.GetExecutingAssembly(),"AllControls.styles.css"))
 
     let runner = 
         Program.mkSimple App.init App.update App.view

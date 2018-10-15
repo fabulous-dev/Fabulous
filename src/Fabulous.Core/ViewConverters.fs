@@ -161,6 +161,15 @@ module Converters =
        | :? Thickness as v -> v
        | _ -> failwithf "makeThickness: invalid argument %O" v
 
+    let makeStyleClass (v:obj) = 
+       match v with
+       | :? string as s        -> [| s |]
+       | :? (string list) as s -> s |> Array.ofList
+       | :? (string [])   as s -> s
+       | :? (string seq)  as s -> s |> Array.ofSeq
+       | _ -> failwithf "makeStyleClass: invalid argument %O" v
+
+
     let makeGridLength (v: obj) = 
         match v with 
         | :? string as s when s = "*" -> GridLength.Star
@@ -446,6 +455,12 @@ module Converters =
                         | None -> 
                             eprintfn "**** WARNING: styles may not be removed, and are compared by object identity. They should be created independently of your update or view functions ****"
                         | Some _ -> ()
+
+    let updateStyleClass (prevCollOpt: IList<string> voption) (collOpt: IList<string> voption) (target: Xamarin.Forms.VisualElement) =
+        if prevCollOpt <> collOpt then
+          target.StyleClass <- match collOpt with
+                               | ValueSome x -> x 
+                               | ValueNone   -> null
 
     /// Incremental NavigationPage maintenance: push/pop the right pages
     let updateNavigationPages (prevCollOpt: ViewElement[] voption)  (collOpt: ViewElement[] voption) (target: NavigationPage) attach =

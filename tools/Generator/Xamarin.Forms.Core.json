@@ -99,6 +99,14 @@
 					"defaultValue": "null"
 				},
 				{
+					"name": "StyleClass",
+					"defaultValue": "null",
+					"inputType": "obj",
+					"modelType": "System.Collections.Generic.IList<string>",
+					"convToModel": "makeStyleClass",
+					"updateCode":  "updateStyleClass"
+				},
+				{
 					"name": "TranslationX",
 					"defaultValue": "0.0"
 				},
