@@ -156,7 +156,7 @@ type ProgramRunner<'model, 'msg>(app: Application, program: Program<'model, 'msg
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module Program =
     let internal onError (text: string, ex: exn) = 
-        Debug.WriteLine (sprintf "%s: %A" text ex)
+        Console.WriteLine (sprintf "%s: %A" text ex)
 
     /// Typical program, new commands are produced by `init` and `update` along with the new state.
     let mkProgram init update view =
