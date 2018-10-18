@@ -204,13 +204,27 @@ module Extensions =
 
             let switchD (files: DFile[]) =
               lock interp (fun () -> 
-                for file in files do
-                    printfn "LiveUpdate: adding declarations...."
-                    interp.AddDecls file.Code
+                let res = 
+                    try 
+                        for file in files do
+                            printfn "LiveUpdate: adding declarations...."
+                            interp.AddDecls file.Code
 
-                for file in files do
-                    printfn "LiveUpdate: evaluating decls in code package for side effects...."
-                    interp.EvalDecls (envEmpty, file.Code)
+                        for file in files do
+                            printfn "LiveUpdate: evaluating decls in code package for side effects...."
+                            interp.EvalDecls (envEmpty, file.Code)
+                        Result.Ok ()
+                    with exn -> 
+                        Result.Error exn
+
+                match res with 
+                | Result.Error exn -> 
+                    printfn "*** LiveUpdate failure:"
+                    printfn "***   [x] got code pacakge"
+                    printfn "***   FAIL: the evaluation of the decalarations in the code package failed: %A" exn
+                    { Quacked = sprintf "couldn't quack! the evaluation of the decalarations in the code package failed: %A" exn }
+
+                | Result.Ok () -> 
 
                 match files.Length with 
                 | 0 -> { Quacked = "couldn't quack! Files were empty!" }
