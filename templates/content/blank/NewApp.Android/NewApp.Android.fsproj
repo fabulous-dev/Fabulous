@@ -181,7 +181,7 @@
       <HintPath>..\packages/Fabulous.LiveUpdate.FabulousPkgsVersion/lib/netstandard2.0/Fabulous.LiveUpdate.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages/Newtonsoft.Json.NewtonsoftJsonPkg/lib/netstandard1.3/Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages/Newtonsoft.Json.NewtonsoftJsonPkg/lib/netstandard2.0/Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Essentials">
       <HintPath>..\packages/Xamarin.Essentials.0.6.0-preview/lib/monoandroid71/Xamarin.Essentials.dll</HintPath>
