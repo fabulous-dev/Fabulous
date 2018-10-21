@@ -8375,7 +8375,7 @@ type View() =
             if kvp.Key = View._ChildrenAttribKey.KeyValue then 
                 currChildrenOpt <- ValueSome (kvp.Value :?> ViewElement[])
             if kvp.Key = View._CarouselPage_CurrentPageAttribKey.KeyValue then 
-                currCarouselPage_CurrentPageOpt <- ValueSome (kvp.Value :?> ViewElement)
+                currCarouselPage_CurrentPageOpt <- ValueSome (kvp.Value :?> int)
             if kvp.Key = View._CarouselPage_CurrentPageChangedAttribKey.KeyValue then 
                 currCarouselPage_CurrentPageChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
         match prevOpt with
@@ -8385,7 +8385,7 @@ type View() =
                 if kvp.Key = View._ChildrenAttribKey.KeyValue then 
                     prevChildrenOpt <- ValueSome (kvp.Value :?> ViewElement[])
                 if kvp.Key = View._CarouselPage_CurrentPageAttribKey.KeyValue then 
-                    prevCarouselPage_CurrentPageOpt <- ValueSome (kvp.Value :?> ViewElement)
+                    prevCarouselPage_CurrentPageOpt <- ValueSome (kvp.Value :?> int)
                 if kvp.Key = View._CarouselPage_CurrentPageChangedAttribKey.KeyValue then 
                     prevCarouselPage_CurrentPageChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
         updateCollectionGeneric prevChildrenOpt currChildrenOpt target.Children
@@ -8861,7 +8861,7 @@ type View() =
             if kvp.Key = View._BarTextColorAttribKey.KeyValue then 
                 currBarTextColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
             if kvp.Key = View._TabbedPage_CurrentPageAttribKey.KeyValue then 
-                currTabbedPage_CurrentPageOpt <- ValueSome (kvp.Value :?> ViewElement)
+                currTabbedPage_CurrentPageOpt <- ValueSome (kvp.Value :?> int)
             if kvp.Key = View._TabbedPage_CurrentPageChangedAttribKey.KeyValue then 
                 currTabbedPage_CurrentPageChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
         match prevOpt with
@@ -8875,7 +8875,7 @@ type View() =
                 if kvp.Key = View._BarTextColorAttribKey.KeyValue then 
                     prevBarTextColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
                 if kvp.Key = View._TabbedPage_CurrentPageAttribKey.KeyValue then 
-                    prevTabbedPage_CurrentPageOpt <- ValueSome (kvp.Value :?> ViewElement)
+                    prevTabbedPage_CurrentPageOpt <- ValueSome (kvp.Value :?> int)
                 if kvp.Key = View._TabbedPage_CurrentPageChangedAttribKey.KeyValue then 
                     prevTabbedPage_CurrentPageChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
         updateCollectionGeneric prevChildrenOpt currChildrenOpt target.Children

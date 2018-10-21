@@ -1319,6 +1319,7 @@
 					"uniqueName": "CarouselPage_CurrentPage",
 					"defaultValue": "0",
 					"inputType": "int",
+					"modelType": "int",
 					"updateCode": "updateCurrentPage<Xamarin.Forms.ContentPage>" 
 				},
 				{
@@ -1416,6 +1417,7 @@
 					"uniqueName": "TabbedPage_CurrentPage",
 					"defaultValue": "0",
 					"inputType": "int",
+					"modelType": "int",
 					"updateCode": "updateCurrentPage<Xamarin.Forms.Page>" 
 				},
 				{

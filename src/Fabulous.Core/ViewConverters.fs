@@ -188,13 +188,13 @@ module Converters =
         | :? double as v -> v
         | _ -> System.Convert.ToDouble(v)
 
-    let makeCurrentPageChanged<'a when 'a :> Xamarin.Forms.Page> f =
+    let makeCurrentPageChanged<'a when 'a :> Xamarin.Forms.Page and 'a : null> f =
         System.EventHandler(fun sender args ->
             let control = sender :?> Xamarin.Forms.MultiPage<'a>
             let index =
-                match control.SelectedItem with
+                match control.CurrentPage with
                 | null -> None
-                | page -> Some (Xamarin.Forms.MultiPage<'a>.GetIndex(page :?> 'a))
+                | page -> Some (Xamarin.Forms.MultiPage<'a>.GetIndex(page))
             f index
         )
 
