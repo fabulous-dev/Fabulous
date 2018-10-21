@@ -1314,31 +1314,19 @@
 					"modelType": "ViewElement[]",
 					"convToModel": "Array.ofList"
 				},
-				//{
-				//		"name": "ItemsSource",
-				//		"inputType": "'T list",
-				//			"modelType": "System.Collections.Generic.IList<obj>",
-				//			"convToModel": "(fun es -> es |> Array.ofList |> Array.map box :> System.Collections.Generic.IList<obj>)",
-				//			"defaultValue": "null"
-				//		},
-				//		{
-				//			"name": "ItemTemplate",
-				//			"defaultValue": "null"
-				//		},
-				{
-					"name": "SelectedItem",
-					"uniqueName": "CarouselPage_SelectedItem",
-					"defaultValue": "null"
-				},
 				{
 					"name": "CurrentPage",
-					"defaultValue": "null"
+					"uniqueName": "CarouselPage_CurrentPage",
+					"defaultValue": "0",
+					"inputType": "int",
+					"updateCode": "updateCurrentPage<Xamarin.Forms.ContentPage>" 
 				},
 				{
 					"name": "CurrentPageChanged",
+					"uniqueName": "CarouselPage_CurrentPageChanged",
 					"defaultValue": "null",
-					"inputType": "'T option -> unit",
-					"convToModel": "(fun f -> System.EventHandler(fun sender args -> f ((sender :?> Xamarin.Forms.CarouselPage).SelectedItem |> Option.ofObj |> Option.map unbox<'T>)))"
+					"inputType": "int option -> unit",
+					"convToModel": "makeCurrentPageChanged<Xamarin.Forms.ContentPage>"
 				}
 			]
 		},
@@ -1422,6 +1410,20 @@
 				{
 					"name": "BarTextColor",
 					"defaultValue": "Xamarin.Forms.Color.Default"
+				},
+				{
+					"name": "CurrentPage",
+					"uniqueName": "TabbedPage_CurrentPage",
+					"defaultValue": "0",
+					"inputType": "int",
+					"updateCode": "updateCurrentPage<Xamarin.Forms.Page>" 
+				},
+				{
+					"name": "CurrentPageChanged",
+					"uniqueName": "TabbedPage_CurrentPageChanged",
+					"defaultValue": "null",
+					"inputType": "int option -> unit",
+					"convToModel": "makeCurrentPageChanged<Xamarin.Forms.Page>"
 				}
 			]
 		},
