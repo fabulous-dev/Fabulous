@@ -34,9 +34,14 @@ Getting started
 
 By default iOS and Android projects are created. For WPF apps use `--WPF`, for example:
 
-   Android only: dotnet new fabulous-app -n SqueakyApp --iOS=false
-   iOS only:     dotnet new fabulous-app -n SqueakyApp --Android=false
-   WPF only:     dotnet new fabulous-app -n SqueakyApp --WPF --Android=false --iOS=false
+Android only:
+    dotnet new fabulous-app -n SqueakyApp --iOS=false
+   
+iOS only:
+    dotnet new fabulous-app -n SqueakyApp --Android=false
+   
+WPF only:
+    dotnet new fabulous-app -n SqueakyApp --WPF --Android=false --iOS=false
    
 5. If you are using Visual Studio for Mac and you want to start with File -> New, make sure you target ".NET Standard" to add the references to Fabulous:
        
