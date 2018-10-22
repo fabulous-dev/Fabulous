@@ -1,0 +1,13 @@
+<Project>
+    <PropertyGroup>
+        <IncludeSourceLink Condition=" '$(IncludeSourceLink)' == '' ">False</IncludeSourceLink>
+    </PropertyGroup>
+
+    <Choose>
+        <When Condition=" '$(IncludeSourceLink)' == 'True' ">
+            <ItemGroup>
+                <PackageReference Include="Microsoft.SourceLink.Github" />
+            </ItemGroup>
+        </When>
+    </Choose>
+</Project>

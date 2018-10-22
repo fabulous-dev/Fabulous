@@ -54,6 +54,10 @@ A Basic Example
 Here is a full example of an app:
 
 ```fsharp
+open Fabulous.Core
+open Fabulous.DynamicViews
+open Xamarin.Forms
+
 /// The messages dispatched by the view
 type Msg =
     | Pressed
@@ -63,10 +67,10 @@ type Model =
     { Pressed: bool }
 
 /// Returns the initial state
-let init() = { Pressed=false }
+let init() = { Pressed = false }
 
 /// The function to update the view
-let update (msg:Msg) (model:Model) =
+let update (msg: Msg) (model: Model) =
     match msg with
     | Pressed -> { model with Pressed = true }
 
@@ -77,13 +81,13 @@ let view (model: Model) dispatch =
     else
         View.Button(text="Press Me!", command=(fun () -> dispatch Pressed))
 
-type App () =
+type App () as app =
     inherit Application ()
 
     let runner =
         Program.mkSimple init update view
         |> Program.withConsoleTrace
-        |> Program.runWithDynamicView
+        |> Program.runWithDynamicView app
 ```
 
 The init function returns your initial state, and each model gets an update function for message processing. The `view` function computes an immutable Xaml-like description. In the above example, the choice between a label and button depends on the `model.Pressed` value.
@@ -97,11 +101,11 @@ Some advantages of using an immutable model are:
 Samples
 ------
 
-The sample [CounterApp](https://github.com/fsprojects/Fabulous/blob/master/Samples/CounterApp/CounterApp/CounterApp.fs) contains a slightly larger example of Button/Label/Slider elements.
+The sample [CounterApp](https://github.com/fsprojects/Fabulous/blob/master/samples/CounterApp/CounterApp/CounterApp.fs) contains a slightly larger example of Button/Label/Slider elements.
 
-The sample [TicTacToe](https://github.com/fsprojects/Fabulous/blob/master/Samples/TicTacToe/TicTacToe/TicTacToe.fs) contains examples of the Grid and Image elements.
+The sample [TicTacToe](https://github.com/fsprojects/Fabulous/blob/master/samples/TicTacToe/TicTacToe/TicTacToe.fs) contains examples of the Grid and Image elements.
 
-The sample [AllControls](https://github.com/fsprojects/Fabulous/blob/master/Samples/AllControls/AllControls/AllControls.fs) contains examples of instantiating most elements in `Xamarin.Forms.Core`.
+The sample [AllControls](https://github.com/fsprojects/Fabulous/blob/master/samples/AllControls/AllControls/AllControls.fs) contains examples of instantiating most elements in `Xamarin.Forms.Core`.
 
 The external sample [Calculator](https://github.com/nosami/Elmish.Calculator/) is a small calculator app. (Note: because this is an external sample it may not be up-to-date with the latest version of his library.)
 
@@ -109,9 +113,9 @@ The external sample [PocketPiggyBank](https://github.com/jimbobbennett/PocketPig
 
 The external sample [ElmishContacts](https://github.com/TimLariviere/ElmishContacts) is a multi-page contacts app featuring maps, group-lists and cross-page messages. (Note: because this is an external sample it may not be up-to-date with the latest version of this library.)
 
-The external sample [ElmishPlanets](https://github.com/TimLariviere/ElmishPlanets) is a multi-page app featuring facts on the planets in the Solar System. It uses Urho3D and EXF (Note: because this is an external sample it may not be up-to-date with the latest version of this library.)
+The external sample [ElmishPlanets](https://github.com/TimLariviere/ElmishPlanets) is a multi-page app featuring facts on the planets in the Solar System. It uses Urho3D and Fabulous (Note: because this is an external sample it may not be up-to-date with the latest version of this library.)
 
-See also the curated list [awesome EXF](http://aka.ms/AwesomeEXF).
+See also the curated list [Awesome Fabulous](http://aka.ms/AwesomeEXF).
 
 Further Resources
 --------

@@ -1,0 +1,27 @@
+<Project>
+    <ItemGroup>
+        <PackageReference Update="FSharp.Core" Version="4.5.2" />
+        <PackageReference Update="Xamarin.Forms" Version="3.1.0.697729" />
+        <PackageReference Update="Xamarin.Forms.Platform.WPF" Version="3.1.0.697729" />
+        <PackageReference Update="Xamarin.Forms.Maps" Version="3.1.0.697729" />
+        <PackageReference Update="Newtonsoft.Json" Version="11.0.2" />
+        <PackageReference Update="FSharp.Compiler.Service" Version="23.0.3" />
+        <PackageReference Update="Dotnet.ProjInfo" Version="0.9.0" />
+        <PackageReference Update="OxyPlot.Core" Version="2.0.0-unstable0956" />
+        <PackageReference Update="OxyPlot.Xamarin.Forms" Version="1.1.0-unstable0013" />
+        <PackageReference Update="SkiaSharp" Version="1.60.3" />
+        <PackageReference Update="SkiaSharp.Views.Forms" Version="1.60.3" />
+        <PackageReference Update="Mono.Cecil" Version="0.10.0" />
+        <PackageReference Update="Microsoft.NET.Test.Sdk" Version="15.7.0" />
+        <PackageReference Update="MSTest.TestAdapter" Version="1.2.1" />
+        <PackageReference Update="MSTest.TestFramework" Version="1.2.1" />
+        <PackageReference Update="Microsoft.SourceLink.Github" Version="1.0.0-beta-63127-02" PrivateAssets="All" />
+    </ItemGroup>
+    <PropertyGroup>
+        <RestoreSources>
+            $(RestoreSources);
+            https://api.nuget.org/v3/index.json;
+            https://www.myget.org/F/oxyplot;
+        </RestoreSources>
+    </PropertyGroup>
+</Project>

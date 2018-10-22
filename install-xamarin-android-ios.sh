@@ -7,7 +7,7 @@ installpkg() {
 
 # install Android SDK
 brew tap caskroom/cask
-brew cask install android-sdk > brew.cask.install.android-sdk.log
+brew cask install android-sdk
 
 mkdir ~/.android
 touch ~/.android/repositories.cfg

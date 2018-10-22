@@ -1,8 +1,8 @@
 ﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
 
-// Windows: dotnet build -c Release Generator\Generator.fsproj && dotnet Generator\bin\Release\netcoreapp2.0\Generator.dll Generator\Xamarin.Forms.Core.json Fabulous.Core\Xamarin.Forms.Core.fs
+// Windows: dotnet build -c Release tools\Generator\Generator.fsproj && dotnet tools\Generator\bin\Release\netcoreapp2.0\Generator.dll tools\Generator\Xamarin.Forms.Core.json src\Fabulous.Core\Xamarin.Forms.Core.fs
 
-// OSX: dotnet build -c Release Generator/Generator.fsproj && dotnet Generator/bin/Release/netcoreapp2.0/Generator.dll Generator/Xamarin.Forms.Core.json Fabulous.Core/Xamarin.Forms.Core.fs
+// OSX: dotnet build -c Release tools/Generator/Generator.fsproj && dotnet tools/Generator/bin/Release/netcoreapp2.0/Generator.dll tools/Generator/Xamarin.Forms.Core.json src/Fabulous.Core/Xamarin.Forms.Core.fs
 
 module Generator
 
@@ -307,12 +307,14 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
         w.printfn ""
         w.printfn "    /// Builds the attributes for a %s in the view" nameOfCreator
         w.printfn "    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]"
-        w.printf "    static member inline Build%s(attribCount: int" nameOfCreator
-        if allMembers.Length > 0 then w.printf ", "
-        allMembers |> iterSep ", " (fun head m -> 
+        w.printf    "    static member inline Build%s(attribCount: int" nameOfCreator
+        let space = "                              " + String.replicate nameOfCreator.Length " " + " "
+        for m in allMembers do
             let inputType = m.GetInputType(bindings, memberResolutions, null)
 
-            w.printf "%s?%s: %s" head m.LowerBoundShortName inputType)
+            w.printfn "," 
+            w.printf "%s" space
+            w.printf "?%s: %s" m.LowerBoundShortName inputType
 
         w.printfn ") = "
         w.printfn ""
@@ -326,9 +328,8 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
         | Some nameOfBaseCreator ->
             w.printfn ""
             w.printf "        let attribBuilder = View.Build%s(attribCount" nameOfBaseCreator
-            if allBaseMembers.Length > 0 then w.printf ", "
-            allBaseMembers |> iterSep ", " (fun head m -> 
-                w.printf "%s?%s=%s" head m.LowerBoundShortName m.LowerBoundShortName)
+            for m in allBaseMembers do
+                w.printf ", ?%s=%s" m.LowerBoundShortName m.LowerBoundShortName
             w.printfn ")"
 
         for m in allImmediateMembers do
@@ -515,18 +516,33 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
         w.printfn ""
         w.printfn "    /// Describes a %s in the view" nameOfCreator
         //let qual = if hasCreate then "internal " else ""
-        let qual = ""
-        w.printf "    static member inline %s%s(" qual nameOfCreator
-        allMembers |> iterSep ", " (fun head m -> 
+        w.printf "    static member inline %s(" nameOfCreator
+        let space = "                         " + String.replicate nameOfCreator.Length " " + " "
+        allMembers |> iterSep "," (fun head m -> 
             let inputType = m.GetInputType(bindings, memberResolutions, null)
 
-            w.printf "%s?%s: %s" head m.LowerBoundShortName inputType)
+            if head <> "" then 
+                w.printfn ","
+                w.printf "%s" space
+            if m.LowerBoundShortName = "created" then
+                w.printf "?%s: (%s -> unit)" m.LowerBoundShortName tdef.FullName
+            elif m.LowerBoundShortName = "ref" then
+                w.printf "?%s: ViewRef<%s>"  m.LowerBoundShortName tdef.FullName
+            else
+                w.printf "?%s: %s" m.LowerBoundShortName inputType)
 
         w.printfn ") = "
         w.printfn ""
         w.printf "        let attribBuilder = View.Build%s(0" nameOfCreator
-        if allMembers.Length > 0 then w.printf ", "
-        allMembers |> iterSep ", " (fun head m -> w.printf "%s?%s=%s" head m.LowerBoundShortName m.LowerBoundShortName)
+        for m in allMembers do
+            w.printfn ","
+            w.printf "                               "
+            if m.LowerBoundShortName = "created" then
+                w.printf "?%s=(match %s with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<%s> target)))" m.LowerBoundShortName m.LowerBoundShortName tdef.FullName 
+            elif m.LowerBoundShortName = "ref" then
+                w.printf "?%s=(match %s with None -> None | Some (ref: ViewRef<%s>) -> Some ref.Unbox)" m.LowerBoundShortName m.LowerBoundShortName tdef.FullName 
+            else
+                w.printf "?%s=%s" m.LowerBoundShortName m.LowerBoundShortName
         w.printfn ")"
         w.printfn ""
         w.printfn "        ViewElement.Create<%s>(View.CreateFunc%s, View.UpdateFunc%s, attribBuilder)" tdef.FullName nameOfCreator nameOfCreator
@@ -544,7 +560,7 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
 
     for ms in allMembersInAllTypesGroupedByName do
         let m = ms.First()
-        if not m.IsParam then
+        if not m.IsParam && m.LowerBoundShortName <> "created" && m.LowerBoundShortName <> "ref" then
             w.printfn ""
             w.printfn "        /// Adjusts the %s property in the visual element" m.BoundUniqueName
             let conv = if String.IsNullOrWhiteSpace(m.ConvToModel) then "" else m.ConvToModel
@@ -554,7 +570,7 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
     w.printfn ""
     for ms in allMembersInAllTypesGroupedByName do
         let m = ms.First()
-        if not m.IsParam then
+        if not m.IsParam && m.LowerBoundShortName <> "created" && m.LowerBoundShortName <> "ref" then
             let inputType = m.GetInputType(bindings, memberResolutions, null)
             w.printfn ""
             w.printfn "    /// Adjusts the %s property in the visual element" m.BoundUniqueName
@@ -601,7 +617,7 @@ let Main(args: string[]) =
                     | Some e -> yield (m, (e :> MemberReference))
                     | None -> 
                       if (String.IsNullOrWhiteSpace(m.UpdateCode))  then
-                        Console.WriteLine(sprintf "Could not find member '%s'") ]
+                        Console.WriteLine(sprintf "Could not find member '%s'" m.Name) ]
                |> dict
             let code = BindTypes (bindings, resolutions, memberResolutions)
 

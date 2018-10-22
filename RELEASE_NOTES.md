@@ -1,6 +1,18 @@
+#### 0.24.0
+
+* Added StyleClass property (https://github.com/fsprojects/Fabulous/pull/209)
+
+#### 0.23.0
+
+* Added support for SourceLink (https://github.com/dotnet/sourcelink)
+* Fixed wrong type for the new ViewRef
+* Fixed missing incremental update for ListView rows
+
 #### 0.22.0
 
-* Add WPF to template
+* Added support for Focus and Animations (access to the underlying control with "created" event & ViewRef)
+* Added "invalidate" flag to SkiaSharp extension
+* Added WPF to template
 
 #### 0.21.1
 

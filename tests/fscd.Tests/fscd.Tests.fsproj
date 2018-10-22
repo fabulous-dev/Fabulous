@@ -1,35 +1,27 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>net471</TargetFramework>
-
-    <OutputType>Library</OutputType>
-    <IsPackable>false</IsPackable>
-    <DefineConstants>$(DefineConstants);TEST</DefineConstants>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="..\..\tools\fscd\ProjectCracker.fs" Link="ProjectCracker.fs" />
-    <Compile Include="..\..\tools\fscd\CodeModel.fs" Link="CodeModel.fs" />
-    <Compile Include="..\..\tools\fscd\Interpreter.fs" Link="Interpreter.fs" />
-    <Compile Include="..\..\tools\fscd\FromCompilerService.fs" Link="FromCompilerService.fs" />
-    <Compile Include="..\..\tools\fscd\fscd.fs" Link="fscd.fs" />
-    <Compile Include="Tests.fs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Dotnet.ProjInfo" Version="0.9.0" />
-    <PackageReference Include="FSharp.Core" Version="4.5.2" />
-    <PackageReference Update="FSharp.Core" Version="4.5.2" /> <!-- workaround for VSMac bug https://github.com/mono/monodevelop/pull/5137 --> 
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="1.2.1" />
-    <PackageReference Include="MSTest.TestFramework" Version="1.2.1" />
-    <PackageReference Include="FSharp.Compiler.Service" Version="23.0.3" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-</ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Fabulous.Core\Fabulous.Core.fsproj" />
-  </ItemGroup>
-
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net471</TargetFramework>
+        <OutputType>Library</OutputType>
+        <IsPackable>false</IsPackable>
+        <DefineConstants>$(DefineConstants);TEST</DefineConstants>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="..\..\tools\fscd\ProjectCracker.fs" Link="ProjectCracker.fs" />
+        <Compile Include="..\..\tools\fscd\CodeModel.fs" Link="CodeModel.fs" />
+        <Compile Include="..\..\tools\fscd\Interpreter.fs" Link="Interpreter.fs" />
+        <Compile Include="..\..\tools\fscd\FromCompilerService.fs" Link="FromCompilerService.fs" />
+        <Compile Include="..\..\tools\fscd\fscd.fs" Link="fscd.fs" />
+        <Compile Include="Tests.fs" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Dotnet.ProjInfo" />
+        <PackageReference Include="FSharp.Core" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" />
+        <PackageReference Include="MSTest.TestAdapter" />
+        <PackageReference Include="MSTest.TestFramework" />
+        <PackageReference Include="FSharp.Compiler.Service" />
+        <PackageReference Include="Newtonsoft.Json" />
+        <PackageReference Include="Xamarin.Forms" />
+    </ItemGroup>
+    <Import Project="..\..\Packages.targets" />
 </Project>
