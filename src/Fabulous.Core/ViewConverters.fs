@@ -4,6 +4,7 @@ namespace Fabulous.DynamicViews
 
 open System
 open System.Collections.Generic
+open System.ComponentModel
 open System.Reflection
 open System.Diagnostics
 open System.Windows.Input
@@ -15,18 +16,41 @@ module ValueOption =
 
 [<AllowNullLiteral>]
 type IListElement = 
+    inherit INotifyPropertyChanged
     abstract Key : obj
 
 [<AllowNullLiteral>]
 type ListElementData<'T>(key:'T) = 
-    interface IListElement with member x.Key = box key
-    member x.Key = key
+    let ev = new Event<_,_>()
+    let mutable data = key
+    
+    interface IListElement with
+        member x.Key = box data
+        [<CLIEvent>] member x.PropertyChanged = ev.Publish
+        
+    member x.Key
+        with get() = data
+        and set(value) =
+            data <- value
+            ev.Trigger(x, PropertyChangedEventArgs "Key")
 
 [<AllowNullLiteral>]
 type ListGroupData<'T>(shortName: string, key:'T, coll: 'T[]) = 
     inherit System.Collections.Generic.List<ListElementData<'T>>(Seq.map ListElementData coll)
-    interface IListElement with member x.Key = box key
-    member x.Key = key
+    
+    let ev = new Event<_,_>()
+    let mutable data = key
+    
+    interface IListElement with
+        member x.Key = box data
+        [<CLIEvent>] member x.PropertyChanged = ev.Publish
+        
+    member x.Key
+        with get() = data
+        and set(value) =
+            data <- value
+            ev.Trigger(x, PropertyChangedEventArgs "Key")
+            
     member x.ShortName = shortName
     member x.Items = coll
 
@@ -34,30 +58,52 @@ type ListGroupData<'T>(shortName: string, key:'T, coll: 'T[]) =
 type ViewElementCell() = 
     inherit ViewCell()
 
-    let mutable modelOpt = None
+    let mutable listElementOpt : IListElement option = None
+    let mutable modelOpt : obj option = None
+    
+    let createView newModel =
+        let ty = newModel.GetType()
+        let res = ty.InvokeMember("Create",(BindingFlags.InvokeMethod ||| BindingFlags.Public ||| BindingFlags.Instance), null, newModel, [| |] )
+        match res with 
+        | :? View as v -> v
+        | _ -> failwithf "The cells of a ListView must each be some kind of 'View' and not a '%A'" (res.GetType())
+
+    let updateIncremental view prevModel newModel =
+        let ty = newModel.GetType()
+        let res = ty.InvokeMember("UpdateIncremental",(BindingFlags.InvokeMethod ||| BindingFlags.Public ||| BindingFlags.Instance), null, newModel, [| prevModel; box view |] )
+        ignore res
+    
+    member x.OnDataPropertyChanged = PropertyChangedEventHandler(fun _ args ->
+        match args.PropertyName, listElementOpt, modelOpt with
+        | "Key", Some curr, Some prevModel ->
+            updateIncremental x.View prevModel curr.Key
+            modelOpt <- Some curr.Key
+        | _ -> ()
+    )
 
     override x.OnBindingContextChanged () =
         base.OnBindingContextChanged ()
         match x.BindingContext with
-        | :? IListElement as data -> 
-            let newModel = data.Key
-            match modelOpt with 
-            | Some prev -> 
-                let ty = newModel.GetType()
-                let res = ty.InvokeMember("UpdateIncremental",(BindingFlags.InvokeMethod ||| BindingFlags.Public ||| BindingFlags.Instance), null, newModel, [| box prev; box x.View |] )
-                modelOpt <- None
-                ignore res
+        | :? IListElement as curr -> 
+            let newModel = curr.Key
+            match listElementOpt with 
+            | Some prev ->
+                prev.PropertyChanged.RemoveHandler x.OnDataPropertyChanged
+                curr.PropertyChanged.AddHandler x.OnDataPropertyChanged
+                updateIncremental x.View prev.Key newModel
             | None -> 
-                let ty = newModel.GetType()
-                let res = ty.InvokeMember("Create",(BindingFlags.InvokeMethod ||| BindingFlags.Public ||| BindingFlags.Instance), null, newModel, [| |] )
-                match res with 
-                | :? View as v -> 
-                    x.View <- v
-                | _ -> 
-                    failwithf "The cells of a ListView must each be some kind of 'View' and not a '%A'" (res.GetType())
-                modelOpt <- Some newModel
-        | _ -> 
-            modelOpt <- None
+                curr.PropertyChanged.AddHandler x.OnDataPropertyChanged
+                x.View <- createView newModel
+
+            listElementOpt <- Some curr
+            modelOpt <- Some curr.Key
+        | _ ->
+            match listElementOpt with
+            | Some prev -> 
+                prev.PropertyChanged.RemoveHandler x.OnDataPropertyChanged
+                listElementOpt <- None
+                modelOpt <- None
+            | None -> ()
 
 type CustomListView() = 
     inherit ListView(ItemTemplate=DataTemplate(typeof<ViewElementCell>))
@@ -114,6 +160,15 @@ module Converters =
        | :? double as f -> Thickness.op_Implicit f
        | :? Thickness as v -> v
        | _ -> failwithf "makeThickness: invalid argument %O" v
+
+    let makeStyleClass (v:obj) = 
+       match v with
+       | :? string as s        -> [| s |]
+       | :? (string list) as s -> s |> Array.ofList
+       | :? (string [])   as s -> s
+       | :? (string seq)  as s -> s |> Array.ofSeq
+       | _ -> failwithf "makeStyleClass: invalid argument %O" v
+
 
     let makeGridLength (v: obj) = 
         match v with 
@@ -268,7 +323,7 @@ module Converters =
                 let oc = ObservableCollection<ListElementData<'T>>()
                 target.ItemsSource <- oc
                 oc
-        updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetColl ListElementData (fun _ _ _ -> ()) (fun _ _ -> false) (fun _ _ _ -> failwith "no element reuse") 
+        updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetColl ListElementData (fun _ _ _ -> ()) canReuseChild (fun _ curr target -> target.Key <- curr) 
 
     let updateListViewGroupedItems (prevCollOpt: (string * 'T * 'T[])[] voption) (collOpt: (string * 'T * 'T[])[] voption) (target: Xamarin.Forms.ListView) = 
         let targetColl = 
@@ -278,7 +333,7 @@ module Converters =
                 let oc = ObservableCollection<ListGroupData<'T>>()
                 target.ItemsSource <- oc
                 oc
-        updateCollectionGeneric prevCollOpt collOpt targetColl ListGroupData (fun _ _ _ -> ()) (fun _ _ -> false) (fun _ _ _ -> failwith "no element reuse")
+        updateCollectionGeneric prevCollOpt collOpt targetColl ListGroupData (fun _ _ _ -> ()) (fun (_, prevKey, _) (_, currKey, _) -> canReuseChild prevKey currKey) (fun _ (_, currKey, _) target -> target.Key <- currKey)
 
     let updateListViewGroupedShowJumpList (prevOpt: bool voption) (currOpt: bool voption) (target: Xamarin.Forms.ListView) =
         let updateTarget enableJumpList = target.GroupShortNameBinding <- (if enableJumpList then new Binding("ShortName") else null)
@@ -400,6 +455,12 @@ module Converters =
                         | None -> 
                             eprintfn "**** WARNING: styles may not be removed, and are compared by object identity. They should be created independently of your update or view functions ****"
                         | Some _ -> ()
+
+    let updateStyleClass (prevCollOpt: IList<string> voption) (collOpt: IList<string> voption) (target: Xamarin.Forms.VisualElement) =
+        if prevCollOpt <> collOpt then
+          target.StyleClass <- match collOpt with
+                               | ValueSome x -> x 
+                               | ValueNone   -> null
 
     /// Incremental NavigationPage maintenance: push/pop the right pages
     let updateNavigationPages (prevCollOpt: ViewElement[] voption)  (collOpt: ViewElement[] voption) (target: NavigationPage) attach =

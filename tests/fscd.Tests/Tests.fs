@@ -152,8 +152,8 @@ PROJ.fs"""
 
     let elmishExtraRefs =
             """
--r:CWD/../../../Fabulous.Core/bin/Debug/netstandard2.0/Fabulous.Core.dll
--r:CWD/../../../Fabulous.LiveUpdate/bin/Debug/netstandard2.0/Fabulous.LiveUpdate.dll
+-r:CWD/../../../src/Fabulous.Core/bin/Debug/netstandard2.0/Fabulous.Core.dll
+-r:CWD/../../../src/Fabulous.LiveUpdate/bin/Debug/netstandard2.0/Fabulous.LiveUpdate.dll
 -r:PACKAGEDIR/newtonsoft.json/11.0.2/lib/netstandard2.0/Newtonsoft.Json.dll
 -r:PACKAGEDIR/xamarin.forms/3.1.0.697729/lib/netstandard2.0/Xamarin.Forms.Core.dll
 -r:PACKAGEDIR/xamarin.forms/3.1.0.697729/lib/netstandard2.0/Xamarin.Forms.Platform.dll

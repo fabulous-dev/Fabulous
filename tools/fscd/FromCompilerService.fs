@@ -178,9 +178,16 @@ let rec convDecl d =
            if e.IsFSharpAbbreviation then ()
            elif e.IsNamespace then yield! convDecls subDecls
            elif e.IsArrayType then ()
-           else yield DDeclEntity (convEntityDef e, convDecls subDecls) 
+           else 
+               let eR = try convEntityDef e with exn -> failwithf "error converting entity %s\n%A" e.CompiledName exn
+               let declsR = convDecls subDecls
+               yield DDeclEntity (eR, declsR) 
        | FSharpImplementationFileDeclaration.MemberOrFunctionOrValue(v, vs, e) -> 
-           yield DDeclMember (convMemberDef v, convExpr e)
+           // Skip Equals, GetHashCode, CompareTo compiler-generated methods
+           if not v.IsCompilerGenerated then
+               let vR = try convMemberDef v with exn -> failwithf "error converting defn of %s\n%A" v.CompiledName exn
+               let eR = try convExpr e with exn -> failwithf "error converting rhs of %s\n%A" v.CompiledName exn
+               yield DDeclMember (vR, eR)
        | FSharpImplementationFileDeclaration.InitAction(e) -> 
            yield DDecl.InitAction (convExpr e) |]
 and convDecls decls = 

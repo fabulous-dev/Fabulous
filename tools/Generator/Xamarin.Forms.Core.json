@@ -18,6 +18,20 @@
 				{  
 				  "name": "AutomationId",  
 				  "defaultValue": "null"  
+				},
+				{  
+				  "name": "Created",  
+					"uniqueName": "ElementCreated",
+					"inputType": "obj -> unit",
+					"modelType": "obj -> unit",
+					"updateCode": "(fun _ _ _ -> ())"
+				},
+				{  
+				  "name": "Ref",  
+					"uniqueName": "ElementViewRef",
+					"inputType": "ViewRef",
+					"modelType": "ViewRef",
+					"updateCode": "(fun _ _ _ -> ())"
 				} 
 			]
 		},
@@ -83,6 +97,14 @@
 				{
 					"name": "Style",
 					"defaultValue": "null"
+				},
+				{
+					"name": "StyleClass",
+					"defaultValue": "null",
+					"inputType": "obj",
+					"modelType": "System.Collections.Generic.IList<string>",
+					"convToModel": "makeStyleClass",
+					"updateCode":  "updateStyleClass"
 				},
 				{
 					"name": "TranslationX",

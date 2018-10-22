@@ -15,6 +15,7 @@ type RootPageKind =
     | Carousel 
     | MasterDetail
     | InfiniteScrollList
+    | Animations
 
 type Model = 
   { RootPageKind: RootPageKind
@@ -82,6 +83,9 @@ type Msg =
     | SetInfiniteScrollMaxIndex of int
     | ExecuteSearch of string
     | ShowPopup
+    | AnimationPoked
+    | AnimationPoked2
+    | AnimationPoked3
 
 [<AutoOpen>]
 module MyExtension = 
@@ -149,6 +153,7 @@ module App =
           InfiniteScrollMaxRequested = 10 
           SearchTerm = "nothing!"}
 
+    let animatedLabelRef = ViewRef<Label>()
     let update msg model =
         match msg with
         | Increment -> { model with Count = model.Count + 1 }
@@ -203,6 +208,20 @@ module App =
         | ShowPopup ->
             Application.Current.MainPage.DisplayAlert("Clicked", "You clicked the button", "OK") |> ignore
             model
+        | AnimationPoked -> 
+            animatedLabelRef.Value.Rotation <- 0.0
+            animatedLabelRef.Value.RotateTo (360.0, 2000u) |> ignore
+            model
+        | AnimationPoked2 -> 
+            ViewExtensions.CancelAnimations (animatedLabelRef.Value)
+            animatedLabelRef.Value.Rotation <- 0.0
+            animatedLabelRef.Value.RotateTo (360.0, 2000u) |> ignore
+            model
+        | AnimationPoked3 -> 
+            ViewExtensions.CancelAnimations (animatedLabelRef.Value)
+            animatedLabelRef.Value.Rotation <- 0.0
+            animatedLabelRef.Value.RotateTo (360.0, 2000u) |> ignore
+            model
 
     let pickerItems = 
         [| ("Aqua", Color.Aqua); ("Black", Color.Black);
@@ -231,6 +250,7 @@ module App =
                                  View.Button(text = "NavigationPage with push/pop", command=(fun () -> dispatch (SetRootPageKind Navigation)))
                                  View.Button(text = "MasterDetail Page", command=(fun () -> dispatch (SetRootPageKind MasterDetail)))
                                  View.Button(text = "Infinite scrolling ListView", command=(fun () -> dispatch (SetRootPageKind InfiniteScrollList)))
+                                 View.Button(text = "Animations", command=(fun () -> dispatch (SetRootPageKind Animations)))
                                  View.Button(text = "Pop-up", command=(fun () -> dispatch ShowPopup))
                             ]))
                      .ToolbarItems([View.ToolbarItem(text="About", command=(fun () -> dispatch (SetRootPageKind (Choice true))))] )
@@ -241,6 +261,7 @@ module App =
                             content= View.StackLayout(
                                children=[ 
                                    View.TestLabel(text = "Fabulous, version " + string (typeof<ViewElement>.Assembly.GetName().Version))
+                                   View.Label(text = "Now with CSS styling", styleClass = "cssCallout")
                                    View.Button(text = "Continue", command=(fun () -> dispatch (SetRootPageKind (Choice false)) ))
                                ]))
                 ])
@@ -681,11 +702,21 @@ module App =
                                itemAppearing=(fun idx -> if idx >= max - 2 then dispatch (SetInfiniteScrollMaxIndex (idx + 10) ) )  )
                  View.Button(text="Main page", command=(fun () -> dispatch (SetRootPageKind (Choice false))), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)
                 
-                ]))
+                ] ))
 
+         | Animations -> 
+               View.ScrollingContentPage("Animations", 
+                  [ View.Label(text="Rotate", created=(fun l -> l.RotateTo (360.0, 2000u) |> ignore)) 
+                    View.Label(text="Hello!", ref=animatedLabelRef) 
+                    View.Button(text="Poke", command=(fun () -> dispatch AnimationPoked))
+                    View.Button(text="Poke2", command=(fun () -> dispatch AnimationPoked2))
+                    View.Button(text="Poke3", command=(fun () -> dispatch AnimationPoked3))
+                    View.Button(text="Main page", cornerRadius=5, command=(fun () -> dispatch (SetRootPageKind (Choice false))), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)
+                    ] )
 
 type App () as app = 
     inherit Application ()
+    do app.Resources.Add(Xamarin.Forms.StyleSheets.StyleSheet.FromAssemblyResource(System.Reflection.Assembly.GetExecutingAssembly(),"AllControls.styles.css"))
 
     let runner = 
         Program.mkSimple App.init App.update App.view

@@ -1,18 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
-    <OtherFlags>/warnon:1182</OtherFlags>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Mono.Cecil" Version="0.10.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Xamarin.Forms.Core.json" />
-    <Compile Include="Program.fs" />
-  </ItemGroup>
-
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp2.0</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Include="Xamarin.Forms.Core.json" />
+        <Compile Include="Program.fs" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="FSharp.Core" />
+        <PackageReference Include="Mono.Cecil" />
+        <PackageReference Include="Newtonsoft.Json" />
+    </ItemGroup>
+    <Import Project="..\..\Packages.targets" />
 </Project>
