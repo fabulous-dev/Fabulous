@@ -46,7 +46,7 @@ By default iOS and Android projects are created. For WPF apps use `--WPF`, for e
        
        Shared Code -> Use .NET Standard
        
-       <img src="https://user-images.githubusercontent.com/1394644/45930814-97bfce80-bf32-11e8-8f7a-ebcbcb0247fa.png" width="100"> 
+<img src="https://user-images.githubusercontent.com/1394644/45930814-97bfce80-bf32-11e8-8f7a-ebcbcb0247fa.png" width="500"> 
 
 A Basic Example
 ------
