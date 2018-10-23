@@ -190,6 +190,16 @@ module Converters =
         | :? double as v -> v
         | _ -> System.Convert.ToDouble(v)
 
+    let makeCurrentPageChanged<'a when 'a :> Xamarin.Forms.Page and 'a : null> f =
+        System.EventHandler(fun sender args ->
+            let control = sender :?> Xamarin.Forms.MultiPage<'a>
+            let index =
+                match control.CurrentPage with
+                | null -> None
+                | page -> Some (Xamarin.Forms.MultiPage<'a>.GetIndex(page))
+            f index
+        )
+
     let identical (x: 'T) (y:'T) = System.Object.ReferenceEquals(x, y)
 
     let rec canReuseChild (prevChild:ViewElement) (newChild:ViewElement) =
@@ -530,6 +540,14 @@ module Converters =
         | _, _, ValueNone, _ -> setter target null
         | _, _, ValueSome f, ValueNone -> setter target (makeCommand (fun () -> f (argTransform target)))
         | _, _, ValueSome f, ValueSome k -> setter target (makeCommandCanExecute (fun () -> f (argTransform target)) k)
+
+    let updateCurrentPage<'a when 'a :> Xamarin.Forms.Page and 'a : null> prevValueOpt valueOpt (target: obj) =
+        let control = target :?> Xamarin.Forms.MultiPage<'a>
+        match prevValueOpt, valueOpt with
+        | ValueNone, ValueNone -> ()
+        | ValueSome prev, ValueSome curr when prev = curr -> ()
+        | ValueSome _, ValueNone -> control.CurrentPage <- null
+        | _, ValueSome curr -> control.CurrentPage <- control.Children.[curr]
 
     let equalLayoutOptions (x:Xamarin.Forms.LayoutOptions) (y:Xamarin.Forms.LayoutOptions)  =
         x.Alignment = y.Alignment && x.Expands = y.Expands
