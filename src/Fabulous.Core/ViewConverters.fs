@@ -7,6 +7,7 @@ open System.Collections.Generic
 open System.ComponentModel
 open System.Reflection
 open System.Diagnostics
+open System.IO
 open System.Windows.Input
 open Xamarin.Forms
 open Xamarin.Forms.StyleSheets
@@ -148,6 +149,7 @@ module Converters =
     let makeImageSource (v: obj) =
         match v with
         | :? string as path -> ImageSource.op_Implicit path
+        | :? (byte array) as bytes -> ImageSource.FromStream(fun () -> new MemoryStream(bytes) :> Stream)
         | :? ImageSource as imageSource -> imageSource
         | _ -> failwithf "makeImageSource: invalid argument %O" v
 
