@@ -1,3 +1,10 @@
+#### 0.25.0
+
+* Added "CurrentPage" and "CurrentPageChanged" to TabbedPage and CarouselPage (https://github.com/fsprojects/Fabulous/pull/215)
+* Added support for byte array with Image.Source (https://github.com/fsprojects/Fabulous/pull/217)
+* Improved exception protection in LiveUpdate (https://github.com/fsprojects/Fabulous/pull/214)
+* Fixed an issue in LiveUpdate preventing the use of some kinds of discriminated unions (https://github.com/fsprojects/Fabulous/pull/213)
+
 #### 0.24.0
 
 * Added StyleClass property (https://github.com/fsprojects/Fabulous/pull/209)

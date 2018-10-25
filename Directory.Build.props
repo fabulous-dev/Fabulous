@@ -1,10 +1,13 @@
 <Project>
   <!-- NuGet Specs -->
   <PropertyGroup>
-    <Version>0.24.0</Version>
-    <Description>Added StyleClass property (https://github.com/fsprojects/Fabulous/pull/209)</Description>
+    <Version>0.25.0</Version>
+    <Description>Added "CurrentPage" and "CurrentPageChanged" to TabbedPage and CarouselPage (https://github.com/fsprojects/Fabulous/pull/215)
+Added support for byte array with Image.Source (https://github.com/fsprojects/Fabulous/pull/217)
+Improved exception protection in LiveUpdate (https://github.com/fsprojects/Fabulous/pull/214)
+Fixed an issue in LiveUpdate preventing the use of some kinds of discriminated unions (https://github.com/fsprojects/Fabulous/pull/213)</Description>
     <Authors>Fabulous Contributors</Authors>
-    <PackageVersion>0.24.0</PackageVersion>
+    <PackageVersion>0.25.0</PackageVersion>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <PackageLicenseUrl>https://github.com/fsprojects/Fabulous/blob/master/LICENSE.md</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/fsprojects/Fabulous</PackageProjectUrl>
