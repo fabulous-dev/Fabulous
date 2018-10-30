@@ -105,7 +105,7 @@ Target.create "UpdateVersion" (fun _ ->
     let props = "./Directory.Build.props"
     Xml.loadDoc props
     |> Xml.replaceXPath "//Version/text()" release.AssemblyVersion
-    |> Xml.replaceXPath "//Description/text()" (String.toLines release.Notes)
+    |> Xml.replaceXPath "//PackageReleaseNotes/text()" (String.toLines release.Notes)
     |> Xml.replaceXPath "//PackageVersion/text()" release.NugetVersion
     |> Xml.saveDoc props
 

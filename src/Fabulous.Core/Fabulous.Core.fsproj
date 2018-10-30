@@ -5,6 +5,7 @@
     </PropertyGroup>
     <PropertyGroup>
         <PackageId>Fabulous.Core</PackageId>
+        <Description>F# Functional App Dev Framework</Description>
     </PropertyGroup>
     <ItemGroup>
         <Compile Include="ViewElement.fs" />
