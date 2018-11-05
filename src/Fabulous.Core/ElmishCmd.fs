@@ -21,7 +21,7 @@ module Cmd =
     let ofMsg (msg:'msg) : Cmd<'msg> =
         [fun dispatch -> dispatch msg]
 
-    /// Command to issue a specific message, only when Option.IsSome
+    /// Command to issue a specific message, only when Option.IsSome = true
     let ofMsgOption (msg:'msg option) : Cmd<'msg> =
         [fun dispatch -> match msg with None -> () | Some msg -> dispatch msg]
 
@@ -39,11 +39,11 @@ module Cmd =
 
     let dispatch d (cmd: Cmd<_>) = for sub in cmd do sub d
 
-    /// Command to issue a specific message at the end of an asynchronous task
+    /// Command to issue a message at the end of an asynchronous task
     let ofAsyncMsg (p: Async<'msg>) : Cmd<'msg> =
         [ fun dispatch -> async { let! msg = p in dispatch msg } |> Async.StartImmediate ]
 
-    /// Command to issue a specific message at the end of an asynchronous task, only when Option.IsSome
+    /// Command to issue a message at the end of an asynchronous task, only when Option.IsSome = true
     let ofAsyncMsgOption (p: Async<'msg option>) : Cmd<'msg> =
         [ fun dispatch -> async { let! msg = p in match msg with None -> () | Some msg -> dispatch msg } |> Async.StartImmediate ]
  
