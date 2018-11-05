@@ -127,3 +127,45 @@ let backgroundCmd =
         return msg
     })
 ```
+
+Optional commands
+------
+
+There might be cases where before a message is sent, you need to check if you want to send it (e.g. check user's preferences, ask user's permission, ...)
+
+Fabulous has 2 helper functions for this:
+
+- `Cmd.ofMsgOption`
+
+```fsharp
+let autoSaveCmd =
+    match userPreference.IsAutoSaveEnabled with
+    | false -> None
+    | true ->
+        autoSave()
+        Some Msg.AutoSaveDone
+
+let update msg model =
+    match msg with
+    | TimedTick -> model, (Cmd.ofMsgOption autoSaveCmd)
+    | AutoSaveDone -> ...
+```
+
+- `Cmd.ofAsyncMsgOption`
+
+```fsharp
+let takePictureCmd = async {
+    try
+        let! picture = takePictureAsync()
+        Some (Msg.PictureTaken picture)
+    with
+    | exn ->
+        do! displayAlert("Exception: " + exn.Message)
+        None
+}
+
+let update msg model =
+    match msg with
+    | TakePicture -> model, (Cmd.ofAsyncMsgOption takePictureCmd)
+    | PictureTaken -> ...
+```
