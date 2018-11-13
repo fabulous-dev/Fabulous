@@ -1,7 +1,7 @@
 {
   "assemblies": [
     "packages/neutral/Xamarin.Forms/lib/netstandard1.0/Xamarin.Forms.Core.dll",
-    "src/Fabulous.Core/bin/Release/netstandard2.0/Fabulous.Core.dll"
+    "customControls/Fabulous.CustomControls/bin/Release/netstandard2.0/Fabulous.CustomControls.dll"
   ],
 	"outputNamespace": "Fabulous.DynamicViews",
 	"types": [
@@ -1086,11 +1086,11 @@
           "convToModel": "(fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.EntryCell).Text))"
         },
         {
-          "name": "EntryTextChanged",
+          "name": "TextChanged",
           "uniqueName": "EntryCellTextChanged",
           "defaultValue": "null",
-          "inputType": "string -> unit",
-          "convToModel": "(fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.EntryCell).Text))"
+          "inputType": "Xamarin.Forms.TextChangedEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))"
         }
       ]
     },

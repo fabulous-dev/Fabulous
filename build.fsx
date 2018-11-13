@@ -56,6 +56,7 @@ let projects = [
     { Name = "Templates";   Path = !! "templates/**/*.nuspec";  Action = NuGetPack;          OutputPath = buildDir }
 ]
 let tools = { Name = "Tools"; Path = !! "tools/**/*.fsproj"; Action = MSBuild Release; OutputPath = buildDir + "/tools" }
+let customControls = { Name = "CustomControls"; Path = !! "customControls/**/*.fsproj"; Action = DotNetPack; OutputPath = buildDir }
 let samples = { Name = "Samples"; Path = (!! "samples/**/*.fsproj" |> removeIncompatiblePlatformProjects); Action = MSBuild Debug; OutputPath = buildDir + "/samples" } 
 
 
@@ -126,6 +127,10 @@ Target.create "UpdateVersion" (fun _ ->
 Target.create "Restore" (fun _ ->
     Paket.restore id
     DotNet.restore id "Fabulous.sln"
+)
+
+Target.create "BuildCustomControls" (fun _ ->
+    customControls |> buildProject
 )
 
 Target.create "BuildTools" (fun _ ->
@@ -200,6 +205,7 @@ open Fake.Core.TargetOperators
   ==> "Restore"
   ==> "UpdateVersion"
   ==> "BuildTools"
+  ==> "BuildCustomControls"
   ==> "RunGenerator"
   ==> "Build"
 
