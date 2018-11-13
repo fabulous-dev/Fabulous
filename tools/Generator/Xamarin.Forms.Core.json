@@ -1,7 +1,8 @@
 {
-	"assemblies": [
-		"packages/neutral/Xamarin.Forms/lib/netstandard1.0/Xamarin.Forms.Core.dll"
-	],
+  "assemblies": [
+    "packages/neutral/Xamarin.Forms/lib/netstandard1.0/Xamarin.Forms.Core.dll",
+    "src/Fabulous.Core/bin/Release/netstandard2.0/Fabulous.Core.dll"
+  ],
 	"outputNamespace": "Fabulous.DynamicViews",
 	"types": [
 		{
@@ -1054,8 +1055,8 @@
 			]
 		},
     {
-      "name": "Xamarin.Forms.EntryCell",
-      "customType": "Fabulous.DynamicViews.CustomEntryCell",
+      "name": "Fabulous.DynamicViews.CustomEntryCell",
+      "modelName": "EntryCell",
       "members": [
         {
           "name": "Label",
