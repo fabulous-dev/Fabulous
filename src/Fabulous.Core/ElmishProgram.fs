@@ -82,7 +82,12 @@ type ProgramRunner<'model, 'msg>(app: Application, program: Program<'model, 'msg
             lastViewDataOpt <- Some viewInfo
 
         | Some prevPageElement ->
-            let newPageElement = program.view updatedModel dispatch
+            let newPageElement = 
+                try program.view updatedModel dispatch
+                with ex -> 
+                    program.onError ("Unable to evaluate view:", ex)
+                    prevPageElement
+
             if canReuseChild prevPageElement newPageElement then
                 newPageElement.UpdateIncremental (prevPageElement, app.MainPage)
             else
@@ -109,7 +114,10 @@ type ProgramRunner<'model, 'msg>(app: Application, program: Program<'model, 'msg
 
         Debug.WriteLine "dispatching initial commands"
         for sub in (program.subscribe initialModel @ cmd) do
-            sub dispatch
+            try 
+                sub dispatch
+            with ex ->
+                program.onError ("Error executing commands:", ex)
 
     member __.InitialMainPage = mainPage
 
@@ -148,7 +156,7 @@ type ProgramRunner<'model, 'msg>(app: Application, program: Program<'model, 'msg
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module Program =
     let internal onError (text: string, ex: exn) = 
-        Debug.WriteLine (sprintf "%s: %A" text ex)
+        Console.WriteLine (sprintf "%s: %A" text ex)
 
     /// Typical program, new commands are produced by `init` and `update` along with the new state.
     let mkProgram init update view =

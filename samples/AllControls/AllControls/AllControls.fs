@@ -43,6 +43,8 @@ type Model =
     // For InfiniteScroll page demo. It's not really an "infinite" scroll, just an unbounded set of data whose growth is prompted by the need formore of it in the UI
     InfiniteScrollMaxRequested: int
     SearchTerm: string
+    CarouselCurrentPageIndex: int
+    Tabbed1CurrentPageIndex: int
     }
 
 type Msg = 
@@ -86,6 +88,8 @@ type Msg =
     | AnimationPoked
     | AnimationPoked2
     | AnimationPoked3
+    | SetCarouselCurrentPage of int
+    | SetTabbed1CurrentPage of int
 
 [<AutoOpen>]
 module MyExtension = 
@@ -151,7 +155,9 @@ module App =
           PageStack=[ Some "Home" ]
           DetailPage="A"
           InfiniteScrollMaxRequested = 10 
-          SearchTerm = "nothing!"}
+          SearchTerm = "nothing!"
+          CarouselCurrentPageIndex = 0
+          Tabbed1CurrentPageIndex = 0 }
 
     let animatedLabelRef = ViewRef<Label>()
     let update msg model =
@@ -222,6 +228,10 @@ module App =
             animatedLabelRef.Value.Rotation <- 0.0
             animatedLabelRef.Value.RotateTo (360.0, 2000u) |> ignore
             model
+        | SetCarouselCurrentPage index ->
+            { model with CarouselCurrentPageIndex = index }
+        | SetTabbed1CurrentPage index ->
+            { model with Tabbed1CurrentPageIndex = index }
 
     let pickerItems = 
         [| ("Aqua", Color.Aqua); ("Black", Color.Black);
@@ -267,7 +277,17 @@ module App =
                 ])
 
         | Carousel -> 
-           View.CarouselPage(useSafeArea=true, children=
+           View.CarouselPage(
+                    useSafeArea=true,
+                    currentPageChanged=(fun index -> 
+                        match index with
+                        | None -> printfn "No page selected"
+                        | Some ind ->
+                            printfn "Page changed : %i" ind
+                            dispatch (SetCarouselCurrentPage ind)
+                    ),
+                    currentPage=model.CarouselCurrentPageIndex,
+                    children=
              [ dependsOn model.Count (fun model count -> 
                    View.ScrollingContentPage("Button", 
                        [ View.Label(text="Label:")
@@ -278,7 +298,9 @@ module App =
                  
                          View.Label(text="Button:")
                          View.Button(text="Decrement", command=(fun () -> dispatch Decrement), horizontalOptions=LayoutOptions.CenterAndExpand)
-                
+
+                         View.Button(text="Go to grid", cornerRadius=5, command=(fun () -> dispatch (SetCarouselCurrentPage 6)), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)
+
                          View.Button(text="Main page", cornerRadius=5, command=(fun () -> dispatch (SetRootPageKind (Choice false))), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)
                 
                       ]))
@@ -376,7 +398,17 @@ module App =
            ])
 
         | Tabbed1 ->
-           View.TabbedPage(useSafeArea=true, children=
+           View.TabbedPage(
+                    useSafeArea=true,
+                    currentPageChanged=(fun index ->
+                        match index with
+                        | None -> printfn "No tab selected"
+                        | Some ind ->
+                            printfn "Tab changed : %i" ind
+                            dispatch (SetTabbed1CurrentPage ind)
+                    ),
+                    currentPage=model.Tabbed1CurrentPageIndex,
+                    children=
              [
                dependsOn (model.CountForSlider, model.StepForSlider) (fun model (count, step) -> 
                   View.ScrollingContentPage("Slider", 
@@ -395,6 +427,10 @@ module App =
                            value=double step, 
                            valueChanged=(fun args -> dispatch (SliderValueChanged (int (args.NewValue + 0.5)))), 
                            horizontalOptions=LayoutOptions.Fill) 
+
+                       View.Button(text="Go to Image", 
+                            command=(fun () -> dispatch (SetTabbed1CurrentPage 4)), 
+                            horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)
                     ]))
 
                dependsOn () (fun model () -> 

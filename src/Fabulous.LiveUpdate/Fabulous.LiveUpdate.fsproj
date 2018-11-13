@@ -5,6 +5,7 @@
     </PropertyGroup>
     <PropertyGroup>
         <PackageId>Fabulous.LiveUpdate</PackageId>
+        <Description>F# Functional App Dev Framework Live Update</Description>
         <PackageTags>LiveUpdate;Android;iOS</PackageTags>
     </PropertyGroup>
     <ItemGroup>
