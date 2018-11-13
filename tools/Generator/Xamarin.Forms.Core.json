@@ -1053,38 +1053,46 @@
 				}
 			]
 		},
-		{
-			"name": "Xamarin.Forms.EntryCell",
-			"members": [
-				{
-					"name": "Label",
-					"defaultValue": "null"
-				},
-				{
-					"name": "Text",
-					"defaultValue": "null"
-				},
-				{
-					"name": "Keyboard",
-					"defaultValue": "Xamarin.Forms.Keyboard.Default"
-				},
-				{
-					"name": "Placeholder",
-					"defaultValue": "null"
-				},
-				{
-					"name": "HorizontalTextAlignment",
-					"defaultValue": "Xamarin.Forms.TextAlignment.Start"
-				},
-				{
-					"name": "Completed",
-					"uniqueName": "EntryCompleted",
-					"defaultValue": "null",
-					"inputType": "string -> unit",
-					"convToModel": "(fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.EntryCell).Text))"
-				}
-			]
-		},
+    {
+      "name": "Xamarin.Forms.EntryCell",
+      "customType": "Fabulous.DynamicViews.CustomEntryCell",
+      "members": [
+        {
+          "name": "Label",
+          "defaultValue": "null"
+        },
+        {
+          "name": "Text",
+          "defaultValue": "null"
+        },
+        {
+          "name": "Keyboard",
+          "defaultValue": "Xamarin.Forms.Keyboard.Default"
+        },
+        {
+          "name": "Placeholder",
+          "defaultValue": "null"
+        },
+        {
+          "name": "HorizontalTextAlignment",
+          "defaultValue": "Xamarin.Forms.TextAlignment.Start"
+        },
+        {
+          "name": "Completed",
+          "uniqueName": "EntryCompleted",
+          "defaultValue": "null",
+          "inputType": "string -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.EntryCell).Text))"
+        },
+        {
+          "name": "EntryTextChanged",
+          "uniqueName": "EntryCellTextChanged",
+          "defaultValue": "null",
+          "inputType": "string -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.EntryCell).Text))"
+        }
+      ]
+    },
 		{
 			"name": "Xamarin.Forms.Label",
 			"members": [

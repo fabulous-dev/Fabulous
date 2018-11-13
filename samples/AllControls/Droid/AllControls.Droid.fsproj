@@ -17,9 +17,8 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
-    <SelectedDevice>Google Pixel 2</SelectedDevice>
-    <DefaultDevice>Android_Accelerated_x86_Nougat</DefaultDevice>
+    <SelectedDevice>twitchdeck</SelectedDevice>
+    <DefaultDevice>twitchdeck</DefaultDevice>
     <Name>AllControls.Droid</Name>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
