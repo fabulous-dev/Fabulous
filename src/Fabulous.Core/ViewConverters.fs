@@ -110,20 +110,6 @@ type CustomListView() =
 
 type CustomGroupListView() = 
     inherit ListView(ItemTemplate=DataTemplate(typeof<ViewElementCell>), GroupHeaderTemplate=DataTemplate(typeof<ViewElementCell>), IsGroupingEnabled=true)
-    
-
-type CustomEntryCell() =
-    inherit EntryCell()
-    let textChanged: Event<string> = Event<_>()
-
-    member this.Text
-        with get () = base.Text
-        and set (value) =
-            base.Text <- value
-            textChanged.Trigger value
-
-    member __.EntryTextChanged = textChanged.Publish
-        
 
 type CustomContentPage() as self = 
     inherit ContentPage()
