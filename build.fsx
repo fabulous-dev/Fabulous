@@ -133,7 +133,12 @@ Target.create "BuildTools" (fun _ ->
 )
 
 Target.create "RunGenerator" (fun _ ->
-    DotNet.exec id (tools.OutputPath + "/Generator/Generator.dll") "tools/Generator/Xamarin.Forms.Core.json src/Fabulous.Core/Xamarin.Forms.Core.fs" |> ignore
+    DotNet.exec id (tools.OutputPath + "/Generator/Generator.dll") "tools/Generator/Xamarin.Forms.Core.json src/Fabulous.Core/Xamarin.Forms.Core.fs"
+    |> (fun x ->
+        match x.OK with
+        | true -> ()
+        | false -> failwith "The generator stopped due to an exception"
+    )
 )
 
 Target.create "Build" (fun _ -> 
