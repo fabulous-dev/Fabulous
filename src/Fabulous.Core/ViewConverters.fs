@@ -37,22 +37,28 @@ type ListElementData<'T>(key:'T) =
 
 [<AllowNullLiteral>]
 type ListGroupData<'T>(shortName: string, key:'T, coll: 'T[]) = 
-    inherit System.Collections.Generic.List<ListElementData<'T>>(Seq.map ListElementData coll)
+    inherit System.Collections.ObjectModel.ObservableCollection<ListElementData<'T>>(Seq.map ListElementData coll)
     
     let ev = new Event<_,_>()
-    let mutable data = key
+    let mutable shortNameData = shortName
+    let mutable keyData = key
     
     interface IListElement with
-        member x.Key = box data
+        member x.Key = box keyData
         [<CLIEvent>] member x.PropertyChanged = ev.Publish
         
     member x.Key
-        with get() = data
+        with get() = keyData
         and set(value) =
-            data <- value
+            keyData <- value
             ev.Trigger(x, PropertyChangedEventArgs "Key")
             
-    member x.ShortName = shortName
+    member x.ShortName
+        with get() = shortName
+        and set(value) =
+            shortNameData <- value
+            ev.Trigger(x, PropertyChangedEventArgs "ShortName")
+            
     member x.Items = coll
 
 
@@ -337,6 +343,11 @@ module Converters =
                 oc
         updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetColl ListElementData (fun _ _ _ -> ()) canReuseChild (fun _ curr target -> target.Key <- curr) 
 
+    let updateListGroupData (prevShortName: string, prevKey: 'T, prevColl: 'T[]) (currShortName: string, currKey: 'T, currColl: 'T[]) (target: ListGroupData<'T>) =
+        target.ShortName <- currShortName
+        target.Key <- currKey
+        updateCollectionGeneric (ValueSome prevColl) (ValueSome currColl) target ListElementData (fun _ _ _ -> ()) canReuseChild (fun _ curr target -> target.Key <- curr) 
+
     let updateListViewGroupedItems (prevCollOpt: (string * 'T * 'T[])[] voption) (collOpt: (string * 'T * 'T[])[] voption) (target: Xamarin.Forms.ListView) = 
         let targetColl = 
             match target.ItemsSource with 
@@ -345,7 +356,7 @@ module Converters =
                 let oc = ObservableCollection<ListGroupData<'T>>()
                 target.ItemsSource <- oc
                 oc
-        updateCollectionGeneric prevCollOpt collOpt targetColl ListGroupData (fun _ _ _ -> ()) (fun (_, prevKey, _) (_, currKey, _) -> canReuseChild prevKey currKey) (fun _ (_, currKey, _) target -> target.Key <- currKey)
+        updateCollectionGeneric prevCollOpt collOpt targetColl ListGroupData (fun _ _ _ -> ()) (fun (_, prevKey, _) (_, currKey, _) -> canReuseChild prevKey currKey) updateListGroupData
 
     let updateListViewGroupedShowJumpList (prevOpt: bool voption) (currOpt: bool voption) (target: Xamarin.Forms.ListView) =
         let updateTarget enableJumpList = target.GroupShortNameBinding <- (if enableJumpList then new Binding("ShortName") else null)
