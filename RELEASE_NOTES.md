@@ -1,3 +1,10 @@
+#### 0.26.0
+
+* Added Cmd.ofMsgOption and Cmd.ofAsyncMsgOption (https://github.com/fsprojects/Fabulous/pull/224)
+* Fixed Microsoft.CSharp warnings when building a project created with the template (https://github.com/fsprojects/Fabulous/pull/216)
+* Fixed a bug in ListViewGrouped that prevented groups to be updated (https://github.com/fsprojects/Fabulous/pull/229)
+* Fixed description of the NuGet packages (https://github.com/fsprojects/Fabulous/pull/220)
+
 #### 0.25.0
 
 * Added "CurrentPage" and "CurrentPageChanged" to TabbedPage and CarouselPage (https://github.com/fsprojects/Fabulous/pull/215)
