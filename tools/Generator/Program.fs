@@ -97,6 +97,30 @@ type TextWriter with
     member this.printf fmt = fprintf this fmt
     member this.printfn fmt = fprintfn this fmt
 
+type RegistrableResolver() =
+    inherit BaseAssemblyResolver()
+
+    let cache = Dictionary<string, AssemblyDefinition>()
+
+    override this.Resolve(name) =
+        match cache.TryGetValue(name.FullName) with
+        | true, assembly -> assembly
+        | false, _ ->
+            let assembly = base.Resolve(name)
+            cache.[name.FullName] <- assembly
+            assembly
+
+    member this.RegisterAssembly(assembly: AssemblyDefinition): unit =
+        match cache.ContainsKey(assembly.Name.FullName) with
+        | true -> ()
+        | false ->
+            cache.[assembly.Name.FullName] <- assembly
+
+    member this.Dispose(disposing) =
+        cache.Values |> Seq.iter (fun asm -> asm.Dispose())
+        cache.Clear()
+        base.Dispose()
+
 let (|NotNullOrWhitespace|_|) (s:string) = if String.IsNullOrWhiteSpace s then None else Some s
 
 let ResolveType(this: Bindings, name: string) =
@@ -579,12 +603,16 @@ let BindTypes (bindings: Bindings, resolutions: IDictionary<TypeBinding, TypeDef
     w.ToString ()
 
 
-let LoadAssembly (path: string) : AssemblyDefinition  =
+let LoadAssembly (resolver: RegistrableResolver) (path: string) : AssemblyDefinition  =
         //if (path.StartsWith("packages")) {
         //    let user = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
         //    path = Path.Combine (user, ".nuget", path)
         // }
-        AssemblyDefinition.ReadAssembly(path)
+        let readerParameters = ReaderParameters()
+        readerParameters.AssemblyResolver <- resolver
+        let assembly = AssemblyDefinition.ReadAssembly(path, readerParameters)
+        resolver.RegisterAssembly assembly
+        assembly
 
 
 [<EntryPoint>]
@@ -598,7 +626,8 @@ let Main(args: string[]) =
 
             let bindings = JsonConvert.DeserializeObject<Bindings> (File.ReadAllText (bindingsPath))
 
-            bindings.AssemblyDefinitions <- bindings.Assemblies.Select(LoadAssembly).ToList()
+            let resolver = new RegistrableResolver()
+            bindings.AssemblyDefinitions <- bindings.Assemblies.Select(LoadAssembly resolver).ToList()
 
             let resolutions = 
                 [ for x in bindings.Types do
