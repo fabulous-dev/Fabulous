@@ -1055,7 +1055,7 @@
 			]
 		},
     {
-      "name": "Fabulous.DynamicViews.CustomEntryCell",
+      "name": "Fabulous.CustomControls.CustomEntryCell",
       "modelName": "EntryCell",
       "members": [
         {
