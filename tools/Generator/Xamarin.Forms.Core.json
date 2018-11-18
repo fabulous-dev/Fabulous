@@ -1,7 +1,7 @@
 {
   "assemblies": [
     "packages/neutral/Xamarin.Forms/lib/netstandard1.0/Xamarin.Forms.Core.dll",
-    "customControls/Fabulous.CustomControls/bin/Release/netstandard2.0/Fabulous.CustomControls.dll"
+    "src/Fabulous.CustomControls/bin/Release/netstandard2.0/Fabulous.CustomControls.dll"
   ],
 	"outputNamespace": "Fabulous.DynamicViews",
 	"types": [

@@ -63,7 +63,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1199BA9F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "extensions", "extensions", "{13C0EB5D-E38E-4714-9421-77CD9C53A067}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fabulous.CustomControls", "customControls\Fabulous.CustomControls\Fabulous.CustomControls.fsproj", "{7FF328BB-9318-4C11-8A9A-37DD98EAB35B}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fabulous.CustomControls", "src\Fabulous.CustomControls\Fabulous.CustomControls.fsproj", "{7FF328BB-9318-4C11-8A9A-37DD98EAB35B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

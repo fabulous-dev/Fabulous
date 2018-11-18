@@ -24,7 +24,7 @@
         <PackageReference Include="Xamarin.Forms" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\..\customControls\Fabulous.CustomControls\Fabulous.CustomControls.fsproj" />
+      <ProjectReference Include="..\Fabulous.CustomControls\Fabulous.CustomControls.fsproj" />
     </ItemGroup>
     <Import Project="..\..\Packages.targets" />
 </Project>
