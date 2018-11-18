@@ -1,13 +1,13 @@
 <Project>
   <!-- NuGet Specs -->
   <PropertyGroup>
-    <Version>0.25.0</Version>
+    <Version>0.26.0</Version>
     <Authors>Fabulous Contributors</Authors>
-    <PackageVersion>0.25.0</PackageVersion>
-    <PackageReleaseNotes>Added "CurrentPage" and "CurrentPageChanged" to TabbedPage and CarouselPage (https://github.com/fsprojects/Fabulous/pull/215)
-Added support for byte array with Image.Source (https://github.com/fsprojects/Fabulous/pull/217)
-Improved exception protection in LiveUpdate (https://github.com/fsprojects/Fabulous/pull/214)
-Fixed an issue in LiveUpdate preventing the use of some kinds of discriminated unions (https://github.com/fsprojects/Fabulous/pull/213)</PackageReleaseNotes>
+    <PackageVersion>0.26.0</PackageVersion>
+    <PackageReleaseNotes>Added Cmd.ofMsgOption and Cmd.ofAsyncMsgOption (https://github.com/fsprojects/Fabulous/pull/224)
+Fixed Microsoft.CSharp warnings when building a project created with the template (https://github.com/fsprojects/Fabulous/pull/216)
+Fixed a bug in ListViewGrouped that prevented groups to be updated (https://github.com/fsprojects/Fabulous/pull/229)
+Fixed description of the NuGet packages (https://github.com/fsprojects/Fabulous/pull/220)</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <PackageLicenseUrl>https://github.com/fsprojects/Fabulous/blob/master/LICENSE.md</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/fsprojects/Fabulous</PackageProjectUrl>
