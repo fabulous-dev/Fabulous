@@ -172,6 +172,9 @@
     <Reference Include="Fabulous.LiveUpdate">
       <HintPath>..\packages\Fabulous.LiveUpdate.FabulousPkgsVersion\lib\netstandard2.0\Fabulous.LiveUpdate.dll</HintPath>
     </Reference>
+    <Reference Include="Fabulous.CustomControls">
+      <HintPath>..\packages\Fabulous.CustomControls.FabulousPkgsVersion\lib\netstandard2.0\Fabulous.CustomControls.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.NewtonsoftJsonPkg\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
