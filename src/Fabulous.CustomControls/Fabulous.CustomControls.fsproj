@@ -1,15 +1,19 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
     <Import Project="..\..\SourceLink.props" />
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="Controls.fs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" />
-  </ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+    </PropertyGroup>
+    <PropertyGroup>
+        <PackageId>Fabulous.CustomControls</PackageId>
+        <Description>Fabulous controls with added support for Elmish</Description>
+        <PackageTags>Controls</PackageTags>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="Controls.fs" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Xamarin.Forms" />
+    </ItemGroup>
     <Import Project="..\..\Packages.targets" />
 </Project>

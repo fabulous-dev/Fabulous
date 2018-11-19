@@ -117,8 +117,12 @@
       <Name>AllControls</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\src\Fabulous.Core\Fabulous.Core.fsproj">
-      <Project>{AE045D79-7FF3-45F3-BFD0-305542A1C728}</Project>
+      <Project>{B459AFAD-BB5B-43C3-BD86-609E8DB3E3FD}</Project>
       <Name>Fabulous.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\src\Fabulous.CustomControls\Fabulous.CustomControls.fsproj">
+      <Project>{7FF328BB-9318-4C11-8A9A-37DD98EAB35B}</Project>
+      <Name>Fabulous.CustomControls</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets" Condition="Exists('$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets')" />
