@@ -36,7 +36,7 @@ type ProjectDefinition =
         Name: string
         Path: IGlobbingPattern
         Action: BuildAction
-        OutputPath: string
+        OutputPath: string option
     }
 
 let release = ReleaseNotes.load "RELEASE_NOTES.MD"
@@ -50,18 +50,23 @@ let removeIncompatiblePlatformProjects pattern =
         pattern
 
 let projects = [
-    { Name = "Src";         Path = !! "src/**/*.fsproj";        Action = DotNetPack;         OutputPath = buildDir }
-    { Name = "Extensions";  Path = !! "extensions/**/*.fsproj"; Action = DotNetPack;         OutputPath = buildDir }
-    { Name = "Tests";       Path = !! "tests/**/*.fsproj";      Action = MSBuild Release;    OutputPath = buildDir + "/tests" }
-    { Name = "Templates";   Path = !! "templates/**/*.nuspec";  Action = NuGetPack;          OutputPath = buildDir }
+    { Name = "Src";         Path = !! "src/**/*.fsproj";        Action = DotNetPack;         OutputPath = Some buildDir }
+    { Name = "Extensions";  Path = !! "extensions/**/*.fsproj"; Action = DotNetPack;         OutputPath = Some buildDir }
+    { Name = "Tests";       Path = !! "tests/**/*.fsproj";      Action = MSBuild Release;    OutputPath = Some (buildDir + "/tests") }
+    { Name = "Templates";   Path = !! "templates/**/*.nuspec";  Action = NuGetPack;          OutputPath = Some buildDir }
 ]
-let tools = { Name = "Tools"; Path = !! "tools/**/*.fsproj"; Action = MSBuild Release; OutputPath = buildDir + "/tools" }
-let samples = { Name = "Samples"; Path = (!! "samples/**/*.fsproj" |> removeIncompatiblePlatformProjects); Action = MSBuild Debug; OutputPath = buildDir + "/samples" } 
+
+let tools = { Name = "Tools"; Path = !! "tools/**/*.fsproj"; Action = MSBuild Release; OutputPath = Some (buildDir + "/tools") }
+let samples = { Name = "Samples"; Path = (!! "samples/**/*.fsproj" |> removeIncompatiblePlatformProjects); Action = MSBuild Debug; OutputPath = Some (buildDir + "/samples") } 
+let customControls = { Name = "CustomControls"; Path = !! "src/Fabulous.CustomControls/*.fsproj"; Action = MSBuild Release; OutputPath = None }
 
 
 let getOutputDir basePath proj =
-    let folderName = Path.GetFileNameWithoutExtension(proj)
-    sprintf "%s/%s/" basePath folderName
+    match basePath with
+    | Some path -> 
+        let folderName = Path.GetFileNameWithoutExtension(proj)
+        sprintf "%s/%s/" path folderName
+    | None -> ""
 
 let msbuild (buildType: BuildType) (definition: ProjectDefinition) =
     let configuration = match buildType with Debug -> "Debug" | Release -> "Release"
@@ -78,14 +83,14 @@ let dotnetPack (definition: ProjectDefinition) =
             { opt with
                 Common = { opt.Common with CustomParams = Some "-p:IncludeSourceLink=True" }
                 Configuration = DotNet.BuildConfiguration.Release
-                OutputPath = Some definition.OutputPath }) project
+                OutputPath = definition.OutputPath }) project
 
 let nugetPack (definition: ProjectDefinition) =
     for nuspec in definition.Path do
         NuGet.NuGetPack (fun opt ->
             { opt with
                 WorkingDir = "templates"
-                OutputPath = definition.OutputPath
+                OutputPath = definition.OutputPath.Value
                 Version = release.NugetVersion
                 ReleaseNotes = (String.toLines release.Notes) }) nuspec
 
@@ -128,12 +133,16 @@ Target.create "Restore" (fun _ ->
     DotNet.restore id "Fabulous.sln"
 )
 
+Target.create "BuildCustomControls" (fun _ ->
+    customControls |> buildProject
+)
+
 Target.create "BuildTools" (fun _ ->
     tools |> buildProject
 )
 
 Target.create "RunGenerator" (fun _ ->
-    DotNet.exec id (tools.OutputPath + "/Generator/Generator.dll") "tools/Generator/Xamarin.Forms.Core.json src/Fabulous.Core/Xamarin.Forms.Core.fs"
+    DotNet.exec id (tools.OutputPath.Value + "/Generator/Generator.dll") "tools/Generator/Xamarin.Forms.Core.json src/Fabulous.Core/Xamarin.Forms.Core.fs"
     |> (fun x ->
         match x.OK with
         | true -> ()
@@ -205,6 +214,7 @@ open Fake.Core.TargetOperators
   ==> "Restore"
   ==> "UpdateVersion"
   ==> "BuildTools"
+  ==> "BuildCustomControls"
   ==> "RunGenerator"
   ==> "Build"
 

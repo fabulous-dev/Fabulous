@@ -12,6 +12,7 @@
     <PackageReference Include="Xamarin.Forms" Version="XamarinFormsSdk" />
     <PackageReference Include="Xamarin.Essentials" Version="XamarinEssentialsSdk" />
     <PackageReference Include="Fabulous.Core" Version="FabulousPkgsVersion" />
+    <PackageReference Include="Fabulous.CustomControls" Version="FabulousPkgsVersion" />
     <PackageReference Include="Fabulous.LiveUpdate" Version="FabulousPkgsVersion" />
     <PackageReference Include="FSharp.Core" Version="FSharpCorePkgVersion" />
     <PackageReference Update="FSharp.Core" Version="FSharpCorePkgVersion" /> <!-- workaround for VSMac bug https://github.com/mono/monodevelop/pull/5137 --> 

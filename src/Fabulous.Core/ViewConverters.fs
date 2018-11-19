@@ -61,7 +61,6 @@ type ListGroupData<'T>(shortName: string, key:'T, coll: 'T[]) =
             
     member x.Items = coll
 
-
 type ViewElementCell() = 
     inherit ViewCell()
 

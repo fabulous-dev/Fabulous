@@ -12,6 +12,7 @@
         <PackageReference Include="Newtonsoft.Json" />
     </ItemGroup>
     <ItemGroup>
+        <ProjectReference Include="..\..\..\customControls\Fabulous.CustomControls\Fabulous.CustomControls.fsproj" />
         <ProjectReference Include="..\..\..\src\Fabulous.Core\Fabulous.Core.fsproj" />
         <ProjectReference Include="..\..\..\src\Fabulous.LiveUpdate\Fabulous.LiveUpdate.fsproj" />
     </ItemGroup>

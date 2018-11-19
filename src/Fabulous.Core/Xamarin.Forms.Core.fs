@@ -279,6 +279,8 @@ type View() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _LabelAttribKey : AttributeKey<_> = AttributeKey<_>("Label")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member val _EntryCellTextChangedAttribKey : AttributeKey<_> = AttributeKey<_>("EntryCellTextChanged")
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _VerticalTextAlignmentAttribKey : AttributeKey<_> = AttributeKey<_>("VerticalTextAlignment")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _FormattedTextAttribKey : AttributeKey<_> = AttributeKey<_>("FormattedText")
@@ -6811,6 +6813,7 @@ type View() =
                                         ?placeholder: string,
                                         ?horizontalTextAlignment: Xamarin.Forms.TextAlignment,
                                         ?completed: string -> unit,
+                                        ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit,
                                         ?height: double,
                                         ?isEnabled: bool,
                                         ?classId: string,
@@ -6825,6 +6828,7 @@ type View() =
         let attribCount = match placeholder with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match horizontalTextAlignment with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match completed with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match textChanged with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = View.BuildCell(attribCount, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match label with None -> () | Some v -> attribBuilder.Add(View._LabelAttribKey, (v)) 
@@ -6833,20 +6837,21 @@ type View() =
         match placeholder with None -> () | Some v -> attribBuilder.Add(View._PlaceholderAttribKey, (v)) 
         match horizontalTextAlignment with None -> () | Some v -> attribBuilder.Add(View._HorizontalTextAlignmentAttribKey, (v)) 
         match completed with None -> () | Some v -> attribBuilder.Add(View._EntryCompletedAttribKey, (fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.EntryCell).Text))(v)) 
+        match textChanged with None -> () | Some v -> attribBuilder.Add(View._EntryCellTextChangedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))(v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val CreateFuncEntryCell : (unit -> Xamarin.Forms.EntryCell) = (fun () -> View.CreateEntryCell())
+    static member val CreateFuncEntryCell : (unit -> Fabulous.CustomControls.CustomEntryCell) = (fun () -> View.CreateEntryCell())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member CreateEntryCell () : Xamarin.Forms.EntryCell = 
-            upcast (new Xamarin.Forms.EntryCell())
+    static member CreateEntryCell () : Fabulous.CustomControls.CustomEntryCell = 
+            upcast (new Fabulous.CustomControls.CustomEntryCell())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val UpdateFuncEntryCell = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.EntryCell) -> View.UpdateEntryCell (prevOpt, curr, target)) 
+    static member val UpdateFuncEntryCell = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Fabulous.CustomControls.CustomEntryCell) -> View.UpdateEntryCell (prevOpt, curr, target)) 
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member UpdateEntryCell (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.EntryCell) = 
+    static member UpdateEntryCell (prevOpt: ViewElement voption, curr: ViewElement, target: Fabulous.CustomControls.CustomEntryCell) = 
         // update the inherited Cell element
         let baseElement = (if View.ProtoCell.IsNone then View.ProtoCell <- Some (View.Cell())); View.ProtoCell.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
@@ -6862,6 +6867,8 @@ type View() =
         let mutable currHorizontalTextAlignmentOpt = ValueNone
         let mutable prevEntryCompletedOpt = ValueNone
         let mutable currEntryCompletedOpt = ValueNone
+        let mutable prevEntryCellTextChangedOpt = ValueNone
+        let mutable currEntryCellTextChangedOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = View._LabelAttribKey.KeyValue then 
                 currLabelOpt <- ValueSome (kvp.Value :?> string)
@@ -6875,6 +6882,8 @@ type View() =
                 currHorizontalTextAlignmentOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.TextAlignment)
             if kvp.Key = View._EntryCompletedAttribKey.KeyValue then 
                 currEntryCompletedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
+            if kvp.Key = View._EntryCellTextChangedAttribKey.KeyValue then 
+                currEntryCellTextChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
@@ -6891,6 +6900,8 @@ type View() =
                     prevHorizontalTextAlignmentOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.TextAlignment)
                 if kvp.Key = View._EntryCompletedAttribKey.KeyValue then 
                     prevEntryCompletedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
+                if kvp.Key = View._EntryCellTextChangedAttribKey.KeyValue then 
+                    prevEntryCellTextChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>)
         match prevLabelOpt, currLabelOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.Label <-  currValue
@@ -6922,6 +6933,12 @@ type View() =
         | ValueNone, ValueSome currValue -> target.Completed.AddHandler(currValue)
         | ValueSome prevValue, ValueNone -> target.Completed.RemoveHandler(prevValue)
         | ValueNone, ValueNone -> ()
+        match prevEntryCellTextChangedOpt, currEntryCellTextChangedOpt with
+        | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
+        | ValueSome prevValue, ValueSome currValue -> target.TextChanged.RemoveHandler(prevValue); target.TextChanged.AddHandler(currValue)
+        | ValueNone, ValueSome currValue -> target.TextChanged.AddHandler(currValue)
+        | ValueSome prevValue, ValueNone -> target.TextChanged.RemoveHandler(prevValue)
+        | ValueNone, ValueNone -> ()
 
     /// Describes a EntryCell in the view
     static member inline EntryCell(?label: string,
@@ -6930,13 +6947,14 @@ type View() =
                                    ?placeholder: string,
                                    ?horizontalTextAlignment: Xamarin.Forms.TextAlignment,
                                    ?completed: string -> unit,
+                                   ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit,
                                    ?height: double,
                                    ?isEnabled: bool,
                                    ?classId: string,
                                    ?styleId: string,
                                    ?automationId: string,
-                                   ?created: (Xamarin.Forms.EntryCell -> unit),
-                                   ?ref: ViewRef<Xamarin.Forms.EntryCell>) = 
+                                   ?created: (Fabulous.CustomControls.CustomEntryCell -> unit),
+                                   ?ref: ViewRef<Fabulous.CustomControls.CustomEntryCell>) = 
 
         let attribBuilder = View.BuildEntryCell(0,
                                ?label=label,
@@ -6945,15 +6963,16 @@ type View() =
                                ?placeholder=placeholder,
                                ?horizontalTextAlignment=horizontalTextAlignment,
                                ?completed=completed,
+                               ?textChanged=textChanged,
                                ?height=height,
                                ?isEnabled=isEnabled,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
-                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.EntryCell> target))),
-                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.EntryCell>) -> Some ref.Unbox))
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Fabulous.CustomControls.CustomEntryCell> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Fabulous.CustomControls.CustomEntryCell>) -> Some ref.Unbox))
 
-        ViewElement.Create<Xamarin.Forms.EntryCell>(View.CreateFuncEntryCell, View.UpdateFuncEntryCell, attribBuilder)
+        ViewElement.Create<Fabulous.CustomControls.CustomEntryCell>(View.CreateFuncEntryCell, View.UpdateFuncEntryCell, attribBuilder)
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val ProtoEntryCell : ViewElement option = None with get, set
@@ -11244,6 +11263,9 @@ module ViewElementExtensions =
         /// Adjusts the Label property in the visual element
         member x.Label(value: string) = x.WithAttribute(View._LabelAttribKey, (value))
 
+        /// Adjusts the EntryCellTextChanged property in the visual element
+        member x.EntryCellTextChanged(value: Xamarin.Forms.TextChangedEventArgs -> unit) = x.WithAttribute(View._EntryCellTextChangedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))(value))
+
         /// Adjusts the VerticalTextAlignment property in the visual element
         member x.VerticalTextAlignment(value: Xamarin.Forms.TextAlignment) = x.WithAttribute(View._VerticalTextAlignmentAttribKey, (value))
 
@@ -11871,6 +11893,9 @@ module ViewElementExtensions =
 
     /// Adjusts the Label property in the visual element
     let label (value: string) (x: ViewElement) = x.Label(value)
+
+    /// Adjusts the EntryCellTextChanged property in the visual element
+    let entryCellTextChanged (value: Xamarin.Forms.TextChangedEventArgs -> unit) (x: ViewElement) = x.EntryCellTextChanged(value)
 
     /// Adjusts the VerticalTextAlignment property in the visual element
     let verticalTextAlignment (value: Xamarin.Forms.TextAlignment) (x: ViewElement) = x.VerticalTextAlignment(value)
