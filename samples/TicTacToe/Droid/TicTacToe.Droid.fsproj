@@ -183,20 +183,22 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\packages\neutral\Newtonsoft.Json\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <ProjectReference Include="..\..\..\src\Fabulous.LiveUpdate\Fabulous.LiveUpdate.fsproj">
-      <Name>Fabulous.LiveUpdate</Name>
-      <Project>{b459afad-bb5b-43c3-bd86-609e8db3e3f1}</Project>
-      <Private>True</Private>
-    </ProjectReference>
     <ProjectReference Include="..\TicTacToe\TicTacToe.fsproj">
       <Project>{AE045D79-7FF3-45F3-BFD0-305542A1C728}</Project>
       <Name>TicTacToe</Name>
       <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\src\Fabulous.Core\Fabulous.Core.fsproj">
-      <Project>{AE045D79-7FF3-45F3-BFD0-305542A1C728}</Project>
+      <Project>{B459AFAD-BB5B-43C3-BD86-609E8DB3E3FD}</Project>
       <Name>Fabulous.Core</Name>
-      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\src\Fabulous.CustomControls\Fabulous.CustomControls.fsproj">
+      <Project>{7FF328BB-9318-4C11-8A9A-37DD98EAB35B}</Project>
+      <Name>Fabulous.CustomControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\src\Fabulous.LiveUpdate\Fabulous.LiveUpdate.fsproj">
+      <Project>{B459AFAD-BB5B-43C3-BD86-609E8DB3E3F1}</Project>
+      <Name>Fabulous.LiveUpdate</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <Import Project="..\..\..\netfx.props" />
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
@@ -27,14 +27,9 @@
         <PackageReference Include="Xamarin.Forms.Platform.WPF" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\AllControls\AllControls.fsproj">
-            <Project>{13F140D6-2D21-41BE-AC90-4B14D8C16A47}</Project>
-            <Name>AllControls</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\..\..\src\Fabulous.Core\Fabulous.Core.fsproj">
-            <Project>{AE045D79-7FF3-45F3-BFD0-305542A1C728}</Project>
-            <Name>Fabulous</Name>
-        </ProjectReference>
+        <ProjectReference Include="..\AllControls\AllControls.fsproj" />
+        <ProjectReference Include="..\..\..\src\Fabulous.Core\Fabulous.Core.fsproj" />
+        <ProjectReference Include="..\..\..\src\Fabulous.CustomControls\Fabulous.CustomControls.fsproj" />
     </ItemGroup>
     <Import Project="..\..\..\Packages.targets" />
 </Project>

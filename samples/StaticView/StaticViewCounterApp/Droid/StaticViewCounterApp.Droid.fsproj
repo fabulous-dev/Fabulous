@@ -85,10 +85,6 @@
       <Project>{4282E90F-2519-46D0-B593-D57CFCA36A2D}</Project>
       <Name>StaticViewCounterApp</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\src\Fabulous.Core\Fabulous.Core.fsproj">
-      <Project>{AE045D79-7FF3-45F3-BFD0-305542A1C728}</Project>
-      <Name>Fabulous.Core</Name>
-    </ProjectReference>
     <Reference Include="Xamarin.Android.FSharp.ResourceProvider.Runtime">
       <HintPath>../../../../packages/androidapp/Xamarin.Android.FSharp.ResourceProvider/lib/Xamarin.Android.FSharp.ResourceProvider.Runtime.dll</HintPath>
     </Reference>
@@ -170,5 +166,13 @@
     <Reference Include="FSharp.Core">
       <HintPath>../../../../packages/androidapp/FSharp.Core/lib/netstandard1.6/FSharp.Core.dll</HintPath>
     </Reference>
+    <ProjectReference Include="..\..\..\..\src\Fabulous.CustomControls\Fabulous.CustomControls.fsproj">
+      <Project>{7FF328BB-9318-4C11-8A9A-37DD98EAB35B}</Project>
+      <Name>Fabulous.CustomControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\src\Fabulous.Core\Fabulous.Core.fsproj">
+      <Project>{B459AFAD-BB5B-43C3-BD86-609E8DB3E3FD}</Project>
+      <Name>Fabulous.Core</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
