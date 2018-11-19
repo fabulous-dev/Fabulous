@@ -1,3 +1,7 @@
+#### 0.27.0
+
+* Added TextChanged event to EntryCell (https://github.com/fsprojects/Fabulous/pull/227)
+
 #### 0.26.0
 
 * Added Cmd.ofMsgOption and Cmd.ofAsyncMsgOption (https://github.com/fsprojects/Fabulous/pull/224)
