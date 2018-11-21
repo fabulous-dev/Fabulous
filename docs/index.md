@@ -11,8 +11,6 @@ to build Xamarin.Forms applications for iOS, Android, Mac and more.  The approac
 
 > The amount of code I'm *not* writing is great!  [@jimbobbennett](https://github.com/jimbobbennett/)
 
-**This project is a sample and may change.**
-
 {% include_relative contents.md %}
 
 Getting started
