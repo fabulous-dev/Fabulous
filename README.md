@@ -7,8 +7,6 @@ Never write a ViewModel class again! Conquer the world with clean dynamic UIs!
 
 This library allows you to use the ultra-simple Model-View-Update architecture to build applications for iOS, Android, Mac, WPF and more. It is a variation of [elmish](https://elmish.github.io/), an Elm architecture implemented in F#. Elmish was originally written for [Fable](https://github.com/fable-compiler) applications, however it is used here for applications using Xamarin.Forms.
 
-**This is a sample and may change.**
-
 * [Getting started](https://fsprojects.github.io/Fabulous/index.html#getting=started)
 
 * [Documentation Guide](https://fsprojects.github.io/Fabulous/guide.html)
