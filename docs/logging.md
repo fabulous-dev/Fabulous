@@ -3,7 +3,7 @@ Fabulous - Guide
 
 {% include_relative contents.md %}
 
-Traces and crashes
+Traces and Crashes
 ------
 
 In Fabulous, everything happens in a centralized message loop that is responsible for calling your `init`, `update` and `view` functions.  

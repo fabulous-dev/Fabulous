@@ -3,6 +3,6 @@
 * [Views](views.html)
 * [Models](models.html)
 * [Update and Messages](update.html)
-* [Logging and tracing](logging.html)
+* [Traces and Crashes](logging.html)
 * [Tools](tools.html)
 * [Further Resources](index.html#further-resources)
