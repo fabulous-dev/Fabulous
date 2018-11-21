@@ -38,7 +38,7 @@ You need to make a function that accepts a `Program<'model, 'msg, 'view>` and th
 
 This `Program` defines the handlers that are responsibles for calling `init`, `update` and `views` as well as handle errors.
 You can define your own handlers instead to do additional logic.  
-**Make sure to call the previous `Program` handlers in your own, otherwise you will completely bypass Fabulous.**
+**Make sure to call the previous `Program` handlers in your owns, otherwise you will completely bypass Fabulous.**
 
 Here's a simple example that prints a message each time something happens
 
@@ -104,10 +104,10 @@ We only need to install the following packages:
 
 Once the packages added, we can access 3 methods:
 - `Start`: We can provide our app secrets and initialize AppCenter
-- `Analytics.TrackEvent`: We can track a custom event with some data
+- `Analytics.TrackEvent`: We can track a custom event with associated data
 - `Crashes.TrackError`: We can track exception. AppCenter will then provide a dashboard of those exceptions along with stack traces
 
-In our `App` class, we need to call `AppCenter.Start("appsecrets", typeof<Analytics>, typeof<Crashes>)` to initialize it. Here we defined a `start` function that hides it.
+Here we override `update` to call `Analytics.TrackEvent`, and `onError` to call `Crashes.TrackError`.
 
 ```fsharp
 module AppCenter =
@@ -151,6 +151,9 @@ module Tracing =
             ])
         | _ -> None
 ```
+
+In our `App` class, we need to call `AppCenter.Start("appsecrets", typeof<Analytics>, typeof<Crashes>)` to initialize it.
+
 ```fsharp
 type App () as app = 
     inherit Application ()
