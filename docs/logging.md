@@ -104,9 +104,11 @@ We only need to install the following packages:
 - [`Microsoft.AppCenter.Crashes`](https://www.nuget.org/packages/Microsoft.AppCenter.Crashes/)
 
 Once the packages added, we can access 3 methods:
-- `Start`: We can provide our app secrets and initialize AppCenter
-- `Analytics.TrackEvent`: We can track a custom event with associated data
-- `Crashes.TrackError`: We can track exception. AppCenter will then provide a dashboard of those exceptions along with stack traces
+- `Start`: Initialize AppCenter by providing our app secrets
+- `Analytics.TrackEvent`: Track a custom event with associated data
+- `Crashes.TrackError`: Track an exception.
+
+AppCenter will provide a dashboard of those events and exceptions along with stack traces
 
 Here we override `update` to call `Analytics.TrackEvent`, and `onError` to call `Crashes.TrackError`.
 
@@ -132,7 +134,7 @@ module AppCenter =
 ```
 
 We could trace everything, but you should consider to trace the minimum to protect your users' privacy.  
-To do that, we added a `AppCenterUpdateTracer` function that will filter the messages that interest us and what data we should get from it.
+To do that, we have added a `AppCenterUpdateTracer` function that will filter the messages that interest us and what data we should extract from it.
 
 ```fsharp
 module Tracing =
