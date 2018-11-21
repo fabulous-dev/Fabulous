@@ -18,7 +18,7 @@ There's a few built-in functions available already:
 | Program.withErrorHandler (onError)  | Call custom error handling logic. <br/>Signature: `onError: string * exn -> unit` |
 
 To use them, you will need to add them when declaring the runner, before calling `runWithDynamicView`.  
-You can combine them, they will be called one after another in the order of declaration.
+You can add multiple trace functions, one after another.
 ```fsharp
 type App () as app = 
     inherit Application ()
