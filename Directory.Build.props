@@ -1,10 +1,10 @@
 <Project>
   <!-- NuGet Specs -->
   <PropertyGroup>
-    <Version>0.27.0</Version>
+    <Version>0.27.1</Version>
     <Authors>Fabulous Contributors</Authors>
-    <PackageVersion>0.27.0</PackageVersion>
-    <PackageReleaseNotes>Added TextChanged event to EntryCell (https://github.com/fsprojects/Fabulous/pull/227)</PackageReleaseNotes>
+    <PackageVersion>0.27.1</PackageVersion>
+    <PackageReleaseNotes>Fixed a cast issue in ViewRef&amp;lt;T&amp;gt;.TryValue (https://github.com/fsprojects/Fabulous/pull/235)</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <PackageLicenseUrl>https://github.com/fsprojects/Fabulous/blob/master/LICENSE.md</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/fsprojects/Fabulous</PackageProjectUrl>
