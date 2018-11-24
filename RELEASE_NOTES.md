@@ -1,3 +1,7 @@
+#### 0.27.1
+
+* Fixed a cast issue in ViewRef&lt;T&gt;.TryValue (https://github.com/fsprojects/Fabulous/pull/235)
+
 #### 0.27.0
 
 * Added TextChanged event to EntryCell (https://github.com/fsprojects/Fabulous/pull/227)
