@@ -215,8 +215,11 @@ module App =
             Application.Current.MainPage.DisplayAlert("Clicked", "You clicked the button", "OK") |> ignore
             model
         | AnimationPoked -> 
-            animatedLabelRef.Value.Rotation <- 0.0
-            animatedLabelRef.Value.RotateTo (360.0, 2000u) |> ignore
+            match animatedLabelRef.TryValue with
+            | Some animated ->
+                animatedLabelRef.Value.Rotation <- 0.0
+                animatedLabelRef.Value.RotateTo (360.0, 2000u) |> ignore
+            | None -> ()
             model
         | AnimationPoked2 -> 
             ViewExtensions.CancelAnimations (animatedLabelRef.Value)
