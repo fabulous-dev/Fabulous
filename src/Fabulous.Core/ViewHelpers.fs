@@ -87,10 +87,10 @@ module SimplerHelpers =
 
             Device.StartTimer(TimeSpan.FromMilliseconds(float timeout), (fun () ->
                 match cts.IsCancellationRequested with
+                | true -> ()
                 | false ->
                     memoizations.Remove(key) |> ignore
                     fn value
-                | _ -> ()
                 false // Do not let the timer trigger a second time
             ))
 
