@@ -122,7 +122,9 @@ type ProgramRunner<'model, 'msg>(app: Application, program: Program<'model, 'msg
     member __.InitialMainPage = mainPage
 
     member __.CurrentModel = lastModel 
-        
+
+    member __.Dispatch = dispatch
+
     member runner.ChangeProgram(newProgram: Program<obj, obj, obj -> (obj -> unit) -> ViewElement>) : unit  =
         Device.BeginInvokeOnMainThread(fun () -> 
             // TODO: transmogrify the model
