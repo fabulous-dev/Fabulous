@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
+// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
 namespace AllControls
 
 open System
@@ -90,6 +90,7 @@ type Msg =
     | AnimationPoked3
     | SetCarouselCurrentPage of int
     | SetTabbed1CurrentPage of int
+    | ReceivedLowMemoryWarning
 
 [<AutoOpen>]
 module MyExtension = 
@@ -235,6 +236,14 @@ module App =
             { model with CarouselCurrentPageIndex = index }
         | SetTabbed1CurrentPage index ->
             { model with Tabbed1CurrentPageIndex = index }
+        | ReceivedLowMemoryWarning ->
+            Application.Current.MainPage.DisplayAlert("Low memory!", "Cleaning up data...", "OK") |> ignore
+            { model with
+                EditorText = ""
+                EntryText = ""
+                Placeholder = ""
+                Password = ""
+                SearchTerm = "" }
 
     let pickerItems = 
         [| ("Aqua", Color.Aqua); ("Black", Color.Black);
@@ -761,3 +770,5 @@ type App () as app =
         Program.mkSimple App.init App.update App.view
         |> Program.withConsoleTrace
         |> Program.runWithDynamicView app
+
+    member __.Program = runner
