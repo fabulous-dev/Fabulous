@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Elmish and Fabulous contributors. See LICENSE.md for license.
+// Copyright 2018 Elmish and Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.Core
 
 open System
@@ -123,7 +123,7 @@ type ProgramRunner<'model, 'msg>(app: Application, program: Program<'model, 'msg
 
     member __.CurrentModel = lastModel 
 
-    member __.Dispatch = dispatch
+    member __.Dispatch(msg) = dispatch msg
 
     member runner.ChangeProgram(newProgram: Program<obj, obj, obj -> (obj -> unit) -> ViewElement>) : unit  =
         Device.BeginInvokeOnMainThread(fun () -> 
