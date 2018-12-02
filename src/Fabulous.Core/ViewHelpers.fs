@@ -2,15 +2,16 @@
 namespace Fabulous.DynamicViews 
 
 open Fabulous.DynamicViews
+open System
 open System.Collections.Generic
+open System.Threading
+open Xamarin.Forms
 
 [<System.Obsolete("Please change 'Xaml.XYZ' to 'View.XYZ'", error=false)>]
 type Xaml = Fabulous.DynamicViews.View 
 
 [<AutoOpen>]
 module SimplerHelpers = 
-    open Xamarin.Forms
-
     type internal Memoizations() = 
          static let t = Dictionary<obj,System.WeakReference<obj>>(HashIdentity.Structural)
          static member T = t
@@ -71,6 +72,27 @@ module SimplerHelpers =
              let res = f
              Memoizations.Add(key, box res)
              res
+
+    /// Debounce multiple calls to a single function
+    let debounce<'T> =
+        let memoizations = Dictionary<obj, CancellationTokenSource>(HashIdentity.Structural)
+        fun (timeout: int) (fn: 'T -> unit) value ->
+            let key = fn.GetType()
+            match memoizations.TryGetValue(key) with
+            | true, previousCts -> previousCts.Cancel()
+            | _ -> ()
+
+            let cts = new CancellationTokenSource()
+            memoizations.[key] <- cts
+
+            Device.StartTimer(TimeSpan.FromMilliseconds(float timeout), (fun () ->
+                match cts.IsCancellationRequested with
+                | true -> ()
+                | false ->
+                    memoizations.Remove(key) |> ignore
+                    fn value
+                false // Do not let the timer trigger a second time
+            ))
 
     type ViewElement with 
         member x.With(?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, 
