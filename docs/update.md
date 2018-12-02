@@ -169,3 +169,76 @@ let update msg model =
     | TakePicture -> model, (Cmd.ofAsyncMsgOption takePictureCmd)
     | PictureTaken -> ...
 ```
+
+Platform-specific dispatch
+-----
+
+Some platform-specific features (like deep linking, memory warnings, ...) are not available in Xamarin.Forms, and need you to implement them in the corresponding app projet.  
+In this case, you might want to dispatch a message from the app project to Fabulous to start a shared logic between platforms (to warn user, ...).
+
+To allow for this kind of use case, the `dispatch` function is exposed as a `Dispatch(msg)` method by the `ProgramRunner`. By default this runner is not accessible, but you can make a read-only property to let apps access it.
+
+```fsharp
+type App() as app =
+    inherit Application()
+
+    let runner =
+        Program.mkProgram init update view
+        |> Program.runWithDynamicView app
+
+    member __.Program = runner // Add this line
+```
+
+Once done, you can access it in the app project
+
+- Android
+```fsharp
+[<Activity>]
+type MainActivity() =
+    inherit FormsApplicationActivity()
+
+    // Store the App instance
+    let mutable _app: App option = None
+
+    override this.OnCreate (bundle: Bundle) =
+        base.OnCreate (bundle)
+
+        Forms.Init (this, bundle)
+
+        // Initialize the app and store its reference
+        let app = new App()
+        this.LoadApplication(app)
+        _app <- Some app
+
+    override this.OnTrimMemory(level) =
+        // If the app is initialized, dispatch the message
+        match _app with
+        | Some app -> app.Program.Dispatch(Msg.ReceivedLowMemoryWarning)
+        | None -> ()
+```
+
+- iOS
+```fsharp
+[<Register("AppDelegate")>]
+type AppDelegate () =
+    inherit FormsApplicationDelegate ()
+
+    // Store the App instance
+    let mutable _app: App option = None
+
+    override this.FinishedLaunching (uiApp, options) =
+        Forms.Init()
+
+        // Initialize the app and store its reference
+        let app = new AllControls.App()
+        this.LoadApplication (app)
+        _app <- Some app
+
+        base.FinishedLaunching(uiApp, options)
+
+    override this.ReceiveMemoryWarning(uiApp) =
+        // If the app is initialized, dispatch the message
+        match _app with
+        | Some app -> app.Program.Dispatch(Msg.ReceivedLowMemoryWarning)
+        | None -> ()
+```
