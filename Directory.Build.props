@@ -1,10 +1,11 @@
 <Project>
   <!-- NuGet Specs -->
   <PropertyGroup>
-    <Version>0.27.1</Version>
+    <Version>0.28.0</Version>
     <Authors>Fabulous Contributors</Authors>
-    <PackageVersion>0.27.1</PackageVersion>
-    <PackageReleaseNotes>Fixed a cast issue in ViewRef&amp;lt;T&amp;gt;.TryValue (https://github.com/fsprojects/Fabulous/pull/235)</PackageReleaseNotes>
+    <PackageVersion>0.28.0</PackageVersion>
+    <PackageReleaseNotes>Added a dispatch method accessible in the app projects (https://github.com/fsprojects/Fabulous/pull/240)
+Added a debounche helper function (https://github.com/fsprojects/Fabulous/pull/237)</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <PackageLicenseUrl>https://github.com/fsprojects/Fabulous/blob/master/LICENSE.md</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/fsprojects/Fabulous</PackageProjectUrl>

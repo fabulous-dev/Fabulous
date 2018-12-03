@@ -1,3 +1,8 @@
+#### 0.28.0
+
+* Added a dispatch method accessible in the app projects (https://github.com/fsprojects/Fabulous/pull/240)
+* Added a debounche helper function (https://github.com/fsprojects/Fabulous/pull/237)
+
 #### 0.27.1
 
 * Fixed a cast issue in ViewRef&lt;T&gt;.TryValue (https://github.com/fsprojects/Fabulous/pull/235)
