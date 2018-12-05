@@ -5,7 +5,7 @@
         <PackageReference Update="Xamarin.Forms.Platform.WPF" Version="3.1.0.697729" />
         <PackageReference Update="Xamarin.Forms.Maps" Version="3.1.0.697729" />
         <PackageReference Update="Newtonsoft.Json" Version="11.0.2" />
-        <PackageReference Update="FSharp.Compiler.Service" Version="23.0.3" />
+        <PackageReference Update="FSharp.Compiler.Service" Version="25.0.1" />
         <PackageReference Update="Dotnet.ProjInfo" Version="0.9.0" />
         <PackageReference Update="OxyPlot.Core" Version="2.0.0-unstable0956" />
         <PackageReference Update="OxyPlot.Xamarin.Forms" Version="1.1.0-unstable0013" />
@@ -16,6 +16,10 @@
         <PackageReference Update="MSTest.TestAdapter" Version="1.2.1" />
         <PackageReference Update="MSTest.TestFramework" Version="1.2.1" />
         <PackageReference Update="Microsoft.SourceLink.Github" Version="1.0.0-beta-63127-02" PrivateAssets="All" />
+        <PackageReference Update="Microsoft.CSharp" Version="4.5.0" />
+        <PackageReference Update="NETStandard.Library" Version="2.0.3" />
+        <PackageReference Update="System.Reflection.Emit.ILGeneration" Version="4.3.0" />
+        <PackageReference Update="System.Reflection.Emit.Lightweight" Version="4.3.0" />
     </ItemGroup>
     <PropertyGroup>
         <RestoreSources>

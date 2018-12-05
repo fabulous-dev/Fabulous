@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net471</TargetFramework>
+        <TargetFramework>netcoreapp2.1</TargetFramework>
         <OutputType>Library</OutputType>
         <IsPackable>false</IsPackable>
-        <DefineConstants>$(DefineConstants);TEST</DefineConstants>
+        <DefineConstants>$(DefineConstants);NETSTANDARD2_0;TEST</DefineConstants>
     </PropertyGroup>
     <ItemGroup>
         <Compile Include="..\..\tools\fscd\ProjectCracker.fs" Link="ProjectCracker.fs" />
@@ -22,6 +22,17 @@
         <PackageReference Include="FSharp.Compiler.Service" />
         <PackageReference Include="Newtonsoft.Json" />
         <PackageReference Include="Xamarin.Forms" />
+      
+        <!-- References used indirectly by FCS when compiling tests -->
+        <PackageReference Include="Microsoft.CSharp" />
+        <PackageReference Include="NETStandard.Library" />
+        <PackageReference Include="System.Reflection.Emit.ILGeneration" />
+        <PackageReference Include="System.Reflection.Emit.Lightweight" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Fabulous.Core\Fabulous.Core.fsproj" />
+      <ProjectReference Include="..\..\src\Fabulous.CustomControls\Fabulous.CustomControls.fsproj" />
+      <ProjectReference Include="..\..\src\Fabulous.LiveUpdate\Fabulous.LiveUpdate.fsproj" />
     </ItemGroup>
     <Import Project="..\..\Packages.targets" />
 </Project>

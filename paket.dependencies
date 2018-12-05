@@ -1,7 +1,3 @@
-framework: net45
-source https://api.nuget.org/v3/index.json
-nuget FAKE 4.64.13
-
 # dependencies used when compiling and running the library and neutral parts of samples
 group neutral
   framework: netstandard2.0

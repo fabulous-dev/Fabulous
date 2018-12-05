@@ -10,3 +10,8 @@ paket-files
 build_output/
 .idea/
 testapp*/
+tests/fscd\.Tests/data/
+
+samples/CounterApp/CounterApp/CounterApp\.args\.txt
+
+samples/TicTacToe/TicTacToe/TicTacToe\.args\.txt
