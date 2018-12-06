@@ -13,8 +13,6 @@
 
 ## Ideas
 
-* Consider allowing explicit static Xaml through a type provider, e.g `xaml<"""<StackLayout Padding="20">...</StackLayout>""">`, evaluating to a `ViewElement`
-
 * Performance:
   * Do better list comparison/diffing
   * Perf-test on large lists and do resulting perf work
@@ -22,7 +20,7 @@
   * Consider memoize function closure creation
   * Consider moving 'view' and 'model' computations off the UI thread
 
-* Make some small F# langauge improvements to improve code:
+* Make some small F# language improvements to improve code:
   * Remove `yield` in more cases
   * Automatically save function values that do not capture any arguments
   * Allow a default unnamed argument for `children` so the argument name doesn't have to be given explicitly
@@ -35,9 +33,3 @@
 ## Discarded Ideas
 
 * Possibly switch to a type provider (see [this comment](https://github.com/fsprojects/Fabulous/issues/50#issuecomment-390396365))
-
-
-## Bugs:
-  * Fix issue for slider where minimum = 1.0, maximum=10.0 (i.e. when value=0 and minimum gets set before maximum?)
-  
-
