@@ -42,19 +42,19 @@ Some manual set-up is required.  The following assumes your app is called `Squea
        Windows (Android):
 
            cd SqueakyApp\SqueakyApp
-           %USERPROFILE%\.nuget\packages\Fabulous.LiveUpdate\<Fabulous version>\tools\fscd.exe --watch --webhook:http://localhost:9867/update 
+           dotnet %USERPROFILE%\.nuget\packages\Fabulous.LiveUpdate\<Fabulous version>\tools\fscd.dll --watch --webhook:http://localhost:9867/update 
 
        OSX (Android):
 
            cd SqueakyApp/SqueakyApp
-           dotnet ~/.nuget/packages/Fabulous.LiveUpdate/<Fabulous version>/tools/fscd.exe --watch --webhook:http://localhost:9867/update  
+           dotnet ~/.nuget/packages/Fabulous.LiveUpdate/<Fabulous version>/tools/fscd.dll --watch --webhook:http://localhost:9867/update  
 
        OSX (iOS): Similar except use the explicit IP address of the emulator or device, e.g. 192.168.1.8, see the application log from launch
 
            cd SqueakyApp/SqueakyApp
-           dotnet ~/.nuget/packages/Fabulous.LiveUpdate/<Fabulous version>/tools/fscd.exe --watch --webhook:http://192.168.1.8:9867/update
+           dotnet ~/.nuget/packages/Fabulous.LiveUpdate/<Fabulous version>/tools/fscd.dll --watch --webhook:http://192.168.1.8:9867/update
 
-Now, whenever you save a file in your core project directory, the `fscd.exe` daemon will attempt to recompile your changed file and
+Now, whenever you save a file in your core project directory, the `fscd` daemon will attempt to recompile your changed file and
 send a representation of its contents to your app via a PUT request to the given webhook.  The app then deserializes this representation and
 adds the declarations to an F# interpreter. This interpreter will make some reflective calls into the existing libraries on device.
 
@@ -126,12 +126,12 @@ The model state of the app is re-initialized.
 ### Troubleshooting
 
 The LiveUpdate mechanism is very experimental.
-- Debug output is printed to console by `fscd.exe`
+- Debug output is printed to console by `fscd`
 - Debug output is printed to app-output by the on-device web server
 
 ### Design
 
-The fscd.exe daemon does this:
+The fscd daemon does this:
 
 1. Cracks project options, listens for changes, then uses FSharp.Compiler.Service to compile
 
