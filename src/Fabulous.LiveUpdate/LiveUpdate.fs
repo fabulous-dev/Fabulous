@@ -67,19 +67,19 @@ type BroadcastInfo =
                             if Device.RuntimePlatform = Device.iOS then
                                 printfn "  LiveUpdate: Connect using:"
                                 for iip in iips do
-                                    printfn "      dotnet fscd.dll --watch --webhook:http://%s:%d/update" iip.Address httpPort
+                                    printfn "      fabulous --watch --webhook:http://%s:%d/update" iip.Address httpPort
                             elif Device.RuntimePlatform = Device.Android then
                                 printfn "  LiveUpdate: On USB connect using:"
                                 printfn "      adb -d forward  tcp:%d tcp:%d" httpPort httpPort
-                                printfn "      dotnet fscd.dll --watch --webhook:http://localhost:%d/update" httpPort
+                                printfn "      fabulous --watch --webhook:http://localhost:%d/update" httpPort
                                 printfn "  "
                                 printfn "  LiveUpdate: On Emulator connect using:"
                                 printfn "      adb -e forward  tcp:%d tcp:%d" httpPort httpPort
-                                printfn "      dotnet fscd.dll --watch --webhook:http://localhost:%d/update" httpPort
+                                printfn "      fabulous --watch --webhook:http://localhost:%d/update" httpPort
                             else
                                 printfn "  LiveUpdate: %s is not officially supported" Device.RuntimePlatform 
                                 printfn "  LiveUpdate: You can still try to connect using:" 
-                                printfn "      dotnet fscd.dll --watch --webhook:http://localhost:%d/update" httpPort
+                                printfn "      fabulous --watch --webhook:http://localhost:%d/update" httpPort
 
                             printfn "  "
                             printfn "  See https://fsprojects.github.io/Fabulous/tools.html for more details"
@@ -151,9 +151,9 @@ type HttpServer(?port) =
         <pre>    adb -d forward  tcp:PORT tcp:PORT  (USB)</pre>
         <pre>    adb -e forward  tcp:PORT tcp:PORT  (Emulator)</pre>
         <p>  then</p>
+        <pre>    dotnet tool install -g fabulous-cli --version FABULOUS_VERSION</pre>
         <pre>    cd MyApp\MyApp</pre>
-        <pre>    dotnet %USERPROFILE%\.nuget\packages\Fabulous.LiveUpdate\FABULOUS_VERSION\tools\fscd.dll --watch --webhook:http://localhost:PORT/update</pre>
-        <pre>    dotnet ~/.nuget/packages/Fabulous.LiveUpdate/FABULOUS_VERSION/tools/fscd.dll --watch --webhook:http://localhost:PORT/update</pre>
+        <pre>    fabulous --watch --webhook:http://localhost:PORT/update</pre>
         <p>in your project directory</p>
     </body>
 </html>"""
