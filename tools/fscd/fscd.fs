@@ -206,8 +206,9 @@ let main (argv: string[]) =
                          with err -> 
                              printfn "fscd: exception: %A" (err.ToString()))
                      watcher.Changed.Add changed 
-                     //watcher.Created.Add changed
-                     //watcher.Deleted.Add changed
+                     watcher.Created.Add changed
+                     watcher.Deleted.Add changed
+                     watcher.Renamed.Add changed
                      yield watcher ]
 
             for watcher in watchers do
