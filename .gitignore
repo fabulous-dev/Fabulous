@@ -10,7 +10,7 @@ paket-files
 build_output/
 .idea/
 testapp*/
-tests/fscd\.Tests/data/
+tests/Fabulous.Cli\.Tests/data/
 
 samples/CounterApp/CounterApp/CounterApp\.args\.txt
 

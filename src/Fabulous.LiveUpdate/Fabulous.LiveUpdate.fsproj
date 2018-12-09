@@ -9,15 +9,9 @@
         <PackageTags>LiveUpdate;Android;iOS</PackageTags>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="..\..\tools\fscd\CodeModel.fs" Link="CodeModel.fs" />
-        <Compile Include="..\..\tools\fscd\Interpreter.fs" Link="Interpreter.fs" />
+        <Compile Include="..\Fabulous.Cli\CodeModel.fs" Link="CodeModel.fs" />
+        <Compile Include="..\Fabulous.Cli\Interpreter.fs" Link="Interpreter.fs" />
         <Compile Include="LiveUpdate.fs" />
-    </ItemGroup>
-    <ItemGroup>
-        <Content Include="..\..\build_output\tools\fscd\*">
-            <Pack>True</Pack>
-            <PackagePath>tools\</PackagePath>
-        </Content>
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="FSharp.Core" />

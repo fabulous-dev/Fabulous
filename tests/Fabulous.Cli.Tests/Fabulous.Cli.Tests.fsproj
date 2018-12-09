@@ -6,11 +6,11 @@
         <DefineConstants>$(DefineConstants);NETSTANDARD2_0;TEST</DefineConstants>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="..\..\tools\fscd\ProjectCracker.fs" Link="ProjectCracker.fs" />
-        <Compile Include="..\..\tools\fscd\CodeModel.fs" Link="CodeModel.fs" />
-        <Compile Include="..\..\tools\fscd\Interpreter.fs" Link="Interpreter.fs" />
-        <Compile Include="..\..\tools\fscd\FromCompilerService.fs" Link="FromCompilerService.fs" />
-        <Compile Include="..\..\tools\fscd\fscd.fs" Link="fscd.fs" />
+        <Compile Include="..\..\src\Fabulous.Cli\ProjectCracker.fs" Link="ProjectCracker.fs" />
+        <Compile Include="..\..\src\Fabulous.Cli\CodeModel.fs" Link="CodeModel.fs" />
+        <Compile Include="..\..\src\Fabulous.Cli\Interpreter.fs" Link="Interpreter.fs" />
+        <Compile Include="..\..\src\Fabulous.Cli\FromCompilerService.fs" Link="FromCompilerService.fs" />
+        <Compile Include="..\..\src\Fabulous.Cli\fscd.fs" Link="fscd.fs" />
         <Compile Include="Tests.fs" />
     </ItemGroup>
     <ItemGroup>
