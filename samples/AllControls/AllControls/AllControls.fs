@@ -23,6 +23,8 @@ type Model =
     CountForSlider : int
     CountForActivityIndicator : int
     StepForSlider : int 
+    MinimumForSlider : int
+    MaximumForSlider : int
     StartDate : System.DateTime
     EndDate : System.DateTime
     EditorText : string
@@ -53,6 +55,8 @@ type Msg =
     | Reset
     | IncrementForSlider
     | DecrementForSlider
+    | ChangeMinimumMaximumForSlider1
+    | ChangeMinimumMaximumForSlider2
     | IncrementForActivityIndicator
     | DecrementForActivityIndicator
     | SliderValueChanged of int
@@ -138,8 +142,10 @@ module App =
         { RootPageKind = Choice false
           Count = 0
           CountForSlider = 0
-          CountForActivityIndicator = 0
           StepForSlider = 3
+          MinimumForSlider = 0
+          MaximumForSlider = 10
+          CountForActivityIndicator = 0
           PickedColorIndex = 0
           EditorText = "hic hac hoc"
           Placeholder = "cogito ergo sum"
@@ -167,6 +173,8 @@ module App =
         | Decrement -> { model with Count = model.Count - 1}
         | IncrementForSlider -> { model with CountForSlider = model.CountForSlider + model.StepForSlider }
         | DecrementForSlider -> { model with CountForSlider = model.CountForSlider - model.StepForSlider }
+        | ChangeMinimumMaximumForSlider1 -> { model with MinimumForSlider = 0; MaximumForSlider = 10 }
+        | ChangeMinimumMaximumForSlider2 -> { model with MinimumForSlider = 15; MaximumForSlider = 20 }
         | IncrementForActivityIndicator -> { model with CountForActivityIndicator = model.CountForActivityIndicator + 1 }
         | DecrementForActivityIndicator -> { model with CountForActivityIndicator = model.CountForActivityIndicator - 1 }
         | Reset -> init ()
@@ -422,7 +430,7 @@ module App =
                     currentPage=model.Tabbed1CurrentPageIndex,
                     children=
              [
-               dependsOn (model.CountForSlider, model.StepForSlider) (fun model (count, step) -> 
+               dependsOn (model.MinimumForSlider, model.MaximumForSlider, model.CountForSlider, model.StepForSlider) (fun model (minimum, maximum, count, step) -> 
                   View.ScrollingContentPage("Slider", 
                      [ View.Label(text="Label:")
                        View.Label(text= sprintf "%d" count, horizontalOptions=LayoutOptions.CenterAndExpand)
@@ -432,10 +440,13 @@ module App =
                  
                        View.Label(text="Button:")
                        View.Button(text="Decrement", command=(fun () -> dispatch DecrementForSlider), horizontalOptions=LayoutOptions.CenterAndExpand)
-                 
-                       View.Label(text="Slider:")
-                       View.Slider(minimum=0.0, 
-                           maximum=10.0, 
+
+                       View.Label(text="Button:")
+                       View.Button(text="Set Minimum = 0 / Maximum = 10", command=(fun () -> dispatch ChangeMinimumMaximumForSlider1), horizontalOptions=LayoutOptions.CenterAndExpand)
+                       View.Button(text="Set Minimum = 15 / Maximum = 20", command=(fun () -> dispatch ChangeMinimumMaximumForSlider2), horizontalOptions=LayoutOptions.CenterAndExpand)
+
+                       View.Label(text=sprintf "Slider: (Minimum %d, Maximum %d, Value %d)" minimum maximum step)
+                       View.Slider(minimumMaximum=(float minimum, float maximum), 
                            value=double step, 
                            valueChanged=(fun args -> dispatch (SliderValueChanged (int (args.NewValue + 0.5)))), 
                            horizontalOptions=LayoutOptions.Fill) 

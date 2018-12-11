@@ -444,14 +444,12 @@
 		{
 			"name": "Xamarin.Forms.Slider",
 			"members": [
-				// ugh, beware the order these are set.  setting minimum before maximum throws an exception....
 				{
-					"name": "Minimum",
-					"defaultValue": "0.0"
-				},
-				{
-					"name": "Maximum",
-					"defaultValue": "1.0"
+					"name": "MinimumMaximum",
+					"inputType": "float * float",
+					"modelType": "float * float",
+					"defaultValue": "(0.0, 1.0)",
+					"updateCode": "updateSliderMinimumMaximum"
 				},
 				{
 					"name": "Value",
@@ -468,14 +466,12 @@
 		{
 			"name": "Xamarin.Forms.Stepper",
 			"members": [
-				// ugh, beware the order these are set.  setting minimum before maximum throws an exception....
 				{
-					"name": "Minimum",
-					"defaultValue": "0.0"
-				},
-				{
-					"name": "Maximum",
-					"defaultValue": "1.0"
+					"name": "MinimumMaximum",
+					"inputType": "float * float",
+					"modelType": "float * float",
+					"defaultValue": "(0.0, 1.0)",
+					"updateCode": "updateStepperMinimumMaximum"
 				},
 				{
 					"name": "Value",

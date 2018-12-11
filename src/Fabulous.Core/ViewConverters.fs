@@ -559,6 +559,42 @@ module Converters =
         | ValueSome _, ValueNone -> control.CurrentPage <- null
         | _, ValueSome curr -> control.CurrentPage <- control.Children.[curr]
 
+    let updateSliderMinimumMaximum prevValueOpt valueOpt (target: obj) =
+        let control = target :?> Xamarin.Forms.Slider
+        let defaultValue = (0.0, 1.0)
+        let updateFunc (prevMinimum, prevMaximum) (newMinimum, newMaximum) =
+            if newMinimum > prevMaximum then
+                control.Maximum <- newMaximum
+                control.Minimum <- newMinimum
+            else
+                control.Minimum <- newMinimum
+                control.Maximum <- newMaximum
+
+        match prevValueOpt, valueOpt with
+        | ValueNone, ValueNone -> ()
+        | ValueSome prev, ValueSome curr when prev = curr -> ()
+        | ValueSome prev, ValueSome curr -> updateFunc prev curr
+        | ValueSome prev, ValueNone -> updateFunc prev defaultValue
+        | ValueNone, ValueSome curr -> updateFunc defaultValue curr
+
+    let updateStepperMinimumMaximum prevValueOpt valueOpt (target: obj) =
+        let control = target :?> Xamarin.Forms.Stepper
+        let defaultValue = (0.0, 1.0)
+        let updateFunc (prevMinimum, prevMaximum) (newMinimum, newMaximum) =
+            if newMinimum > prevMaximum then
+                control.Maximum <- newMaximum
+                control.Minimum <- newMinimum
+            else
+                control.Minimum <- newMinimum
+                control.Maximum <- newMaximum
+
+        match prevValueOpt, valueOpt with
+        | ValueNone, ValueNone -> ()
+        | ValueSome prev, ValueSome curr when prev = curr -> ()
+        | ValueSome prev, ValueSome curr -> updateFunc prev curr
+        | ValueSome prev, ValueNone -> updateFunc prev defaultValue
+        | ValueNone, ValueSome curr -> updateFunc defaultValue curr
+
     let equalLayoutOptions (x:Xamarin.Forms.LayoutOptions) (y:Xamarin.Forms.LayoutOptions)  =
         x.Alignment = y.Alignment && x.Expands = y.Expands
 
