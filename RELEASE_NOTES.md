@@ -1,3 +1,9 @@
+#### 0.29.0
+
+BREAKING CHANGES:
+* Replaced Minimum and Maximum properties of Slider/Stepper by a single MinimumMaximum property (tuple) (https://github.com/fsprojects/Fabulous/pull/246)
+* Replaced the "fscd" daemon (embedded in the Fabulous.LiveUpdate package) by a new dotnet CLI tool "fabulous-cli". See https://fsprojects.github.io/Fabulous/tools.html for more informations. (https://github.com/fsprojects/Fabulous/pull/247)
+
 #### 0.28.0
 
 * Added a dispatch method accessible in the app projects (https://github.com/fsprojects/Fabulous/pull/240)

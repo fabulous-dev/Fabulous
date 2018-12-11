@@ -13,6 +13,7 @@
         <Compile Include="Controls.fs" />
     </ItemGroup>
     <ItemGroup>
+        <PackageReference Include="FSharp.Core" />
         <PackageReference Include="Xamarin.Forms" />
     </ItemGroup>
     <Import Project="..\..\Packages.targets" />
