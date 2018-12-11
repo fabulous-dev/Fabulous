@@ -149,10 +149,6 @@ type View() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _ValueChangedAttribKey : AttributeKey<_> = AttributeKey<_>("ValueChanged")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _MaximumAttribKey : AttributeKey<_> = AttributeKey<_>("Maximum")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _MinimumAttribKey : AttributeKey<_> = AttributeKey<_>("Minimum")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _IncrementAttribKey : AttributeKey<_> = AttributeKey<_>("Increment")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _IsToggledAttribKey : AttributeKey<_> = AttributeKey<_>("IsToggled")
@@ -3154,8 +3150,7 @@ type View() =
     /// Builds the attributes for a Stepper in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member inline BuildStepper(attribCount: int,
-                                      ?maximum: double,
-                                      ?minimum: double,
+                                      ?minimumMaximum: float * float,
                                       ?value: double,
                                       ?increment: double,
                                       ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit,
@@ -3191,15 +3186,13 @@ type View() =
                                       ?created: obj -> unit,
                                       ?ref: ViewRef) = 
 
-        let attribCount = match maximum with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match minimum with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match minimumMaximum with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match value with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match increment with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match valueChanged with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
-        match maximum with None -> () | Some v -> attribBuilder.Add(View._MaximumAttribKey, (v)) 
-        match minimum with None -> () | Some v -> attribBuilder.Add(View._MinimumAttribKey, (v)) 
+        match minimumMaximum with None -> () | Some v -> attribBuilder.Add(View._MinimumMaximumAttribKey, (v)) 
         match value with None -> () | Some v -> attribBuilder.Add(View._ValueAttribKey, (v)) 
         match increment with None -> () | Some v -> attribBuilder.Add(View._IncrementAttribKey, (v)) 
         match valueChanged with None -> () | Some v -> attribBuilder.Add(View._ValueChangedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>(fun _sender args -> f args))(v)) 
@@ -3220,10 +3213,8 @@ type View() =
         // update the inherited View element
         let baseElement = (if View.ProtoView.IsNone then View.ProtoView <- Some (View.View())); View.ProtoView.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
-        let mutable prevMaximumOpt = ValueNone
-        let mutable currMaximumOpt = ValueNone
-        let mutable prevMinimumOpt = ValueNone
-        let mutable currMinimumOpt = ValueNone
+        let mutable prevMinimumMaximumOpt = ValueNone
+        let mutable currMinimumMaximumOpt = ValueNone
         let mutable prevValueOpt = ValueNone
         let mutable currValueOpt = ValueNone
         let mutable prevIncrementOpt = ValueNone
@@ -3231,10 +3222,8 @@ type View() =
         let mutable prevValueChangedOpt = ValueNone
         let mutable currValueChangedOpt = ValueNone
         for kvp in curr.AttributesKeyed do
-            if kvp.Key = View._MaximumAttribKey.KeyValue then 
-                currMaximumOpt <- ValueSome (kvp.Value :?> double)
-            if kvp.Key = View._MinimumAttribKey.KeyValue then 
-                currMinimumOpt <- ValueSome (kvp.Value :?> double)
+            if kvp.Key = View._MinimumMaximumAttribKey.KeyValue then 
+                currMinimumMaximumOpt <- ValueSome (kvp.Value :?> float * float)
             if kvp.Key = View._ValueAttribKey.KeyValue then 
                 currValueOpt <- ValueSome (kvp.Value :?> double)
             if kvp.Key = View._IncrementAttribKey.KeyValue then 
@@ -3245,26 +3234,15 @@ type View() =
         | ValueNone -> ()
         | ValueSome prev ->
             for kvp in prev.AttributesKeyed do
-                if kvp.Key = View._MaximumAttribKey.KeyValue then 
-                    prevMaximumOpt <- ValueSome (kvp.Value :?> double)
-                if kvp.Key = View._MinimumAttribKey.KeyValue then 
-                    prevMinimumOpt <- ValueSome (kvp.Value :?> double)
+                if kvp.Key = View._MinimumMaximumAttribKey.KeyValue then 
+                    prevMinimumMaximumOpt <- ValueSome (kvp.Value :?> float * float)
                 if kvp.Key = View._ValueAttribKey.KeyValue then 
                     prevValueOpt <- ValueSome (kvp.Value :?> double)
                 if kvp.Key = View._IncrementAttribKey.KeyValue then 
                     prevIncrementOpt <- ValueSome (kvp.Value :?> double)
                 if kvp.Key = View._ValueChangedAttribKey.KeyValue then 
                     prevValueChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>)
-        match prevMaximumOpt, currMaximumOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.Maximum <-  currValue
-        | ValueSome _, ValueNone -> target.Maximum <- 1.0
-        | ValueNone, ValueNone -> ()
-        match prevMinimumOpt, currMinimumOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.Minimum <-  currValue
-        | ValueSome _, ValueNone -> target.Minimum <- 0.0
-        | ValueNone, ValueNone -> ()
+        updateStepperMinimumMaximum prevMinimumMaximumOpt currMinimumMaximumOpt target
         match prevValueOpt, currValueOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.Value <-  currValue
@@ -3283,8 +3261,7 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a Stepper in the view
-    static member inline Stepper(?maximum: double,
-                                 ?minimum: double,
+    static member inline Stepper(?minimumMaximum: float * float,
                                  ?value: double,
                                  ?increment: double,
                                  ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit,
@@ -3321,8 +3298,7 @@ type View() =
                                  ?ref: ViewRef<Xamarin.Forms.Stepper>) = 
 
         let attribBuilder = View.BuildStepper(0,
-                               ?maximum=maximum,
-                               ?minimum=minimum,
+                               ?minimumMaximum=minimumMaximum,
                                ?value=value,
                                ?increment=increment,
                                ?valueChanged=valueChanged,
@@ -11050,12 +11026,6 @@ module ViewElementExtensions =
         /// Adjusts the ValueChanged property in the visual element
         member x.ValueChanged(value: Xamarin.Forms.ValueChangedEventArgs -> unit) = x.WithAttribute(View._ValueChangedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>(fun _sender args -> f args))(value))
 
-        /// Adjusts the Maximum property in the visual element
-        member x.Maximum(value: double) = x.WithAttribute(View._MaximumAttribKey, (value))
-
-        /// Adjusts the Minimum property in the visual element
-        member x.Minimum(value: double) = x.WithAttribute(View._MinimumAttribKey, (value))
-
         /// Adjusts the Increment property in the visual element
         member x.Increment(value: double) = x.WithAttribute(View._IncrementAttribKey, (value))
 
@@ -11683,12 +11653,6 @@ module ViewElementExtensions =
 
     /// Adjusts the ValueChanged property in the visual element
     let valueChanged (value: Xamarin.Forms.ValueChangedEventArgs -> unit) (x: ViewElement) = x.ValueChanged(value)
-
-    /// Adjusts the Maximum property in the visual element
-    let maximum (value: double) (x: ViewElement) = x.Maximum(value)
-
-    /// Adjusts the Minimum property in the visual element
-    let minimum (value: double) (x: ViewElement) = x.Minimum(value)
 
     /// Adjusts the Increment property in the visual element
     let increment (value: double) (x: ViewElement) = x.Increment(value)
