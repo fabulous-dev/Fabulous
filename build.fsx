@@ -6,7 +6,6 @@ nuget Fake.DotNet.Cli
 nuget Fake.DotNet.MSBuild
 nuget Fake.Dotnet.NuGet
 nuget Fake.DotNet.Paket
-nuget Fake.DotNet.Testing.VSTest
 nuget Fake.IO.FileSystem
 nuget Newtonsoft.Json //"
 #load "./.fake/build.fsx/intellisense.fsx"
@@ -14,7 +13,6 @@ nuget Newtonsoft.Json //"
 open Fake.Core
 open Fake.DotNet
 open Fake.DotNet.NuGet
-open Fake.DotNet.Testing
 open Fake.IO
 open Fake.IO.Globbing.Operators
 open System.IO
@@ -32,12 +30,10 @@ type BuildAction =
 
 [<NoComparison>]
 type ProjectDefinition =
-    {
-        Name: string
-        Path: IGlobbingPattern
-        Action: BuildAction
-        OutputPath: string
-    }
+    { Name: string
+      Path: IGlobbingPattern
+      Action: BuildAction
+      OutputPath: string }
 
 let release = ReleaseNotes.load "RELEASE_NOTES.MD"
 let buildDir = Path.getFullName "./build_output"
@@ -156,14 +152,9 @@ Target.create "BuildSamples" (fun _ ->
 )
 
 Target.create "RunTests" (fun _ ->
-    !! (buildDir + "/tests/*test*.dll")
-    -- "**/*TestAdapter*.dll"
-    -- "**/*TestFramework*.dll" 
-    |> VSTest.run (fun opt ->
-        { opt with
-             Logger = "trx"
-             TestAdapterPath = (Path.getFullName "./packages") }
-    )
+    let testProjects = !! "tests/**/*.fsproj"
+    for testProject in testProjects do
+        DotNet.test id testProject
 )
 
 Target.create "TestTemplatesNuGet" (fun _ ->
@@ -216,7 +207,7 @@ open Fake.Core.TargetOperators
   ==> "Build"
 
 "Build"
-  // =?> ("RunTests", Environment.isWindows) // Can't be run on OSX
+  ==> "RunTests"
   ==> "BuildSamples"
   ==> "Test"
 

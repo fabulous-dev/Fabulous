@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.1</TargetFramework>
+        <OutputType>Library</OutputType>
+        <IsPackable>false</IsPackable>
+        <DefineConstants>$(DefineConstants);NETSTANDARD2_0;TEST</DefineConstants>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="..\..\src\Fabulous.Cli\ProjectCracker.fs" Link="ProjectCracker.fs" />
+        <Compile Include="..\..\src\Fabulous.Cli\CodeModel.fs" Link="CodeModel.fs" />
+        <Compile Include="..\..\src\Fabulous.Cli\Interpreter.fs" Link="Interpreter.fs" />
+        <Compile Include="..\..\src\Fabulous.Cli\FromCompilerService.fs" Link="FromCompilerService.fs" />
+        <Compile Include="..\..\src\Fabulous.Cli\fscd.fs" Link="fscd.fs" />
+        <Compile Include="Tests.fs" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Dotnet.ProjInfo" />
+        <PackageReference Include="FSharp.Core" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" />
+        <PackageReference Include="MSTest.TestAdapter" />
+        <PackageReference Include="MSTest.TestFramework" />
+        <PackageReference Include="FSharp.Compiler.Service" />
+        <PackageReference Include="Newtonsoft.Json" />
+        <PackageReference Include="Xamarin.Forms" />
+      
+        <!-- References used indirectly by FCS when compiling tests -->
+        <PackageReference Include="Microsoft.CSharp" />
+        <PackageReference Include="NETStandard.Library" />
+        <PackageReference Include="System.Reflection.Emit.ILGeneration" />
+        <PackageReference Include="System.Reflection.Emit.Lightweight" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Fabulous.Core\Fabulous.Core.fsproj" />
+      <ProjectReference Include="..\..\src\Fabulous.CustomControls\Fabulous.CustomControls.fsproj" />
+      <ProjectReference Include="..\..\src\Fabulous.LiveUpdate\Fabulous.LiveUpdate.fsproj" />
+    </ItemGroup>
+    <Import Project="..\..\Packages.targets" />
+</Project>

@@ -6,8 +6,8 @@
 //
 // cd Fabulous\Samples\CounterApp\CounterApp
 //   adb -d forward  tcp:9867 tcp:9867
-// dotnet run --project ..\..\..\fscd\fscd.fsproj -- --eval @out.args
-// dotnet run --project ..\..\..\fscd\fscd.fsproj -- --watch --webhook:http://localhost:9867/update @out.args
+// dotnet run --project ..\..\..\Fabulous.Cli\Fabulous.Cli.fsproj -- --eval @out.args
+// dotnet run --project ..\..\..\Fabulous.Cli\Fabulous.Cli.fsproj -- --watch --webhook:http://localhost:9867/update @out.args
 
 module FSharpDaemon.Driver
 
@@ -206,8 +206,9 @@ let main (argv: string[]) =
                          with err -> 
                              printfn "fscd: exception: %A" (err.ToString()))
                      watcher.Changed.Add changed 
-                     //watcher.Created.Add changed
-                     //watcher.Deleted.Add changed
+                     watcher.Created.Add changed
+                     watcher.Deleted.Add changed
+                     watcher.Renamed.Add changed
                      yield watcher ]
 
             for watcher in watchers do
