@@ -11,7 +11,7 @@ module Versions =
     let SystemReflectionEmitILGeneration = "4.3.0"
     let SystemReflectionEmitLightweight = "4.3.0"
     let NewtonsoftJson = "11.0.2"
-    let XamarinForms = "3.1.0.697729"
+    let XamarinForms = "3.4.0.1008975"
 
 [<TestClass>]
 type TestClass () =
