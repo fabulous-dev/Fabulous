@@ -14,7 +14,6 @@ module SkiaSharpExtension =
     let IgnorePixelScalingAttribKey = AttributeKey<_> "SKCanvas_IgnorePixelScaling"
     let PaintSurfaceAttribKey = AttributeKey<_> "SKCanvas_PaintSurface"
     let TouchAttribKey = AttributeKey<_> "SKCanvas_Touch"
-    let InvalidateAttribKey = AttributeKey<_> "SKCanvas_Invalidate"
 
     type Fabulous.DynamicViews.View with
         /// Describes a Map in the view
@@ -30,7 +29,6 @@ module SkiaSharpExtension =
             let attribCount = 0
             let attribCount = match enableTouchEvents with Some _ -> attribCount + 1 | None -> attribCount
             let attribCount = match ignorePixelScaling with Some _ -> attribCount + 1 | None -> attribCount
-            let attribCount = match invalidate with Some _ -> attribCount + 1 | None -> attribCount
             let attribCount = match paintSurface with Some _ -> attribCount + 1 | None -> attribCount
             let attribCount = match touch with Some _ -> attribCount + 1 | None -> attribCount
 
@@ -49,7 +47,6 @@ module SkiaSharpExtension =
             // Add our own attributes. They must have unique names which must match the names below.
             match enableTouchEvents with None -> () | Some v -> attribs.Add(CanvasEnableTouchEventsAttribKey, v) 
             match ignorePixelScaling with None -> () | Some v -> attribs.Add(IgnorePixelScalingAttribKey, v) 
-            match invalidate with None -> () | Some v -> attribs.Add(InvalidateAttribKey, v)
             match paintSurface with None -> () | Some v -> attribs.Add(PaintSurfaceAttribKey, System.EventHandler<_>(fun _sender args -> v args))
             match touch with None -> () | Some v -> attribs.Add(TouchAttribKey, System.EventHandler<_>(fun _sender args -> v args))
 
@@ -61,9 +58,9 @@ module SkiaSharpExtension =
                 View.UpdateView (prevOpt, source, target)
                 source.UpdatePrimitive(prevOpt, target, CanvasEnableTouchEventsAttribKey, (fun target v -> target.EnableTouchEvents <- v))
                 source.UpdatePrimitive(prevOpt, target, IgnorePixelScalingAttribKey, (fun target v -> target.IgnorePixelScaling <- v))
-                source.UpdatePrimitive(prevOpt, target, InvalidateAttribKey, (fun target v -> if v then target.InvalidateSurface()))
                 source.UpdateEvent(prevOpt, PaintSurfaceAttribKey, target.PaintSurface)
                 source.UpdateEvent(prevOpt, TouchAttribKey, target.Touch)
+                if invalidate = Some true then target.InvalidateSurface()
 
             // The element
             ViewElement.Create(create, update, attribs)

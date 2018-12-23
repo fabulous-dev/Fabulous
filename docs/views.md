@@ -18,7 +18,7 @@ let view model dispatch =
 
 The view function is normal F# code that returns elements created using the `View.*` method calls.
 
-View functions are particuarly useful when the the existence, characteristics and layout of the view depends on information
+View functions are particularly useful when the existence, characteristics and layout of the view depends on information
 in the model. Differential update is used to efficiently update the Xamarin.Forms display based on the previous
 and current view descriptions.
 
