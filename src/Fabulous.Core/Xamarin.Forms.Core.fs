@@ -153,8 +153,6 @@ type View() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _ButtonImageSourceAttribKey : AttributeKey<_> = AttributeKey<_>("ButtonImageSource")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _IsPressedAttribKey : AttributeKey<_> = AttributeKey<_>("IsPressed")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _MinimumMaximumAttribKey : AttributeKey<_> = AttributeKey<_>("MinimumMaximum")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _ValueAttribKey : AttributeKey<_> = AttributeKey<_>("Value")
@@ -269,6 +267,8 @@ type View() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _IsOpaqueAttribKey : AttributeKey<_> = AttributeKey<_>("IsOpaque")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member val _ImageButtonCornerRadiusAttribKey : AttributeKey<_> = AttributeKey<_>("ImageButtonCornerRadius")
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _ClickedAttribKey : AttributeKey<_> = AttributeKey<_>("Clicked")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _PressedAttribKey : AttributeKey<_> = AttributeKey<_>("Pressed")
@@ -362,8 +362,6 @@ type View() =
     static member val _HasNavigationBarAttribKey : AttributeKey<_> = AttributeKey<_>("HasNavigationBar")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _TitleIconAttribKey : AttributeKey<_> = AttributeKey<_>("TitleIcon")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _TitleViewAttribKey : AttributeKey<_> = AttributeKey<_>("TitleView")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _BarBackgroundColorAttribKey : AttributeKey<_> = AttributeKey<_>("BarBackgroundColor")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -936,12 +934,12 @@ type View() =
         match prevScaleXOpt, currScaleXOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.ScaleX <-  currValue
-        | ValueSome _, ValueNone -> target.ScaleX <- 0
+        | ValueSome _, ValueNone -> target.ScaleX <- 0.0
         | ValueNone, ValueNone -> ()
         match prevScaleYOpt, currScaleYOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.ScaleY <-  currValue
-        | ValueSome _, ValueNone -> target.ScaleY <- 0
+        | ValueSome _, ValueNone -> target.ScaleY <- 0.0
         | ValueNone, ValueNone -> ()
         match prevTabIndexOpt, currTabIndexOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
@@ -2852,7 +2850,6 @@ type View() =
                                      ?fontSize: obj,
                                      ?image: string,
                                      ?textColor: Xamarin.Forms.Color,
-                                     ?isPressed: bool,
                                      ?padding: Xamarin.Forms.Thickness,
                                      ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                      ?verticalOptions: Xamarin.Forms.LayoutOptions,
@@ -2903,7 +2900,6 @@ type View() =
         let attribCount = match fontSize with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match image with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match textColor with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match isPressed with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match padding with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
@@ -2920,7 +2916,6 @@ type View() =
         match fontSize with None -> () | Some v -> attribBuilder.Add(View._FontSizeAttribKey, makeFontSize(v)) 
         match image with None -> () | Some v -> attribBuilder.Add(View._ButtonImageSourceAttribKey, (v)) 
         match textColor with None -> () | Some v -> attribBuilder.Add(View._TextColorAttribKey, (v)) 
-        match isPressed with None -> () | Some v -> attribBuilder.Add(View._IsPressedAttribKey, (v)) 
         match padding with None -> () | Some v -> attribBuilder.Add(View._PaddingAttribKey, (v)) 
         attribBuilder
 
@@ -2965,8 +2960,6 @@ type View() =
         let mutable currButtonImageSourceOpt = ValueNone
         let mutable prevTextColorOpt = ValueNone
         let mutable currTextColorOpt = ValueNone
-        let mutable prevIsPressedOpt = ValueNone
-        let mutable currIsPressedOpt = ValueNone
         let mutable prevPaddingOpt = ValueNone
         let mutable currPaddingOpt = ValueNone
         for kvp in curr.AttributesKeyed do
@@ -2996,8 +2989,6 @@ type View() =
                 currButtonImageSourceOpt <- ValueSome (kvp.Value :?> string)
             if kvp.Key = View._TextColorAttribKey.KeyValue then 
                 currTextColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
-            if kvp.Key = View._IsPressedAttribKey.KeyValue then 
-                currIsPressedOpt <- ValueSome (kvp.Value :?> bool)
             if kvp.Key = View._PaddingAttribKey.KeyValue then 
                 currPaddingOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Thickness)
         match prevOpt with
@@ -3030,8 +3021,6 @@ type View() =
                     prevButtonImageSourceOpt <- ValueSome (kvp.Value :?> string)
                 if kvp.Key = View._TextColorAttribKey.KeyValue then 
                     prevTextColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
-                if kvp.Key = View._IsPressedAttribKey.KeyValue then 
-                    prevIsPressedOpt <- ValueSome (kvp.Value :?> bool)
                 if kvp.Key = View._PaddingAttribKey.KeyValue then 
                     prevPaddingOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Thickness)
         match prevTextOpt, currTextOpt with
@@ -3091,11 +3080,6 @@ type View() =
         | _, ValueSome currValue -> target.TextColor <-  currValue
         | ValueSome _, ValueNone -> target.TextColor <- Xamarin.Forms.Color.Default
         | ValueNone, ValueNone -> ()
-        match prevIsPressedOpt, currIsPressedOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.IsPressed <-  currValue
-        | ValueSome _, ValueNone -> target.IsPressed <- false
-        | ValueNone, ValueNone -> ()
         match prevPaddingOpt, currPaddingOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.Padding <-  currValue
@@ -3116,7 +3100,6 @@ type View() =
                                 ?fontSize: obj,
                                 ?image: string,
                                 ?textColor: Xamarin.Forms.Color,
-                                ?isPressed: bool,
                                 ?padding: Xamarin.Forms.Thickness,
                                 ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                 ?verticalOptions: Xamarin.Forms.LayoutOptions,
@@ -3168,7 +3151,6 @@ type View() =
                                ?fontSize=fontSize,
                                ?image=image,
                                ?textColor=textColor,
-                               ?isPressed=isPressed,
                                ?padding=padding,
                                ?horizontalOptions=horizontalOptions,
                                ?verticalOptions=verticalOptions,
@@ -6408,8 +6390,6 @@ type View() =
                                           ?borderWidth: double,
                                           ?cornerRadius: int,
                                           ?isOpaque: bool,
-                                          ?isOpaque: bool,
-                                          ?isPressed: bool,
                                           ?padding: Xamarin.Forms.Thickness,
                                           ?clicked: System.EventArgs -> unit,
                                           ?pressed: System.EventArgs -> unit,
@@ -6456,8 +6436,6 @@ type View() =
         let attribCount = match borderWidth with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match cornerRadius with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match isOpaque with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match isOpaque with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match isPressed with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match padding with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match clicked with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match pressed with Some _ -> attribCount + 1 | None -> attribCount
@@ -6468,10 +6446,8 @@ type View() =
         match aspect with None -> () | Some v -> attribBuilder.Add(View._AspectAttribKey, (v)) 
         match borderColor with None -> () | Some v -> attribBuilder.Add(View._BorderColorAttribKey, (v)) 
         match borderWidth with None -> () | Some v -> attribBuilder.Add(View._BorderWidthAttribKey, (v)) 
-        match cornerRadius with None -> () | Some v -> attribBuilder.Add(View._CornerRadiusAttribKey, (v)) 
+        match cornerRadius with None -> () | Some v -> attribBuilder.Add(View._ImageButtonCornerRadiusAttribKey, (v)) 
         match isOpaque with None -> () | Some v -> attribBuilder.Add(View._IsOpaqueAttribKey, (v)) 
-        match isOpaque with None -> () | Some v -> attribBuilder.Add(View._IsOpaqueAttribKey, (v)) 
-        match isPressed with None -> () | Some v -> attribBuilder.Add(View._IsPressedAttribKey, (v)) 
         match padding with None -> () | Some v -> attribBuilder.Add(View._PaddingAttribKey, (v)) 
         match clicked with None -> () | Some v -> attribBuilder.Add(View._ClickedAttribKey, (fun f -> System.EventHandler(fun _sender args -> f args))(v)) 
         match pressed with None -> () | Some v -> attribBuilder.Add(View._PressedAttribKey, (fun f -> System.EventHandler(fun _sender args -> f args))(v)) 
@@ -6501,14 +6477,10 @@ type View() =
         let mutable currBorderColorOpt = ValueNone
         let mutable prevBorderWidthOpt = ValueNone
         let mutable currBorderWidthOpt = ValueNone
-        let mutable prevCornerRadiusOpt = ValueNone
-        let mutable currCornerRadiusOpt = ValueNone
+        let mutable prevImageButtonCornerRadiusOpt = ValueNone
+        let mutable currImageButtonCornerRadiusOpt = ValueNone
         let mutable prevIsOpaqueOpt = ValueNone
         let mutable currIsOpaqueOpt = ValueNone
-        let mutable prevIsOpaqueOpt = ValueNone
-        let mutable currIsOpaqueOpt = ValueNone
-        let mutable prevIsPressedOpt = ValueNone
-        let mutable currIsPressedOpt = ValueNone
         let mutable prevPaddingOpt = ValueNone
         let mutable currPaddingOpt = ValueNone
         let mutable prevClickedOpt = ValueNone
@@ -6526,14 +6498,10 @@ type View() =
                 currBorderColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
             if kvp.Key = View._BorderWidthAttribKey.KeyValue then 
                 currBorderWidthOpt <- ValueSome (kvp.Value :?> double)
-            if kvp.Key = View._CornerRadiusAttribKey.KeyValue then 
-                currCornerRadiusOpt <- ValueSome (kvp.Value :?> int)
+            if kvp.Key = View._ImageButtonCornerRadiusAttribKey.KeyValue then 
+                currImageButtonCornerRadiusOpt <- ValueSome (kvp.Value :?> int)
             if kvp.Key = View._IsOpaqueAttribKey.KeyValue then 
                 currIsOpaqueOpt <- ValueSome (kvp.Value :?> bool)
-            if kvp.Key = View._IsOpaqueAttribKey.KeyValue then 
-                currIsOpaqueOpt <- ValueSome (kvp.Value :?> bool)
-            if kvp.Key = View._IsPressedAttribKey.KeyValue then 
-                currIsPressedOpt <- ValueSome (kvp.Value :?> bool)
             if kvp.Key = View._PaddingAttribKey.KeyValue then 
                 currPaddingOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Thickness)
             if kvp.Key = View._ClickedAttribKey.KeyValue then 
@@ -6554,14 +6522,10 @@ type View() =
                     prevBorderColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
                 if kvp.Key = View._BorderWidthAttribKey.KeyValue then 
                     prevBorderWidthOpt <- ValueSome (kvp.Value :?> double)
-                if kvp.Key = View._CornerRadiusAttribKey.KeyValue then 
-                    prevCornerRadiusOpt <- ValueSome (kvp.Value :?> int)
+                if kvp.Key = View._ImageButtonCornerRadiusAttribKey.KeyValue then 
+                    prevImageButtonCornerRadiusOpt <- ValueSome (kvp.Value :?> int)
                 if kvp.Key = View._IsOpaqueAttribKey.KeyValue then 
                     prevIsOpaqueOpt <- ValueSome (kvp.Value :?> bool)
-                if kvp.Key = View._IsOpaqueAttribKey.KeyValue then 
-                    prevIsOpaqueOpt <- ValueSome (kvp.Value :?> bool)
-                if kvp.Key = View._IsPressedAttribKey.KeyValue then 
-                    prevIsPressedOpt <- ValueSome (kvp.Value :?> bool)
                 if kvp.Key = View._PaddingAttribKey.KeyValue then 
                     prevPaddingOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Thickness)
                 if kvp.Key = View._ClickedAttribKey.KeyValue then 
@@ -6588,9 +6552,9 @@ type View() =
         match prevBorderWidthOpt, currBorderWidthOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.BorderWidth <-  currValue
-        | ValueSome _, ValueNone -> target.BorderWidth <- 0
+        | ValueSome _, ValueNone -> target.BorderWidth <- 0.0
         | ValueNone, ValueNone -> ()
-        match prevCornerRadiusOpt, currCornerRadiusOpt with
+        match prevImageButtonCornerRadiusOpt, currImageButtonCornerRadiusOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.CornerRadius <-  currValue
         | ValueSome _, ValueNone -> target.CornerRadius <- 0
@@ -6599,16 +6563,6 @@ type View() =
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.IsOpaque <-  currValue
         | ValueSome _, ValueNone -> target.IsOpaque <- true
-        | ValueNone, ValueNone -> ()
-        match prevIsOpaqueOpt, currIsOpaqueOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.IsOpaque <-  currValue
-        | ValueSome _, ValueNone -> target.IsOpaque <- true
-        | ValueNone, ValueNone -> ()
-        match prevIsPressedOpt, currIsPressedOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.IsPressed <-  currValue
-        | ValueSome _, ValueNone -> target.IsPressed <- true
         | ValueNone, ValueNone -> ()
         match prevPaddingOpt, currPaddingOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
@@ -6641,8 +6595,6 @@ type View() =
                                      ?borderWidth: double,
                                      ?cornerRadius: int,
                                      ?isOpaque: bool,
-                                     ?isOpaque: bool,
-                                     ?isPressed: bool,
                                      ?padding: Xamarin.Forms.Thickness,
                                      ?clicked: System.EventArgs -> unit,
                                      ?pressed: System.EventArgs -> unit,
@@ -6690,8 +6642,6 @@ type View() =
                                ?borderWidth=borderWidth,
                                ?cornerRadius=cornerRadius,
                                ?isOpaque=isOpaque,
-                               ?isOpaque=isOpaque,
-                               ?isPressed=isPressed,
                                ?padding=padding,
                                ?clicked=clicked,
                                ?pressed=pressed,
@@ -8005,7 +7955,7 @@ type View() =
         match prevLineHeightOpt, currLineHeightOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.LineHeight <-  currValue
-        | ValueSome _, ValueNone -> target.LineHeight <- 0
+        | ValueSome _, ValueNone -> target.LineHeight <- 0.0
         | ValueNone, ValueNone -> ()
         match prevMaxLinesOpt, currMaxLinesOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
@@ -8015,7 +7965,7 @@ type View() =
         match prevTextDecorationsOpt, currTextDecorationsOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.TextDecorations <-  currValue
-        | ValueSome _, ValueNone -> target.TextDecorations <- 0
+        | ValueSome _, ValueNone -> target.TextDecorations <- Unchecked.defaultof<Xamarin.Forms.TextDecorations>
         | ValueNone, ValueNone -> ()
 
     /// Describes a Label in the view
@@ -8471,12 +8421,12 @@ type View() =
         match prevLineHeightOpt, currLineHeightOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.LineHeight <-  currValue
-        | ValueSome _, ValueNone -> target.LineHeight <- 0
+        | ValueSome _, ValueNone -> target.LineHeight <- 0.0
         | ValueNone, ValueNone -> ()
         match prevTextDecorationsOpt, currTextDecorationsOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.TextDecorations <-  currValue
-        | ValueSome _, ValueNone -> target.TextDecorations <- 0
+        | ValueSome _, ValueNone -> target.TextDecorations <- Unchecked.defaultof<Xamarin.Forms.TextDecorations>
         | ValueNone, ValueNone -> ()
 
     /// Describes a Span in the view
@@ -9638,14 +9588,6 @@ type View() =
                 | ValueSome prevChildValue, ValueSome currValue when prevChildValue = currValue -> ()
                 | _, ValueSome currValue -> Xamarin.Forms.NavigationPage.SetTitleIcon(targetChild, makeFileImageSource currValue)
                 | ValueSome _, ValueNone -> Xamarin.Forms.NavigationPage.SetTitleIcon(targetChild, null) // TODO: not always perfect, should set back to original default?
-                | _ -> ()
-                // Adjust the attached properties
-                let prevChildValueOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttributeKeyed<string>(View._TitleViewAttribKey)
-                let childValueOpt = newChild.TryGetAttributeKeyed<string>(View._TitleViewAttribKey)
-                match prevChildValueOpt, childValueOpt with
-                | ValueSome prevChildValue, ValueSome currValue when prevChildValue = currValue -> ()
-                | _, ValueSome currValue -> Xamarin.Forms.NavigationPage.SetTitleView(targetChild, currValue)
-                | ValueSome _, ValueNone -> Xamarin.Forms.NavigationPage.SetTitleView(targetChild, null) // TODO: not always perfect, should set back to original default?
                 | _ -> ()
                 ())
         match prevBarBackgroundColorOpt, currBarBackgroundColorOpt with
@@ -12127,9 +12069,6 @@ module ViewElementExtensions =
         /// Adjusts the ButtonImageSource property in the visual element
         member x.ButtonImageSource(value: string) = x.WithAttribute(View._ButtonImageSourceAttribKey, (value))
 
-        /// Adjusts the IsPressed property in the visual element
-        member x.IsPressed(value: bool) = x.WithAttribute(View._IsPressedAttribKey, (value))
-
         /// Adjusts the MinimumMaximum property in the visual element
         member x.MinimumMaximum(value: float * float) = x.WithAttribute(View._MinimumMaximumAttribKey, (value))
 
@@ -12301,6 +12240,9 @@ module ViewElementExtensions =
         /// Adjusts the IsOpaque property in the visual element
         member x.IsOpaque(value: bool) = x.WithAttribute(View._IsOpaqueAttribKey, (value))
 
+        /// Adjusts the ImageButtonCornerRadius property in the visual element
+        member x.ImageButtonCornerRadius(value: int) = x.WithAttribute(View._ImageButtonCornerRadiusAttribKey, (value))
+
         /// Adjusts the Clicked property in the visual element
         member x.Clicked(value: System.EventArgs -> unit) = x.WithAttribute(View._ClickedAttribKey, (fun f -> System.EventHandler(fun _sender args -> f args))(value))
 
@@ -12441,9 +12383,6 @@ module ViewElementExtensions =
 
         /// Adjusts the TitleIcon property in the visual element
         member x.TitleIcon(value: string) = x.WithAttribute(View._TitleIconAttribKey, (value))
-
-        /// Adjusts the TitleView property in the visual element
-        member x.TitleView(value: string) = x.WithAttribute(View._TitleViewAttribKey, (value))
 
         /// Adjusts the BarBackgroundColor property in the visual element
         member x.BarBackgroundColor(value: Xamarin.Forms.Color) = x.WithAttribute(View._BarBackgroundColorAttribKey, (value))
@@ -12803,9 +12742,6 @@ module ViewElementExtensions =
     /// Adjusts the ButtonImageSource property in the visual element
     let buttonImageSource (value: string) (x: ViewElement) = x.ButtonImageSource(value)
 
-    /// Adjusts the IsPressed property in the visual element
-    let isPressed (value: bool) (x: ViewElement) = x.IsPressed(value)
-
     /// Adjusts the MinimumMaximum property in the visual element
     let minimumMaximum (value: float * float) (x: ViewElement) = x.MinimumMaximum(value)
 
@@ -12977,6 +12913,9 @@ module ViewElementExtensions =
     /// Adjusts the IsOpaque property in the visual element
     let isOpaque (value: bool) (x: ViewElement) = x.IsOpaque(value)
 
+    /// Adjusts the ImageButtonCornerRadius property in the visual element
+    let imageButtonCornerRadius (value: int) (x: ViewElement) = x.ImageButtonCornerRadius(value)
+
     /// Adjusts the Clicked property in the visual element
     let clicked (value: System.EventArgs -> unit) (x: ViewElement) = x.Clicked(value)
 
@@ -13117,9 +13056,6 @@ module ViewElementExtensions =
 
     /// Adjusts the TitleIcon property in the visual element
     let titleIcon (value: string) (x: ViewElement) = x.TitleIcon(value)
-
-    /// Adjusts the TitleView property in the visual element
-    let titleView (value: string) (x: ViewElement) = x.TitleView(value)
 
     /// Adjusts the BarBackgroundColor property in the visual element
     let barBackgroundColor (value: Xamarin.Forms.Color) (x: ViewElement) = x.BarBackgroundColor(value)

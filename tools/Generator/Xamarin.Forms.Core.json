@@ -146,11 +146,11 @@
         },
         {
           "name": "ScaleX",
-          "defaultValue": "0"
+          "defaultValue": "0.0"
         },
         {
           "name": "ScaleY",
-          "defaultValue": "0"
+          "defaultValue": "0.0"
         },
         {
           "name": "TabIndex",
@@ -458,10 +458,6 @@
         {
           "name": "TextColor",
           "defaultValue": "Xamarin.Forms.Color.Default"
-        },
-        {
-          "name": "IsPressed",
-          "defaultValue": "false"
         },
         {
           "name": "Padding",
@@ -976,22 +972,15 @@
         },
         {
           "name": "BorderWidth",
-          "defaultValue": "0"
+          "defaultValue": "0.0"
         },
         {
           "name": "CornerRadius",
+          "uniqueName": "ImageButtonCornerRadius",
           "defaultValue": "0"
         },
         {
           "name": "IsOpaque",
-          "defaultValue": "true"
-        },
-        {
-          "name": "IsOpaque",
-          "defaultValue": "true"
-        },
-        {
-          "name": "IsPressed",
           "defaultValue": "true"
         },
         {
@@ -1240,7 +1229,7 @@
         },
         {
           "name": "LineHeight",
-          "defaultValue": "0"
+          "defaultValue": "0.0"
         },
         {
           "name": "MaxLines",
@@ -1248,7 +1237,7 @@
         },
         {
           "name": "TextDecorations",
-          "defaultValue": "0"
+          "defaultValue": "Unchecked.defaultof<Xamarin.Forms.TextDecorations>"
         }
       ]
     },
@@ -1310,11 +1299,11 @@
         },
         {
           "name": "LineHeight",
-          "defaultValue": "0"
+          "defaultValue": "0.0"
         },
         {
           "name": "TextDecorations",
-          "defaultValue": "0"
+          "defaultValue": "Unchecked.defaultof<Xamarin.Forms.TextDecorations>"
         }
       ]
     },
@@ -1500,12 +1489,6 @@
               "inputType": "string",
               "modelType": "string",
               "convToValue": "makeFileImageSource",
-              "defaultValue": "null"
-            },
-            {
-              "name": "TitleView",
-              "inputType": "string",
-              "modelType": "string",            
               "defaultValue": "null"
             }
           ]
