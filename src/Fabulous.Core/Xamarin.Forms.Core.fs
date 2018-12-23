@@ -89,6 +89,8 @@ type View() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _IsRunningAttribKey : AttributeKey<_> = AttributeKey<_>("IsRunning")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member val _CornerRadiusAttribKey : AttributeKey<_> = AttributeKey<_>("CornerRadius")
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _ProgressAttribKey : AttributeKey<_> = AttributeKey<_>("Progress")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _IsClippedToBoundsAttribKey : AttributeKey<_> = AttributeKey<_>("IsClippedToBounds")
@@ -142,6 +144,8 @@ type View() =
     static member val _ButtonCornerRadiusAttribKey : AttributeKey<_> = AttributeKey<_>("ButtonCornerRadius")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _ButtonImageSourceAttribKey : AttributeKey<_> = AttributeKey<_>("ButtonImageSource")
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member val _IsPressedAttribKey : AttributeKey<_> = AttributeKey<_>("IsPressed")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _MinimumMaximumAttribKey : AttributeKey<_> = AttributeKey<_>("MinimumMaximum")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -257,6 +261,12 @@ type View() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _IsOpaqueAttribKey : AttributeKey<_> = AttributeKey<_>("IsOpaque")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member val _ClickedAttribKey : AttributeKey<_> = AttributeKey<_>("Clicked")
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member val _PressedAttribKey : AttributeKey<_> = AttributeKey<_>("Pressed")
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member val _ReleasedAttribKey : AttributeKey<_> = AttributeKey<_>("Released")
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _KeyboardAttribKey : AttributeKey<_> = AttributeKey<_>("Keyboard")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _EditorCompletedAttribKey : AttributeKey<_> = AttributeKey<_>("EditorCompleted")
@@ -274,6 +284,10 @@ type View() =
     static member val _ReturnTypeAttribKey : AttributeKey<_> = AttributeKey<_>("ReturnType")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _ReturnCommandAttribKey : AttributeKey<_> = AttributeKey<_>("ReturnCommand")
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member val _CursorPositionAttribKey : AttributeKey<_> = AttributeKey<_>("CursorPosition")
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member val _SelectionLengthAttribKey : AttributeKey<_> = AttributeKey<_>("SelectionLength")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _LabelAttribKey : AttributeKey<_> = AttributeKey<_>("Label")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -1665,6 +1679,7 @@ type View() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member inline BuildBoxView(attribCount: int,
                                       ?color: Xamarin.Forms.Color,
+                                      ?cornerRadius: Xamarin.Forms.CornerRadius,
                                       ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                       ?verticalOptions: Xamarin.Forms.LayoutOptions,
                                       ?margin: obj,
@@ -1698,9 +1713,11 @@ type View() =
                                       ?ref: ViewRef) = 
 
         let attribCount = match color with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match cornerRadius with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match color with None -> () | Some v -> attribBuilder.Add(View._ColorAttribKey, (v)) 
+        match cornerRadius with None -> () | Some v -> attribBuilder.Add(View._CornerRadiusAttribKey, (v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -1720,23 +1737,35 @@ type View() =
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevColorOpt = ValueNone
         let mutable currColorOpt = ValueNone
+        let mutable prevCornerRadiusOpt = ValueNone
+        let mutable currCornerRadiusOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = View._ColorAttribKey.KeyValue then 
                 currColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
+            if kvp.Key = View._CornerRadiusAttribKey.KeyValue then 
+                currCornerRadiusOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.CornerRadius)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
             for kvp in prev.AttributesKeyed do
                 if kvp.Key = View._ColorAttribKey.KeyValue then 
                     prevColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
+                if kvp.Key = View._CornerRadiusAttribKey.KeyValue then 
+                    prevCornerRadiusOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.CornerRadius)
         match prevColorOpt, currColorOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.Color <-  currValue
         | ValueSome _, ValueNone -> target.Color <- Xamarin.Forms.Color.Default
         | ValueNone, ValueNone -> ()
+        match prevCornerRadiusOpt, currCornerRadiusOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.CornerRadius <-  currValue
+        | ValueSome _, ValueNone -> target.CornerRadius <- Unchecked.defaultof<Xamarin.Forms.CornerRadius>
+        | ValueNone, ValueNone -> ()
 
     /// Describes a BoxView in the view
     static member inline BoxView(?color: Xamarin.Forms.Color,
+                                 ?cornerRadius: Xamarin.Forms.CornerRadius,
                                  ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                  ?verticalOptions: Xamarin.Forms.LayoutOptions,
                                  ?margin: obj,
@@ -1771,6 +1800,7 @@ type View() =
 
         let attribBuilder = View.BuildBoxView(0,
                                ?color=color,
+                               ?cornerRadius=cornerRadius,
                                ?horizontalOptions=horizontalOptions,
                                ?verticalOptions=verticalOptions,
                                ?margin=margin,
@@ -2656,6 +2686,8 @@ type View() =
                                      ?fontSize: obj,
                                      ?image: string,
                                      ?textColor: Xamarin.Forms.Color,
+                                     ?isPressed: bool,
+                                     ?padding: Xamarin.Forms.Thickness,
                                      ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                      ?verticalOptions: Xamarin.Forms.LayoutOptions,
                                      ?margin: obj,
@@ -2701,6 +2733,8 @@ type View() =
         let attribCount = match fontSize with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match image with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match textColor with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match isPressed with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match padding with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match text with None -> () | Some v -> attribBuilder.Add(View._TextAttribKey, (v)) 
@@ -2716,6 +2750,8 @@ type View() =
         match fontSize with None -> () | Some v -> attribBuilder.Add(View._FontSizeAttribKey, makeFontSize(v)) 
         match image with None -> () | Some v -> attribBuilder.Add(View._ButtonImageSourceAttribKey, (v)) 
         match textColor with None -> () | Some v -> attribBuilder.Add(View._TextColorAttribKey, (v)) 
+        match isPressed with None -> () | Some v -> attribBuilder.Add(View._IsPressedAttribKey, (v)) 
+        match padding with None -> () | Some v -> attribBuilder.Add(View._PaddingAttribKey, (v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -2759,6 +2795,10 @@ type View() =
         let mutable currButtonImageSourceOpt = ValueNone
         let mutable prevTextColorOpt = ValueNone
         let mutable currTextColorOpt = ValueNone
+        let mutable prevIsPressedOpt = ValueNone
+        let mutable currIsPressedOpt = ValueNone
+        let mutable prevPaddingOpt = ValueNone
+        let mutable currPaddingOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = View._TextAttribKey.KeyValue then 
                 currTextOpt <- ValueSome (kvp.Value :?> string)
@@ -2786,6 +2826,10 @@ type View() =
                 currButtonImageSourceOpt <- ValueSome (kvp.Value :?> string)
             if kvp.Key = View._TextColorAttribKey.KeyValue then 
                 currTextColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
+            if kvp.Key = View._IsPressedAttribKey.KeyValue then 
+                currIsPressedOpt <- ValueSome (kvp.Value :?> bool)
+            if kvp.Key = View._PaddingAttribKey.KeyValue then 
+                currPaddingOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Thickness)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
@@ -2816,6 +2860,10 @@ type View() =
                     prevButtonImageSourceOpt <- ValueSome (kvp.Value :?> string)
                 if kvp.Key = View._TextColorAttribKey.KeyValue then 
                     prevTextColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
+                if kvp.Key = View._IsPressedAttribKey.KeyValue then 
+                    prevIsPressedOpt <- ValueSome (kvp.Value :?> bool)
+                if kvp.Key = View._PaddingAttribKey.KeyValue then 
+                    prevPaddingOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Thickness)
         match prevTextOpt, currTextOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.Text <-  currValue
@@ -2873,6 +2921,16 @@ type View() =
         | _, ValueSome currValue -> target.TextColor <-  currValue
         | ValueSome _, ValueNone -> target.TextColor <- Xamarin.Forms.Color.Default
         | ValueNone, ValueNone -> ()
+        match prevIsPressedOpt, currIsPressedOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.IsPressed <-  currValue
+        | ValueSome _, ValueNone -> target.IsPressed <- false
+        | ValueNone, ValueNone -> ()
+        match prevPaddingOpt, currPaddingOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Padding <-  currValue
+        | ValueSome _, ValueNone -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
+        | ValueNone, ValueNone -> ()
 
     /// Describes a Button in the view
     static member inline Button(?text: string,
@@ -2888,6 +2946,8 @@ type View() =
                                 ?fontSize: obj,
                                 ?image: string,
                                 ?textColor: Xamarin.Forms.Color,
+                                ?isPressed: bool,
+                                ?padding: Xamarin.Forms.Thickness,
                                 ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                 ?verticalOptions: Xamarin.Forms.LayoutOptions,
                                 ?margin: obj,
@@ -2934,6 +2994,8 @@ type View() =
                                ?fontSize=fontSize,
                                ?image=image,
                                ?textColor=textColor,
+                               ?isPressed=isPressed,
+                               ?padding=padding,
                                ?horizontalOptions=horizontalOptions,
                                ?verticalOptions=verticalOptions,
                                ?margin=margin,
@@ -5991,6 +6053,332 @@ type View() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val ProtoImage : ViewElement option = None with get, set
 
+    /// Builds the attributes for a ImageButton in the view
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member inline BuildImageButton(attribCount: int,
+                                          ?source: obj,
+                                          ?aspect: Xamarin.Forms.Aspect,
+                                          ?borderColor: Xamarin.Forms.Color,
+                                          ?borderWidth: double,
+                                          ?cornerRadius: int,
+                                          ?isOpaque: bool,
+                                          ?isOpaque: bool,
+                                          ?isPressed: bool,
+                                          ?padding: Xamarin.Forms.Thickness,
+                                          ?clicked: System.EventArgs -> unit,
+                                          ?pressed: System.EventArgs -> unit,
+                                          ?released: System.EventArgs -> unit,
+                                          ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                          ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                          ?margin: obj,
+                                          ?gestureRecognizers: ViewElement list,
+                                          ?anchorX: double,
+                                          ?anchorY: double,
+                                          ?backgroundColor: Xamarin.Forms.Color,
+                                          ?heightRequest: double,
+                                          ?inputTransparent: bool,
+                                          ?isEnabled: bool,
+                                          ?isVisible: bool,
+                                          ?minimumHeightRequest: double,
+                                          ?minimumWidthRequest: double,
+                                          ?opacity: double,
+                                          ?rotation: double,
+                                          ?rotationX: double,
+                                          ?rotationY: double,
+                                          ?scale: double,
+                                          ?style: Xamarin.Forms.Style,
+                                          ?styleClass: obj,
+                                          ?translationX: double,
+                                          ?translationY: double,
+                                          ?widthRequest: double,
+                                          ?resources: (string * obj) list,
+                                          ?styles: Xamarin.Forms.Style list,
+                                          ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                          ?classId: string,
+                                          ?styleId: string,
+                                          ?automationId: string,
+                                          ?created: obj -> unit,
+                                          ?ref: ViewRef) = 
+
+        let attribCount = match source with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match aspect with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match borderColor with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match borderWidth with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match cornerRadius with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match isOpaque with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match isOpaque with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match isPressed with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match padding with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match clicked with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match pressed with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match released with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        match source with None -> () | Some v -> attribBuilder.Add(View._ImageSourceAttribKey, (v)) 
+        match aspect with None -> () | Some v -> attribBuilder.Add(View._AspectAttribKey, (v)) 
+        match borderColor with None -> () | Some v -> attribBuilder.Add(View._BorderColorAttribKey, (v)) 
+        match borderWidth with None -> () | Some v -> attribBuilder.Add(View._BorderWidthAttribKey, (v)) 
+        match cornerRadius with None -> () | Some v -> attribBuilder.Add(View._CornerRadiusAttribKey, (v)) 
+        match isOpaque with None -> () | Some v -> attribBuilder.Add(View._IsOpaqueAttribKey, (v)) 
+        match isOpaque with None -> () | Some v -> attribBuilder.Add(View._IsOpaqueAttribKey, (v)) 
+        match isPressed with None -> () | Some v -> attribBuilder.Add(View._IsPressedAttribKey, (v)) 
+        match padding with None -> () | Some v -> attribBuilder.Add(View._PaddingAttribKey, (v)) 
+        match clicked with None -> () | Some v -> attribBuilder.Add(View._ClickedAttribKey, (fun f -> System.EventHandler(fun _sender args -> f args))(v)) 
+        match pressed with None -> () | Some v -> attribBuilder.Add(View._PressedAttribKey, (fun f -> System.EventHandler(fun _sender args -> f args))(v)) 
+        match released with None -> () | Some v -> attribBuilder.Add(View._ReleasedAttribKey, (fun f -> System.EventHandler(fun _sender args -> f args))(v)) 
+        attribBuilder
+
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member val CreateFuncImageButton : (unit -> Xamarin.Forms.ImageButton) = (fun () -> View.CreateImageButton())
+
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member CreateImageButton () : Xamarin.Forms.ImageButton = 
+            upcast (new Xamarin.Forms.ImageButton())
+
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member val UpdateFuncImageButton = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.ImageButton) -> View.UpdateImageButton (prevOpt, curr, target)) 
+
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member UpdateImageButton (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.ImageButton) = 
+        // update the inherited View element
+        let baseElement = (if View.ProtoView.IsNone then View.ProtoView <- Some (View.View())); View.ProtoView.Value
+        baseElement.UpdateInherited (prevOpt, curr, target)
+        let mutable prevImageSourceOpt = ValueNone
+        let mutable currImageSourceOpt = ValueNone
+        let mutable prevAspectOpt = ValueNone
+        let mutable currAspectOpt = ValueNone
+        let mutable prevBorderColorOpt = ValueNone
+        let mutable currBorderColorOpt = ValueNone
+        let mutable prevBorderWidthOpt = ValueNone
+        let mutable currBorderWidthOpt = ValueNone
+        let mutable prevCornerRadiusOpt = ValueNone
+        let mutable currCornerRadiusOpt = ValueNone
+        let mutable prevIsOpaqueOpt = ValueNone
+        let mutable currIsOpaqueOpt = ValueNone
+        let mutable prevIsOpaqueOpt = ValueNone
+        let mutable currIsOpaqueOpt = ValueNone
+        let mutable prevIsPressedOpt = ValueNone
+        let mutable currIsPressedOpt = ValueNone
+        let mutable prevPaddingOpt = ValueNone
+        let mutable currPaddingOpt = ValueNone
+        let mutable prevClickedOpt = ValueNone
+        let mutable currClickedOpt = ValueNone
+        let mutable prevPressedOpt = ValueNone
+        let mutable currPressedOpt = ValueNone
+        let mutable prevReleasedOpt = ValueNone
+        let mutable currReleasedOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = View._ImageSourceAttribKey.KeyValue then 
+                currImageSourceOpt <- ValueSome (kvp.Value :?> obj)
+            if kvp.Key = View._AspectAttribKey.KeyValue then 
+                currAspectOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Aspect)
+            if kvp.Key = View._BorderColorAttribKey.KeyValue then 
+                currBorderColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
+            if kvp.Key = View._BorderWidthAttribKey.KeyValue then 
+                currBorderWidthOpt <- ValueSome (kvp.Value :?> double)
+            if kvp.Key = View._CornerRadiusAttribKey.KeyValue then 
+                currCornerRadiusOpt <- ValueSome (kvp.Value :?> int)
+            if kvp.Key = View._IsOpaqueAttribKey.KeyValue then 
+                currIsOpaqueOpt <- ValueSome (kvp.Value :?> bool)
+            if kvp.Key = View._IsOpaqueAttribKey.KeyValue then 
+                currIsOpaqueOpt <- ValueSome (kvp.Value :?> bool)
+            if kvp.Key = View._IsPressedAttribKey.KeyValue then 
+                currIsPressedOpt <- ValueSome (kvp.Value :?> bool)
+            if kvp.Key = View._PaddingAttribKey.KeyValue then 
+                currPaddingOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Thickness)
+            if kvp.Key = View._ClickedAttribKey.KeyValue then 
+                currClickedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
+            if kvp.Key = View._PressedAttribKey.KeyValue then 
+                currPressedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
+            if kvp.Key = View._ReleasedAttribKey.KeyValue then 
+                currReleasedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = View._ImageSourceAttribKey.KeyValue then 
+                    prevImageSourceOpt <- ValueSome (kvp.Value :?> obj)
+                if kvp.Key = View._AspectAttribKey.KeyValue then 
+                    prevAspectOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Aspect)
+                if kvp.Key = View._BorderColorAttribKey.KeyValue then 
+                    prevBorderColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
+                if kvp.Key = View._BorderWidthAttribKey.KeyValue then 
+                    prevBorderWidthOpt <- ValueSome (kvp.Value :?> double)
+                if kvp.Key = View._CornerRadiusAttribKey.KeyValue then 
+                    prevCornerRadiusOpt <- ValueSome (kvp.Value :?> int)
+                if kvp.Key = View._IsOpaqueAttribKey.KeyValue then 
+                    prevIsOpaqueOpt <- ValueSome (kvp.Value :?> bool)
+                if kvp.Key = View._IsOpaqueAttribKey.KeyValue then 
+                    prevIsOpaqueOpt <- ValueSome (kvp.Value :?> bool)
+                if kvp.Key = View._IsPressedAttribKey.KeyValue then 
+                    prevIsPressedOpt <- ValueSome (kvp.Value :?> bool)
+                if kvp.Key = View._PaddingAttribKey.KeyValue then 
+                    prevPaddingOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Thickness)
+                if kvp.Key = View._ClickedAttribKey.KeyValue then 
+                    prevClickedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
+                if kvp.Key = View._PressedAttribKey.KeyValue then 
+                    prevPressedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
+                if kvp.Key = View._ReleasedAttribKey.KeyValue then 
+                    prevReleasedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
+        match prevImageSourceOpt, currImageSourceOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Source <- makeImageSource  currValue
+        | ValueSome _, ValueNone -> target.Source <- null
+        | ValueNone, ValueNone -> ()
+        match prevAspectOpt, currAspectOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Aspect <-  currValue
+        | ValueSome _, ValueNone -> target.Aspect <- Xamarin.Forms.Aspect.AspectFit
+        | ValueNone, ValueNone -> ()
+        match prevBorderColorOpt, currBorderColorOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.BorderColor <-  currValue
+        | ValueSome _, ValueNone -> target.BorderColor <- Xamarin.Forms.Color.Default
+        | ValueNone, ValueNone -> ()
+        match prevBorderWidthOpt, currBorderWidthOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.BorderWidth <-  currValue
+        | ValueSome _, ValueNone -> target.BorderWidth <- 0
+        | ValueNone, ValueNone -> ()
+        match prevCornerRadiusOpt, currCornerRadiusOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.CornerRadius <-  currValue
+        | ValueSome _, ValueNone -> target.CornerRadius <- 0
+        | ValueNone, ValueNone -> ()
+        match prevIsOpaqueOpt, currIsOpaqueOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.IsOpaque <-  currValue
+        | ValueSome _, ValueNone -> target.IsOpaque <- true
+        | ValueNone, ValueNone -> ()
+        match prevIsOpaqueOpt, currIsOpaqueOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.IsOpaque <-  currValue
+        | ValueSome _, ValueNone -> target.IsOpaque <- true
+        | ValueNone, ValueNone -> ()
+        match prevIsPressedOpt, currIsPressedOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.IsPressed <-  currValue
+        | ValueSome _, ValueNone -> target.IsPressed <- true
+        | ValueNone, ValueNone -> ()
+        match prevPaddingOpt, currPaddingOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Padding <-  currValue
+        | ValueSome _, ValueNone -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
+        | ValueNone, ValueNone -> ()
+        match prevClickedOpt, currClickedOpt with
+        | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
+        | ValueSome prevValue, ValueSome currValue -> target.Clicked.RemoveHandler(prevValue); target.Clicked.AddHandler(currValue)
+        | ValueNone, ValueSome currValue -> target.Clicked.AddHandler(currValue)
+        | ValueSome prevValue, ValueNone -> target.Clicked.RemoveHandler(prevValue)
+        | ValueNone, ValueNone -> ()
+        match prevPressedOpt, currPressedOpt with
+        | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
+        | ValueSome prevValue, ValueSome currValue -> target.Pressed.RemoveHandler(prevValue); target.Pressed.AddHandler(currValue)
+        | ValueNone, ValueSome currValue -> target.Pressed.AddHandler(currValue)
+        | ValueSome prevValue, ValueNone -> target.Pressed.RemoveHandler(prevValue)
+        | ValueNone, ValueNone -> ()
+        match prevReleasedOpt, currReleasedOpt with
+        | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
+        | ValueSome prevValue, ValueSome currValue -> target.Released.RemoveHandler(prevValue); target.Released.AddHandler(currValue)
+        | ValueNone, ValueSome currValue -> target.Released.AddHandler(currValue)
+        | ValueSome prevValue, ValueNone -> target.Released.RemoveHandler(prevValue)
+        | ValueNone, ValueNone -> ()
+
+    /// Describes a ImageButton in the view
+    static member inline ImageButton(?source: obj,
+                                     ?aspect: Xamarin.Forms.Aspect,
+                                     ?borderColor: Xamarin.Forms.Color,
+                                     ?borderWidth: double,
+                                     ?cornerRadius: int,
+                                     ?isOpaque: bool,
+                                     ?isOpaque: bool,
+                                     ?isPressed: bool,
+                                     ?padding: Xamarin.Forms.Thickness,
+                                     ?clicked: System.EventArgs -> unit,
+                                     ?pressed: System.EventArgs -> unit,
+                                     ?released: System.EventArgs -> unit,
+                                     ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                     ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                     ?margin: obj,
+                                     ?gestureRecognizers: ViewElement list,
+                                     ?anchorX: double,
+                                     ?anchorY: double,
+                                     ?backgroundColor: Xamarin.Forms.Color,
+                                     ?heightRequest: double,
+                                     ?inputTransparent: bool,
+                                     ?isEnabled: bool,
+                                     ?isVisible: bool,
+                                     ?minimumHeightRequest: double,
+                                     ?minimumWidthRequest: double,
+                                     ?opacity: double,
+                                     ?rotation: double,
+                                     ?rotationX: double,
+                                     ?rotationY: double,
+                                     ?scale: double,
+                                     ?style: Xamarin.Forms.Style,
+                                     ?styleClass: obj,
+                                     ?translationX: double,
+                                     ?translationY: double,
+                                     ?widthRequest: double,
+                                     ?resources: (string * obj) list,
+                                     ?styles: Xamarin.Forms.Style list,
+                                     ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                     ?classId: string,
+                                     ?styleId: string,
+                                     ?automationId: string,
+                                     ?created: (Xamarin.Forms.ImageButton -> unit),
+                                     ?ref: ViewRef<Xamarin.Forms.ImageButton>) = 
+
+        let attribBuilder = View.BuildImageButton(0,
+                               ?source=source,
+                               ?aspect=aspect,
+                               ?borderColor=borderColor,
+                               ?borderWidth=borderWidth,
+                               ?cornerRadius=cornerRadius,
+                               ?isOpaque=isOpaque,
+                               ?isOpaque=isOpaque,
+                               ?isPressed=isPressed,
+                               ?padding=padding,
+                               ?clicked=clicked,
+                               ?pressed=pressed,
+                               ?released=released,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ImageButton> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ImageButton>) -> Some ref.Unbox))
+
+        ViewElement.Create<Xamarin.Forms.ImageButton>(View.CreateFuncImageButton, View.UpdateFuncImageButton, attribBuilder)
+
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member val ProtoImageButton : ViewElement option = None with get, set
+
     /// Builds the attributes for a InputView in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member inline BuildInputView(attribCount: int,
@@ -6149,6 +6537,8 @@ type View() =
                                      ?completed: string -> unit,
                                      ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit,
                                      ?autoSize: Xamarin.Forms.EditorAutoSizeOption,
+                                     ?placeholder: string,
+                                     ?placeholderColor: Xamarin.Forms.Color,
                                      ?keyboard: Xamarin.Forms.Keyboard,
                                      ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                      ?verticalOptions: Xamarin.Forms.LayoutOptions,
@@ -6190,6 +6580,8 @@ type View() =
         let attribCount = match completed with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match textChanged with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match autoSize with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match placeholder with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match placeholderColor with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = View.BuildInputView(attribCount, ?keyboard=keyboard, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match text with None -> () | Some v -> attribBuilder.Add(View._TextAttribKey, (v)) 
@@ -6200,6 +6592,8 @@ type View() =
         match completed with None -> () | Some v -> attribBuilder.Add(View._EditorCompletedAttribKey, (fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.Editor).Text))(v)) 
         match textChanged with None -> () | Some v -> attribBuilder.Add(View._TextChangedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))(v)) 
         match autoSize with None -> () | Some v -> attribBuilder.Add(View._AutoSizeAttribKey, (v)) 
+        match placeholder with None -> () | Some v -> attribBuilder.Add(View._PlaceholderAttribKey, (v)) 
+        match placeholderColor with None -> () | Some v -> attribBuilder.Add(View._PlaceholderColorAttribKey, (v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -6233,6 +6627,10 @@ type View() =
         let mutable currTextChangedOpt = ValueNone
         let mutable prevAutoSizeOpt = ValueNone
         let mutable currAutoSizeOpt = ValueNone
+        let mutable prevPlaceholderOpt = ValueNone
+        let mutable currPlaceholderOpt = ValueNone
+        let mutable prevPlaceholderColorOpt = ValueNone
+        let mutable currPlaceholderColorOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = View._TextAttribKey.KeyValue then 
                 currTextOpt <- ValueSome (kvp.Value :?> string)
@@ -6250,6 +6648,10 @@ type View() =
                 currTextChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>)
             if kvp.Key = View._AutoSizeAttribKey.KeyValue then 
                 currAutoSizeOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.EditorAutoSizeOption)
+            if kvp.Key = View._PlaceholderAttribKey.KeyValue then 
+                currPlaceholderOpt <- ValueSome (kvp.Value :?> string)
+            if kvp.Key = View._PlaceholderColorAttribKey.KeyValue then 
+                currPlaceholderColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
@@ -6270,6 +6672,10 @@ type View() =
                     prevTextChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>)
                 if kvp.Key = View._AutoSizeAttribKey.KeyValue then 
                     prevAutoSizeOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.EditorAutoSizeOption)
+                if kvp.Key = View._PlaceholderAttribKey.KeyValue then 
+                    prevPlaceholderOpt <- ValueSome (kvp.Value :?> string)
+                if kvp.Key = View._PlaceholderColorAttribKey.KeyValue then 
+                    prevPlaceholderColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
         match prevTextOpt, currTextOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.Text <-  currValue
@@ -6312,6 +6718,16 @@ type View() =
         | _, ValueSome currValue -> target.AutoSize <-  currValue
         | ValueSome _, ValueNone -> target.AutoSize <- Xamarin.Forms.EditorAutoSizeOption.Disabled
         | ValueNone, ValueNone -> ()
+        match prevPlaceholderOpt, currPlaceholderOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Placeholder <-  currValue
+        | ValueSome _, ValueNone -> target.Placeholder <- null
+        | ValueNone, ValueNone -> ()
+        match prevPlaceholderColorOpt, currPlaceholderColorOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.PlaceholderColor <-  currValue
+        | ValueSome _, ValueNone -> target.PlaceholderColor <- Xamarin.Forms.Color.Default
+        | ValueNone, ValueNone -> ()
 
     /// Describes a Editor in the view
     static member inline Editor(?text: string,
@@ -6322,6 +6738,8 @@ type View() =
                                 ?completed: string -> unit,
                                 ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit,
                                 ?autoSize: Xamarin.Forms.EditorAutoSizeOption,
+                                ?placeholder: string,
+                                ?placeholderColor: Xamarin.Forms.Color,
                                 ?keyboard: Xamarin.Forms.Keyboard,
                                 ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                 ?verticalOptions: Xamarin.Forms.LayoutOptions,
@@ -6364,6 +6782,8 @@ type View() =
                                ?completed=completed,
                                ?textChanged=textChanged,
                                ?autoSize=autoSize,
+                               ?placeholder=placeholder,
+                               ?placeholderColor=placeholderColor,
                                ?keyboard=keyboard,
                                ?horizontalOptions=horizontalOptions,
                                ?verticalOptions=verticalOptions,
@@ -6419,6 +6839,8 @@ type View() =
                                     ?isTextPredictionEnabled: bool,
                                     ?returnType: Xamarin.Forms.ReturnType,
                                     ?returnCommand: unit -> unit,
+                                    ?cursorPosition: int,
+                                    ?selectionLength: int,
                                     ?keyboard: Xamarin.Forms.Keyboard,
                                     ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                     ?verticalOptions: Xamarin.Forms.LayoutOptions,
@@ -6466,6 +6888,8 @@ type View() =
         let attribCount = match isTextPredictionEnabled with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match returnType with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match returnCommand with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match cursorPosition with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match selectionLength with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = View.BuildInputView(attribCount, ?keyboard=keyboard, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match text with None -> () | Some v -> attribBuilder.Add(View._TextAttribKey, (v)) 
@@ -6482,6 +6906,8 @@ type View() =
         match isTextPredictionEnabled with None -> () | Some v -> attribBuilder.Add(View._IsTextPredictionEnabledAttribKey, (v)) 
         match returnType with None -> () | Some v -> attribBuilder.Add(View._ReturnTypeAttribKey, (v)) 
         match returnCommand with None -> () | Some v -> attribBuilder.Add(View._ReturnCommandAttribKey, makeCommand(v)) 
+        match cursorPosition with None -> () | Some v -> attribBuilder.Add(View._CursorPositionAttribKey, (v)) 
+        match selectionLength with None -> () | Some v -> attribBuilder.Add(View._SelectionLengthAttribKey, (v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -6527,6 +6953,10 @@ type View() =
         let mutable currReturnTypeOpt = ValueNone
         let mutable prevReturnCommandOpt = ValueNone
         let mutable currReturnCommandOpt = ValueNone
+        let mutable prevCursorPositionOpt = ValueNone
+        let mutable currCursorPositionOpt = ValueNone
+        let mutable prevSelectionLengthOpt = ValueNone
+        let mutable currSelectionLengthOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = View._TextAttribKey.KeyValue then 
                 currTextOpt <- ValueSome (kvp.Value :?> string)
@@ -6556,6 +6986,10 @@ type View() =
                 currReturnTypeOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.ReturnType)
             if kvp.Key = View._ReturnCommandAttribKey.KeyValue then 
                 currReturnCommandOpt <- ValueSome (kvp.Value :?> System.Windows.Input.ICommand)
+            if kvp.Key = View._CursorPositionAttribKey.KeyValue then 
+                currCursorPositionOpt <- ValueSome (kvp.Value :?> int)
+            if kvp.Key = View._SelectionLengthAttribKey.KeyValue then 
+                currSelectionLengthOpt <- ValueSome (kvp.Value :?> int)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
@@ -6588,6 +7022,10 @@ type View() =
                     prevReturnTypeOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.ReturnType)
                 if kvp.Key = View._ReturnCommandAttribKey.KeyValue then 
                     prevReturnCommandOpt <- ValueSome (kvp.Value :?> System.Windows.Input.ICommand)
+                if kvp.Key = View._CursorPositionAttribKey.KeyValue then 
+                    prevCursorPositionOpt <- ValueSome (kvp.Value :?> int)
+                if kvp.Key = View._SelectionLengthAttribKey.KeyValue then 
+                    prevSelectionLengthOpt <- ValueSome (kvp.Value :?> int)
         match prevTextOpt, currTextOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.Text <-  currValue
@@ -6660,6 +7098,16 @@ type View() =
         | _, ValueSome currValue -> target.ReturnCommand <-  currValue
         | ValueSome _, ValueNone -> target.ReturnCommand <- null
         | ValueNone, ValueNone -> ()
+        match prevCursorPositionOpt, currCursorPositionOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.CursorPosition <-  currValue
+        | ValueSome _, ValueNone -> target.CursorPosition <- 0
+        | ValueNone, ValueNone -> ()
+        match prevSelectionLengthOpt, currSelectionLengthOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.SelectionLength <-  currValue
+        | ValueSome _, ValueNone -> target.SelectionLength <- 0
+        | ValueNone, ValueNone -> ()
 
     /// Describes a Entry in the view
     static member inline Entry(?text: string,
@@ -6676,6 +7124,8 @@ type View() =
                                ?isTextPredictionEnabled: bool,
                                ?returnType: Xamarin.Forms.ReturnType,
                                ?returnCommand: unit -> unit,
+                               ?cursorPosition: int,
+                               ?selectionLength: int,
                                ?keyboard: Xamarin.Forms.Keyboard,
                                ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                ?verticalOptions: Xamarin.Forms.LayoutOptions,
@@ -6724,6 +7174,8 @@ type View() =
                                ?isTextPredictionEnabled=isTextPredictionEnabled,
                                ?returnType=returnType,
                                ?returnCommand=returnCommand,
+                               ?cursorPosition=cursorPosition,
+                               ?selectionLength=selectionLength,
                                ?keyboard=keyboard,
                                ?horizontalOptions=horizontalOptions,
                                ?verticalOptions=verticalOptions,
@@ -10936,6 +11388,9 @@ module ViewElementExtensions =
         /// Adjusts the IsRunning property in the visual element
         member x.IsRunning(value: bool) = x.WithAttribute(View._IsRunningAttribKey, (value))
 
+        /// Adjusts the CornerRadius property in the visual element
+        member x.CornerRadius(value: Xamarin.Forms.CornerRadius) = x.WithAttribute(View._CornerRadiusAttribKey, (value))
+
         /// Adjusts the Progress property in the visual element
         member x.Progress(value: double) = x.WithAttribute(View._ProgressAttribKey, (value))
 
@@ -11016,6 +11471,9 @@ module ViewElementExtensions =
 
         /// Adjusts the ButtonImageSource property in the visual element
         member x.ButtonImageSource(value: string) = x.WithAttribute(View._ButtonImageSourceAttribKey, (value))
+
+        /// Adjusts the IsPressed property in the visual element
+        member x.IsPressed(value: bool) = x.WithAttribute(View._IsPressedAttribKey, (value))
 
         /// Adjusts the MinimumMaximum property in the visual element
         member x.MinimumMaximum(value: float * float) = x.WithAttribute(View._MinimumMaximumAttribKey, (value))
@@ -11188,6 +11646,15 @@ module ViewElementExtensions =
         /// Adjusts the IsOpaque property in the visual element
         member x.IsOpaque(value: bool) = x.WithAttribute(View._IsOpaqueAttribKey, (value))
 
+        /// Adjusts the Clicked property in the visual element
+        member x.Clicked(value: System.EventArgs -> unit) = x.WithAttribute(View._ClickedAttribKey, (fun f -> System.EventHandler(fun _sender args -> f args))(value))
+
+        /// Adjusts the Pressed property in the visual element
+        member x.Pressed(value: System.EventArgs -> unit) = x.WithAttribute(View._PressedAttribKey, (fun f -> System.EventHandler(fun _sender args -> f args))(value))
+
+        /// Adjusts the Released property in the visual element
+        member x.Released(value: System.EventArgs -> unit) = x.WithAttribute(View._ReleasedAttribKey, (fun f -> System.EventHandler(fun _sender args -> f args))(value))
+
         /// Adjusts the Keyboard property in the visual element
         member x.Keyboard(value: Xamarin.Forms.Keyboard) = x.WithAttribute(View._KeyboardAttribKey, (value))
 
@@ -11214,6 +11681,12 @@ module ViewElementExtensions =
 
         /// Adjusts the ReturnCommand property in the visual element
         member x.ReturnCommand(value: unit -> unit) = x.WithAttribute(View._ReturnCommandAttribKey, makeCommand(value))
+
+        /// Adjusts the CursorPosition property in the visual element
+        member x.CursorPosition(value: int) = x.WithAttribute(View._CursorPositionAttribKey, (value))
+
+        /// Adjusts the SelectionLength property in the visual element
+        member x.SelectionLength(value: int) = x.WithAttribute(View._SelectionLengthAttribKey, (value))
 
         /// Adjusts the Label property in the visual element
         member x.Label(value: string) = x.WithAttribute(View._LabelAttribKey, (value))
@@ -11564,6 +12037,9 @@ module ViewElementExtensions =
     /// Adjusts the IsRunning property in the visual element
     let isRunning (value: bool) (x: ViewElement) = x.IsRunning(value)
 
+    /// Adjusts the CornerRadius property in the visual element
+    let cornerRadius (value: Xamarin.Forms.CornerRadius) (x: ViewElement) = x.CornerRadius(value)
+
     /// Adjusts the Progress property in the visual element
     let progress (value: double) (x: ViewElement) = x.Progress(value)
 
@@ -11644,6 +12120,9 @@ module ViewElementExtensions =
 
     /// Adjusts the ButtonImageSource property in the visual element
     let buttonImageSource (value: string) (x: ViewElement) = x.ButtonImageSource(value)
+
+    /// Adjusts the IsPressed property in the visual element
+    let isPressed (value: bool) (x: ViewElement) = x.IsPressed(value)
 
     /// Adjusts the MinimumMaximum property in the visual element
     let minimumMaximum (value: float * float) (x: ViewElement) = x.MinimumMaximum(value)
@@ -11816,6 +12295,15 @@ module ViewElementExtensions =
     /// Adjusts the IsOpaque property in the visual element
     let isOpaque (value: bool) (x: ViewElement) = x.IsOpaque(value)
 
+    /// Adjusts the Clicked property in the visual element
+    let clicked (value: System.EventArgs -> unit) (x: ViewElement) = x.Clicked(value)
+
+    /// Adjusts the Pressed property in the visual element
+    let pressed (value: System.EventArgs -> unit) (x: ViewElement) = x.Pressed(value)
+
+    /// Adjusts the Released property in the visual element
+    let released (value: System.EventArgs -> unit) (x: ViewElement) = x.Released(value)
+
     /// Adjusts the Keyboard property in the visual element
     let keyboard (value: Xamarin.Forms.Keyboard) (x: ViewElement) = x.Keyboard(value)
 
@@ -11842,6 +12330,12 @@ module ViewElementExtensions =
 
     /// Adjusts the ReturnCommand property in the visual element
     let returnCommand (value: unit -> unit) (x: ViewElement) = x.ReturnCommand(value)
+
+    /// Adjusts the CursorPosition property in the visual element
+    let cursorPosition (value: int) (x: ViewElement) = x.CursorPosition(value)
+
+    /// Adjusts the SelectionLength property in the visual element
+    let selectionLength (value: int) (x: ViewElement) = x.SelectionLength(value)
 
     /// Adjusts the Label property in the visual element
     let label (value: string) (x: ViewElement) = x.Label(value)
