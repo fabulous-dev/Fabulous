@@ -24,6 +24,10 @@
       "path": "NewApp.Android\\NewApp.Android.fsproj"
     },
     {
+      "condition": "GTK",
+      "path": "NewApp.GTK\\NewApp.GTK.fsproj"
+    },
+    {
       "condition": "WPF",
       "path": "NewApp.WPF\\NewApp.WPF.fsproj"
     },
@@ -178,6 +182,11 @@
       "dataType": "bool",
       "defaultValue": "false"
     },
+    "GTK": {
+      "type": "parameter",
+      "dataType": "bool",
+      "defaultValue": "false"
+    },
     "WPF": {
       "type": "parameter",
       "dataType": "bool",
@@ -217,6 +226,12 @@
           ]
         },
         {
+          "condition": "(!GTK)",
+          "exclude": [
+            "NewApp.GTK/**/*"
+          ]
+        },
+        {
           "condition": "(!WPF)",
           "exclude": [
             "NewApp.WPF/**/*"
@@ -244,6 +259,12 @@
           "condition": "(!Android)",
           "exclude": [
             "NewApp.Android/**/*"
+          ]
+        },
+        {
+          "condition": "(!GTK)",
+          "exclude": [
+            "NewApp.GTK/**/*"
           ]
         },
         {
