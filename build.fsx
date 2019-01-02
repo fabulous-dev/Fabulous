@@ -98,6 +98,19 @@ Target.create "Clean" (fun _ ->
     Shell.cleanDir buildDir
 )
 
+Target.create "Restore" (fun _ ->
+    Paket.restore id
+    DotNet.restore id "Fabulous.sln"
+)
+
+Target.create "FormatBindings" (fun _ ->
+    for binding in !! "tools/Generator/*.json" do
+        File.ReadAllText binding
+        |> JToken.Parse
+        |> (fun token -> token.ToString(Formatting.Indented))
+        |> (fun json -> File.WriteAllText(binding, json))
+)
+
 Target.create "UpdateVersion" (fun _ ->
     // Updates Directory.Build.props
     let props = "./Directory.Build.props"
@@ -119,11 +132,6 @@ Target.create "UpdateVersion" (fun _ ->
         )
         |> (fun o -> JsonConvert.SerializeObject(o, Formatting.Indented))
         |> File.writeString false template
-)
-
-Target.create "Restore" (fun _ ->
-    Paket.restore id
-    DotNet.restore id "Fabulous.sln"
 )
 
 Target.create "BuildControls" (fun _ ->
@@ -200,6 +208,7 @@ open Fake.Core.TargetOperators
 
 "Clean"
   ==> "Restore"
+  ==> "FormatBindings"
   ==> "UpdateVersion"
   ==> "BuildTools"
   ==> "BuildControls"
