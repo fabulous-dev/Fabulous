@@ -1,0 +1,55 @@
+phases:
+- phase: Windows
+  displayName: Windows Agent
+
+  condition: succeeded()
+  queue:
+    name: Hosted VS2017
+  steps:
+  - script: |
+      echo Install fake-cli
+      dotnet tool install --tool-path . fake-cli 
+    displayName: 'Install Fake'
+
+  - script: |  
+      echo run build script
+      mkdir -p build_output
+      fake.exe run build.fsx --parallel 3
+    displayName: 'Build Fabulous'
+
+
+- phase: macOS
+  displayName: macOS Agent
+
+  condition: succeeded()
+  queue:
+    name: Hosted macOS
+  steps:
+  - script: |
+        echo install fake
+        export DOTNET_ROOT=$HOME/.dotnet/
+        export PATH=$PATH:$HOME/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands
+        dotnet tool install fake-cli -g
+
+        echo run build script
+        mkdir -p build_output
+        echo $PATH
+        ./build.sh Test
+    displayName: 'Build Fabulous'
+
+- phase: Linux
+  displayName: Linux Agent
+
+  condition: succeeded()
+  queue:
+    name: Hosted Ubuntu 1604
+  steps:
+  - script: |
+        echo install fake
+        export DOTNET_ROOT=$HOME/.dotnet/
+        export PATH=$PATH:$HOME/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands
+        dotnet tool install fake-cli -g
+        echo run build script
+        mkdir -p build_output
+        ./build.sh Test
+    displayName: 'Build Fabulous'
