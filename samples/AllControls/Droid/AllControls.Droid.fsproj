@@ -17,8 +17,8 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <SelectedDevice>oreo81</SelectedDevice>
-    <DefaultDevice>oreo81</DefaultDevice>
+    <SelectedDevice>Google Pixel 2</SelectedDevice>
+    <DefaultDevice>Android_Accelerated_x86_Nougat</DefaultDevice>
     <Name>AllControls.Droid</Name>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
