@@ -3,7 +3,7 @@
     "packages/neutral/Xamarin.Forms/lib/netstandard1.0/Xamarin.Forms.Core.dll",
     "build_output/controls/Fabulous.CustomControls/Fabulous.CustomControls.dll"
   ],
-	"outputNamespace": "Fabulous.DynamicViews",
+  "outputNamespace": "Fabulous.DynamicViews",
   "types": [
     {
       "name": "Xamarin.Forms.Element",
@@ -187,8 +187,7 @@
     },
     {
       "name": "Xamarin.Forms.IGestureRecognizer",
-      "members": [
-      ]
+      "members": []
     },
     {
       "name": "Xamarin.Forms.PanGestureRecognizer",
@@ -365,7 +364,7 @@
           "uniqueName": "SearchBarCommand",
           "inputType": "string -> unit",
           "modelType": "string -> unit",
-          "updateCode": "(fun _ _ _ -> ())" // set below in CanExecute
+          "updateCode": "(fun _ _ _ -> ())"
         },
         {
           "name": "CanExecute",
@@ -403,7 +402,7 @@
           "uniqueName": "ButtonCommand",
           "inputType": "unit -> unit",
           "modelType": "unit -> unit",
-          "updateCode": "(fun _ _ _ -> ())" // set below in CanExecute
+          "updateCode": "(fun _ _ _ -> ())"
         },
         {
           "name": "CanExecute",
@@ -543,7 +542,6 @@
           "name": "IsEnabled",
           "defaultValue": "true"
         }
-        //ContextActions	- A list of MenuItem objects to display when the user performs the context action.
       ]
     },
     {
@@ -832,7 +830,6 @@
           ]
         }
       ]
-
     },
     {
       "name": "Xamarin.Forms.TemplatedView",
@@ -889,10 +886,6 @@
           "name": "SelectedIndex",
           "defaultValue": "0"
         },
-        //{
-        //    "name": "SelectedItem",
-        //    "defaultValue": "null"
-        //},
         {
           "name": "Title",
           "defaultValue": "null"
@@ -1666,7 +1659,7 @@
           "uniqueName": "TextCellCommand",
           "inputType": "unit -> unit",
           "modelType": "unit -> unit",
-          "updateCode": "(fun _ _ _ -> ())" // set below in CanExecute
+          "updateCode": "(fun _ _ _ -> ())"
         },
         {
           "name": "CanExecute",
@@ -1727,27 +1720,10 @@
           "modelType": "seq<ViewElement>",
           "updateCode": "updateListViewItems"
         },
-        //{
-        //	"name": "ListViewCachingStrategy",
-        //		"inputType": "Xamarin.Forms.ListViewCachingStrategy",
-        //		"isParam": true
-        //	},
-        //{
-        //	"name": "ItemTemplate",
-        //	"defaultValue": "null"
-        //},
         {
           "name": "Footer",
           "defaultValue": "null"
         },
-        //{
-        //		"name": "FooterTemplate",
-        //		"defaultValue": "null"
-        //		},
-        //	{
-        //			"name": "GroupHeaderTemplate",
-        //			"defaultValue": "null"
-        //		},
         {
           "name": "HasUnevenRows",
           "defaultValue": "false"
@@ -1783,7 +1759,6 @@
           "defaultValue": "-1"
         },
         {
-          // the SelectedItem is stored as an index integer, when we apply it we fetch out the element from the source
           "name": "SelectedItem",
           "uniqueName": "ListView_SelectedItem",
           "defaultValue": "null",
@@ -1863,22 +1838,10 @@
           "defaultValue": "false",
           "updateCode": "updateListViewGroupedShowJumpList"
         },
-        //{
-        //	"name": "ItemTemplate",
-        //	"defaultValue": "null"
-        //},
         {
           "name": "Footer",
           "defaultValue": "null"
         },
-        //{
-        //		"name": "FooterTemplate",
-        //		"defaultValue": "null"
-        //		},
-        //	{
-        //			"name": "GroupHeaderTemplate",
-        //			"defaultValue": "null"
-        //		},
         {
           "name": "HasUnevenRows",
           "defaultValue": "false"
@@ -1887,10 +1850,6 @@
           "name": "Header",
           "defaultValue": "null"
         },
-        //{
-        //	"name": "HeaderTemplate",
-        //	"defaultValue": "null"
-        //},
         {
           "name": "IsPullToRefreshEnabled",
           "defaultValue": "false"
@@ -1910,7 +1869,6 @@
           "defaultValue": "-1"
         },
         {
-          // the SelectedItem is stored as an index integer, when we apply it we fetch out the element from the source
           "name": "SelectedItem",
           "uniqueName": "ListViewGrouped_SelectedItem",
           "defaultValue": "null",
