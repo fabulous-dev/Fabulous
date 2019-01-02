@@ -3,7 +3,7 @@
     "packages/neutral/Xamarin.Forms/lib/netstandard1.0/Xamarin.Forms.Core.dll",
     "build_output/controls/Fabulous.CustomControls/Fabulous.CustomControls.dll"
   ],
-  "outputNamespace": "Fabulous.DynamicViews",
+	"outputNamespace": "Fabulous.DynamicViews",
   "types": [
     {
       "name": "Xamarin.Forms.Element",
@@ -139,6 +139,22 @@
           "inputType": "Xamarin.Forms.StyleSheets.StyleSheet list",
           "modelType": "Xamarin.Forms.StyleSheets.StyleSheet list",
           "updateCode": "updateStyleSheets"
+        },
+        {
+          "name": "IsTabStop",
+          "defaultValue": "false"
+        },
+        {
+          "name": "ScaleX",
+          "defaultValue": "0.0"
+        },
+        {
+          "name": "ScaleY",
+          "defaultValue": "0.0"
+        },
+        {
+          "name": "TabIndex",
+          "defaultValue": "0"
         }
       ]
     },
@@ -171,7 +187,8 @@
     },
     {
       "name": "Xamarin.Forms.IGestureRecognizer",
-      "members": []
+      "members": [
+      ]
     },
     {
       "name": "Xamarin.Forms.PanGestureRecognizer",
@@ -256,6 +273,10 @@
         {
           "name": "Color",
           "defaultValue": "Xamarin.Forms.Color.Default"
+        },
+        {
+          "name": "CornerRadius",
+          "defaultValue": "Unchecked.defaultof<Xamarin.Forms.CornerRadius>"
         }
       ]
     },
@@ -344,7 +365,7 @@
           "uniqueName": "SearchBarCommand",
           "inputType": "string -> unit",
           "modelType": "string -> unit",
-          "updateCode": "(fun _ _ _ -> ())"
+          "updateCode": "(fun _ _ _ -> ())" // set below in CanExecute
         },
         {
           "name": "CanExecute",
@@ -382,7 +403,7 @@
           "uniqueName": "ButtonCommand",
           "inputType": "unit -> unit",
           "modelType": "unit -> unit",
-          "updateCode": "(fun _ _ _ -> ())"
+          "updateCode": "(fun _ _ _ -> ())" // set below in CanExecute
         },
         {
           "name": "CanExecute",
@@ -437,6 +458,10 @@
         {
           "name": "TextColor",
           "defaultValue": "Xamarin.Forms.Color.Default"
+        },
+        {
+          "name": "Padding",
+          "defaultValue": "Unchecked.defaultof<Xamarin.Forms.Thickness>"
         }
       ]
     },
@@ -518,6 +543,7 @@
           "name": "IsEnabled",
           "defaultValue": "true"
         }
+        //ContextActions	- A list of MenuItem objects to display when the user performs the context action.
       ]
     },
     {
@@ -806,6 +832,7 @@
           ]
         }
       ]
+
     },
     {
       "name": "Xamarin.Forms.TemplatedView",
@@ -862,6 +889,10 @@
           "name": "SelectedIndex",
           "defaultValue": "0"
         },
+        //{
+        //    "name": "SelectedItem",
+        //    "defaultValue": "null"
+        //},
         {
           "name": "Title",
           "defaultValue": "null"
@@ -921,6 +952,62 @@
       ]
     },
     {
+      "name": "Xamarin.Forms.ImageButton",
+      "members": [
+        {
+          "name": "Source",
+          "uniqueName": "ImageSource",
+          "inputType": "obj",
+          "modelType": "obj",
+          "convToValue": "makeImageSource",
+          "defaultValue": "null"
+        },
+        {
+          "name": "Aspect",
+          "defaultValue": "Xamarin.Forms.Aspect.AspectFit"
+        },
+        {
+          "name": "BorderColor",
+          "defaultValue": "Xamarin.Forms.Color.Default"
+        },
+        {
+          "name": "BorderWidth",
+          "defaultValue": "0.0"
+        },
+        {
+          "name": "CornerRadius",
+          "uniqueName": "ImageButtonCornerRadius",
+          "defaultValue": "0"
+        },
+        {
+          "name": "IsOpaque",
+          "defaultValue": "true"
+        },
+        {
+          "name": "Padding",
+          "defaultValue": "Unchecked.defaultof<Xamarin.Forms.Thickness>"
+        },
+        {
+          "name": "Clicked",
+          "defaultValue": "null",
+          "inputType": "System.EventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun _sender args -> f args))"
+        },
+        {
+          "name": "Pressed",
+          "defaultValue": "null",
+          "inputType": "System.EventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun _sender args -> f args))"
+        },
+        {
+          "name": "Released",
+          "defaultValue": "null",
+          "inputType": "System.EventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun _sender args -> f args))"
+        }
+      ]
+    },
+    {
       "name": "Xamarin.Forms.InputView",
       "members": [
         {
@@ -970,6 +1057,14 @@
         {
           "name": "AutoSize",
           "defaultValue": "Xamarin.Forms.EditorAutoSizeOption.Disabled"
+        },
+        {
+          "name": "Placeholder",
+          "defaultValue": "null"
+        },
+        {
+          "name": "PlaceholderColor",
+          "defaultValue": "Xamarin.Forms.Color.Default"
         }
       ]
     },
@@ -1040,6 +1135,14 @@
           "defaultValue": "null",
           "inputType": "unit -> unit",
           "convToModel": "makeCommand"
+        },
+        {
+          "name": "CursorPosition",
+          "defaultValue": "0"
+        },
+        {
+          "name": "SelectionLength",
+          "defaultValue": "0"
         }
       ]
     },
@@ -1123,6 +1226,18 @@
         {
           "name": "LineBreakMode",
           "defaultValue": "Xamarin.Forms.LineBreakMode.WordWrap"
+        },
+        {
+          "name": "LineHeight",
+          "defaultValue": "0.0"
+        },
+        {
+          "name": "MaxLines",
+          "defaultValue": "0"
+        },
+        {
+          "name": "TextDecorations",
+          "defaultValue": "Unchecked.defaultof<Xamarin.Forms.TextDecorations>"
         }
       ]
     },
@@ -1181,6 +1296,14 @@
           "defaultValue": "null",
           "inputType": "System.ComponentModel.PropertyChangedEventArgs -> unit",
           "convToModel": "(fun f -> System.EventHandler<System.ComponentModel.PropertyChangedEventArgs>(fun _sender args -> f args))"
+        },
+        {
+          "name": "LineHeight",
+          "defaultValue": "0.0"
+        },
+        {
+          "name": "TextDecorations",
+          "defaultValue": "Unchecked.defaultof<Xamarin.Forms.TextDecorations>"
         }
       ]
     },
@@ -1231,6 +1354,12 @@
           "defaultValue": "null",
           "inputType": "Xamarin.Forms.WebNavigatingEventArgs -> unit",
           "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.WebNavigatingEventArgs>(fun _sender args -> f args))"
+        },
+        {
+          "name": "ReloadRequested",
+          "defaultValue": "null",
+          "inputType": "System.EventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun _sender args -> f args))"
         }
       ]
     },
@@ -1537,7 +1666,7 @@
           "uniqueName": "TextCellCommand",
           "inputType": "unit -> unit",
           "modelType": "unit -> unit",
-          "updateCode": "(fun _ _ _ -> ())"
+          "updateCode": "(fun _ _ _ -> ())" // set below in CanExecute
         },
         {
           "name": "CanExecute",
@@ -1598,10 +1727,27 @@
           "modelType": "seq<ViewElement>",
           "updateCode": "updateListViewItems"
         },
+        //{
+        //	"name": "ListViewCachingStrategy",
+        //		"inputType": "Xamarin.Forms.ListViewCachingStrategy",
+        //		"isParam": true
+        //	},
+        //{
+        //	"name": "ItemTemplate",
+        //	"defaultValue": "null"
+        //},
         {
           "name": "Footer",
           "defaultValue": "null"
         },
+        //{
+        //		"name": "FooterTemplate",
+        //		"defaultValue": "null"
+        //		},
+        //	{
+        //			"name": "GroupHeaderTemplate",
+        //			"defaultValue": "null"
+        //		},
         {
           "name": "HasUnevenRows",
           "defaultValue": "false"
@@ -1637,6 +1783,7 @@
           "defaultValue": "-1"
         },
         {
+          // the SelectedItem is stored as an index integer, when we apply it we fetch out the element from the source
           "name": "SelectedItem",
           "uniqueName": "ListView_SelectedItem",
           "defaultValue": "null",
@@ -1716,10 +1863,22 @@
           "defaultValue": "false",
           "updateCode": "updateListViewGroupedShowJumpList"
         },
+        //{
+        //	"name": "ItemTemplate",
+        //	"defaultValue": "null"
+        //},
         {
           "name": "Footer",
           "defaultValue": "null"
         },
+        //{
+        //		"name": "FooterTemplate",
+        //		"defaultValue": "null"
+        //		},
+        //	{
+        //			"name": "GroupHeaderTemplate",
+        //			"defaultValue": "null"
+        //		},
         {
           "name": "HasUnevenRows",
           "defaultValue": "false"
@@ -1728,6 +1887,10 @@
           "name": "Header",
           "defaultValue": "null"
         },
+        //{
+        //	"name": "HeaderTemplate",
+        //	"defaultValue": "null"
+        //},
         {
           "name": "IsPullToRefreshEnabled",
           "defaultValue": "false"
@@ -1747,6 +1910,7 @@
           "defaultValue": "-1"
         },
         {
+          // the SelectedItem is stored as an index integer, when we apply it we fetch out the element from the source
           "name": "SelectedItem",
           "uniqueName": "ListViewGrouped_SelectedItem",
           "defaultValue": "null",
