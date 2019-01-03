@@ -25,7 +25,7 @@
     },
     {
       "condition": "GTK",
-      "path": "NewApp.GTK\\NewApp.GTK.fsproj"
+      "path": "NewApp.Gtk\\NewApp.Gtk.fsproj"
     },
     {
       "condition": "WPF",
