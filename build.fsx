@@ -35,7 +35,7 @@ type ProjectDefinition =
       Action: BuildAction
       OutputPath: string }
 
-let release = ReleaseNotes.load "RELEASE_NOTES.MD"
+let release = ReleaseNotes.load "RELEASE_NOTES.md"
 let buildDir = Path.getFullName "./build_output"
 
 let removeIncompatiblePlatformProjects pattern = 
