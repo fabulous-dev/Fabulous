@@ -264,7 +264,7 @@
         {
           "condition": "(!GTK)",
           "exclude": [
-            "NewApp.GTK/**/*"
+            "NewApp.Gtk/**/*"
           ]
         },
         {
