@@ -13,7 +13,7 @@ EndProject
 #//#endif
 
 #//#if (GTK)
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NewApp.GTK", "NewApp.GTK\NewApp.GTK.fsproj", "{E9A5BEFA-0E53-40B7-B2F8-DDB8369E644D}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NewApp.Gtk", "NewApp.Gtk\NewApp.Gtk.fsproj", "{E9A5BEFA-0E53-40B7-B2F8-DDB8369E644D}"
 EndProject
 #//#endif
 
