@@ -966,7 +966,7 @@
         },
         {
           "name": "BorderWidth",
-          "defaultValue": "0.0"
+          "defaultValue": "-1.0"
         },
         {
           "name": "CornerRadius",
