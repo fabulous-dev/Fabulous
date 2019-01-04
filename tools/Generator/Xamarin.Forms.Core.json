@@ -142,7 +142,7 @@
         },
         {
           "name": "IsTabStop",
-          "defaultValue": "false"
+          "defaultValue": "true"
         },
         {
           "name": "ScaleX",
