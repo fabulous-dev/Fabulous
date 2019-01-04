@@ -1227,7 +1227,7 @@
         },
         {
           "name": "MaxLines",
-          "defaultValue": "0"
+          "defaultValue": "-1"
         },
         {
           "name": "TextDecorations",
