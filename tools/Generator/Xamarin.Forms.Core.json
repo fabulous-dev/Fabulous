@@ -1297,7 +1297,7 @@
         },
         {
           "name": "TextDecorations",
-          "defaultValue": "Unchecked.defaultof<Xamarin.Forms.TextDecorations>"
+          "defaultValue": "Xamarin.Forms.TextDecorations.None"
         }
       ]
     },
