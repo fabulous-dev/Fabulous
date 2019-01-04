@@ -1223,7 +1223,7 @@
         },
         {
           "name": "LineHeight",
-          "defaultValue": "0.0"
+          "defaultValue": "-1.0"
         },
         {
           "name": "MaxLines",
