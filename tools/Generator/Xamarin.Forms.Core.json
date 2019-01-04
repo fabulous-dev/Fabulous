@@ -971,7 +971,7 @@
         {
           "name": "CornerRadius",
           "uniqueName": "ImageButtonCornerRadius",
-          "defaultValue": "0"
+          "defaultValue": "-1"
         },
         {
           "name": "IsOpaque",
