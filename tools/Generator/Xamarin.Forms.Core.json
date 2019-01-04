@@ -275,6 +275,7 @@
         },
         {
           "name": "CornerRadius",
+          "uniqueName": "BoxViewCornerRadius",
           "defaultValue": "Unchecked.defaultof<Xamarin.Forms.CornerRadius>"
         }
       ]
