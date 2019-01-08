@@ -422,7 +422,6 @@ module App =
                                          View.BoxView(color).GridRow(i-1).GridColumn(j-1) ] )
                          MainPageButton
                        ]))
-
            ])
 
         | Tabbed1 ->
