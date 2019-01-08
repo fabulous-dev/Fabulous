@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Exe</OutputType>
@@ -8,6 +8,8 @@
         <Compile Include="Helpers.fs" />
         <Compile Include="Models.fs" />
         <Compile Include="Resolvers.fs" />
+        <Compile Include="CodeGenerator.Models.fs" />
+        <Compile Include="CodeGenerator.Preparation.fs" />
         <Compile Include="CodeGenerator.fs" />
         <None Include="Xamarin.Forms.Core.json" />
         <Compile Include="AssemblyResolver.fs" />
