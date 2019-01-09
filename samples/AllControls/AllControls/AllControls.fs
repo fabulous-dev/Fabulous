@@ -534,7 +534,8 @@ module App =
                       
                dependsOn () (fun model () -> 
                   View.ScrollingContentPage("ListView", 
-                     [ View.Label(text="ListView:")
+                     [ MainPageButton
+                       View.Label(text="ListView:")
                        View.ListView(
                            items = [ 
                                for i in 0 .. 10 do 
@@ -545,7 +546,6 @@ module App =
                                    yield View.Label "Rider"], 
                            horizontalOptions=LayoutOptions.CenterAndExpand, 
                            itemSelected=(fun idx -> dispatch (ListViewSelectedItemChanged idx)))
-                       MainPageButton
                 ]))
 
                       
@@ -776,15 +776,14 @@ module App =
          | InfiniteScrollList -> 
               dependsOn (model.InfiniteScrollMaxRequested ) (fun model max -> 
                View.ScrollingContentPage("ListView (InfiniteScrollList)", 
-                [View.Label(text="InfiniteScrollList:")
+                [MainPageButton
+                 View.Label(text="InfiniteScrollList:")
                  View.ListView(items = [ for i in 1 .. max do 
                                            yield dependsOn i (fun _ i -> View.Label("Item " + string i, textColor=(if i % 3 = 0 then Color.CadetBlue else Color.LightCyan))) ], 
                                horizontalOptions=LayoutOptions.CenterAndExpand, 
                                // Every time the last element is needed, grow the set of data to be at least 10 bigger then that index 
                                itemAppearing=(fun idx -> if idx >= max - 2 then dispatch (SetInfiniteScrollMaxIndex (idx + 10) ) )  )
-                 MainPageButton
-                
-                ] ))
+                 ] ))
 
          | Animations -> 
                View.ScrollingContentPage("Animations", 
