@@ -265,7 +265,7 @@ module App =
 
     let view (model: Model) dispatch =
 
-        let MainPageButton =
+        let MainPageButton = 
             View.Button(text="Main page", 
                         command=(fun () -> dispatch (SetRootPageKind (Choice false))), 
                         horizontalOptions=LayoutOptions.CenterAndExpand)
