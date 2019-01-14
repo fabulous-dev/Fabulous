@@ -1,4 +1,5 @@
-namespace Fabulous.DynamicViews 
+// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
+namespace Fabulous.DynamicViews
 
 #nowarn "59" // cast always holds
 #nowarn "66" // cast always holds
@@ -485,6 +486,7 @@ type View() =
         let attribCount = match automationId with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match created with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match ref with Some _ -> attribCount + 1 | None -> attribCount
+
         let attribBuilder = new AttributesBuilder(attribCount)
         match classId with None -> () | Some v -> attribBuilder.Add(View._ClassIdAttribKey, (v)) 
         match styleId with None -> () | Some v -> attribBuilder.Add(View._StyleIdAttribKey, (v)) 
@@ -1228,7 +1230,6 @@ type View() =
     /// Builds the attributes for a IGestureRecognizer in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member inline BuildIGestureRecognizer(attribCount: int) = 
-
         let attribBuilder = new AttributesBuilder(attribCount)
         attribBuilder
 
@@ -1282,7 +1283,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreatePanGestureRecognizer () : Xamarin.Forms.PanGestureRecognizer = 
-            upcast (new Xamarin.Forms.PanGestureRecognizer())
+        upcast (new Xamarin.Forms.PanGestureRecognizer())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncPanGestureRecognizer = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.PanGestureRecognizer) -> View.UpdatePanGestureRecognizer (prevOpt, curr, target)) 
@@ -1368,7 +1369,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateTapGestureRecognizer () : Xamarin.Forms.TapGestureRecognizer = 
-            upcast (new Xamarin.Forms.TapGestureRecognizer())
+        upcast (new Xamarin.Forms.TapGestureRecognizer())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncTapGestureRecognizer = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.TapGestureRecognizer) -> View.UpdateTapGestureRecognizer (prevOpt, curr, target)) 
@@ -1456,7 +1457,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateClickGestureRecognizer () : Xamarin.Forms.ClickGestureRecognizer = 
-            upcast (new Xamarin.Forms.ClickGestureRecognizer())
+        upcast (new Xamarin.Forms.ClickGestureRecognizer())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncClickGestureRecognizer = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.ClickGestureRecognizer) -> View.UpdateClickGestureRecognizer (prevOpt, curr, target)) 
@@ -1554,7 +1555,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreatePinchGestureRecognizer () : Xamarin.Forms.PinchGestureRecognizer = 
-            upcast (new Xamarin.Forms.PinchGestureRecognizer())
+        upcast (new Xamarin.Forms.PinchGestureRecognizer())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncPinchGestureRecognizer = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.PinchGestureRecognizer) -> View.UpdatePinchGestureRecognizer (prevOpt, curr, target)) 
@@ -1646,7 +1647,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateSwipeGestureRecognizer () : Xamarin.Forms.SwipeGestureRecognizer = 
-            upcast (new Xamarin.Forms.SwipeGestureRecognizer())
+        upcast (new Xamarin.Forms.SwipeGestureRecognizer())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncSwipeGestureRecognizer = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.SwipeGestureRecognizer) -> View.UpdateSwipeGestureRecognizer (prevOpt, curr, target)) 
@@ -1788,7 +1789,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateActivityIndicator () : Xamarin.Forms.ActivityIndicator = 
-            upcast (new Xamarin.Forms.ActivityIndicator())
+        upcast (new Xamarin.Forms.ActivityIndicator())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncActivityIndicator = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.ActivityIndicator) -> View.UpdateActivityIndicator (prevOpt, curr, target)) 
@@ -1963,7 +1964,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateBoxView () : Xamarin.Forms.BoxView = 
-            upcast (new Xamarin.Forms.BoxView())
+        upcast (new Xamarin.Forms.BoxView())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncBoxView = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.BoxView) -> View.UpdateBoxView (prevOpt, curr, target)) 
@@ -2135,7 +2136,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateProgressBar () : Xamarin.Forms.ProgressBar = 
-            upcast (new Xamarin.Forms.ProgressBar())
+        upcast (new Xamarin.Forms.ProgressBar())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncProgressBar = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.ProgressBar) -> View.UpdateProgressBar (prevOpt, curr, target)) 
@@ -2480,7 +2481,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateScrollView () : Xamarin.Forms.ScrollView = 
-            upcast (new Xamarin.Forms.ScrollView())
+        upcast (new Xamarin.Forms.ScrollView())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncScrollView = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.ScrollView) -> View.UpdateScrollView (prevOpt, curr, target)) 
@@ -2720,7 +2721,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateSearchBar () : Xamarin.Forms.SearchBar = 
-            upcast (new Xamarin.Forms.SearchBar())
+        upcast (new Xamarin.Forms.SearchBar())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncSearchBar = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.SearchBar) -> View.UpdateSearchBar (prevOpt, curr, target)) 
@@ -3054,7 +3055,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateButton () : Xamarin.Forms.Button = 
-            upcast (new Xamarin.Forms.Button())
+        upcast (new Xamarin.Forms.Button())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncButton = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.Button) -> View.UpdateButton (prevOpt, curr, target)) 
@@ -3202,7 +3203,7 @@ type View() =
         | ValueNone, ValueNone -> ()
         match prevButtonImageSourceOpt, currButtonImageSourceOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.Image <- makeFileImageSource  currValue
+        | _, ValueSome currValue -> target.Image <- makeFileImageSource currValue
         | ValueSome _, ValueNone -> target.Image <- null
         | ValueNone, ValueNone -> ()
         match prevTextColorOpt, currTextColorOpt with
@@ -3380,7 +3381,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateSlider () : Xamarin.Forms.Slider = 
-            upcast (new Xamarin.Forms.Slider())
+        upcast (new Xamarin.Forms.Slider())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncSlider = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.Slider) -> View.UpdateSlider (prevOpt, curr, target)) 
@@ -3571,7 +3572,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateStepper () : Xamarin.Forms.Stepper = 
-            upcast (new Xamarin.Forms.Stepper())
+        upcast (new Xamarin.Forms.Stepper())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncStepper = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.Stepper) -> View.UpdateStepper (prevOpt, curr, target)) 
@@ -3772,7 +3773,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateSwitch () : Xamarin.Forms.Switch = 
-            upcast (new Xamarin.Forms.Switch())
+        upcast (new Xamarin.Forms.Switch())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncSwitch = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.Switch) -> View.UpdateSwitch (prevOpt, curr, target)) 
@@ -4021,7 +4022,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateSwitchCell () : Xamarin.Forms.SwitchCell = 
-            upcast (new Xamarin.Forms.SwitchCell())
+        upcast (new Xamarin.Forms.SwitchCell())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncSwitchCell = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.SwitchCell) -> View.UpdateSwitchCell (prevOpt, curr, target)) 
@@ -4160,7 +4161,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateTableView () : Xamarin.Forms.TableView = 
-            upcast (new Xamarin.Forms.TableView())
+        upcast (new Xamarin.Forms.TableView())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncTableView = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.TableView) -> View.UpdateTableView (prevOpt, curr, target)) 
@@ -4309,6 +4310,7 @@ type View() =
                                             ?height: obj) = 
 
         let attribCount = match height with Some _ -> attribCount + 1 | None -> attribCount
+
         let attribBuilder = new AttributesBuilder(attribCount)
         match height with None -> () | Some v -> attribBuilder.Add(View._RowDefinitionHeightAttribKey, makeGridLength(v)) 
         attribBuilder
@@ -4318,7 +4320,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateRowDefinition () : Xamarin.Forms.RowDefinition = 
-            upcast (new Xamarin.Forms.RowDefinition())
+        upcast (new Xamarin.Forms.RowDefinition())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncRowDefinition = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.RowDefinition) -> View.UpdateRowDefinition (prevOpt, curr, target)) 
@@ -4359,6 +4361,7 @@ type View() =
                                                ?width: obj) = 
 
         let attribCount = match width with Some _ -> attribCount + 1 | None -> attribCount
+
         let attribBuilder = new AttributesBuilder(attribCount)
         match width with None -> () | Some v -> attribBuilder.Add(View._ColumnDefinitionWidthAttribKey, makeGridLength(v)) 
         attribBuilder
@@ -4368,7 +4371,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateColumnDefinition () : Xamarin.Forms.ColumnDefinition = 
-            upcast (new Xamarin.Forms.ColumnDefinition())
+        upcast (new Xamarin.Forms.ColumnDefinition())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncColumnDefinition = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.ColumnDefinition) -> View.UpdateColumnDefinition (prevOpt, curr, target)) 
@@ -4468,7 +4471,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateGrid () : Xamarin.Forms.Grid = 
-            upcast (new Xamarin.Forms.Grid())
+        upcast (new Xamarin.Forms.Grid())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncGrid = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.Grid) -> View.UpdateGrid (prevOpt, curr, target)) 
@@ -4718,7 +4721,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateAbsoluteLayout () : Xamarin.Forms.AbsoluteLayout = 
-            upcast (new Xamarin.Forms.AbsoluteLayout())
+        upcast (new Xamarin.Forms.AbsoluteLayout())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncAbsoluteLayout = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.AbsoluteLayout) -> View.UpdateAbsoluteLayout (prevOpt, curr, target)) 
@@ -4900,7 +4903,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateRelativeLayout () : Xamarin.Forms.RelativeLayout = 
-            upcast (new Xamarin.Forms.RelativeLayout())
+        upcast (new Xamarin.Forms.RelativeLayout())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncRelativeLayout = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.RelativeLayout) -> View.UpdateRelativeLayout (prevOpt, curr, target)) 
@@ -5124,7 +5127,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateFlexLayout () : Xamarin.Forms.FlexLayout = 
-            upcast (new Xamarin.Forms.FlexLayout())
+        upcast (new Xamarin.Forms.FlexLayout())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncFlexLayout = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.FlexLayout) -> View.UpdateFlexLayout (prevOpt, curr, target)) 
@@ -5395,8 +5398,6 @@ type View() =
                                             ?automationId: string,
                                             ?created: obj -> unit,
                                             ?ref: ViewRef) = 
-
-
         let attribBuilder = View.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         attribBuilder
 
@@ -5405,7 +5406,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateTemplatedView () : Xamarin.Forms.TemplatedView = 
-            upcast (new Xamarin.Forms.TemplatedView())
+        upcast (new Xamarin.Forms.TemplatedView())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncTemplatedView = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.TemplatedView) -> View.UpdateTemplatedView (prevOpt, curr, target)) 
@@ -5555,7 +5556,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateContentView () : Xamarin.Forms.ContentView = 
-            upcast (new Xamarin.Forms.ContentView())
+        upcast (new Xamarin.Forms.ContentView())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncContentView = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.ContentView) -> View.UpdateContentView (prevOpt, curr, target)) 
@@ -5735,7 +5736,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateDatePicker () : Xamarin.Forms.DatePicker = 
-            upcast (new Xamarin.Forms.DatePicker())
+        upcast (new Xamarin.Forms.DatePicker())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncDatePicker = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.DatePicker) -> View.UpdateDatePicker (prevOpt, curr, target)) 
@@ -5959,7 +5960,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreatePicker () : Xamarin.Forms.Picker = 
-            upcast (new Xamarin.Forms.Picker())
+        upcast (new Xamarin.Forms.Picker())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncPicker = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.Picker) -> View.UpdatePicker (prevOpt, curr, target)) 
@@ -6180,7 +6181,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateFrame () : Xamarin.Forms.Frame = 
-            upcast (new Xamarin.Forms.Frame())
+        upcast (new Xamarin.Forms.Frame())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncFrame = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.Frame) -> View.UpdateFrame (prevOpt, curr, target)) 
@@ -6377,7 +6378,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateImage () : Xamarin.Forms.Image = 
-            upcast (new Xamarin.Forms.Image())
+        upcast (new Xamarin.Forms.Image())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncImage = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.Image) -> View.UpdateImage (prevOpt, curr, target)) 
@@ -6412,7 +6413,7 @@ type View() =
                     prevIsOpaqueOpt <- ValueSome (kvp.Value :?> bool)
         match prevImageSourceOpt, currImageSourceOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.Source <- makeImageSource  currValue
+        | _, ValueSome currValue -> target.Source <- makeImageSource currValue
         | ValueSome _, ValueNone -> target.Source <- null
         | ValueNone, ValueNone -> ()
         match prevAspectOpt, currAspectOpt with
@@ -6592,7 +6593,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateImageButton () : Xamarin.Forms.ImageButton = 
-            upcast (new Xamarin.Forms.ImageButton())
+        upcast (new Xamarin.Forms.ImageButton())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncImageButton = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.ImageButton) -> View.UpdateImageButton (prevOpt, curr, target)) 
@@ -6676,7 +6677,7 @@ type View() =
         (fun _ _ _ -> ()) prevImageButtonCommandOpt currImageButtonCommandOpt target
         match prevImageSourceOpt, currImageSourceOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.Source <- makeImageSource  currValue
+        | _, ValueSome currValue -> target.Source <- makeImageSource currValue
         | ValueSome _, ValueNone -> target.Source <- null
         | ValueNone, ValueNone -> ()
         match prevAspectOpt, currAspectOpt with
@@ -7067,7 +7068,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateEditor () : Xamarin.Forms.Editor = 
-            upcast (new Xamarin.Forms.Editor())
+        upcast (new Xamarin.Forms.Editor())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncEditor = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.Editor) -> View.UpdateEditor (prevOpt, curr, target)) 
@@ -7393,7 +7394,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateEntry () : Xamarin.Forms.Entry = 
-            upcast (new Xamarin.Forms.Entry())
+        upcast (new Xamarin.Forms.Entry())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncEntry = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.Entry) -> View.UpdateEntry (prevOpt, curr, target)) 
@@ -7733,7 +7734,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateEntryCell () : Fabulous.CustomControls.CustomEntryCell = 
-            upcast (new Fabulous.CustomControls.CustomEntryCell())
+        upcast (new Fabulous.CustomControls.CustomEntryCell())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncEntryCell = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Fabulous.CustomControls.CustomEntryCell) -> View.UpdateEntryCell (prevOpt, curr, target)) 
@@ -7949,7 +7950,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateLabel () : Xamarin.Forms.Label = 
-            upcast (new Xamarin.Forms.Label())
+        upcast (new Xamarin.Forms.Label())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncLabel = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.Label) -> View.UpdateLabel (prevOpt, curr, target)) 
@@ -8264,7 +8265,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateStackLayout () : Xamarin.Forms.StackLayout = 
-            upcast (new Xamarin.Forms.StackLayout())
+        upcast (new Xamarin.Forms.StackLayout())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncStackLayout = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.StackLayout) -> View.UpdateStackLayout (prevOpt, curr, target)) 
@@ -8447,7 +8448,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateSpan () : Xamarin.Forms.Span = 
-            upcast (new Xamarin.Forms.Span())
+        upcast (new Xamarin.Forms.Span())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncSpan = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.Span) -> View.UpdateSpan (prevOpt, curr, target)) 
@@ -8621,7 +8622,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateFormattedString () : Xamarin.Forms.FormattedString = 
-            upcast (new Xamarin.Forms.FormattedString())
+        upcast (new Xamarin.Forms.FormattedString())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncFormattedString = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.FormattedString) -> View.UpdateFormattedString (prevOpt, curr, target)) 
@@ -8726,7 +8727,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateTimePicker () : Xamarin.Forms.TimePicker = 
-            upcast (new Xamarin.Forms.TimePicker())
+        upcast (new Xamarin.Forms.TimePicker())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncTimePicker = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.TimePicker) -> View.UpdateTimePicker (prevOpt, curr, target)) 
@@ -8923,7 +8924,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateWebView () : Xamarin.Forms.WebView = 
-            upcast (new Xamarin.Forms.WebView())
+        upcast (new Xamarin.Forms.WebView())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncWebView = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.WebView) -> View.UpdateWebView (prevOpt, curr, target)) 
@@ -9156,7 +9157,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreatePage () : Xamarin.Forms.Page = 
-            upcast (new Xamarin.Forms.Page())
+        upcast (new Xamarin.Forms.Page())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncPage = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.Page) -> View.UpdatePage (prevOpt, curr, target)) 
@@ -9243,7 +9244,7 @@ type View() =
         | ValueNone, ValueNone -> ()
         match prevIconOpt, currIconOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.Icon <- makeFileImageSource  currValue
+        | _, ValueSome currValue -> target.Icon <- makeFileImageSource currValue
         | ValueSome _, ValueNone -> target.Icon <- null
         | ValueNone, ValueNone -> ()
         match prevIsBusyOpt, currIsBusyOpt with
@@ -9435,7 +9436,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateCarouselPage () : Xamarin.Forms.CarouselPage = 
-            upcast (new Xamarin.Forms.CarouselPage())
+        upcast (new Xamarin.Forms.CarouselPage())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncCarouselPage = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.CarouselPage) -> View.UpdateCarouselPage (prevOpt, curr, target)) 
@@ -9653,7 +9654,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateNavigationPage () : Xamarin.Forms.NavigationPage = 
-            upcast (new Xamarin.Forms.NavigationPage())
+        upcast (new Xamarin.Forms.NavigationPage())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncNavigationPage = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.NavigationPage) -> View.UpdateNavigationPage (prevOpt, curr, target)) 
@@ -9949,7 +9950,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateTabbedPage () : Xamarin.Forms.TabbedPage = 
-            upcast (new Xamarin.Forms.TabbedPage())
+        upcast (new Xamarin.Forms.TabbedPage())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncTabbedPage = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.TabbedPage) -> View.UpdateTabbedPage (prevOpt, curr, target)) 
@@ -10178,7 +10179,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateContentPage () : Xamarin.Forms.ContentPage = 
-            upcast (new Fabulous.DynamicViews.CustomContentPage())
+        upcast (new Fabulous.DynamicViews.CustomContentPage())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncContentPage = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.ContentPage) -> View.UpdateContentPage (prevOpt, curr, target)) 
@@ -10384,7 +10385,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateMasterDetailPage () : Xamarin.Forms.MasterDetailPage = 
-            upcast (new Xamarin.Forms.MasterDetailPage())
+        upcast (new Xamarin.Forms.MasterDetailPage())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncMasterDetailPage = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.MasterDetailPage) -> View.UpdateMasterDetailPage (prevOpt, curr, target)) 
@@ -10610,7 +10611,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateMenuItem () : Xamarin.Forms.MenuItem = 
-            upcast (new Xamarin.Forms.MenuItem())
+        upcast (new Xamarin.Forms.MenuItem())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncMenuItem = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.MenuItem) -> View.UpdateMenuItem (prevOpt, curr, target)) 
@@ -10666,7 +10667,7 @@ type View() =
         | ValueNone, ValueNone -> ()
         match prevIconOpt, currIconOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.Icon <- makeFileImageSource  currValue
+        | _, ValueSome currValue -> target.Icon <- makeFileImageSource currValue
         | ValueSome _, ValueNone -> target.Icon <- null
         | ValueNone, ValueNone -> ()
 
@@ -10738,7 +10739,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateTextCell () : Xamarin.Forms.TextCell = 
-            upcast (new Xamarin.Forms.TextCell())
+        upcast (new Xamarin.Forms.TextCell())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncTextCell = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.TextCell) -> View.UpdateTextCell (prevOpt, curr, target)) 
@@ -10888,7 +10889,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateToolbarItem () : Xamarin.Forms.ToolbarItem = 
-            upcast (new Xamarin.Forms.ToolbarItem())
+        upcast (new Xamarin.Forms.ToolbarItem())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncToolbarItem = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.ToolbarItem) -> View.UpdateToolbarItem (prevOpt, curr, target)) 
@@ -10987,7 +10988,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateImageCell () : Xamarin.Forms.ImageCell = 
-            upcast (new Xamarin.Forms.ImageCell())
+        upcast (new Xamarin.Forms.ImageCell())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncImageCell = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.ImageCell) -> View.UpdateImageCell (prevOpt, curr, target)) 
@@ -11010,7 +11011,7 @@ type View() =
                     prevImageSourceOpt <- ValueSome (kvp.Value :?> obj)
         match prevImageSourceOpt, currImageSourceOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.ImageSource <- makeImageSource  currValue
+        | _, ValueSome currValue -> target.ImageSource <- makeImageSource currValue
         | ValueSome _, ValueNone -> target.ImageSource <- null
         | ValueNone, ValueNone -> ()
 
@@ -11076,7 +11077,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateViewCell () : Xamarin.Forms.ViewCell = 
-            upcast (new Xamarin.Forms.ViewCell())
+        upcast (new Xamarin.Forms.ViewCell())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncViewCell = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.ViewCell) -> View.UpdateViewCell (prevOpt, curr, target)) 
@@ -11238,7 +11239,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateListView () : Xamarin.Forms.ListView = 
-            upcast (new Fabulous.DynamicViews.CustomListView())
+        upcast (new Fabulous.DynamicViews.CustomListView())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncListView = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.ListView) -> View.UpdateListView (prevOpt, curr, target)) 
@@ -11415,7 +11416,7 @@ type View() =
         | ValueNone, ValueNone -> ()
         match prevListView_SelectedItemOpt, currListView_SelectedItemOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.SelectedItem <- (function None -> null | Some i -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListElementData<ViewElement>> in if i >= 0 && i < items.Count then items.[i] else null)  currValue
+        | _, ValueSome currValue -> target.SelectedItem <- (function None -> null | Some i -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListElementData<ViewElement>> in if i >= 0 && i < items.Count then items.[i] else null) currValue
         | ValueSome _, ValueNone -> target.SelectedItem <- null
         | ValueNone, ValueNone -> ()
         match prevListView_SeparatorVisibilityOpt, currListView_SeparatorVisibilityOpt with
@@ -11683,7 +11684,7 @@ type View() =
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member CreateListViewGrouped () : Xamarin.Forms.ListView = 
-            upcast (new Fabulous.DynamicViews.CustomGroupListView())
+        upcast (new Fabulous.DynamicViews.CustomGroupListView())
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val UpdateFuncListViewGrouped = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.ListView) -> View.UpdateListViewGrouped (prevOpt, curr, target)) 
@@ -11845,7 +11846,7 @@ type View() =
         | ValueNone, ValueNone -> ()
         match prevListViewGrouped_SelectedItemOpt, currListViewGrouped_SelectedItemOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.SelectedItem <- (function None -> null | Some (i,j) -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListGroupData<ViewElement>> in (if i >= 0 && i < items.Count then (let items2 = items.[i] in if j >= 0 && j < items2.Count then items2.[j] else null) else null))  currValue
+        | _, ValueSome currValue -> target.SelectedItem <- (function None -> null | Some (i,j) -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListGroupData<ViewElement>> in (if i >= 0 && i < items.Count then (let items2 = items.[i] in if j >= 0 && j < items2.Count then items2.[j] else null) else null)) currValue
         | ValueSome _, ValueNone -> target.SelectedItem <- null
         | ValueNone, ValueNone -> ()
         match prevSeparatorVisibilityOpt, currSeparatorVisibilityOpt with

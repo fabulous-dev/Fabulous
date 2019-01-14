@@ -56,7 +56,9 @@ For example, here is one pattern for a timer loop that can be turned on/off:
 
 ```fsharp
 type Model = 
-    { TimerOn: bool }
+    { TimerOn: bool
+      Count: int
+      Step: int }
         
 type Message = 
     | TimedTick
@@ -67,7 +69,7 @@ let timerCmd =
             return TimedTick }
     |> Cmd.ofAsyncMsg
 
-let init () = { TimerOn = false }, Cmd.none
+let init () = { TimerOn = false; Count = 0; Step = 1 }, Cmd.none
     
 let update msg model =
     match msg with

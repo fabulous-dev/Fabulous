@@ -82,7 +82,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Numerics" />
-    <Reference Include="netstandard" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.Mac" />
     <Reference Include="Xamarin.Forms.Core">
@@ -99,6 +98,12 @@
     </Reference>
     <Reference Include="FSharp.Core">
       <HintPath>..\packages\FSharp.Core.FSharpCorePkgVersion\lib\netstandard1.6\FSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Fabulous.CustomControls">
+      <HintPath>..\packages\Fabulous.CustomControls.FabulousPkgsVersion\lib\netstandard2.0\Fabulous.CustomControls.dll</HintPath>
+    </Reference>
+    <Reference Include="Fabulous.Core">
+      <HintPath>..\packages\Fabulous.Core.FabulousPkgsVersion\lib\netstandard2.0\Fabulous.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.FSharp.targets" Condition="Exists('$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.FSharp.targets')"/>
