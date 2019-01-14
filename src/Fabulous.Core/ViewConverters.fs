@@ -595,6 +595,17 @@ module Converters =
         | ValueSome prev, ValueNone -> updateFunc prev defaultValue
         | ValueNone, ValueSome curr -> updateFunc defaultValue curr
 
+    let updateNavigationPageTitleView (prevOpt: ViewElement voption) (currOpt: ViewElement voption) (target: Xamarin.Forms.NavigationPage) =
+        match prevOpt, currOpt with
+        | ValueSome prev, ValueSome curr when identical prev curr -> ()
+        | ValueSome prev, ValueSome curr when canReuseChild prev curr ->
+            updateChild prev curr (NavigationPage.GetTitleView(target))
+        | _, ValueSome curr ->
+            NavigationPage.SetTitleView(target, (curr.Create() :?> Xamarin.Forms.View))
+        | ValueSome _, ValueNone ->
+            NavigationPage.SetTitleView(target, null)
+        | _, _ -> ()
+
     let equalLayoutOptions (x:Xamarin.Forms.LayoutOptions) (y:Xamarin.Forms.LayoutOptions)  =
         x.Alignment = y.Alignment && x.Expands = y.Expands
 

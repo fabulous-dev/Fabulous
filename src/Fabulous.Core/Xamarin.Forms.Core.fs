@@ -93,11 +93,17 @@ type View() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _PinchUpdatedAttribKey : AttributeKey<_> = AttributeKey<_>("PinchUpdated")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member val _SwipeGestureRecognizerDirectionAttribKey : AttributeKey<_> = AttributeKey<_>("SwipeGestureRecognizerDirection")
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member val _ThresholdAttribKey : AttributeKey<_> = AttributeKey<_>("Threshold")
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member val _SwipedAttribKey : AttributeKey<_> = AttributeKey<_>("Swiped")
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _ColorAttribKey : AttributeKey<_> = AttributeKey<_>("Color")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _IsRunningAttribKey : AttributeKey<_> = AttributeKey<_>("IsRunning")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _CornerRadiusAttribKey : AttributeKey<_> = AttributeKey<_>("CornerRadius")
+    static member val _BoxViewCornerRadiusAttribKey : AttributeKey<_> = AttributeKey<_>("BoxViewCornerRadius")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _ProgressAttribKey : AttributeKey<_> = AttributeKey<_>("Progress")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -221,7 +227,7 @@ type View() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _AlignItemsAttribKey : AttributeKey<_> = AttributeKey<_>("AlignItems")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _DirectionAttribKey : AttributeKey<_> = AttributeKey<_>("Direction")
+    static member val _FlexLayoutDirectionAttribKey : AttributeKey<_> = AttributeKey<_>("FlexLayoutDirection")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _PositionAttribKey : AttributeKey<_> = AttributeKey<_>("Position")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -266,6 +272,8 @@ type View() =
     static member val _AspectAttribKey : AttributeKey<_> = AttributeKey<_>("Aspect")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _IsOpaqueAttribKey : AttributeKey<_> = AttributeKey<_>("IsOpaque")
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member val _ImageButtonCommandAttribKey : AttributeKey<_> = AttributeKey<_>("ImageButtonCommand")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _ImageButtonCornerRadiusAttribKey : AttributeKey<_> = AttributeKey<_>("ImageButtonCornerRadius")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -327,6 +335,8 @@ type View() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _WebSourceAttribKey : AttributeKey<_> = AttributeKey<_>("WebSource")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member val _ReloadAttribKey : AttributeKey<_> = AttributeKey<_>("Reload")
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _NavigatedAttribKey : AttributeKey<_> = AttributeKey<_>("Navigated")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _NavigatingAttribKey : AttributeKey<_> = AttributeKey<_>("Navigating")
@@ -366,6 +376,8 @@ type View() =
     static member val _BarBackgroundColorAttribKey : AttributeKey<_> = AttributeKey<_>("BarBackgroundColor")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _BarTextColorAttribKey : AttributeKey<_> = AttributeKey<_>("BarTextColor")
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member val _TitleViewAttribKey : AttributeKey<_> = AttributeKey<_>("TitleView")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _PoppedAttribKey : AttributeKey<_> = AttributeKey<_>("Popped")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -929,7 +941,7 @@ type View() =
         match prevIsTabStopOpt, currIsTabStopOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.IsTabStop <-  currValue
-        | ValueSome _, ValueNone -> target.IsTabStop <- false
+        | ValueSome _, ValueNone -> target.IsTabStop <- true
         | ValueNone, ValueNone -> ()
         match prevScaleXOpt, currScaleXOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
@@ -1604,6 +1616,124 @@ type View() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val ProtoPinchGestureRecognizer : ViewElement option = None with get, set
 
+    /// Builds the attributes for a SwipeGestureRecognizer in the view
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member inline BuildSwipeGestureRecognizer(attribCount: int,
+                                                     ?command: unit -> unit,
+                                                     ?direction: Xamarin.Forms.SwipeDirection,
+                                                     ?threshold: System.UInt32,
+                                                     ?swiped: Xamarin.Forms.SwipedEventArgs -> unit,
+                                                     ?classId: string,
+                                                     ?styleId: string,
+                                                     ?automationId: string,
+                                                     ?created: obj -> unit,
+                                                     ?ref: ViewRef) = 
+
+        let attribCount = match command with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match direction with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match threshold with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match swiped with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = View.BuildElement(attribCount, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        match command with None -> () | Some v -> attribBuilder.Add(View._CommandAttribKey, makeCommand(v)) 
+        match direction with None -> () | Some v -> attribBuilder.Add(View._SwipeGestureRecognizerDirectionAttribKey, (v)) 
+        match threshold with None -> () | Some v -> attribBuilder.Add(View._ThresholdAttribKey, (v)) 
+        match swiped with None -> () | Some v -> attribBuilder.Add(View._SwipedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.SwipedEventArgs>(fun _sender args -> f args))(v)) 
+        attribBuilder
+
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member val CreateFuncSwipeGestureRecognizer : (unit -> Xamarin.Forms.SwipeGestureRecognizer) = (fun () -> View.CreateSwipeGestureRecognizer())
+
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member CreateSwipeGestureRecognizer () : Xamarin.Forms.SwipeGestureRecognizer = 
+            upcast (new Xamarin.Forms.SwipeGestureRecognizer())
+
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member val UpdateFuncSwipeGestureRecognizer = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.SwipeGestureRecognizer) -> View.UpdateSwipeGestureRecognizer (prevOpt, curr, target)) 
+
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member UpdateSwipeGestureRecognizer (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.SwipeGestureRecognizer) = 
+        // update the inherited Element element
+        let baseElement = (if View.ProtoElement.IsNone then View.ProtoElement <- Some (View.Element())); View.ProtoElement.Value
+        baseElement.UpdateInherited (prevOpt, curr, target)
+        let mutable prevCommandOpt = ValueNone
+        let mutable currCommandOpt = ValueNone
+        let mutable prevSwipeGestureRecognizerDirectionOpt = ValueNone
+        let mutable currSwipeGestureRecognizerDirectionOpt = ValueNone
+        let mutable prevThresholdOpt = ValueNone
+        let mutable currThresholdOpt = ValueNone
+        let mutable prevSwipedOpt = ValueNone
+        let mutable currSwipedOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = View._CommandAttribKey.KeyValue then 
+                currCommandOpt <- ValueSome (kvp.Value :?> System.Windows.Input.ICommand)
+            if kvp.Key = View._SwipeGestureRecognizerDirectionAttribKey.KeyValue then 
+                currSwipeGestureRecognizerDirectionOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.SwipeDirection)
+            if kvp.Key = View._ThresholdAttribKey.KeyValue then 
+                currThresholdOpt <- ValueSome (kvp.Value :?> System.UInt32)
+            if kvp.Key = View._SwipedAttribKey.KeyValue then 
+                currSwipedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.SwipedEventArgs>)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = View._CommandAttribKey.KeyValue then 
+                    prevCommandOpt <- ValueSome (kvp.Value :?> System.Windows.Input.ICommand)
+                if kvp.Key = View._SwipeGestureRecognizerDirectionAttribKey.KeyValue then 
+                    prevSwipeGestureRecognizerDirectionOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.SwipeDirection)
+                if kvp.Key = View._ThresholdAttribKey.KeyValue then 
+                    prevThresholdOpt <- ValueSome (kvp.Value :?> System.UInt32)
+                if kvp.Key = View._SwipedAttribKey.KeyValue then 
+                    prevSwipedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.SwipedEventArgs>)
+        match prevCommandOpt, currCommandOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Command <-  currValue
+        | ValueSome _, ValueNone -> target.Command <- null
+        | ValueNone, ValueNone -> ()
+        match prevSwipeGestureRecognizerDirectionOpt, currSwipeGestureRecognizerDirectionOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Direction <-  currValue
+        | ValueSome _, ValueNone -> target.Direction <- enum<Xamarin.Forms.SwipeDirection>(0)
+        | ValueNone, ValueNone -> ()
+        match prevThresholdOpt, currThresholdOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Threshold <-  currValue
+        | ValueSome _, ValueNone -> target.Threshold <- 100u
+        | ValueNone, ValueNone -> ()
+        match prevSwipedOpt, currSwipedOpt with
+        | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
+        | ValueSome prevValue, ValueSome currValue -> target.Swiped.RemoveHandler(prevValue); target.Swiped.AddHandler(currValue)
+        | ValueNone, ValueSome currValue -> target.Swiped.AddHandler(currValue)
+        | ValueSome prevValue, ValueNone -> target.Swiped.RemoveHandler(prevValue)
+        | ValueNone, ValueNone -> ()
+
+    /// Describes a SwipeGestureRecognizer in the view
+    static member inline SwipeGestureRecognizer(?command: unit -> unit,
+                                                ?direction: Xamarin.Forms.SwipeDirection,
+                                                ?threshold: System.UInt32,
+                                                ?swiped: Xamarin.Forms.SwipedEventArgs -> unit,
+                                                ?classId: string,
+                                                ?styleId: string,
+                                                ?automationId: string,
+                                                ?created: (Xamarin.Forms.SwipeGestureRecognizer -> unit),
+                                                ?ref: ViewRef<Xamarin.Forms.SwipeGestureRecognizer>) = 
+
+        let attribBuilder = View.BuildSwipeGestureRecognizer(0,
+                               ?command=command,
+                               ?direction=direction,
+                               ?threshold=threshold,
+                               ?swiped=swiped,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.SwipeGestureRecognizer> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.SwipeGestureRecognizer>) -> Some ref.Unbox))
+
+        ViewElement.Create<Xamarin.Forms.SwipeGestureRecognizer>(View.CreateFuncSwipeGestureRecognizer, View.UpdateFuncSwipeGestureRecognizer, attribBuilder)
+
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member val ProtoSwipeGestureRecognizer : ViewElement option = None with get, set
+
     /// Builds the attributes for a ActivityIndicator in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member inline BuildActivityIndicator(attribCount: int,
@@ -1825,7 +1955,7 @@ type View() =
 
         let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match color with None -> () | Some v -> attribBuilder.Add(View._ColorAttribKey, (v)) 
-        match cornerRadius with None -> () | Some v -> attribBuilder.Add(View._CornerRadiusAttribKey, (v)) 
+        match cornerRadius with None -> () | Some v -> attribBuilder.Add(View._BoxViewCornerRadiusAttribKey, (v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -1845,27 +1975,27 @@ type View() =
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevColorOpt = ValueNone
         let mutable currColorOpt = ValueNone
-        let mutable prevCornerRadiusOpt = ValueNone
-        let mutable currCornerRadiusOpt = ValueNone
+        let mutable prevBoxViewCornerRadiusOpt = ValueNone
+        let mutable currBoxViewCornerRadiusOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = View._ColorAttribKey.KeyValue then 
                 currColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
-            if kvp.Key = View._CornerRadiusAttribKey.KeyValue then 
-                currCornerRadiusOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.CornerRadius)
+            if kvp.Key = View._BoxViewCornerRadiusAttribKey.KeyValue then 
+                currBoxViewCornerRadiusOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.CornerRadius)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
             for kvp in prev.AttributesKeyed do
                 if kvp.Key = View._ColorAttribKey.KeyValue then 
                     prevColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
-                if kvp.Key = View._CornerRadiusAttribKey.KeyValue then 
-                    prevCornerRadiusOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.CornerRadius)
+                if kvp.Key = View._BoxViewCornerRadiusAttribKey.KeyValue then 
+                    prevBoxViewCornerRadiusOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.CornerRadius)
         match prevColorOpt, currColorOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.Color <-  currValue
         | ValueSome _, ValueNone -> target.Color <- Xamarin.Forms.Color.Default
         | ValueNone, ValueNone -> ()
-        match prevCornerRadiusOpt, currCornerRadiusOpt with
+        match prevBoxViewCornerRadiusOpt, currBoxViewCornerRadiusOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.CornerRadius <-  currValue
         | ValueSome _, ValueNone -> target.CornerRadius <- Unchecked.defaultof<Xamarin.Forms.CornerRadius>
@@ -4982,7 +5112,7 @@ type View() =
         let attribBuilder = View.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match alignContent with None -> () | Some v -> attribBuilder.Add(View._AlignContentAttribKey, (v)) 
         match alignItems with None -> () | Some v -> attribBuilder.Add(View._AlignItemsAttribKey, (v)) 
-        match direction with None -> () | Some v -> attribBuilder.Add(View._DirectionAttribKey, (v)) 
+        match direction with None -> () | Some v -> attribBuilder.Add(View._FlexLayoutDirectionAttribKey, (v)) 
         match position with None -> () | Some v -> attribBuilder.Add(View._PositionAttribKey, (v)) 
         match wrap with None -> () | Some v -> attribBuilder.Add(View._WrapAttribKey, (v)) 
         match justifyContent with None -> () | Some v -> attribBuilder.Add(View._JustifyContentAttribKey, (v)) 
@@ -5008,8 +5138,8 @@ type View() =
         let mutable currAlignContentOpt = ValueNone
         let mutable prevAlignItemsOpt = ValueNone
         let mutable currAlignItemsOpt = ValueNone
-        let mutable prevDirectionOpt = ValueNone
-        let mutable currDirectionOpt = ValueNone
+        let mutable prevFlexLayoutDirectionOpt = ValueNone
+        let mutable currFlexLayoutDirectionOpt = ValueNone
         let mutable prevPositionOpt = ValueNone
         let mutable currPositionOpt = ValueNone
         let mutable prevWrapOpt = ValueNone
@@ -5023,8 +5153,8 @@ type View() =
                 currAlignContentOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlexAlignContent)
             if kvp.Key = View._AlignItemsAttribKey.KeyValue then 
                 currAlignItemsOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlexAlignItems)
-            if kvp.Key = View._DirectionAttribKey.KeyValue then 
-                currDirectionOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlexDirection)
+            if kvp.Key = View._FlexLayoutDirectionAttribKey.KeyValue then 
+                currFlexLayoutDirectionOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlexDirection)
             if kvp.Key = View._PositionAttribKey.KeyValue then 
                 currPositionOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlexPosition)
             if kvp.Key = View._WrapAttribKey.KeyValue then 
@@ -5041,8 +5171,8 @@ type View() =
                     prevAlignContentOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlexAlignContent)
                 if kvp.Key = View._AlignItemsAttribKey.KeyValue then 
                     prevAlignItemsOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlexAlignItems)
-                if kvp.Key = View._DirectionAttribKey.KeyValue then 
-                    prevDirectionOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlexDirection)
+                if kvp.Key = View._FlexLayoutDirectionAttribKey.KeyValue then 
+                    prevFlexLayoutDirectionOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlexDirection)
                 if kvp.Key = View._PositionAttribKey.KeyValue then 
                     prevPositionOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlexPosition)
                 if kvp.Key = View._WrapAttribKey.KeyValue then 
@@ -5061,7 +5191,7 @@ type View() =
         | _, ValueSome currValue -> target.AlignItems <-  currValue
         | ValueSome _, ValueNone -> target.AlignItems <- Unchecked.defaultof<Xamarin.Forms.FlexAlignItems>
         | ValueNone, ValueNone -> ()
-        match prevDirectionOpt, currDirectionOpt with
+        match prevFlexLayoutDirectionOpt, currFlexLayoutDirectionOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.Direction <-  currValue
         | ValueSome _, ValueNone -> target.Direction <- Unchecked.defaultof<Xamarin.Forms.FlexDirection>
@@ -6384,6 +6514,7 @@ type View() =
     /// Builds the attributes for a ImageButton in the view
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member inline BuildImageButton(attribCount: int,
+                                          ?command: unit -> unit,
                                           ?source: obj,
                                           ?aspect: Xamarin.Forms.Aspect,
                                           ?borderColor: Xamarin.Forms.Color,
@@ -6430,6 +6561,7 @@ type View() =
                                           ?created: obj -> unit,
                                           ?ref: ViewRef) = 
 
+        let attribCount = match command with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match source with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match aspect with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match borderColor with Some _ -> attribCount + 1 | None -> attribCount
@@ -6442,6 +6574,7 @@ type View() =
         let attribCount = match released with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        match command with None -> () | Some v -> attribBuilder.Add(View._ImageButtonCommandAttribKey, (v)) 
         match source with None -> () | Some v -> attribBuilder.Add(View._ImageSourceAttribKey, (v)) 
         match aspect with None -> () | Some v -> attribBuilder.Add(View._AspectAttribKey, (v)) 
         match borderColor with None -> () | Some v -> attribBuilder.Add(View._BorderColorAttribKey, (v)) 
@@ -6469,6 +6602,8 @@ type View() =
         // update the inherited View element
         let baseElement = (if View.ProtoView.IsNone then View.ProtoView <- Some (View.View())); View.ProtoView.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
+        let mutable prevImageButtonCommandOpt = ValueNone
+        let mutable currImageButtonCommandOpt = ValueNone
         let mutable prevImageSourceOpt = ValueNone
         let mutable currImageSourceOpt = ValueNone
         let mutable prevAspectOpt = ValueNone
@@ -6490,6 +6625,8 @@ type View() =
         let mutable prevReleasedOpt = ValueNone
         let mutable currReleasedOpt = ValueNone
         for kvp in curr.AttributesKeyed do
+            if kvp.Key = View._ImageButtonCommandAttribKey.KeyValue then 
+                currImageButtonCommandOpt <- ValueSome (kvp.Value :?> unit -> unit)
             if kvp.Key = View._ImageSourceAttribKey.KeyValue then 
                 currImageSourceOpt <- ValueSome (kvp.Value :?> obj)
             if kvp.Key = View._AspectAttribKey.KeyValue then 
@@ -6514,6 +6651,8 @@ type View() =
         | ValueNone -> ()
         | ValueSome prev ->
             for kvp in prev.AttributesKeyed do
+                if kvp.Key = View._ImageButtonCommandAttribKey.KeyValue then 
+                    prevImageButtonCommandOpt <- ValueSome (kvp.Value :?> unit -> unit)
                 if kvp.Key = View._ImageSourceAttribKey.KeyValue then 
                     prevImageSourceOpt <- ValueSome (kvp.Value :?> obj)
                 if kvp.Key = View._AspectAttribKey.KeyValue then 
@@ -6534,6 +6673,7 @@ type View() =
                     prevPressedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
                 if kvp.Key = View._ReleasedAttribKey.KeyValue then 
                     prevReleasedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
+        (fun _ _ _ -> ()) prevImageButtonCommandOpt currImageButtonCommandOpt target
         match prevImageSourceOpt, currImageSourceOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.Source <- makeImageSource  currValue
@@ -6552,12 +6692,12 @@ type View() =
         match prevBorderWidthOpt, currBorderWidthOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.BorderWidth <-  currValue
-        | ValueSome _, ValueNone -> target.BorderWidth <- 0.0
+        | ValueSome _, ValueNone -> target.BorderWidth <- -1.0
         | ValueNone, ValueNone -> ()
         match prevImageButtonCornerRadiusOpt, currImageButtonCornerRadiusOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.CornerRadius <-  currValue
-        | ValueSome _, ValueNone -> target.CornerRadius <- 0
+        | ValueSome _, ValueNone -> target.CornerRadius <- -1
         | ValueNone, ValueNone -> ()
         match prevIsOpaqueOpt, currIsOpaqueOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
@@ -6589,7 +6729,8 @@ type View() =
         | ValueNone, ValueNone -> ()
 
     /// Describes a ImageButton in the view
-    static member inline ImageButton(?source: obj,
+    static member inline ImageButton(?command: unit -> unit,
+                                     ?source: obj,
                                      ?aspect: Xamarin.Forms.Aspect,
                                      ?borderColor: Xamarin.Forms.Color,
                                      ?borderWidth: double,
@@ -6636,6 +6777,7 @@ type View() =
                                      ?ref: ViewRef<Xamarin.Forms.ImageButton>) = 
 
         let attribBuilder = View.BuildImageButton(0,
+                               ?command=command,
                                ?source=source,
                                ?aspect=aspect,
                                ?borderColor=borderColor,
@@ -7434,16 +7576,8 @@ type View() =
         | _, ValueSome currValue -> target.ReturnCommand <-  currValue
         | ValueSome _, ValueNone -> target.ReturnCommand <- null
         | ValueNone, ValueNone -> ()
-        match prevCursorPositionOpt, currCursorPositionOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.CursorPosition <-  currValue
-        | ValueSome _, ValueNone -> target.CursorPosition <- 0
-        | ValueNone, ValueNone -> ()
-        match prevSelectionLengthOpt, currSelectionLengthOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.SelectionLength <-  currValue
-        | ValueSome _, ValueNone -> target.SelectionLength <- 0
-        | ValueNone, ValueNone -> ()
+        (fun _ curr (target: Xamarin.Forms.Entry) -> match curr with ValueSome value -> target.CursorPosition <- value | ValueNone -> ()) prevCursorPositionOpt currCursorPositionOpt target
+        (fun _ curr (target: Xamarin.Forms.Entry) -> match curr with ValueSome value -> target.SelectionLength <- value | ValueNone -> ()) prevSelectionLengthOpt currSelectionLengthOpt target
 
     /// Describes a Entry in the view
     static member inline Entry(?text: string,
@@ -7955,17 +8089,17 @@ type View() =
         match prevLineHeightOpt, currLineHeightOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.LineHeight <-  currValue
-        | ValueSome _, ValueNone -> target.LineHeight <- 0.0
+        | ValueSome _, ValueNone -> target.LineHeight <- -1.0
         | ValueNone, ValueNone -> ()
         match prevMaxLinesOpt, currMaxLinesOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.MaxLines <-  currValue
-        | ValueSome _, ValueNone -> target.MaxLines <- 0
+        | ValueSome _, ValueNone -> target.MaxLines <- -1
         | ValueNone, ValueNone -> ()
         match prevTextDecorationsOpt, currTextDecorationsOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.TextDecorations <-  currValue
-        | ValueSome _, ValueNone -> target.TextDecorations <- Unchecked.defaultof<Xamarin.Forms.TextDecorations>
+        | ValueSome _, ValueNone -> target.TextDecorations <- Xamarin.Forms.TextDecorations.None
         | ValueNone, ValueNone -> ()
 
     /// Describes a Label in the view
@@ -8421,12 +8555,12 @@ type View() =
         match prevLineHeightOpt, currLineHeightOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.LineHeight <-  currValue
-        | ValueSome _, ValueNone -> target.LineHeight <- 0.0
+        | ValueSome _, ValueNone -> target.LineHeight <- -1.0
         | ValueNone, ValueNone -> ()
         match prevTextDecorationsOpt, currTextDecorationsOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.TextDecorations <-  currValue
-        | ValueSome _, ValueNone -> target.TextDecorations <- Unchecked.defaultof<Xamarin.Forms.TextDecorations>
+        | ValueSome _, ValueNone -> target.TextDecorations <- Xamarin.Forms.TextDecorations.None
         | ValueNone, ValueNone -> ()
 
     /// Describes a Span in the view
@@ -8730,6 +8864,7 @@ type View() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member inline BuildWebView(attribCount: int,
                                       ?source: Xamarin.Forms.WebViewSource,
+                                      ?reload: bool,
                                       ?navigated: Xamarin.Forms.WebNavigatedEventArgs -> unit,
                                       ?navigating: Xamarin.Forms.WebNavigatingEventArgs -> unit,
                                       ?reloadRequested: System.EventArgs -> unit,
@@ -8770,12 +8905,14 @@ type View() =
                                       ?ref: ViewRef) = 
 
         let attribCount = match source with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match reload with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match navigated with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match navigating with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match reloadRequested with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match source with None -> () | Some v -> attribBuilder.Add(View._WebSourceAttribKey, (v)) 
+        match reload with None -> () | Some v -> attribBuilder.Add(View._ReloadAttribKey, (v)) 
         match navigated with None -> () | Some v -> attribBuilder.Add(View._NavigatedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.WebNavigatedEventArgs>(fun _sender args -> f args))(v)) 
         match navigating with None -> () | Some v -> attribBuilder.Add(View._NavigatingAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.WebNavigatingEventArgs>(fun _sender args -> f args))(v)) 
         match reloadRequested with None -> () | Some v -> attribBuilder.Add(View._ReloadRequestedAttribKey, (fun f -> System.EventHandler(fun _sender args -> f args))(v)) 
@@ -8798,6 +8935,8 @@ type View() =
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevWebSourceOpt = ValueNone
         let mutable currWebSourceOpt = ValueNone
+        let mutable prevReloadOpt = ValueNone
+        let mutable currReloadOpt = ValueNone
         let mutable prevNavigatedOpt = ValueNone
         let mutable currNavigatedOpt = ValueNone
         let mutable prevNavigatingOpt = ValueNone
@@ -8807,6 +8946,8 @@ type View() =
         for kvp in curr.AttributesKeyed do
             if kvp.Key = View._WebSourceAttribKey.KeyValue then 
                 currWebSourceOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.WebViewSource)
+            if kvp.Key = View._ReloadAttribKey.KeyValue then 
+                currReloadOpt <- ValueSome (kvp.Value :?> bool)
             if kvp.Key = View._NavigatedAttribKey.KeyValue then 
                 currNavigatedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.WebNavigatedEventArgs>)
             if kvp.Key = View._NavigatingAttribKey.KeyValue then 
@@ -8819,6 +8960,8 @@ type View() =
             for kvp in prev.AttributesKeyed do
                 if kvp.Key = View._WebSourceAttribKey.KeyValue then 
                     prevWebSourceOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.WebViewSource)
+                if kvp.Key = View._ReloadAttribKey.KeyValue then 
+                    prevReloadOpt <- ValueSome (kvp.Value :?> bool)
                 if kvp.Key = View._NavigatedAttribKey.KeyValue then 
                     prevNavigatedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.WebNavigatedEventArgs>)
                 if kvp.Key = View._NavigatingAttribKey.KeyValue then 
@@ -8830,6 +8973,7 @@ type View() =
         | _, ValueSome currValue -> target.Source <-  currValue
         | ValueSome _, ValueNone -> target.Source <- null
         | ValueNone, ValueNone -> ()
+        (fun _ curr (target: Xamarin.Forms.WebView) -> if curr = ValueSome true then target.Reload()) prevReloadOpt currReloadOpt target
         match prevNavigatedOpt, currNavigatedOpt with
         | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
         | ValueSome prevValue, ValueSome currValue -> target.Navigated.RemoveHandler(prevValue); target.Navigated.AddHandler(currValue)
@@ -8851,6 +8995,7 @@ type View() =
 
     /// Describes a WebView in the view
     static member inline WebView(?source: Xamarin.Forms.WebViewSource,
+                                 ?reload: bool,
                                  ?navigated: Xamarin.Forms.WebNavigatedEventArgs -> unit,
                                  ?navigating: Xamarin.Forms.WebNavigatingEventArgs -> unit,
                                  ?reloadRequested: System.EventArgs -> unit,
@@ -8892,6 +9037,7 @@ type View() =
 
         let attribBuilder = View.BuildWebView(0,
                                ?source=source,
+                               ?reload=reload,
                                ?navigated=navigated,
                                ?navigating=navigating,
                                ?reloadRequested=reloadRequested,
@@ -9438,6 +9584,7 @@ type View() =
                                              ?pages: ViewElement list,
                                              ?barBackgroundColor: Xamarin.Forms.Color,
                                              ?barTextColor: Xamarin.Forms.Color,
+                                             ?titleView: ViewElement,
                                              ?popped: Xamarin.Forms.NavigationEventArgs -> unit,
                                              ?poppedToRoot: Xamarin.Forms.NavigationEventArgs -> unit,
                                              ?pushed: Xamarin.Forms.NavigationEventArgs -> unit,
@@ -9486,6 +9633,7 @@ type View() =
         let attribCount = match pages with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match barBackgroundColor with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match barTextColor with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match titleView with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match popped with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match poppedToRoot with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match pushed with Some _ -> attribCount + 1 | None -> attribCount
@@ -9494,6 +9642,7 @@ type View() =
         match pages with None -> () | Some v -> attribBuilder.Add(View._PagesAttribKey, Array.ofList(v)) 
         match barBackgroundColor with None -> () | Some v -> attribBuilder.Add(View._BarBackgroundColorAttribKey, (v)) 
         match barTextColor with None -> () | Some v -> attribBuilder.Add(View._BarTextColorAttribKey, (v)) 
+        match titleView with None -> () | Some v -> attribBuilder.Add(View._TitleViewAttribKey, (v)) 
         match popped with None -> () | Some v -> attribBuilder.Add(View._PoppedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(v)) 
         match poppedToRoot with None -> () | Some v -> attribBuilder.Add(View._PoppedToRootAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(v)) 
         match pushed with None -> () | Some v -> attribBuilder.Add(View._PushedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(v)) 
@@ -9520,6 +9669,8 @@ type View() =
         let mutable currBarBackgroundColorOpt = ValueNone
         let mutable prevBarTextColorOpt = ValueNone
         let mutable currBarTextColorOpt = ValueNone
+        let mutable prevTitleViewOpt = ValueNone
+        let mutable currTitleViewOpt = ValueNone
         let mutable prevPoppedOpt = ValueNone
         let mutable currPoppedOpt = ValueNone
         let mutable prevPoppedToRootOpt = ValueNone
@@ -9533,6 +9684,8 @@ type View() =
                 currBarBackgroundColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
             if kvp.Key = View._BarTextColorAttribKey.KeyValue then 
                 currBarTextColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
+            if kvp.Key = View._TitleViewAttribKey.KeyValue then 
+                currTitleViewOpt <- ValueSome (kvp.Value :?> ViewElement)
             if kvp.Key = View._PoppedAttribKey.KeyValue then 
                 currPoppedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.NavigationEventArgs>)
             if kvp.Key = View._PoppedToRootAttribKey.KeyValue then 
@@ -9549,6 +9702,8 @@ type View() =
                     prevBarBackgroundColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
                 if kvp.Key = View._BarTextColorAttribKey.KeyValue then 
                     prevBarTextColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
+                if kvp.Key = View._TitleViewAttribKey.KeyValue then 
+                    prevTitleViewOpt <- ValueSome (kvp.Value :?> ViewElement)
                 if kvp.Key = View._PoppedAttribKey.KeyValue then 
                     prevPoppedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.NavigationEventArgs>)
                 if kvp.Key = View._PoppedToRootAttribKey.KeyValue then 
@@ -9600,6 +9755,7 @@ type View() =
         | _, ValueSome currValue -> target.BarTextColor <-  currValue
         | ValueSome _, ValueNone -> target.BarTextColor <- Xamarin.Forms.Color.Default
         | ValueNone, ValueNone -> ()
+        updateNavigationPageTitleView prevTitleViewOpt currTitleViewOpt target
         match prevPoppedOpt, currPoppedOpt with
         | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
         | ValueSome prevValue, ValueSome currValue -> target.Popped.RemoveHandler(prevValue); target.Popped.AddHandler(currValue)
@@ -9623,6 +9779,7 @@ type View() =
     static member inline NavigationPage(?pages: ViewElement list,
                                         ?barBackgroundColor: Xamarin.Forms.Color,
                                         ?barTextColor: Xamarin.Forms.Color,
+                                        ?titleView: ViewElement,
                                         ?popped: Xamarin.Forms.NavigationEventArgs -> unit,
                                         ?poppedToRoot: Xamarin.Forms.NavigationEventArgs -> unit,
                                         ?pushed: Xamarin.Forms.NavigationEventArgs -> unit,
@@ -9672,6 +9829,7 @@ type View() =
                                ?pages=pages,
                                ?barBackgroundColor=barBackgroundColor,
                                ?barTextColor=barTextColor,
+                               ?titleView=titleView,
                                ?popped=popped,
                                ?poppedToRoot=poppedToRoot,
                                ?pushed=pushed,
@@ -11979,14 +12137,23 @@ module ViewElementExtensions =
         /// Adjusts the PinchUpdated property in the visual element
         member x.PinchUpdated(value: Xamarin.Forms.PinchGestureUpdatedEventArgs -> unit) = x.WithAttribute(View._PinchUpdatedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.PinchGestureUpdatedEventArgs>(fun _sender args -> f args))(value))
 
+        /// Adjusts the SwipeGestureRecognizerDirection property in the visual element
+        member x.SwipeGestureRecognizerDirection(value: Xamarin.Forms.SwipeDirection) = x.WithAttribute(View._SwipeGestureRecognizerDirectionAttribKey, (value))
+
+        /// Adjusts the Threshold property in the visual element
+        member x.Threshold(value: System.UInt32) = x.WithAttribute(View._ThresholdAttribKey, (value))
+
+        /// Adjusts the Swiped property in the visual element
+        member x.Swiped(value: Xamarin.Forms.SwipedEventArgs -> unit) = x.WithAttribute(View._SwipedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.SwipedEventArgs>(fun _sender args -> f args))(value))
+
         /// Adjusts the Color property in the visual element
         member x.Color(value: Xamarin.Forms.Color) = x.WithAttribute(View._ColorAttribKey, (value))
 
         /// Adjusts the IsRunning property in the visual element
         member x.IsRunning(value: bool) = x.WithAttribute(View._IsRunningAttribKey, (value))
 
-        /// Adjusts the CornerRadius property in the visual element
-        member x.CornerRadius(value: Xamarin.Forms.CornerRadius) = x.WithAttribute(View._CornerRadiusAttribKey, (value))
+        /// Adjusts the BoxViewCornerRadius property in the visual element
+        member x.BoxViewCornerRadius(value: Xamarin.Forms.CornerRadius) = x.WithAttribute(View._BoxViewCornerRadiusAttribKey, (value))
 
         /// Adjusts the Progress property in the visual element
         member x.Progress(value: double) = x.WithAttribute(View._ProgressAttribKey, (value))
@@ -12171,8 +12338,8 @@ module ViewElementExtensions =
         /// Adjusts the AlignItems property in the visual element
         member x.AlignItems(value: Xamarin.Forms.FlexAlignItems) = x.WithAttribute(View._AlignItemsAttribKey, (value))
 
-        /// Adjusts the Direction property in the visual element
-        member x.Direction(value: Xamarin.Forms.FlexDirection) = x.WithAttribute(View._DirectionAttribKey, (value))
+        /// Adjusts the FlexLayoutDirection property in the visual element
+        member x.FlexLayoutDirection(value: Xamarin.Forms.FlexDirection) = x.WithAttribute(View._FlexLayoutDirectionAttribKey, (value))
 
         /// Adjusts the Position property in the visual element
         member x.Position(value: Xamarin.Forms.FlexPosition) = x.WithAttribute(View._PositionAttribKey, (value))
@@ -12239,6 +12406,9 @@ module ViewElementExtensions =
 
         /// Adjusts the IsOpaque property in the visual element
         member x.IsOpaque(value: bool) = x.WithAttribute(View._IsOpaqueAttribKey, (value))
+
+        /// Adjusts the ImageButtonCommand property in the visual element
+        member x.ImageButtonCommand(value: unit -> unit) = x.WithAttribute(View._ImageButtonCommandAttribKey, (value))
 
         /// Adjusts the ImageButtonCornerRadius property in the visual element
         member x.ImageButtonCornerRadius(value: int) = x.WithAttribute(View._ImageButtonCornerRadiusAttribKey, (value))
@@ -12330,6 +12500,9 @@ module ViewElementExtensions =
         /// Adjusts the WebSource property in the visual element
         member x.WebSource(value: Xamarin.Forms.WebViewSource) = x.WithAttribute(View._WebSourceAttribKey, (value))
 
+        /// Adjusts the Reload property in the visual element
+        member x.Reload(value: bool) = x.WithAttribute(View._ReloadAttribKey, (value))
+
         /// Adjusts the Navigated property in the visual element
         member x.Navigated(value: Xamarin.Forms.WebNavigatedEventArgs -> unit) = x.WithAttribute(View._NavigatedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.WebNavigatedEventArgs>(fun _sender args -> f args))(value))
 
@@ -12389,6 +12562,9 @@ module ViewElementExtensions =
 
         /// Adjusts the BarTextColor property in the visual element
         member x.BarTextColor(value: Xamarin.Forms.Color) = x.WithAttribute(View._BarTextColorAttribKey, (value))
+
+        /// Adjusts the TitleView property in the visual element
+        member x.TitleView(value: ViewElement) = x.WithAttribute(View._TitleViewAttribKey, (value))
 
         /// Adjusts the Popped property in the visual element
         member x.Popped(value: Xamarin.Forms.NavigationEventArgs -> unit) = x.WithAttribute(View._PoppedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(value))
@@ -12652,14 +12828,23 @@ module ViewElementExtensions =
     /// Adjusts the PinchUpdated property in the visual element
     let pinchUpdated (value: Xamarin.Forms.PinchGestureUpdatedEventArgs -> unit) (x: ViewElement) = x.PinchUpdated(value)
 
+    /// Adjusts the SwipeGestureRecognizerDirection property in the visual element
+    let swipeGestureRecognizerDirection (value: Xamarin.Forms.SwipeDirection) (x: ViewElement) = x.SwipeGestureRecognizerDirection(value)
+
+    /// Adjusts the Threshold property in the visual element
+    let threshold (value: System.UInt32) (x: ViewElement) = x.Threshold(value)
+
+    /// Adjusts the Swiped property in the visual element
+    let swiped (value: Xamarin.Forms.SwipedEventArgs -> unit) (x: ViewElement) = x.Swiped(value)
+
     /// Adjusts the Color property in the visual element
     let color (value: Xamarin.Forms.Color) (x: ViewElement) = x.Color(value)
 
     /// Adjusts the IsRunning property in the visual element
     let isRunning (value: bool) (x: ViewElement) = x.IsRunning(value)
 
-    /// Adjusts the CornerRadius property in the visual element
-    let cornerRadius (value: Xamarin.Forms.CornerRadius) (x: ViewElement) = x.CornerRadius(value)
+    /// Adjusts the BoxViewCornerRadius property in the visual element
+    let boxViewCornerRadius (value: Xamarin.Forms.CornerRadius) (x: ViewElement) = x.BoxViewCornerRadius(value)
 
     /// Adjusts the Progress property in the visual element
     let progress (value: double) (x: ViewElement) = x.Progress(value)
@@ -12844,8 +13029,8 @@ module ViewElementExtensions =
     /// Adjusts the AlignItems property in the visual element
     let alignItems (value: Xamarin.Forms.FlexAlignItems) (x: ViewElement) = x.AlignItems(value)
 
-    /// Adjusts the Direction property in the visual element
-    let direction (value: Xamarin.Forms.FlexDirection) (x: ViewElement) = x.Direction(value)
+    /// Adjusts the FlexLayoutDirection property in the visual element
+    let flexLayoutDirection (value: Xamarin.Forms.FlexDirection) (x: ViewElement) = x.FlexLayoutDirection(value)
 
     /// Adjusts the Position property in the visual element
     let position (value: Xamarin.Forms.FlexPosition) (x: ViewElement) = x.Position(value)
@@ -12912,6 +13097,9 @@ module ViewElementExtensions =
 
     /// Adjusts the IsOpaque property in the visual element
     let isOpaque (value: bool) (x: ViewElement) = x.IsOpaque(value)
+
+    /// Adjusts the ImageButtonCommand property in the visual element
+    let imageButtonCommand (value: unit -> unit) (x: ViewElement) = x.ImageButtonCommand(value)
 
     /// Adjusts the ImageButtonCornerRadius property in the visual element
     let imageButtonCornerRadius (value: int) (x: ViewElement) = x.ImageButtonCornerRadius(value)
@@ -13003,6 +13191,9 @@ module ViewElementExtensions =
     /// Adjusts the WebSource property in the visual element
     let webSource (value: Xamarin.Forms.WebViewSource) (x: ViewElement) = x.WebSource(value)
 
+    /// Adjusts the Reload property in the visual element
+    let reload (value: bool) (x: ViewElement) = x.Reload(value)
+
     /// Adjusts the Navigated property in the visual element
     let navigated (value: Xamarin.Forms.WebNavigatedEventArgs -> unit) (x: ViewElement) = x.Navigated(value)
 
@@ -13062,6 +13253,9 @@ module ViewElementExtensions =
 
     /// Adjusts the BarTextColor property in the visual element
     let barTextColor (value: Xamarin.Forms.Color) (x: ViewElement) = x.BarTextColor(value)
+
+    /// Adjusts the TitleView property in the visual element
+    let titleView (value: ViewElement) (x: ViewElement) = x.TitleView(value)
 
     /// Adjusts the Popped property in the visual element
     let popped (value: Xamarin.Forms.NavigationEventArgs -> unit) (x: ViewElement) = x.Popped(value)

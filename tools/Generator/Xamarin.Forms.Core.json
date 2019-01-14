@@ -254,6 +254,32 @@
       ]
     },
     {
+      "name": "Xamarin.Forms.SwipeGestureRecognizer",
+      "members": [
+        {
+          "name": "Command",
+          "defaultValue": "null",
+          "inputType": "unit -> unit",
+          "convToModel": "makeCommand"
+        },
+        {
+          "name": "Direction",
+          "uniqueName": "SwipeGestureRecognizerDirection",
+          "defaultValue": "enum<Xamarin.Forms.SwipeDirection>(0)"
+        },
+        {
+          "name": "Threshold",
+          "defaultValue": "100u"
+        },
+        {
+          "name": "Swiped",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.SwipedEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.SwipedEventArgs>(fun _sender args -> f args))"
+        }
+      ]
+    },
+    {
       "name": "Xamarin.Forms.ActivityIndicator",
       "members": [
         {
@@ -769,6 +795,7 @@
         },
         {
           "name": "Direction",
+          "uniqueName": "FlexLayoutDirection",
           "modelType": "Xamarin.Forms.FlexDirection",
           "defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexDirection>"
         },
@@ -948,6 +975,13 @@
     {
       "name": "Xamarin.Forms.ImageButton",
       "members": [
+        {
+          "name": "Command",
+          "uniqueName": "ImageButtonCommand",
+          "inputType": "unit -> unit",
+          "modelType": "unit -> unit",
+          "updateCode": "(fun _ _ _ -> ())"
+        },
         {
           "name": "Source",
           "uniqueName": "ImageSource",
@@ -1132,11 +1166,13 @@
         },
         {
           "name": "CursorPosition",
-          "defaultValue": "0"
+          "defaultValue": "0",
+          "updateCode": "(fun _ curr (target: Xamarin.Forms.Entry) -> match curr with ValueSome value -> target.CursorPosition <- value | ValueNone -> ())"
         },
         {
           "name": "SelectionLength",
-          "defaultValue": "0"
+          "defaultValue": "0",
+          "updateCode": "(fun _ curr (target: Xamarin.Forms.Entry) -> match curr with ValueSome value -> target.SelectionLength <- value | ValueNone -> ())"
         }
       ]
     },
@@ -1338,6 +1374,13 @@
           "defaultValue": "null"
         },
         {
+          "name": "Reload",
+          "defaultValue": "None",
+          "inputType": "bool",
+          "modelType": "bool",
+          "updateCode": "(fun _ curr (target: Xamarin.Forms.WebView) -> if curr = ValueSome true then target.Reload())"
+        },
+        {
           "name": "Navigated",
           "defaultValue": "null",
           "inputType": "Xamarin.Forms.WebNavigatedEventArgs -> unit",
@@ -1494,6 +1537,13 @@
         {
           "name": "BarTextColor",
           "defaultValue": "Xamarin.Forms.Color.Default"
+        },
+        {
+          "name": "TitleView",
+          "inputType": "ViewElement",
+          "modelType": "ViewElement",
+          "updateCode": "updateNavigationPageTitleView",
+          "defaultValue": "null"
         },
         {
           "name": "Popped",
