@@ -251,12 +251,7 @@ NUGET
     Xamarin.Android.Support.v7.Palette (27.0.2.1)
     Xamarin.Android.Support.v7.RecyclerView (27.0.2.1)
     Xamarin.Android.Support.Vector.Drawable (27.0.2.1)
-    Xamarin.Forms (3.1.0.697729)
-      Xamarin.Android.Support.Design (>= 25.4.0.2)
-      Xamarin.Android.Support.v4 (>= 25.4.0.2)
-      Xamarin.Android.Support.v7.AppCompat (>= 25.4.0.2)
-      Xamarin.Android.Support.v7.CardView (>= 25.4.0.2)
-      Xamarin.Android.Support.v7.MediaRouter (>= 25.4.0.2)
+    Xamarin.Forms (3.4.0.1009999)
 
 GROUP iosapp
 RESTRICTION: == monotouch
@@ -392,7 +387,7 @@ NUGET
     System.Xml.ReaderWriter (4.3.1)
     System.Xml.XDocument (4.3)
     System.Xml.XmlDocument (4.3)
-    Xamarin.Forms (3.1.0.697729)
+    Xamarin.Forms (3.4.0.1009999)
 
 GROUP macos
 RESTRICTION: == xamarinmac
@@ -528,7 +523,7 @@ NUGET
     System.Xml.ReaderWriter (4.3.1)
     System.Xml.XDocument (4.3)
     System.Xml.XmlDocument (4.3)
-    Xamarin.Forms (3.1.0.697729)
+    Xamarin.Forms (3.4.0.1009999)
 
 GROUP neutral
 RESTRICTION: == netstandard2.0
@@ -538,12 +533,12 @@ NUGET
     Newtonsoft.Json (11.0.2)
     OxyPlot.Core (2.0.0-unstable0956)
     SkiaSharp (1.68)
-    SkiaSharp.Views.Forms (1.60.3)
-      SkiaSharp (>= 1.60.3)
-      Xamarin.Forms (>= 2.5.0.280555)
-    Xamarin.Forms (3.1.0.697729)
-    Xamarin.Forms.Maps (3.1.0.697729)
-      Xamarin.Forms (>= 3.1.0.697729)
+    SkiaSharp.Views.Forms (1.68)
+      SkiaSharp (>= 1.68)
+      Xamarin.Forms (>= 3.3.0.912540)
+    Xamarin.Forms (3.4.0.1009999)
+    Xamarin.Forms.Maps (3.4.0.1009999)
+      Xamarin.Forms (>= 3.4.0.1009999)
   remote: https://www.myget.org/F/oxyplot
     OxyPlot.Xamarin.Forms (1.1.0-unstable0013)
       OxyPlot.Core (>= 2.0.0-unstable0956)
@@ -558,9 +553,8 @@ NUGET
     OpenTK (3.0.1)
     OpenTK.GLControl (3.0.1)
       OpenTK (>= 3.0.1)
-    WpfLightToolkit (1.0.3)
-    Xamarin.Forms (3.1.0.697729)
-    Xamarin.Forms.Platform.WPF (3.2.0.871581)
+    Xamarin.Forms (3.4.0.1009999)
+    Xamarin.Forms.Platform.WPF (3.4.0.1009999)
       OpenTK (>= 2.0)
       OpenTK.GLControl (>= 1.1.2349.61993)
-      WpfLightToolkit (>= 1.0.1)
+      Xamarin.Forms (>= 3.4.0.1009999)

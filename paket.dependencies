@@ -4,8 +4,8 @@ group neutral
   source https://api.nuget.org/v3/index.json
   source https://www.myget.org/F/oxyplot
   nuget FSharp.Core 4.5.2
-  nuget Xamarin.Forms 3.1.0.697729
-  nuget Xamarin.Forms.Maps 3.1.0.697729
+  nuget Xamarin.Forms 3.4.0.1009999
+  nuget Xamarin.Forms.Maps 3.4.0.1009999
   nuget SkiaSharp
   nuget SkiaSharp.Views.Forms
   nuget OxyPlot.Core 2.0.0-unstable0956 # version matching last updated version of OxyPlot.Xamarin.Forms
@@ -18,7 +18,7 @@ group androidapp
   framework: monoandroid71
   source https://api.nuget.org/v3/index.json
   nuget FSharp.Core 4.5.2
-  nuget Xamarin.Forms 3.1.0.697729
+  nuget Xamarin.Forms 3.4.0.1009999
   nuget Xamarin.Android.FSharp.ResourceProvider 1.0.0.25
   nuget Xamarin.Android.Arch.Core.Common 1.0.0.1
   nuget Xamarin.Android.Arch.Core.Runtime 1.0.0.1
@@ -48,20 +48,20 @@ group iosapp
   framework: monotouch
   source https://api.nuget.org/v3/index.json
   nuget FSharp.Core 4.5.2
-  nuget Xamarin.Forms 3.1.0.697729
+  nuget Xamarin.Forms 3.4.0.1009999
   nuget Newtonsoft.Json 11.0.2
 
 group macos
   framework: xamarinmac20
   source https://api.nuget.org/v3/index.json
   nuget FSharp.Core 4.5.2
-  nuget Xamarin.Forms 3.1.0.697729
+  nuget Xamarin.Forms 3.4.0.1009999
   nuget Newtonsoft.Json 11.0.2
 
 group wpfapp
   framework: net461
   source https://api.nuget.org/v3/index.json
   nuget FSharp.Core 4.5.2
-  nuget Xamarin.Forms 3.1.0.697729 
+  nuget Xamarin.Forms 3.4.0.1009999 
   nuget Newtonsoft.Json 11.0.2
-  nuget Xamarin.Forms.Platform.WPF
+  nuget Xamarin.Forms.Platform.WPF 3.4.0.1009999 

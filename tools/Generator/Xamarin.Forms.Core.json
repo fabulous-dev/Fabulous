@@ -139,6 +139,22 @@
           "inputType": "Xamarin.Forms.StyleSheets.StyleSheet list",
           "modelType": "Xamarin.Forms.StyleSheets.StyleSheet list",
           "updateCode": "updateStyleSheets"
+        },
+        {
+          "name": "IsTabStop",
+          "defaultValue": "true"
+        },
+        {
+          "name": "ScaleX",
+          "defaultValue": "0.0"
+        },
+        {
+          "name": "ScaleY",
+          "defaultValue": "0.0"
+        },
+        {
+          "name": "TabIndex",
+          "defaultValue": "0"
         }
       ]
     },
@@ -238,6 +254,32 @@
       ]
     },
     {
+      "name": "Xamarin.Forms.SwipeGestureRecognizer",
+      "members": [
+        {
+          "name": "Command",
+          "defaultValue": "null",
+          "inputType": "unit -> unit",
+          "convToModel": "makeCommand"
+        },
+        {
+          "name": "Direction",
+          "uniqueName": "SwipeGestureRecognizerDirection",
+          "defaultValue": "enum<Xamarin.Forms.SwipeDirection>(0)"
+        },
+        {
+          "name": "Threshold",
+          "defaultValue": "100u"
+        },
+        {
+          "name": "Swiped",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.SwipedEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.SwipedEventArgs>(fun _sender args -> f args))"
+        }
+      ]
+    },
+    {
       "name": "Xamarin.Forms.ActivityIndicator",
       "members": [
         {
@@ -256,6 +298,11 @@
         {
           "name": "Color",
           "defaultValue": "Xamarin.Forms.Color.Default"
+        },
+        {
+          "name": "CornerRadius",
+          "uniqueName": "BoxViewCornerRadius",
+          "defaultValue": "Unchecked.defaultof<Xamarin.Forms.CornerRadius>"
         }
       ]
     },
@@ -437,6 +484,10 @@
         {
           "name": "TextColor",
           "defaultValue": "Xamarin.Forms.Color.Default"
+        },
+        {
+          "name": "Padding",
+          "defaultValue": "Unchecked.defaultof<Xamarin.Forms.Thickness>"
         }
       ]
     },
@@ -744,6 +795,7 @@
         },
         {
           "name": "Direction",
+          "uniqueName": "FlexLayoutDirection",
           "modelType": "Xamarin.Forms.FlexDirection",
           "defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexDirection>"
         },
@@ -921,6 +973,69 @@
       ]
     },
     {
+      "name": "Xamarin.Forms.ImageButton",
+      "members": [
+        {
+          "name": "Command",
+          "uniqueName": "ImageButtonCommand",
+          "inputType": "unit -> unit",
+          "modelType": "unit -> unit",
+          "updateCode": "(fun _ _ _ -> ())"
+        },
+        {
+          "name": "Source",
+          "uniqueName": "ImageSource",
+          "inputType": "obj",
+          "modelType": "obj",
+          "convToValue": "makeImageSource",
+          "defaultValue": "null"
+        },
+        {
+          "name": "Aspect",
+          "defaultValue": "Xamarin.Forms.Aspect.AspectFit"
+        },
+        {
+          "name": "BorderColor",
+          "defaultValue": "Xamarin.Forms.Color.Default"
+        },
+        {
+          "name": "BorderWidth",
+          "defaultValue": "-1.0"
+        },
+        {
+          "name": "CornerRadius",
+          "uniqueName": "ImageButtonCornerRadius",
+          "defaultValue": "-1"
+        },
+        {
+          "name": "IsOpaque",
+          "defaultValue": "true"
+        },
+        {
+          "name": "Padding",
+          "defaultValue": "Unchecked.defaultof<Xamarin.Forms.Thickness>"
+        },
+        {
+          "name": "Clicked",
+          "defaultValue": "null",
+          "inputType": "System.EventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun _sender args -> f args))"
+        },
+        {
+          "name": "Pressed",
+          "defaultValue": "null",
+          "inputType": "System.EventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun _sender args -> f args))"
+        },
+        {
+          "name": "Released",
+          "defaultValue": "null",
+          "inputType": "System.EventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun _sender args -> f args))"
+        }
+      ]
+    },
+    {
       "name": "Xamarin.Forms.InputView",
       "members": [
         {
@@ -970,6 +1085,14 @@
         {
           "name": "AutoSize",
           "defaultValue": "Xamarin.Forms.EditorAutoSizeOption.Disabled"
+        },
+        {
+          "name": "Placeholder",
+          "defaultValue": "null"
+        },
+        {
+          "name": "PlaceholderColor",
+          "defaultValue": "Xamarin.Forms.Color.Default"
         }
       ]
     },
@@ -1040,6 +1163,16 @@
           "defaultValue": "null",
           "inputType": "unit -> unit",
           "convToModel": "makeCommand"
+        },
+        {
+          "name": "CursorPosition",
+          "defaultValue": "0",
+          "updateCode": "(fun _ curr (target: Xamarin.Forms.Entry) -> match curr with ValueSome value -> target.CursorPosition <- value | ValueNone -> ())"
+        },
+        {
+          "name": "SelectionLength",
+          "defaultValue": "0",
+          "updateCode": "(fun _ curr (target: Xamarin.Forms.Entry) -> match curr with ValueSome value -> target.SelectionLength <- value | ValueNone -> ())"
         }
       ]
     },
@@ -1123,6 +1256,18 @@
         {
           "name": "LineBreakMode",
           "defaultValue": "Xamarin.Forms.LineBreakMode.WordWrap"
+        },
+        {
+          "name": "LineHeight",
+          "defaultValue": "-1.0"
+        },
+        {
+          "name": "MaxLines",
+          "defaultValue": "-1"
+        },
+        {
+          "name": "TextDecorations",
+          "defaultValue": "Xamarin.Forms.TextDecorations.None"
         }
       ]
     },
@@ -1181,6 +1326,14 @@
           "defaultValue": "null",
           "inputType": "System.ComponentModel.PropertyChangedEventArgs -> unit",
           "convToModel": "(fun f -> System.EventHandler<System.ComponentModel.PropertyChangedEventArgs>(fun _sender args -> f args))"
+        },
+        {
+          "name": "LineHeight",
+          "defaultValue": "-1.0"
+        },
+        {
+          "name": "TextDecorations",
+          "defaultValue": "Xamarin.Forms.TextDecorations.None"
         }
       ]
     },
@@ -1221,6 +1374,13 @@
           "defaultValue": "null"
         },
         {
+          "name": "Reload",
+          "defaultValue": "None",
+          "inputType": "bool",
+          "modelType": "bool",
+          "updateCode": "(fun _ curr (target: Xamarin.Forms.WebView) -> if curr = ValueSome true then target.Reload())"
+        },
+        {
           "name": "Navigated",
           "defaultValue": "null",
           "inputType": "Xamarin.Forms.WebNavigatedEventArgs -> unit",
@@ -1231,6 +1391,12 @@
           "defaultValue": "null",
           "inputType": "Xamarin.Forms.WebNavigatingEventArgs -> unit",
           "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.WebNavigatingEventArgs>(fun _sender args -> f args))"
+        },
+        {
+          "name": "ReloadRequested",
+          "defaultValue": "null",
+          "inputType": "System.EventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun _sender args -> f args))"
         }
       ]
     },
@@ -1371,6 +1537,13 @@
         {
           "name": "BarTextColor",
           "defaultValue": "Xamarin.Forms.Color.Default"
+        },
+        {
+          "name": "TitleView",
+          "inputType": "ViewElement",
+          "modelType": "ViewElement",
+          "updateCode": "updateNavigationPageTitleView",
+          "defaultValue": "null"
         },
         {
           "name": "Popped",
