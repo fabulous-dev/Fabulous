@@ -27,7 +27,7 @@
         <PackageReference Include="Xamarin.Forms.Platform.WPF" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\AllControls\AllControls.fsproj" />
+        <ProjectReference Include="..\CounterApp\CounterApp.fsproj" />
         <ProjectReference Include="..\..\..\src\Fabulous.Core\Fabulous.Core.fsproj" />
         <ProjectReference Include="..\..\..\src\Fabulous.CustomControls\Fabulous.CustomControls.fsproj" />
     </ItemGroup>

@@ -18,6 +18,15 @@
         <Reference Include="PresentationFramework" />
     </ItemGroup>
     <ItemGroup>
+        <Content Include="icon.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Cross.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Nought.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
         <Compile Include="App.fs" />
         <None Include="app.config" />
     </ItemGroup>
@@ -27,7 +36,7 @@
         <PackageReference Include="Xamarin.Forms.Platform.WPF" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\AllControls\AllControls.fsproj" />
+        <ProjectReference Include="..\TicTacToe\TicTacToe.fsproj" />
         <ProjectReference Include="..\..\..\src\Fabulous.Core\Fabulous.Core.fsproj" />
         <ProjectReference Include="..\..\..\src\Fabulous.CustomControls\Fabulous.CustomControls.fsproj" />
     </ItemGroup>

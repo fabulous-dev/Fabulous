@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2006
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.Core", "src\Fabulous.Core\Fabulous.Core.fsproj", "{B459AFAD-BB5B-43C3-BD86-609E8DB3E3FD}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fabulous.Core", "src\Fabulous.Core\Fabulous.Core.fsproj", "{B459AFAD-BB5B-43C3-BD86-609E8DB3E3FD}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.LiveUpdate", "src\Fabulous.LiveUpdate\Fabulous.LiveUpdate.fsproj", "{B459AFAD-BB5B-43C3-BD86-609E8DB3E3F1}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fabulous.LiveUpdate", "src\Fabulous.LiveUpdate\Fabulous.LiveUpdate.fsproj", "{B459AFAD-BB5B-43C3-BD86-609E8DB3E3F1}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.Maps", "extensions\Maps\Fabulous.Maps.fsproj", "{B459AFAD-BB5B-43C3-BD86-609E8DB3E3FE}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fabulous.Maps", "extensions\Maps\Fabulous.Maps.fsproj", "{B459AFAD-BB5B-43C3-BD86-609E8DB3E3FE}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.SkiaSharp", "extensions\SkiaSharp\Fabulous.SkiaSharp.fsproj", "{B459AFAD-BB5B-43C3-BD86-609E8DB3E3FF}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fabulous.SkiaSharp", "extensions\SkiaSharp\Fabulous.SkiaSharp.fsproj", "{B459AFAD-BB5B-43C3-BD86-609E8DB3E3FF}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.OxyPlot", "extensions\OxyPlot\Fabulous.OxyPlot.fsproj", "{B459AFAD-BB5B-43C3-BD86-609E8DB3E3F0}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fabulous.OxyPlot", "extensions\OxyPlot\Fabulous.OxyPlot.fsproj", "{B459AFAD-BB5B-43C3-BD86-609E8DB3E3F0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{FB194A8D-00A6-4416-AA8D-A89C1541935B}"
 EndProject
@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StaticView", "StaticView", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StaticViewCounterApp", "StaticViewCounterApp", "{A832662D-05EB-4582-B871-143798897673}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "StaticViewCounterApp", "samples\StaticView\StaticViewCounterApp\StaticViewCounterApp\StaticViewCounterApp.fsproj", "{4282E90F-2519-46D0-B593-D57CFCA36A2D}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "StaticViewCounterApp", "samples\StaticView\StaticViewCounterApp\StaticViewCounterApp\StaticViewCounterApp.fsproj", "{4282E90F-2519-46D0-B593-D57CFCA36A2D}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "StaticViewCounterApp.Droid", "samples\StaticView\StaticViewCounterApp\Droid\StaticViewCounterApp.Droid.fsproj", "{2D3CBBD7-118F-4457-817E-0D60E03C5534}"
 EndProject
@@ -27,7 +27,7 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "StaticViewCounterApp.iOS", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TicTacToe", "TicTacToe", "{9869E35B-39CD-490C-A843-842C09938630}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TicTacToe", "samples\TicTacToe\TicTacToe\TicTacToe.fsproj", "{AE045D79-7FF3-45F3-BFD0-305542A1C728}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "TicTacToe", "samples\TicTacToe\TicTacToe\TicTacToe.fsproj", "{AE045D79-7FF3-45F3-BFD0-305542A1C728}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TicTacToe.iOS", "samples\TicTacToe\iOS\TicTacToe.iOS.fsproj", "{E43D02E6-04E7-4E4E-A527-3C5D00D9D826}"
 EndProject
@@ -35,27 +35,27 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TicTacToe.Droid", "samples\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AllControls", "AllControls", "{12D18417-809C-4CA9-AD3E-474333B181BC}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AllControls", "samples\AllControls\AllControls\AllControls.fsproj", "{13F140D6-2D21-41BE-AC90-4B14D8C16A47}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "AllControls", "samples\AllControls\AllControls\AllControls.fsproj", "{13F140D6-2D21-41BE-AC90-4B14D8C16A47}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AllControls.Droid", "samples\AllControls\Droid\AllControls.Droid.fsproj", "{5CCD3C0C-3434-434C-B8C2-7FFDEDCC2437}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AllControls.iOS", "samples\AllControls\iOS\AllControls.iOS.fsproj", "{9031246B-4B08-47C9-A500-30334A245272}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AllControls.WPF", "samples\AllControls\WPF\AllControls.WPF.fsproj", "{D83017F5-0B21-4D0C-8C7F-0EBA37E16379}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "AllControls.WPF", "samples\AllControls\WPF\AllControls.WPF.fsproj", "{D83017F5-0B21-4D0C-8C7F-0EBA37E16379}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CounterApp", "CounterApp", "{A61655CB-26DF-47E7-BCC0-91FD9A7D83AA}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CounterApp", "samples\CounterApp\CounterApp\CounterApp.fsproj", "{AC36B11A-383D-45A3-8999-4F6475E9DD13}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "CounterApp", "samples\CounterApp\CounterApp\CounterApp.fsproj", "{AC36B11A-383D-45A3-8999-4F6475E9DD13}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CounterApp.Droid", "samples\CounterApp\Droid\CounterApp.Droid.fsproj", "{13181907-1C53-47C1-BDF0-DBECCC2ED92E}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CounterApp.iOS", "samples\CounterApp\iOS\CounterApp.iOS.fsproj", "{F557905B-B099-44AB-939C-AB169499A36E}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Generator", "tools\Generator\Generator.fsproj", "{10DF5D2F-17FA-43DE-9549-B84E6CF26602}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Generator", "tools\Generator\Generator.fsproj", "{10DF5D2F-17FA-43DE-9549-B84E6CF26602}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.Cli", "src\Fabulous.Cli\Fabulous.Cli.fsproj", "{23640E46-E830-4AB7-9289-E527F6429435}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fabulous.Cli", "src\Fabulous.Cli\Fabulous.Cli.fsproj", "{23640E46-E830-4AB7-9289-E527F6429435}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.Cli.Tests", "tests\Fabulous.Cli.Tests\Fabulous.Cli.Tests.fsproj", "{810EEB40-5042-4946-B695-5B13E9957807}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fabulous.Cli.Tests", "tests\Fabulous.Cli.Tests\Fabulous.Cli.Tests.fsproj", "{810EEB40-5042-4946-B695-5B13E9957807}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{E75EAD35-1041-42CC-8AA4-01DB58FA467C}"
 EndProject
@@ -63,9 +63,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1199BA9F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "extensions", "extensions", "{13C0EB5D-E38E-4714-9421-77CD9C53A067}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.CustomControls", "src\Fabulous.CustomControls\Fabulous.CustomControls.fsproj", "{7FF328BB-9318-4C11-8A9A-37DD98EAB35B}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fabulous.CustomControls", "src\Fabulous.CustomControls\Fabulous.CustomControls.fsproj", "{7FF328BB-9318-4C11-8A9A-37DD98EAB35B}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Generator.Tests", "tests\Generator.Tests\Generator.Tests.fsproj", "{1CABDDE0-BB3C-4D9C-BC95-6213F177ACB1}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Generator.Tests", "tests\Generator.Tests\Generator.Tests.fsproj", "{1CABDDE0-BB3C-4D9C-BC95-6213F177ACB1}"
+EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "CounterApp.WPF", "samples\CounterApp\WPF\CounterApp.WPF.fsproj", "{096F85A9-9572-43FC-893C-05B9D07965A4}"
+EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "StaticViewCounterApp.WPF", "samples\StaticView\StaticViewCounterApp\WPF\StaticViewCounterApp.WPF.fsproj", "{D139AE95-5169-4AF4-B5A5-AED084467E86}"
+EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "TicTacToe.WPF", "samples\TicTacToe\WPF\TicTacToe.WPF.fsproj", "{30462E1D-0584-48A0-82BA-DE8A8B168E6B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -459,6 +465,54 @@ Global
 		{1CABDDE0-BB3C-4D9C-BC95-6213F177ACB1}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{1CABDDE0-BB3C-4D9C-BC95-6213F177ACB1}.Release|x86.ActiveCfg = Release|Any CPU
 		{1CABDDE0-BB3C-4D9C-BC95-6213F177ACB1}.Release|x86.Build.0 = Release|Any CPU
+		{096F85A9-9572-43FC-893C-05B9D07965A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{096F85A9-9572-43FC-893C-05B9D07965A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{096F85A9-9572-43FC-893C-05B9D07965A4}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{096F85A9-9572-43FC-893C-05B9D07965A4}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{096F85A9-9572-43FC-893C-05B9D07965A4}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{096F85A9-9572-43FC-893C-05B9D07965A4}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{096F85A9-9572-43FC-893C-05B9D07965A4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{096F85A9-9572-43FC-893C-05B9D07965A4}.Debug|x86.Build.0 = Debug|Any CPU
+		{096F85A9-9572-43FC-893C-05B9D07965A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{096F85A9-9572-43FC-893C-05B9D07965A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{096F85A9-9572-43FC-893C-05B9D07965A4}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{096F85A9-9572-43FC-893C-05B9D07965A4}.Release|iPhone.Build.0 = Release|Any CPU
+		{096F85A9-9572-43FC-893C-05B9D07965A4}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{096F85A9-9572-43FC-893C-05B9D07965A4}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{096F85A9-9572-43FC-893C-05B9D07965A4}.Release|x86.ActiveCfg = Release|Any CPU
+		{096F85A9-9572-43FC-893C-05B9D07965A4}.Release|x86.Build.0 = Release|Any CPU
+		{D139AE95-5169-4AF4-B5A5-AED084467E86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D139AE95-5169-4AF4-B5A5-AED084467E86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D139AE95-5169-4AF4-B5A5-AED084467E86}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{D139AE95-5169-4AF4-B5A5-AED084467E86}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{D139AE95-5169-4AF4-B5A5-AED084467E86}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{D139AE95-5169-4AF4-B5A5-AED084467E86}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{D139AE95-5169-4AF4-B5A5-AED084467E86}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D139AE95-5169-4AF4-B5A5-AED084467E86}.Debug|x86.Build.0 = Debug|Any CPU
+		{D139AE95-5169-4AF4-B5A5-AED084467E86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D139AE95-5169-4AF4-B5A5-AED084467E86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D139AE95-5169-4AF4-B5A5-AED084467E86}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{D139AE95-5169-4AF4-B5A5-AED084467E86}.Release|iPhone.Build.0 = Release|Any CPU
+		{D139AE95-5169-4AF4-B5A5-AED084467E86}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{D139AE95-5169-4AF4-B5A5-AED084467E86}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{D139AE95-5169-4AF4-B5A5-AED084467E86}.Release|x86.ActiveCfg = Release|Any CPU
+		{D139AE95-5169-4AF4-B5A5-AED084467E86}.Release|x86.Build.0 = Release|Any CPU
+		{30462E1D-0584-48A0-82BA-DE8A8B168E6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30462E1D-0584-48A0-82BA-DE8A8B168E6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30462E1D-0584-48A0-82BA-DE8A8B168E6B}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{30462E1D-0584-48A0-82BA-DE8A8B168E6B}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{30462E1D-0584-48A0-82BA-DE8A8B168E6B}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{30462E1D-0584-48A0-82BA-DE8A8B168E6B}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{30462E1D-0584-48A0-82BA-DE8A8B168E6B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{30462E1D-0584-48A0-82BA-DE8A8B168E6B}.Debug|x86.Build.0 = Debug|Any CPU
+		{30462E1D-0584-48A0-82BA-DE8A8B168E6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30462E1D-0584-48A0-82BA-DE8A8B168E6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30462E1D-0584-48A0-82BA-DE8A8B168E6B}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{30462E1D-0584-48A0-82BA-DE8A8B168E6B}.Release|iPhone.Build.0 = Release|Any CPU
+		{30462E1D-0584-48A0-82BA-DE8A8B168E6B}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{30462E1D-0584-48A0-82BA-DE8A8B168E6B}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{30462E1D-0584-48A0-82BA-DE8A8B168E6B}.Release|x86.ActiveCfg = Release|Any CPU
+		{30462E1D-0584-48A0-82BA-DE8A8B168E6B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -488,6 +542,9 @@ Global
 		{10DF5D2F-17FA-43DE-9549-B84E6CF26602} = {E75EAD35-1041-42CC-8AA4-01DB58FA467C}
 		{810EEB40-5042-4946-B695-5B13E9957807} = {1199BA9F-BF79-477F-8E25-FD0E0CBC962A}
 		{1CABDDE0-BB3C-4D9C-BC95-6213F177ACB1} = {1199BA9F-BF79-477F-8E25-FD0E0CBC962A}
+		{096F85A9-9572-43FC-893C-05B9D07965A4} = {A61655CB-26DF-47E7-BCC0-91FD9A7D83AA}
+		{D139AE95-5169-4AF4-B5A5-AED084467E86} = {A832662D-05EB-4582-B871-143798897673}
+		{30462E1D-0584-48A0-82BA-DE8A8B168E6B} = {9869E35B-39CD-490C-A843-842C09938630}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E142F9FB-7EA9-4866-81D4-718660BDCAEB}
