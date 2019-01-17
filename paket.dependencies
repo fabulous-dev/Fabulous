@@ -51,7 +51,7 @@ group iosapp
   nuget Xamarin.Forms 3.4.0.1009999
   nuget Newtonsoft.Json 11.0.2
 
-group macos
+group macosapp
   framework: xamarinmac20
   source https://api.nuget.org/v3/index.json
   nuget FSharp.Core 4.5.2
@@ -59,9 +59,17 @@ group macos
   nuget Newtonsoft.Json 11.0.2
 
 group wpfapp
-  framework: net461
+  framework: net472
   source https://api.nuget.org/v3/index.json
   nuget FSharp.Core 4.5.2
   nuget Xamarin.Forms 3.4.0.1009999 
   nuget Newtonsoft.Json 11.0.2
   nuget Xamarin.Forms.Platform.WPF 3.4.0.1009999 
+
+group gtkapp
+  framework: net471
+  source https://api.nuget.org/v3/index.json
+  nuget FSharp.Core 4.5.2
+  nuget Xamarin.Forms 3.4.0.1009999 
+  nuget Newtonsoft.Json 11.0.2
+  nuget Xamarin.Forms.Platform.GTK 3.4.0.1009999 

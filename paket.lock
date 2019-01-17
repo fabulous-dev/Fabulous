@@ -253,6 +253,16 @@ NUGET
     Xamarin.Android.Support.Vector.Drawable (27.0.2.1)
     Xamarin.Forms (3.4.0.1009999)
 
+GROUP gtkapp
+RESTRICTION: == net471
+NUGET
+  remote: https://api.nuget.org/v3/index.json
+    FSharp.Core (4.5.2)
+    Newtonsoft.Json (11.0.2)
+    Xamarin.Forms (3.4.0.1009999)
+    Xamarin.Forms.Platform.GTK (3.4.0.1009999)
+      Xamarin.Forms (>= 3.4.0.1009999)
+
 GROUP iosapp
 RESTRICTION: == monotouch
 NUGET
@@ -389,7 +399,7 @@ NUGET
     System.Xml.XmlDocument (4.3)
     Xamarin.Forms (3.4.0.1009999)
 
-GROUP macos
+GROUP macosapp
 RESTRICTION: == xamarinmac
 NUGET
   remote: https://api.nuget.org/v3/index.json
@@ -545,7 +555,7 @@ NUGET
       Xamarin.Forms (>= 2.3.3.180)
 
 GROUP wpfapp
-RESTRICTION: == net461
+RESTRICTION: == net472
 NUGET
   remote: https://api.nuget.org/v3/index.json
     FSharp.Core (4.5.2)

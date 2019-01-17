@@ -1,4 +1,4 @@
-﻿namespace NewApp.macOS
+﻿namespace AllControls.MacOS
 
 open System
 open AppKit
@@ -19,7 +19,7 @@ type AppDelegate() =
 
     override this.DidFinishLaunching(notification: NSNotification) =
         Forms.Init()
-        this.LoadApplication(new NewApp.App())
+        this.LoadApplication(new AllControls.App())
 
         base.DidFinishLaunching(notification)
 
