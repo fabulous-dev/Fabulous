@@ -30,7 +30,7 @@ Getting started
 
        SqueakyApp/SqueakyApp.sln
 
-By default iOS and Android projects are created. For WPF apps use `--WPF`, for example:
+By default iOS and Android projects are created. For WPF apps use `--WPF`, for macOS use `--macOS` for example:
 
 Android only:
 
@@ -44,6 +44,14 @@ WPF only:
 
     dotnet new fabulous-app -n SqueakyApp --WPF --Android=false --iOS=false
    
+macOS only:
+
+    dotnet new fabulous-app -n SqueakyApp --macOS --Android=false --iOS=false
+
+All 4 platforms:
+
+    dotnet new fabulous-app -n SqueakyApp --WPF --macOS
+
 5. If you are using Visual Studio for Mac and you want to start with File -> New, make sure you target ".NET Standard" to add the references to Fabulous:
        
        File -> New Solution
