@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleName</key>
-	<string>CounterApp</string>
+	<string>TicTacToe</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.fabulous.CounterApp</string>
+	<string>org.fabulous.TicTacToe</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
@@ -26,7 +26,7 @@
 	<string>NSApplication</string>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
-    <key>NSRequiresAquaSystemAppearance</key>
-    <true/>
+	<key>NSRequiresAquaSystemAppearance</key>
+	<true/>
 </dict>
 </plist>

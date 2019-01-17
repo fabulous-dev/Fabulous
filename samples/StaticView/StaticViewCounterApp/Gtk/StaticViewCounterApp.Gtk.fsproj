@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\..\packages\gtkapp\Xamarin.Forms\build\netstandard2.0\Xamarin.Forms.props" Condition="Exists('..\..\..\packages\gtkapp\Xamarin.Forms\build\netstandard2.0\Xamarin.Forms.props')" />
+  <Import Project="..\..\..\..\packages\gtkapp\Xamarin.Forms\build\netstandard2.0\Xamarin.Forms.props" Condition="Exists('..\..\..\..\packages\gtkapp\Xamarin.Forms\build\netstandard2.0\Xamarin.Forms.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{035502bf-dcd6-409c-80f5-076ef6c97f17}</ProjectGuid>
+    <ProjectGuid>{35b1119b-a075-4f14-adb0-0f69b669e607}</ProjectGuid>
     <UseStandardResourceNames>true</UseStandardResourceNames>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>AllControls.Gtk</RootNamespace>
-    <AssemblyName>AllControls.Gtk</AssemblyName>
+    <RootNamespace>StaticViewCounterApp.Gtk</RootNamespace>
+    <AssemblyName>StaticViewCounterApp.Gtk</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -64,28 +64,28 @@
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="OpenTK">
-      <HintPath>..\..\..\packages\gtkapp\Xamarin.Forms.Platform.GTK\lib\net45\OpenTK.dll</HintPath>
+      <HintPath>..\..\..\..\packages\gtkapp\Xamarin.Forms.Platform.GTK\lib\net45\OpenTK.dll</HintPath>
     </Reference>
     <Reference Include="webkit-sharp">
-      <HintPath>..\..\..\packages\gtkapp\Xamarin.Forms.Platform.GTK\lib\net45\webkit-sharp.dll</HintPath>
+      <HintPath>..\..\..\..\packages\gtkapp\Xamarin.Forms.Platform.GTK\lib\net45\webkit-sharp.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Platform.GTK">
-      <HintPath>..\..\..\packages\gtkapp\Xamarin.Forms.Platform.GTK\lib\net45\Xamarin.Forms.Platform.GTK.dll</HintPath>
+      <HintPath>..\..\..\..\packages\gtkapp\Xamarin.Forms.Platform.GTK\lib\net45\Xamarin.Forms.Platform.GTK.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Core">
-      <HintPath>..\..\..\packages\gtkapp\FSharp.Core\lib\net45\FSharp.Core.dll</HintPath>
+      <HintPath>..\..\..\..\packages\gtkapp\FSharp.Core\lib\net45\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Core">
-      <HintPath>..\..\..\packages\gtkapp\Xamarin.Forms\lib\netstandard2.0\Xamarin.Forms.Core.dll</HintPath>
+      <HintPath>..\..\..\..\packages\gtkapp\Xamarin.Forms\lib\netstandard2.0\Xamarin.Forms.Core.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Platform">
-      <HintPath>..\..\..\packages\gtkapp\Xamarin.Forms\lib\netstandard2.0\Xamarin.Forms.Platform.dll</HintPath>
+      <HintPath>..\..\..\..\packages\gtkapp\Xamarin.Forms\lib\netstandard2.0\Xamarin.Forms.Platform.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml">
-      <HintPath>..\..\..\packages\gtkapp\Xamarin.Forms\lib\netstandard2.0\Xamarin.Forms.Xaml.dll</HintPath>
+      <HintPath>..\..\..\..\packages\gtkapp\Xamarin.Forms\lib\netstandard2.0\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\packages\gtkapp\Newtonsoft.Json\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\..\packages\gtkapp\Newtonsoft.Json\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -95,19 +95,19 @@
     <None Include="OpenTK.dll.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Fabulous.Core\Fabulous.Core.fsproj">
+    <ProjectReference Include="..\..\..\..\src\Fabulous.Core\Fabulous.Core.fsproj">
       <Project>{B459AFAD-BB5B-43C3-BD86-609E8DB3E3FD}</Project>
       <Name>Fabulous.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\src\Fabulous.CustomControls\Fabulous.CustomControls.fsproj">
+    <ProjectReference Include="..\..\..\..\src\Fabulous.CustomControls\Fabulous.CustomControls.fsproj">
       <Project>{7FF328BB-9318-4C11-8A9A-37DD98EAB35B}</Project>
       <Name>Fabulous.CustomControls</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AllControls\AllControls.fsproj">
-      <Project>{13F140D6-2D21-41BE-AC90-4B14D8C16A47}</Project>
-      <Name>AllControls</Name>
+    <ProjectReference Include="..\StaticViewCounterApp\StaticViewCounterApp.fsproj">
+      <Project>{4282E90F-2519-46D0-B593-D57CFCA36A2D}</Project>
+      <Name>StaticViewCounterApp</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(FSharpTargetsPath)" />
-  <Import Project="..\..\..\packages\gtkapp\Xamarin.Forms\build\netstandard2.0\Xamarin.Forms.targets" Condition="Exists('..\..\..\packages\gtkapp\Xamarin.Forms\build\netstandard2.0\Xamarin.Forms.targets')" />
+  <Import Project="..\..\..\..\packages\gtkapp\Xamarin.Forms\build\netstandard2.0\Xamarin.Forms.targets" Condition="Exists('..\..\..\..\packages\gtkapp\Xamarin.Forms\build\netstandard2.0\Xamarin.Forms.targets')" />
 </Project>

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{035502bf-dcd6-409c-80f5-076ef6c97f17}</ProjectGuid>
+    <ProjectGuid>{3e3c2cac-27ed-4f0c-af38-b6bddcd072e2}</ProjectGuid>
     <UseStandardResourceNames>true</UseStandardResourceNames>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>AllControls.Gtk</RootNamespace>
-    <AssemblyName>AllControls.Gtk</AssemblyName>
+    <RootNamespace>TicTacToe.Gtk</RootNamespace>
+    <AssemblyName>TicTacToe.Gtk</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -93,8 +93,9 @@
     <Compile Include="Main.fs" />
     <None Include="webkit-sharp.dll.config" />
     <None Include="OpenTK.dll.config" />
-  </ItemGroup>
-  <ItemGroup>
+    <Content Include="Cross.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <ProjectReference Include="..\..\..\src\Fabulous.Core\Fabulous.Core.fsproj">
       <Project>{B459AFAD-BB5B-43C3-BD86-609E8DB3E3FD}</Project>
       <Name>Fabulous.Core</Name>
@@ -103,9 +104,12 @@
       <Project>{7FF328BB-9318-4C11-8A9A-37DD98EAB35B}</Project>
       <Name>Fabulous.CustomControls</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AllControls\AllControls.fsproj">
-      <Project>{13F140D6-2D21-41BE-AC90-4B14D8C16A47}</Project>
-      <Name>AllControls</Name>
+    <Content Include="Nought.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <ProjectReference Include="..\TicTacToe\TicTacToe.fsproj">
+      <Project>{AE045D79-7FF3-45F3-BFD0-305542A1C728}</Project>
+      <Name>TicTacToe</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(FSharpTargetsPath)" />

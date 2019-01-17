@@ -5,12 +5,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E157F244-7A19-4193-B833-9196569A315E}</ProjectGuid>
+    <ProjectGuid>{B223E32C-3585-4D94-B001-DBEC12D80E02}</ProjectGuid>
     <ProjectTypeGuids>{A3F8F2AB-B479-4A4A-A458-A89E7DC349F1};{F2A71F9B-5D33-465A-A702-920D77279786}</ProjectTypeGuids>
     <TemplateGuid>{40ed8a7a-2bf4-42fa-b1a7-b43e1d3b7273}</TemplateGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>AllControls.MacOS</RootNamespace>
-    <AssemblyName>AllControls.MacOS</AssemblyName>
+    <RootNamespace>TicTacToe.MacOS</RootNamespace>
+    <AssemblyName>TicTacToe.MacOS</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <TargetFrameworkIdentifier>Xamarin.Mac</TargetFrameworkIdentifier>
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
@@ -56,6 +56,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="Assets.xcassets\Cross.imageset\" />
+    <Folder Include="Assets.xcassets\Nought.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -95,6 +97,14 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\AppIcon-512.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\AppIcon-512%402x.png" />
     <ImageAsset Include="Assets.xcassets\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Cross.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Cross.imageset\Cross.png" />
+    <ImageAsset Include="Assets.xcassets\Cross.imageset\Cross-1.png" />
+    <ImageAsset Include="Assets.xcassets\Cross.imageset\Cross-2.png" />
+    <ImageAsset Include="Assets.xcassets\Nought.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Nought.imageset\Nought.png" />
+    <ImageAsset Include="Assets.xcassets\Nought.imageset\Nought-1.png" />
+    <ImageAsset Include="Assets.xcassets\Nought.imageset\Nought-2.png" />
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
     <Compile Include="AppDelegate.fs" />
@@ -106,9 +116,9 @@
       <Project>{7FF328BB-9318-4C11-8A9A-37DD98EAB35B}</Project>
       <Name>Fabulous.CustomControls</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AllControls\AllControls.fsproj">
-      <Project>{13F140D6-2D21-41BE-AC90-4B14D8C16A47}</Project>
-      <Name>AllControls</Name>
+    <ProjectReference Include="..\TicTacToe\TicTacToe.fsproj">
+      <Project>{AE045D79-7FF3-45F3-BFD0-305542A1C728}</Project>
+      <Name>TicTacToe</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="..\..\..\packages\macosapp\Xamarin.Forms\build\netstandard2.0\Xamarin.Forms.targets" Condition="Exists('..\..\..\packages\macosapp\Xamarin.Forms\build\netstandard2.0\Xamarin.Forms.targets')" />
