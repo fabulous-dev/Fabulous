@@ -169,40 +169,37 @@ Target.create "RunTests" (fun _ ->
 )
 
 Target.create "TestTemplatesNuGet" (fun _ ->
-    // Globally install the templates from the template nuget package we just built
-    DotNet.exec id "new" ("-i " + buildDir + "/Fabulous.Templates." + release.NugetVersion + ".nupkg") |> ignore
+    let restorePackageDotnetCli appName projectName pkgs =
+        DotNet.exec id "restore" (sprintf "%s/%s/%s.fsproj  --source https://api.nuget.org/v3/index.json --source %s" appName projectName projectName pkgs) |> ignore
 
     let testAppName = "testapp2" + string (abs (hash System.DateTime.Now.Ticks) % 100)
-    // Instantiate the template. TODO: additional parameters and variations
-    Shell.cleanDir testAppName
-    let extraArgs = if Environment.isUnix then "" else " --WPF"
-    DotNet.exec id "new fabulous-app" (sprintf "-n %s -lang F#%s" testAppName extraArgs) |> ignore
 
-    let pkgs = Path.GetFullPath(buildDir)
+    // Globally install the templates from the template nuget package we just built
+    DotNet.exec id "new" (sprintf "-i %s/Fabulous.Templates.%s.nupkg" buildDir release.NugetVersion) |> ignore
+
+    // Instantiate the template.
+    Shell.cleanDir testAppName
+
+    let extraArgs =
+        if Environment.isWindows then " --WPF"
+        elif Environment.isMacOS then " --macOS"
+        else ""
+        
+    DotNet.exec id "new fabulous-app" (sprintf "-n %s -lang F# --GTK%s" testAppName extraArgs) |> ignore
+
+    // The shared project and WPF need to be restored manually as they're using the new SDK-style format
     // When restoring, using the build_output as a package source to pick up the package we just compiled
-    DotNet.exec id "restore" (sprintf "%s/%s/%s.fsproj  --source https://api.nuget.org/v3/index.json --source %s" testAppName testAppName testAppName pkgs) |> ignore
-    if not Environment.isUnix then 
-        DotNet.exec id "restore" (sprintf "%s/%s.WPF/%s.WPF.fsproj  --source https://api.nuget.org/v3/index.json --source %s" testAppName testAppName testAppName pkgs) |> ignore
-    
+    let pkgs = Path.GetFullPath(buildDir)
+    restorePackageDotnetCli testAppName testAppName pkgs
+    if Environment.isWindows then restorePackageDotnetCli testAppName (testAppName + ".WPF") pkgs
+
+    // Build for all combinations
     let slash = if Environment.isUnix then "\\" else ""
     for c in ["Debug"; "Release"] do 
         for p in ["Any CPU"; "iPhoneSimulator"] do
             let args = (sprintf "%s/%s.sln /p:Platform=\"%s\" /p:Configuration=%s /p:PackageSources=%s\"https://api.nuget.org/v3/index.json;%s%s\"" testAppName testAppName p c slash pkgs slash)
             let code = Shell.Exec("msbuild", args) 
             if code <> 0 then failwithf "%s %s failed, error code %d" "msbuild" args code
-
-    (* Manual steps without building nupkg
-        .\build LibraryNuGet
-        dotnet new -i  templates
-        rmdir /s /q testapp2
-        dotnet new fabulous-app -n testapp2 -lang F#
-        dotnet restore testapp2/testapp2/testapp2.fsproj -s build_output/
-        dotnet new -i  templates && rmdir /s /q testapp2 && dotnet new fabulous-app -n testapp2 -lang F# && dotnet restore testapp2/testapp2/testapp2.fsproj && msbuild testapp2/testapp2.Android/testapp2.Android.fsproj /t:RestorePackages && msbuild testapp2/testapp2.Android/testapp2.Android.fsproj
-        dotnet new -i  templates && rmdir /s /q testapp2 && dotnet new fabulous-app -n testapp2 -lang F# && dotnet restore testapp2/testapp2/testapp2.fsproj && msbuild testapp2/testapp2.iOS/testapp2.iOS.fsproj /t:RestorePackages  && msbuild testapp2/testapp2.iOS/testapp2.iOS.fsproj
-        dotnet new -i  templates && rmdir /s /q testapp2 && dotnet new fabulous-app -n testapp2 -lang F# --macOS && dotnet restore testapp2/testapp2/testapp2.fsproj && msbuild testapp2/testapp2.macOS/testapp2.macOS.fsproj /t:RestorePackages  && msbuild testapp2/testapp2.macOS/testapp2.macOS.fsproj
-
-        dotnet restore testapp265/testapp265.WPF/testapp265.WPF.fsproj --source https://api.nuget.org/v3/index.json -s build_output
-        *)
 )
 
 Target.create "Test" ignore
