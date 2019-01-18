@@ -106,6 +106,6 @@
       <Name>NewApp</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="$(FSharpTargetsPath)" />
+  <Import Project="$(FSharpTargetsPath)" Condition="Exists($(FSharpTargetsPath))" />
   <Import Project="..\packages\Xamarin.Forms.XamarinFormsSdk\build\netstandard2.0\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.XamarinFormsSdk\build\netstandard2.0\Xamarin.Forms.targets')" />
 </Project>

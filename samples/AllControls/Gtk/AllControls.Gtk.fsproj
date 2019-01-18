@@ -108,6 +108,6 @@
       <Name>AllControls</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="$(FSharpTargetsPath)" />
+  <Import Project="$(FSharpTargetsPath)" Condition="Exists($(FSharpTargetsPath))" />
   <Import Project="..\..\..\packages\gtkapp\Xamarin.Forms\build\netstandard2.0\Xamarin.Forms.targets" Condition="Exists('..\..\..\packages\gtkapp\Xamarin.Forms\build\netstandard2.0\Xamarin.Forms.targets')" />
 </Project>
