@@ -234,7 +234,7 @@ module Converters =
     //
     // NavigationPage can be reused only if the pages don't change their type (added/removed pages don't prevent reuse)
     // E.g. If the first page switch from ContentPage to TabbedPage, the NavigationPage can't be reused.
-    and canReuseNavigationPage (prevChild:ViewElement) (newChild:ViewElement) =
+    and internal canReuseNavigationPage (prevChild:ViewElement) (newChild:ViewElement) =
         let prevPages = prevChild.TryGetAttribute<ViewElement[]>("Pages")
         let newPages = newChild.TryGetAttribute<ViewElement[]>("Pages")
 
@@ -243,13 +243,8 @@ module Converters =
         | _, _ -> true
 
     /// Update a control given the previous and new view elements
-    let updateChild (prevChild:ViewElement) (newChild:ViewElement) targetChild = 
+    let inline updateChild (prevChild:ViewElement) (newChild:ViewElement) targetChild = 
         newChild.UpdateIncremental(prevChild, targetChild)
-
-    /// Represents a tree-structured collection of collections
-    type Chunks<'T> = 
-        | Chunk of 'T[]
-        | Chunks of Chunks<'T> * Chunks<'T>
 
     /// Convert a sequence to an array, maintaining the object identity of arrays
     let seqToArray (itemsSource:seq<'T>) =
@@ -262,12 +257,6 @@ module Converters =
         match itemsSource with 
         | :? System.Collections.IList as arr -> arr
         | es -> (Array.ofSeq es :> System.Collections.IList)
-
-    /// Convert a sequence to an IList<'T>, maintaining the object identity of any IList
-    let seqToIList (itemsSource:seq<'T>) =
-        match itemsSource with 
-        | :? IList<'T> as arr -> arr
-        | es -> (Array.ofSeq es :> IList<'T>)
 
     /// Incremental list maintenance: given a collection, and a previous version of that collection, perform
     /// a reduced number of clear/add/remove/insert operations
@@ -317,6 +306,7 @@ module Converters =
                     attach prevChildOpt newChild targetChild
 
 
+    // The public API for extensions to define their incremental update logic
     type ViewElement with
 
         /// Update an event handler on a target control, given a previous and current view element description
@@ -358,7 +348,8 @@ module Converters =
             let collOpt = source.TryGetAttributeKeyed<_>(attribKey)
             updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetCollection (fun x -> x.Create() :?> 'T) (fun _ _ _ -> ()) canReuseChild updateChild
 
-    let updateListViewItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.ListView) = 
+    /// Update the items in a ListView control, given previous and current view elements
+    let internal updateListViewItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.ListView) = 
         let targetColl = 
             match target.ItemsSource with 
             | :? ObservableCollection<ListElementData<'T>> as oc -> oc
@@ -368,12 +359,13 @@ module Converters =
                 oc
         updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetColl ListElementData (fun _ _ _ -> ()) canReuseChild (fun _ curr target -> target.Key <- curr) 
 
-    let updateListGroupData (prevShortName: string, prevKey: 'T, prevColl: 'T[]) (currShortName: string, currKey: 'T, currColl: 'T[]) (target: ListGroupData<'T>) =
+    let private updateListGroupData (_prevShortName: string, _prevKey: 'T, prevColl: 'T[]) (currShortName: string, currKey: 'T, currColl: 'T[]) (target: ListGroupData<'T>) =
         target.ShortName <- currShortName
         target.Key <- currKey
         updateCollectionGeneric (ValueSome prevColl) (ValueSome currColl) target ListElementData (fun _ _ _ -> ()) canReuseChild (fun _ curr target -> target.Key <- curr) 
 
-    let updateListViewGroupedItems (prevCollOpt: (string * 'T * 'T[])[] voption) (collOpt: (string * 'T * 'T[])[] voption) (target: Xamarin.Forms.ListView) = 
+    /// Update the items in a GroupedListView control, given previous and current view elements
+    let internal updateListViewGroupedItems (prevCollOpt: (string * 'T * 'T[])[] voption) (collOpt: (string * 'T * 'T[])[] voption) (target: Xamarin.Forms.ListView) = 
         let targetColl = 
             match target.ItemsSource with 
             | :? ObservableCollection<ListGroupData<'T>> as oc -> oc
@@ -383,7 +375,8 @@ module Converters =
                 oc
         updateCollectionGeneric prevCollOpt collOpt targetColl ListGroupData (fun _ _ _ -> ()) (fun (_, prevKey, _) (_, currKey, _) -> canReuseChild prevKey currKey) updateListGroupData
 
-    let updateListViewGroupedShowJumpList (prevOpt: bool voption) (currOpt: bool voption) (target: Xamarin.Forms.ListView) =
+    /// Update the ShowJumpList property of a GroupedListView control, given previous and current view elements
+    let internal updateListViewGroupedShowJumpList (prevOpt: bool voption) (currOpt: bool voption) (target: Xamarin.Forms.ListView) =
         let updateTarget enableJumpList = target.GroupShortNameBinding <- (if enableJumpList then new Binding("ShortName") else null)
 
         match (prevOpt, currOpt) with
@@ -392,7 +385,8 @@ module Converters =
         | ValueSome _, ValueNone -> target.GroupShortNameBinding <- null
         | _, _ -> ()
 
-    let updateTableViewItems (prevCollOpt: (string * 'T[])[] voption) (collOpt: (string * 'T[])[] voption) (target: Xamarin.Forms.TableView) = 
+    /// Update the items of a TableView control, given previous and current view elements
+    let internal updateTableViewItems (prevCollOpt: (string * 'T[])[] voption) (collOpt: (string * 'T[])[] voption) (target: Xamarin.Forms.TableView) = 
         let create (desc: ViewElement) = (desc.Create() :?> Cell)
         let root = 
             match target.Root with 
@@ -408,12 +402,14 @@ module Converters =
             (fun (_prevTitle,prevChild) (_newTitle, newChild) target -> 
                 updateCollectionGeneric (ValueSome prevChild) (ValueSome newChild) target create (fun _ _ _ -> ()) canReuseChild updateChild) 
 
-    let updateResources (prevCollOpt: (string * obj) list voption) (collOpt: (string * obj) list voption) (target: Xamarin.Forms.VisualElement) = 
-        let targetColl = target.Resources
+    /// Update the resources of a control, given previous and current view elements describing the resources
+    let internal updateResources (prevCollOpt: (string * obj) list voption) (collOpt: (string * obj) list voption) (target: Xamarin.Forms.VisualElement) = 
         match prevCollOpt, collOpt with 
+        | ValueNone, ValueNone -> ()
         | ValueSome prevColl, ValueSome newColl when identical prevColl newColl -> ()
-        | _, ValueNone -> targetColl.Clear()
+        | _, ValueNone -> target.Resources.Clear()
         | _, ValueSome coll ->
+            let targetColl = target.Resources
             let coll = Array.ofSeq coll
             if (coll = null || coll.Length = 0) then
                 targetColl.Clear()
@@ -437,15 +433,16 @@ module Converters =
                    if not (coll |> Array.exists(fun (key2, _v2) -> key = key2)) then 
                        targetColl.Remove(key) |> ignore
 
-
+    /// Update the style sheets of a control, given previous and current view elements describing them
     // Note, style sheets can't be removed
     // Note, style sheets are compared by object identity
-    let updateStyleSheets (prevCollOpt: list<StyleSheet> voption) (collOpt: list<StyleSheet> voption) (target: Xamarin.Forms.VisualElement) = 
-        let targetColl = target.Resources
+    let internal updateStyleSheets (prevCollOpt: list<StyleSheet> voption) (collOpt: list<StyleSheet> voption) (target: Xamarin.Forms.VisualElement) = 
         match prevCollOpt, collOpt with 
+        | ValueNone, ValueNone -> ()
         | ValueSome prevColl, ValueSome newColl when identical prevColl newColl -> ()
-        | _, ValueNone -> targetColl.Clear()
+        | _, ValueNone -> target.Resources.Clear()
         | _, ValueSome coll ->
+            let targetColl = target.Resources
             let coll = Array.ofSeq coll
             if (coll = null || coll.Length = 0) then
                 targetColl.Clear()
@@ -471,14 +468,16 @@ module Converters =
                             eprintfn "**** WARNING: style sheets may not be removed, and are compared by object identity, so should be created independently of your update or view functions ****"
                         | Some _ -> ()
 
+    /// Update the styles of a control, given previous and current view elements describing them
     // Note, styles can't be removed
     // Note, styles are compared by object identity
-    let updateStyles (prevCollOpt: Style list voption) (collOpt: Style list voption) (target: Xamarin.Forms.VisualElement) = 
-        let targetColl = target.Resources
+    let internal updateStyles (prevCollOpt: Style list voption) (collOpt: Style list voption) (target: Xamarin.Forms.VisualElement) = 
         match prevCollOpt, collOpt with 
+        | ValueNone, ValueNone -> ()
         | ValueSome prevColl, ValueSome newColl when identical prevColl newColl -> ()
-        | _, ValueNone -> targetColl.Clear()
+        | _, ValueNone -> target.Resources.Clear()
         | _, ValueSome coll ->
+            let targetColl = target.Resources
             let coll = Array.ofSeq coll
             if (coll = null || coll.Length = 0) then
                 targetColl.Clear()
@@ -504,22 +503,24 @@ module Converters =
                             eprintfn "**** WARNING: styles may not be removed, and are compared by object identity. They should be created independently of your update or view functions ****"
                         | Some _ -> ()
 
-    let updateStyleClass (prevCollOpt: IList<string> voption) (collOpt: IList<string> voption) (target: Xamarin.Forms.VisualElement) =
-        if prevCollOpt <> collOpt then
-          target.StyleClass <- match collOpt with
-                               | ValueSome x -> x 
-                               | ValueNone   -> null
+    /// Update the style class of a control, given previous and current view elements 
+    let internal updateStyleClass (prevCollOpt: IList<string> voption) (collOpt: IList<string> voption) (target: Xamarin.Forms.VisualElement) =
+        match prevCollOpt, collOpt with 
+        | ValueNone, ValueNone -> ()
+        | ValueSome prevColl, ValueSome newColl when prevColl = newColl -> ()
+        | _, ValueNone -> target.StyleClass <- null
+        | _, ValueSome coll -> target.StyleClass <- coll
 
     /// Incremental NavigationPage maintenance: push/pop the right pages
-    let updateNavigationPages (prevCollOpt: ViewElement[] voption)  (collOpt: ViewElement[] voption) (target: NavigationPage) attach =
-          let create (desc: ViewElement) = (desc.Create() :?> Page)
-          match prevCollOpt, collOpt with 
-          | ValueSome prevColl, ValueSome newColl when identical prevColl newColl -> ()
-          | _, ValueNone -> failwith "Error while updating NavigationPage pages: the pages collection should never be empty for a NavigationPage"
-          | _, ValueSome coll ->
-              if (coll = null || coll.Length = 0) then
+    let internal updateNavigationPages (prevCollOpt: ViewElement[] voption)  (collOpt: ViewElement[] voption) (target: NavigationPage) attach =
+        match prevCollOpt, collOpt with 
+        | ValueSome prevColl, ValueSome newColl when identical prevColl newColl -> ()
+        | _, ValueNone -> failwith "Error while updating NavigationPage pages: the pages collection should never be empty for a NavigationPage"
+        | _, ValueSome coll ->
+            let create (desc: ViewElement) = (desc.Create() :?> Page)
+            if (coll = null || coll.Length = 0) then
                 failwith "Error while updating NavigationPage pages: the pages collection should never be empty for a NavigationPage"
-              else
+            else
                 // Count the existing pages
                 let prevCount = target.Pages |> Seq.length
                 let newCount = coll.Length
@@ -562,13 +563,14 @@ module Converters =
                             prevChildOpt, targetChild
                     attach prevChildOpt newChild targetChild
 
-    let updateOnSizeAllocated prevValueOpt valueOpt (target: obj) = 
+    /// Update the OnSizeAllocated callback of a control, given previous and current values
+    let internal updateOnSizeAllocated prevValueOpt valueOpt (target: obj) = 
         let target = (target :?> CustomContentPage)
         match prevValueOpt with ValueNone -> () | ValueSome f -> target.SizeAllocated.RemoveHandler(f)
         match valueOpt with ValueNone -> () | ValueSome f -> target.SizeAllocated.AddHandler(f)
 
-    /// This links the Command and CanExecute properties
-    let inline updateCommand prevCommandValueOpt commandValueOpt argTransform setter  prevCanExecuteValueOpt canExecuteValueOpt target = 
+    /// Update the Command and CanExecute properties of a control, given previous and current values
+    let inline internal updateCommand prevCommandValueOpt commandValueOpt argTransform setter  prevCanExecuteValueOpt canExecuteValueOpt target = 
         match prevCommandValueOpt, prevCanExecuteValueOpt, commandValueOpt, canExecuteValueOpt with 
         | ValueNone, ValueNone, ValueNone, ValueNone -> ()
         | ValueSome prevf, ValueNone, ValueSome f, ValueNone when identical prevf f -> ()
@@ -577,7 +579,8 @@ module Converters =
         | _, _, ValueSome f, ValueNone -> setter target (makeCommand (fun () -> f (argTransform target)))
         | _, _, ValueSome f, ValueSome k -> setter target (makeCommandCanExecute (fun () -> f (argTransform target)) k)
 
-    let updateCurrentPage<'a when 'a :> Xamarin.Forms.Page and 'a : null> prevValueOpt valueOpt (target: obj) =
+    /// Update the CurrentPage of a control, given previous and current values
+    let internal updateCurrentPage<'a when 'a :> Xamarin.Forms.Page and 'a : null> prevValueOpt valueOpt (target: obj) =
         let control = target :?> Xamarin.Forms.MultiPage<'a>
         match prevValueOpt, valueOpt with
         | ValueNone, ValueNone -> ()
@@ -585,7 +588,8 @@ module Converters =
         | ValueSome _, ValueNone -> control.CurrentPage <- null
         | _, ValueSome curr -> control.CurrentPage <- control.Children.[curr]
 
-    let updateSliderMinimumMaximum prevValueOpt valueOpt (target: obj) =
+    /// Update the Minium and Maximum values of a slider, given previous and current values
+    let internal updateSliderMinimumMaximum prevValueOpt valueOpt (target: obj) =
         let control = target :?> Xamarin.Forms.Slider
         let defaultValue = (0.0, 1.0)
         let updateFunc (prevMinimum, prevMaximum) (newMinimum, newMaximum) =
@@ -603,7 +607,8 @@ module Converters =
         | ValueSome prev, ValueNone -> updateFunc prev defaultValue
         | ValueNone, ValueSome curr -> updateFunc defaultValue curr
 
-    let updateStepperMinimumMaximum prevValueOpt valueOpt (target: obj) =
+    /// Update the Minium and Maximum values of a stepper, given previous and current values
+    let internal updateStepperMinimumMaximum prevValueOpt valueOpt (target: obj) =
         let control = target :?> Xamarin.Forms.Stepper
         let defaultValue = (0.0, 1.0)
         let updateFunc (prevMinimum, prevMaximum) (newMinimum, newMaximum) =
@@ -621,7 +626,8 @@ module Converters =
         | ValueSome prev, ValueNone -> updateFunc prev defaultValue
         | ValueNone, ValueSome curr -> updateFunc defaultValue curr
 
-    let updateNavigationPageTitleView (prevOpt: ViewElement voption) (currOpt: ViewElement voption) (target: Xamarin.Forms.NavigationPage) =
+    /// Update the TitleView of a NavigationPage, given previous and current values
+    let internal updateNavigationPageTitleView (prevOpt: ViewElement voption) (currOpt: ViewElement voption) (target: Xamarin.Forms.NavigationPage) =
         match prevOpt, currOpt with
         | ValueSome prev, ValueSome curr when identical prev curr -> ()
         | ValueSome prev, ValueSome curr when canReuseChild prev curr ->
@@ -632,13 +638,15 @@ module Converters =
             NavigationPage.SetTitleView(target, null)
         | _, _ -> ()
 
-    let equalLayoutOptions (x:Xamarin.Forms.LayoutOptions) (y:Xamarin.Forms.LayoutOptions)  =
+    /// Check if two LayoutOptions are equal
+    let internal equalLayoutOptions (x:Xamarin.Forms.LayoutOptions) (y:Xamarin.Forms.LayoutOptions)  =
         x.Alignment = y.Alignment && x.Expands = y.Expands
 
-    let equalThickness (x:Xamarin.Forms.Thickness) (y:Xamarin.Forms.Thickness)  =
+    /// Check if two Thickness values are equal
+    let internal equalThickness (x:Xamarin.Forms.Thickness) (y:Xamarin.Forms.Thickness)  =
         x.Bottom = y.Bottom && x.Top = y.Top && x.Left = y.Left && x.Right = y.Right
 
-
+    /// Try and find a specific ListView item
     let tryFindListViewItem (sender: obj) (item: obj) =
         match item with 
         | null -> None
@@ -648,7 +656,7 @@ module Converters =
             items |> Seq.tryFindIndex (fun item2 -> identical item.Key item2.Key)
         | _ -> None
 
-    let tryFindGroupedListViewItemIndex (items: System.Collections.Generic.IList<ListGroupData<ViewElement>>) (item: ListElementData<ViewElement>) =
+    let private tryFindGroupedListViewItemIndex (items: System.Collections.Generic.IList<ListGroupData<ViewElement>>) (item: ListElementData<ViewElement>) =
         // POSSIBLE IMPROVEMENT: don't use a linear search
         items 
         |> Seq.indexed 
@@ -658,6 +666,7 @@ module Converters =
             |> Seq.indexed 
             |> Seq.tryPick (fun (j,item2) -> if identical item.Key item2.Key then Some (i,j) else None))
 
+    /// Try and find a specific item in a GroupedListView 
     let tryFindGroupedListViewItemOrGroupItem (sender: obj) (item: obj) = 
         match item with 
         | null -> None
@@ -675,6 +684,7 @@ module Converters =
                 | Some (i, j) -> Some (i, Some j))
         | _ -> None
 
+    /// Try and find a specific GroupedListView item
     let tryFindGroupedListViewItem (sender: obj) (item: obj) =
         match item with 
         | null -> None
