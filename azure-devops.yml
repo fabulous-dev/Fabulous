@@ -1,6 +1,13 @@
+trigger:
+  batch: true
+pr:
+  paths:
+    exclude:
+    - README.md
+    - docs/*
 phases:
 - phase: Windows
-  displayName: Windows Agent
+  displayName: Windows
 
   condition: succeeded()
   queue:
@@ -19,7 +26,7 @@ phases:
 
 
 - phase: macOS
-  displayName: macOS Agent
+  displayName: macOS
 
   condition: succeeded()
   queue:
@@ -38,7 +45,7 @@ phases:
     displayName: 'Build Fabulous'
 
 # - phase: Linux
-#   displayName: Linux Agent
+#   displayName: Linux
 
 #   condition: succeeded()
 #   queue:
