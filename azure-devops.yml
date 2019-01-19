@@ -37,19 +37,18 @@ phases:
         ./build.sh Test
     displayName: 'Build Fabulous'
 
-- phase: Linux
-  displayName: Linux Agent
+# - phase: Linux
+#   displayName: Linux Agent
 
-  condition: succeeded()
-  queue:
-    name: Hosted Ubuntu 1604
-  steps:
-  - script: |
-        echo install fake
-        export DOTNET_ROOT=$HOME/.dotnet/
-        export PATH=$PATH:$HOME/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands
-        dotnet tool install fake-cli -g
-        echo run build script
-        mkdir -p build_output
-        ./build.sh Test
-    displayName: 'Build Fabulous'
+#   condition: succeeded()
+#   queue:
+#     name: Hosted Ubuntu 1604
+#   steps:
+#   - script: |
+#         echo install fake
+#         export PATH=$PATH:$HOME/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands
+#         dotnet tool install fake-cli -g
+#         echo run build script
+#         mkdir -p build_output
+#         ./build.sh Test
+#     displayName: 'Build Fabulous'
