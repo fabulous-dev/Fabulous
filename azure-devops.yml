@@ -24,8 +24,9 @@ phases:
   - script: |  
       echo run build script
       mkdir -p build_output
-      fake.exe run build.fsx -t Test 
-      #--parallel 3
+      ./build.cmd
+      # ./build.cmd Test 
+      # fake.exe run build.fsx --parallel 3
     displayName: 'Build Fabulous'
 
 
