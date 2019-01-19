@@ -183,16 +183,21 @@ PROJ.fs"""
 -r:PACKAGEDIR/xamarin.forms/XAMARINFORMSVERSION/lib/netstandard2.0/Xamarin.Forms.Xaml.dll
 """
 
-    let SimpleTestCase name code =
+    let GeneralTestCase name code refs =
         let directory = __SOURCE_DIRECTORY__ + "/data"
         Directory.CreateDirectory directory |> ignore
         Environment.CurrentDirectory <- directory
         File.WriteAllText (name + ".fs", """
 module TestCode
 """ + code)
-        createNetStandardProjectArgs name ""
+        createNetStandardProjectArgs name refs
 
         Assert.AreEqual(0, FSharpDaemon.Driver.main( [| "dummy.exe"; "--eval"; "@" + name + ".args.txt" |]))
+
+    let SimpleTestCase name code = GeneralTestCase name code ""
+
+    let ElmishTestCase name code = GeneralTestCase name code elmishExtraRefs
+
     [<TestMethod>]
     member this.TestCanEvaluateCounterApp () =
         Environment.CurrentDirectory <- __SOURCE_DIRECTORY__ + "/../../Samples/CounterApp/CounterApp"
@@ -295,6 +300,46 @@ type C(x: int) =
 
 let y = C(3)
 let z = if y.X <> 3 then failwith "fail!" else 1
+        """
+
+    [<TestMethod>]
+    member this.TestExtrinsicFSharpExtensionOnClass1() =
+        SimpleTestCase "TestExtrinsicFSharpExtensionOnClass1" """
+type System.String with 
+    member x.GetLength() = x.Length
+
+let y = "a".GetLength() 
+let z = if y <> 1 then failwith "fail!" else 1
+        """
+
+    [<TestMethod>]
+    member this.TestExtrinsicFSharpExtensionOnClass2() =
+        SimpleTestCase "TestExtrinsicFSharpExtensionOnClass2" """
+type System.String with 
+    member x.GetLength2(y:int) = x.Length + y
+
+let y = "ab".GetLength2(5) 
+let z = if y <> 7 then failwith "fail!" else 1
+        """
+
+    [<TestMethod>]
+    member this.TestExtrinsicFSharpExtensionOnClass3() =
+        SimpleTestCase "TestExtrinsicFSharpExtensionOnClass3" """
+type System.String with 
+    static member GetLength3(x:string) = x.Length
+
+let y = System.String.GetLength3("abc") 
+let z = if y <> 3 then failwith "fail!" else 1
+        """
+
+    [<TestMethod>]
+    member this.TestExtrinsicFSharpExtensionOnClass4() =
+        SimpleTestCase "TestExtrinsicFSharpExtensionOnClass4" """
+type System.String with 
+    member x.LengthProp = x.Length
+
+let y = "abcd".LengthProp
+let z = if y <> 4 then failwith "fail!" else 1
         """
 
     [<TestMethod>]
@@ -401,6 +446,18 @@ let f() =
     | _ -> failwith "fail2!"
 
 f()
+       """
+
+    [<TestMethod>]
+    member this.ViewRefSmoke() =
+        ElmishTestCase "ViewRefSmoke" """
+let theRef = Fabulous.DynamicViews.ViewRef<Xamarin.Forms.Label>()
+       """
+
+    [<TestMethod>]
+    member this.TestCallUnitFunction() =
+        ElmishTestCase "TestCallUnitFunction" """
+let theRef = FSharp.Core.LanguagePrimitives.GenericZeroDynamic<int>()
        """
 
 

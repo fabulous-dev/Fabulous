@@ -30,7 +30,7 @@ let rec convExpr (e:FSharpExpr) : DExpr =
         let mrefR = convMemberRef memberOrFunc
         let typeArgs1R = convTypes typeArgs1
         let typeArgs2R = convTypes typeArgs2
-        let argExprsR = convExprs argExprs
+        let argExprsR = convArgExprs memberOrFunc argExprs
         match objExprOptR with 
         // FCS TODO: Fix quirk with extension members so this isn't needed
         | Some objExprR when memberOrFunc.IsExtensionMember || not memberOrFunc.IsInstanceMemberInCompiledCode  -> 
@@ -48,7 +48,7 @@ let rec convExpr (e:FSharpExpr) : DExpr =
     | BasicPatterns.LetRec(recursiveBindings, bodyExpr) -> DExpr.LetRec(List.mapToArray (map2 convLocalDef convExpr) recursiveBindings, convExpr bodyExpr)
     | BasicPatterns.NewArray(arrayType, argExprs) -> DExpr.NewArray(convType arrayType, convExprs argExprs)
     | BasicPatterns.NewDelegate(delegateType, delegateBodyExpr) -> DExpr.NewDelegate(convType delegateType, convExpr delegateBodyExpr)
-    | BasicPatterns.NewObject(objCtor, typeArgs, argExprs) -> DExpr.NewObject(convMemberRef objCtor, convTypes typeArgs, convExprs argExprs)
+    | BasicPatterns.NewObject(objCtor, typeArgs, argExprs) -> DExpr.NewObject(convMemberRef objCtor, convTypes typeArgs, convArgExprs objCtor argExprs)
     | BasicPatterns.NewRecord(recordType, argExprs) ->  DExpr.NewRecord(convType recordType, convExprs argExprs)
     | BasicPatterns.NewTuple(tupleType, argExprs) -> DExpr.NewTuple(convType tupleType, convExprs argExprs)
     | BasicPatterns.NewUnionCase(unionType, unionCase, argExprs) -> DExpr.NewUnionCase(convType unionType, convUnionCase unionCase, convExprs argExprs)
@@ -118,29 +118,74 @@ and convMemberDef (memb: FSharpMemberOrFunctionOrValue) : DMemberDef =
     { EnclosingEntity = convEntityRef memb.DeclaringEntity.Value
       Name = memb.CompiledName
       GenericParameters = convGenericParamDefs memb.GenericParameters
-      Parameters = convParamDefs memb.CurriedParameterGroups
+      Parameters = convParamDefs memb
       ReturnType = convReturnType memb
       IsInstance = memb.IsInstanceMemberInCompiledCode }
 
 and convMemberRef (memb: FSharpMemberOrFunctionOrValue) = 
     if not (memb.IsMember || memb.IsModuleValueOrMember) then failwith "can't convert non-member ref"
-    let paramTypesR = convParamTypes memb.CurriedParameterGroups
+    let paramTypesR = convParamTypes memb
 
     // TODO: extensions of generic type
     if memb.IsExtensionMember && memb.ApparentEnclosingEntity.GenericParameters.Count > 0 && not (memb.CompiledName = "ProgramRunner`2.EnableLiveUpdate") then 
        failwithf "NYI: extension of generic type, needs FCS support: %s" memb.CompiledName
 
-    let paramTypesR = if memb.IsExtensionMember then Array.append [| DNamedType (convEntityRef memb.ApparentEnclosingEntity, [| |]) |] paramTypesR else paramTypesR
     DMemberRef (convEntityRef memb.DeclaringEntity.Value, memb.CompiledName, memb.GenericParameters.Count, paramTypesR, convReturnType memb)
 
-and convParamTypes (parameters: IList<IList<FSharpParameter>>) = 
-    parameters |> Seq.concat |> Array.ofSeq |> Array.map (fun p -> p.Type) |> convTypes 
+and convParamTypes (memb: FSharpMemberOrFunctionOrValue) =
+    let parameters = memb.CurriedParameterGroups 
+    let paramTypesR = parameters |> Seq.concat |> Array.ofSeq |> Array.map (fun p -> p.Type) 
+    // TODO: FCS should do this unit arg elimination for us
+    let paramTypesR = 
+        match paramTypesR with 
+        | [| pty |] when memb.IsModuleValueOrMember && pty.HasTypeDefinition && pty.TypeDefinition.LogicalName = "unit" -> [| |]
+        | _ -> paramTypesR |> convTypes 
+    // TODO: FCS should do this instance --> static transformation for us
+    if memb.IsInstanceMember && not memb.IsInstanceMemberInCompiledCode then 
+        if memb.IsExtensionMember then 
+            Array.append [| DNamedType (convEntityRef memb.ApparentEnclosingEntity, [| |]) |] paramTypesR 
+        else
+            let instanceType = memb.FullType.GenericArguments.[0]
+            Array.append [| convType instanceType |] paramTypesR 
+    else 
+        paramTypesR 
 
-and convParamDefs (parameters: IList<IList<FSharpParameter>>) = 
-    parameters |> Seq.concat |> Array.ofSeq |> Array.map (fun p -> { Name = p.DisplayName; IsMutable = false; Type = convType p.Type })
+and convArgExprs (memb: FSharpMemberOrFunctionOrValue) exprs = 
+    let parameters = memb.CurriedParameterGroups 
+    let paramTypes = parameters |> Seq.concat |> Array.ofSeq |> Array.map (fun p -> p.Type) 
+    // TODO: FCS should do this unit arg elimination for us
+    match paramTypes, exprs with 
+    | [| pty |] , [ _expr ] when memb.IsModuleValueOrMember && pty.HasTypeDefinition && pty.TypeDefinition.LogicalName = "unit"  -> [| |]
+    | _ -> convExprs exprs
+
+and convParamDefs (memb: FSharpMemberOrFunctionOrValue) = 
+    let parameters = memb.CurriedParameterGroups 
+    // TODO: FCS should do this unit arg elimination for us
+    let parameters = 
+        match parameters |> Seq.concat |> Seq.toArray with 
+        | [| p |] when p.Type.HasTypeDefinition && p.Type.TypeDefinition.LogicalName = "unit" -> [| |]
+        | ps -> ps
+    let parametersR = 
+        parameters |> Array.map (fun p -> { Name = p.DisplayName; IsMutable = false; Type = convType p.Type })
+    if memb.IsInstanceMember && not memb.IsInstanceMemberInCompiledCode then 
+        if memb.IsExtensionMember then 
+            let instanceTypeR = DNamedType (convEntityRef memb.ApparentEnclosingEntity, [| |])
+            let thisParam = { Name = "$this"; IsMutable = false; Type = instanceTypeR }
+            Array.append [| thisParam |] parametersR
+        else
+            let instanceType = memb.FullType.GenericArguments.[0]
+            let thisParam = { Name = "$this"; IsMutable = false; Type = convType instanceType }
+            Array.append [| thisParam |] parametersR
+    else
+        parametersR
 
 and convParamDefs2 (parameters: FSharpMemberOrFunctionOrValue list list) = 
-    parameters |> Seq.concat |> Array.ofSeq |> Array.map (fun p -> { Name = p.DisplayName; IsMutable = false; Type = convType p.FullType })
+    // TODO: FCS should do this unit arg elimination for us
+    let parameters = 
+        match parameters |> Seq.concat |> Seq.toArray with 
+        | [| p |] when p.FullType.HasTypeDefinition && p.FullType.TypeDefinition.LogicalName = "unit" -> [| |]
+        | ps -> ps
+    parameters |> Array.map (fun p -> { Name = p.DisplayName; IsMutable = false; Type = convType p.FullType })
 
 and convReturnType (memb: FSharpMemberOrFunctionOrValue) = 
     convType memb.ReturnParameter.Type
