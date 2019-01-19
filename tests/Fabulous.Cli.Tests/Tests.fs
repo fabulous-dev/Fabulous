@@ -355,6 +355,12 @@ c.Y <- 4
 if c.Y <> 4 then failwith "fail! fail!" 
         """
 
+    [<TestMethod>]
+    member this.TestLengthOnList() =
+        SimpleTestCase "TestLengthOnList" """
+let x = [1;2;3].Length
+if x <> 3 then failwith "fail! fail!" 
+        """
 // Known limitation of FSharp Compiler Service
 //    [<TestMethod>]
 //    member this.TestEvalLocalFunctionOnClass() =
