@@ -154,7 +154,7 @@ Target.create "RunGenerator" (fun _ ->
     )
 )
 
-Target.create "Build" (fun _ -> 
+Target.create "BuildFabulous" (fun _ -> 
     projects |> List.iter buildProject
 )
 
@@ -202,6 +202,7 @@ Target.create "TestTemplatesNuGet" (fun _ ->
             if code <> 0 then failwithf "%s %s failed, error code %d" "msbuild" args code
 )
 
+Target.create "Build" ignore
 Target.create "Test" ignore
 
 open Fake.Core.TargetOperators
@@ -213,15 +214,13 @@ open Fake.Core.TargetOperators
   ==> "BuildTools"
   ==> "BuildControls"
   ==> "RunGenerator"
+  ==> "BuildFabulous"
+  ==> "RunTests"
   ==> "Build"
 
 "Build"
-  ==> "RunTests"
-  ==> "BuildSamples"
-  ==> "Test"
-
-"Build"
   ==> "TestTemplatesNuGet"
+  ==> "BuildSamples"
   ==> "Test"
 
 Target.runOrDefault "Build"
