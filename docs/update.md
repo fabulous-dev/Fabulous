@@ -176,45 +176,46 @@ Sometimes it is needed to make some web requests. Which tool you use here does n
 These are the steps that you have to do, to make it work:
 1. Create a case in the message type for a successful and failure webrequests
 ```fsharp
-type Msg = 
+type Msg =
     | LoginClicked
     | LoginSuccess
     | AuthError
 ```
 2. Implement the Command and return the correct message
 ```fsharp
-let authUser (username: string) (password: string) = 
+let authUser (username : string) (password : string) =
     async {
         do! Async.SwitchToThreadPool()
         // make your http call
         // FSharp.Data.HTTPUtil is used here
-        let! response = 
-            Http.AsyncRequest(url=URL,
-                              body = TextRequest """ {"username": "test", "password": "testpassword"} """,
-                              httpMethod="POST",
-                              silentHttpErrors = true)
-        let r = match response.StatusCode with
+        let! response = Http.AsyncRequest
+                            (url = URL, body = TextRequest """ {"username": "test", "password": "testpassword"} """,
+                             httpMethod = "POST", silentHttpErrors = true)
+        let r =
+            match response.StatusCode with
             | 200 -> LoginSuccess
             | _ -> AuthError
-
-        return r;
-        } |> Cmd.ofAsyncMsg
+        return r
+    }
+    |> Cmd.ofAsyncMsg
 ```
 3. Call the Command from update e.g. when a button is clicked
 ```fsharp
 let update msg model =
-    | LoginClicked ->
-        {model with IsRunning=true}, authUser model.Username model.Password // Call the Command
+    match msg with
+    | LoginClicked -> { model with IsRunning = true }, authUser model.Username model.Password // Call the Command
     | LoginSuccess ->
-        {model with IsLoggedIn = true; IsRunning=false}, Cmd.none
+        { model with IsLoggedIn = true
+                     IsRunning = false }, Cmd.none
     | AuthError ->
-        {model with IsLoggedIn = false; IsRunning=false}, Cmd.none
+        { model with IsLoggedIn = false
+                     IsRunning = false }, Cmd.none
 ```
 4. Create your view as you need
 ```fsharp
 match model.IsLoggedIn with
-    | true -> LoggedInSuccesful
-    | false -> LoginView
+| true -> LoggedInSuccesful
+| false -> LoginView
 ```
 
 Platform-specific dispatch
