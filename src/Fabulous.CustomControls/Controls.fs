@@ -4,6 +4,7 @@ namespace Fabulous.CustomControls
 open Xamarin.Forms
 open System
 
+/// A custom control used to implement the 'textChanged' attribute on the EntryCell view element 
 type CustomEntryCell() as self =
     inherit EntryCell()
 

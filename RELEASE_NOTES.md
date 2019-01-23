@@ -1,3 +1,12 @@
+#### 0.30.0
+
+* Added support for Xamarin.Forms 3.4 (https://github.com/fsprojects/Fabulous/pull/257)
+* Added new GTK template (https://github.com/fsprojects/Fabulous/pull/268)
+* Changed behavior of SKCanvasView "invalidate" (always triggers an invalidation while the property is true) (https://github.com/fsprojects/Fabulous/pull/262)
+* Updated WPF template to target .NET Framework 4.7.2 by default (https://github.com/fsprojects/Fabulous/pull/267)
+* Updated NuGet inside the template to v4.9.2 (https://github.com/fsprojects/Fabulous/pull/271)
+* Fixed MacOS template by adding some missing references (https://github.com/fsprojects/Fabulous/pull/276)
+
 #### 0.29.0
 
 BREAKING CHANGES:

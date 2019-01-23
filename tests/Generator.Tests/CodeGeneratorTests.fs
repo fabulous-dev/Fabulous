@@ -11,7 +11,7 @@ module ``CodeGenerator Tests`` =
         let expected = expectedStr.Replace("\r\n", "\n").Substring(1)
         use w = new StringWriter()
         func data w
-        let actual = w.ToString()
+        let actual = w.ToString().Replace("\r\n", "\n")
         actual |> should equal expected
 
     let testGenerateNamespaceAndClass = testFunc generateNamespaceAndClass

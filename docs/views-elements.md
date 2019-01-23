@@ -119,7 +119,7 @@ View.FlexLayout(
         ).FlexOrder(-1).FlexAlignSelf(FlexAlignSelf.Center)
 
         View.Label(margin = Thickness(0.0, 4.0)).FlexGrow(1.0)
-        View.Button(text = "Learn More", fontSize = "Large", cornerRadius = 20) ])
+        View.Button(text = "Learn More", fontSize = "Large", cornerRadius = 20)
     ]
 )
 ```

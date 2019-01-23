@@ -265,6 +265,11 @@ module App =
 
     let view (model: Model) dispatch =
 
+        let MainPageButton = 
+            View.Button(text="Main page", 
+                        command=(fun () -> dispatch (SetRootPageKind (Choice false))), 
+                        horizontalOptions=LayoutOptions.CenterAndExpand)
+
         match model.RootPageKind with 
         | Choice showAbout -> 
             View.NavigationPage(pages=
@@ -320,9 +325,8 @@ module App =
                          View.Button(text="Decrement", command=(fun () -> dispatch Decrement), horizontalOptions=LayoutOptions.CenterAndExpand)
 
                          View.Button(text="Go to grid", cornerRadius=5, command=(fun () -> dispatch (SetCarouselCurrentPage 6)), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)
-
-                         View.Button(text="Main page", cornerRadius=5, command=(fun () -> dispatch (SetRootPageKind (Choice false))), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)
-                
+                         
+                         MainPageButton
                       ]))
 
                dependsOn model.CountForActivityIndicator (fun model count -> 
@@ -338,7 +342,7 @@ module App =
 
                         View.Label(text="Button:")
                         View.Button(text="Decrement", command=(fun () -> dispatch DecrementForActivityIndicator), horizontalOptions=LayoutOptions.CenterAndExpand)
-                 
+                        MainPageButton
                       ]))
 
                dependsOn (model.StartDate, model.EndDate) (fun model (startDate, endDate) -> 
@@ -354,6 +358,7 @@ module App =
                              date=endDate, 
                              dateSelected=(fun args -> dispatch (EndDateSelected args.NewDate)), 
                              horizontalOptions=LayoutOptions.CenterAndExpand)
+                         MainPageButton
                        ]))
 
                dependsOn model.EditorText (fun model editorText -> 
@@ -362,6 +367,7 @@ module App =
                          View.Editor(text= editorText, horizontalOptions=LayoutOptions.FillAndExpand, 
                             textChanged=(fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
                             completed=(fun text -> dispatch (EditorEditCompleted text)))
+                         MainPageButton
                        ]))
 
                dependsOn (model.EntryText, model.Password, model.Placeholder) (fun model (entryText, password, placeholder) -> 
@@ -381,6 +387,7 @@ module App =
                              textChanged=debounce 250 (fun args -> dispatch (TextChanged(args.OldTextValue, args.NewTextValue))), 
                              completed=(fun text -> dispatch (PlaceholderEntryEditCompleted text)))
 
+                         MainPageButton
                        ]) )
 
                dependsOn (model.NumTaps, model.NumTaps2) (fun model (numTaps, numTaps2) -> 
@@ -400,7 +407,7 @@ module App =
                              horizontalOptions=LayoutOptions.CenterAndExpand, 
                              gestureRecognizers=[ View.TapGestureRecognizer(numberOfTapsRequired=2, command=(fun () -> dispatch FrameTapped2)) ] )
                  
-                         View.Button(text="Main page", command=(fun () -> dispatch (SetRootPageKind (Choice false))), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)
+                         MainPageButton
                        ]))
 
                dependsOn () (fun model () -> 
@@ -413,8 +420,8 @@ module App =
                                       for j in 1 .. 6 -> 
                                          let color = Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0)
                                          View.BoxView(color).GridRow(i-1).GridColumn(j-1) ] )
+                         MainPageButton
                        ]))
-
            ])
 
         | Tabbed1 ->
@@ -454,6 +461,8 @@ module App =
                        View.Button(text="Go to Image", 
                             command=(fun () -> dispatch (SetTabbed1CurrentPage 4)), 
                             horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)
+                       
+                       MainPageButton
                     ]))
 
                dependsOn () (fun model () -> 
@@ -465,10 +474,7 @@ module App =
                                     for j in 1 .. 6 -> 
                                         let color = Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0) 
                                         View.BoxView(color).GridRow(i-1).GridColumn(j-1) ] )
-                         View.Button(text="Main page", 
-                             command=(fun () -> dispatch (SetRootPageKind (Choice false))), 
-                             horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)
-                
+                         MainPageButton
                         ]))
 
                dependsOn (model.GridSize, model.NewGridSize) (fun model (gridSize, newGridSize) -> 
@@ -482,6 +488,7 @@ module App =
                                       for j in 1 .. gridSize -> 
                                          let color = Color((1.0/float i), (1.0/float j), (1.0/float (i+j)), 1.0) 
                                          View.BoxView(color).GridRow(i-1).GridColumn(j-1) ]))
+                        MainPageButton
                       ], 
                       gestureRecognizers=[ View.PinchGestureRecognizer(pinchUpdated=(fun pinchArgs -> 
                                               dispatch (UpdateNewGridSize (pinchArgs.Scale, pinchArgs.Status)))) ] ))
@@ -496,6 +503,7 @@ module App =
                                                for col in 1 .. 6 ->
                                                   let item = View.Label(text=sprintf "(%d, %d)" (col+dx) (row+dy), backgroundColor=Color.White, textColor=Color.Black) 
                                                   item.GridRow(row-1).GridColumn(col-1) ])
+                            MainPageButton
                       ], 
                       gestureRecognizers=[ View.PanGestureRecognizer(touchPoints=1, panUpdated=(fun panArgs -> 
                                               if panArgs.StatusType = GestureStatus.Running then 
@@ -510,7 +518,8 @@ module App =
                        View.Label(text="Image (Embedded):", margin=Thickness(0., 20., 0., 0.))
                        View.Image(source=ImageSource.FromResource("AllControls.Baboon_Serengeti.jpg", typeof<RootPageKind>.Assembly), 
                               horizontalOptions=LayoutOptions.FillAndExpand,
-                              verticalOptions=LayoutOptions.FillAndExpand) ]))
+                              verticalOptions=LayoutOptions.FillAndExpand) 
+                       MainPageButton ]))
              ])
 
         | Tabbed2 ->
@@ -520,11 +529,13 @@ module App =
                   View.ScrollingContentPage("Picker", 
                      [ View.Label(text="Picker:")
                        View.Picker(title="Choose Color:", textColor=snd pickerItems.[pickedColorIndex], selectedIndex=pickedColorIndex, itemsSource=(Array.map fst pickerItems), horizontalOptions=LayoutOptions.CenterAndExpand, selectedIndexChanged=(fun (i, item) -> dispatch (PickerItemChanged i)))
+                       MainPageButton
                      ]))
                       
                dependsOn () (fun model () -> 
                   View.ScrollingContentPage("ListView", 
-                     [ View.Label(text="ListView:")
+                     [ MainPageButton
+                       View.Label(text="ListView:")
                        View.ListView(
                            items = [ 
                                for i in 0 .. 10 do 
@@ -545,7 +556,8 @@ module App =
                             placeholder = "Enter search term",
                             searchCommand = (fun searchBarText -> dispatch (ExecuteSearch searchBarText)),
                             canExecute=true) 
-                       View.Label(text="You searched for " + searchTerm) ]))
+                       View.Label(text="You searched for " + searchTerm) 
+                       MainPageButton ]))
 
                dependsOn () (fun model () -> 
                    View.NonScrollingContentPage("ListViewGrouped", 
@@ -567,6 +579,7 @@ module App =
                                 ], 
                              horizontalOptions=LayoutOptions.CenterAndExpand,
                              itemSelected=(fun idx -> dispatch (ListViewGroupedSelectedItemChanged idx)))
+                         MainPageButton
                    ]))
 
              ])
@@ -578,45 +591,50 @@ module App =
                    View.ContentPage(title="FlexLayout", useSafeArea=true,
                        padding = new Thickness (10.0, 20.0, 10.0, 5.0), 
                        content= 
-                           View.ScrollView(orientation=ScrollOrientation.Both,
-                              content = View.FlexLayout(
-                                  children = [
-                                      View.Frame(heightRequest=480.0, widthRequest=300.0, 
-                                          content = View.FlexLayout( direction=FlexDirection.Column,
-                                              children = [ 
-                                                  View.Label(text="Seated Monkey", margin=Thickness(0.0, 8.0), fontSize="Large", textColor=Color.Blue)
-                                                  View.Label(text="This monkey is laid back and relaxed, and likes to watch the world go by.", margin=Thickness(0.0, 4.0), textColor=Color.Black)
-                                                  View.Label(text="  • Often smiles mysteriously", margin=Thickness(0.0, 4.0), textColor=Color.Black)
-                                                  View.Label(text="  • Sleeps sitting up", margin=Thickness(0.0, 4.0), textColor=Color.Black)
-                                                  View.Image(heightRequest=240.0, 
-                                                      widthRequest=160.0, 
-                                                      source="https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg/160px-Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg"
-                                                  ).FlexOrder(-1).FlexAlignSelf(FlexAlignSelf.Center)
-                                                  View.Label(margin=Thickness(0.0, 4.0)).FlexGrow(1.0)
-                                                  View.Button(text="Learn More", fontSize="Large", textColor=Color.White, backgroundColor=Color.Green, cornerRadius=20) ]),
-                                          backgroundColor=Color.LightYellow,
-                                          borderColor=Color.Blue,
-                                          margin=10.0,
-                                          cornerRadius=15.0)
-                                      View.Frame(heightRequest=480.0, widthRequest=300.0, 
-                                          content = View.FlexLayout( direction=FlexDirection.Column,
-                                              children = [ 
-                                                  View.Label(text="Banana Monkey", margin=Thickness(0.0, 8.0), fontSize="Large", textColor=Color.Blue)
-                                                  View.Label(text="Watch this monkey eat a giant banana.", margin=Thickness(0.0, 4.0), textColor=Color.Black)
-                                                  View.Label(text="  • More fun than a barrel of monkeys", margin=Thickness(0.0, 4.0), textColor=Color.Black)
-                                                  View.Label(text="  • Banana not included", margin=Thickness(0.0, 4.0), textColor=Color.Black)
-                                                  View.Image(heightRequest=213.0, 
-                                                      widthRequest=320.0, 
-                                                      source="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Crab_eating_macaque_in_Ubud_with_banana.JPG/320px-Crab_eating_macaque_in_Ubud_with_banana.JPG"
-                                                  ).FlexOrder(-1).FlexAlignSelf(FlexAlignSelf.Center)
-                                                  View.Label(margin=Thickness(0.0, 4.0)).FlexGrow(1.0)
-                                                  View.Button(text="Learn More", fontSize="Large", textColor=Color.White, backgroundColor=Color.Green, cornerRadius=20) ]),
-                                          backgroundColor=Color.LightYellow,
-                                          borderColor=Color.Blue,
-                                          margin=10.0,
-                                          cornerRadius=15.0)
-                                  ] ))
-                           ) )
+                           View.FlexLayout(
+                            direction = FlexDirection.Column,
+                            children = [
+                                View.ScrollView(orientation=ScrollOrientation.Both,
+                                  content = View.FlexLayout(
+                                      children = [
+                                          View.Frame(heightRequest=480.0, widthRequest=300.0, 
+                                              content = View.FlexLayout( direction=FlexDirection.Column,
+                                                  children = [ 
+                                                      View.Label(text="Seated Monkey", margin=Thickness(0.0, 8.0), fontSize="Large", textColor=Color.Blue)
+                                                      View.Label(text="This monkey is laid back and relaxed, and likes to watch the world go by.", margin=Thickness(0.0, 4.0), textColor=Color.Black)
+                                                      View.Label(text="  • Often smiles mysteriously", margin=Thickness(0.0, 4.0), textColor=Color.Black)
+                                                      View.Label(text="  • Sleeps sitting up", margin=Thickness(0.0, 4.0), textColor=Color.Black)
+                                                      View.Image(heightRequest=240.0, 
+                                                          widthRequest=160.0, 
+                                                          source="https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg/160px-Vervet_monkey_Krugersdorp_game_reserve_%285657678441%29.jpg"
+                                                      ).FlexOrder(-1).FlexAlignSelf(FlexAlignSelf.Center)
+                                                      View.Label(margin=Thickness(0.0, 4.0)).FlexGrow(1.0)
+                                                      View.Button(text="Learn More", fontSize="Large", textColor=Color.White, backgroundColor=Color.Green, cornerRadius=20) ]),
+                                              backgroundColor=Color.LightYellow,
+                                              borderColor=Color.Blue,
+                                              margin=10.0,
+                                              cornerRadius=15.0)
+                                          View.Frame(heightRequest=480.0, widthRequest=300.0, 
+                                              content = View.FlexLayout( direction=FlexDirection.Column,
+                                                  children = [ 
+                                                      View.Label(text="Banana Monkey", margin=Thickness(0.0, 8.0), fontSize="Large", textColor=Color.Blue)
+                                                      View.Label(text="Watch this monkey eat a giant banana.", margin=Thickness(0.0, 4.0), textColor=Color.Black)
+                                                      View.Label(text="  • More fun than a barrel of monkeys", margin=Thickness(0.0, 4.0), textColor=Color.Black)
+                                                      View.Label(text="  • Banana not included", margin=Thickness(0.0, 4.0), textColor=Color.Black)
+                                                      View.Image(heightRequest=213.0, 
+                                                          widthRequest=320.0, 
+                                                          source="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Crab_eating_macaque_in_Ubud_with_banana.JPG/320px-Crab_eating_macaque_in_Ubud_with_banana.JPG"
+                                                      ).FlexOrder(-1).FlexAlignSelf(FlexAlignSelf.Center)
+                                                      View.Label(margin=Thickness(0.0, 4.0)).FlexGrow(1.0)
+                                                      View.Button(text="Learn More", fontSize="Large", textColor=Color.White, backgroundColor=Color.Green, cornerRadius=20) ]),
+                                              backgroundColor=Color.LightYellow,
+                                              borderColor=Color.Blue,
+                                              margin=10.0,
+                                              cornerRadius=15.0)
+                                          
+                                      ] ))
+                                MainPageButton
+                            ])) )
 
                dependsOn () (fun model () -> 
                 View.ScrollingContentPage("TableView", 
@@ -627,7 +645,8 @@ module App =
                                                       View.SwitchCell(on=false, text="Programming F#", onChanged=(fun args -> ()) ) ])
                                           ("Contact", [ View.EntryCell(label="Email", placeholder="foo@bar.com", completed=(fun args -> ()) )
                                                         View.EntryCell(label="Phone", placeholder="+44 87654321", completed=(fun args -> ()) )] )], 
-                                  horizontalOptions=LayoutOptions.StartAndExpand) 
+                                  horizontalOptions=LayoutOptions.StartAndExpand)
+                  MainPageButton
                     ]))
 
                dependsOn model.Count (fun model count -> 
@@ -640,6 +659,8 @@ module App =
                           View.Label(text = "Positioned relative to my parent", textColor = Color.Red)
                                 .XConstraint(Constraint.RelativeToParent(fun parent -> parent.Width / 3.0))
                                 .YConstraint(Constraint.RelativeToParent(fun parent -> parent.Height / 2.0))
+                          MainPageButton
+                                .XConstraint(Constraint.RelativeToParent(fun parent -> parent.Width / 2.0))
                       ])))
 
 
@@ -661,6 +682,7 @@ module App =
                                       View.Label(text = "Bottom Right", textColor = Color.Black)
                                           .LayoutFlags(AbsoluteLayoutFlags.PositionProportional)
                                           .LayoutBounds(Rectangle(1.0, 1.0, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize)) ])
+                               MainPageButton
                             ])))
 
                 ])
@@ -717,6 +739,7 @@ module App =
                                         View.Button(text="Page A", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (PushPage "A")))
                                         View.Button(text="Page B", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch (PushPage "B")))
                                         View.Button(text="Back", verticalOptions=LayoutOptions.CenterAndExpand, horizontalOptions=LayoutOptions.Center, command=(fun () -> dispatch PopPage ))
+                                        MainPageButton
                                         ]) ).HasNavigationBar(false).HasBackButton(false)
 
                           | _ -> 
@@ -753,15 +776,14 @@ module App =
          | InfiniteScrollList -> 
               dependsOn (model.InfiniteScrollMaxRequested ) (fun model max -> 
                View.ScrollingContentPage("ListView (InfiniteScrollList)", 
-                [View.Label(text="InfiniteScrollList:")
+                [MainPageButton
+                 View.Label(text="InfiniteScrollList:")
                  View.ListView(items = [ for i in 1 .. max do 
                                            yield dependsOn i (fun _ i -> View.Label("Item " + string i, textColor=(if i % 3 = 0 then Color.CadetBlue else Color.LightCyan))) ], 
                                horizontalOptions=LayoutOptions.CenterAndExpand, 
                                // Every time the last element is needed, grow the set of data to be at least 10 bigger then that index 
                                itemAppearing=(fun idx -> if idx >= max - 2 then dispatch (SetInfiniteScrollMaxIndex (idx + 10) ) )  )
-                 View.Button(text="Main page", command=(fun () -> dispatch (SetRootPageKind (Choice false))), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)
-                
-                ] ))
+                 ] ))
 
          | Animations -> 
                View.ScrollingContentPage("Animations", 

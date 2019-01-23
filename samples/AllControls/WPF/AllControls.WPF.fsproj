@@ -2,7 +2,7 @@
     <Import Project="..\..\..\netfx.props" />
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net471</TargetFramework>
+        <TargetFramework>net472</TargetFramework>
         <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
     </PropertyGroup>
     <ItemGroup>

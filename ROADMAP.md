@@ -7,20 +7,22 @@
 * Docs
   * Generate `///` docs in code generator
 
-* Programming efficiency
-  * Support hot-reloading of the saved model, reapplying to the same app where possible
-
+* Live Reload
+  * State migration: Support hot-reloading of the saved model, reapplying to the same app where possible
+  * Use actual newly compiled DLLs on Android instead of F# interperter
+  * Check Live Reload on WPF and other same-machine
+  * Make IDE launch of `fscd` tool simpler
 
 ## Ideas
 
 * Performance:
-  * Do better list comparison/diffing
-  * Perf-test on large lists and do resulting perf work
+  * Consider possibilities for better list comparison/diffing
+  * Do more perf-test on large lists and do resulting perf work
   * Consider allowing a `ChunkList` tree as input to ListView etc., e.g. `chunks { yield! stablePart; yield newElement; yield! stablePart2 }` 
   * Consider memoize function closure creation
   * Consider moving 'view' and 'model' computations off the UI thread
 
-* Make some small F# language improvements to improve code:
+* Consider making  some small F# language improvements to improve code:
   * Remove `yield` in more cases
   * Automatically save function values that do not capture any arguments
   * Allow a default unnamed argument for `children` so the argument name doesn't have to be given explicitly

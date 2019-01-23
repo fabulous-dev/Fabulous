@@ -41,7 +41,10 @@ let buildDir = Path.getFullName "./build_output"
 let removeIncompatiblePlatformProjects pattern = 
     if not Environment.isWindows then
         pattern
-        -- "samples/AllControls/WPF/AllControls.WPF.fsproj"
+        -- "samples/**/*.WPF.fsproj"
+    elif not Environment.isMacOS then
+        pattern
+        -- "samples/**/*.MacOS.fsproj"
     else    
         pattern
 
