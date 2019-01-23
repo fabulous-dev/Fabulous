@@ -24,6 +24,7 @@ phases:
   - script: |  
       echo run build script
       mkdir -p build_output
+      set PATH=%PATH%;C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin\
       ./build.cmd Test
       # ./build.cmd Test 
       # fake.exe run build.fsx --parallel 3
