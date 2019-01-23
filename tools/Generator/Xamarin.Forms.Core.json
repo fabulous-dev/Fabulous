@@ -1434,6 +1434,13 @@
           "defaultValue": "Unchecked.defaultof<Xamarin.Forms.Thickness>"
         },
         {
+          "name": "TitleView",
+          "inputType": "ViewElement",
+          "modelType": "ViewElement",
+          "updateCode": "updateNavigationPageTitleView",
+          "defaultValue": "null"
+        },
+        {
           "name": "ToolbarItems",
           "inputType": "ViewElement list",
           "modelType": "ViewElement[]",
@@ -1537,13 +1544,6 @@
         {
           "name": "BarTextColor",
           "defaultValue": "Xamarin.Forms.Color.Default"
-        },
-        {
-          "name": "TitleView",
-          "inputType": "ViewElement",
-          "modelType": "ViewElement",
-          "updateCode": "updateNavigationPageTitleView",
-          "defaultValue": "null"
         },
         {
           "name": "Popped",
