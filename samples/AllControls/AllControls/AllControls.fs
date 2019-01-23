@@ -837,6 +837,7 @@ module App =
                         View.Button(text="Get Data", command=(fun () -> dispatch ReceiveData))
                         View.ActivityIndicator(isRunning=model.IsRunning)
                         View.Label(text=data)
+                        MainPageButton
                     ]
             ))
 
