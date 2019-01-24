@@ -399,7 +399,7 @@ type EvalContext ()  =
                 | _res -> 
                     let (RTypesOrObj paramTysV) = ctxt.ResolveTypes (formalEnv, paramTys)
                     match entityType.GetConstructor(bindAll, null, paramTysV, null) with 
-                    | null -> ctxt.InterpMethod(formalEnv, eR, nm, paramTys)
+                    | null -> failwithf "couldn't bind constructor %A for %A" v entityType //ctxt.InterpMethod(formalEnv, eR, nm, paramTys)
                     | cinfo -> RMethod cinfo
             else
                 match entityType.GetMethods(bindAll) |> Array.filter (fun m -> m.Name = nm && m.GetParameters().Length = n) with 
@@ -407,12 +407,14 @@ type EvalContext ()  =
                 | [| |] when n = 0 && genericParams = 0 -> 
                     // FCS QUIRK TODO: cleanup FCS and portacode so names of properties are never used
                     match entityType.GetProperty(nm, bindAll) with 
-                    | null -> ctxt.InterpMethod(formalEnv, eR, nm, paramTys)
+                    | null -> failwithf "couldn't bind method %A for %A" v entityType //ctxt.InterpMethod(formalEnv, eR, nm, paramTys)
+                    //| null -> ctxt.InterpMethod(formalEnv, eR, nm, paramTys)
                     | pinfo  -> ctxt.MakeRMethod pinfo.GetMethod
                 | _res -> 
                     let (RTypesOrObj paramTysV) = ctxt.ResolveTypes (formalEnv, paramTys)
                     match entityType.GetMethod(nm, bindAll, null, paramTysV, null) with 
-                    | null -> ctxt.InterpMethod(formalEnv, eR, nm, paramTys)
+                    | null -> failwithf "couldn't bind property %A for %A" v entityType //ctxt.InterpMethod(formalEnv, eR, nm, paramTys)
+                    //| null -> ctxt.InterpMethod(formalEnv, eR, nm, paramTys)
                     | minfo -> RMethod minfo
         | eR -> 
             ctxt.InterpMethod(formalEnv, eR, nm, paramTys)
@@ -427,11 +429,12 @@ type EvalContext ()  =
                 // Override any existing resolution
                 entityResolutions.[DEntityRef entityName] <- UEntity entityDef
                 ctxt.AddDecls(subDecls)
-            | DDeclMember (membDef, _body) when membDef.Parameters.Length = 0 && membDef.GenericParameters.Length = 0 -> ()
+            // TODO: static member properties will be evaluated eagerly incorrectly
+            | DDeclMember (membDef, _body) when not (membDef.Name = ".ctor") && not membDef.IsInstance && membDef.Parameters.Length = 0 && membDef.GenericParameters.Length = 0 -> ()
             | DDeclMember (membDef, body) -> 
                 let ty = ctxt.ResolveEntity(membDef.EnclosingEntity)
-                let paramTypes = membDef.Parameters |> Array.map (fun p -> p.Type)
-                let paramTypesR = ctxt.ResolveTypes(env, paramTypes)
+                let paramTypes = membDef.Parameters |> Array.map (fun p -> p.Type) 
+                let paramTypesR = ctxt.ResolveTypes(env, paramTypes) 
                 let thunk = ctxt.EvalMethodLambda (envEmpty, (membDef.Name = ".ctor"), membDef.IsInstance, membDef.GenericParameters, membDef.Parameters, body)
                 members.[(ty, membDef.Name, paramTypesR)] <- Value thunk
             | _ -> ()
@@ -456,7 +459,7 @@ type EvalContext ()  =
         for d in decls do
             match d with 
             | DDeclEntity (_e, subDecls) -> ctxt.EvalDecls(env, subDecls)
-            | DDeclMember (membDef, body) when membDef.Parameters.Length = 0 && membDef.GenericParameters.Length = 0 -> 
+            | DDeclMember (membDef, body) when not (membDef.Name = ".ctor") && not membDef.IsInstance && membDef.Parameters.Length = 0 && membDef.GenericParameters.Length = 0 -> 
                 let ty = ctxt.ResolveEntity(membDef.EnclosingEntity)
                 let res = ctxt.EvalExpr (env, body)
                 members.[(ty, membDef.Name, RTypes [| |])] <- res
