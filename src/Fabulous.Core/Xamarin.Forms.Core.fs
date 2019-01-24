@@ -9266,7 +9266,7 @@ type View() =
         | _, ValueSome currValue -> target.Padding <-  currValue
         | ValueSome _, ValueNone -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
         | ValueNone, ValueNone -> ()
-        updateNavigationPageTitleView prevTitleViewOpt currTitleViewOpt target
+        updatePageTitleView prevTitleViewOpt currTitleViewOpt target
         updateCollectionGeneric prevToolbarItemsOpt currToolbarItemsOpt target.ToolbarItems
             (fun (x:ViewElement) -> x.Create() :?> Xamarin.Forms.ToolbarItem)
             (fun _ _ _ -> ())

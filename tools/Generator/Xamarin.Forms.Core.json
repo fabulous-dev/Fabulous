@@ -1437,7 +1437,7 @@
           "name": "TitleView",
           "inputType": "ViewElement",
           "modelType": "ViewElement",
-          "updateCode": "updateNavigationPageTitleView",
+          "updateCode": "updatePageTitleView",
           "defaultValue": "null"
         },
         {

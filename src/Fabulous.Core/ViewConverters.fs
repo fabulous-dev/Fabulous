@@ -627,7 +627,7 @@ module Converters =
         | ValueNone, ValueSome curr -> updateFunc defaultValue curr
 
     /// Update the attached NavigationPage.TitleView property of a Page, given previous and current values
-    let internal updateNavigationPageTitleView (prevOpt: ViewElement voption) (currOpt: ViewElement voption) (target: Page) =
+    let internal updatePageTitleView (prevOpt: ViewElement voption) (currOpt: ViewElement voption) (target: Page) =
         match prevOpt, currOpt with
         | ValueSome prev, ValueSome curr when identical prev curr -> ()
         | ValueSome prev, ValueSome curr when canReuseChild prev curr ->
