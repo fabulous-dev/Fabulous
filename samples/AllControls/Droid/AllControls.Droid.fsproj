@@ -167,7 +167,7 @@
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>../../../packages/androidapp/Xamarin.Forms/lib/MonoAndroid10/Xamarin.Forms.Xaml.dll</HintPath>
-    </Reference>
+    </Reference> 
     <Reference Include="FSharp.Core">
       <HintPath>../../../packages/androidapp/FSharp.Core/lib/netstandard1.6/FSharp.Core.dll</HintPath>
     </Reference>
