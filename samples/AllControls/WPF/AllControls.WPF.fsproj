@@ -23,7 +23,6 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="FSharp.Core" />
-        <PackageReference Include="FSharp.Data" Version="3.0.0" />
         <PackageReference Include="Xamarin.Forms" />
         <PackageReference Include="Xamarin.Forms.Platform.WPF" />
     </ItemGroup>
