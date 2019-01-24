@@ -36,7 +36,7 @@ module MockForms =
             member __.CreateTicker() = raise (NotImplementedException())
             member __.StartTimer(interval, callback) =  raise (NotImplementedException())
             member __.GetStreamAsync(uri, cancellationToken) = raise (NotImplementedException())
-            member __.GetAssemblies() = raise (NotImplementedException())
+            member __.GetAssemblies() = [| |] // raise (NotImplementedException())
             member __.GetUserStoreForApplication() = raise (NotImplementedException())
             member __.QuitApplication() = raise (NotImplementedException())
 
@@ -47,7 +47,7 @@ module MockForms =
 
     type MockResourcesProvider() = 
         interface ISystemResourcesProvider with 
-            member __.GetSystemResources() = raise (NotImplementedException())
+            member __.GetSystemResources() = (ResourceDictionary() :> IResourceDictionary) // raise (NotImplementedException())
 
     type MockDeviceInfo() = 
         inherit DeviceInfo()
