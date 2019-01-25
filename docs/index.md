@@ -30,7 +30,7 @@ Getting started
 
        SqueakyApp/SqueakyApp.sln
 
-By default iOS and Android projects are created. For WPF apps use `--WPF`, for macOS use `--macOS`, for GTK use `--GTK` for example:
+By default iOS and Android projects are created. But you can also target WPF with `--WPF`, macOS with `--macOS` and/or GTK with `--GTK`. Here some common examples, but feel free to change the targets to the ones you require:
 
 Android only:
 
