@@ -78,7 +78,6 @@
     <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
     <None Include="Assets\AboutAssets.txt" />
-    <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -169,7 +168,7 @@
       <HintPath>../../../packages/androidapp/FSharp.Core/lib/netstandard1.6/FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Data">
-      <HintPath>../../../packages/androidapp/FSharp.Data.3.0.0/lib/netstandard2.0/FSharp.Data.dll</HintPath>
+      <HintPath>../../../packages/androidapp/FSharp.Data/lib/netstandard2.0/FSharp.Data.dll</HintPath>
     </Reference>
     <ProjectReference Include="..\AllControls\AllControls.fsproj">
       <Project>{13f140d6-2d21-41be-ac90-4b14d8c16a47}</Project>
