@@ -164,6 +164,8 @@ RESTRICTION: == net471
 NUGET
   remote: https://api.nuget.org/v3/index.json
     FSharp.Core (4.5.2)
+    FSharp.Data (3.0)
+      FSharp.Core (>= 4.0.0.1)
     Newtonsoft.Json (11.0.2)
     Xamarin.Forms (3.4.0.1009999)
     Xamarin.Forms.Platform.GTK (3.4.0.1009999)
@@ -197,6 +199,7 @@ NUGET
       System.Threading.Thread (>= 4.0)
       System.Threading.ThreadPool (>= 4.0.10)
       System.Threading.Timer (>= 4.0.1)
+    FSharp.Data (3.0)
     Microsoft.CSharp (4.5)
     Microsoft.NETCore.Platforms (2.2)
     Microsoft.Win32.Primitives (4.3)
@@ -333,6 +336,7 @@ NUGET
       System.Threading.Thread (>= 4.0)
       System.Threading.ThreadPool (>= 4.0.10)
       System.Threading.Timer (>= 4.0.1)
+    FSharp.Data (3.0)
     Microsoft.CSharp (4.5)
     Microsoft.NETCore.Platforms (2.2)
     Microsoft.Win32.Primitives (4.3)
@@ -465,6 +469,8 @@ RESTRICTION: == net472
 NUGET
   remote: https://api.nuget.org/v3/index.json
     FSharp.Core (4.5.2)
+    FSharp.Data (3.0)
+      FSharp.Core (>= 4.0.0.1)
     Newtonsoft.Json (11.0.2)
     OpenTK (3.0.1)
     OpenTK.GLControl (3.0.1)

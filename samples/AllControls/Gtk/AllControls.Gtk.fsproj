@@ -63,6 +63,12 @@
       <Package>gtk-sharp-2.0</Package>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
+    <Reference Include="FSharp.Core">
+      <HintPath>..\..\..\packages\gtkapp\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="FSharp.Data">
+      <HintPath>..\..\..\packages\gtkapp\FSharp.Data\lib\netstandard2.0\FSharp.Data.dll</HintPath>
+    </Reference>
     <Reference Include="OpenTK">
       <HintPath>..\..\..\packages\gtkapp\Xamarin.Forms.Platform.GTK\lib\net45\OpenTK.dll</HintPath>
     </Reference>
