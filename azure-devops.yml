@@ -17,7 +17,7 @@ phases:
     name: Hosted VS2017
   steps:
   - script: |
-      echo Install fake-cli & GTK#
+      echo Install fake-cli and GTK#
       dotnet tool install --tool-path . fake-cli 
       choco install gtksharp
     displayName: 'Install Fake'
