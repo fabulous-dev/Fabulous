@@ -41,6 +41,7 @@ group androidapp
   nuget Xamarin.Android.Support.v7.RecyclerView 27.0.2.1
   nuget Xamarin.Android.Support.Vector.Drawable 27.0.2.1
   nuget Newtonsoft.Json 11.0.2
+  nuget FSharp.Data 3.0.0
 
 # Dependencies used when compiling and running iOS samples. We can normally use the latest FSharp.Core and 
 # latest Xamarin.Forms though we pin them for now.
@@ -50,6 +51,7 @@ group iosapp
   nuget FSharp.Core 4.5.2
   nuget Xamarin.Forms 3.4.0.1009999
   nuget Newtonsoft.Json 11.0.2
+  nuget FSharp.Data 3.0.0
 
 group macosapp
   framework: xamarinmac20
@@ -57,6 +59,7 @@ group macosapp
   nuget FSharp.Core 4.5.2
   nuget Xamarin.Forms 3.4.0.1009999
   nuget Newtonsoft.Json 11.0.2
+  nuget FSharp.Data 3.0.0
 
 group wpfapp
   framework: net472
@@ -65,6 +68,7 @@ group wpfapp
   nuget Xamarin.Forms 3.4.0.1009999 
   nuget Newtonsoft.Json 11.0.2
   nuget Xamarin.Forms.Platform.WPF 3.4.0.1009999 
+  nuget FSharp.Data 3.0.0
 
 group gtkapp
   framework: net471
@@ -73,3 +77,4 @@ group gtkapp
   nuget Xamarin.Forms 3.4.0.1009999 
   nuget Newtonsoft.Json 11.0.2
   nuget Xamarin.Forms.Platform.GTK 3.4.0.1009999 
+  nuget FSharp.Data 3.0.0

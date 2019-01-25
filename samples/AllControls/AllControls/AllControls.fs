@@ -5,6 +5,7 @@ open System
 open Fabulous.Core
 open Fabulous.DynamicViews
 open Xamarin.Forms
+open FSharp.Data
 
 type RootPageKind = 
     | Choice of bool
@@ -16,6 +17,7 @@ type RootPageKind =
     | MasterDetail
     | InfiniteScrollList
     | Animations
+    | WebCall
 
 type Model = 
   { RootPageKind: RootPageKind
@@ -47,6 +49,10 @@ type Model =
     SearchTerm: string
     CarouselCurrentPageIndex: int
     Tabbed1CurrentPageIndex: int
+    // For WebCall page demo
+    IsRunning: bool
+    ReceivedData: bool
+    WebCallData: string option
     }
 
 type Msg = 
@@ -95,6 +101,10 @@ type Msg =
     | SetCarouselCurrentPage of int
     | SetTabbed1CurrentPage of int
     | ReceivedLowMemoryWarning
+    // For WebCall page demo
+    | ReceivedDataSuccess of string option
+    | ReceivedDataFailure of string option
+    | ReceiveData    
 
 [<AutoOpen>]
 module MyExtension = 
@@ -164,86 +174,101 @@ module App =
           InfiniteScrollMaxRequested = 10 
           SearchTerm = "nothing!"
           CarouselCurrentPageIndex = 0
-          Tabbed1CurrentPageIndex = 0 }
+          Tabbed1CurrentPageIndex = 0 
+          IsRunning = false
+          ReceivedData = false
+          WebCallData = None }, Cmd.none
+
+    let getWebData =
+        async {
+            do! Async.SwitchToThreadPool()
+            let! response = 
+                Http.AsyncRequest(url="https://api.myjson.com/bins/1ecasc", httpMethod="GET", silentHttpErrors=true)
+            let r = 
+                match response.StatusCode with
+                | 200 -> Msg.ReceivedDataSuccess (Some (response.Body |> string))
+                | _ -> Msg.ReceivedDataFailure (Some "Failed to get data")
+            return r
+        } |> Cmd.ofAsyncMsg
 
     let animatedLabelRef = ViewRef<Label>()
     let update msg model =
         match msg with
-        | Increment -> { model with Count = model.Count + 1 }
-        | Decrement -> { model with Count = model.Count - 1}
-        | IncrementForSlider -> { model with CountForSlider = model.CountForSlider + model.StepForSlider }
-        | DecrementForSlider -> { model with CountForSlider = model.CountForSlider - model.StepForSlider }
-        | ChangeMinimumMaximumForSlider1 -> { model with MinimumForSlider = 0; MaximumForSlider = 10 }
-        | ChangeMinimumMaximumForSlider2 -> { model with MinimumForSlider = 15; MaximumForSlider = 20 }
-        | IncrementForActivityIndicator -> { model with CountForActivityIndicator = model.CountForActivityIndicator + 1 }
-        | DecrementForActivityIndicator -> { model with CountForActivityIndicator = model.CountForActivityIndicator - 1 }
+        | Increment -> { model with Count = model.Count + 1 }, Cmd.none
+        | Decrement -> { model with Count = model.Count - 1}, Cmd.none
+        | IncrementForSlider -> { model with CountForSlider = model.CountForSlider + model.StepForSlider }, Cmd.none
+        | DecrementForSlider -> { model with CountForSlider = model.CountForSlider - model.StepForSlider }, Cmd.none
+        | ChangeMinimumMaximumForSlider1 -> { model with MinimumForSlider = 0; MaximumForSlider = 10 }, Cmd.none
+        | ChangeMinimumMaximumForSlider2 -> { model with MinimumForSlider = 15; MaximumForSlider = 20 }, Cmd.none
+        | IncrementForActivityIndicator -> { model with CountForActivityIndicator = model.CountForActivityIndicator + 1 }, Cmd.none
+        | DecrementForActivityIndicator -> { model with CountForActivityIndicator = model.CountForActivityIndicator - 1 }, Cmd.none
         | Reset -> init ()
-        | SliderValueChanged n -> { model with StepForSlider = n }
-        | TextChanged (oldValue, newValue) -> model
-        | EditorEditCompleted t -> { model with EditorText = t }
-        | EntryEditCompleted t -> { model with EntryText = t }
-        | PasswordEntryEditCompleted t -> { model with Password = t }
-        | PlaceholderEntryEditCompleted t -> { model with Placeholder = t }
-        | StartDateSelected d -> { model with StartDate = d; EndDate = d + (model.EndDate - model.StartDate) }
-        | EndDateSelected d -> { model with EndDate = d }
-        | GridEditCompleted (i, j) -> model
-        | ListViewSelectedItemChanged item -> model
-        | ListViewGroupedSelectedItemChanged item -> model
-        | PickerItemChanged i -> { model with PickedColorIndex = i }
-        | FrameTapped -> { model with NumTaps= model.NumTaps + 1 }
-        | FrameTapped2 -> { model with NumTaps2= model.NumTaps2 + 1 }
+        | SliderValueChanged n -> { model with StepForSlider = n }, Cmd.none
+        | TextChanged (oldValue, newValue) -> model, Cmd.none
+        | EditorEditCompleted t -> { model with EditorText = t }, Cmd.none
+        | EntryEditCompleted t -> { model with EntryText = t }, Cmd.none
+        | PasswordEntryEditCompleted t -> { model with Password = t }, Cmd.none
+        | PlaceholderEntryEditCompleted t -> { model with Placeholder = t }, Cmd.none
+        | StartDateSelected d -> { model with StartDate = d; EndDate = d + (model.EndDate - model.StartDate) }, Cmd.none
+        | EndDateSelected d -> { model with EndDate = d }, Cmd.none
+        | GridEditCompleted (i, j) -> model, Cmd.none
+        | ListViewSelectedItemChanged item -> model, Cmd.none
+        | ListViewGroupedSelectedItemChanged item -> model, Cmd.none
+        | PickerItemChanged i -> { model with PickedColorIndex = i }, Cmd.none
+        | FrameTapped -> { model with NumTaps= model.NumTaps + 1 }, Cmd.none
+        | FrameTapped2 -> { model with NumTaps2= model.NumTaps2 + 1 }, Cmd.none
         | UpdateNewGridSize (n, status) -> 
             match status with 
-            | GestureStatus.Running -> { model with NewGridSize = model.NewGridSize * n}
-            | GestureStatus.Completed -> let sz = int (model.NewGridSize + 0.5) in { model with GridSize = sz; NewGridSize = float sz }
-            | GestureStatus.Canceled -> { model with NewGridSize = double model.GridSize }
-            | _ -> model
-        | UpdateGridPortal (x, y) -> { model with GridPortal = (x, y) }
+            | GestureStatus.Running -> { model with NewGridSize = model.NewGridSize * n}, Cmd.none
+            | GestureStatus.Completed -> let sz = int (model.NewGridSize + 0.5) in { model with GridSize = sz; NewGridSize = float sz }, Cmd.none
+            | GestureStatus.Canceled -> { model with NewGridSize = double model.GridSize }, Cmd.none
+            | _ -> model, Cmd.none
+        | UpdateGridPortal (x, y) -> { model with GridPortal = (x, y) }, Cmd.none
         // For NavigationPage
-        | GoHomePage -> { model with PageStack = [ Some "Home" ] }
+        | GoHomePage -> { model with PageStack = [ Some "Home" ] }, Cmd.none
         | PagePopped -> 
             if model.PageStack |> List.exists Option.isNone then 
-               { model with PageStack = model.PageStack |> List.filter Option.isSome }
+               { model with PageStack = model.PageStack |> List.filter Option.isSome }, Cmd.none
             else
-               { model with PageStack = (match model.PageStack with [] -> model.PageStack | _ :: t -> t) }
+               { model with PageStack = (match model.PageStack with [] -> model.PageStack | _ :: t -> t) }, Cmd.none
         | PopPage -> 
-               { model with PageStack = (match model.PageStack with [] -> model.PageStack | _ :: t -> None :: t) }
+               { model with PageStack = (match model.PageStack with [] -> model.PageStack | _ :: t -> None :: t) }, Cmd.none
         | PushPage page -> 
-            { model with PageStack = Some page :: model.PageStack}
+            { model with PageStack = Some page :: model.PageStack}, Cmd.none
         | ReplacePage page -> 
-            { model with PageStack = (match model.PageStack with [] -> Some page :: model.PageStack | _ :: t -> Some page :: t) }
+            { model with PageStack = (match model.PageStack with [] -> Some page :: model.PageStack | _ :: t -> Some page :: t) }, Cmd.none
         // For MasterDetail
-        | IsMasterPresentedChanged b -> { model with IsMasterPresented = b }
-        | SetDetailPage s -> { model with DetailPage = s ; IsMasterPresented=false}
-        | SetInfiniteScrollMaxIndex n -> if n >= max n model.InfiniteScrollMaxRequested then { model with InfiniteScrollMaxRequested = (n + 10)} else model
+        | IsMasterPresentedChanged b -> { model with IsMasterPresented = b }, Cmd.none
+        | SetDetailPage s -> { model with DetailPage = s ; IsMasterPresented=false}, Cmd.none
+        | SetInfiniteScrollMaxIndex n -> if n >= max n model.InfiniteScrollMaxRequested then { model with InfiniteScrollMaxRequested = (n + 10)}, Cmd.none else model, Cmd.none
         // For selection page
-        | SetRootPageKind kind -> { model with RootPageKind = kind }
-        | ExecuteSearch search -> { model with SearchTerm = search }
+        | SetRootPageKind kind -> { model with RootPageKind = kind }, Cmd.none
+        | ExecuteSearch search -> { model with SearchTerm = search }, Cmd.none
         // For pop-ups
         | ShowPopup ->
             Application.Current.MainPage.DisplayAlert("Clicked", "You clicked the button", "OK") |> ignore
-            model
+            model, Cmd.none
         | AnimationPoked -> 
             match animatedLabelRef.TryValue with
             | Some animated ->
                 animatedLabelRef.Value.Rotation <- 0.0
                 animatedLabelRef.Value.RotateTo (360.0, 2000u) |> ignore
             | None -> ()
-            model
+            model, Cmd.none
         | AnimationPoked2 -> 
             ViewExtensions.CancelAnimations (animatedLabelRef.Value)
             animatedLabelRef.Value.Rotation <- 0.0
             animatedLabelRef.Value.RotateTo (360.0, 2000u) |> ignore
-            model
+            model, Cmd.none
         | AnimationPoked3 -> 
             ViewExtensions.CancelAnimations (animatedLabelRef.Value)
             animatedLabelRef.Value.Rotation <- 0.0
             animatedLabelRef.Value.RotateTo (360.0, 2000u) |> ignore
-            model
+            model, Cmd.none
         | SetCarouselCurrentPage index ->
-            { model with CarouselCurrentPageIndex = index }
+            { model with CarouselCurrentPageIndex = index }, Cmd.none
         | SetTabbed1CurrentPage index ->
-            { model with Tabbed1CurrentPageIndex = index }
+            { model with Tabbed1CurrentPageIndex = index }, Cmd.none
         | ReceivedLowMemoryWarning ->
             Application.Current.MainPage.DisplayAlert("Low memory!", "Cleaning up data...", "OK") |> ignore
             { model with
@@ -251,7 +276,13 @@ module App =
                 EntryText = ""
                 Placeholder = ""
                 Password = ""
-                SearchTerm = "" }
+                SearchTerm = "" }, Cmd.none
+        | ReceiveData ->
+            {model with IsRunning=true}, getWebData
+        | ReceivedDataFailure value ->
+            {model with ReceivedData=false; IsRunning=false; WebCallData = value}, Cmd.none
+        | ReceivedDataSuccess value ->
+            {model with ReceivedData=true; IsRunning=false; WebCallData = value}, Cmd.none
 
     let pickerItems = 
         [| ("Aqua", Color.Aqua); ("Black", Color.Black);
@@ -287,6 +318,7 @@ module App =
                                  View.Button(text = "Infinite scrolling ListView", command=(fun () -> dispatch (SetRootPageKind InfiniteScrollList)))
                                  View.Button(text = "Animations", command=(fun () -> dispatch (SetRootPageKind Animations)))
                                  View.Button(text = "Pop-up", command=(fun () -> dispatch ShowPopup))
+                                 View.Button(text = "WebRequest", command=(fun () -> dispatch (SetRootPageKind WebCall)))
                             ]))
                      .ToolbarItems([View.ToolbarItem(text="About", command=(fun () -> dispatch (SetRootPageKind (Choice true))))] )
                   if showAbout then 
@@ -687,7 +719,7 @@ module App =
 
                 ])
          
-         | Navigation -> 
+        | Navigation -> 
 
          // NavigationPage example
            dependsOn model.PageStack (fun model pageStack -> 
@@ -794,13 +826,28 @@ module App =
                     View.Button(text="Poke3", command=(fun () -> dispatch AnimationPoked3))
                     View.Button(text="Main page", cornerRadius=5, command=(fun () -> dispatch (SetRootPageKind (Choice false))), horizontalOptions=LayoutOptions.CenterAndExpand, verticalOptions=LayoutOptions.End)
                     ] )
+         | WebCall ->
+            let data = match model.WebCallData with
+                        | Some v -> v
+                        | None -> ""
 
+            View.ContentPage(
+                content = View.StackLayout(
+                    children = [
+                        View.Button(text="Get Data", command=(fun () -> dispatch ReceiveData))
+                        View.ActivityIndicator(isRunning=model.IsRunning)
+                        View.Label(text=data)
+                        MainPageButton
+                    ]
+            ))
+
+    
 type App () as app = 
     inherit Application ()
     do app.Resources.Add(Xamarin.Forms.StyleSheets.StyleSheet.FromAssemblyResource(System.Reflection.Assembly.GetExecutingAssembly(),"AllControls.styles.css"))
 
     let runner = 
-        Program.mkSimple App.init App.update App.view
+        Program.mkProgram App.init App.update App.view
         |> Program.withConsoleTrace
         |> Program.runWithDynamicView app
 
