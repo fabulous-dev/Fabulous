@@ -13,8 +13,6 @@
         <PackageReference Update="SkiaSharp.Views.Forms" Version="1.60.3" />
         <PackageReference Update="Mono.Cecil" Version="0.10.0" />
         <PackageReference Update="Microsoft.NET.Test.Sdk" Version="15.7.0" />
-        <PackageReference Update="MSTest.TestAdapter" Version="1.2.1" />
-        <PackageReference Update="MSTest.TestFramework" Version="1.2.1" />
         <PackageReference Update="Microsoft.SourceLink.Github" Version="1.0.0-beta-63127-02" PrivateAssets="All" />
         <PackageReference Update="Microsoft.CSharp" Version="4.5.0" />
         <PackageReference Update="NETStandard.Library" Version="2.0.3" />
