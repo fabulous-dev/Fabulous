@@ -71,14 +71,15 @@ let msbuild (buildType: BuildType) (definition: ProjectDefinition) =
     for project in definition.Path do
         let outputDir = getOutputDir definition.OutputPath project
         MSBuild.run id outputDir "Restore" properties [project] |> Trace.logItems (definition.Name + "Restore-Output: ")
-    
-    definition.Path
-    |> Seq.toArray
-    |> Array.Parallel.iter (
-        fun project -> 
-        let outputDir = getOutputDir definition.OutputPath project
         MSBuild.run id outputDir "Build" properties [project] |> Trace.logItems (definition.Name + "Build-Output: ")
-    )
+    
+    // definition.Path
+    // |> Seq.toArray
+    // |> Array.Parallel.iter (
+    //     fun project -> 
+    //     let outputDir = getOutputDir definition.OutputPath project
+    //     MSBuild.run id outputDir "Build" properties [project] |> Trace.logItems (definition.Name + "Build-Output: ")
+    // )
 
 let dotnetPack (definition: ProjectDefinition) =
     for project in definition.Path do
