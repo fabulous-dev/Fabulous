@@ -90,7 +90,7 @@
     <Reference Include="Xamarin.Forms.Platform">
       <HintPath>..\packages\Xamarin.Forms.XamarinFormsSdk\lib\Xamarin.Mac\Xamarin.Forms.Platform.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Forms.Platform.Android">
+    <Reference Include="Xamarin.Forms.Platform.macOS">
       <HintPath>..\packages\Xamarin.Forms.XamarinFormsSdk\lib\Xamarin.Mac\Xamarin.Forms.Platform.macOS.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml">
