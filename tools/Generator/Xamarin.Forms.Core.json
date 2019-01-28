@@ -1434,13 +1434,6 @@
           "defaultValue": "Unchecked.defaultof<Xamarin.Forms.Thickness>"
         },
         {
-          "name": "TitleView",
-          "inputType": "ViewElement",
-          "modelType": "ViewElement",
-          "updateCode": "updatePageTitleView",
-          "defaultValue": "null"
-        },
-        {
           "name": "ToolbarItems",
           "inputType": "ViewElement list",
           "modelType": "ViewElement[]",
@@ -1533,6 +1526,13 @@
               "inputType": "string",
               "modelType": "string",
               "convToValue": "makeFileImageSource",
+              "defaultValue": "null"
+            },
+            {
+              "name": "TitleView",
+              "inputType": "ViewElement",
+              "modelType": "ViewElement",
+              "convToValue": "(fun (elem:ViewElement) -> elem.Create() :?> Xamarin.Forms.View)",
               "defaultValue": "null"
             }
           ]

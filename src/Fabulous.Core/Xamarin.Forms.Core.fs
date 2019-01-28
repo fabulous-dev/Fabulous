@@ -350,8 +350,6 @@ type View() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _IsBusyAttribKey : AttributeKey<_> = AttributeKey<_>("IsBusy")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _TitleViewAttribKey : AttributeKey<_> = AttributeKey<_>("TitleView")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _ToolbarItemsAttribKey : AttributeKey<_> = AttributeKey<_>("ToolbarItems")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _UseSafeAreaAttribKey : AttributeKey<_> = AttributeKey<_>("UseSafeArea")
@@ -375,6 +373,8 @@ type View() =
     static member val _HasNavigationBarAttribKey : AttributeKey<_> = AttributeKey<_>("HasNavigationBar")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _TitleIconAttribKey : AttributeKey<_> = AttributeKey<_>("TitleIcon")
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member val _TitleViewAttribKey : AttributeKey<_> = AttributeKey<_>("TitleView")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _BarBackgroundColorAttribKey : AttributeKey<_> = AttributeKey<_>("BarBackgroundColor")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -9091,7 +9091,6 @@ type View() =
                                    ?icon: string,
                                    ?isBusy: bool,
                                    ?padding: obj,
-                                   ?titleView: ViewElement,
                                    ?toolbarItems: ViewElement list,
                                    ?useSafeArea: bool,
                                    ?appearing: unit -> unit,
@@ -9134,7 +9133,6 @@ type View() =
         let attribCount = match icon with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match isBusy with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match padding with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match titleView with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match toolbarItems with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match useSafeArea with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match appearing with Some _ -> attribCount + 1 | None -> attribCount
@@ -9147,7 +9145,6 @@ type View() =
         match icon with None -> () | Some v -> attribBuilder.Add(View._IconAttribKey, (v)) 
         match isBusy with None -> () | Some v -> attribBuilder.Add(View._IsBusyAttribKey, (v)) 
         match padding with None -> () | Some v -> attribBuilder.Add(View._PaddingAttribKey, makeThickness(v)) 
-        match titleView with None -> () | Some v -> attribBuilder.Add(View._TitleViewAttribKey, (v)) 
         match toolbarItems with None -> () | Some v -> attribBuilder.Add(View._ToolbarItemsAttribKey, Array.ofList(v)) 
         match useSafeArea with None -> () | Some v -> attribBuilder.Add(View._UseSafeAreaAttribKey, (v)) 
         match appearing with None -> () | Some v -> attribBuilder.Add(View._Page_AppearingAttribKey, (fun f -> System.EventHandler(fun _sender _args -> f ()))(v)) 
@@ -9180,8 +9177,6 @@ type View() =
         let mutable currIsBusyOpt = ValueNone
         let mutable prevPaddingOpt = ValueNone
         let mutable currPaddingOpt = ValueNone
-        let mutable prevTitleViewOpt = ValueNone
-        let mutable currTitleViewOpt = ValueNone
         let mutable prevToolbarItemsOpt = ValueNone
         let mutable currToolbarItemsOpt = ValueNone
         let mutable prevUseSafeAreaOpt = ValueNone
@@ -9203,8 +9198,6 @@ type View() =
                 currIsBusyOpt <- ValueSome (kvp.Value :?> bool)
             if kvp.Key = View._PaddingAttribKey.KeyValue then 
                 currPaddingOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Thickness)
-            if kvp.Key = View._TitleViewAttribKey.KeyValue then 
-                currTitleViewOpt <- ValueSome (kvp.Value :?> ViewElement)
             if kvp.Key = View._ToolbarItemsAttribKey.KeyValue then 
                 currToolbarItemsOpt <- ValueSome (kvp.Value :?> ViewElement[])
             if kvp.Key = View._UseSafeAreaAttribKey.KeyValue then 
@@ -9229,8 +9222,6 @@ type View() =
                     prevIsBusyOpt <- ValueSome (kvp.Value :?> bool)
                 if kvp.Key = View._PaddingAttribKey.KeyValue then 
                     prevPaddingOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Thickness)
-                if kvp.Key = View._TitleViewAttribKey.KeyValue then 
-                    prevTitleViewOpt <- ValueSome (kvp.Value :?> ViewElement)
                 if kvp.Key = View._ToolbarItemsAttribKey.KeyValue then 
                     prevToolbarItemsOpt <- ValueSome (kvp.Value :?> ViewElement[])
                 if kvp.Key = View._UseSafeAreaAttribKey.KeyValue then 
@@ -9266,7 +9257,6 @@ type View() =
         | _, ValueSome currValue -> target.Padding <-  currValue
         | ValueSome _, ValueNone -> target.Padding <- Unchecked.defaultof<Xamarin.Forms.Thickness>
         | ValueNone, ValueNone -> ()
-        updatePageTitleView prevTitleViewOpt currTitleViewOpt target
         updateCollectionGeneric prevToolbarItemsOpt currToolbarItemsOpt target.ToolbarItems
             (fun (x:ViewElement) -> x.Create() :?> Xamarin.Forms.ToolbarItem)
             (fun _ _ _ -> ())
@@ -9298,7 +9288,6 @@ type View() =
                               ?icon: string,
                               ?isBusy: bool,
                               ?padding: obj,
-                              ?titleView: ViewElement,
                               ?toolbarItems: ViewElement list,
                               ?useSafeArea: bool,
                               ?appearing: unit -> unit,
@@ -9342,7 +9331,6 @@ type View() =
                                ?icon=icon,
                                ?isBusy=isBusy,
                                ?padding=padding,
-                               ?titleView=titleView,
                                ?toolbarItems=toolbarItems,
                                ?useSafeArea=useSafeArea,
                                ?appearing=appearing,
@@ -9396,7 +9384,6 @@ type View() =
                                            ?icon: string,
                                            ?isBusy: bool,
                                            ?padding: obj,
-                                           ?titleView: ViewElement,
                                            ?toolbarItems: ViewElement list,
                                            ?useSafeArea: bool,
                                            ?appearing: unit -> unit,
@@ -9438,7 +9425,7 @@ type View() =
         let attribCount = match currentPage with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match currentPageChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?titleView=titleView, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match children with None -> () | Some v -> attribBuilder.Add(View._ChildrenAttribKey, Array.ofList(v)) 
         match currentPage with None -> () | Some v -> attribBuilder.Add(View._CarouselPage_CurrentPageAttribKey, (v)) 
         match currentPageChanged with None -> () | Some v -> attribBuilder.Add(View._CarouselPage_CurrentPageChangedAttribKey, makeCurrentPageChanged<Xamarin.Forms.ContentPage>(v)) 
@@ -9504,7 +9491,6 @@ type View() =
                                       ?icon: string,
                                       ?isBusy: bool,
                                       ?padding: obj,
-                                      ?titleView: ViewElement,
                                       ?toolbarItems: ViewElement list,
                                       ?useSafeArea: bool,
                                       ?appearing: unit -> unit,
@@ -9551,7 +9537,6 @@ type View() =
                                ?icon=icon,
                                ?isBusy=isBusy,
                                ?padding=padding,
-                               ?titleView=titleView,
                                ?toolbarItems=toolbarItems,
                                ?useSafeArea=useSafeArea,
                                ?appearing=appearing,
@@ -9608,7 +9593,6 @@ type View() =
                                              ?icon: string,
                                              ?isBusy: bool,
                                              ?padding: obj,
-                                             ?titleView: ViewElement,
                                              ?toolbarItems: ViewElement list,
                                              ?useSafeArea: bool,
                                              ?appearing: unit -> unit,
@@ -9653,7 +9637,7 @@ type View() =
         let attribCount = match poppedToRoot with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match pushed with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?titleView=titleView, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match pages with None -> () | Some v -> attribBuilder.Add(View._PagesAttribKey, Array.ofList(v)) 
         match barBackgroundColor with None -> () | Some v -> attribBuilder.Add(View._BarBackgroundColorAttribKey, (v)) 
         match barTextColor with None -> () | Some v -> attribBuilder.Add(View._BarTextColorAttribKey, (v)) 
@@ -9752,6 +9736,14 @@ type View() =
                 | _, ValueSome currValue -> Xamarin.Forms.NavigationPage.SetTitleIcon(targetChild, makeFileImageSource currValue)
                 | ValueSome _, ValueNone -> Xamarin.Forms.NavigationPage.SetTitleIcon(targetChild, null) // TODO: not always perfect, should set back to original default?
                 | _ -> ()
+                // Adjust the attached properties
+                let prevChildValueOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttributeKeyed<ViewElement>(View._TitleViewAttribKey)
+                let childValueOpt = newChild.TryGetAttributeKeyed<ViewElement>(View._TitleViewAttribKey)
+                match prevChildValueOpt, childValueOpt with
+                | ValueSome prevChildValue, ValueSome currValue when prevChildValue = currValue -> ()
+                | _, ValueSome currValue -> Xamarin.Forms.NavigationPage.SetTitleView(targetChild, (fun (elem:ViewElement) -> elem.Create() :?> Xamarin.Forms.View) currValue)
+                | ValueSome _, ValueNone -> Xamarin.Forms.NavigationPage.SetTitleView(targetChild, null) // TODO: not always perfect, should set back to original default?
+                | _ -> ()
                 ())
         match prevBarBackgroundColorOpt, currBarBackgroundColorOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
@@ -9794,7 +9786,6 @@ type View() =
                                         ?icon: string,
                                         ?isBusy: bool,
                                         ?padding: obj,
-                                        ?titleView: ViewElement,
                                         ?toolbarItems: ViewElement list,
                                         ?useSafeArea: bool,
                                         ?appearing: unit -> unit,
@@ -9844,7 +9835,6 @@ type View() =
                                ?icon=icon,
                                ?isBusy=isBusy,
                                ?padding=padding,
-                               ?titleView=titleView,
                                ?toolbarItems=toolbarItems,
                                ?useSafeArea=useSafeArea,
                                ?appearing=appearing,
@@ -9900,7 +9890,6 @@ type View() =
                                          ?icon: string,
                                          ?isBusy: bool,
                                          ?padding: obj,
-                                         ?titleView: ViewElement,
                                          ?toolbarItems: ViewElement list,
                                          ?useSafeArea: bool,
                                          ?appearing: unit -> unit,
@@ -9944,7 +9933,7 @@ type View() =
         let attribCount = match currentPage with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match currentPageChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?titleView=titleView, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match children with None -> () | Some v -> attribBuilder.Add(View._ChildrenAttribKey, Array.ofList(v)) 
         match barBackgroundColor with None -> () | Some v -> attribBuilder.Add(View._BarBackgroundColorAttribKey, (v)) 
         match barTextColor with None -> () | Some v -> attribBuilder.Add(View._BarTextColorAttribKey, (v)) 
@@ -10036,7 +10025,6 @@ type View() =
                                     ?icon: string,
                                     ?isBusy: bool,
                                     ?padding: obj,
-                                    ?titleView: ViewElement,
                                     ?toolbarItems: ViewElement list,
                                     ?useSafeArea: bool,
                                     ?appearing: unit -> unit,
@@ -10085,7 +10073,6 @@ type View() =
                                ?icon=icon,
                                ?isBusy=isBusy,
                                ?padding=padding,
-                               ?titleView=titleView,
                                ?toolbarItems=toolbarItems,
                                ?useSafeArea=useSafeArea,
                                ?appearing=appearing,
@@ -10138,7 +10125,6 @@ type View() =
                                           ?icon: string,
                                           ?isBusy: bool,
                                           ?padding: obj,
-                                          ?titleView: ViewElement,
                                           ?toolbarItems: ViewElement list,
                                           ?useSafeArea: bool,
                                           ?appearing: unit -> unit,
@@ -10179,7 +10165,7 @@ type View() =
         let attribCount = match content with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match onSizeAllocated with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?titleView=titleView, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match content with None -> () | Some v -> attribBuilder.Add(View._ContentAttribKey, (v)) 
         match onSizeAllocated with None -> () | Some v -> attribBuilder.Add(View._OnSizeAllocatedCallbackAttribKey, (fun f -> FSharp.Control.Handler<_>(fun _sender args -> f args))(v)) 
         attribBuilder
@@ -10236,7 +10222,6 @@ type View() =
                                      ?icon: string,
                                      ?isBusy: bool,
                                      ?padding: obj,
-                                     ?titleView: ViewElement,
                                      ?toolbarItems: ViewElement list,
                                      ?useSafeArea: bool,
                                      ?appearing: unit -> unit,
@@ -10282,7 +10267,6 @@ type View() =
                                ?icon=icon,
                                ?isBusy=isBusy,
                                ?padding=padding,
-                               ?titleView=titleView,
                                ?toolbarItems=toolbarItems,
                                ?useSafeArea=useSafeArea,
                                ?appearing=appearing,
@@ -10339,7 +10323,6 @@ type View() =
                                                ?icon: string,
                                                ?isBusy: bool,
                                                ?padding: obj,
-                                               ?titleView: ViewElement,
                                                ?toolbarItems: ViewElement list,
                                                ?useSafeArea: bool,
                                                ?appearing: unit -> unit,
@@ -10384,7 +10367,7 @@ type View() =
         let attribCount = match masterBehavior with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match isPresentedChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?titleView=titleView, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match master with None -> () | Some v -> attribBuilder.Add(View._MasterAttribKey, (v)) 
         match detail with None -> () | Some v -> attribBuilder.Add(View._DetailAttribKey, (v)) 
         match isGestureEnabled with None -> () | Some v -> attribBuilder.Add(View._IsGestureEnabledAttribKey, (v)) 
@@ -10503,7 +10486,6 @@ type View() =
                                           ?icon: string,
                                           ?isBusy: bool,
                                           ?padding: obj,
-                                          ?titleView: ViewElement,
                                           ?toolbarItems: ViewElement list,
                                           ?useSafeArea: bool,
                                           ?appearing: unit -> unit,
@@ -10553,7 +10535,6 @@ type View() =
                                ?icon=icon,
                                ?isBusy=isBusy,
                                ?padding=padding,
-                               ?titleView=titleView,
                                ?toolbarItems=toolbarItems,
                                ?useSafeArea=useSafeArea,
                                ?appearing=appearing,
@@ -12537,9 +12518,6 @@ module ViewElementExtensions =
         /// Adjusts the IsBusy property in the visual element
         member x.IsBusy(value: bool) = x.WithAttribute(View._IsBusyAttribKey, (value))
 
-        /// Adjusts the TitleView property in the visual element
-        member x.TitleView(value: ViewElement) = x.WithAttribute(View._TitleViewAttribKey, (value))
-
         /// Adjusts the ToolbarItems property in the visual element
         member x.ToolbarItems(value: ViewElement list) = x.WithAttribute(View._ToolbarItemsAttribKey, Array.ofList(value))
 
@@ -12575,6 +12553,9 @@ module ViewElementExtensions =
 
         /// Adjusts the TitleIcon property in the visual element
         member x.TitleIcon(value: string) = x.WithAttribute(View._TitleIconAttribKey, (value))
+
+        /// Adjusts the TitleView property in the visual element
+        member x.TitleView(value: ViewElement) = x.WithAttribute(View._TitleViewAttribKey, (value))
 
         /// Adjusts the BarBackgroundColor property in the visual element
         member x.BarBackgroundColor(value: Xamarin.Forms.Color) = x.WithAttribute(View._BarBackgroundColorAttribKey, (value))
@@ -13228,9 +13209,6 @@ module ViewElementExtensions =
     /// Adjusts the IsBusy property in the visual element
     let isBusy (value: bool) (x: ViewElement) = x.IsBusy(value)
 
-    /// Adjusts the TitleView property in the visual element
-    let titleView (value: ViewElement) (x: ViewElement) = x.TitleView(value)
-
     /// Adjusts the ToolbarItems property in the visual element
     let toolbarItems (value: ViewElement list) (x: ViewElement) = x.ToolbarItems(value)
 
@@ -13266,6 +13244,9 @@ module ViewElementExtensions =
 
     /// Adjusts the TitleIcon property in the visual element
     let titleIcon (value: string) (x: ViewElement) = x.TitleIcon(value)
+
+    /// Adjusts the TitleView property in the visual element
+    let titleView (value: ViewElement) (x: ViewElement) = x.TitleView(value)
 
     /// Adjusts the BarBackgroundColor property in the visual element
     let barBackgroundColor (value: Xamarin.Forms.Color) (x: ViewElement) = x.BarBackgroundColor(value)
