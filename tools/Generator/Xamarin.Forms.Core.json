@@ -1660,7 +1660,16 @@
           "name": "Command",
           "defaultValue": "null",
           "inputType": "unit -> unit",
-          "convToModel": "makeCommand"
+          "convToModel": "makeCommand",
+          "attached": [
+            {
+              "name": "Accelerator",
+              "inputType": "string",
+              "modelType": "string",
+              "convToValue": "makeAccelerator",
+              "defaultValue": "null"
+            }
+          ]
         },
         {
           "name": "CommandParameter",
@@ -1671,15 +1680,6 @@
           "inputType": "string",
           "modelType": "string",
           "convToValue": "makeFileImageSource",
-          "defaultValue": "null"
-        }
-      ],
-      "attached": [
-        {
-          "name": "Accelerator",
-          "inputType": "string",
-          "modelType": "string",
-          "convToValue": "makeAccelerator",
           "defaultValue": "null"
         }
       ]
