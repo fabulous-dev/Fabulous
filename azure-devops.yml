@@ -20,7 +20,7 @@ phases:
       echo Install fake-cli and GTK#
       dotnet tool install --tool-path . fake-cli 
       choco install gtksharp
-    displayName: 'Install Fake'
+    displayName: 'Install Fake and GTK#'
 
   - script: |  
       echo run build script
@@ -30,7 +30,7 @@ phases:
     displayName: 'Build Fabulous'
   - task: PublishTestResults@1
     inputs:
-      testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit
+      testResultsFormat: 'VSTest' # Options: JUnit, NUnit, VSTest, xUnit
       testResultsFiles: 'build_output\*.trx' 
   - task: CopyFiles@2
     inputs:
@@ -62,7 +62,7 @@ phases:
     displayName: 'Build Fabulous'
   - task: PublishTestResults@1
     inputs:
-      testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit
+      testResultsFormat: 'VSTest' # Options: JUnit, NUnit, VSTest, xUnit
       testResultsFiles: 'build_output/*.trx' 
   - task: CopyFiles@1
     inputs:
