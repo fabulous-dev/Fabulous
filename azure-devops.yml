@@ -30,7 +30,7 @@ phases:
     displayName: 'Build Fabulous'
   - task: PublishTestResults@1
     inputs:
-      testResultsFormat: 'VSTest' # Options: JUnit, NUnit, VSTest, xUnit
+      testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit
       testResultsFiles: 'build_output\*.trx' 
   - task: CopyFiles@2
     inputs:
@@ -62,7 +62,7 @@ phases:
     displayName: 'Build Fabulous'
   - task: PublishTestResults@1
     inputs:
-      testResultsFormat: 'NUnit' # Options: JUnit, NUnit, VSTest, xUnit
+      testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit
       testResultsFiles: 'build_output/*.trx' 
   - task: CopyFiles@1
     inputs:
