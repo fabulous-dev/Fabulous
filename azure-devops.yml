@@ -27,8 +27,6 @@ phases:
       mkdir -p build_output
       set PATH=%PATH%;C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin\
       ./build.cmd Test
-      # ./build.cmd Test 
-      # fake.exe run build.fsx --parallel 3
     displayName: 'Build Fabulous'
   - task: PublishTestResults@1
     inputs:
@@ -41,7 +39,7 @@ phases:
   - task: PublishBuildArtifacts@1
     inputs:
       pathtoPublish: $(Build.ArtifactStagingDirectory)
-      artifactName: FabulousBuildOutputs
+      artifactName: Windows-FabulousBuildOutputs
 
 
 - phase: macOS
@@ -62,6 +60,18 @@ phases:
         echo $PATH
         ./build.sh Test
     displayName: 'Build Fabulous'
+  - task: PublishTestResults@1
+    inputs:
+      testResultsFormat: 'NUnit' # Options: JUnit, NUnit, VSTest, xUnit
+      testResultsFiles: 'build_output\*.trx' 
+  - task: CopyFiles@1
+    inputs:
+      contents: build_output\*.nupkg
+      targetFolder: $(Build.ArtifactStagingDirectory)
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: $(Build.ArtifactStagingDirectory)
+      artifactName: macOS-FabulousBuildOutputs
 
 # - phase: Linux
 #   displayName: Linux

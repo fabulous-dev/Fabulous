@@ -73,14 +73,6 @@ let msbuild (buildType: BuildType) (definition: ProjectDefinition) =
         MSBuild.run id outputDir "Restore" properties [project] |> Trace.logItems (definition.Name + "Restore-Output: ")
         MSBuild.run id outputDir "Build" properties [project] |> Trace.logItems (definition.Name + "Build-Output: ")
 
-    // definition.Path
-    // |> Seq.toArray
-    // |> Array.Parallel.iter(
-    //     fun project ->
-    //         let outputDir = getOutputDir definition.OutputPath project
-    //         // MSBuild.run id outputDir "Restore" properties [project] |> Trace.logItems (definition.Name + "Restore-Output: ")
-    //         MSBuild.run id outputDir "Build" properties [project] |> Trace.logItems (definition.Name + "Build-Output: ")
-    // )
 
 
 let dotnetPack (definition: ProjectDefinition) =
@@ -178,7 +170,6 @@ Target.create "RunTests" (fun _ ->
           { dotNetTestOptions with
               Logger = Some "trx"
               ResultsDirectory = Some buildDir
-              // Configuration = DotNet.BuildConfiguration.Release
           }
 
     !!("tests/**/*.fsproj")
@@ -188,12 +179,6 @@ Target.create "RunTests" (fun _ ->
           let projectDirectory = Path.GetDirectoryName(testProject)
           DotNet.test (setDotNetOptions projectDirectory) testProject
         )
-
-    // let testProjects = !! "tests/**/*.fsproj"
-    // for testProject in testProjects do
-    //     let projectDirectory = Path.GetDirectoryName(testProject)
-    //     DotNet.test (setDotNetOptions projectDirectory) testProject
-    //     // DotNet.test id testProject
 )
 
 Target.create "RunSamplesTests" (fun _ ->
