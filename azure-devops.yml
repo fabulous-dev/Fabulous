@@ -62,11 +62,11 @@ phases:
     displayName: 'Build Fabulous'
   - task: PublishTestResults@1
     inputs:
-      testResultsFormat: 'VSTest' # Options: JUnit, NUnit, VSTest, xUnit
-      testResultsFiles: 'build_output\*.trx' 
+      testResultsFormat: 'NUnit' # Options: JUnit, NUnit, VSTest, xUnit
+      testResultsFiles: 'build_output/*.trx' 
   - task: CopyFiles@1
     inputs:
-      contents: build_output\*.nupkg
+      contents: build_output/*.nupkg
       targetFolder: $(Build.ArtifactStagingDirectory)
   - task: PublishBuildArtifacts@1
     inputs:
