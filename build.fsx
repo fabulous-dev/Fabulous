@@ -168,7 +168,7 @@ Target.create "RunTests" (fun _ ->
     let setDotNetOptions (projectDirectory:string) : (DotNet.TestOptions-> DotNet.TestOptions) =
         fun (dotNetTestOptions:DotNet.TestOptions) -> 
           { dotNetTestOptions with
-              Logger = Some "trx"
+              Logger = Some "nunit"
               ResultsDirectory = Some buildDir
           }
 
