@@ -1532,7 +1532,7 @@
               "name": "TitleView",
               "inputType": "ViewElement",
               "modelType": "ViewElement",
-              "convToValue": "(fun (elem:ViewElement) -> elem.Create() :?> Xamarin.Forms.View)",
+              "updateCode": "updatePageTitleView",
               "defaultValue": "null"
             }
           ]

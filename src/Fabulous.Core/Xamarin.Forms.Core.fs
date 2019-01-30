@@ -9739,11 +9739,7 @@ type View() =
                 // Adjust the attached properties
                 let prevChildValueOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttributeKeyed<ViewElement>(View._TitleViewAttribKey)
                 let childValueOpt = newChild.TryGetAttributeKeyed<ViewElement>(View._TitleViewAttribKey)
-                match prevChildValueOpt, childValueOpt with
-                | ValueSome prevChildValue, ValueSome currValue when prevChildValue = currValue -> ()
-                | _, ValueSome currValue -> Xamarin.Forms.NavigationPage.SetTitleView(targetChild, (fun (elem:ViewElement) -> elem.Create() :?> Xamarin.Forms.View) currValue)
-                | ValueSome _, ValueNone -> Xamarin.Forms.NavigationPage.SetTitleView(targetChild, null) // TODO: not always perfect, should set back to original default?
-                | _ -> ()
+                updatePageTitleView prevChildValueOpt childValueOpt targetChild
                 ())
         match prevBarBackgroundColorOpt, currBarBackgroundColorOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
