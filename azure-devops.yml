@@ -31,7 +31,7 @@ phases:
   - task: PublishTestResults@1
     inputs:
       testResultsFormat: 'NUnit' # Options: JUnit, NUnit, VSTest, xUnit
-      testResultsFiles: 'build_output\*.trx' 
+      testResultsFiles: 'build_output\*.xml' 
   - task: CopyFiles@2
     inputs:
       contents: build_output\*.nupkg
@@ -63,7 +63,7 @@ phases:
   - task: PublishTestResults@1
     inputs:
       testResultsFormat: 'NUnit' # Options: JUnit, NUnit, VSTest, xUnit
-      testResultsFiles: 'build_output/*.trx' 
+      testResultsFiles: 'build_output/*.xml' 
   - task: CopyFiles@1
     inputs:
       contents: build_output/*.nupkg

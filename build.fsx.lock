@@ -162,6 +162,7 @@ NUGET
     NETStandard.Library (2.0.3)
       Microsoft.NETCore.Platforms (>= 1.1)
     Newtonsoft.Json (12.0.1)
+    NunitXml.TestLogger (2.1.36)
     runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl (4.3.3)
     runtime.debian.9-x64.runtime.native.System.Security.Cryptography.OpenSsl (4.3.3)
     runtime.fedora.23-x64.runtime.native.System.Security.Cryptography.OpenSsl (4.3.3)

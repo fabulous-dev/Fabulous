@@ -1,3 +1,6 @@
+source https://www.nuget.org/api/v2
+
+nuget NunitXml.TestLogger 2.1.36
 # dependencies used when compiling and running the library and neutral parts of samples
 group neutral
   framework: netstandard2.0

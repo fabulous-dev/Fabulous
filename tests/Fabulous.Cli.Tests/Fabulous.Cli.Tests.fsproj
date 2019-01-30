@@ -27,6 +27,7 @@
       
         <!-- References used indirectly by FCS when compiling tests -->
         <PackageReference Include="Microsoft.CSharp" />
+        <PackageReference Include="NunitXml.TestLogger" />
         <PackageReference Include="NETStandard.Library" />
         <PackageReference Include="System.Reflection.Emit.ILGeneration" />
         <PackageReference Include="System.Reflection.Emit.Lightweight" />

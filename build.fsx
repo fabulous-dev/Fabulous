@@ -165,10 +165,10 @@ Target.create "BuildSamples" (fun _ ->
 )
 
 Target.create "RunTests" (fun _ ->
-    let setDotNetOptions (projectDirectory:string) : (DotNet.TestOptions-> DotNet.TestOptions) =
+    let setDotNetOptions (projectName:string) : (DotNet.TestOptions-> DotNet.TestOptions) =
         fun (dotNetTestOptions:DotNet.TestOptions) -> 
           { dotNetTestOptions with
-              Logger = Some "nunit"
+              Logger = Some (sprintf "nunit;LogFilePath=%s.xml" (Path.Combine(buildDir, projectName)))
               ResultsDirectory = Some buildDir
           }
 
@@ -176,8 +176,8 @@ Target.create "RunTests" (fun _ ->
     |> Seq.toArray
     |> Array.Parallel.iter (
         fun testProject -> 
-          let projectDirectory = Path.GetDirectoryName(testProject)
-          DotNet.test (setDotNetOptions projectDirectory) testProject
+          let testprojectName = Path.GetFileName(testProject)
+          DotNet.test (setDotNetOptions testprojectName) testProject
         )
 )
 
