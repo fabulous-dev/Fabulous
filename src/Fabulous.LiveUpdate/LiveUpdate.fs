@@ -200,7 +200,7 @@ module Extensions =
 
         member runner.EnableLiveUpdate() = 
 
-            let interp = EvalContext()
+            let interp = EvalContext(System.Reflection.Assembly.Load)
 
             let switchD (files: DFile[]) =
               lock interp (fun () -> 
