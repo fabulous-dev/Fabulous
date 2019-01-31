@@ -305,7 +305,7 @@ module App =
         | Choice showAbout -> 
             View.NavigationPage(pages=
                 [ yield 
-                    View.ContentPage(title="Root Page", useSafeArea=true,
+                    View.ContentPage(useSafeArea=true,
                         padding = new Thickness (10.0, 20.0, 10.0, 5.0), 
                         content= View.StackLayout(
                             children=[ 
@@ -321,6 +321,12 @@ module App =
                                  View.Button(text = "WebRequest", command=(fun () -> dispatch (SetRootPageKind WebCall)))
                             ]))
                      .ToolbarItems([View.ToolbarItem(text="About", command=(fun () -> dispatch (SetRootPageKind (Choice true))))] )
+                     .TitleView(View.StackLayout(orientation=StackOrientation.Horizontal, children=[
+                             View.Label(text="Fabulous", verticalOptions=LayoutOptions.Center)
+                             View.Label(text="RootPage", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.CenterAndExpand)
+                         ]
+                     ))
+
                   if showAbout then 
                     yield 
                         View.ContentPage(title="About", useSafeArea=true, 
