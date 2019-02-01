@@ -60,6 +60,26 @@ module Cmd =
             match msg with
             | None -> dispatch ValueNone
             | Some msg -> dispatch (ValueSome msg) } |> Async.StartImmediate ]
+
+    /// Module containing functions dedicated to testing Cmds.
+    module Testing =
+
+        /// Immediately executes a Cmd and wait for it to dispatch one or more messages, with a given timeout
+        let rec executeUntil (millisecondsTimeout: int) (cmd: Cmd<'msg>) : 'msg voption list =
+            let internalDispatch (r: Ref<'msg voption option>) (autoResetEvent: System.Threading.AutoResetEvent) msg =
+                r.Value <- Some msg
+                autoResetEvent.Set() |> ignore
+
+            [ for sub in cmd do
+                let result = ref None
+                use autoResetEvent = new System.Threading.AutoResetEvent(false)
+                sub (internalDispatch result autoResetEvent)
+                match autoResetEvent.WaitOne(millisecondsTimeout) with
+                | false -> ()
+                | true -> yield result.Value.Value ]
+
+        /// Immediately executes a Cmd and indefinitely wait for it to dispatch a message
+        let execute cmd = executeUntil -1 cmd
  
     //let ofAsyncMsgs p : Cmd<_> =
     //    [ fun dispatch -> p |> AsyncSeq.iter dispatch |> Async.StartImmediate ]

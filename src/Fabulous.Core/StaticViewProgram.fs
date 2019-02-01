@@ -29,6 +29,7 @@ module StaticView =
         let mutable lastModel = initialModel
         let mutable lastViewData = None
         let dispatch = ProgramDispatch<'msg>.DispatchViaThunk
+        let viewDispatch = (fun msg -> ProgramDispatch<'msg>.DispatchViaThunk (ValueSome msg))
 
         do Debug.WriteLine "run: computing static components of view"
 
@@ -56,7 +57,7 @@ module StaticView =
             | None -> 
 
                 // Construct the binding context for the view model
-                let viewModel = StaticViewModel (updatedModel, dispatch, bindings, program.debug)
+                let viewModel = StaticViewModel (updatedModel, viewDispatch, bindings, program.debug)
                 setBindingContexts bindings viewModel
                 mainPage.BindingContext <- box viewModel
                 lastViewData <- Some (mainPage, bindings, viewModel)
