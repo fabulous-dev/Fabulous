@@ -3,6 +3,13 @@ group neutral
   framework: netstandard2.0
   source https://api.nuget.org/v3/index.json
   source https://www.myget.org/F/oxyplot
+  github fsprojects/FSharp.Compiler.PortaCode:master src/ProjectCracker.fs
+  github fsprojects/FSharp.Compiler.PortaCode:master src/CodeModel.fs
+  github fsprojects/FSharp.Compiler.PortaCode:master src/Interpreter.fs
+  github fsprojects/FSharp.Compiler.PortaCode:master src/FromCompilerService.fs
+  github fsprojects/FSharp.Compiler.PortaCode:master src/ProcessCommandLine.fs
+  github fsprojects/FSharp.Compiler.PortaCode:master tests/PortaCodeTests.fs
+
   nuget FSharp.Core 4.5.2
   nuget Xamarin.Forms 3.4.0.1009999
   nuget Xamarin.Forms.Maps 3.4.0.1009999

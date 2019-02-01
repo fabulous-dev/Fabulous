@@ -6,10 +6,12 @@
         <DefineConstants>$(DefineConstants);NETSTANDARD2_0;TEST</DefineConstants>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="..\..\src\Fabulous.Cli\ProjectCracker.fs" Link="ProjectCracker.fs" />
-        <Compile Include="..\..\src\Fabulous.Cli\CodeModel.fs" Link="CodeModel.fs" />
-        <Compile Include="..\..\src\Fabulous.Cli\Interpreter.fs" Link="Interpreter.fs" />
-        <Compile Include="..\..\src\Fabulous.Cli\FromCompilerService.fs" Link="FromCompilerService.fs" />
+        <Compile Include="..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\ProjectCracker.fs" Link="ProjectCracker.fs" />
+        <Compile Include="..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\CodeModel.fs" Link="CodeModel.fs" />
+        <Compile Include="..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\Interpreter.fs" Link="Interpreter.fs" />
+        <Compile Include="..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\FromCompilerService.fs" Link="FromCompilerService.fs" />
+        <Compile Include="..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\ProcessCommandLine.fs" Link="ProcessCommandLine.fs" />
+        <Compile Include="..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\tests\PortaCodeTests.fs" />
         <Compile Include="..\..\src\Fabulous.Cli\fscd.fs" Link="fscd.fs" />
         <Compile Include="Tests.fs" />
     </ItemGroup>

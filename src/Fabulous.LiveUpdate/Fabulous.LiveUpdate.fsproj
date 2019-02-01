@@ -9,8 +9,8 @@
         <PackageTags>LiveUpdate;Android;iOS</PackageTags>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="..\Fabulous.Cli\CodeModel.fs" Link="CodeModel.fs" />
-        <Compile Include="..\Fabulous.Cli\Interpreter.fs" Link="Interpreter.fs" />
+        <Compile Include="..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\CodeModel.fs" Link="CodeModel.fs" />
+        <Compile Include="..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\Interpreter.fs" Link="Interpreter.fs" />
         <Compile Include="LiveUpdate.fs" />
     </ItemGroup>
     <ItemGroup>
