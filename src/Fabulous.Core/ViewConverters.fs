@@ -643,7 +643,7 @@ module Converters =
         match prevValue, currValue with
         | ValueNone, ValueNone -> ()
         | ValueSome prevVal, ValueSome newVal when prevVal = newVal -> ()
-        | _, ValueNone -> ()
+        | _, ValueNone -> Xamarin.Forms.MenuItem.SetAccelerator(target, null)
         | _, ValueSome newVal -> Xamarin.Forms.MenuItem.SetAccelerator(target, makeAccelerator newVal)
 
     /// Check if two LayoutOptions are equal
