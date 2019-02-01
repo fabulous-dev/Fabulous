@@ -626,8 +626,8 @@ module Converters =
         | ValueSome prev, ValueNone -> updateFunc prev defaultValue
         | ValueNone, ValueSome curr -> updateFunc defaultValue curr
 
-    /// Update the TitleView of a NavigationPage, given previous and current values
-    let internal updateNavigationPageTitleView (prevOpt: ViewElement voption) (currOpt: ViewElement voption) (target: Xamarin.Forms.NavigationPage) =
+    /// Update the attached NavigationPage.TitleView property of a Page, given previous and current values
+    let internal updatePageTitleView (prevOpt: ViewElement voption) (currOpt: ViewElement voption) (target: Page) =
         match prevOpt, currOpt with
         | ValueSome prev, ValueSome curr when identical prev curr -> ()
         | ValueSome prev, ValueSome curr when canReuseChild prev curr ->

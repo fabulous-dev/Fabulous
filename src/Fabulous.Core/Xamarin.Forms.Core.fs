@@ -374,11 +374,11 @@ type View() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _TitleIconAttribKey : AttributeKey<_> = AttributeKey<_>("TitleIcon")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member val _TitleViewAttribKey : AttributeKey<_> = AttributeKey<_>("TitleView")
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _BarBackgroundColorAttribKey : AttributeKey<_> = AttributeKey<_>("BarBackgroundColor")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _BarTextColorAttribKey : AttributeKey<_> = AttributeKey<_>("BarTextColor")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _TitleViewAttribKey : AttributeKey<_> = AttributeKey<_>("TitleView")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _PoppedAttribKey : AttributeKey<_> = AttributeKey<_>("Popped")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -9587,7 +9587,6 @@ type View() =
                                              ?pages: ViewElement list,
                                              ?barBackgroundColor: Xamarin.Forms.Color,
                                              ?barTextColor: Xamarin.Forms.Color,
-                                             ?titleView: ViewElement,
                                              ?popped: Xamarin.Forms.NavigationEventArgs -> unit,
                                              ?poppedToRoot: Xamarin.Forms.NavigationEventArgs -> unit,
                                              ?pushed: Xamarin.Forms.NavigationEventArgs -> unit,
@@ -9636,7 +9635,6 @@ type View() =
         let attribCount = match pages with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match barBackgroundColor with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match barTextColor with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match titleView with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match popped with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match poppedToRoot with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match pushed with Some _ -> attribCount + 1 | None -> attribCount
@@ -9645,7 +9643,6 @@ type View() =
         match pages with None -> () | Some v -> attribBuilder.Add(View._PagesAttribKey, Array.ofList(v)) 
         match barBackgroundColor with None -> () | Some v -> attribBuilder.Add(View._BarBackgroundColorAttribKey, (v)) 
         match barTextColor with None -> () | Some v -> attribBuilder.Add(View._BarTextColorAttribKey, (v)) 
-        match titleView with None -> () | Some v -> attribBuilder.Add(View._TitleViewAttribKey, (v)) 
         match popped with None -> () | Some v -> attribBuilder.Add(View._PoppedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(v)) 
         match poppedToRoot with None -> () | Some v -> attribBuilder.Add(View._PoppedToRootAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(v)) 
         match pushed with None -> () | Some v -> attribBuilder.Add(View._PushedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(v)) 
@@ -9672,8 +9669,6 @@ type View() =
         let mutable currBarBackgroundColorOpt = ValueNone
         let mutable prevBarTextColorOpt = ValueNone
         let mutable currBarTextColorOpt = ValueNone
-        let mutable prevTitleViewOpt = ValueNone
-        let mutable currTitleViewOpt = ValueNone
         let mutable prevPoppedOpt = ValueNone
         let mutable currPoppedOpt = ValueNone
         let mutable prevPoppedToRootOpt = ValueNone
@@ -9687,8 +9682,6 @@ type View() =
                 currBarBackgroundColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
             if kvp.Key = View._BarTextColorAttribKey.KeyValue then 
                 currBarTextColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
-            if kvp.Key = View._TitleViewAttribKey.KeyValue then 
-                currTitleViewOpt <- ValueSome (kvp.Value :?> ViewElement)
             if kvp.Key = View._PoppedAttribKey.KeyValue then 
                 currPoppedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.NavigationEventArgs>)
             if kvp.Key = View._PoppedToRootAttribKey.KeyValue then 
@@ -9705,8 +9698,6 @@ type View() =
                     prevBarBackgroundColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
                 if kvp.Key = View._BarTextColorAttribKey.KeyValue then 
                     prevBarTextColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
-                if kvp.Key = View._TitleViewAttribKey.KeyValue then 
-                    prevTitleViewOpt <- ValueSome (kvp.Value :?> ViewElement)
                 if kvp.Key = View._PoppedAttribKey.KeyValue then 
                     prevPoppedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.NavigationEventArgs>)
                 if kvp.Key = View._PoppedToRootAttribKey.KeyValue then 
@@ -9747,6 +9738,10 @@ type View() =
                 | _, ValueSome currValue -> Xamarin.Forms.NavigationPage.SetTitleIcon(targetChild, makeFileImageSource currValue)
                 | ValueSome _, ValueNone -> Xamarin.Forms.NavigationPage.SetTitleIcon(targetChild, null) // TODO: not always perfect, should set back to original default?
                 | _ -> ()
+                // Adjust the attached properties
+                let prevChildValueOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttributeKeyed<ViewElement>(View._TitleViewAttribKey)
+                let childValueOpt = newChild.TryGetAttributeKeyed<ViewElement>(View._TitleViewAttribKey)
+                updatePageTitleView prevChildValueOpt childValueOpt targetChild
                 ())
         match prevBarBackgroundColorOpt, currBarBackgroundColorOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
@@ -9758,7 +9753,6 @@ type View() =
         | _, ValueSome currValue -> target.BarTextColor <-  currValue
         | ValueSome _, ValueNone -> target.BarTextColor <- Xamarin.Forms.Color.Default
         | ValueNone, ValueNone -> ()
-        updateNavigationPageTitleView prevTitleViewOpt currTitleViewOpt target
         match prevPoppedOpt, currPoppedOpt with
         | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
         | ValueSome prevValue, ValueSome currValue -> target.Popped.RemoveHandler(prevValue); target.Popped.AddHandler(currValue)
@@ -9782,7 +9776,6 @@ type View() =
     static member inline NavigationPage(?pages: ViewElement list,
                                         ?barBackgroundColor: Xamarin.Forms.Color,
                                         ?barTextColor: Xamarin.Forms.Color,
-                                        ?titleView: ViewElement,
                                         ?popped: Xamarin.Forms.NavigationEventArgs -> unit,
                                         ?poppedToRoot: Xamarin.Forms.NavigationEventArgs -> unit,
                                         ?pushed: Xamarin.Forms.NavigationEventArgs -> unit,
@@ -9832,7 +9825,6 @@ type View() =
                                ?pages=pages,
                                ?barBackgroundColor=barBackgroundColor,
                                ?barTextColor=barTextColor,
-                               ?titleView=titleView,
                                ?popped=popped,
                                ?poppedToRoot=poppedToRoot,
                                ?pushed=pushed,
@@ -12575,14 +12567,14 @@ module ViewElementExtensions =
         /// Adjusts the TitleIcon property in the visual element
         member x.TitleIcon(value: string) = x.WithAttribute(View._TitleIconAttribKey, (value))
 
+        /// Adjusts the TitleView property in the visual element
+        member x.TitleView(value: ViewElement) = x.WithAttribute(View._TitleViewAttribKey, (value))
+
         /// Adjusts the BarBackgroundColor property in the visual element
         member x.BarBackgroundColor(value: Xamarin.Forms.Color) = x.WithAttribute(View._BarBackgroundColorAttribKey, (value))
 
         /// Adjusts the BarTextColor property in the visual element
         member x.BarTextColor(value: Xamarin.Forms.Color) = x.WithAttribute(View._BarTextColorAttribKey, (value))
-
-        /// Adjusts the TitleView property in the visual element
-        member x.TitleView(value: ViewElement) = x.WithAttribute(View._TitleViewAttribKey, (value))
 
         /// Adjusts the Popped property in the visual element
         member x.Popped(value: Xamarin.Forms.NavigationEventArgs -> unit) = x.WithAttribute(View._PoppedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(value))
@@ -13269,14 +13261,14 @@ module ViewElementExtensions =
     /// Adjusts the TitleIcon property in the visual element
     let titleIcon (value: string) (x: ViewElement) = x.TitleIcon(value)
 
+    /// Adjusts the TitleView property in the visual element
+    let titleView (value: ViewElement) (x: ViewElement) = x.TitleView(value)
+
     /// Adjusts the BarBackgroundColor property in the visual element
     let barBackgroundColor (value: Xamarin.Forms.Color) (x: ViewElement) = x.BarBackgroundColor(value)
 
     /// Adjusts the BarTextColor property in the visual element
     let barTextColor (value: Xamarin.Forms.Color) (x: ViewElement) = x.BarTextColor(value)
-
-    /// Adjusts the TitleView property in the visual element
-    let titleView (value: ViewElement) (x: ViewElement) = x.TitleView(value)
 
     /// Adjusts the Popped property in the visual element
     let popped (value: Xamarin.Forms.NavigationEventArgs -> unit) (x: ViewElement) = x.Popped(value)

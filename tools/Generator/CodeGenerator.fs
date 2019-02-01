@@ -184,15 +184,18 @@ module CodeGenerator =
                     if (m.Attached.Length > 0) then
                         w.printfn "            (fun prevChildOpt newChild targetChild -> "
                         for ap in m.Attached do
-                            let apApply = getValueOrDefault "" (ap.ConvToValue + " ")
                             w.printfn "                // Adjust the attached properties"
                             w.printfn "                let prevChildValueOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttributeKeyed<%s>(View._%sAttribKey)" ap.ModelType ap.UniqueName
                             w.printfn "                let childValueOpt = newChild.TryGetAttributeKeyed<%s>(View._%sAttribKey)" ap.ModelType ap.UniqueName
-                            w.printfn "                match prevChildValueOpt, childValueOpt with"
-                            w.printfn "                | ValueSome prevChildValue, ValueSome currChildValue when prevChildValue = currChildValue -> ()"
-                            w.printfn "                | _, ValueSome currChildValue -> %s.Set%s(targetChild, %scurrChildValue)" data.FullName ap.Name apApply
-                            w.printfn "                | ValueSome _, ValueNone -> %s.Set%s(targetChild, %s)" data.FullName ap.Name ap.DefaultValue
-                            w.printfn "                | _ -> ()"
+                            if System.String.IsNullOrWhiteSpace(ap.UpdateCode) then
+                                let apApply = getValueOrDefault "" (ap.ConvToValue + " ")
+                                w.printfn "                match prevChildValueOpt, childValueOpt with"
+                                w.printfn "                | ValueSome prevChildValue, ValueSome currChildValue when prevChildValue = currChildValue -> ()"
+                                w.printfn "                | _, ValueSome currChildValue -> %s.Set%s(targetChild, %scurrChildValue)" data.FullName ap.Name apApply
+                                w.printfn "                | ValueSome _, ValueNone -> %s.Set%s(targetChild, %s)" data.FullName ap.Name ap.DefaultValue
+                                w.printfn "                | _ -> ()"
+                            else
+                                w.printfn "                %s prevChildValueOpt childValueOpt targetChild" ap.UpdateCode
                         w.printfn "                ())"
                     else
                         w.printfn "            (fun _ _ _ -> ())"
@@ -230,15 +233,19 @@ module CodeGenerator =
                         if (m.Attached.Length > 0) then
                             w.printfn "            (fun prevChildOpt newChild targetChild -> "
                             for ap in m.Attached do
-                                let apApply = getValueOrDefault "" (ap.ConvToValue + " ")
                                 w.printfn "                // Adjust the attached properties"
                                 w.printfn "                let prevChildValueOpt = match prevChildOpt with ValueNone -> ValueNone | ValueSome prevChild -> prevChild.TryGetAttributeKeyed<%s>(View._%sAttribKey)" ap.ModelType ap.UniqueName
                                 w.printfn "                let childValueOpt = newChild.TryGetAttributeKeyed<%s>(View._%sAttribKey)" ap.ModelType ap.UniqueName
-                                w.printfn "                match prevChildValueOpt, childValueOpt with"
-                                w.printfn "                | ValueSome prevChildValue, ValueSome currValue when prevChildValue = currValue -> ()"
-                                w.printfn "                | _, ValueSome currValue -> %s.Set%s(targetChild, %scurrValue)" data.FullName ap.Name apApply
-                                w.printfn "                | ValueSome _, ValueNone -> %s.Set%s(targetChild, %s) // TODO: not always perfect, should set back to original default?" data.FullName ap.Name ap.DefaultValue
-                                w.printfn "                | _ -> ()"
+
+                                if System.String.IsNullOrWhiteSpace(ap.UpdateCode) then
+                                    let apApply = getValueOrDefault "" (ap.ConvToValue + " ")
+                                    w.printfn "                match prevChildValueOpt, childValueOpt with"
+                                    w.printfn "                | ValueSome prevChildValue, ValueSome currValue when prevChildValue = currValue -> ()"
+                                    w.printfn "                | _, ValueSome currValue -> %s.Set%s(targetChild, %scurrValue)" data.FullName ap.Name apApply
+                                    w.printfn "                | ValueSome _, ValueNone -> %s.Set%s(targetChild, %s) // TODO: not always perfect, should set back to original default?" data.FullName ap.Name ap.DefaultValue
+                                    w.printfn "                | _ -> ()"
+                                else
+                                    w.printfn "                %s prevChildValueOpt childValueOpt targetChild" ap.UpdateCode
                             w.printfn "                ())"
 
                     | _ -> 
