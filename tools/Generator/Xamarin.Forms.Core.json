@@ -1660,16 +1660,7 @@
           "name": "Command",
           "defaultValue": "null",
           "inputType": "unit -> unit",
-          "convToModel": "makeCommand",
-          "attached": [
-            {
-              "name": "Accelerator",
-              "inputType": "string",
-              "modelType": "string",
-              "convToValue": "makeAccelerator",
-              "defaultValue": "null"
-            }
-          ]
+          "convToModel": "makeCommand"
         },
         {
           "name": "CommandParameter",
@@ -1681,6 +1672,14 @@
           "modelType": "string",
           "convToValue": "makeFileImageSource",
           "defaultValue": "null"
+        },
+        {
+          "name": "Accelerator",
+          "inputType": "string",
+          "modelType": "string",
+          "convToValue": "makeAccelerator",
+          "defaultValue": "null",
+          "updateCode": "(fun _ currValue (target: Xamarin.Forms.MenuItem) -> match currValue with | ValueSome value -> Xamarin.Forms.MenuItem.SetAccelerator(target, makeAccelerator value) | ValueNone -> ())"
         }
       ]
     },
