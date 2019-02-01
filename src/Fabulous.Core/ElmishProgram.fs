@@ -18,8 +18,10 @@ type internal ProgramDispatch<'msg>()  =
     static let mutable dispatchImpl = (fun (_msg: 'msg) -> failwith "do not call dispatch during initialization" : unit)
 
     static let dispatch = 
-        id (fun msg -> 
-            dispatchImpl msg)
+        id (fun msgOpt -> 
+            match msgOpt with
+            | ValueNone -> ()
+            | ValueSome msg -> dispatchImpl msg)
 
     static member DispatchViaThunk = dispatch 
     static member SetDispatchThunk v = dispatchImpl <- v
@@ -45,11 +47,12 @@ type ProgramRunner<'model, 'msg>(app: Application, program: Program<'model, 'msg
     let mutable lastModel = initialModel
     let mutable lastViewDataOpt = None
     let dispatch = ProgramDispatch<'msg>.DispatchViaThunk
+    let viewDispatch = (fun msg -> ProgramDispatch<'msg>.DispatchViaThunk (ValueSome msg))
     let mutable reset = (fun () -> ())
 
     // If the view is dynamic, create the initial page
     let viewInfo, mainPage = 
-        let pageElement = program.view initialModel dispatch
+        let pageElement = program.view initialModel viewDispatch
         let pageObj = pageElement.Create()
         let mainPage = 
             match pageObj with 
@@ -83,7 +86,7 @@ type ProgramRunner<'model, 'msg>(app: Application, program: Program<'model, 'msg
 
         | Some prevPageElement ->
             let newPageElement = 
-                try program.view updatedModel dispatch
+                try program.view updatedModel viewDispatch
                 with ex -> 
                     program.onError ("Unable to evaluate view:", ex)
                     prevPageElement
@@ -123,7 +126,7 @@ type ProgramRunner<'model, 'msg>(app: Application, program: Program<'model, 'msg
 
     member __.CurrentModel = lastModel 
 
-    member __.Dispatch(msg) = dispatch msg
+    member __.Dispatch(msg) = viewDispatch msg
 
     member runner.ChangeProgram(newProgram: Program<obj, obj, obj -> (obj -> unit) -> ViewElement>) : unit  =
         Device.BeginInvokeOnMainThread(fun () -> 
@@ -235,16 +238,3 @@ module Program =
     /// Run the app with ddynamic views for a specific application
     let runWithDynamicView (app : Application) (program: Program<'model, 'msg, _>) = 
         ProgramRunner(app, program)
-
-    /// Creates the view model for the given page and starts the Elmish dispatch loop for the matching program
-    [<Obsolete("Please use Program.runWithDynamicView", true)>]
-    let run app program = ProgramRunner(app,program)
-
-    /// Add dynamic views associated with a specific application
-    [<Obsolete("Please use Program.runWithDynamicView", true)>]
-    let withDynamicView _app (_program: Program<'model, 'msg, _>) = failwith ""
-
-    /// Add dynamic views associated with a specific application
-    [<Obsolete("Please open Fabulous.StaticViews and use Program.runWithStaticView", true)>]
-    let withStaticView (_program: Program<'model, 'msg, _>) = failwith ""
-
