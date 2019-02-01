@@ -638,6 +638,14 @@ module Converters =
             NavigationPage.SetTitleView(target, null)
         | _, _ -> ()
 
+    /// Update the AcceleratorProperty of a MenuItem, given previous and current Accelerator
+    let internal updateAccelerator prevValue currValue (target: Xamarin.Forms.MenuItem) =
+        match prevValue, currValue with
+        | ValueNone, ValueNone -> ()
+        | ValueSome prevVal, ValueSome newVal when prevVal = newVal -> ()
+        | _, ValueNone -> Xamarin.Forms.MenuItem.SetAccelerator(target, null)
+        | _, ValueSome newVal -> Xamarin.Forms.MenuItem.SetAccelerator(target, makeAccelerator newVal)
+
     /// Check if two LayoutOptions are equal
     let internal equalLayoutOptions (x:Xamarin.Forms.LayoutOptions) (y:Xamarin.Forms.LayoutOptions)  =
         x.Alignment = y.Alignment && x.Expands = y.Expands

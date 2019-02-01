@@ -404,6 +404,8 @@ type View() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _IsPresentedChangedAttribKey : AttributeKey<_> = AttributeKey<_>("IsPresentedChanged")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
+    static member val _AcceleratorAttribKey : AttributeKey<_> = AttributeKey<_>("Accelerator")
+    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _TextDetailAttribKey : AttributeKey<_> = AttributeKey<_>("TextDetail")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _TextDetailColorAttribKey : AttributeKey<_> = AttributeKey<_>("TextDetailColor")
@@ -10580,6 +10582,7 @@ type View() =
                                        ?command: unit -> unit,
                                        ?commandParameter: System.Object,
                                        ?icon: string,
+                                       ?accelerator: string,
                                        ?classId: string,
                                        ?styleId: string,
                                        ?automationId: string,
@@ -10590,12 +10593,14 @@ type View() =
         let attribCount = match command with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match commandParameter with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match icon with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match accelerator with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = View.BuildElement(attribCount, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match text with None -> () | Some v -> attribBuilder.Add(View._TextAttribKey, (v)) 
         match command with None -> () | Some v -> attribBuilder.Add(View._CommandAttribKey, makeCommand(v)) 
         match commandParameter with None -> () | Some v -> attribBuilder.Add(View._CommandParameterAttribKey, (v)) 
         match icon with None -> () | Some v -> attribBuilder.Add(View._IconAttribKey, (v)) 
+        match accelerator with None -> () | Some v -> attribBuilder.Add(View._AcceleratorAttribKey, (v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -10621,6 +10626,8 @@ type View() =
         let mutable currCommandParameterOpt = ValueNone
         let mutable prevIconOpt = ValueNone
         let mutable currIconOpt = ValueNone
+        let mutable prevAcceleratorOpt = ValueNone
+        let mutable currAcceleratorOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = View._TextAttribKey.KeyValue then 
                 currTextOpt <- ValueSome (kvp.Value :?> string)
@@ -10630,6 +10637,8 @@ type View() =
                 currCommandParameterOpt <- ValueSome (kvp.Value :?> System.Object)
             if kvp.Key = View._IconAttribKey.KeyValue then 
                 currIconOpt <- ValueSome (kvp.Value :?> string)
+            if kvp.Key = View._AcceleratorAttribKey.KeyValue then 
+                currAcceleratorOpt <- ValueSome (kvp.Value :?> string)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
@@ -10642,6 +10651,8 @@ type View() =
                     prevCommandParameterOpt <- ValueSome (kvp.Value :?> System.Object)
                 if kvp.Key = View._IconAttribKey.KeyValue then 
                     prevIconOpt <- ValueSome (kvp.Value :?> string)
+                if kvp.Key = View._AcceleratorAttribKey.KeyValue then 
+                    prevAcceleratorOpt <- ValueSome (kvp.Value :?> string)
         match prevTextOpt, currTextOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.Text <-  currValue
@@ -10662,12 +10673,14 @@ type View() =
         | _, ValueSome currValue -> target.Icon <- makeFileImageSource currValue
         | ValueSome _, ValueNone -> target.Icon <- null
         | ValueNone, ValueNone -> ()
+        updateAccelerator prevAcceleratorOpt currAcceleratorOpt target
 
     /// Describes a MenuItem in the view
     static member inline MenuItem(?text: string,
                                   ?command: unit -> unit,
                                   ?commandParameter: System.Object,
                                   ?icon: string,
+                                  ?accelerator: string,
                                   ?classId: string,
                                   ?styleId: string,
                                   ?automationId: string,
@@ -10679,6 +10692,7 @@ type View() =
                                ?command=command,
                                ?commandParameter=commandParameter,
                                ?icon=icon,
+                               ?accelerator=accelerator,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -10862,6 +10876,7 @@ type View() =
                                           ?command: unit -> unit,
                                           ?commandParameter: System.Object,
                                           ?icon: string,
+                                          ?accelerator: string,
                                           ?classId: string,
                                           ?styleId: string,
                                           ?automationId: string,
@@ -10871,7 +10886,7 @@ type View() =
         let attribCount = match order with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match priority with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildMenuItem(attribCount, ?text=text, ?command=command, ?commandParameter=commandParameter, ?icon=icon, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = View.BuildMenuItem(attribCount, ?text=text, ?command=command, ?commandParameter=commandParameter, ?icon=icon, ?accelerator=accelerator, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match order with None -> () | Some v -> attribBuilder.Add(View._OrderAttribKey, (v)) 
         match priority with None -> () | Some v -> attribBuilder.Add(View._PriorityAttribKey, (v)) 
         attribBuilder
@@ -10926,6 +10941,7 @@ type View() =
                                      ?command: unit -> unit,
                                      ?commandParameter: System.Object,
                                      ?icon: string,
+                                     ?accelerator: string,
                                      ?classId: string,
                                      ?styleId: string,
                                      ?automationId: string,
@@ -10939,6 +10955,7 @@ type View() =
                                ?command=command,
                                ?commandParameter=commandParameter,
                                ?icon=icon,
+                               ?accelerator=accelerator,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -12595,6 +12612,9 @@ module ViewElementExtensions =
         /// Adjusts the IsPresentedChanged property in the visual element
         member x.IsPresentedChanged(value: bool -> unit) = x.WithAttribute(View._IsPresentedChangedAttribKey, (fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.MasterDetailPage).IsPresented))(value))
 
+        /// Adjusts the Accelerator property in the visual element
+        member x.Accelerator(value: string) = x.WithAttribute(View._AcceleratorAttribKey, (value))
+
         /// Adjusts the TextDetail property in the visual element
         member x.TextDetail(value: string) = x.WithAttribute(View._TextDetailAttribKey, (value))
 
@@ -13285,6 +13305,9 @@ module ViewElementExtensions =
 
     /// Adjusts the IsPresentedChanged property in the visual element
     let isPresentedChanged (value: bool -> unit) (x: ViewElement) = x.IsPresentedChanged(value)
+
+    /// Adjusts the Accelerator property in the visual element
+    let accelerator (value: string) (x: ViewElement) = x.Accelerator(value)
 
     /// Adjusts the TextDetail property in the visual element
     let textDetail (value: string) (x: ViewElement) = x.TextDetail(value)

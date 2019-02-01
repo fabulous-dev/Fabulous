@@ -1672,15 +1672,14 @@
           "modelType": "string",
           "convToValue": "makeFileImageSource",
           "defaultValue": "null"
-        }
-      ],
-      "attached": [
+        },
         {
           "name": "Accelerator",
           "inputType": "string",
           "modelType": "string",
           "convToValue": "makeAccelerator",
-          "defaultValue": "null"
+          "defaultValue": "null",
+          "updateCode": "updateAccelerator"
         }
       ]
     },
