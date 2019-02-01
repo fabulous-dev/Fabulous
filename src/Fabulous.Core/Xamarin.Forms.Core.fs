@@ -10673,7 +10673,7 @@ type View() =
         | _, ValueSome currValue -> target.Icon <- makeFileImageSource currValue
         | ValueSome _, ValueNone -> target.Icon <- null
         | ValueNone, ValueNone -> ()
-        (fun _ currValue (target: Xamarin.Forms.MenuItem) -> match currValue with | ValueSome value -> Xamarin.Forms.MenuItem.SetAccelerator(target, makeAccelerator value) | ValueNone -> ()) prevAcceleratorOpt currAcceleratorOpt target
+        updateAccelerator prevAcceleratorOpt currAcceleratorOpt target
 
     /// Describes a MenuItem in the view
     static member inline MenuItem(?text: string,

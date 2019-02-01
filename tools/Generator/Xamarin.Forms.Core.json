@@ -1679,7 +1679,7 @@
           "modelType": "string",
           "convToValue": "makeAccelerator",
           "defaultValue": "null",
-          "updateCode": "(fun _ currValue (target: Xamarin.Forms.MenuItem) -> match currValue with | ValueSome value -> Xamarin.Forms.MenuItem.SetAccelerator(target, makeAccelerator value) | ValueNone -> ())"
+          "updateCode": "updateAccelerator"
         }
       ]
     },
