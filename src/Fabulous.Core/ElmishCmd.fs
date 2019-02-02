@@ -65,7 +65,7 @@ module Cmd =
     module Testing =
 
         /// Immediately executes a Cmd and wait for it to dispatch one or more messages, with a given timeout
-        let rec executeUntil (millisecondsTimeout: int) (cmd: Cmd<'msg>) : 'msg voption list =
+        let rec executeUntil (millisecondsTimeout: int) (cmd: Cmd<'msg>) : 'msg list =
             let internalDispatch (r: Ref<'msg voption option>) (autoResetEvent: System.Threading.AutoResetEvent) msg =
                 r.Value <- Some msg
                 autoResetEvent.Set() |> ignore
@@ -76,7 +76,10 @@ module Cmd =
                 sub (internalDispatch result autoResetEvent)
                 match autoResetEvent.WaitOne(millisecondsTimeout) with
                 | false -> ()
-                | true -> yield result.Value.Value ]
+                | true ->
+                    match result.Value.Value with
+                    | ValueNone -> ()
+                    | ValueSome msg -> yield msg ]
 
         /// Immediately executes a Cmd and indefinitely wait for it to dispatch a message
         let execute cmd = executeUntil -1 cmd
