@@ -1,3 +1,14 @@
+#### 0.31.0
+
+* [Fabulous.Core] Added XML docs for Fabulous helpers (https://github.com/fsprojects/Fabulous/pull/284)
+* [Xamarin.Forms controls] Fixed the TitleView attached property on Page (https://github.com/fsprojects/Fabulous/pull/305)
+* [Xamarin.Forms controls] Fixed the Accelerator property on MenuItem (https://github.com/fsprojects/Fabulous/pull/301)
+* [Template] Fixed a typo in assembly name in macOS project (https://github.com/fsprojects/Fabulous/pull/300)
+* [Template] Fixed an issue where NuGet restore would fail due to a space in path on Windows (https://github.com/fsprojects/Fabulous/pull/290)
+* [LiveUpdate] Fixed: Using ViewRef produces a "No member found for key Fabulous.DynamicViews.ViewRef" error (https://github.com/fsprojects/Fabulous/pull/286)
+* [LiveUpdate] Fixed: Using a list a "No member found for key Microsoft.FSharp.Collections.FSharpList" error (https://github.com/fsprojects/Fabulous/pull/286)
+* [LiveUpdate] Fixed: Calling a function that takes unit from a module in a separate dll produces a "No member found for key" error (https://github.com/fsprojects/Fabulous/pull/286)
+
 #### 0.30.0
 
 * Added support for Xamarin.Forms 3.4 (https://github.com/fsprojects/Fabulous/pull/257)
