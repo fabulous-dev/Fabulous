@@ -1726,6 +1726,22 @@
       ]
     },
     {
+      "name": "Xamarin.Forms.Menu",
+      "members": [
+        {
+          "name": "Text",
+          "defaultValue": "null"
+        },
+        {
+          "name": "Items",
+          "defaultValue": "null",
+          "inputType": "ViewElement list",
+          "modelType": "ViewElement []",
+          "convToModel": "Array.ofList"
+        }
+      ]
+    },
+    {
       "name": "Xamarin.Forms.TextCell",
       "members": [
         {
