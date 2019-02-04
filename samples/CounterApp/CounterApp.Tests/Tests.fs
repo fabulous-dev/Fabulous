@@ -92,3 +92,31 @@ module ``View tests`` =
         timerSwitch.IsToggled |> should equal true
         stepSlider.Value |> should equal 4.0
         stepSizeLabel.Text |> should equal "Step size: 4"
+
+    [<Test>]
+    let ``Clicking the button Increment should send the message Increment``() =
+        let mockedDispatch msg =
+            msg |> should equal Increment
+
+        let model = { Count = 5; Step = 4; TimerOn = true }
+        let actualView = App.view model mockedDispatch
+
+        let contentPage = ContentPageViewer(actualView)
+        let stackLayout = StackLayoutViewer(contentPage.Content)
+        let incrementButton = ButtonViewer(stackLayout.Children.[1])
+
+        incrementButton.Command ()
+
+    [<Test>]
+    let ``Clicking the button Decrement should send the message Decrement``() =
+        let mockedDispatch msg =
+            msg |> should equal Decrement
+
+        let model = { Count = 5; Step = 4; TimerOn = true }
+        let actualView = App.view model mockedDispatch
+
+        let contentPage = ContentPageViewer(actualView)
+        let stackLayout = StackLayoutViewer(contentPage.Content)
+        let decrementButton = ButtonViewer(stackLayout.Children.[2])
+
+        decrementButton.Command ()

@@ -27,7 +27,7 @@ let init () =
 ```
 
 Here we can make sure that the default state stays exact throughout the life of the project.  
-So using our favorite unit test framework (here we use [FsUnit](https://fsprojects.github.io/FsUnit/) for this example), we can write a simple test that will check if the value returned by `init` is the one we expect.
+So using our favorite unit test framework (here we use [FsUnit](https://fsprojects.github.io/FsUnit/) for this example), we can write a test that will check if the value returned by `init` is the one we expect.
 
 ```fsharp
 [<Test>]
@@ -104,14 +104,15 @@ let ``Given the message Increment, Update should increment Count by 1``() =
     App.update Increment initialModel |> should equal expectedState
 ```
 
-#### Testing `Cmd`s that always returns a value (`Cmd.ofMsg`, `Cmd.ofAsyncMsg`, etc.)
+#### Testing `Cmd`s
 
 `Cmd` is highly asynchronous by nature.  
 When creating a `Cmd`, we're really creating functions that will be called later by Fabulous (in its main update loop).  
 So testing if our `Cmd`s do return the correct message(s), we need something to execute the `Cmd` and give us the generated message(s).
 
-For this purpose, the module `Fabulous.Core.Cmd.Testing` contains an helper function:
+For this purpose, the module `Fabulous.Core.Cmd.Testing` contains two helper functions:
 - `execute: (cmd: Cmd<'msg>) -> 'msg list`
+- `executeUntil: (timeout: int) (cmd: Cmd<'msg>) -> 'msg list`
 
 `execute` will give you every messages it got from the executed `Cmd`.
 
@@ -134,18 +135,16 @@ let ``Given the message LoadData, Update should store the data and send a new me
     actualCmdMessages |> should equal expectedCmdMessages
 ```
 
-#### Testing `Cmd`s that might not return a value (`Cmd.ofMsgOption`, `Cmd.ofAsyncMsgOption`, etc.)
-
-TBD
+`executeUntil` is the same, except you can specify a timeout (in milliseconds).
 
 ### Testing view
 
 Views in Fabulous are testable as well, which makes it a clear advantage over more classic OOP frameworks (like C#/MVVM).  
-The `view` function returns a `ViewElement` value (which is a glorified dictionary of attribute-value pairs). So we can check against that dictionary if we find the property we want, with the value we want.
+The `view` function returns a `ViewElement` value (which is a dictionary of attribute-value pairs). So we can check against that dictionary if we find the property we want, with the value we want.
 
 Unfortunately when creating a control through `View.XXX`, we lose the control's type and access to its properties. Fabulous creates a `ViewElement` which encapsulates all those data.  
 
-In order to allow testing in a safe way, Fabulous provides type-safe helpers for every controls from `Xamarin.Forms.Core`.  
+In order to test in a safe way, Fabulous provides type-safe helpers for every controls from `Xamarin.Forms.Core`.  
 You can find them in the `Fabulous.DynamicViews` namespace. They are each named after the control they represent.
 
 Example: `StackLayoutViewer` will let you access the properties of a `StackLayout`.  
@@ -203,7 +202,24 @@ let ``View should generate a valid interface``() =
 
 ### Testing if a control dispatches the correct message
 
-TBD
+If you want to test your event handlers, you can retrieve them in the same way than a regular property.  
+Then, you can execute the event handler like a normal function and check its result through a mocked dispatch.
+
+```fsharp
+[<Test>]
+let ``Clicking the button Increment should send the message Increment``() =
+    let mockedDispatch msg =
+        msg |> should equal Increment
+
+    let model = { Count = 5; Step = 4; TimerOn = true }
+    let actualView = App.view model mockedDispatch
+
+    let contentPage = ContentPageViewer(actualView)
+    let stackLayout = StackLayoutViewer(contentPage.Content)
+    let incrementButton = ButtonViewer(stackLayout.Children.[1])
+
+    incrementButton.Command ()
+```
 
 
 ### See also
