@@ -171,7 +171,7 @@ Target.create "RunTests" (fun _ ->
               Logger = Some (sprintf "nunit;LogFilePath=%s.xml" (Path.Combine(buildDir, projectName)))
               ResultsDirectory = Some buildDir
           }
-
+    
     !!("tests/**/*.fsproj")
     |> Seq.toArray
     |> Array.Parallel.iter (
@@ -179,6 +179,15 @@ Target.create "RunTests" (fun _ ->
           let testprojectName = Path.GetFileName(testProject)
           DotNet.test (setDotNetOptions testprojectName) testProject
         )
+    // let testProjects = !! "tests/**/*.fsproj"
+    // for testProject in testProjects do
+    //     let testprojectName = Path.GetFileName(testProject)
+    //     DotNet.test (setDotNetOptions testprojectName) testProject )
+
+    // !! "tests/**/*.fsproj"
+    // |> Seq.iter (fun (testProject) -> 
+    //       let testprojectName = Path.GetFileName(testProject)
+    //       DotNet.test (setDotNetOptions testprojectName) testProject )
 )
 
 Target.create "RunSamplesTests" (fun _ ->
