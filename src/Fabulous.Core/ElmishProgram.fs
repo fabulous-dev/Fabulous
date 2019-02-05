@@ -31,10 +31,10 @@ type Program<'model, 'msg, 'view> =
       subscribe : 'model -> Cmd<'msg>
       view : 'view
       debug : bool
-      onError : (string*exn) -> unit }
+      onError : (string * exn) -> unit }
 
 /// Starts the Elmish dispatch loop for the page with the given Elmish program
-type ProgramRunner<'model, 'msg>(app: Application, program: Program<'model, 'msg, 'model -> ('msg -> unit) -> ViewElement>)  = 
+type ProgramRunner<'model, 'msg>(app: Application, program: Program<'model, 'msg, 'model -> ('msg -> unit) -> ViewElement>) = 
 
     do Debug.WriteLine "run: computing initial model"
 
@@ -125,7 +125,7 @@ type ProgramRunner<'model, 'msg>(app: Application, program: Program<'model, 'msg
 
     member __.Dispatch(msg) = dispatch msg
 
-    member runner.ChangeProgram(newProgram: Program<obj, obj, obj -> (obj -> unit) -> ViewElement>) : unit  =
+    member runner.ChangeProgram(newProgram: Program<obj, obj, obj -> (obj -> unit) -> ViewElement>) : unit =
         Device.BeginInvokeOnMainThread(fun () -> 
             // TODO: transmogrify the model
             alternativeRunner <- Some (ProgramRunner<obj, obj>(app, newProgram))
@@ -161,7 +161,7 @@ module Program =
         Console.WriteLine (sprintf "%s: %A" text ex)
 
     /// Typical program, new commands are produced by `init` and `update` along with the new state.
-    let mkProgram init update view =
+    let mkProgram (init : unit -> 'model * Cmd<'msg>) (update : 'msg -> 'model -> 'model * Cmd<'msg>) (view : 'view) =
         { init = init
           update = update
           view = view
@@ -170,7 +170,7 @@ module Program =
           onError = onError }
 
     /// Simple program that produces only new state with `init` and `update`.
-    let mkSimple init update view = 
+    let mkSimple (init : unit -> 'model) (update : 'msg -> 'model -> 'model) (view : 'view) = 
         mkProgram (fun arg -> init arg, Cmd.none) (fun msg model -> update msg model, Cmd.none) view
 
     /// Subscribe to external source of events.
@@ -217,7 +217,6 @@ module Program =
             update = traceUpdate
             view = traceView }
 
-
     /// Trace all the messages as they update the model
     let withTrace trace (program: Program<'model, 'msg, 'view>) =
         { program
@@ -247,4 +246,3 @@ module Program =
     /// Add dynamic views associated with a specific application
     [<Obsolete("Please open Fabulous.StaticViews and use Program.runWithStaticView", true)>]
     let withStaticView (_program: Program<'model, 'msg, _>) = failwith ""
-
