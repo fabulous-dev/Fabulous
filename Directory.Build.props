@@ -13,7 +13,7 @@
 [LiveUpdate] Fixed: Using a list a "No member found for key Microsoft.FSharp.Collections.FSharpList" error (https://github.com/fsprojects/Fabulous/pull/286)
 [LiveUpdate] Fixed: Calling a function that takes unit from a module in a separate dll produces a "No member found for key" error (https://github.com/fsprojects/Fabulous/pull/286)</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
-    <PackageLicenseUrl>https://github.com/fsprojects/Fabulous/blob/master/LICENSE.md</PackageLicenseUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/fsprojects/Fabulous</PackageProjectUrl>
     <PackageTags>Xamarin.Forms;F#;Elmish;Elm;$(PackageTags)</PackageTags>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
