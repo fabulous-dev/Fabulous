@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <Import Project="..\..\..\..\netfx.props" />
+    <Import Project="..\..\..\netfx.props" />
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
         <TargetFramework>net472</TargetFramework>
@@ -26,9 +26,9 @@
         <PackageReference Include="Xamarin.Forms.Platform.WPF" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\StaticViewCounterApp\StaticViewCounterApp.fsproj" />
-        <ProjectReference Include="..\..\..\..\src\Fabulous.Core\Fabulous.Core.fsproj" />
-        <ProjectReference Include="..\..\..\..\src\Fabulous.CustomControls\Fabulous.CustomControls.fsproj" />
+        <ProjectReference Include="..\Calculator\Calculator.fsproj" />
+        <ProjectReference Include="..\..\..\src\Fabulous.Core\Fabulous.Core.fsproj" />
+        <ProjectReference Include="..\..\..\src\Fabulous.CustomControls\Fabulous.CustomControls.fsproj" />
     </ItemGroup>
-    <Import Project="..\..\..\..\Packages.targets" />
+    <Import Project="..\..\..\Packages.targets" />
 </Project>
