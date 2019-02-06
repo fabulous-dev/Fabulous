@@ -172,7 +172,8 @@ Target.create "TestTemplatesNuGet" (fun _ ->
     let restorePackageDotnetCli appName projectName pkgs =
         DotNet.exec id "restore" (sprintf "%s/%s/%s.fsproj  --source https://api.nuget.org/v3/index.json --source %s" appName projectName projectName pkgs) |> ignore
 
-    let testAppName = "testapp2" + string (abs (hash System.DateTime.Now.Ticks) % 100)
+    let ticks = let now = System.DateTime.Now in now.Ticks // Prevents warning FS0052
+    let testAppName = "testapp2" + string (abs (hash ticks) % 100)
 
     // Globally install the templates from the template nuget package we just built
     DotNet.exec id "new" (sprintf "-i %s/Fabulous.Templates.%s.nupkg" buildDir release.NugetVersion) |> ignore
