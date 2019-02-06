@@ -11,7 +11,7 @@ open Android.Views
 open Android.Widget
 open Android.OS
 
-[<Activity (Label = "Droid", Icon = "@drawable/icon", MainLauncher = true, ConfigurationChanges = (ConfigChanges.ScreenSize ||| ConfigChanges.Orientation))>]
+[<Activity (Label = "StaticViewCounterApp.Droid", Icon = "@drawable/icon", MainLauncher = true, ConfigurationChanges = (ConfigChanges.ScreenSize ||| ConfigChanges.Orientation))>]
 type MainActivity() =
     inherit Xamarin.Forms.Platform.Android.FormsApplicationActivity()
     override this.OnCreate (bundle: Bundle) =
