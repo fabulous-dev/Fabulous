@@ -1,11 +1,8 @@
 ﻿// Copyright 2018 Elmish and Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.Core
 
-/// Dispatch - feed new message into the processing loop
-type Dispatch<'msg> = 'msg -> unit
-
-/// Subscription - return immediately, but may schedule dispatch of a message at any time
-type Sub<'msg> = Dispatch<'msg> -> unit
+/// Subscription - may schedule dispatch of a message at any time
+type Sub<'msg> = unit -> Async<'msg voption>
 
 /// Cmd - container for subscriptions that may produce messages
 type Cmd<'msg> = Sub<'msg> list
@@ -19,18 +16,15 @@ module Cmd =
 
     /// Command to issue a specific message
     let ofMsg (msg:'msg) : Cmd<'msg> =
-        [fun dispatch -> dispatch msg]
+        [ fun () -> msg |> ValueSome |> AsyncHelpers.returnAsync ]
 
     /// Command to issue a specific message, only when Option.IsSome = true
-    let ofMsgOption (msg:'msg option) : Cmd<'msg> =
-        [ fun dispatch ->
-             match msg with
-             | None -> ()
-             | Some msg -> dispatch msg ]
+    let ofMsgOption (msg: 'msg option) : Cmd<'msg> =
+        [ fun () -> msg |> OptionHelpers.convertToValueOption |> AsyncHelpers.returnAsync ]
 
     /// When emitting the message, map to another type
     let map (f: 'a -> 'msg) (cmd: Cmd<'a>) : Cmd<'msg> =
-        cmd |> List.map (fun g -> (fun dispatch -> f >> dispatch) >> g)
+        cmd |> List.map (fun g -> g >> (f |> OptionHelpers.mapValueOption |> AsyncHelpers.applyAsync))
 
     /// Aggregate multiple commands
     let batch (cmds: #seq<Cmd<'msg>>) : Cmd<'msg> =
@@ -40,28 +34,10 @@ module Cmd =
     let ofSub (sub: Sub<'msg>) : Cmd<'msg> =
         [sub]
 
-    let dispatch d (cmd: Cmd<_>) = for sub in cmd do sub d
-
     /// Command to issue a message at the end of an asynchronous task
     let ofAsyncMsg (p: Async<'msg>) : Cmd<'msg> =
-        [ fun dispatch -> async { let! msg = p in dispatch msg } |> Async.StartImmediate ]
+        [ fun () -> p |> (AsyncHelpers.applyAsync ValueSome) ]
 
     /// Command to issue a message at the end of an asynchronous task, only when Option.IsSome = true
     let ofAsyncMsgOption (p: Async<'msg option>) : Cmd<'msg> =
-        [ fun dispatch -> async { 
-            let! msg = p
-            match msg with
-            | None -> ()
-            | Some msg -> dispatch msg } |> Async.StartImmediate ]
- 
-    //let ofAsyncMsgs p : Cmd<_> =
-    //    [ fun dispatch -> p |> AsyncSeq.iter dispatch |> Async.StartImmediate ]
- 
-    //type CmdBuilder() = 
-    //    inherit AsyncSeq.AsyncSeqBuilder()
-    //    member x.Run(p: AsyncSeq<_>) = ofAsyncMsgs p
- 
-//[<AutoOpen>]
-//module CommandBuilder = 
-//    let cmd = Cmd.CmdBuilder()
-
+        [ fun () -> p |> (AsyncHelpers.applyAsync OptionHelpers.convertToValueOption) ]

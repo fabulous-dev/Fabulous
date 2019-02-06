@@ -8,6 +8,7 @@
         <Description>F# Functional App Dev Framework</Description>
     </PropertyGroup>
     <ItemGroup>
+        <Compile Include="Helpers.fs" />
         <Compile Include="ViewElement.fs" />
         <Compile Include="ViewConverters.fs" />
         <Compile Include="Xamarin.Forms.Core.fs" />

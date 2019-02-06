@@ -28,7 +28,18 @@ module StaticView =
 
         let mutable lastModel = initialModel
         let mutable lastViewData = None
-        let dispatch = ProgramDispatch<'msg>.DispatchViaThunk
+
+        /// Dispatch function used to evaluate the Cmds. They might return a message at any time.
+        let cmdDispatch msgOptAsync =
+            (async {
+                let! msgOpt = msgOptAsync
+                ProgramDispatch<'msg>.DispatchViaThunk msgOpt
+            })
+            |> Async.StartImmediate
+
+        /// Dispatch function passed to the view function. If called, a message will be given immediately.
+        let viewDispatch msg =
+            ProgramDispatch<'msg>.DispatchViaThunk (ValueSome msg)
 
         do Debug.WriteLine "run: computing static components of view"
 
@@ -45,7 +56,7 @@ module StaticView =
                 with ex ->
                     program.onError ("Unable to update view:", ex)
                 try 
-                    newCommands |> List.iter (fun sub -> sub dispatch)
+                    newCommands |> List.iter (fun sub -> sub() |> cmdDispatch)
                 with ex ->
                     program.onError ("Error executing commands:", ex)
             with ex ->
@@ -56,7 +67,7 @@ module StaticView =
             | None -> 
 
                 // Construct the binding context for the view model
-                let viewModel = StaticViewModel (updatedModel, dispatch, bindings, program.debug)
+                let viewModel = StaticViewModel (updatedModel, viewDispatch, bindings, program.debug)
                 setBindingContexts bindings viewModel
                 mainPage.BindingContext <- box viewModel
                 lastViewData <- Some (mainPage, bindings, viewModel)
@@ -75,7 +86,7 @@ module StaticView =
 
            Debug.WriteLine "dispatching initial commands"
            for sub in (program.subscribe initialModel @ cmd) do
-                sub dispatch
+                sub() |> cmdDispatch
 
         member __.InitialMainPage = mainPage
 
@@ -87,7 +98,7 @@ module StaticView =
             lastModel <- model
             updateView model
             for sub in program.subscribe model @ cmd do
-                sub dispatch
+                sub() |> cmdDispatch
 
 
 /// Program module - functions to manipulate program instances

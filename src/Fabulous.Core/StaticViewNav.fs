@@ -1,11 +1,7 @@
 ﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.StaticViews
 
-open System
-open System.Diagnostics
 open Fabulous.Core
-open Fabulous.StaticViews
-open Fabulous.DynamicViews
 open Xamarin.Forms
 
 [<RequireQualifiedAccess>]
@@ -17,35 +13,40 @@ module Nav =
 
     /// Push new location into history and navigate there
     let push (fromPageTag: ('navTarget :> System.IComparable)) (toPageTag: ('navTarget :> System.IComparable)) : Cmd<_> =
-        [ fun _ -> 
+        [ fun () -> 
             let fromPage = globalNavMap.[fromPageTag]
             let toPage = globalNavMap.[toPageTag]
             let nav = fromPage.Navigation
-            nav.PushAsync toPage |> ignore ]
+            nav.PushAsync toPage |> ignore
+            AsyncHelpers.returnAsync ValueNone ]
 
     /// Push new location into history and navigate there
     let pushModal (fromPageTag: ('navTarget :> System.IComparable)) (toPageTag: ('navTarget :> System.IComparable)) : Cmd<_> =
-        [ fun _ -> 
+        [ fun () -> 
             let fromPage = globalNavMap.[fromPageTag]
             let toPage = globalNavMap.[toPageTag]
             let nav = fromPage.Navigation
-            nav.PushModalAsync toPage |> ignore ]
+            nav.PushModalAsync toPage |> ignore
+            AsyncHelpers.returnAsync ValueNone ]
 
     let popToRoot (fromPageTag: ('navTarget :> System.IComparable)) : Cmd<_> =
-        [ fun _ -> 
+        [ fun () -> 
             let fromPage = globalNavMap.[fromPageTag]
             let nav = fromPage.Navigation
-            nav.PopToRootAsync() |> ignore ]
+            nav.PopToRootAsync() |> ignore
+            AsyncHelpers.returnAsync ValueNone ]
 
     let popModal (fromPageTag: ('navTarget :> System.IComparable)) : Cmd<_> =
-        [ fun _ -> 
+        [ fun () -> 
             let fromPage = globalNavMap.[fromPageTag]
             let nav = fromPage.Navigation
-            nav.PopModalAsync() |> ignore ]
+            nav.PopModalAsync() |> ignore
+            AsyncHelpers.returnAsync ValueNone ]
 
     let pop (fromPageTag: ('navTarget :> System.IComparable)) : Cmd<_> =
-        [ fun _ -> 
+        [ fun () -> 
             let fromPage = globalNavMap.[fromPageTag]
             let nav = fromPage.Navigation
-            nav.PopAsync() |> ignore ]
+            nav.PopAsync() |> ignore
+            AsyncHelpers.returnAsync ValueNone ]
 

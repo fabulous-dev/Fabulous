@@ -18,8 +18,12 @@ type internal ProgramDispatch<'msg>()  =
     static let mutable dispatchImpl = (fun (_msg: 'msg) -> failwith "do not call dispatch during initialization" : unit)
 
     static let dispatch = 
-        id (fun msg -> 
-            dispatchImpl msg)
+        id (fun msgOpt ->
+            // Dispatch the message if there is one to dispatch
+            // Otherwise ignore the call to this function
+            match msgOpt with
+            | ValueNone -> ()
+            | ValueSome msg -> dispatchImpl msg)
 
     static member DispatchViaThunk = dispatch 
     static member SetDispatchThunk v = dispatchImpl <- v
@@ -44,12 +48,23 @@ type ProgramRunner<'model, 'msg>(app: Application, program: Program<'model, 'msg
 
     let mutable lastModel = initialModel
     let mutable lastViewDataOpt = None
-    let dispatch = ProgramDispatch<'msg>.DispatchViaThunk
     let mutable reset = (fun () -> ())
+
+    /// Dispatch function used to evaluate the Cmds. They might return a message at any time.
+    let cmdDispatch msgOptAsync =
+        (async {
+            let! msgOpt = msgOptAsync
+            ProgramDispatch<'msg>.DispatchViaThunk msgOpt
+        })
+        |> Async.StartImmediate
+
+    /// Dispatch function passed to the view function. If called, a message will be given immediately.
+    let viewDispatch msg =
+        ProgramDispatch<'msg>.DispatchViaThunk (ValueSome msg)
 
     // If the view is dynamic, create the initial page
     let viewInfo, mainPage = 
-        let pageElement = program.view initialModel dispatch
+        let pageElement = program.view initialModel viewDispatch
         let pageObj = pageElement.Create()
         let mainPage = 
             match pageObj with 
@@ -70,7 +85,7 @@ type ProgramRunner<'model, 'msg>(app: Application, program: Program<'model, 'msg
                 program.onError ("Unable to update view:", ex)
             for sub in newCommands do
                 try 
-                    sub dispatch
+                    sub() |> cmdDispatch
                 with ex ->
                     program.onError ("Error executing commands:", ex)
         with ex ->
@@ -83,7 +98,7 @@ type ProgramRunner<'model, 'msg>(app: Application, program: Program<'model, 'msg
 
         | Some prevPageElement ->
             let newPageElement = 
-                try program.view updatedModel dispatch
+                try program.view updatedModel viewDispatch
                 with ex -> 
                     program.onError ("Unable to evaluate view:", ex)
                     prevPageElement
@@ -115,7 +130,7 @@ type ProgramRunner<'model, 'msg>(app: Application, program: Program<'model, 'msg
         Debug.WriteLine "dispatching initial commands"
         for sub in (program.subscribe initialModel @ cmd) do
             try 
-                sub dispatch
+                sub() |> cmdDispatch
             with ex ->
                 program.onError ("Error executing commands:", ex)
 
@@ -123,7 +138,7 @@ type ProgramRunner<'model, 'msg>(app: Application, program: Program<'model, 'msg
 
     member __.CurrentModel = lastModel 
 
-    member __.Dispatch(msg) = dispatch msg
+    member __.Dispatch(msg) = viewDispatch msg
 
     member runner.ChangeProgram(newProgram: Program<obj, obj, obj -> (obj -> unit) -> ViewElement>) : unit  =
         Device.BeginInvokeOnMainThread(fun () -> 
@@ -150,7 +165,7 @@ type ProgramRunner<'model, 'msg>(app: Application, program: Program<'model, 'msg
                 lastModel <- model
                 updateView model
                 for sub in program.subscribe model @ cmd do
-                    sub dispatch
+                    sub() |> cmdDispatch
         )
 
 /// Program module - functions to manipulate program instances
