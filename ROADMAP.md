@@ -3,6 +3,12 @@
 * Programming model: 
   * Move to `seq<_>` as the de-facto model type
   * Add `OpenGLView`
+  * Compute the delta between previous and current model in a platform-agnostic way (would allow to support other frameworks like Avalonia or Uno)
+  * Move all Xamarin.Forms specific code in its own project "Fabulous.XamarinForms"
+  
+* Support for external libraries
+  * Make the code generator work with components libraries (like SyncFusion or Telerik for Xamarin.Forms)
+  * Add a bindings generator to automate extraction of every controls/properties/events in a format readable by the code generator (easier to update with Xamarin.Forms, easier to use other components libraries)
 
 * Docs
   * Generate `///` docs in code generator
@@ -11,7 +17,6 @@
   * State migration: Support hot-reloading of the saved model, reapplying to the same app where possible
   * Use actual newly compiled DLLs on Android instead of F# interperter
   * Check Live Reload on WPF and other same-machine
-  * Make IDE launch of `fscd` tool simpler
 
 ## Ideas
 
