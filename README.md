@@ -11,7 +11,7 @@ This library allows you to use the ultra-simple Model-View-Update architecture t
 
 * [Documentation Guide](https://fsprojects.github.io/Fabulous/guide.html)
 
-* [TODOs](https://github.com/fsprojects/Fabulous/blob/master/ROADMAP.md)
+* [Roadmap](https://github.com/fsprojects/Fabulous/blob/master/ROADMAP.md)
 
 * [Contributor guide](DEVGUIDE.md)
 
