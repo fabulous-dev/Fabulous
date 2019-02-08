@@ -1,3 +1,13 @@
+# Contributing
+
+Contributing is easy:
+
+1. [Fork](https://help.github.com/articles/fork-a-repo/) the repository
+2. Create a new branch for the feature/fix and give it an appropriate name `my_fabulous_fix`
+3. Do your best work
+4. Build/Test as per the below
+5. Create a pull request back to `Fabulous/master`
+
 # Dev Notes
 
 ## Dev Notes - Prerequisites
