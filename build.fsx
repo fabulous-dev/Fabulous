@@ -193,8 +193,10 @@ Target.create "TestTemplatesNuGet" (fun _ ->
     // When restoring, using the build_output as a package source to pick up the package we just compiled
     let pkgs = Path.GetFullPath(buildDir)
     restorePackageDotnetCli testAppName testAppName pkgs
-    if Environment.isWindows then restorePackageDotnetCli testAppName (testAppName + ".WPF") pkgs
-    if Environment.isWindows then restorePackageDotnetCli testAppName (testAppName + ".UWP") pkgs
+    
+    if Environment.isWindows then
+        restorePackageDotnetCli testAppName (testAppName + ".WPF") pkgs
+        restorePackageDotnetCli testAppName (testAppName + ".UWP") pkgs
 
     // Build for all combinations
     let slash = if Environment.isUnix then "\\" else ""
