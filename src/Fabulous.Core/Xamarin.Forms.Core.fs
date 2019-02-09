@@ -709,7 +709,7 @@ type View() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _AcceleratorAttribKey : AttributeKey<_> = AttributeKey<_>("Accelerator")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ItemsAttribKey : AttributeKey<_> = AttributeKey<_>("Items")
+    static member val _MenuItemsAttribKey : AttributeKey<_> = AttributeKey<_>("MenuItems")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member val _TextDetailAttribKey : AttributeKey<_> = AttributeKey<_>("TextDetail")
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -11253,7 +11253,7 @@ type ViewBuilders() =
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member inline BuildMenu(attribCount: int,
                                    ?text: string,
-                                   ?items: ViewElement list,
+                                   ?items: seq<ViewElement>,
                                    ?classId: string,
                                    ?styleId: string,
                                    ?automationId: string,
@@ -11265,7 +11265,7 @@ type ViewBuilders() =
 
         let attribBuilder = View.BuildElement(attribCount, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match text with None -> () | Some v -> attribBuilder.Add(View._TextAttribKey, (v)) 
-        match items with None -> () | Some v -> attribBuilder.Add(View._ItemsAttribKey, Array.ofList(v)) 
+        match items with None -> () | Some v -> attribBuilder.Add(View._MenuItemsAttribKey, (v)) 
         attribBuilder
 
     [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
@@ -11285,35 +11285,31 @@ type ViewBuilders() =
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevTextOpt = ValueNone
         let mutable currTextOpt = ValueNone
-        let mutable prevItemsOpt = ValueNone
-        let mutable currItemsOpt = ValueNone
+        let mutable prevMenuItemsOpt = ValueNone
+        let mutable currMenuItemsOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = View._TextAttribKey.KeyValue then 
                 currTextOpt <- ValueSome (kvp.Value :?> string)
-            if kvp.Key = View._ItemsAttribKey.KeyValue then 
-                currItemsOpt <- ValueSome (kvp.Value :?> ViewElement [])
+            if kvp.Key = View._MenuItemsAttribKey.KeyValue then 
+                currMenuItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
             for kvp in prev.AttributesKeyed do
                 if kvp.Key = View._TextAttribKey.KeyValue then 
                     prevTextOpt <- ValueSome (kvp.Value :?> string)
-                if kvp.Key = View._ItemsAttribKey.KeyValue then 
-                    prevItemsOpt <- ValueSome (kvp.Value :?> ViewElement [])
+                if kvp.Key = View._MenuItemsAttribKey.KeyValue then 
+                    prevMenuItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
         match prevTextOpt, currTextOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.Text <-  currValue
         | ValueSome _, ValueNone -> target.Text <- null
         | ValueNone, ValueNone -> ()
-        match prevItemsOpt, currItemsOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.Items <-  currValue
-        | ValueSome _, ValueNone -> target.Items <- null
-        | ValueNone, ValueNone -> ()
+        updateMenuItems prevMenuItemsOpt currMenuItemsOpt target
 
     /// Describes a Menu in the view
     static member inline Menu(?text: string,
-                              ?items: ViewElement list,
+                              ?items: seq<ViewElement>,
                               ?classId: string,
                               ?styleId: string,
                               ?automationId: string,
@@ -18266,8 +18262,8 @@ module ViewElementExtensions =
         /// Adjusts the Accelerator property in the visual element
         member x.Accelerator(value: string) = x.WithAttribute(ViewAttributes.AcceleratorAttribKey, (value))
 
-        /// Adjusts the Items property in the visual element
-        member x.Items(value: ViewElement list) = x.WithAttribute(View._ItemsAttribKey, Array.ofList(value))
+        /// Adjusts the MenuItems property in the visual element
+        member x.MenuItems(value: seq<ViewElement>) = x.WithAttribute(View._MenuItemsAttribKey, (value))
 
         /// Adjusts the TextDetail property in the visual element
         member x.TextDetail(value: string) = x.WithAttribute(ViewAttributes.TextDetailAttribKey, (value))
@@ -19070,8 +19066,8 @@ module ViewElementExtensions =
 <<<<<<< master
 =======
 
-    /// Adjusts the Items property in the visual element
-    let items (value: ViewElement list) (x: ViewElement) = x.Items(value)
+    /// Adjusts the MenuItems property in the visual element
+    let menuItems (value: seq<ViewElement>) (x: ViewElement) = x.MenuItems(value)
 
 >>>>>>> first doings
     /// Adjusts the TextDetail property in the visual element

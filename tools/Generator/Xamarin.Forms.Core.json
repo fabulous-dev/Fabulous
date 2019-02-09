@@ -1734,10 +1734,11 @@
         },
         {
           "name": "Items",
+          "uniqueName": "MenuItems",
           "defaultValue": "null",
-          "inputType": "ViewElement list",
-          "modelType": "ViewElement []",
-          "convToModel": "Array.ofList"
+          "inputType": "seq<ViewElement>",
+          "modelType": "seq<ViewElement>",
+          "updateCode": "updateMenuItems"
         }
       ]
     },

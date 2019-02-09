@@ -661,6 +661,13 @@ module Converters =
             target.ScrollToAsync(x, y, animated) |> ignore
         | _ -> ()
 
+    /// Update the items in a Menu control, given previous and current view elements
+    let internal updateMenuItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.Menu) = 
+        let targetColl = target.Items
+        let prevArray = ValueOption.map seqToArray prevCollOpt
+        let collArray = ValueOption.map seqToArray collOpt
+        updateCollectionGeneric prevArray collArray targetColl (fun _ -> new MenuItem()) (fun _ _ _ -> ()) (fun _ _ -> false) (fun _ curr target -> ())
+ 
     /// Check if two LayoutOptions are equal
     let internal equalLayoutOptions (x:Xamarin.Forms.LayoutOptions) (y:Xamarin.Forms.LayoutOptions)  =
         x.Alignment = y.Alignment && x.Expands = y.Expands
