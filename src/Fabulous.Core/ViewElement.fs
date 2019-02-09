@@ -73,6 +73,12 @@ type ViewElement internal (targetType: Type, create: (unit -> obj), update: (Vie
     member x.TryGetAttribute<'T>(name: string) = 
         x.TryGetAttributeKeyed<'T>(AttributeKey<'T> name)
  
+    /// Get an attribute of the visual element
+    member x.GetAttributeKeyed<'T>(key: AttributeKey<'T>) = 
+        match attribs |> Array.tryFind (fun kvp -> kvp.Key = key.KeyValue) with 
+        | Some kvp -> unbox<'T>(kvp.Value)
+        | None -> failwithf "Property '%s' does not exist on %s" key.Name x.TargetType.Name
+
     /// Apply initial settings to a freshly created visual element
     member x.Update (target: obj) = update ValueNone x target
 

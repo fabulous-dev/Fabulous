@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
+// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.Generator
 
 open Mono.Cecil
@@ -7,7 +7,6 @@ open System.Collections.Generic
 module AssemblyResolver =
     type RegistrableResolver() =
         inherit BaseAssemblyResolver()
-
         let cache = Dictionary<string, AssemblyDefinition>()
 
         override this.Resolve(name) =
@@ -18,18 +17,17 @@ module AssemblyResolver =
                 cache.[name.FullName] <- assembly
                 assembly
 
-        member this.RegisterAssembly(assembly: AssemblyDefinition): unit =
+        member this.RegisterAssembly(assembly : AssemblyDefinition) : unit =
             match cache.ContainsKey(assembly.Name.FullName) with
             | true -> ()
-            | false ->
-                cache.[assembly.Name.FullName] <- assembly
+            | false -> cache.[assembly.Name.FullName] <- assembly
 
         member this.Dispose(disposing) =
             cache.Values |> Seq.iter (fun asm -> asm.Dispose())
             cache.Clear()
             base.Dispose()
 
-    let loadAssembly (resolver: RegistrableResolver) (path: string) =
+    let loadAssembly (resolver : RegistrableResolver) (path : string) =
         let readerParameters = ReaderParameters()
         readerParameters.AssemblyResolver <- resolver
         let assembly = AssemblyDefinition.ReadAssembly(path, readerParameters)

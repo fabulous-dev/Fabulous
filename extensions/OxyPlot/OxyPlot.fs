@@ -31,15 +31,15 @@ module OxyPlotExtension =
 
             // Populate the attributes of the base element
             let attribs =
-                View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions,
-                               ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY,
-                               ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent,
-                               ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest,
-                               ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation,
-                               ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style,
-                               ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest,
-                               ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId,
-                               ?automationId=automationId, ?created=created, ?styleClass=styleClass)
+                ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions,
+                                       ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY,
+                                       ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent,
+                                       ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest,
+                                       ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation,
+                                       ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style,
+                                       ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest,
+                                       ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId,
+                                       ?automationId=automationId, ?created=created, ?styleClass=styleClass)
 
             // Add our own attributes.
             attribs.Add(ModelAttribKey, model) 
@@ -50,7 +50,7 @@ module OxyPlotExtension =
 
             // The update method
             let update (prevOpt: ViewElement voption) (source: ViewElement) (target: PlotView) = 
-                View.UpdateView (prevOpt, source, target)
+                ViewBuilders.UpdateView (prevOpt, source, target)
                 source.UpdatePrimitive(prevOpt, target, ModelAttribKey, (fun target v -> target.Model <- v))
                 source.UpdatePrimitive(prevOpt, target, ControllerAttribKey, (fun target v -> target.Controller <- v))
 

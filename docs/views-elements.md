@@ -557,9 +557,9 @@ match confirm with
 | false -> (...)
 ```
 
-_Why don't we add an Fabulous wrapper for those?_  
+_Why don't we add a Fabulous wrapper for those?_  
 Doing so would only end up duplicating the existing methods and compel us to maintain these in sync with Xamarin.Forms.  
-See https://github.com/fsprojects/Fabulous/pull/147 for more information
+See [Pull Request #147](https://github.com/fsprojects/Fabulous/pull/147) for more information
 
 See also:
 

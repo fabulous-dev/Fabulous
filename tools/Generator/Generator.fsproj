@@ -8,6 +8,8 @@
         <Compile Include="Helpers.fs" />
         <Compile Include="Models.fs" />
         <Compile Include="Resolvers.fs" />
+        <Compile Include="CodeGenerator.Models.fs" />
+        <Compile Include="CodeGenerator.Preparation.fs" />
         <Compile Include="CodeGenerator.fs" />
         <None Include="Xamarin.Forms.Core.json" />
         <Compile Include="AssemblyResolver.fs" />
