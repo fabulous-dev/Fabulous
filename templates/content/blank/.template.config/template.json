@@ -38,6 +38,10 @@
     {
       "condition": "macOS",
       "path": "NewApp.macOS\\NewApp.macOS.fsproj"
+    },
+    {
+      "condition": "UWP",
+      "path": "NewApp.UWP\\NewApp.UWP.csproj"
     }
   ],
   "defaultName": "App",
@@ -49,7 +53,8 @@
     "B445DF73-AC9E-4276-9FBA-7CB5AD5D2518",
     "3EA9E612-E717-4E55-9034-DE653429FEFD",
     "3EA9E612-E717-4E55-9034-C415CD62AF9A",
-    "E9A5BEFA-0E53-40B7-B2F8-DDB8369E644D"
+    "E9A5BEFA-0E53-40B7-B2F8-DDB8369E644D",
+    "2B1FDFB6-C93C-4CA1-A6AB-528C4B3654B9"
   ],
   "symbols": {
     "kind": {
@@ -99,9 +104,16 @@
     },
     "WindowsSdk": {
       "type": "parameter",
-      "description": "Windows SDK Target Version. Minimum Version is Fall Creator's Update (10.0.16278).",
+      "description": "Windows SDK Target Version. Minimum Version is Fall Creator's Update (10.0.16299).",
       "dataType": "string",
-      "replaces": "WindowsSdk"
+      "replaces": "WindowsSdk",
+      "defaultValue": "10.0.17763.0"
+    },
+    "MicrosoftNETCoreUniversalWindowsPlatformPkgVersion": {
+      "type": "parameter",
+      "dataType": "string",
+      "replaces": "MicrosoftNETCoreUniversalWindowsPlatformPkgVersion",
+      "defaultValue": "6.2.3"
     },
     "AndroidSDKVersion": {
       "type": "parameter",
@@ -197,6 +209,11 @@
       "type": "parameter",
       "dataType": "bool",
       "defaultValue": "true"
+    },
+    "UWP": {
+      "type": "parameter",
+      "dataType": "bool",
+      "defaultValue": "false"
     }
   },
   "postActions": [
@@ -243,6 +260,12 @@
           "exclude": [
             "NewApp.macOS/**/*"
           ]
+        },
+        {
+          "condition": "(!UWP)",
+          "exclude": [
+            "NewApp.UWP/**/*"
+          ]
         }
       ]
     },
@@ -278,6 +301,12 @@
           "condition": "(!macOS)",
           "exclude": [
             "NewApp.macOS/**/*"
+          ]
+        },
+        {
+          "condition": "(!UWP)",
+          "exclude": [
+            "NewApp.UWP/**/*"
           ]
         }
       ],

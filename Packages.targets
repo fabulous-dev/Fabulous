@@ -21,6 +21,7 @@
         <PackageReference Update="System.Reflection.Emit.Lightweight" Version="4.3.0" />
         <PackageReference Update="FsUnit" Version="3.4.0" />
         <PackageReference Update="NUnit3TestAdapter" Version="3.11.2" />
+        <PackageReference Update="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.1.9" />
     </ItemGroup>
     <PropertyGroup>
         <RestoreSources>
