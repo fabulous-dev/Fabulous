@@ -42,6 +42,7 @@ let removeIncompatiblePlatformProjects pattern =
     if not Environment.isWindows then
         pattern
         -- "samples/**/*.WPF.fsproj"
+        -- "samples/**/*.UWP.fsproj"
     elif not Environment.isMacOS then
         pattern
         -- "samples/**/*.MacOS.fsproj"
@@ -182,7 +183,7 @@ Target.create "TestTemplatesNuGet" (fun _ ->
     Shell.cleanDir testAppName
 
     let extraArgs =
-        if Environment.isWindows then " --WPF"
+        if Environment.isWindows then " --WPF --UWP"
         elif Environment.isMacOS then " --macOS"
         else ""
         
@@ -193,6 +194,7 @@ Target.create "TestTemplatesNuGet" (fun _ ->
     let pkgs = Path.GetFullPath(buildDir)
     restorePackageDotnetCli testAppName testAppName pkgs
     if Environment.isWindows then restorePackageDotnetCli testAppName (testAppName + ".WPF") pkgs
+    if Environment.isWindows then restorePackageDotnetCli testAppName (testAppName + ".UWP") pkgs
 
     // Build for all combinations
     let slash = if Environment.isUnix then "\\" else ""
