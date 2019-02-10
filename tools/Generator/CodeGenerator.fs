@@ -217,7 +217,7 @@ module CodeGenerator =
         w   
 
     let generateConstruct (data: ConstructData) (w: StringWriter) =
-        let memberNewLine = "\n                           " + String.replicate data.Name.Length " " + " "
+        let memberNewLine = "\n                                  " + String.replicate data.Name.Length " " + " "
         let space = "\n                               "
         let membersForConstructor =
             data.Members
@@ -237,7 +237,7 @@ module CodeGenerator =
                 | _ ->         sprintf ",%s?%s=%s" space m.LowerShortName m.LowerShortName)
             |> Array.fold (+) ""
 
-        w.printfn "    static member Construct%s(%s) = " data.Name membersForConstructor
+        w.printfn "    static member inline Construct%s(%s) = " data.Name membersForConstructor
         w.printfn ""
         w.printfn "        let attribBuilder = ViewBuilders.Build%s(0%s)" data.Name membersForBuild
         w.printfn ""

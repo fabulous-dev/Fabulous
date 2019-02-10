@@ -388,7 +388,7 @@ type ViewProto() =
               FullName = "Xamarin.Forms.View"
               Members = [| |]}
             """
-    static member ConstructView() = 
+    static member inline ConstructView() = 
 
         let attribBuilder = ViewBuilders.BuildView(0)
 
@@ -407,10 +407,10 @@ type ViewProto() =
                    { LowerShortName = "created"; InputType = "" }
                    { LowerShortName = "ref"; InputType = "" } |] }
             """
-    static member ConstructButton(?text: string,
-                                  ?canExecute: bool,
-                                  ?created: (Xamarin.Forms.Button -> unit),
-                                  ?ref: ViewRef<Xamarin.Forms.Button>) = 
+    static member inline ConstructButton(?text: string,
+                                         ?canExecute: bool,
+                                         ?created: (Xamarin.Forms.Button -> unit),
+                                         ?ref: ViewRef<Xamarin.Forms.Button>) = 
 
         let attribBuilder = ViewBuilders.BuildButton(0,
                                ?text=text,
@@ -510,7 +510,7 @@ type ViewBuilders() =
         | ValueSome _, ValueNone -> target.Text <- null
         | ValueNone, ValueNone -> ()
 
-    static member ConstructButton(?text: string) = 
+    static member inline ConstructButton(?text: string) = 
 
         let attribBuilder = ViewBuilders.BuildButton(0,
                                ?text=text)
