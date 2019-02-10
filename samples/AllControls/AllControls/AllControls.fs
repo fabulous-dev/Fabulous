@@ -116,12 +116,12 @@ module MyExtension =
 
         static member TestLabel(?text: string, ?fontFamily: string, ?backgroundColor, ?rotation) = 
 
-            // Get the attributes for the base element. The number is the the expected number of attributes.
+            // Get the attributes for the base element. The number is the expected number of attributes.
             // You can add additional base element attributes here if you like
             let attribCount = 0
             let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
             let attribCount = match fontFamily with Some _ -> attribCount + 1 | None -> attribCount
-            let attribs = View.BuildView(attribCount, ?backgroundColor = backgroundColor, ?rotation = rotation) 
+            let attribs = ViewBuilders.BuildView(attribCount, ?backgroundColor = backgroundColor, ?rotation = rotation) 
 
             // Add our own attributes. They must have unique names.
             match text with None -> () | Some v -> attribs.Add(TestLabelTextAttribKey, v) 
@@ -132,7 +132,7 @@ module MyExtension =
 
             // The incremental update method
             let update (prevOpt: ViewElement voption) (source: ViewElement) (target: Xamarin.Forms.Label) = 
-                View.UpdateView(prevOpt, source, target)
+                ViewBuilders.UpdateView(prevOpt, source, target)
                 source.UpdatePrimitive(prevOpt, target, TestLabelTextAttribKey, (fun target v -> target.Text <- v))
                 source.UpdatePrimitive(prevOpt, target, TestLabelFontFamilyAttribKey, (fun target v -> target.FontFamily <- v))
 

@@ -42,15 +42,15 @@ module MapsExtension =
 
             // Count and populate the inherited attributes
             let attribs = 
-                View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, 
-                              ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, 
-                              ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, 
-                              ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest,
-                              ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, 
-                              ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, 
-                              ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, 
-                              ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId,
-                              ?automationId=automationId, ?created=created, ?styleClass=styleClass)
+                ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, 
+                                       ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, 
+                                       ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, 
+                                       ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest,
+                                       ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, 
+                                       ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, 
+                                       ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, 
+                                       ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId,
+                                       ?automationId=automationId, ?created=created, ?styleClass=styleClass)
 
             // Add our own attributes. They must have unique names which must match the names below.
             match pins with None -> () | Some v -> attribs.Add(MapPinsAttribKey, v) 
@@ -62,7 +62,7 @@ module MapsExtension =
 
             // The update method
             let update (prevOpt: ViewElement voption) (source: ViewElement) (target: Map) = 
-                View.UpdateView (prevOpt, source, target)
+                ViewBuilders.UpdateView (prevOpt, source, target)
                 source.UpdatePrimitive(prevOpt, target, MapHasScrollEnabledAttribKey, (fun target v -> target.HasScrollEnabled <- v))
                 source.UpdatePrimitive(prevOpt, target, MapHasZoomEnabledAttribKey, (fun target v -> target.HasZoomEnabled <- v))
                 source.UpdatePrimitive(prevOpt, target, MapIsShowingUserAttribKey, (fun target v -> target.IsShowingUser <- v))

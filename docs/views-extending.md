@@ -26,7 +26,7 @@ collection property `Prop1` and one primitive property `Prop2`.
 (A collection property is a one that may contain further sub-elements, e.g. `children` for StackLayout, `gestureRecognizers` for any `View`
 and `pins` in the Maps example further below.)
 
-An view element simply defines a static member that extends `Xaml` and returns a `ViewElement`.
+An view element simply defines a static member that extends `View` and returns a `ViewElement`.
 The view element inherits attributes and update functionality from BASE via prototype inheritance.
 
 > **NOTE**: we are considering adding a code generator or type provider to automate this process, though the code is not complex to write.
@@ -56,7 +56,7 @@ module MyViewExtensions =
             let attribCount = match prop2 with Some _ -> attribCount + 1 | None -> attribCount
 
             // Populate the attributes of the base element
-            let attribs = View._BuildBASE(attribCount, ... inherited attributes ... )
+            let attribs = ViewBuilders.BuildBASE(attribCount, ... inherited attributes ... )
 
             // Add our own attributes.
             match prop1 with None -> () | Some v -> attribs.Add (Prop1AttribKey, v)
@@ -68,7 +68,7 @@ module MyViewExtensions =
 
             // The incremental update method
             let update (prev: ViewElement voption) (source: ViewElement) (target: ABC) =
-                View._UpdateBASE (prev, source, target)
+                ViewBuilders.UpdateBASE (prev, source, target)
                 source.UpdateElementCollection (prev, rop1AttribKey, target.Prop1)
                 source.UpdatePrimitive (prev, target, Prop2AttribKey, (fun target -> target.Prop2), (fun target v -> target.Prop2 <- v))
                 ...
@@ -93,7 +93,7 @@ Sometimes it makes sense to "massage" the input values before storing them in at
 to a stored attribte value here:
 
 ```fsharp
-            match prop1 with None -> () | Some v -> attribs.Add(Prop1AttribKey, box (CONV v))
+match prop1 with None -> () | Some v -> attribs.Add(Prop1AttribKey, box (CONV v))
 ```
 
 It is common to mark view extensions as `inline`. This allows the F# compiler to create more optimized
@@ -149,7 +149,7 @@ module MapsExtension =
 
             // Count and populate the inherited attributes
             let attribs =
-                View.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions,
+                ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions,
                                ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY,
                                ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent,
                                ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest,
@@ -168,7 +168,7 @@ module MapsExtension =
 
             // The update method
             let update (prevOpt: ViewElement voption) (source: ViewElement) (target: Map) =
-                View.UpdateView(prevOpt, source, target)
+                ViewBuilders.UpdateView(prevOpt, source, target)
                 source.UpdatePrimitive(prevOpt, target, MapHasScrollEnabledAttribKey, (fun target v -> target.HasScrollEnabled <- v))
                 source.UpdatePrimitive(prevOpt, target, MapHasZoomEnabledAttribKey, (fun target v -> target.HasZoomEnabled <- v))
                 source.UpdatePrimitive(prevOpt, target, MapIsShowingUserAttribKey, (fun target v -> target.IsShowingUser <- v))
@@ -212,7 +212,7 @@ In the above example, inherited properties from `View` (such as `margin` or `hor
 need not be added, you can set them on elements using the helper `With`, usable for all `View` properties:
 
 ```fsharp
-    View.Map(hasZoomEnabled = true, hasScrollEnabled = true).With(horizontalOptions = LayoutOptions.FillAndExpand)
+View.Map(hasZoomEnabled = true, hasScrollEnabled = true).With(horizontalOptions = LayoutOptions.FillAndExpand)
 ```
 
 See also:

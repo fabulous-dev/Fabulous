@@ -10,8 +10,8 @@
     <ItemGroup>
         <Compile Include="ViewElement.fs" />
         <Compile Include="ViewConverters.fs" />
-        <Compile Include="Xamarin.Forms.Core.fs" />
         <Compile Include="ViewHelpers.fs" />
+        <Compile Include="Xamarin.Forms.Core.fs" />
         <Compile Include="ElmishCmd.fs" />
         <Compile Include="ElmishProgram.fs" />
         <Compile Include="StaticViewBinding.fs" />

@@ -169,6 +169,12 @@ Target.create "RunTests" (fun _ ->
         DotNet.test id testProject
 )
 
+Target.create "RunSamplesTests" (fun _ ->
+    let testProjects = !! "samples/**/*Tests.fsproj"
+    for testProject in testProjects do
+        DotNet.test id testProject
+)
+
 Target.create "TestTemplatesNuGet" (fun _ ->
     let restorePackageDotnetCli appName projectName pkgs =
         DotNet.exec id "restore" (sprintf "%s/%s/%s.fsproj  --source https://api.nuget.org/v3/index.json --source %s" appName projectName projectName pkgs) |> ignore
@@ -226,6 +232,7 @@ open Fake.Core.TargetOperators
 "Build"
   ==> "TestTemplatesNuGet"
   ==> "BuildSamples"
+  ==> "RunSamplesTests"
   ==> "Test"
 
 Target.runOrDefault "Build"
