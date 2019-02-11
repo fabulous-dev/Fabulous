@@ -37,6 +37,11 @@ module ViewAttributes =
     let ScaleXAttribKey : AttributeKey<_> = AttributeKey<_>("ScaleX")
     let ScaleYAttribKey : AttributeKey<_> = AttributeKey<_>("ScaleY")
     let TabIndexAttribKey : AttributeKey<_> = AttributeKey<_>("TabIndex")
+    let ChildrenReorderedAttribKey : AttributeKey<_> = AttributeKey<_>("ChildrenReordered")
+    let MeasureInvalidatedAttribKey : AttributeKey<_> = AttributeKey<_>("MeasureInvalidated")
+    let FocusedAttribKey : AttributeKey<_> = AttributeKey<_>("Focused")
+    let SizeChangedAttribKey : AttributeKey<_> = AttributeKey<_>("SizeChanged")
+    let UnfocusedAttribKey : AttributeKey<_> = AttributeKey<_>("Unfocused")
     let HorizontalOptionsAttribKey : AttributeKey<_> = AttributeKey<_>("HorizontalOptions")
     let VerticalOptionsAttribKey : AttributeKey<_> = AttributeKey<_>("VerticalOptions")
     let MarginAttribKey : AttributeKey<_> = AttributeKey<_>("Margin")
@@ -428,6 +433,11 @@ type ViewBuilders() =
                                             ?scaleX: double,
                                             ?scaleY: double,
                                             ?tabIndex: int,
+                                            ?childrenReordered: System.EventArgs -> unit,
+                                            ?measureInvalidated: System.EventArgs -> unit,
+                                            ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                            ?sizeChanged: System.EventArgs -> unit,
+                                            ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                             ?classId: string,
                                             ?styleId: string,
                                             ?automationId: string,
@@ -460,6 +470,11 @@ type ViewBuilders() =
         let attribCount = match scaleX with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match scaleY with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match tabIndex with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match childrenReordered with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match measureInvalidated with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match focused with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match sizeChanged with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match unfocused with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = ViewBuilders.BuildElement(attribCount, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match anchorX with None -> () | Some v -> attribBuilder.Add(ViewAttributes.AnchorXAttribKey, (v)) 
@@ -488,6 +503,11 @@ type ViewBuilders() =
         match scaleX with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ScaleXAttribKey, (v)) 
         match scaleY with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ScaleYAttribKey, (v)) 
         match tabIndex with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TabIndexAttribKey, (v)) 
+        match childrenReordered with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ChildrenReorderedAttribKey, (fun f -> System.EventHandler(fun _sender args -> f args))(v)) 
+        match measureInvalidated with None -> () | Some v -> attribBuilder.Add(ViewAttributes.MeasureInvalidatedAttribKey, (fun f -> System.EventHandler(fun _sender args -> f args))(v)) 
+        match focused with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FocusedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.FocusEventArgs>(fun _sender args -> f args))(v)) 
+        match sizeChanged with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SizeChangedAttribKey, (fun f -> System.EventHandler(fun _sender args -> f args))(v)) 
+        match unfocused with None -> () | Some v -> attribBuilder.Add(ViewAttributes.UnfocusedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.FocusEventArgs>(fun _sender args -> f args))(v)) 
         attribBuilder
 
     static member val CreateFuncVisualElement : (unit -> Xamarin.Forms.VisualElement) = (fun () -> ViewBuilders.CreateVisualElement())
@@ -554,6 +574,16 @@ type ViewBuilders() =
         let mutable currScaleYOpt = ValueNone
         let mutable prevTabIndexOpt = ValueNone
         let mutable currTabIndexOpt = ValueNone
+        let mutable prevChildrenReorderedOpt = ValueNone
+        let mutable currChildrenReorderedOpt = ValueNone
+        let mutable prevMeasureInvalidatedOpt = ValueNone
+        let mutable currMeasureInvalidatedOpt = ValueNone
+        let mutable prevFocusedOpt = ValueNone
+        let mutable currFocusedOpt = ValueNone
+        let mutable prevSizeChangedOpt = ValueNone
+        let mutable currSizeChangedOpt = ValueNone
+        let mutable prevUnfocusedOpt = ValueNone
+        let mutable currUnfocusedOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = ViewAttributes.AnchorXAttribKey.KeyValue then 
                 currAnchorXOpt <- ValueSome (kvp.Value :?> double)
@@ -607,6 +637,16 @@ type ViewBuilders() =
                 currScaleYOpt <- ValueSome (kvp.Value :?> double)
             if kvp.Key = ViewAttributes.TabIndexAttribKey.KeyValue then 
                 currTabIndexOpt <- ValueSome (kvp.Value :?> int)
+            if kvp.Key = ViewAttributes.ChildrenReorderedAttribKey.KeyValue then 
+                currChildrenReorderedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
+            if kvp.Key = ViewAttributes.MeasureInvalidatedAttribKey.KeyValue then 
+                currMeasureInvalidatedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
+            if kvp.Key = ViewAttributes.FocusedAttribKey.KeyValue then 
+                currFocusedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.FocusEventArgs>)
+            if kvp.Key = ViewAttributes.SizeChangedAttribKey.KeyValue then 
+                currSizeChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
+            if kvp.Key = ViewAttributes.UnfocusedAttribKey.KeyValue then 
+                currUnfocusedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.FocusEventArgs>)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
@@ -663,6 +703,16 @@ type ViewBuilders() =
                     prevScaleYOpt <- ValueSome (kvp.Value :?> double)
                 if kvp.Key = ViewAttributes.TabIndexAttribKey.KeyValue then 
                     prevTabIndexOpt <- ValueSome (kvp.Value :?> int)
+                if kvp.Key = ViewAttributes.ChildrenReorderedAttribKey.KeyValue then 
+                    prevChildrenReorderedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
+                if kvp.Key = ViewAttributes.MeasureInvalidatedAttribKey.KeyValue then 
+                    prevMeasureInvalidatedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
+                if kvp.Key = ViewAttributes.FocusedAttribKey.KeyValue then 
+                    prevFocusedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.FocusEventArgs>)
+                if kvp.Key = ViewAttributes.SizeChangedAttribKey.KeyValue then 
+                    prevSizeChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
+                if kvp.Key = ViewAttributes.UnfocusedAttribKey.KeyValue then 
+                    prevUnfocusedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.FocusEventArgs>)
         match prevAnchorXOpt, currAnchorXOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.AnchorX <-  currValue
@@ -777,6 +827,36 @@ type ViewBuilders() =
         | _, ValueSome currValue -> target.TabIndex <-  currValue
         | ValueSome _, ValueNone -> target.TabIndex <- 0
         | ValueNone, ValueNone -> ()
+        match prevChildrenReorderedOpt, currChildrenReorderedOpt with
+        | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
+        | ValueSome prevValue, ValueSome currValue -> target.ChildrenReordered.RemoveHandler(prevValue); target.ChildrenReordered.AddHandler(currValue)
+        | ValueNone, ValueSome currValue -> target.ChildrenReordered.AddHandler(currValue)
+        | ValueSome prevValue, ValueNone -> target.ChildrenReordered.RemoveHandler(prevValue)
+        | ValueNone, ValueNone -> ()
+        match prevMeasureInvalidatedOpt, currMeasureInvalidatedOpt with
+        | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
+        | ValueSome prevValue, ValueSome currValue -> target.MeasureInvalidated.RemoveHandler(prevValue); target.MeasureInvalidated.AddHandler(currValue)
+        | ValueNone, ValueSome currValue -> target.MeasureInvalidated.AddHandler(currValue)
+        | ValueSome prevValue, ValueNone -> target.MeasureInvalidated.RemoveHandler(prevValue)
+        | ValueNone, ValueNone -> ()
+        match prevFocusedOpt, currFocusedOpt with
+        | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
+        | ValueSome prevValue, ValueSome currValue -> target.Focused.RemoveHandler(prevValue); target.Focused.AddHandler(currValue)
+        | ValueNone, ValueSome currValue -> target.Focused.AddHandler(currValue)
+        | ValueSome prevValue, ValueNone -> target.Focused.RemoveHandler(prevValue)
+        | ValueNone, ValueNone -> ()
+        match prevSizeChangedOpt, currSizeChangedOpt with
+        | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
+        | ValueSome prevValue, ValueSome currValue -> target.SizeChanged.RemoveHandler(prevValue); target.SizeChanged.AddHandler(currValue)
+        | ValueNone, ValueSome currValue -> target.SizeChanged.AddHandler(currValue)
+        | ValueSome prevValue, ValueNone -> target.SizeChanged.RemoveHandler(prevValue)
+        | ValueNone, ValueNone -> ()
+        match prevUnfocusedOpt, currUnfocusedOpt with
+        | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
+        | ValueSome prevValue, ValueSome currValue -> target.Unfocused.RemoveHandler(prevValue); target.Unfocused.AddHandler(currValue)
+        | ValueNone, ValueSome currValue -> target.Unfocused.AddHandler(currValue)
+        | ValueSome prevValue, ValueNone -> target.Unfocused.RemoveHandler(prevValue)
+        | ValueNone, ValueNone -> ()
 
     static member inline ConstructVisualElement(?anchorX: double,
                                                 ?anchorY: double,
@@ -804,6 +884,11 @@ type ViewBuilders() =
                                                 ?scaleX: double,
                                                 ?scaleY: double,
                                                 ?tabIndex: int,
+                                                ?childrenReordered: System.EventArgs -> unit,
+                                                ?measureInvalidated: System.EventArgs -> unit,
+                                                ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                ?sizeChanged: System.EventArgs -> unit,
+                                                ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                                 ?classId: string,
                                                 ?styleId: string,
                                                 ?automationId: string,
@@ -837,6 +922,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -877,6 +967,11 @@ type ViewBuilders() =
                                    ?scaleX: double,
                                    ?scaleY: double,
                                    ?tabIndex: int,
+                                   ?childrenReordered: System.EventArgs -> unit,
+                                   ?measureInvalidated: System.EventArgs -> unit,
+                                   ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                   ?sizeChanged: System.EventArgs -> unit,
+                                   ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                    ?classId: string,
                                    ?styleId: string,
                                    ?automationId: string,
@@ -888,7 +983,7 @@ type ViewBuilders() =
         let attribCount = match margin with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match gestureRecognizers with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildVisualElement(attribCount, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildVisualElement(attribCount, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match horizontalOptions with None -> () | Some v -> attribBuilder.Add(ViewAttributes.HorizontalOptionsAttribKey, (v)) 
         match verticalOptions with None -> () | Some v -> attribBuilder.Add(ViewAttributes.VerticalOptionsAttribKey, (v)) 
         match margin with None -> () | Some v -> attribBuilder.Add(ViewAttributes.MarginAttribKey, makeThickness(v)) 
@@ -987,6 +1082,11 @@ type ViewBuilders() =
                                        ?scaleX: double,
                                        ?scaleY: double,
                                        ?tabIndex: int,
+                                       ?childrenReordered: System.EventArgs -> unit,
+                                       ?measureInvalidated: System.EventArgs -> unit,
+                                       ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                       ?sizeChanged: System.EventArgs -> unit,
+                                       ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                        ?classId: string,
                                        ?styleId: string,
                                        ?automationId: string,
@@ -1024,6 +1124,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -1526,6 +1631,11 @@ type ViewBuilders() =
                                                 ?scaleX: double,
                                                 ?scaleY: double,
                                                 ?tabIndex: int,
+                                                ?childrenReordered: System.EventArgs -> unit,
+                                                ?measureInvalidated: System.EventArgs -> unit,
+                                                ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                ?sizeChanged: System.EventArgs -> unit,
+                                                ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                                 ?classId: string,
                                                 ?styleId: string,
                                                 ?automationId: string,
@@ -1535,7 +1645,7 @@ type ViewBuilders() =
         let attribCount = match color with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match isRunning with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match color with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ColorAttribKey, (v)) 
         match isRunning with None -> () | Some v -> attribBuilder.Add(ViewAttributes.IsRunningAttribKey, (v)) 
         attribBuilder
@@ -1612,6 +1722,11 @@ type ViewBuilders() =
                                                     ?scaleX: double,
                                                     ?scaleY: double,
                                                     ?tabIndex: int,
+                                                    ?childrenReordered: System.EventArgs -> unit,
+                                                    ?measureInvalidated: System.EventArgs -> unit,
+                                                    ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                    ?sizeChanged: System.EventArgs -> unit,
+                                                    ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                                     ?classId: string,
                                                     ?styleId: string,
                                                     ?automationId: string,
@@ -1651,6 +1766,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -1693,6 +1813,11 @@ type ViewBuilders() =
                                       ?scaleX: double,
                                       ?scaleY: double,
                                       ?tabIndex: int,
+                                      ?childrenReordered: System.EventArgs -> unit,
+                                      ?measureInvalidated: System.EventArgs -> unit,
+                                      ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                      ?sizeChanged: System.EventArgs -> unit,
+                                      ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                       ?classId: string,
                                       ?styleId: string,
                                       ?automationId: string,
@@ -1702,7 +1827,7 @@ type ViewBuilders() =
         let attribCount = match color with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match cornerRadius with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match color with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ColorAttribKey, (v)) 
         match cornerRadius with None -> () | Some v -> attribBuilder.Add(ViewAttributes.BoxViewCornerRadiusAttribKey, (v)) 
         attribBuilder
@@ -1779,6 +1904,11 @@ type ViewBuilders() =
                                           ?scaleX: double,
                                           ?scaleY: double,
                                           ?tabIndex: int,
+                                          ?childrenReordered: System.EventArgs -> unit,
+                                          ?measureInvalidated: System.EventArgs -> unit,
+                                          ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                          ?sizeChanged: System.EventArgs -> unit,
+                                          ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                           ?classId: string,
                                           ?styleId: string,
                                           ?automationId: string,
@@ -1818,6 +1948,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -1859,6 +1994,11 @@ type ViewBuilders() =
                                           ?scaleX: double,
                                           ?scaleY: double,
                                           ?tabIndex: int,
+                                          ?childrenReordered: System.EventArgs -> unit,
+                                          ?measureInvalidated: System.EventArgs -> unit,
+                                          ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                          ?sizeChanged: System.EventArgs -> unit,
+                                          ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                           ?classId: string,
                                           ?styleId: string,
                                           ?automationId: string,
@@ -1867,7 +2007,7 @@ type ViewBuilders() =
 
         let attribCount = match progress with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match progress with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ProgressAttribKey, (v)) 
         attribBuilder
 
@@ -1931,6 +2071,11 @@ type ViewBuilders() =
                                               ?scaleX: double,
                                               ?scaleY: double,
                                               ?tabIndex: int,
+                                              ?childrenReordered: System.EventArgs -> unit,
+                                              ?measureInvalidated: System.EventArgs -> unit,
+                                              ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                              ?sizeChanged: System.EventArgs -> unit,
+                                              ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                               ?classId: string,
                                               ?styleId: string,
                                               ?automationId: string,
@@ -1969,6 +2114,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -2011,6 +2161,11 @@ type ViewBuilders() =
                                      ?scaleX: double,
                                      ?scaleY: double,
                                      ?tabIndex: int,
+                                     ?childrenReordered: System.EventArgs -> unit,
+                                     ?measureInvalidated: System.EventArgs -> unit,
+                                     ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                     ?sizeChanged: System.EventArgs -> unit,
+                                     ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                      ?classId: string,
                                      ?styleId: string,
                                      ?automationId: string,
@@ -2020,7 +2175,7 @@ type ViewBuilders() =
         let attribCount = match isClippedToBounds with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match padding with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match isClippedToBounds with None -> () | Some v -> attribBuilder.Add(ViewAttributes.IsClippedToBoundsAttribKey, (v)) 
         match padding with None -> () | Some v -> attribBuilder.Add(ViewAttributes.PaddingAttribKey, makeThickness(v)) 
         attribBuilder
@@ -2097,6 +2252,11 @@ type ViewBuilders() =
                                          ?scaleX: double,
                                          ?scaleY: double,
                                          ?tabIndex: int,
+                                         ?childrenReordered: System.EventArgs -> unit,
+                                         ?measureInvalidated: System.EventArgs -> unit,
+                                         ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                         ?sizeChanged: System.EventArgs -> unit,
+                                         ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                          ?classId: string,
                                          ?styleId: string,
                                          ?automationId: string,
@@ -2136,6 +2296,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -2182,6 +2347,11 @@ type ViewBuilders() =
                                          ?scaleX: double,
                                          ?scaleY: double,
                                          ?tabIndex: int,
+                                         ?childrenReordered: System.EventArgs -> unit,
+                                         ?measureInvalidated: System.EventArgs -> unit,
+                                         ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                         ?sizeChanged: System.EventArgs -> unit,
+                                         ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                          ?classId: string,
                                          ?styleId: string,
                                          ?automationId: string,
@@ -2193,7 +2363,7 @@ type ViewBuilders() =
         let attribCount = match horizontalScrollBarVisibility with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match verticalScrollBarVisibility with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match content with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ContentAttribKey, (v)) 
         match orientation with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ScrollOrientationAttribKey, (v)) 
         match horizontalScrollBarVisibility with None -> () | Some v -> attribBuilder.Add(ViewAttributes.HorizontalScrollBarVisibilityAttribKey, (v)) 
@@ -2303,6 +2473,11 @@ type ViewBuilders() =
                                              ?scaleX: double,
                                              ?scaleY: double,
                                              ?tabIndex: int,
+                                             ?childrenReordered: System.EventArgs -> unit,
+                                             ?measureInvalidated: System.EventArgs -> unit,
+                                             ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                             ?sizeChanged: System.EventArgs -> unit,
+                                             ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                              ?classId: string,
                                              ?styleId: string,
                                              ?automationId: string,
@@ -2346,6 +2521,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -2398,6 +2578,11 @@ type ViewBuilders() =
                                         ?scaleX: double,
                                         ?scaleY: double,
                                         ?tabIndex: int,
+                                        ?childrenReordered: System.EventArgs -> unit,
+                                        ?measureInvalidated: System.EventArgs -> unit,
+                                        ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?sizeChanged: System.EventArgs -> unit,
+                                        ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                         ?classId: string,
                                         ?styleId: string,
                                         ?automationId: string,
@@ -2417,7 +2602,7 @@ type ViewBuilders() =
         let attribCount = match textColor with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match textChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match cancelButtonColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CancelButtonColorAttribKey, (v)) 
         match fontFamily with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FontFamilyAttribKey, (v)) 
         match fontAttributes with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FontAttributesAttribKey, (v)) 
@@ -2617,6 +2802,11 @@ type ViewBuilders() =
                                             ?scaleX: double,
                                             ?scaleY: double,
                                             ?tabIndex: int,
+                                            ?childrenReordered: System.EventArgs -> unit,
+                                            ?measureInvalidated: System.EventArgs -> unit,
+                                            ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                            ?sizeChanged: System.EventArgs -> unit,
+                                            ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                             ?classId: string,
                                             ?styleId: string,
                                             ?automationId: string,
@@ -2666,6 +2856,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -2720,6 +2915,11 @@ type ViewBuilders() =
                                      ?scaleX: double,
                                      ?scaleY: double,
                                      ?tabIndex: int,
+                                     ?childrenReordered: System.EventArgs -> unit,
+                                     ?measureInvalidated: System.EventArgs -> unit,
+                                     ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                     ?sizeChanged: System.EventArgs -> unit,
+                                     ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                      ?classId: string,
                                      ?styleId: string,
                                      ?automationId: string,
@@ -2741,7 +2941,7 @@ type ViewBuilders() =
         let attribCount = match textColor with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match padding with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match text with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextAttribKey, (v)) 
         match command with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ButtonCommandAttribKey, (v)) 
         match canExecute with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ButtonCanExecuteAttribKey, (v)) 
@@ -2966,6 +3166,11 @@ type ViewBuilders() =
                                          ?scaleX: double,
                                          ?scaleY: double,
                                          ?tabIndex: int,
+                                         ?childrenReordered: System.EventArgs -> unit,
+                                         ?measureInvalidated: System.EventArgs -> unit,
+                                         ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                         ?sizeChanged: System.EventArgs -> unit,
+                                         ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                          ?classId: string,
                                          ?styleId: string,
                                          ?automationId: string,
@@ -3017,6 +3222,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -3060,6 +3270,11 @@ type ViewBuilders() =
                                      ?scaleX: double,
                                      ?scaleY: double,
                                      ?tabIndex: int,
+                                     ?childrenReordered: System.EventArgs -> unit,
+                                     ?measureInvalidated: System.EventArgs -> unit,
+                                     ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                     ?sizeChanged: System.EventArgs -> unit,
+                                     ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                      ?classId: string,
                                      ?styleId: string,
                                      ?automationId: string,
@@ -3070,7 +3285,7 @@ type ViewBuilders() =
         let attribCount = match value with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match valueChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match minimumMaximum with None -> () | Some v -> attribBuilder.Add(ViewAttributes.MinimumMaximumAttribKey, (v)) 
         match value with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ValueAttribKey, (v)) 
         match valueChanged with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ValueChangedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>(fun _sender args -> f args))(v)) 
@@ -3157,6 +3372,11 @@ type ViewBuilders() =
                                          ?scaleX: double,
                                          ?scaleY: double,
                                          ?tabIndex: int,
+                                         ?childrenReordered: System.EventArgs -> unit,
+                                         ?measureInvalidated: System.EventArgs -> unit,
+                                         ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                         ?sizeChanged: System.EventArgs -> unit,
+                                         ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                          ?classId: string,
                                          ?styleId: string,
                                          ?automationId: string,
@@ -3197,6 +3417,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -3241,6 +3466,11 @@ type ViewBuilders() =
                                       ?scaleX: double,
                                       ?scaleY: double,
                                       ?tabIndex: int,
+                                      ?childrenReordered: System.EventArgs -> unit,
+                                      ?measureInvalidated: System.EventArgs -> unit,
+                                      ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                      ?sizeChanged: System.EventArgs -> unit,
+                                      ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                       ?classId: string,
                                       ?styleId: string,
                                       ?automationId: string,
@@ -3252,7 +3482,7 @@ type ViewBuilders() =
         let attribCount = match increment with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match valueChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match minimumMaximum with None -> () | Some v -> attribBuilder.Add(ViewAttributes.MinimumMaximumAttribKey, (v)) 
         match value with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ValueAttribKey, (v)) 
         match increment with None -> () | Some v -> attribBuilder.Add(ViewAttributes.IncrementAttribKey, (v)) 
@@ -3352,6 +3582,11 @@ type ViewBuilders() =
                                           ?scaleX: double,
                                           ?scaleY: double,
                                           ?tabIndex: int,
+                                          ?childrenReordered: System.EventArgs -> unit,
+                                          ?measureInvalidated: System.EventArgs -> unit,
+                                          ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                          ?sizeChanged: System.EventArgs -> unit,
+                                          ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                           ?classId: string,
                                           ?styleId: string,
                                           ?automationId: string,
@@ -3393,6 +3628,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -3436,6 +3676,11 @@ type ViewBuilders() =
                                      ?scaleX: double,
                                      ?scaleY: double,
                                      ?tabIndex: int,
+                                     ?childrenReordered: System.EventArgs -> unit,
+                                     ?measureInvalidated: System.EventArgs -> unit,
+                                     ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                     ?sizeChanged: System.EventArgs -> unit,
+                                     ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                      ?classId: string,
                                      ?styleId: string,
                                      ?automationId: string,
@@ -3446,7 +3691,7 @@ type ViewBuilders() =
         let attribCount = match toggled with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match onColor with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match isToggled with None -> () | Some v -> attribBuilder.Add(ViewAttributes.IsToggledAttribKey, (v)) 
         match toggled with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ToggledAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ToggledEventArgs>(fun _sender args -> f args))(v)) 
         match onColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.OnColorAttribKey, (v)) 
@@ -3537,6 +3782,11 @@ type ViewBuilders() =
                                          ?scaleX: double,
                                          ?scaleY: double,
                                          ?tabIndex: int,
+                                         ?childrenReordered: System.EventArgs -> unit,
+                                         ?measureInvalidated: System.EventArgs -> unit,
+                                         ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                         ?sizeChanged: System.EventArgs -> unit,
+                                         ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                          ?classId: string,
                                          ?styleId: string,
                                          ?automationId: string,
@@ -3577,6 +3827,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -3798,6 +4053,11 @@ type ViewBuilders() =
                                         ?scaleX: double,
                                         ?scaleY: double,
                                         ?tabIndex: int,
+                                        ?childrenReordered: System.EventArgs -> unit,
+                                        ?measureInvalidated: System.EventArgs -> unit,
+                                        ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?sizeChanged: System.EventArgs -> unit,
+                                        ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                         ?classId: string,
                                         ?styleId: string,
                                         ?automationId: string,
@@ -3809,7 +4069,7 @@ type ViewBuilders() =
         let attribCount = match rowHeight with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match items with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match intent with None -> () | Some v -> attribBuilder.Add(ViewAttributes.IntentAttribKey, (v)) 
         match hasUnevenRows with None -> () | Some v -> attribBuilder.Add(ViewAttributes.HasUnevenRowsAttribKey, (v)) 
         match rowHeight with None -> () | Some v -> attribBuilder.Add(ViewAttributes.RowHeightAttribKey, (v)) 
@@ -3908,6 +4168,11 @@ type ViewBuilders() =
                                             ?scaleX: double,
                                             ?scaleY: double,
                                             ?tabIndex: int,
+                                            ?childrenReordered: System.EventArgs -> unit,
+                                            ?measureInvalidated: System.EventArgs -> unit,
+                                            ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                            ?sizeChanged: System.EventArgs -> unit,
+                                            ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                             ?classId: string,
                                             ?styleId: string,
                                             ?automationId: string,
@@ -3949,6 +4214,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -4082,6 +4352,11 @@ type ViewBuilders() =
                                    ?scaleX: double,
                                    ?scaleY: double,
                                    ?tabIndex: int,
+                                   ?childrenReordered: System.EventArgs -> unit,
+                                   ?measureInvalidated: System.EventArgs -> unit,
+                                   ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                   ?sizeChanged: System.EventArgs -> unit,
+                                   ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                    ?classId: string,
                                    ?styleId: string,
                                    ?automationId: string,
@@ -4094,7 +4369,7 @@ type ViewBuilders() =
         let attribCount = match columnSpacing with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match children with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match rowdefs with None -> () | Some v -> attribBuilder.Add(ViewAttributes.GridRowDefinitionsAttribKey, (fun es -> es |> Array.ofList |> Array.map (fun h -> ViewBuilders.ConstructRowDefinition(height=h)))(v)) 
         match coldefs with None -> () | Some v -> attribBuilder.Add(ViewAttributes.GridColumnDefinitionsAttribKey, (fun es -> es |> Array.ofList |> Array.map (fun h -> ViewBuilders.ConstructColumnDefinition(width=h)))(v)) 
         match rowSpacing with None -> () | Some v -> attribBuilder.Add(ViewAttributes.RowSpacingAttribKey, (v)) 
@@ -4245,6 +4520,11 @@ type ViewBuilders() =
                                        ?scaleX: double,
                                        ?scaleY: double,
                                        ?tabIndex: int,
+                                       ?childrenReordered: System.EventArgs -> unit,
+                                       ?measureInvalidated: System.EventArgs -> unit,
+                                       ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                       ?sizeChanged: System.EventArgs -> unit,
+                                       ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                        ?classId: string,
                                        ?styleId: string,
                                        ?automationId: string,
@@ -4289,6 +4569,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -4332,6 +4617,11 @@ type ViewBuilders() =
                                              ?scaleX: double,
                                              ?scaleY: double,
                                              ?tabIndex: int,
+                                             ?childrenReordered: System.EventArgs -> unit,
+                                             ?measureInvalidated: System.EventArgs -> unit,
+                                             ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                             ?sizeChanged: System.EventArgs -> unit,
+                                             ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                              ?classId: string,
                                              ?styleId: string,
                                              ?automationId: string,
@@ -4340,7 +4630,7 @@ type ViewBuilders() =
 
         let attribCount = match children with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match children with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ChildrenAttribKey, Array.ofList(v)) 
         attribBuilder
 
@@ -4423,6 +4713,11 @@ type ViewBuilders() =
                                                  ?scaleX: double,
                                                  ?scaleY: double,
                                                  ?tabIndex: int,
+                                                 ?childrenReordered: System.EventArgs -> unit,
+                                                 ?measureInvalidated: System.EventArgs -> unit,
+                                                 ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                 ?sizeChanged: System.EventArgs -> unit,
+                                                 ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                                  ?classId: string,
                                                  ?styleId: string,
                                                  ?automationId: string,
@@ -4463,6 +4758,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -4506,6 +4806,11 @@ type ViewBuilders() =
                                              ?scaleX: double,
                                              ?scaleY: double,
                                              ?tabIndex: int,
+                                             ?childrenReordered: System.EventArgs -> unit,
+                                             ?measureInvalidated: System.EventArgs -> unit,
+                                             ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                             ?sizeChanged: System.EventArgs -> unit,
+                                             ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                              ?classId: string,
                                              ?styleId: string,
                                              ?automationId: string,
@@ -4514,7 +4819,7 @@ type ViewBuilders() =
 
         let attribCount = match children with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match children with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ChildrenAttribKey, Array.ofList(v)) 
         attribBuilder
 
@@ -4621,6 +4926,11 @@ type ViewBuilders() =
                                                  ?scaleX: double,
                                                  ?scaleY: double,
                                                  ?tabIndex: int,
+                                                 ?childrenReordered: System.EventArgs -> unit,
+                                                 ?measureInvalidated: System.EventArgs -> unit,
+                                                 ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                 ?sizeChanged: System.EventArgs -> unit,
+                                                 ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                                  ?classId: string,
                                                  ?styleId: string,
                                                  ?automationId: string,
@@ -4661,6 +4971,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -4710,6 +5025,11 @@ type ViewBuilders() =
                                          ?scaleX: double,
                                          ?scaleY: double,
                                          ?tabIndex: int,
+                                         ?childrenReordered: System.EventArgs -> unit,
+                                         ?measureInvalidated: System.EventArgs -> unit,
+                                         ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                         ?sizeChanged: System.EventArgs -> unit,
+                                         ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                          ?classId: string,
                                          ?styleId: string,
                                          ?automationId: string,
@@ -4724,7 +5044,7 @@ type ViewBuilders() =
         let attribCount = match justifyContent with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match children with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match alignContent with None -> () | Some v -> attribBuilder.Add(ViewAttributes.AlignContentAttribKey, (v)) 
         match alignItems with None -> () | Some v -> attribBuilder.Add(ViewAttributes.AlignItemsAttribKey, (v)) 
         match direction with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FlexLayoutDirectionAttribKey, (v)) 
@@ -4909,6 +5229,11 @@ type ViewBuilders() =
                                              ?scaleX: double,
                                              ?scaleY: double,
                                              ?tabIndex: int,
+                                             ?childrenReordered: System.EventArgs -> unit,
+                                             ?measureInvalidated: System.EventArgs -> unit,
+                                             ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                             ?sizeChanged: System.EventArgs -> unit,
+                                             ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                              ?classId: string,
                                              ?styleId: string,
                                              ?automationId: string,
@@ -4955,6 +5280,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -4997,12 +5327,17 @@ type ViewBuilders() =
                                             ?scaleX: double,
                                             ?scaleY: double,
                                             ?tabIndex: int,
+                                            ?childrenReordered: System.EventArgs -> unit,
+                                            ?measureInvalidated: System.EventArgs -> unit,
+                                            ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                            ?sizeChanged: System.EventArgs -> unit,
+                                            ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                             ?classId: string,
                                             ?styleId: string,
                                             ?automationId: string,
                                             ?created: obj -> unit,
                                             ?ref: ViewRef) = 
-        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         attribBuilder
 
     static member val CreateFuncTemplatedView : (unit -> Xamarin.Forms.TemplatedView) = (fun () -> ViewBuilders.CreateTemplatedView())
@@ -5053,6 +5388,11 @@ type ViewBuilders() =
                                                 ?scaleX: double,
                                                 ?scaleY: double,
                                                 ?tabIndex: int,
+                                                ?childrenReordered: System.EventArgs -> unit,
+                                                ?measureInvalidated: System.EventArgs -> unit,
+                                                ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                ?sizeChanged: System.EventArgs -> unit,
+                                                ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                                 ?classId: string,
                                                 ?styleId: string,
                                                 ?automationId: string,
@@ -5092,6 +5432,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -5135,6 +5480,11 @@ type ViewBuilders() =
                                           ?scaleX: double,
                                           ?scaleY: double,
                                           ?tabIndex: int,
+                                          ?childrenReordered: System.EventArgs -> unit,
+                                          ?measureInvalidated: System.EventArgs -> unit,
+                                          ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                          ?sizeChanged: System.EventArgs -> unit,
+                                          ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                           ?classId: string,
                                           ?styleId: string,
                                           ?automationId: string,
@@ -5143,7 +5493,7 @@ type ViewBuilders() =
 
         let attribCount = match content with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildTemplatedView(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildTemplatedView(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match content with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ContentAttribKey, (v)) 
         attribBuilder
 
@@ -5214,6 +5564,11 @@ type ViewBuilders() =
                                               ?scaleX: double,
                                               ?scaleY: double,
                                               ?tabIndex: int,
+                                              ?childrenReordered: System.EventArgs -> unit,
+                                              ?measureInvalidated: System.EventArgs -> unit,
+                                              ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                              ?sizeChanged: System.EventArgs -> unit,
+                                              ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                               ?classId: string,
                                               ?styleId: string,
                                               ?automationId: string,
@@ -5254,6 +5609,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -5299,6 +5659,11 @@ type ViewBuilders() =
                                          ?scaleX: double,
                                          ?scaleY: double,
                                          ?tabIndex: int,
+                                         ?childrenReordered: System.EventArgs -> unit,
+                                         ?measureInvalidated: System.EventArgs -> unit,
+                                         ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                         ?sizeChanged: System.EventArgs -> unit,
+                                         ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                          ?classId: string,
                                          ?styleId: string,
                                          ?automationId: string,
@@ -5311,7 +5676,7 @@ type ViewBuilders() =
         let attribCount = match maximumDate with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match dateSelected with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match date with None -> () | Some v -> attribBuilder.Add(ViewAttributes.DateAttribKey, (v)) 
         match format with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FormatAttribKey, (v)) 
         match minimumDate with None -> () | Some v -> attribBuilder.Add(ViewAttributes.MinimumDateAttribKey, (v)) 
@@ -5428,6 +5793,11 @@ type ViewBuilders() =
                                              ?scaleX: double,
                                              ?scaleY: double,
                                              ?tabIndex: int,
+                                             ?childrenReordered: System.EventArgs -> unit,
+                                             ?measureInvalidated: System.EventArgs -> unit,
+                                             ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                             ?sizeChanged: System.EventArgs -> unit,
+                                             ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                              ?classId: string,
                                              ?styleId: string,
                                              ?automationId: string,
@@ -5470,6 +5840,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -5515,6 +5890,11 @@ type ViewBuilders() =
                                      ?scaleX: double,
                                      ?scaleY: double,
                                      ?tabIndex: int,
+                                     ?childrenReordered: System.EventArgs -> unit,
+                                     ?measureInvalidated: System.EventArgs -> unit,
+                                     ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                     ?sizeChanged: System.EventArgs -> unit,
+                                     ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                      ?classId: string,
                                      ?styleId: string,
                                      ?automationId: string,
@@ -5527,7 +5907,7 @@ type ViewBuilders() =
         let attribCount = match textColor with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match selectedIndexChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match itemsSource with None -> () | Some v -> attribBuilder.Add(ViewAttributes.PickerItemsSourceAttribKey, seqToIListUntyped(v)) 
         match selectedIndex with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SelectedIndexAttribKey, (v)) 
         match title with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TitleAttribKey, (v)) 
@@ -5644,6 +6024,11 @@ type ViewBuilders() =
                                          ?scaleX: double,
                                          ?scaleY: double,
                                          ?tabIndex: int,
+                                         ?childrenReordered: System.EventArgs -> unit,
+                                         ?measureInvalidated: System.EventArgs -> unit,
+                                         ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                         ?sizeChanged: System.EventArgs -> unit,
+                                         ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                          ?classId: string,
                                          ?styleId: string,
                                          ?automationId: string,
@@ -5686,6 +6071,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -5732,6 +6122,11 @@ type ViewBuilders() =
                                     ?scaleX: double,
                                     ?scaleY: double,
                                     ?tabIndex: int,
+                                    ?childrenReordered: System.EventArgs -> unit,
+                                    ?measureInvalidated: System.EventArgs -> unit,
+                                    ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                    ?sizeChanged: System.EventArgs -> unit,
+                                    ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                     ?classId: string,
                                     ?styleId: string,
                                     ?automationId: string,
@@ -5742,7 +6137,7 @@ type ViewBuilders() =
         let attribCount = match cornerRadius with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match hasShadow with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildContentView(attribCount, ?content=content, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildContentView(attribCount, ?content=content, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match borderColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.BorderColorAttribKey, (v)) 
         match cornerRadius with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FrameCornerRadiusAttribKey, single(v)) 
         match hasShadow with None -> () | Some v -> attribBuilder.Add(ViewAttributes.HasShadowAttribKey, (v)) 
@@ -5835,6 +6230,11 @@ type ViewBuilders() =
                                         ?scaleX: double,
                                         ?scaleY: double,
                                         ?tabIndex: int,
+                                        ?childrenReordered: System.EventArgs -> unit,
+                                        ?measureInvalidated: System.EventArgs -> unit,
+                                        ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?sizeChanged: System.EventArgs -> unit,
+                                        ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                         ?classId: string,
                                         ?styleId: string,
                                         ?automationId: string,
@@ -5878,6 +6278,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -5921,6 +6326,11 @@ type ViewBuilders() =
                                     ?scaleX: double,
                                     ?scaleY: double,
                                     ?tabIndex: int,
+                                    ?childrenReordered: System.EventArgs -> unit,
+                                    ?measureInvalidated: System.EventArgs -> unit,
+                                    ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                    ?sizeChanged: System.EventArgs -> unit,
+                                    ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                     ?classId: string,
                                     ?styleId: string,
                                     ?automationId: string,
@@ -5931,7 +6341,7 @@ type ViewBuilders() =
         let attribCount = match aspect with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match isOpaque with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match source with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ImageSourceAttribKey, (v)) 
         match aspect with None -> () | Some v -> attribBuilder.Add(ViewAttributes.AspectAttribKey, (v)) 
         match isOpaque with None -> () | Some v -> attribBuilder.Add(ViewAttributes.IsOpaqueAttribKey, (v)) 
@@ -6021,6 +6431,11 @@ type ViewBuilders() =
                                         ?scaleX: double,
                                         ?scaleY: double,
                                         ?tabIndex: int,
+                                        ?childrenReordered: System.EventArgs -> unit,
+                                        ?measureInvalidated: System.EventArgs -> unit,
+                                        ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?sizeChanged: System.EventArgs -> unit,
+                                        ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                         ?classId: string,
                                         ?styleId: string,
                                         ?automationId: string,
@@ -6061,6 +6476,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -6112,6 +6532,11 @@ type ViewBuilders() =
                                           ?scaleX: double,
                                           ?scaleY: double,
                                           ?tabIndex: int,
+                                          ?childrenReordered: System.EventArgs -> unit,
+                                          ?measureInvalidated: System.EventArgs -> unit,
+                                          ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                          ?sizeChanged: System.EventArgs -> unit,
+                                          ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                           ?classId: string,
                                           ?styleId: string,
                                           ?automationId: string,
@@ -6130,7 +6555,7 @@ type ViewBuilders() =
         let attribCount = match pressed with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match released with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match command with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ImageButtonCommandAttribKey, (v)) 
         match source with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ImageSourceAttribKey, (v)) 
         match aspect with None -> () | Some v -> attribBuilder.Add(ViewAttributes.AspectAttribKey, (v)) 
@@ -6323,6 +6748,11 @@ type ViewBuilders() =
                                               ?scaleX: double,
                                               ?scaleY: double,
                                               ?tabIndex: int,
+                                              ?childrenReordered: System.EventArgs -> unit,
+                                              ?measureInvalidated: System.EventArgs -> unit,
+                                              ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                              ?sizeChanged: System.EventArgs -> unit,
+                                              ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                               ?classId: string,
                                               ?styleId: string,
                                               ?automationId: string,
@@ -6371,6 +6801,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -6412,6 +6847,11 @@ type ViewBuilders() =
                                         ?scaleX: double,
                                         ?scaleY: double,
                                         ?tabIndex: int,
+                                        ?childrenReordered: System.EventArgs -> unit,
+                                        ?measureInvalidated: System.EventArgs -> unit,
+                                        ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?sizeChanged: System.EventArgs -> unit,
+                                        ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                         ?classId: string,
                                         ?styleId: string,
                                         ?automationId: string,
@@ -6420,7 +6860,7 @@ type ViewBuilders() =
 
         let attribCount = match keyboard with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match keyboard with None -> () | Some v -> attribBuilder.Add(ViewAttributes.KeyboardAttribKey, (v)) 
         attribBuilder
 
@@ -6484,6 +6924,11 @@ type ViewBuilders() =
                                             ?scaleX: double,
                                             ?scaleY: double,
                                             ?tabIndex: int,
+                                            ?childrenReordered: System.EventArgs -> unit,
+                                            ?measureInvalidated: System.EventArgs -> unit,
+                                            ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                            ?sizeChanged: System.EventArgs -> unit,
+                                            ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                             ?classId: string,
                                             ?styleId: string,
                                             ?automationId: string,
@@ -6522,6 +6967,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -6573,6 +7023,11 @@ type ViewBuilders() =
                                      ?scaleX: double,
                                      ?scaleY: double,
                                      ?tabIndex: int,
+                                     ?childrenReordered: System.EventArgs -> unit,
+                                     ?measureInvalidated: System.EventArgs -> unit,
+                                     ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                     ?sizeChanged: System.EventArgs -> unit,
+                                     ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                      ?classId: string,
                                      ?styleId: string,
                                      ?automationId: string,
@@ -6590,7 +7045,7 @@ type ViewBuilders() =
         let attribCount = match placeholder with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match placeholderColor with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildInputView(attribCount, ?keyboard=keyboard, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildInputView(attribCount, ?keyboard=keyboard, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match text with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextAttribKey, (v)) 
         match fontSize with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FontSizeAttribKey, makeFontSize(v)) 
         match fontFamily with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FontFamilyAttribKey, (v)) 
@@ -6774,6 +7229,11 @@ type ViewBuilders() =
                                          ?scaleX: double,
                                          ?scaleY: double,
                                          ?tabIndex: int,
+                                         ?childrenReordered: System.EventArgs -> unit,
+                                         ?measureInvalidated: System.EventArgs -> unit,
+                                         ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                         ?sizeChanged: System.EventArgs -> unit,
+                                         ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                          ?classId: string,
                                          ?styleId: string,
                                          ?automationId: string,
@@ -6822,6 +7282,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -6879,6 +7344,11 @@ type ViewBuilders() =
                                     ?scaleX: double,
                                     ?scaleY: double,
                                     ?tabIndex: int,
+                                    ?childrenReordered: System.EventArgs -> unit,
+                                    ?measureInvalidated: System.EventArgs -> unit,
+                                    ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                    ?sizeChanged: System.EventArgs -> unit,
+                                    ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                     ?classId: string,
                                     ?styleId: string,
                                     ?automationId: string,
@@ -6902,7 +7372,7 @@ type ViewBuilders() =
         let attribCount = match cursorPosition with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match selectionLength with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildInputView(attribCount, ?keyboard=keyboard, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildInputView(attribCount, ?keyboard=keyboard, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match text with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextAttribKey, (v)) 
         match placeholder with None -> () | Some v -> attribBuilder.Add(ViewAttributes.PlaceholderAttribKey, (v)) 
         match horizontalTextAlignment with None -> () | Some v -> attribBuilder.Add(ViewAttributes.HorizontalTextAlignmentAttribKey, (v)) 
@@ -7156,6 +7626,11 @@ type ViewBuilders() =
                                         ?scaleX: double,
                                         ?scaleY: double,
                                         ?tabIndex: int,
+                                        ?childrenReordered: System.EventArgs -> unit,
+                                        ?measureInvalidated: System.EventArgs -> unit,
+                                        ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?sizeChanged: System.EventArgs -> unit,
+                                        ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                         ?classId: string,
                                         ?styleId: string,
                                         ?automationId: string,
@@ -7210,6 +7685,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -7427,6 +7907,11 @@ type ViewBuilders() =
                                     ?scaleX: double,
                                     ?scaleY: double,
                                     ?tabIndex: int,
+                                    ?childrenReordered: System.EventArgs -> unit,
+                                    ?measureInvalidated: System.EventArgs -> unit,
+                                    ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                    ?sizeChanged: System.EventArgs -> unit,
+                                    ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                     ?classId: string,
                                     ?styleId: string,
                                     ?automationId: string,
@@ -7446,7 +7931,7 @@ type ViewBuilders() =
         let attribCount = match maxLines with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match textDecorations with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match text with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextAttribKey, (v)) 
         match horizontalTextAlignment with None -> () | Some v -> attribBuilder.Add(ViewAttributes.HorizontalTextAlignmentAttribKey, (v)) 
         match verticalTextAlignment with None -> () | Some v -> attribBuilder.Add(ViewAttributes.VerticalTextAlignmentAttribKey, (v)) 
@@ -7658,6 +8143,11 @@ type ViewBuilders() =
                                         ?scaleX: double,
                                         ?scaleY: double,
                                         ?tabIndex: int,
+                                        ?childrenReordered: System.EventArgs -> unit,
+                                        ?measureInvalidated: System.EventArgs -> unit,
+                                        ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?sizeChanged: System.EventArgs -> unit,
+                                        ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                         ?classId: string,
                                         ?styleId: string,
                                         ?automationId: string,
@@ -7707,6 +8197,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -7752,6 +8247,11 @@ type ViewBuilders() =
                                           ?scaleX: double,
                                           ?scaleY: double,
                                           ?tabIndex: int,
+                                          ?childrenReordered: System.EventArgs -> unit,
+                                          ?measureInvalidated: System.EventArgs -> unit,
+                                          ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                          ?sizeChanged: System.EventArgs -> unit,
+                                          ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                           ?classId: string,
                                           ?styleId: string,
                                           ?automationId: string,
@@ -7762,7 +8262,7 @@ type ViewBuilders() =
         let attribCount = match orientation with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match spacing with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match children with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ChildrenAttribKey, Array.ofList(v)) 
         match orientation with None -> () | Some v -> attribBuilder.Add(ViewAttributes.StackOrientationAttribKey, (v)) 
         match spacing with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SpacingAttribKey, (v)) 
@@ -7854,6 +8354,11 @@ type ViewBuilders() =
                                               ?scaleX: double,
                                               ?scaleY: double,
                                               ?tabIndex: int,
+                                              ?childrenReordered: System.EventArgs -> unit,
+                                              ?measureInvalidated: System.EventArgs -> unit,
+                                              ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                              ?sizeChanged: System.EventArgs -> unit,
+                                              ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                               ?classId: string,
                                               ?styleId: string,
                                               ?automationId: string,
@@ -7896,6 +8401,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -8190,6 +8700,11 @@ type ViewBuilders() =
                                          ?scaleX: double,
                                          ?scaleY: double,
                                          ?tabIndex: int,
+                                         ?childrenReordered: System.EventArgs -> unit,
+                                         ?measureInvalidated: System.EventArgs -> unit,
+                                         ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                         ?sizeChanged: System.EventArgs -> unit,
+                                         ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                          ?classId: string,
                                          ?styleId: string,
                                          ?automationId: string,
@@ -8200,7 +8715,7 @@ type ViewBuilders() =
         let attribCount = match format with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match textColor with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match time with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TimeAttribKey, (v)) 
         match format with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FormatAttribKey, (v)) 
         match textColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextColorAttribKey, (v)) 
@@ -8290,6 +8805,11 @@ type ViewBuilders() =
                                              ?scaleX: double,
                                              ?scaleY: double,
                                              ?tabIndex: int,
+                                             ?childrenReordered: System.EventArgs -> unit,
+                                             ?measureInvalidated: System.EventArgs -> unit,
+                                             ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                             ?sizeChanged: System.EventArgs -> unit,
+                                             ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                              ?classId: string,
                                              ?styleId: string,
                                              ?automationId: string,
@@ -8330,6 +8850,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -8375,6 +8900,11 @@ type ViewBuilders() =
                                       ?scaleX: double,
                                       ?scaleY: double,
                                       ?tabIndex: int,
+                                      ?childrenReordered: System.EventArgs -> unit,
+                                      ?measureInvalidated: System.EventArgs -> unit,
+                                      ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                      ?sizeChanged: System.EventArgs -> unit,
+                                      ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                       ?classId: string,
                                       ?styleId: string,
                                       ?automationId: string,
@@ -8387,7 +8917,7 @@ type ViewBuilders() =
         let attribCount = match navigating with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match reloadRequested with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match source with None -> () | Some v -> attribBuilder.Add(ViewAttributes.WebSourceAttribKey, (v)) 
         match reload with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ReloadAttribKey, (v)) 
         match navigated with None -> () | Some v -> attribBuilder.Add(ViewAttributes.NavigatedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.WebNavigatedEventArgs>(fun _sender args -> f args))(v)) 
@@ -8502,6 +9032,11 @@ type ViewBuilders() =
                                           ?scaleX: double,
                                           ?scaleY: double,
                                           ?tabIndex: int,
+                                          ?childrenReordered: System.EventArgs -> unit,
+                                          ?measureInvalidated: System.EventArgs -> unit,
+                                          ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                          ?sizeChanged: System.EventArgs -> unit,
+                                          ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                           ?classId: string,
                                           ?styleId: string,
                                           ?automationId: string,
@@ -8544,6 +9079,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -8590,6 +9130,11 @@ type ViewBuilders() =
                                    ?scaleX: double,
                                    ?scaleY: double,
                                    ?tabIndex: int,
+                                   ?childrenReordered: System.EventArgs -> unit,
+                                   ?measureInvalidated: System.EventArgs -> unit,
+                                   ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                   ?sizeChanged: System.EventArgs -> unit,
+                                   ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                    ?classId: string,
                                    ?styleId: string,
                                    ?automationId: string,
@@ -8607,7 +9152,7 @@ type ViewBuilders() =
         let attribCount = match disappearing with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match layoutChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildVisualElement(attribCount, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildVisualElement(attribCount, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match title with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TitleAttribKey, (v)) 
         match backgroundImage with None -> () | Some v -> attribBuilder.Add(ViewAttributes.BackgroundImageAttribKey, (v)) 
         match icon with None -> () | Some v -> attribBuilder.Add(ViewAttributes.IconAttribKey, (v)) 
@@ -8783,6 +9328,11 @@ type ViewBuilders() =
                                        ?scaleX: double,
                                        ?scaleY: double,
                                        ?tabIndex: int,
+                                       ?childrenReordered: System.EventArgs -> unit,
+                                       ?measureInvalidated: System.EventArgs -> unit,
+                                       ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                       ?sizeChanged: System.EventArgs -> unit,
+                                       ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                        ?classId: string,
                                        ?styleId: string,
                                        ?automationId: string,
@@ -8826,6 +9376,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -8875,6 +9430,11 @@ type ViewBuilders() =
                                            ?scaleX: double,
                                            ?scaleY: double,
                                            ?tabIndex: int,
+                                           ?childrenReordered: System.EventArgs -> unit,
+                                           ?measureInvalidated: System.EventArgs -> unit,
+                                           ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                           ?sizeChanged: System.EventArgs -> unit,
+                                           ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                            ?classId: string,
                                            ?styleId: string,
                                            ?automationId: string,
@@ -8885,7 +9445,7 @@ type ViewBuilders() =
         let attribCount = match currentPage with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match currentPageChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match children with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ChildrenAttribKey, Array.ofList(v)) 
         match currentPage with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CarouselPage_CurrentPageAttribKey, (v)) 
         match currentPageChanged with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CarouselPage_CurrentPageChangedAttribKey, makeCurrentPageChanged<Xamarin.Forms.ContentPage>(v)) 
@@ -8978,6 +9538,11 @@ type ViewBuilders() =
                                                ?scaleX: double,
                                                ?scaleY: double,
                                                ?tabIndex: int,
+                                               ?childrenReordered: System.EventArgs -> unit,
+                                               ?measureInvalidated: System.EventArgs -> unit,
+                                               ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                               ?sizeChanged: System.EventArgs -> unit,
+                                               ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                                ?classId: string,
                                                ?styleId: string,
                                                ?automationId: string,
@@ -9024,6 +9589,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -9076,6 +9646,11 @@ type ViewBuilders() =
                                              ?scaleX: double,
                                              ?scaleY: double,
                                              ?tabIndex: int,
+                                             ?childrenReordered: System.EventArgs -> unit,
+                                             ?measureInvalidated: System.EventArgs -> unit,
+                                             ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                             ?sizeChanged: System.EventArgs -> unit,
+                                             ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                              ?classId: string,
                                              ?styleId: string,
                                              ?automationId: string,
@@ -9089,7 +9664,7 @@ type ViewBuilders() =
         let attribCount = match poppedToRoot with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match pushed with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match pages with None -> () | Some v -> attribBuilder.Add(ViewAttributes.PagesAttribKey, Array.ofList(v)) 
         match barBackgroundColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.BarBackgroundColorAttribKey, (v)) 
         match barTextColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.BarTextColorAttribKey, (v)) 
@@ -9261,6 +9836,11 @@ type ViewBuilders() =
                                                  ?scaleX: double,
                                                  ?scaleY: double,
                                                  ?tabIndex: int,
+                                                 ?childrenReordered: System.EventArgs -> unit,
+                                                 ?measureInvalidated: System.EventArgs -> unit,
+                                                 ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                 ?sizeChanged: System.EventArgs -> unit,
+                                                 ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                                  ?classId: string,
                                                  ?styleId: string,
                                                  ?automationId: string,
@@ -9310,6 +9890,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -9361,6 +9946,11 @@ type ViewBuilders() =
                                          ?scaleX: double,
                                          ?scaleY: double,
                                          ?tabIndex: int,
+                                         ?childrenReordered: System.EventArgs -> unit,
+                                         ?measureInvalidated: System.EventArgs -> unit,
+                                         ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                         ?sizeChanged: System.EventArgs -> unit,
+                                         ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                          ?classId: string,
                                          ?styleId: string,
                                          ?automationId: string,
@@ -9373,7 +9963,7 @@ type ViewBuilders() =
         let attribCount = match currentPage with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match currentPageChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match children with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ChildrenAttribKey, Array.ofList(v)) 
         match barBackgroundColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.BarBackgroundColorAttribKey, (v)) 
         match barTextColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.BarTextColorAttribKey, (v)) 
@@ -9492,6 +10082,11 @@ type ViewBuilders() =
                                              ?scaleX: double,
                                              ?scaleY: double,
                                              ?tabIndex: int,
+                                             ?childrenReordered: System.EventArgs -> unit,
+                                             ?measureInvalidated: System.EventArgs -> unit,
+                                             ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                             ?sizeChanged: System.EventArgs -> unit,
+                                             ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                              ?classId: string,
                                              ?styleId: string,
                                              ?automationId: string,
@@ -9540,6 +10135,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -9588,6 +10188,11 @@ type ViewBuilders() =
                                           ?scaleX: double,
                                           ?scaleY: double,
                                           ?tabIndex: int,
+                                          ?childrenReordered: System.EventArgs -> unit,
+                                          ?measureInvalidated: System.EventArgs -> unit,
+                                          ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                          ?sizeChanged: System.EventArgs -> unit,
+                                          ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                           ?classId: string,
                                           ?styleId: string,
                                           ?automationId: string,
@@ -9597,7 +10202,7 @@ type ViewBuilders() =
         let attribCount = match content with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match onSizeAllocated with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match content with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ContentAttribKey, (v)) 
         match onSizeAllocated with None -> () | Some v -> attribBuilder.Add(ViewAttributes.OnSizeAllocatedCallbackAttribKey, (fun f -> FSharp.Control.Handler<_>(fun _sender args -> f args))(v)) 
         attribBuilder
@@ -9681,6 +10286,11 @@ type ViewBuilders() =
                                               ?scaleX: double,
                                               ?scaleY: double,
                                               ?tabIndex: int,
+                                              ?childrenReordered: System.EventArgs -> unit,
+                                              ?measureInvalidated: System.EventArgs -> unit,
+                                              ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                              ?sizeChanged: System.EventArgs -> unit,
+                                              ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                               ?classId: string,
                                               ?styleId: string,
                                               ?automationId: string,
@@ -9726,6 +10336,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -9778,6 +10393,11 @@ type ViewBuilders() =
                                                ?scaleX: double,
                                                ?scaleY: double,
                                                ?tabIndex: int,
+                                               ?childrenReordered: System.EventArgs -> unit,
+                                               ?measureInvalidated: System.EventArgs -> unit,
+                                               ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                               ?sizeChanged: System.EventArgs -> unit,
+                                               ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                                ?classId: string,
                                                ?styleId: string,
                                                ?automationId: string,
@@ -9791,7 +10411,7 @@ type ViewBuilders() =
         let attribCount = match masterBehavior with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match isPresentedChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match master with None -> () | Some v -> attribBuilder.Add(ViewAttributes.MasterAttribKey, (v)) 
         match detail with None -> () | Some v -> attribBuilder.Add(ViewAttributes.DetailAttribKey, (v)) 
         match isGestureEnabled with None -> () | Some v -> attribBuilder.Add(ViewAttributes.IsGestureEnabledAttribKey, (v)) 
@@ -9937,6 +10557,11 @@ type ViewBuilders() =
                                                    ?scaleX: double,
                                                    ?scaleY: double,
                                                    ?tabIndex: int,
+                                                   ?childrenReordered: System.EventArgs -> unit,
+                                                   ?measureInvalidated: System.EventArgs -> unit,
+                                                   ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                   ?sizeChanged: System.EventArgs -> unit,
+                                                   ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                                    ?classId: string,
                                                    ?styleId: string,
                                                    ?automationId: string,
@@ -9986,6 +10611,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -10573,6 +11203,11 @@ type ViewBuilders() =
                                        ?scaleX: double,
                                        ?scaleY: double,
                                        ?tabIndex: int,
+                                       ?childrenReordered: System.EventArgs -> unit,
+                                       ?measureInvalidated: System.EventArgs -> unit,
+                                       ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                       ?sizeChanged: System.EventArgs -> unit,
+                                       ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                        ?classId: string,
                                        ?styleId: string,
                                        ?automationId: string,
@@ -10599,7 +11234,7 @@ type ViewBuilders() =
         let attribCount = match refreshing with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match selectionMode with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match items with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ListViewItemsAttribKey, (v)) 
         match footer with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FooterAttribKey, (v)) 
         match hasUnevenRows with None -> () | Some v -> attribBuilder.Add(ViewAttributes.HasUnevenRowsAttribKey, (v)) 
@@ -10898,6 +11533,11 @@ type ViewBuilders() =
                                            ?scaleX: double,
                                            ?scaleY: double,
                                            ?tabIndex: int,
+                                           ?childrenReordered: System.EventArgs -> unit,
+                                           ?measureInvalidated: System.EventArgs -> unit,
+                                           ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                           ?sizeChanged: System.EventArgs -> unit,
+                                           ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                            ?classId: string,
                                            ?styleId: string,
                                            ?automationId: string,
@@ -10954,6 +11594,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -11012,6 +11657,11 @@ type ViewBuilders() =
                                               ?scaleX: double,
                                               ?scaleY: double,
                                               ?tabIndex: int,
+                                              ?childrenReordered: System.EventArgs -> unit,
+                                              ?measureInvalidated: System.EventArgs -> unit,
+                                              ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                              ?sizeChanged: System.EventArgs -> unit,
+                                              ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                               ?classId: string,
                                               ?styleId: string,
                                               ?automationId: string,
@@ -11037,7 +11687,7 @@ type ViewBuilders() =
         let attribCount = match refreshing with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match selectionMode with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match items with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ListViewGrouped_ItemsSourceAttribKey, (fun es -> es |> Array.ofList |> Array.map (fun (g, e, l) -> (g, e, Array.ofList l)))(v)) 
         match showJumpList with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ListViewGrouped_ShowJumpListAttribKey, (v)) 
         match footer with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FooterAttribKey, (v)) 
@@ -11319,6 +11969,11 @@ type ViewBuilders() =
                                                   ?scaleX: double,
                                                   ?scaleY: double,
                                                   ?tabIndex: int,
+                                                  ?childrenReordered: System.EventArgs -> unit,
+                                                  ?measureInvalidated: System.EventArgs -> unit,
+                                                  ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                  ?sizeChanged: System.EventArgs -> unit,
+                                                  ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                                   ?classId: string,
                                                   ?styleId: string,
                                                   ?automationId: string,
@@ -11374,6 +12029,11 @@ type ViewBuilders() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -11448,6 +12108,16 @@ type VisualElementViewer(element: ViewElement) =
     member this.ScaleY = element.GetAttributeKeyed(ViewAttributes.ScaleYAttribKey)
     /// Get the value of the TabIndex property
     member this.TabIndex = element.GetAttributeKeyed(ViewAttributes.TabIndexAttribKey)
+    /// Get the value of the ChildrenReordered property
+    member this.ChildrenReordered = element.GetAttributeKeyed(ViewAttributes.ChildrenReorderedAttribKey)
+    /// Get the value of the MeasureInvalidated property
+    member this.MeasureInvalidated = element.GetAttributeKeyed(ViewAttributes.MeasureInvalidatedAttribKey)
+    /// Get the value of the Focused property
+    member this.Focused = element.GetAttributeKeyed(ViewAttributes.FocusedAttribKey)
+    /// Get the value of the SizeChanged property
+    member this.SizeChanged = element.GetAttributeKeyed(ViewAttributes.SizeChangedAttribKey)
+    /// Get the value of the Unfocused property
+    member this.Unfocused = element.GetAttributeKeyed(ViewAttributes.UnfocusedAttribKey)
 
 /// Viewer that allows to read the properties of a ViewElement representing a View
 type ViewViewer(element: ViewElement) =
@@ -12305,6 +12975,11 @@ type View() =
                                        ?scaleX: double,
                                        ?scaleY: double,
                                        ?tabIndex: int,
+                                       ?childrenReordered: System.EventArgs -> unit,
+                                       ?measureInvalidated: System.EventArgs -> unit,
+                                       ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                       ?sizeChanged: System.EventArgs -> unit,
+                                       ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                        ?classId: string,
                                        ?styleId: string,
                                        ?automationId: string,
@@ -12337,6 +13012,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -12374,6 +13054,11 @@ type View() =
                               ?scaleX: double,
                               ?scaleY: double,
                               ?tabIndex: int,
+                              ?childrenReordered: System.EventArgs -> unit,
+                              ?measureInvalidated: System.EventArgs -> unit,
+                              ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                              ?sizeChanged: System.EventArgs -> unit,
+                              ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                               ?classId: string,
                               ?styleId: string,
                               ?automationId: string,
@@ -12410,6 +13095,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -12545,6 +13235,11 @@ type View() =
                                            ?scaleX: double,
                                            ?scaleY: double,
                                            ?tabIndex: int,
+                                           ?childrenReordered: System.EventArgs -> unit,
+                                           ?measureInvalidated: System.EventArgs -> unit,
+                                           ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                           ?sizeChanged: System.EventArgs -> unit,
+                                           ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                            ?classId: string,
                                            ?styleId: string,
                                            ?automationId: string,
@@ -12583,6 +13278,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -12622,6 +13322,11 @@ type View() =
                                  ?scaleX: double,
                                  ?scaleY: double,
                                  ?tabIndex: int,
+                                 ?childrenReordered: System.EventArgs -> unit,
+                                 ?measureInvalidated: System.EventArgs -> unit,
+                                 ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                 ?sizeChanged: System.EventArgs -> unit,
+                                 ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                  ?classId: string,
                                  ?styleId: string,
                                  ?automationId: string,
@@ -12660,6 +13365,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -12698,6 +13408,11 @@ type View() =
                                      ?scaleX: double,
                                      ?scaleY: double,
                                      ?tabIndex: int,
+                                     ?childrenReordered: System.EventArgs -> unit,
+                                     ?measureInvalidated: System.EventArgs -> unit,
+                                     ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                     ?sizeChanged: System.EventArgs -> unit,
+                                     ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                      ?classId: string,
                                      ?styleId: string,
                                      ?automationId: string,
@@ -12735,6 +13450,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -12774,6 +13494,11 @@ type View() =
                                 ?scaleX: double,
                                 ?scaleY: double,
                                 ?tabIndex: int,
+                                ?childrenReordered: System.EventArgs -> unit,
+                                ?measureInvalidated: System.EventArgs -> unit,
+                                ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                ?sizeChanged: System.EventArgs -> unit,
+                                ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                 ?classId: string,
                                 ?styleId: string,
                                 ?automationId: string,
@@ -12812,6 +13537,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -12855,6 +13585,11 @@ type View() =
                                     ?scaleX: double,
                                     ?scaleY: double,
                                     ?tabIndex: int,
+                                    ?childrenReordered: System.EventArgs -> unit,
+                                    ?measureInvalidated: System.EventArgs -> unit,
+                                    ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                    ?sizeChanged: System.EventArgs -> unit,
+                                    ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                     ?classId: string,
                                     ?styleId: string,
                                     ?automationId: string,
@@ -12897,6 +13632,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -12946,6 +13686,11 @@ type View() =
                                    ?scaleX: double,
                                    ?scaleY: double,
                                    ?tabIndex: int,
+                                   ?childrenReordered: System.EventArgs -> unit,
+                                   ?measureInvalidated: System.EventArgs -> unit,
+                                   ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                   ?sizeChanged: System.EventArgs -> unit,
+                                   ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                    ?classId: string,
                                    ?styleId: string,
                                    ?automationId: string,
@@ -12994,6 +13739,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -13045,6 +13795,11 @@ type View() =
                                 ?scaleX: double,
                                 ?scaleY: double,
                                 ?tabIndex: int,
+                                ?childrenReordered: System.EventArgs -> unit,
+                                ?measureInvalidated: System.EventArgs -> unit,
+                                ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                ?sizeChanged: System.EventArgs -> unit,
+                                ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                 ?classId: string,
                                 ?styleId: string,
                                 ?automationId: string,
@@ -13095,6 +13850,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -13135,6 +13895,11 @@ type View() =
                                 ?scaleX: double,
                                 ?scaleY: double,
                                 ?tabIndex: int,
+                                ?childrenReordered: System.EventArgs -> unit,
+                                ?measureInvalidated: System.EventArgs -> unit,
+                                ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                ?sizeChanged: System.EventArgs -> unit,
+                                ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                 ?classId: string,
                                 ?styleId: string,
                                 ?automationId: string,
@@ -13174,6 +13939,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -13215,6 +13985,11 @@ type View() =
                                  ?scaleX: double,
                                  ?scaleY: double,
                                  ?tabIndex: int,
+                                 ?childrenReordered: System.EventArgs -> unit,
+                                 ?measureInvalidated: System.EventArgs -> unit,
+                                 ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                 ?sizeChanged: System.EventArgs -> unit,
+                                 ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                  ?classId: string,
                                  ?styleId: string,
                                  ?automationId: string,
@@ -13255,6 +14030,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -13295,6 +14075,11 @@ type View() =
                                 ?scaleX: double,
                                 ?scaleY: double,
                                 ?tabIndex: int,
+                                ?childrenReordered: System.EventArgs -> unit,
+                                ?measureInvalidated: System.EventArgs -> unit,
+                                ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                ?sizeChanged: System.EventArgs -> unit,
+                                ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                 ?classId: string,
                                 ?styleId: string,
                                 ?automationId: string,
@@ -13334,6 +14119,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -13415,6 +14205,11 @@ type View() =
                                    ?scaleX: double,
                                    ?scaleY: double,
                                    ?tabIndex: int,
+                                   ?childrenReordered: System.EventArgs -> unit,
+                                   ?measureInvalidated: System.EventArgs -> unit,
+                                   ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                   ?sizeChanged: System.EventArgs -> unit,
+                                   ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                    ?classId: string,
                                    ?styleId: string,
                                    ?automationId: string,
@@ -13455,6 +14250,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -13509,6 +14309,11 @@ type View() =
                               ?scaleX: double,
                               ?scaleY: double,
                               ?tabIndex: int,
+                              ?childrenReordered: System.EventArgs -> unit,
+                              ?measureInvalidated: System.EventArgs -> unit,
+                              ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                              ?sizeChanged: System.EventArgs -> unit,
+                              ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                               ?classId: string,
                               ?styleId: string,
                               ?automationId: string,
@@ -13552,6 +14357,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -13592,6 +14402,11 @@ type View() =
                                         ?scaleX: double,
                                         ?scaleY: double,
                                         ?tabIndex: int,
+                                        ?childrenReordered: System.EventArgs -> unit,
+                                        ?measureInvalidated: System.EventArgs -> unit,
+                                        ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?sizeChanged: System.EventArgs -> unit,
+                                        ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                         ?classId: string,
                                         ?styleId: string,
                                         ?automationId: string,
@@ -13631,6 +14446,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -13671,6 +14491,11 @@ type View() =
                                         ?scaleX: double,
                                         ?scaleY: double,
                                         ?tabIndex: int,
+                                        ?childrenReordered: System.EventArgs -> unit,
+                                        ?measureInvalidated: System.EventArgs -> unit,
+                                        ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?sizeChanged: System.EventArgs -> unit,
+                                        ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                         ?classId: string,
                                         ?styleId: string,
                                         ?automationId: string,
@@ -13710,6 +14535,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -13756,6 +14586,11 @@ type View() =
                                     ?scaleX: double,
                                     ?scaleY: double,
                                     ?tabIndex: int,
+                                    ?childrenReordered: System.EventArgs -> unit,
+                                    ?measureInvalidated: System.EventArgs -> unit,
+                                    ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                    ?sizeChanged: System.EventArgs -> unit,
+                                    ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                     ?classId: string,
                                     ?styleId: string,
                                     ?automationId: string,
@@ -13801,6 +14636,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -13840,6 +14680,11 @@ type View() =
                                        ?scaleX: double,
                                        ?scaleY: double,
                                        ?tabIndex: int,
+                                       ?childrenReordered: System.EventArgs -> unit,
+                                       ?measureInvalidated: System.EventArgs -> unit,
+                                       ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                       ?sizeChanged: System.EventArgs -> unit,
+                                       ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                        ?classId: string,
                                        ?styleId: string,
                                        ?automationId: string,
@@ -13878,6 +14723,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -13918,6 +14768,11 @@ type View() =
                                      ?scaleX: double,
                                      ?scaleY: double,
                                      ?tabIndex: int,
+                                     ?childrenReordered: System.EventArgs -> unit,
+                                     ?measureInvalidated: System.EventArgs -> unit,
+                                     ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                     ?sizeChanged: System.EventArgs -> unit,
+                                     ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                      ?classId: string,
                                      ?styleId: string,
                                      ?automationId: string,
@@ -13957,6 +14812,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -13999,6 +14859,11 @@ type View() =
                                     ?scaleX: double,
                                     ?scaleY: double,
                                     ?tabIndex: int,
+                                    ?childrenReordered: System.EventArgs -> unit,
+                                    ?measureInvalidated: System.EventArgs -> unit,
+                                    ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                    ?sizeChanged: System.EventArgs -> unit,
+                                    ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                     ?classId: string,
                                     ?styleId: string,
                                     ?automationId: string,
@@ -14040,6 +14905,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -14082,6 +14952,11 @@ type View() =
                                 ?scaleX: double,
                                 ?scaleY: double,
                                 ?tabIndex: int,
+                                ?childrenReordered: System.EventArgs -> unit,
+                                ?measureInvalidated: System.EventArgs -> unit,
+                                ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                ?sizeChanged: System.EventArgs -> unit,
+                                ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                 ?classId: string,
                                 ?styleId: string,
                                 ?automationId: string,
@@ -14123,6 +14998,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -14166,6 +15046,11 @@ type View() =
                                ?scaleX: double,
                                ?scaleY: double,
                                ?tabIndex: int,
+                               ?childrenReordered: System.EventArgs -> unit,
+                               ?measureInvalidated: System.EventArgs -> unit,
+                               ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                               ?sizeChanged: System.EventArgs -> unit,
+                               ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                ?classId: string,
                                ?styleId: string,
                                ?automationId: string,
@@ -14208,6 +15093,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -14248,6 +15138,11 @@ type View() =
                                ?scaleX: double,
                                ?scaleY: double,
                                ?tabIndex: int,
+                               ?childrenReordered: System.EventArgs -> unit,
+                               ?measureInvalidated: System.EventArgs -> unit,
+                               ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                               ?sizeChanged: System.EventArgs -> unit,
+                               ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                ?classId: string,
                                ?styleId: string,
                                ?automationId: string,
@@ -14287,6 +15182,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -14335,6 +15235,11 @@ type View() =
                                      ?scaleX: double,
                                      ?scaleY: double,
                                      ?tabIndex: int,
+                                     ?childrenReordered: System.EventArgs -> unit,
+                                     ?measureInvalidated: System.EventArgs -> unit,
+                                     ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                     ?sizeChanged: System.EventArgs -> unit,
+                                     ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                      ?classId: string,
                                      ?styleId: string,
                                      ?automationId: string,
@@ -14382,6 +15287,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -14420,6 +15330,11 @@ type View() =
                                    ?scaleX: double,
                                    ?scaleY: double,
                                    ?tabIndex: int,
+                                   ?childrenReordered: System.EventArgs -> unit,
+                                   ?measureInvalidated: System.EventArgs -> unit,
+                                   ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                   ?sizeChanged: System.EventArgs -> unit,
+                                   ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                    ?classId: string,
                                    ?styleId: string,
                                    ?automationId: string,
@@ -14457,6 +15372,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -14505,6 +15425,11 @@ type View() =
                                 ?scaleX: double,
                                 ?scaleY: double,
                                 ?tabIndex: int,
+                                ?childrenReordered: System.EventArgs -> unit,
+                                ?measureInvalidated: System.EventArgs -> unit,
+                                ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                ?sizeChanged: System.EventArgs -> unit,
+                                ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                 ?classId: string,
                                 ?styleId: string,
                                 ?automationId: string,
@@ -14552,6 +15477,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -14606,6 +15536,11 @@ type View() =
                                ?scaleX: double,
                                ?scaleY: double,
                                ?tabIndex: int,
+                               ?childrenReordered: System.EventArgs -> unit,
+                               ?measureInvalidated: System.EventArgs -> unit,
+                               ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                               ?sizeChanged: System.EventArgs -> unit,
+                               ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                ?classId: string,
                                ?styleId: string,
                                ?automationId: string,
@@ -14659,6 +15594,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -14739,6 +15679,11 @@ type View() =
                                ?scaleX: double,
                                ?scaleY: double,
                                ?tabIndex: int,
+                               ?childrenReordered: System.EventArgs -> unit,
+                               ?measureInvalidated: System.EventArgs -> unit,
+                               ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                               ?sizeChanged: System.EventArgs -> unit,
+                               ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                ?classId: string,
                                ?styleId: string,
                                ?automationId: string,
@@ -14787,6 +15732,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -14829,6 +15779,11 @@ type View() =
                                      ?scaleX: double,
                                      ?scaleY: double,
                                      ?tabIndex: int,
+                                     ?childrenReordered: System.EventArgs -> unit,
+                                     ?measureInvalidated: System.EventArgs -> unit,
+                                     ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                     ?sizeChanged: System.EventArgs -> unit,
+                                     ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                      ?classId: string,
                                      ?styleId: string,
                                      ?automationId: string,
@@ -14870,6 +15825,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -14956,6 +15916,11 @@ type View() =
                                     ?scaleX: double,
                                     ?scaleY: double,
                                     ?tabIndex: int,
+                                    ?childrenReordered: System.EventArgs -> unit,
+                                    ?measureInvalidated: System.EventArgs -> unit,
+                                    ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                    ?sizeChanged: System.EventArgs -> unit,
+                                    ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                     ?classId: string,
                                     ?styleId: string,
                                     ?automationId: string,
@@ -14995,6 +15960,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -15037,6 +16007,11 @@ type View() =
                                  ?scaleX: double,
                                  ?scaleY: double,
                                  ?tabIndex: int,
+                                 ?childrenReordered: System.EventArgs -> unit,
+                                 ?measureInvalidated: System.EventArgs -> unit,
+                                 ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                 ?sizeChanged: System.EventArgs -> unit,
+                                 ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                  ?classId: string,
                                  ?styleId: string,
                                  ?automationId: string,
@@ -15078,6 +16053,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -15121,6 +16101,11 @@ type View() =
                               ?scaleX: double,
                               ?scaleY: double,
                               ?tabIndex: int,
+                              ?childrenReordered: System.EventArgs -> unit,
+                              ?measureInvalidated: System.EventArgs -> unit,
+                              ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                              ?sizeChanged: System.EventArgs -> unit,
+                              ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                               ?classId: string,
                               ?styleId: string,
                               ?automationId: string,
@@ -15163,6 +16148,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -15209,6 +16199,11 @@ type View() =
                                       ?scaleX: double,
                                       ?scaleY: double,
                                       ?tabIndex: int,
+                                      ?childrenReordered: System.EventArgs -> unit,
+                                      ?measureInvalidated: System.EventArgs -> unit,
+                                      ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                      ?sizeChanged: System.EventArgs -> unit,
+                                      ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                       ?classId: string,
                                       ?styleId: string,
                                       ?automationId: string,
@@ -15254,6 +16249,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -15303,6 +16303,11 @@ type View() =
                                         ?scaleX: double,
                                         ?scaleY: double,
                                         ?tabIndex: int,
+                                        ?childrenReordered: System.EventArgs -> unit,
+                                        ?measureInvalidated: System.EventArgs -> unit,
+                                        ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?sizeChanged: System.EventArgs -> unit,
+                                        ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                         ?classId: string,
                                         ?styleId: string,
                                         ?automationId: string,
@@ -15351,6 +16356,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -15399,6 +16409,11 @@ type View() =
                                     ?scaleX: double,
                                     ?scaleY: double,
                                     ?tabIndex: int,
+                                    ?childrenReordered: System.EventArgs -> unit,
+                                    ?measureInvalidated: System.EventArgs -> unit,
+                                    ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                    ?sizeChanged: System.EventArgs -> unit,
+                                    ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                     ?classId: string,
                                     ?styleId: string,
                                     ?automationId: string,
@@ -15446,6 +16461,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -15491,6 +16511,11 @@ type View() =
                                      ?scaleX: double,
                                      ?scaleY: double,
                                      ?tabIndex: int,
+                                     ?childrenReordered: System.EventArgs -> unit,
+                                     ?measureInvalidated: System.EventArgs -> unit,
+                                     ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                     ?sizeChanged: System.EventArgs -> unit,
+                                     ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                      ?classId: string,
                                      ?styleId: string,
                                      ?automationId: string,
@@ -15535,6 +16560,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -15584,6 +16614,11 @@ type View() =
                                           ?scaleX: double,
                                           ?scaleY: double,
                                           ?tabIndex: int,
+                                          ?childrenReordered: System.EventArgs -> unit,
+                                          ?measureInvalidated: System.EventArgs -> unit,
+                                          ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                          ?sizeChanged: System.EventArgs -> unit,
+                                          ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                           ?classId: string,
                                           ?styleId: string,
                                           ?automationId: string,
@@ -15632,6 +16667,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -15821,6 +16861,11 @@ type View() =
                                   ?scaleX: double,
                                   ?scaleY: double,
                                   ?tabIndex: int,
+                                  ?childrenReordered: System.EventArgs -> unit,
+                                  ?measureInvalidated: System.EventArgs -> unit,
+                                  ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                  ?sizeChanged: System.EventArgs -> unit,
+                                  ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                   ?classId: string,
                                   ?styleId: string,
                                   ?automationId: string,
@@ -15876,6 +16921,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -15931,6 +16981,11 @@ type View() =
                                          ?scaleX: double,
                                          ?scaleY: double,
                                          ?tabIndex: int,
+                                         ?childrenReordered: System.EventArgs -> unit,
+                                         ?measureInvalidated: System.EventArgs -> unit,
+                                         ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                         ?sizeChanged: System.EventArgs -> unit,
+                                         ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
                                          ?classId: string,
                                          ?styleId: string,
                                          ?automationId: string,
@@ -15985,6 +17040,11 @@ type View() =
                                ?scaleX=scaleX,
                                ?scaleY=scaleY,
                                ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -16083,6 +17143,21 @@ module ViewElementExtensions =
 
         /// Adjusts the TabIndex property in the visual element
         member x.TabIndex(value: int) = x.WithAttribute(ViewAttributes.TabIndexAttribKey, (value))
+
+        /// Adjusts the ChildrenReordered property in the visual element
+        member x.ChildrenReordered(value: System.EventArgs -> unit) = x.WithAttribute(ViewAttributes.ChildrenReorderedAttribKey, (fun f -> System.EventHandler(fun _sender args -> f args))(value))
+
+        /// Adjusts the MeasureInvalidated property in the visual element
+        member x.MeasureInvalidated(value: System.EventArgs -> unit) = x.WithAttribute(ViewAttributes.MeasureInvalidatedAttribKey, (fun f -> System.EventHandler(fun _sender args -> f args))(value))
+
+        /// Adjusts the Focused property in the visual element
+        member x.Focused(value: Xamarin.Forms.FocusEventArgs -> unit) = x.WithAttribute(ViewAttributes.FocusedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.FocusEventArgs>(fun _sender args -> f args))(value))
+
+        /// Adjusts the SizeChanged property in the visual element
+        member x.SizeChanged(value: System.EventArgs -> unit) = x.WithAttribute(ViewAttributes.SizeChangedAttribKey, (fun f -> System.EventHandler(fun _sender args -> f args))(value))
+
+        /// Adjusts the Unfocused property in the visual element
+        member x.Unfocused(value: Xamarin.Forms.FocusEventArgs -> unit) = x.WithAttribute(ViewAttributes.UnfocusedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.FocusEventArgs>(fun _sender args -> f args))(value))
 
         /// Adjusts the HorizontalOptions property in the visual element
         member x.HorizontalOptions(value: Xamarin.Forms.LayoutOptions) = x.WithAttribute(ViewAttributes.HorizontalOptionsAttribKey, (value))
@@ -16695,7 +17770,8 @@ module ViewElementExtensions =
                       ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, 
                       ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?styleClass: obj, ?translationX: double, 
                       ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, 
-                      ?isTabStop: bool, ?scaleX: double, ?scaleY: double, ?tabIndex: int, ?horizontalOptions: Xamarin.Forms.LayoutOptions, 
+                      ?isTabStop: bool, ?scaleX: double, ?scaleY: double, ?tabIndex: int, ?childrenReordered: System.EventArgs -> unit, 
+                      ?measureInvalidated: System.EventArgs -> unit, ?focused: Xamarin.Forms.FocusEventArgs -> unit, ?sizeChanged: System.EventArgs -> unit, ?unfocused: Xamarin.Forms.FocusEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, 
                       ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?touchPoints: int, ?panUpdated: Xamarin.Forms.PanUpdatedEventArgs -> unit, 
                       ?command: unit -> unit, ?numberOfTapsRequired: int, ?numberOfClicksRequired: int, ?buttons: Xamarin.Forms.ButtonsMask, ?isPinching: bool, 
                       ?pinchUpdated: Xamarin.Forms.PinchGestureUpdatedEventArgs -> unit, ?swipeGestureRecognizerDirection: Xamarin.Forms.SwipeDirection, ?threshold: System.UInt32, ?swiped: Xamarin.Forms.SwipedEventArgs -> unit, ?color: Xamarin.Forms.Color, 
@@ -16766,6 +17842,11 @@ module ViewElementExtensions =
             let x = match scaleX with None -> x | Some opt -> x.ScaleX(opt)
             let x = match scaleY with None -> x | Some opt -> x.ScaleY(opt)
             let x = match tabIndex with None -> x | Some opt -> x.TabIndex(opt)
+            let x = match childrenReordered with None -> x | Some opt -> x.ChildrenReordered(opt)
+            let x = match measureInvalidated with None -> x | Some opt -> x.MeasureInvalidated(opt)
+            let x = match focused with None -> x | Some opt -> x.Focused(opt)
+            let x = match sizeChanged with None -> x | Some opt -> x.SizeChanged(opt)
+            let x = match unfocused with None -> x | Some opt -> x.Unfocused(opt)
             let x = match horizontalOptions with None -> x | Some opt -> x.HorizontalOptions(opt)
             let x = match verticalOptions with None -> x | Some opt -> x.VerticalOptions(opt)
             let x = match margin with None -> x | Some opt -> x.Margin(opt)
@@ -17028,6 +18109,16 @@ module ViewElementExtensions =
     let scaleY (value: double) (x: ViewElement) = x.ScaleY(value)
     /// Adjusts the TabIndex property in the visual element
     let tabIndex (value: int) (x: ViewElement) = x.TabIndex(value)
+    /// Adjusts the ChildrenReordered property in the visual element
+    let childrenReordered (value: System.EventArgs -> unit) (x: ViewElement) = x.ChildrenReordered(value)
+    /// Adjusts the MeasureInvalidated property in the visual element
+    let measureInvalidated (value: System.EventArgs -> unit) (x: ViewElement) = x.MeasureInvalidated(value)
+    /// Adjusts the Focused property in the visual element
+    let focused (value: Xamarin.Forms.FocusEventArgs -> unit) (x: ViewElement) = x.Focused(value)
+    /// Adjusts the SizeChanged property in the visual element
+    let sizeChanged (value: System.EventArgs -> unit) (x: ViewElement) = x.SizeChanged(value)
+    /// Adjusts the Unfocused property in the visual element
+    let unfocused (value: Xamarin.Forms.FocusEventArgs -> unit) (x: ViewElement) = x.Unfocused(value)
     /// Adjusts the HorizontalOptions property in the visual element
     let horizontalOptions (value: Xamarin.Forms.LayoutOptions) (x: ViewElement) = x.HorizontalOptions(value)
     /// Adjusts the VerticalOptions property in the visual element

@@ -155,6 +155,36 @@
         {
           "name": "TabIndex",
           "defaultValue": "0"
+        },
+        {
+          "name": "ChildrenReordered",
+          "defaultValue": "null",
+          "inputType": "System.EventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun _sender args -> f args))"
+        },
+        {
+          "name": "MeasureInvalidated",
+          "defaultValue": "null",
+          "inputType": "System.EventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun _sender args -> f args))"
+        },
+        {
+          "name": "Focused",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.FocusEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.FocusEventArgs>(fun _sender args -> f args))"
+        },
+        {
+          "name": "SizeChanged",
+          "defaultValue": "null",
+          "inputType": "System.EventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun _sender args -> f args))"
+        },
+        {
+          "name": "Unfocused",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.FocusEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.FocusEventArgs>(fun _sender args -> f args))"
         }
       ]
     },
