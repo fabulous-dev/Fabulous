@@ -388,18 +388,17 @@ module Converters =
     /// Update the items of a TableView control, given previous and current view elements
     let internal updateTableViewItems (prevCollOpt: (string * 'T[])[] voption) (collOpt: (string * 'T[])[] voption) (target: Xamarin.Forms.TableView) = 
         let create (desc: ViewElement) = (desc.Create() :?> Cell)
-        let root = 
-            match target.Root with 
-            | null -> 
-                let v = TableRoot()
-                target.Root <- v
-                v
-            | v -> v
-        updateCollectionGeneric prevCollOpt collOpt root 
+
+        match prevCollOpt with
+        | ValueNone -> ()
+        | ValueSome _ -> target.Root <- TableRoot()
+
+        updateCollectionGeneric prevCollOpt collOpt target.Root 
             (fun (s, es) -> let section = TableSection(s) in section.Add(Seq.map create es); section) 
             (fun _ _ _ -> ()) // attach
             (fun _ _ -> true) // canReuse
-            (fun (_prevTitle,prevChild) (_newTitle, newChild) target -> 
+            (fun (_prevTitle,prevChild) (newTitle, newChild) target ->
+                target.Title <- newTitle
                 updateCollectionGeneric (ValueSome prevChild) (ValueSome newChild) target create (fun _ _ _ -> ()) canReuseChild updateChild) 
 
     /// Update the resources of a control, given previous and current view elements describing the resources
