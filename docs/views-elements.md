@@ -184,7 +184,7 @@ To do this, a reference to the underlying ScrollView is needed.
 
 
 ```fsharp
-let scrollViewRef = ViewRef<ScrollView>
+let scrollViewRef = ViewRef<ScrollView>()
 
 View.ScrollView(ref=scrollViewRef, content=(...))
 
