@@ -1735,7 +1735,6 @@
         {
           "name": "Items",
           "uniqueName": "MenuItems",
-          "defaultValue": "null",
           "inputType": "seq<ViewElement>",
           "modelType": "seq<ViewElement>",
           "updateCode": "updateMenuItems"

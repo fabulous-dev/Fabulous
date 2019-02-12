@@ -5,7 +5,6 @@ namespace Fabulous.DynamicViews
 #nowarn "66" // cast always holds
 #nowarn "67" // cast always holds
 
-<<<<<<< master
 module ViewAttributes =
     let ClassIdAttribKey : AttributeKey<_> = AttributeKey<_>("ClassId")
     let StyleIdAttribKey : AttributeKey<_> = AttributeKey<_>("StyleId")
@@ -213,6 +212,7 @@ module ViewAttributes =
     let MasterBehaviorAttribKey : AttributeKey<_> = AttributeKey<_>("MasterBehavior")
     let IsPresentedChangedAttribKey : AttributeKey<_> = AttributeKey<_>("IsPresentedChanged")
     let AcceleratorAttribKey : AttributeKey<_> = AttributeKey<_>("Accelerator")
+    let MenuItemsAttribKey : AttributeKey<_> = AttributeKey<_>("MenuItems")
     let TextDetailAttribKey : AttributeKey<_> = AttributeKey<_>("TextDetail")
     let TextDetailColorAttribKey : AttributeKey<_> = AttributeKey<_>("TextDetailColor")
     let TextCellCommandAttribKey : AttributeKey<_> = AttributeKey<_>("TextCellCommand")
@@ -301,484 +301,13 @@ type ViewProto() =
     static member val ProtoContentPage : ViewElement option = None with get, set
     static member val ProtoMasterDetailPage : ViewElement option = None with get, set
     static member val ProtoMenuItem : ViewElement option = None with get, set
+    static member val ProtoMenu : ViewElement option = None with get, set
     static member val ProtoTextCell : ViewElement option = None with get, set
     static member val ProtoToolbarItem : ViewElement option = None with get, set
     static member val ProtoImageCell : ViewElement option = None with get, set
     static member val ProtoViewCell : ViewElement option = None with get, set
     static member val ProtoListView : ViewElement option = None with get, set
     static member val ProtoListViewGrouped : ViewElement option = None with get, set
-=======
-type View() =
-
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ClassIdAttribKey : AttributeKey<_> = AttributeKey<_>("ClassId")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _StyleIdAttribKey : AttributeKey<_> = AttributeKey<_>("StyleId")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _AutomationIdAttribKey : AttributeKey<_> = AttributeKey<_>("AutomationId")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ElementCreatedAttribKey : AttributeKey<_> = AttributeKey<_>("ElementCreated")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ElementViewRefAttribKey : AttributeKey<_> = AttributeKey<_>("ElementViewRef")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _AnchorXAttribKey : AttributeKey<_> = AttributeKey<_>("AnchorX")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _AnchorYAttribKey : AttributeKey<_> = AttributeKey<_>("AnchorY")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _BackgroundColorAttribKey : AttributeKey<_> = AttributeKey<_>("BackgroundColor")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _HeightRequestAttribKey : AttributeKey<_> = AttributeKey<_>("HeightRequest")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _InputTransparentAttribKey : AttributeKey<_> = AttributeKey<_>("InputTransparent")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _IsEnabledAttribKey : AttributeKey<_> = AttributeKey<_>("IsEnabled")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _IsVisibleAttribKey : AttributeKey<_> = AttributeKey<_>("IsVisible")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _MinimumHeightRequestAttribKey : AttributeKey<_> = AttributeKey<_>("MinimumHeightRequest")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _MinimumWidthRequestAttribKey : AttributeKey<_> = AttributeKey<_>("MinimumWidthRequest")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _OpacityAttribKey : AttributeKey<_> = AttributeKey<_>("Opacity")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _RotationAttribKey : AttributeKey<_> = AttributeKey<_>("Rotation")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _RotationXAttribKey : AttributeKey<_> = AttributeKey<_>("RotationX")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _RotationYAttribKey : AttributeKey<_> = AttributeKey<_>("RotationY")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ScaleAttribKey : AttributeKey<_> = AttributeKey<_>("Scale")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _StyleAttribKey : AttributeKey<_> = AttributeKey<_>("Style")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _StyleClassAttribKey : AttributeKey<_> = AttributeKey<_>("StyleClass")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _TranslationXAttribKey : AttributeKey<_> = AttributeKey<_>("TranslationX")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _TranslationYAttribKey : AttributeKey<_> = AttributeKey<_>("TranslationY")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _WidthRequestAttribKey : AttributeKey<_> = AttributeKey<_>("WidthRequest")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ResourcesAttribKey : AttributeKey<_> = AttributeKey<_>("Resources")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _StylesAttribKey : AttributeKey<_> = AttributeKey<_>("Styles")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _StyleSheetsAttribKey : AttributeKey<_> = AttributeKey<_>("StyleSheets")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _IsTabStopAttribKey : AttributeKey<_> = AttributeKey<_>("IsTabStop")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ScaleXAttribKey : AttributeKey<_> = AttributeKey<_>("ScaleX")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ScaleYAttribKey : AttributeKey<_> = AttributeKey<_>("ScaleY")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _TabIndexAttribKey : AttributeKey<_> = AttributeKey<_>("TabIndex")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _HorizontalOptionsAttribKey : AttributeKey<_> = AttributeKey<_>("HorizontalOptions")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _VerticalOptionsAttribKey : AttributeKey<_> = AttributeKey<_>("VerticalOptions")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _MarginAttribKey : AttributeKey<_> = AttributeKey<_>("Margin")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _GestureRecognizersAttribKey : AttributeKey<_> = AttributeKey<_>("GestureRecognizers")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _TouchPointsAttribKey : AttributeKey<_> = AttributeKey<_>("TouchPoints")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _PanUpdatedAttribKey : AttributeKey<_> = AttributeKey<_>("PanUpdated")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _CommandAttribKey : AttributeKey<_> = AttributeKey<_>("Command")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _NumberOfTapsRequiredAttribKey : AttributeKey<_> = AttributeKey<_>("NumberOfTapsRequired")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _NumberOfClicksRequiredAttribKey : AttributeKey<_> = AttributeKey<_>("NumberOfClicksRequired")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ButtonsAttribKey : AttributeKey<_> = AttributeKey<_>("Buttons")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _IsPinchingAttribKey : AttributeKey<_> = AttributeKey<_>("IsPinching")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _PinchUpdatedAttribKey : AttributeKey<_> = AttributeKey<_>("PinchUpdated")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _SwipeGestureRecognizerDirectionAttribKey : AttributeKey<_> = AttributeKey<_>("SwipeGestureRecognizerDirection")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ThresholdAttribKey : AttributeKey<_> = AttributeKey<_>("Threshold")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _SwipedAttribKey : AttributeKey<_> = AttributeKey<_>("Swiped")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ColorAttribKey : AttributeKey<_> = AttributeKey<_>("Color")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _IsRunningAttribKey : AttributeKey<_> = AttributeKey<_>("IsRunning")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _BoxViewCornerRadiusAttribKey : AttributeKey<_> = AttributeKey<_>("BoxViewCornerRadius")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ProgressAttribKey : AttributeKey<_> = AttributeKey<_>("Progress")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _IsClippedToBoundsAttribKey : AttributeKey<_> = AttributeKey<_>("IsClippedToBounds")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _PaddingAttribKey : AttributeKey<_> = AttributeKey<_>("Padding")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ContentAttribKey : AttributeKey<_> = AttributeKey<_>("Content")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ScrollOrientationAttribKey : AttributeKey<_> = AttributeKey<_>("ScrollOrientation")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _HorizontalScrollBarVisibilityAttribKey : AttributeKey<_> = AttributeKey<_>("HorizontalScrollBarVisibility")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _VerticalScrollBarVisibilityAttribKey : AttributeKey<_> = AttributeKey<_>("VerticalScrollBarVisibility")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _CancelButtonColorAttribKey : AttributeKey<_> = AttributeKey<_>("CancelButtonColor")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _FontFamilyAttribKey : AttributeKey<_> = AttributeKey<_>("FontFamily")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _FontAttributesAttribKey : AttributeKey<_> = AttributeKey<_>("FontAttributes")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _FontSizeAttribKey : AttributeKey<_> = AttributeKey<_>("FontSize")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _HorizontalTextAlignmentAttribKey : AttributeKey<_> = AttributeKey<_>("HorizontalTextAlignment")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _PlaceholderAttribKey : AttributeKey<_> = AttributeKey<_>("Placeholder")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _PlaceholderColorAttribKey : AttributeKey<_> = AttributeKey<_>("PlaceholderColor")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _SearchBarCommandAttribKey : AttributeKey<_> = AttributeKey<_>("SearchBarCommand")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _SearchBarCanExecuteAttribKey : AttributeKey<_> = AttributeKey<_>("SearchBarCanExecute")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _TextAttribKey : AttributeKey<_> = AttributeKey<_>("Text")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _TextColorAttribKey : AttributeKey<_> = AttributeKey<_>("TextColor")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _SearchBarTextChangedAttribKey : AttributeKey<_> = AttributeKey<_>("SearchBarTextChanged")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ButtonCommandAttribKey : AttributeKey<_> = AttributeKey<_>("ButtonCommand")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ButtonCanExecuteAttribKey : AttributeKey<_> = AttributeKey<_>("ButtonCanExecute")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _BorderColorAttribKey : AttributeKey<_> = AttributeKey<_>("BorderColor")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _BorderWidthAttribKey : AttributeKey<_> = AttributeKey<_>("BorderWidth")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _CommandParameterAttribKey : AttributeKey<_> = AttributeKey<_>("CommandParameter")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ContentLayoutAttribKey : AttributeKey<_> = AttributeKey<_>("ContentLayout")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ButtonCornerRadiusAttribKey : AttributeKey<_> = AttributeKey<_>("ButtonCornerRadius")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ButtonImageSourceAttribKey : AttributeKey<_> = AttributeKey<_>("ButtonImageSource")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _MinimumMaximumAttribKey : AttributeKey<_> = AttributeKey<_>("MinimumMaximum")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ValueAttribKey : AttributeKey<_> = AttributeKey<_>("Value")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ValueChangedAttribKey : AttributeKey<_> = AttributeKey<_>("ValueChanged")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _IncrementAttribKey : AttributeKey<_> = AttributeKey<_>("Increment")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _IsToggledAttribKey : AttributeKey<_> = AttributeKey<_>("IsToggled")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ToggledAttribKey : AttributeKey<_> = AttributeKey<_>("Toggled")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _OnColorAttribKey : AttributeKey<_> = AttributeKey<_>("OnColor")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _HeightAttribKey : AttributeKey<_> = AttributeKey<_>("Height")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _OnAttribKey : AttributeKey<_> = AttributeKey<_>("On")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _OnChangedAttribKey : AttributeKey<_> = AttributeKey<_>("OnChanged")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _IntentAttribKey : AttributeKey<_> = AttributeKey<_>("Intent")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _HasUnevenRowsAttribKey : AttributeKey<_> = AttributeKey<_>("HasUnevenRows")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _RowHeightAttribKey : AttributeKey<_> = AttributeKey<_>("RowHeight")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _TableRootAttribKey : AttributeKey<_> = AttributeKey<_>("TableRoot")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _RowDefinitionHeightAttribKey : AttributeKey<_> = AttributeKey<_>("RowDefinitionHeight")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ColumnDefinitionWidthAttribKey : AttributeKey<_> = AttributeKey<_>("ColumnDefinitionWidth")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _GridRowDefinitionsAttribKey : AttributeKey<_> = AttributeKey<_>("GridRowDefinitions")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _GridColumnDefinitionsAttribKey : AttributeKey<_> = AttributeKey<_>("GridColumnDefinitions")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _RowSpacingAttribKey : AttributeKey<_> = AttributeKey<_>("RowSpacing")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ColumnSpacingAttribKey : AttributeKey<_> = AttributeKey<_>("ColumnSpacing")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ChildrenAttribKey : AttributeKey<_> = AttributeKey<_>("Children")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _GridRowAttribKey : AttributeKey<_> = AttributeKey<_>("GridRow")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _GridRowSpanAttribKey : AttributeKey<_> = AttributeKey<_>("GridRowSpan")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _GridColumnAttribKey : AttributeKey<_> = AttributeKey<_>("GridColumn")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _GridColumnSpanAttribKey : AttributeKey<_> = AttributeKey<_>("GridColumnSpan")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _LayoutBoundsAttribKey : AttributeKey<_> = AttributeKey<_>("LayoutBounds")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _LayoutFlagsAttribKey : AttributeKey<_> = AttributeKey<_>("LayoutFlags")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _BoundsConstraintAttribKey : AttributeKey<_> = AttributeKey<_>("BoundsConstraint")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _HeightConstraintAttribKey : AttributeKey<_> = AttributeKey<_>("HeightConstraint")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _WidthConstraintAttribKey : AttributeKey<_> = AttributeKey<_>("WidthConstraint")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _XConstraintAttribKey : AttributeKey<_> = AttributeKey<_>("XConstraint")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _YConstraintAttribKey : AttributeKey<_> = AttributeKey<_>("YConstraint")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _AlignContentAttribKey : AttributeKey<_> = AttributeKey<_>("AlignContent")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _AlignItemsAttribKey : AttributeKey<_> = AttributeKey<_>("AlignItems")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _FlexLayoutDirectionAttribKey : AttributeKey<_> = AttributeKey<_>("FlexLayoutDirection")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _PositionAttribKey : AttributeKey<_> = AttributeKey<_>("Position")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _WrapAttribKey : AttributeKey<_> = AttributeKey<_>("Wrap")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _JustifyContentAttribKey : AttributeKey<_> = AttributeKey<_>("JustifyContent")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _FlexAlignSelfAttribKey : AttributeKey<_> = AttributeKey<_>("FlexAlignSelf")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _FlexOrderAttribKey : AttributeKey<_> = AttributeKey<_>("FlexOrder")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _FlexBasisAttribKey : AttributeKey<_> = AttributeKey<_>("FlexBasis")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _FlexGrowAttribKey : AttributeKey<_> = AttributeKey<_>("FlexGrow")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _FlexShrinkAttribKey : AttributeKey<_> = AttributeKey<_>("FlexShrink")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _DateAttribKey : AttributeKey<_> = AttributeKey<_>("Date")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _FormatAttribKey : AttributeKey<_> = AttributeKey<_>("Format")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _MinimumDateAttribKey : AttributeKey<_> = AttributeKey<_>("MinimumDate")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _MaximumDateAttribKey : AttributeKey<_> = AttributeKey<_>("MaximumDate")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _DateSelectedAttribKey : AttributeKey<_> = AttributeKey<_>("DateSelected")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _PickerItemsSourceAttribKey : AttributeKey<_> = AttributeKey<_>("PickerItemsSource")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _SelectedIndexAttribKey : AttributeKey<_> = AttributeKey<_>("SelectedIndex")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _TitleAttribKey : AttributeKey<_> = AttributeKey<_>("Title")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _SelectedIndexChangedAttribKey : AttributeKey<_> = AttributeKey<_>("SelectedIndexChanged")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _FrameCornerRadiusAttribKey : AttributeKey<_> = AttributeKey<_>("FrameCornerRadius")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _HasShadowAttribKey : AttributeKey<_> = AttributeKey<_>("HasShadow")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ImageSourceAttribKey : AttributeKey<_> = AttributeKey<_>("ImageSource")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _AspectAttribKey : AttributeKey<_> = AttributeKey<_>("Aspect")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _IsOpaqueAttribKey : AttributeKey<_> = AttributeKey<_>("IsOpaque")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ImageButtonCommandAttribKey : AttributeKey<_> = AttributeKey<_>("ImageButtonCommand")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ImageButtonCornerRadiusAttribKey : AttributeKey<_> = AttributeKey<_>("ImageButtonCornerRadius")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ClickedAttribKey : AttributeKey<_> = AttributeKey<_>("Clicked")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _PressedAttribKey : AttributeKey<_> = AttributeKey<_>("Pressed")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ReleasedAttribKey : AttributeKey<_> = AttributeKey<_>("Released")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _KeyboardAttribKey : AttributeKey<_> = AttributeKey<_>("Keyboard")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _EditorCompletedAttribKey : AttributeKey<_> = AttributeKey<_>("EditorCompleted")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _TextChangedAttribKey : AttributeKey<_> = AttributeKey<_>("TextChanged")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _AutoSizeAttribKey : AttributeKey<_> = AttributeKey<_>("AutoSize")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _IsPasswordAttribKey : AttributeKey<_> = AttributeKey<_>("IsPassword")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _EntryCompletedAttribKey : AttributeKey<_> = AttributeKey<_>("EntryCompleted")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _IsTextPredictionEnabledAttribKey : AttributeKey<_> = AttributeKey<_>("IsTextPredictionEnabled")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ReturnTypeAttribKey : AttributeKey<_> = AttributeKey<_>("ReturnType")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ReturnCommandAttribKey : AttributeKey<_> = AttributeKey<_>("ReturnCommand")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _CursorPositionAttribKey : AttributeKey<_> = AttributeKey<_>("CursorPosition")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _SelectionLengthAttribKey : AttributeKey<_> = AttributeKey<_>("SelectionLength")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _LabelAttribKey : AttributeKey<_> = AttributeKey<_>("Label")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _EntryCellTextChangedAttribKey : AttributeKey<_> = AttributeKey<_>("EntryCellTextChanged")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _VerticalTextAlignmentAttribKey : AttributeKey<_> = AttributeKey<_>("VerticalTextAlignment")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _FormattedTextAttribKey : AttributeKey<_> = AttributeKey<_>("FormattedText")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _LineBreakModeAttribKey : AttributeKey<_> = AttributeKey<_>("LineBreakMode")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _LineHeightAttribKey : AttributeKey<_> = AttributeKey<_>("LineHeight")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _MaxLinesAttribKey : AttributeKey<_> = AttributeKey<_>("MaxLines")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _TextDecorationsAttribKey : AttributeKey<_> = AttributeKey<_>("TextDecorations")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _StackOrientationAttribKey : AttributeKey<_> = AttributeKey<_>("StackOrientation")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _SpacingAttribKey : AttributeKey<_> = AttributeKey<_>("Spacing")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ForegroundColorAttribKey : AttributeKey<_> = AttributeKey<_>("ForegroundColor")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _PropertyChangedAttribKey : AttributeKey<_> = AttributeKey<_>("PropertyChanged")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _SpansAttribKey : AttributeKey<_> = AttributeKey<_>("Spans")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _TimeAttribKey : AttributeKey<_> = AttributeKey<_>("Time")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _WebSourceAttribKey : AttributeKey<_> = AttributeKey<_>("WebSource")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ReloadAttribKey : AttributeKey<_> = AttributeKey<_>("Reload")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _NavigatedAttribKey : AttributeKey<_> = AttributeKey<_>("Navigated")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _NavigatingAttribKey : AttributeKey<_> = AttributeKey<_>("Navigating")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ReloadRequestedAttribKey : AttributeKey<_> = AttributeKey<_>("ReloadRequested")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _BackgroundImageAttribKey : AttributeKey<_> = AttributeKey<_>("BackgroundImage")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _IconAttribKey : AttributeKey<_> = AttributeKey<_>("Icon")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _IsBusyAttribKey : AttributeKey<_> = AttributeKey<_>("IsBusy")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ToolbarItemsAttribKey : AttributeKey<_> = AttributeKey<_>("ToolbarItems")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _UseSafeAreaAttribKey : AttributeKey<_> = AttributeKey<_>("UseSafeArea")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _Page_AppearingAttribKey : AttributeKey<_> = AttributeKey<_>("Page_Appearing")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _Page_DisappearingAttribKey : AttributeKey<_> = AttributeKey<_>("Page_Disappearing")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _Page_LayoutChangedAttribKey : AttributeKey<_> = AttributeKey<_>("Page_LayoutChanged")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _CarouselPage_CurrentPageAttribKey : AttributeKey<_> = AttributeKey<_>("CarouselPage_CurrentPage")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _CarouselPage_CurrentPageChangedAttribKey : AttributeKey<_> = AttributeKey<_>("CarouselPage_CurrentPageChanged")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _PagesAttribKey : AttributeKey<_> = AttributeKey<_>("Pages")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _BackButtonTitleAttribKey : AttributeKey<_> = AttributeKey<_>("BackButtonTitle")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _HasBackButtonAttribKey : AttributeKey<_> = AttributeKey<_>("HasBackButton")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _HasNavigationBarAttribKey : AttributeKey<_> = AttributeKey<_>("HasNavigationBar")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _TitleIconAttribKey : AttributeKey<_> = AttributeKey<_>("TitleIcon")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _TitleViewAttribKey : AttributeKey<_> = AttributeKey<_>("TitleView")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _BarBackgroundColorAttribKey : AttributeKey<_> = AttributeKey<_>("BarBackgroundColor")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _BarTextColorAttribKey : AttributeKey<_> = AttributeKey<_>("BarTextColor")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _PoppedAttribKey : AttributeKey<_> = AttributeKey<_>("Popped")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _PoppedToRootAttribKey : AttributeKey<_> = AttributeKey<_>("PoppedToRoot")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _PushedAttribKey : AttributeKey<_> = AttributeKey<_>("Pushed")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _TabbedPage_CurrentPageAttribKey : AttributeKey<_> = AttributeKey<_>("TabbedPage_CurrentPage")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _TabbedPage_CurrentPageChangedAttribKey : AttributeKey<_> = AttributeKey<_>("TabbedPage_CurrentPageChanged")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _OnSizeAllocatedCallbackAttribKey : AttributeKey<_> = AttributeKey<_>("OnSizeAllocatedCallback")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _MasterAttribKey : AttributeKey<_> = AttributeKey<_>("Master")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _DetailAttribKey : AttributeKey<_> = AttributeKey<_>("Detail")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _IsGestureEnabledAttribKey : AttributeKey<_> = AttributeKey<_>("IsGestureEnabled")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _IsPresentedAttribKey : AttributeKey<_> = AttributeKey<_>("IsPresented")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _MasterBehaviorAttribKey : AttributeKey<_> = AttributeKey<_>("MasterBehavior")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _IsPresentedChangedAttribKey : AttributeKey<_> = AttributeKey<_>("IsPresentedChanged")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _AcceleratorAttribKey : AttributeKey<_> = AttributeKey<_>("Accelerator")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _MenuItemsAttribKey : AttributeKey<_> = AttributeKey<_>("MenuItems")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _TextDetailAttribKey : AttributeKey<_> = AttributeKey<_>("TextDetail")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _TextDetailColorAttribKey : AttributeKey<_> = AttributeKey<_>("TextDetailColor")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _TextCellCommandAttribKey : AttributeKey<_> = AttributeKey<_>("TextCellCommand")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _TextCellCanExecuteAttribKey : AttributeKey<_> = AttributeKey<_>("TextCellCanExecute")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _OrderAttribKey : AttributeKey<_> = AttributeKey<_>("Order")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _PriorityAttribKey : AttributeKey<_> = AttributeKey<_>("Priority")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ViewAttribKey : AttributeKey<_> = AttributeKey<_>("View")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ListViewItemsAttribKey : AttributeKey<_> = AttributeKey<_>("ListViewItems")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _FooterAttribKey : AttributeKey<_> = AttributeKey<_>("Footer")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _HeaderAttribKey : AttributeKey<_> = AttributeKey<_>("Header")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _HeaderTemplateAttribKey : AttributeKey<_> = AttributeKey<_>("HeaderTemplate")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _IsGroupingEnabledAttribKey : AttributeKey<_> = AttributeKey<_>("IsGroupingEnabled")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _IsPullToRefreshEnabledAttribKey : AttributeKey<_> = AttributeKey<_>("IsPullToRefreshEnabled")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _IsRefreshingAttribKey : AttributeKey<_> = AttributeKey<_>("IsRefreshing")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _RefreshCommandAttribKey : AttributeKey<_> = AttributeKey<_>("RefreshCommand")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ListView_SelectedItemAttribKey : AttributeKey<_> = AttributeKey<_>("ListView_SelectedItem")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ListView_SeparatorVisibilityAttribKey : AttributeKey<_> = AttributeKey<_>("ListView_SeparatorVisibility")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ListView_SeparatorColorAttribKey : AttributeKey<_> = AttributeKey<_>("ListView_SeparatorColor")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ListView_ItemAppearingAttribKey : AttributeKey<_> = AttributeKey<_>("ListView_ItemAppearing")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ListView_ItemDisappearingAttribKey : AttributeKey<_> = AttributeKey<_>("ListView_ItemDisappearing")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ListView_ItemSelectedAttribKey : AttributeKey<_> = AttributeKey<_>("ListView_ItemSelected")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ListView_ItemTappedAttribKey : AttributeKey<_> = AttributeKey<_>("ListView_ItemTapped")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ListView_RefreshingAttribKey : AttributeKey<_> = AttributeKey<_>("ListView_Refreshing")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _SelectionModeAttribKey : AttributeKey<_> = AttributeKey<_>("SelectionMode")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ListViewGrouped_ItemsSourceAttribKey : AttributeKey<_> = AttributeKey<_>("ListViewGrouped_ItemsSource")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ListViewGrouped_ShowJumpListAttribKey : AttributeKey<_> = AttributeKey<_>("ListViewGrouped_ShowJumpList")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ListViewGrouped_SelectedItemAttribKey : AttributeKey<_> = AttributeKey<_>("ListViewGrouped_SelectedItem")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _SeparatorVisibilityAttribKey : AttributeKey<_> = AttributeKey<_>("SeparatorVisibility")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _SeparatorColorAttribKey : AttributeKey<_> = AttributeKey<_>("SeparatorColor")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ListViewGrouped_ItemAppearingAttribKey : AttributeKey<_> = AttributeKey<_>("ListViewGrouped_ItemAppearing")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ListViewGrouped_ItemDisappearingAttribKey : AttributeKey<_> = AttributeKey<_>("ListViewGrouped_ItemDisappearing")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ListViewGrouped_ItemSelectedAttribKey : AttributeKey<_> = AttributeKey<_>("ListViewGrouped_ItemSelected")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _ListViewGrouped_ItemTappedAttribKey : AttributeKey<_> = AttributeKey<_>("ListViewGrouped_ItemTapped")
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val _RefreshingAttribKey : AttributeKey<_> = AttributeKey<_>("Refreshing")
->>>>>>> first doings
 
 type ViewBuilders() =
     /// Builds the attributes for a Element in the view
@@ -11250,7 +10779,6 @@ type ViewBuilders() =
         ViewElement.Create<Xamarin.Forms.MenuItem>(ViewBuilders.CreateFuncMenuItem, ViewBuilders.UpdateFuncMenuItem, attribBuilder)
 
     /// Builds the attributes for a Menu in the view
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member inline BuildMenu(attribCount: int,
                                    ?text: string,
                                    ?items: seq<ViewElement>,
@@ -11263,42 +10791,39 @@ type ViewBuilders() =
         let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match items with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = View.BuildElement(attribCount, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
-        match text with None -> () | Some v -> attribBuilder.Add(View._TextAttribKey, (v)) 
-        match items with None -> () | Some v -> attribBuilder.Add(View._MenuItemsAttribKey, (v)) 
+        let attribBuilder = ViewBuilders.BuildElement(attribCount, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        match text with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextAttribKey, (v)) 
+        match items with None -> () | Some v -> attribBuilder.Add(ViewAttributes.MenuItemsAttribKey, (v)) 
         attribBuilder
 
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val CreateFuncMenu : (unit -> Xamarin.Forms.Menu) = (fun () -> View.CreateMenu())
+    static member val CreateFuncMenu : (unit -> Xamarin.Forms.Menu) = (fun () -> ViewBuilders.CreateMenu())
 
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member CreateMenu () : Xamarin.Forms.Menu = 
+    static member CreateMenu () : Xamarin.Forms.Menu =
         upcast (new Xamarin.Forms.Menu())
 
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val UpdateFuncMenu = (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.Menu) -> View.UpdateMenu (prevOpt, curr, target)) 
+    static member val UpdateFuncMenu =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.Menu) -> ViewBuilders.UpdateMenu (prevOpt, curr, target)) 
 
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
     static member UpdateMenu (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.Menu) = 
         // update the inherited Element element
-        let baseElement = (if View.ProtoElement.IsNone then View.ProtoElement <- Some (View.Element())); View.ProtoElement.Value
+        let baseElement = (if ViewProto.ProtoElement.IsNone then ViewProto.ProtoElement <- Some (ViewBuilders.ConstructElement())); ViewProto.ProtoElement.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevTextOpt = ValueNone
         let mutable currTextOpt = ValueNone
         let mutable prevMenuItemsOpt = ValueNone
         let mutable currMenuItemsOpt = ValueNone
         for kvp in curr.AttributesKeyed do
-            if kvp.Key = View._TextAttribKey.KeyValue then 
+            if kvp.Key = ViewAttributes.TextAttribKey.KeyValue then 
                 currTextOpt <- ValueSome (kvp.Value :?> string)
-            if kvp.Key = View._MenuItemsAttribKey.KeyValue then 
+            if kvp.Key = ViewAttributes.MenuItemsAttribKey.KeyValue then 
                 currMenuItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
             for kvp in prev.AttributesKeyed do
-                if kvp.Key = View._TextAttribKey.KeyValue then 
+                if kvp.Key = ViewAttributes.TextAttribKey.KeyValue then 
                     prevTextOpt <- ValueSome (kvp.Value :?> string)
-                if kvp.Key = View._MenuItemsAttribKey.KeyValue then 
+                if kvp.Key = ViewAttributes.MenuItemsAttribKey.KeyValue then 
                     prevMenuItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
         match prevTextOpt, currTextOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
@@ -11307,16 +10832,15 @@ type ViewBuilders() =
         | ValueNone, ValueNone -> ()
         updateMenuItems prevMenuItemsOpt currMenuItemsOpt target
 
-    /// Describes a Menu in the view
-    static member inline Menu(?text: string,
-                              ?items: seq<ViewElement>,
-                              ?classId: string,
-                              ?styleId: string,
-                              ?automationId: string,
-                              ?created: (Xamarin.Forms.Menu -> unit),
-                              ?ref: ViewRef<Xamarin.Forms.Menu>) = 
+    static member inline ConstructMenu(?text: string,
+                                       ?items: seq<ViewElement>,
+                                       ?classId: string,
+                                       ?styleId: string,
+                                       ?automationId: string,
+                                       ?created: (Xamarin.Forms.Menu -> unit),
+                                       ?ref: ViewRef<Xamarin.Forms.Menu>) = 
 
-        let attribBuilder = View.BuildMenu(0,
+        let attribBuilder = ViewBuilders.BuildMenu(0,
                                ?text=text,
                                ?items=items,
                                ?classId=classId,
@@ -11325,10 +10849,7 @@ type ViewBuilders() =
                                ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Menu> target))),
                                ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Menu>) -> Some ref.Unbox))
 
-        ViewElement.Create<Xamarin.Forms.Menu>(View.CreateFuncMenu, View.UpdateFuncMenu, attribBuilder)
-
-    [<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-    static member val ProtoMenu : ViewElement option = None with get, set
+        ViewElement.Create<Xamarin.Forms.Menu>(ViewBuilders.CreateFuncMenu, ViewBuilders.UpdateFuncMenu, attribBuilder)
 
     /// Builds the attributes for a TextCell in the view
     static member inline BuildTextCell(attribCount: int,
@@ -13396,6 +12917,15 @@ type MenuItemViewer(element: ViewElement) =
     member this.Icon = element.GetAttributeKeyed(ViewAttributes.IconAttribKey)
     /// Get the value of the Accelerator property
     member this.Accelerator = element.GetAttributeKeyed(ViewAttributes.AcceleratorAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a Menu
+type MenuViewer(element: ViewElement) =
+    inherit ElementViewer(element)
+    do if not ((typeof<Xamarin.Forms.Menu>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.Menu' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the Text property
+    member this.Text = element.GetAttributeKeyed(ViewAttributes.TextAttribKey)
+    /// Get the value of the Items property
+    member this.Items = element.GetAttributeKeyed(ViewAttributes.MenuItemsAttribKey)
 
 /// Viewer that allows to read the properties of a ViewElement representing a TextCell
 type TextCellViewer(element: ViewElement) =
@@ -17294,6 +16824,23 @@ type View() =
                                ?created=created,
                                ?ref=ref)
 
+    /// Describes a Menu in the view
+    static member inline Menu(?text: string,
+                              ?items: seq<ViewElement>,
+                              ?classId: string,
+                              ?styleId: string,
+                              ?automationId: string,
+                              ?created: (Xamarin.Forms.Menu -> unit),
+                              ?ref: ViewRef<Xamarin.Forms.Menu>) =
+
+        ViewBuilders.ConstructMenu(?text=text,
+                               ?items=items,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=created,
+                               ?ref=ref)
+
     /// Describes a TextCell in the view
     static member inline TextCell(?text: string,
                                   ?detail: string,
@@ -18263,7 +17810,7 @@ module ViewElementExtensions =
         member x.Accelerator(value: string) = x.WithAttribute(ViewAttributes.AcceleratorAttribKey, (value))
 
         /// Adjusts the MenuItems property in the visual element
-        member x.MenuItems(value: seq<ViewElement>) = x.WithAttribute(View._MenuItemsAttribKey, (value))
+        member x.MenuItems(value: seq<ViewElement>) = x.WithAttribute(ViewAttributes.MenuItemsAttribKey, (value))
 
         /// Adjusts the TextDetail property in the visual element
         member x.TextDetail(value: string) = x.WithAttribute(ViewAttributes.TextDetailAttribKey, (value))
@@ -18407,14 +17954,14 @@ module ViewElementExtensions =
                       ?hasBackButton: bool, ?hasNavigationBar: bool, ?titleIcon: string, ?titleView: ViewElement, ?barBackgroundColor: Xamarin.Forms.Color, 
                       ?barTextColor: Xamarin.Forms.Color, ?popped: Xamarin.Forms.NavigationEventArgs -> unit, ?poppedToRoot: Xamarin.Forms.NavigationEventArgs -> unit, ?pushed: Xamarin.Forms.NavigationEventArgs -> unit, ?tabbedPage_CurrentPage: int, 
                       ?tabbedPage_CurrentPageChanged: int option -> unit, ?onSizeAllocatedCallback: (double * double) -> unit, ?master: ViewElement, ?detail: ViewElement, ?isGestureEnabled: bool, 
-                      ?isPresented: bool, ?masterBehavior: Xamarin.Forms.MasterBehavior, ?isPresentedChanged: bool -> unit, ?accelerator: string, ?textDetail: string, 
-                      ?textDetailColor: Xamarin.Forms.Color, ?textCellCommand: unit -> unit, ?textCellCanExecute: bool, ?order: Xamarin.Forms.ToolbarItemOrder, ?priority: int, 
-                      ?view: ViewElement, ?listViewItems: seq<ViewElement>, ?footer: System.Object, ?header: System.Object, ?headerTemplate: Xamarin.Forms.DataTemplate, 
-                      ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?listView_SelectedItem: int option, 
-                      ?listView_SeparatorVisibility: Xamarin.Forms.SeparatorVisibility, ?listView_SeparatorColor: Xamarin.Forms.Color, ?listView_ItemAppearing: int -> unit, ?listView_ItemDisappearing: int -> unit, ?listView_ItemSelected: int option -> unit, 
-                      ?listView_ItemTapped: int -> unit, ?listView_Refreshing: unit -> unit, ?selectionMode: Xamarin.Forms.ListViewSelectionMode, ?listViewGrouped_ItemsSource: (string * ViewElement * ViewElement list) list, ?listViewGrouped_ShowJumpList: bool, 
-                      ?listViewGrouped_SelectedItem: (int * int) option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?listViewGrouped_ItemAppearing: int * int option -> unit, ?listViewGrouped_ItemDisappearing: int * int option -> unit, 
-                      ?listViewGrouped_ItemSelected: (int * int) option -> unit, ?listViewGrouped_ItemTapped: int * int -> unit, ?refreshing: unit -> unit) =
+                      ?isPresented: bool, ?masterBehavior: Xamarin.Forms.MasterBehavior, ?isPresentedChanged: bool -> unit, ?accelerator: string, ?menuItems: seq<ViewElement>, 
+                      ?textDetail: string, ?textDetailColor: Xamarin.Forms.Color, ?textCellCommand: unit -> unit, ?textCellCanExecute: bool, ?order: Xamarin.Forms.ToolbarItemOrder, 
+                      ?priority: int, ?view: ViewElement, ?listViewItems: seq<ViewElement>, ?footer: System.Object, ?header: System.Object, 
+                      ?headerTemplate: Xamarin.Forms.DataTemplate, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, 
+                      ?listView_SelectedItem: int option, ?listView_SeparatorVisibility: Xamarin.Forms.SeparatorVisibility, ?listView_SeparatorColor: Xamarin.Forms.Color, ?listView_ItemAppearing: int -> unit, ?listView_ItemDisappearing: int -> unit, 
+                      ?listView_ItemSelected: int option -> unit, ?listView_ItemTapped: int -> unit, ?listView_Refreshing: unit -> unit, ?selectionMode: Xamarin.Forms.ListViewSelectionMode, ?listViewGrouped_ItemsSource: (string * ViewElement * ViewElement list) list, 
+                      ?listViewGrouped_ShowJumpList: bool, ?listViewGrouped_SelectedItem: (int * int) option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?listViewGrouped_ItemAppearing: int * int option -> unit, 
+                      ?listViewGrouped_ItemDisappearing: int * int option -> unit, ?listViewGrouped_ItemSelected: (int * int) option -> unit, ?listViewGrouped_ItemTapped: int * int -> unit, ?refreshing: unit -> unit) =
             let x = match classId with None -> x | Some opt -> x.ClassId(opt)
             let x = match styleId with None -> x | Some opt -> x.StyleId(opt)
             let x = match automationId with None -> x | Some opt -> x.AutomationId(opt)
@@ -18619,6 +18166,7 @@ module ViewElementExtensions =
             let x = match masterBehavior with None -> x | Some opt -> x.MasterBehavior(opt)
             let x = match isPresentedChanged with None -> x | Some opt -> x.IsPresentedChanged(opt)
             let x = match accelerator with None -> x | Some opt -> x.Accelerator(opt)
+            let x = match menuItems with None -> x | Some opt -> x.MenuItems(opt)
             let x = match textDetail with None -> x | Some opt -> x.TextDetail(opt)
             let x = match textDetailColor with None -> x | Some opt -> x.TextDetailColor(opt)
             let x = match textCellCommand with None -> x | Some opt -> x.TextCellCommand(opt)
@@ -19063,13 +18611,8 @@ module ViewElementExtensions =
     let isPresentedChanged (value: bool -> unit) (x: ViewElement) = x.IsPresentedChanged(value)
     /// Adjusts the Accelerator property in the visual element
     let accelerator (value: string) (x: ViewElement) = x.Accelerator(value)
-<<<<<<< master
-=======
-
     /// Adjusts the MenuItems property in the visual element
     let menuItems (value: seq<ViewElement>) (x: ViewElement) = x.MenuItems(value)
-
->>>>>>> first doings
     /// Adjusts the TextDetail property in the visual element
     let textDetail (value: string) (x: ViewElement) = x.TextDetail(value)
     /// Adjusts the TextDetailColor property in the visual element
