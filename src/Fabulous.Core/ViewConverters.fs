@@ -14,6 +14,11 @@ open Xamarin.Forms.StyleSheets
 module ValueOption = 
     let inline map f x = match x with ValueNone -> ValueNone | ValueSome v -> ValueSome (f v)
 
+/// Defines if the action should be animated or not
+type AnimationKind =
+    | Animated
+    | NotAnimated
+
 /// A custom data element for the ListView view element
 [<AllowNullLiteral>]
 type IListElement = 
@@ -644,6 +649,17 @@ module Converters =
         | ValueSome prevVal, ValueSome newVal when prevVal = newVal -> ()
         | _, ValueNone -> Xamarin.Forms.MenuItem.SetAccelerator(target, null)
         | _, ValueSome newVal -> Xamarin.Forms.MenuItem.SetAccelerator(target, makeAccelerator newVal)
+
+    /// Trigger ScrollView.ScrollToAsync if needed, given the current values
+    let internal triggerScrollToAsync (currValue: (float * float * AnimationKind) voption) (target: Xamarin.Forms.ScrollView) =
+        match currValue with
+        | ValueSome (x, y, animationKind) when x <> target.ScrollX || y <> target.ScrollY ->
+            let animated =
+                match animationKind with
+                | Animated -> true
+                | NotAnimated -> false
+            target.ScrollToAsync(x, y, animated) |> ignore
+        | _ -> ()
 
     /// Check if two LayoutOptions are equal
     let internal equalLayoutOptions (x:Xamarin.Forms.LayoutOptions) (y:Xamarin.Forms.LayoutOptions)  =

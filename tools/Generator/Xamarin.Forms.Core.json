@@ -380,6 +380,18 @@
         {
           "name": "VerticalScrollBarVisibility",
           "defaultValue": "Xamarin.Forms.ScrollBarVisibility.Default"
+        },
+        {
+          "name": "ScrollTo",
+          "inputType": "float * float * Fabulous.DynamicViews.AnimationKind",
+          "modelType": "float * float * Fabulous.DynamicViews.AnimationKind",
+          "updateCode": "(fun _ curr target -> triggerScrollToAsync curr target)"
+        },
+        {
+          "name": "Scrolled",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.ScrolledEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ScrolledEventArgs>(fun _sender args -> f args))"
         }
       ]
     },

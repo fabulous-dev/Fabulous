@@ -166,6 +166,40 @@ to automatically move to the visible portion of the screen when the keyboard is 
 View.ScrollView(View.StackLayout(padding=20.0, children= ...) )
 ```
 
+The scroll position can be setted programmatically through the attribute `scrollTo`. This attribute needs the X and Y coordinates to scroll to and an indication whether it should be animated or not. (`Animated`/`NotAnimated`)
+
+Note: Fabulous will try to scroll to these coordinates every time it needs to refresh the UI. Making use of the optional argument is recommended.
+
+You can also subscribe to the event `Scrolled` to be notified when the scrolling is over.
+
+```fsharp
+View.ScrollView(content=(...),
+    ?scrollTo=(if model.ShouldScroll then Some (500.0, 0.0, Animated) else None),
+    scrolled=(fun args -> dispatch Scrolled))
+```
+
+For more complex scenarios, you can directly use the method from Xamarin.Forms [`ScrollView.ScrollToAsync(x, y, animated)`](https://docs.microsoft.com/dotnet/api/xamarin.forms.scrollview.scrolltoasync?view=xamarin-forms)  
+This method offers the advantage of being awaitable until the end of the scrolling.  
+To do this, a reference to the underlying ScrollView is needed.
+
+
+```fsharp
+let scrollViewRef = ViewRef<ScrollView>
+
+View.ScrollView(ref=scrollViewRef, content=(...))
+
+// Some time later (usually in a Cmd)
+let scrollToCoordinates x y animated =
+    async {
+        match scrollViewRef.TryValue with
+        | None ->
+            return None
+        | Some scrollView ->
+            do! scrollView.ScrollToAsync(x, y, animated) |> Async.AwaitTask
+            return (Some Scrolled)
+    } |> Cmd.ofAsyncMsgOption
+```
+
 See also:
 
 * [Xamarin guide to ScrollView](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/scroll-view)
