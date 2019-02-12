@@ -67,6 +67,8 @@ module ViewAttributes =
     let ScrollOrientationAttribKey : AttributeKey<_> = AttributeKey<_>("ScrollOrientation")
     let HorizontalScrollBarVisibilityAttribKey : AttributeKey<_> = AttributeKey<_>("HorizontalScrollBarVisibility")
     let VerticalScrollBarVisibilityAttribKey : AttributeKey<_> = AttributeKey<_>("VerticalScrollBarVisibility")
+    let ScrollToAttribKey : AttributeKey<_> = AttributeKey<_>("ScrollTo")
+    let ScrolledAttribKey : AttributeKey<_> = AttributeKey<_>("Scrolled")
     let CancelButtonColorAttribKey : AttributeKey<_> = AttributeKey<_>("CancelButtonColor")
     let FontFamilyAttribKey : AttributeKey<_> = AttributeKey<_>("FontFamily")
     let FontAttributesAttribKey : AttributeKey<_> = AttributeKey<_>("FontAttributes")
@@ -2315,6 +2317,8 @@ type ViewBuilders() =
                                          ?orientation: Xamarin.Forms.ScrollOrientation,
                                          ?horizontalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility,
                                          ?verticalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility,
+                                         ?scrollTo: float * float * Fabulous.DynamicViews.AnimationKind,
+                                         ?scrolled: Xamarin.Forms.ScrolledEventArgs -> unit,
                                          ?isClippedToBounds: bool,
                                          ?padding: obj,
                                          ?horizontalOptions: Xamarin.Forms.LayoutOptions,
@@ -2362,12 +2366,16 @@ type ViewBuilders() =
         let attribCount = match orientation with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match horizontalScrollBarVisibility with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match verticalScrollBarVisibility with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match scrollTo with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match scrolled with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match content with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ContentAttribKey, (v)) 
         match orientation with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ScrollOrientationAttribKey, (v)) 
         match horizontalScrollBarVisibility with None -> () | Some v -> attribBuilder.Add(ViewAttributes.HorizontalScrollBarVisibilityAttribKey, (v)) 
         match verticalScrollBarVisibility with None -> () | Some v -> attribBuilder.Add(ViewAttributes.VerticalScrollBarVisibilityAttribKey, (v)) 
+        match scrollTo with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ScrollToAttribKey, (v)) 
+        match scrolled with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ScrolledAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ScrolledEventArgs>(fun _sender args -> f args))(v)) 
         attribBuilder
 
     static member val CreateFuncScrollView : (unit -> Xamarin.Forms.ScrollView) = (fun () -> ViewBuilders.CreateScrollView())
@@ -2390,6 +2398,10 @@ type ViewBuilders() =
         let mutable currHorizontalScrollBarVisibilityOpt = ValueNone
         let mutable prevVerticalScrollBarVisibilityOpt = ValueNone
         let mutable currVerticalScrollBarVisibilityOpt = ValueNone
+        let mutable prevScrollToOpt = ValueNone
+        let mutable currScrollToOpt = ValueNone
+        let mutable prevScrolledOpt = ValueNone
+        let mutable currScrolledOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = ViewAttributes.ContentAttribKey.KeyValue then 
                 currContentOpt <- ValueSome (kvp.Value :?> ViewElement)
@@ -2399,6 +2411,10 @@ type ViewBuilders() =
                 currHorizontalScrollBarVisibilityOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.ScrollBarVisibility)
             if kvp.Key = ViewAttributes.VerticalScrollBarVisibilityAttribKey.KeyValue then 
                 currVerticalScrollBarVisibilityOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.ScrollBarVisibility)
+            if kvp.Key = ViewAttributes.ScrollToAttribKey.KeyValue then 
+                currScrollToOpt <- ValueSome (kvp.Value :?> float * float * Fabulous.DynamicViews.AnimationKind)
+            if kvp.Key = ViewAttributes.ScrolledAttribKey.KeyValue then 
+                currScrolledOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.ScrolledEventArgs>)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
@@ -2411,6 +2427,10 @@ type ViewBuilders() =
                     prevHorizontalScrollBarVisibilityOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.ScrollBarVisibility)
                 if kvp.Key = ViewAttributes.VerticalScrollBarVisibilityAttribKey.KeyValue then 
                     prevVerticalScrollBarVisibilityOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.ScrollBarVisibility)
+                if kvp.Key = ViewAttributes.ScrollToAttribKey.KeyValue then 
+                    prevScrollToOpt <- ValueSome (kvp.Value :?> float * float * Fabulous.DynamicViews.AnimationKind)
+                if kvp.Key = ViewAttributes.ScrolledAttribKey.KeyValue then 
+                    prevScrolledOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.ScrolledEventArgs>)
         match prevContentOpt, currContentOpt with
         // For structured objects, dependsOn on reference equality
         | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()
@@ -2436,11 +2456,20 @@ type ViewBuilders() =
         | _, ValueSome currValue -> target.VerticalScrollBarVisibility <-  currValue
         | ValueSome _, ValueNone -> target.VerticalScrollBarVisibility <- Xamarin.Forms.ScrollBarVisibility.Default
         | ValueNone, ValueNone -> ()
+        (fun _ curr target -> triggerScrollToAsync curr target) prevScrollToOpt currScrollToOpt target
+        match prevScrolledOpt, currScrolledOpt with
+        | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
+        | ValueSome prevValue, ValueSome currValue -> target.Scrolled.RemoveHandler(prevValue); target.Scrolled.AddHandler(currValue)
+        | ValueNone, ValueSome currValue -> target.Scrolled.AddHandler(currValue)
+        | ValueSome prevValue, ValueNone -> target.Scrolled.RemoveHandler(prevValue)
+        | ValueNone, ValueNone -> ()
 
     static member inline ConstructScrollView(?content: ViewElement,
                                              ?orientation: Xamarin.Forms.ScrollOrientation,
                                              ?horizontalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility,
                                              ?verticalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility,
+                                             ?scrollTo: float * float * Fabulous.DynamicViews.AnimationKind,
+                                             ?scrolled: Xamarin.Forms.ScrolledEventArgs -> unit,
                                              ?isClippedToBounds: bool,
                                              ?padding: obj,
                                              ?horizontalOptions: Xamarin.Forms.LayoutOptions,
@@ -2489,6 +2518,8 @@ type ViewBuilders() =
                                ?orientation=orientation,
                                ?horizontalScrollBarVisibility=horizontalScrollBarVisibility,
                                ?verticalScrollBarVisibility=verticalScrollBarVisibility,
+                               ?scrollTo=scrollTo,
+                               ?scrolled=scrolled,
                                ?isClippedToBounds=isClippedToBounds,
                                ?padding=padding,
                                ?horizontalOptions=horizontalOptions,
@@ -12233,6 +12264,10 @@ type ScrollViewViewer(element: ViewElement) =
     member this.HorizontalScrollBarVisibility = element.GetAttributeKeyed(ViewAttributes.HorizontalScrollBarVisibilityAttribKey)
     /// Get the value of the VerticalScrollBarVisibility property
     member this.VerticalScrollBarVisibility = element.GetAttributeKeyed(ViewAttributes.VerticalScrollBarVisibilityAttribKey)
+    /// Get the value of the ScrollTo property
+    member this.ScrollTo = element.GetAttributeKeyed(ViewAttributes.ScrollToAttribKey)
+    /// Get the value of the Scrolled property
+    member this.Scrolled = element.GetAttributeKeyed(ViewAttributes.ScrolledAttribKey)
 
 /// Viewer that allows to read the properties of a ViewElement representing a SearchBar
 type SearchBarViewer(element: ViewElement) =
@@ -13553,6 +13588,8 @@ type View() =
                                     ?orientation: Xamarin.Forms.ScrollOrientation,
                                     ?horizontalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility,
                                     ?verticalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility,
+                                    ?scrollTo: float * float * Fabulous.DynamicViews.AnimationKind,
+                                    ?scrolled: Xamarin.Forms.ScrolledEventArgs -> unit,
                                     ?isClippedToBounds: bool,
                                     ?padding: obj,
                                     ?horizontalOptions: Xamarin.Forms.LayoutOptions,
@@ -13600,6 +13637,8 @@ type View() =
                                ?orientation=orientation,
                                ?horizontalScrollBarVisibility=horizontalScrollBarVisibility,
                                ?verticalScrollBarVisibility=verticalScrollBarVisibility,
+                               ?scrollTo=scrollTo,
+                               ?scrolled=scrolled,
                                ?isClippedToBounds=isClippedToBounds,
                                ?padding=padding,
                                ?horizontalOptions=horizontalOptions,
@@ -17234,6 +17273,12 @@ module ViewElementExtensions =
         /// Adjusts the VerticalScrollBarVisibility property in the visual element
         member x.VerticalScrollBarVisibility(value: Xamarin.Forms.ScrollBarVisibility) = x.WithAttribute(ViewAttributes.VerticalScrollBarVisibilityAttribKey, (value))
 
+        /// Adjusts the ScrollTo property in the visual element
+        member x.ScrollTo(value: float * float * Fabulous.DynamicViews.AnimationKind) = x.WithAttribute(ViewAttributes.ScrollToAttribKey, (value))
+
+        /// Adjusts the Scrolled property in the visual element
+        member x.Scrolled(value: Xamarin.Forms.ScrolledEventArgs -> unit) = x.WithAttribute(ViewAttributes.ScrolledAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ScrolledEventArgs>(fun _sender args -> f args))(value))
+
         /// Adjusts the CancelButtonColor property in the visual element
         member x.CancelButtonColor(value: Xamarin.Forms.Color) = x.WithAttribute(ViewAttributes.CancelButtonColorAttribKey, (value))
 
@@ -17776,43 +17821,43 @@ module ViewElementExtensions =
                       ?command: unit -> unit, ?numberOfTapsRequired: int, ?numberOfClicksRequired: int, ?buttons: Xamarin.Forms.ButtonsMask, ?isPinching: bool, 
                       ?pinchUpdated: Xamarin.Forms.PinchGestureUpdatedEventArgs -> unit, ?swipeGestureRecognizerDirection: Xamarin.Forms.SwipeDirection, ?threshold: System.UInt32, ?swiped: Xamarin.Forms.SwipedEventArgs -> unit, ?color: Xamarin.Forms.Color, 
                       ?isRunning: bool, ?boxViewCornerRadius: Xamarin.Forms.CornerRadius, ?progress: double, ?isClippedToBounds: bool, ?padding: obj, 
-                      ?content: ViewElement, ?scrollOrientation: Xamarin.Forms.ScrollOrientation, ?horizontalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility, ?verticalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility, ?cancelButtonColor: Xamarin.Forms.Color, 
-                      ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?placeholder: string, 
-                      ?placeholderColor: Xamarin.Forms.Color, ?searchBarCommand: string -> unit, ?searchBarCanExecute: bool, ?text: string, ?textColor: Xamarin.Forms.Color, 
-                      ?searchBarTextChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?buttonCommand: unit -> unit, ?buttonCanExecute: bool, ?borderColor: Xamarin.Forms.Color, ?borderWidth: double, 
-                      ?commandParameter: System.Object, ?contentLayout: Xamarin.Forms.Button.ButtonContentLayout, ?buttonCornerRadius: int, ?buttonImageSource: string, ?minimumMaximum: float * float, 
-                      ?value: double, ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit, ?increment: double, ?isToggled: bool, ?toggled: Xamarin.Forms.ToggledEventArgs -> unit, 
-                      ?onColor: Xamarin.Forms.Color, ?height: double, ?on: bool, ?onChanged: Xamarin.Forms.ToggledEventArgs -> unit, ?intent: Xamarin.Forms.TableIntent, 
-                      ?hasUnevenRows: bool, ?rowHeight: int, ?tableRoot: (string * ViewElement list) list, ?rowDefinitionHeight: obj, ?columnDefinitionWidth: obj, 
-                      ?gridRowDefinitions: obj list, ?gridColumnDefinitions: obj list, ?rowSpacing: double, ?columnSpacing: double, ?children: ViewElement list, 
-                      ?gridRow: int, ?gridRowSpan: int, ?gridColumn: int, ?gridColumnSpan: int, ?layoutBounds: Xamarin.Forms.Rectangle, 
-                      ?layoutFlags: Xamarin.Forms.AbsoluteLayoutFlags, ?boundsConstraint: Xamarin.Forms.BoundsConstraint, ?heightConstraint: Xamarin.Forms.Constraint, ?widthConstraint: Xamarin.Forms.Constraint, ?xConstraint: Xamarin.Forms.Constraint, 
-                      ?yConstraint: Xamarin.Forms.Constraint, ?alignContent: Xamarin.Forms.FlexAlignContent, ?alignItems: Xamarin.Forms.FlexAlignItems, ?flexLayoutDirection: Xamarin.Forms.FlexDirection, ?position: Xamarin.Forms.FlexPosition, 
-                      ?wrap: Xamarin.Forms.FlexWrap, ?justifyContent: Xamarin.Forms.FlexJustify, ?flexAlignSelf: Xamarin.Forms.FlexAlignSelf, ?flexOrder: int, ?flexBasis: Xamarin.Forms.FlexBasis, 
-                      ?flexGrow: double, ?flexShrink: double, ?date: System.DateTime, ?format: string, ?minimumDate: System.DateTime, 
-                      ?maximumDate: System.DateTime, ?dateSelected: Xamarin.Forms.DateChangedEventArgs -> unit, ?pickerItemsSource: seq<'T>, ?selectedIndex: int, ?title: string, 
-                      ?selectedIndexChanged: (int * 'T option) -> unit, ?frameCornerRadius: double, ?hasShadow: bool, ?imageSource: obj, ?aspect: Xamarin.Forms.Aspect, 
-                      ?isOpaque: bool, ?imageButtonCommand: unit -> unit, ?imageButtonCornerRadius: int, ?clicked: System.EventArgs -> unit, ?pressed: System.EventArgs -> unit, 
-                      ?released: System.EventArgs -> unit, ?keyboard: Xamarin.Forms.Keyboard, ?editorCompleted: string -> unit, ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?autoSize: Xamarin.Forms.EditorAutoSizeOption, 
-                      ?isPassword: bool, ?entryCompleted: string -> unit, ?isTextPredictionEnabled: bool, ?returnType: Xamarin.Forms.ReturnType, ?returnCommand: unit -> unit, 
-                      ?cursorPosition: int, ?selectionLength: int, ?label: string, ?entryCellTextChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?verticalTextAlignment: Xamarin.Forms.TextAlignment, 
-                      ?formattedText: ViewElement, ?lineBreakMode: Xamarin.Forms.LineBreakMode, ?lineHeight: double, ?maxLines: int, ?textDecorations: Xamarin.Forms.TextDecorations, 
-                      ?stackOrientation: Xamarin.Forms.StackOrientation, ?spacing: double, ?foregroundColor: Xamarin.Forms.Color, ?propertyChanged: System.ComponentModel.PropertyChangedEventArgs -> unit, ?spans: ViewElement[], 
-                      ?time: System.TimeSpan, ?webSource: Xamarin.Forms.WebViewSource, ?reload: bool, ?navigated: Xamarin.Forms.WebNavigatedEventArgs -> unit, ?navigating: Xamarin.Forms.WebNavigatingEventArgs -> unit, 
-                      ?reloadRequested: System.EventArgs -> unit, ?backgroundImage: string, ?icon: string, ?isBusy: bool, ?toolbarItems: ViewElement list, 
-                      ?useSafeArea: bool, ?page_Appearing: unit -> unit, ?page_Disappearing: unit -> unit, ?page_LayoutChanged: unit -> unit, ?carouselPage_CurrentPage: int, 
-                      ?carouselPage_CurrentPageChanged: int option -> unit, ?pages: ViewElement list, ?backButtonTitle: string, ?hasBackButton: bool, ?hasNavigationBar: bool, 
-                      ?titleIcon: string, ?titleView: ViewElement, ?barBackgroundColor: Xamarin.Forms.Color, ?barTextColor: Xamarin.Forms.Color, ?popped: Xamarin.Forms.NavigationEventArgs -> unit, 
-                      ?poppedToRoot: Xamarin.Forms.NavigationEventArgs -> unit, ?pushed: Xamarin.Forms.NavigationEventArgs -> unit, ?tabbedPage_CurrentPage: int, ?tabbedPage_CurrentPageChanged: int option -> unit, ?onSizeAllocatedCallback: (double * double) -> unit, 
-                      ?master: ViewElement, ?detail: ViewElement, ?isGestureEnabled: bool, ?isPresented: bool, ?masterBehavior: Xamarin.Forms.MasterBehavior, 
-                      ?isPresentedChanged: bool -> unit, ?accelerator: string, ?textDetail: string, ?textDetailColor: Xamarin.Forms.Color, ?textCellCommand: unit -> unit, 
-                      ?textCellCanExecute: bool, ?order: Xamarin.Forms.ToolbarItemOrder, ?priority: int, ?view: ViewElement, ?listViewItems: seq<ViewElement>, 
-                      ?footer: System.Object, ?header: System.Object, ?headerTemplate: Xamarin.Forms.DataTemplate, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, 
-                      ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?listView_SelectedItem: int option, ?listView_SeparatorVisibility: Xamarin.Forms.SeparatorVisibility, ?listView_SeparatorColor: Xamarin.Forms.Color, 
-                      ?listView_ItemAppearing: int -> unit, ?listView_ItemDisappearing: int -> unit, ?listView_ItemSelected: int option -> unit, ?listView_ItemTapped: int -> unit, ?listView_Refreshing: unit -> unit, 
-                      ?selectionMode: Xamarin.Forms.ListViewSelectionMode, ?listViewGrouped_ItemsSource: (string * ViewElement * ViewElement list) list, ?listViewGrouped_ShowJumpList: bool, ?listViewGrouped_SelectedItem: (int * int) option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, 
-                      ?separatorColor: Xamarin.Forms.Color, ?listViewGrouped_ItemAppearing: int * int option -> unit, ?listViewGrouped_ItemDisappearing: int * int option -> unit, ?listViewGrouped_ItemSelected: (int * int) option -> unit, ?listViewGrouped_ItemTapped: int * int -> unit, 
-                      ?refreshing: unit -> unit) =
+                      ?content: ViewElement, ?scrollOrientation: Xamarin.Forms.ScrollOrientation, ?horizontalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility, ?verticalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility, ?scrollTo: float * float * Fabulous.DynamicViews.AnimationKind, 
+                      ?scrolled: Xamarin.Forms.ScrolledEventArgs -> unit, ?cancelButtonColor: Xamarin.Forms.Color, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, 
+                      ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?placeholder: string, ?placeholderColor: Xamarin.Forms.Color, ?searchBarCommand: string -> unit, ?searchBarCanExecute: bool, 
+                      ?text: string, ?textColor: Xamarin.Forms.Color, ?searchBarTextChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?buttonCommand: unit -> unit, ?buttonCanExecute: bool, 
+                      ?borderColor: Xamarin.Forms.Color, ?borderWidth: double, ?commandParameter: System.Object, ?contentLayout: Xamarin.Forms.Button.ButtonContentLayout, ?buttonCornerRadius: int, 
+                      ?buttonImageSource: string, ?minimumMaximum: float * float, ?value: double, ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit, ?increment: double, 
+                      ?isToggled: bool, ?toggled: Xamarin.Forms.ToggledEventArgs -> unit, ?onColor: Xamarin.Forms.Color, ?height: double, ?on: bool, 
+                      ?onChanged: Xamarin.Forms.ToggledEventArgs -> unit, ?intent: Xamarin.Forms.TableIntent, ?hasUnevenRows: bool, ?rowHeight: int, ?tableRoot: (string * ViewElement list) list, 
+                      ?rowDefinitionHeight: obj, ?columnDefinitionWidth: obj, ?gridRowDefinitions: obj list, ?gridColumnDefinitions: obj list, ?rowSpacing: double, 
+                      ?columnSpacing: double, ?children: ViewElement list, ?gridRow: int, ?gridRowSpan: int, ?gridColumn: int, 
+                      ?gridColumnSpan: int, ?layoutBounds: Xamarin.Forms.Rectangle, ?layoutFlags: Xamarin.Forms.AbsoluteLayoutFlags, ?boundsConstraint: Xamarin.Forms.BoundsConstraint, ?heightConstraint: Xamarin.Forms.Constraint, 
+                      ?widthConstraint: Xamarin.Forms.Constraint, ?xConstraint: Xamarin.Forms.Constraint, ?yConstraint: Xamarin.Forms.Constraint, ?alignContent: Xamarin.Forms.FlexAlignContent, ?alignItems: Xamarin.Forms.FlexAlignItems, 
+                      ?flexLayoutDirection: Xamarin.Forms.FlexDirection, ?position: Xamarin.Forms.FlexPosition, ?wrap: Xamarin.Forms.FlexWrap, ?justifyContent: Xamarin.Forms.FlexJustify, ?flexAlignSelf: Xamarin.Forms.FlexAlignSelf, 
+                      ?flexOrder: int, ?flexBasis: Xamarin.Forms.FlexBasis, ?flexGrow: double, ?flexShrink: double, ?date: System.DateTime, 
+                      ?format: string, ?minimumDate: System.DateTime, ?maximumDate: System.DateTime, ?dateSelected: Xamarin.Forms.DateChangedEventArgs -> unit, ?pickerItemsSource: seq<'T>, 
+                      ?selectedIndex: int, ?title: string, ?selectedIndexChanged: (int * 'T option) -> unit, ?frameCornerRadius: double, ?hasShadow: bool, 
+                      ?imageSource: obj, ?aspect: Xamarin.Forms.Aspect, ?isOpaque: bool, ?imageButtonCommand: unit -> unit, ?imageButtonCornerRadius: int, 
+                      ?clicked: System.EventArgs -> unit, ?pressed: System.EventArgs -> unit, ?released: System.EventArgs -> unit, ?keyboard: Xamarin.Forms.Keyboard, ?editorCompleted: string -> unit, 
+                      ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?autoSize: Xamarin.Forms.EditorAutoSizeOption, ?isPassword: bool, ?entryCompleted: string -> unit, ?isTextPredictionEnabled: bool, 
+                      ?returnType: Xamarin.Forms.ReturnType, ?returnCommand: unit -> unit, ?cursorPosition: int, ?selectionLength: int, ?label: string, 
+                      ?entryCellTextChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?verticalTextAlignment: Xamarin.Forms.TextAlignment, ?formattedText: ViewElement, ?lineBreakMode: Xamarin.Forms.LineBreakMode, ?lineHeight: double, 
+                      ?maxLines: int, ?textDecorations: Xamarin.Forms.TextDecorations, ?stackOrientation: Xamarin.Forms.StackOrientation, ?spacing: double, ?foregroundColor: Xamarin.Forms.Color, 
+                      ?propertyChanged: System.ComponentModel.PropertyChangedEventArgs -> unit, ?spans: ViewElement[], ?time: System.TimeSpan, ?webSource: Xamarin.Forms.WebViewSource, ?reload: bool, 
+                      ?navigated: Xamarin.Forms.WebNavigatedEventArgs -> unit, ?navigating: Xamarin.Forms.WebNavigatingEventArgs -> unit, ?reloadRequested: System.EventArgs -> unit, ?backgroundImage: string, ?icon: string, 
+                      ?isBusy: bool, ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?page_Appearing: unit -> unit, ?page_Disappearing: unit -> unit, 
+                      ?page_LayoutChanged: unit -> unit, ?carouselPage_CurrentPage: int, ?carouselPage_CurrentPageChanged: int option -> unit, ?pages: ViewElement list, ?backButtonTitle: string, 
+                      ?hasBackButton: bool, ?hasNavigationBar: bool, ?titleIcon: string, ?titleView: ViewElement, ?barBackgroundColor: Xamarin.Forms.Color, 
+                      ?barTextColor: Xamarin.Forms.Color, ?popped: Xamarin.Forms.NavigationEventArgs -> unit, ?poppedToRoot: Xamarin.Forms.NavigationEventArgs -> unit, ?pushed: Xamarin.Forms.NavigationEventArgs -> unit, ?tabbedPage_CurrentPage: int, 
+                      ?tabbedPage_CurrentPageChanged: int option -> unit, ?onSizeAllocatedCallback: (double * double) -> unit, ?master: ViewElement, ?detail: ViewElement, ?isGestureEnabled: bool, 
+                      ?isPresented: bool, ?masterBehavior: Xamarin.Forms.MasterBehavior, ?isPresentedChanged: bool -> unit, ?accelerator: string, ?textDetail: string, 
+                      ?textDetailColor: Xamarin.Forms.Color, ?textCellCommand: unit -> unit, ?textCellCanExecute: bool, ?order: Xamarin.Forms.ToolbarItemOrder, ?priority: int, 
+                      ?view: ViewElement, ?listViewItems: seq<ViewElement>, ?footer: System.Object, ?header: System.Object, ?headerTemplate: Xamarin.Forms.DataTemplate, 
+                      ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?listView_SelectedItem: int option, 
+                      ?listView_SeparatorVisibility: Xamarin.Forms.SeparatorVisibility, ?listView_SeparatorColor: Xamarin.Forms.Color, ?listView_ItemAppearing: int -> unit, ?listView_ItemDisappearing: int -> unit, ?listView_ItemSelected: int option -> unit, 
+                      ?listView_ItemTapped: int -> unit, ?listView_Refreshing: unit -> unit, ?selectionMode: Xamarin.Forms.ListViewSelectionMode, ?listViewGrouped_ItemsSource: (string * ViewElement * ViewElement list) list, ?listViewGrouped_ShowJumpList: bool, 
+                      ?listViewGrouped_SelectedItem: (int * int) option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?listViewGrouped_ItemAppearing: int * int option -> unit, ?listViewGrouped_ItemDisappearing: int * int option -> unit, 
+                      ?listViewGrouped_ItemSelected: (int * int) option -> unit, ?listViewGrouped_ItemTapped: int * int -> unit, ?refreshing: unit -> unit) =
             let x = match classId with None -> x | Some opt -> x.ClassId(opt)
             let x = match styleId with None -> x | Some opt -> x.StyleId(opt)
             let x = match automationId with None -> x | Some opt -> x.AutomationId(opt)
@@ -17872,6 +17917,8 @@ module ViewElementExtensions =
             let x = match scrollOrientation with None -> x | Some opt -> x.ScrollOrientation(opt)
             let x = match horizontalScrollBarVisibility with None -> x | Some opt -> x.HorizontalScrollBarVisibility(opt)
             let x = match verticalScrollBarVisibility with None -> x | Some opt -> x.VerticalScrollBarVisibility(opt)
+            let x = match scrollTo with None -> x | Some opt -> x.ScrollTo(opt)
+            let x = match scrolled with None -> x | Some opt -> x.Scrolled(opt)
             let x = match cancelButtonColor with None -> x | Some opt -> x.CancelButtonColor(opt)
             let x = match fontFamily with None -> x | Some opt -> x.FontFamily(opt)
             let x = match fontAttributes with None -> x | Some opt -> x.FontAttributes(opt)
@@ -18169,6 +18216,10 @@ module ViewElementExtensions =
     let horizontalScrollBarVisibility (value: Xamarin.Forms.ScrollBarVisibility) (x: ViewElement) = x.HorizontalScrollBarVisibility(value)
     /// Adjusts the VerticalScrollBarVisibility property in the visual element
     let verticalScrollBarVisibility (value: Xamarin.Forms.ScrollBarVisibility) (x: ViewElement) = x.VerticalScrollBarVisibility(value)
+    /// Adjusts the ScrollTo property in the visual element
+    let scrollTo (value: float * float * Fabulous.DynamicViews.AnimationKind) (x: ViewElement) = x.ScrollTo(value)
+    /// Adjusts the Scrolled property in the visual element
+    let scrolled (value: Xamarin.Forms.ScrolledEventArgs -> unit) (x: ViewElement) = x.Scrolled(value)
     /// Adjusts the CancelButtonColor property in the visual element
     let cancelButtonColor (value: Xamarin.Forms.Color) (x: ViewElement) = x.CancelButtonColor(value)
     /// Adjusts the FontFamily property in the visual element

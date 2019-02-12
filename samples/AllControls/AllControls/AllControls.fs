@@ -18,6 +18,7 @@ type RootPageKind =
     | InfiniteScrollList
     | Animations
     | WebCall
+    | ScrollView
 
 type Model = 
   { RootPageKind: RootPageKind
@@ -53,6 +54,11 @@ type Model =
     IsRunning: bool
     ReceivedData: bool
     WebCallData: string option
+    // For ScrollView page demo
+    ScrollPosition: float * float
+    AnimatedScroll: AnimationKind
+    IsScrollingWithFabulous: bool
+    IsScrolling: bool
     }
 
 type Msg = 
@@ -104,7 +110,11 @@ type Msg =
     // For WebCall page demo
     | ReceivedDataSuccess of string option
     | ReceivedDataFailure of string option
-    | ReceiveData    
+    | ReceiveData
+    // For ScrollView page demo
+    | ScrollFabulous of float * float * AnimationKind
+    | ScrollXamarinForms of float * float * AnimationKind
+    | Scrolled of float * float
 
 [<AutoOpen>]
 module MyExtension = 
@@ -177,7 +187,11 @@ module App =
           Tabbed1CurrentPageIndex = 0 
           IsRunning = false
           ReceivedData = false
-          WebCallData = None }, Cmd.none
+          WebCallData = None
+          ScrollPosition = 0.0, 0.0
+          AnimatedScroll = Animated
+          IsScrollingWithFabulous = false
+          IsScrolling = false }, Cmd.none
 
     let getWebData =
         async {
@@ -192,6 +206,21 @@ module App =
         } |> Cmd.ofAsyncMsg
 
     let animatedLabelRef = ViewRef<Label>()
+    let scrollViewRef = ViewRef<ScrollView>()
+
+    let scrollWithXFAsync (x: float, y: float, animated: AnimationKind) =
+        async {
+            match scrollViewRef.TryValue with
+            | None -> return None
+            | Some scrollView ->
+                let animationEnabled =
+                    match animated with
+                    | Animated -> true
+                    | NotAnimated -> false
+                do! scrollView.ScrollToAsync(x, y, animationEnabled) |> Async.AwaitTask |> Async.Ignore
+                return Some (Scrolled (x, y))
+        } |> Cmd.ofAsyncMsgOption
+
     let update msg model =
         match msg with
         | Increment -> { model with Count = model.Count + 1 }, Cmd.none
@@ -283,6 +312,12 @@ module App =
             {model with ReceivedData=false; IsRunning=false; WebCallData = value}, Cmd.none
         | ReceivedDataSuccess value ->
             {model with ReceivedData=true; IsRunning=false; WebCallData = value}, Cmd.none
+        | ScrollFabulous (x, y, animated) ->
+            { model with IsScrolling = true; IsScrollingWithFabulous = true; ScrollPosition = (x, y); AnimatedScroll = animated }, Cmd.none
+        | ScrollXamarinForms (x, y, animated) ->
+            { model with IsScrolling = true; IsScrollingWithFabulous = false; ScrollPosition = (x, y); AnimatedScroll = animated }, scrollWithXFAsync (x, y, animated)
+        | Scrolled (x, y) ->
+            { model with ScrollPosition = (x, y); IsScrolling = false; IsScrollingWithFabulous = false }, Cmd.none 
 
     let pickerItems = 
         [| ("Aqua", Color.Aqua); ("Black", Color.Black);
@@ -319,6 +354,7 @@ module App =
                                  View.Button(text = "Animations", command=(fun () -> dispatch (SetRootPageKind Animations)))
                                  View.Button(text = "Pop-up", command=(fun () -> dispatch ShowPopup))
                                  View.Button(text = "WebRequest", command=(fun () -> dispatch (SetRootPageKind WebCall)))
+                                 View.Button(text = "ScrollView", command=(fun () -> dispatch (SetRootPageKind ScrollView)))
                             ]))
                      .ToolbarItems([View.ToolbarItem(text="About", command=(fun () -> dispatch (SetRootPageKind (Choice true))))] )
                      .TitleView(View.StackLayout(orientation=StackOrientation.Horizontal, children=[
@@ -846,6 +882,35 @@ module App =
                         MainPageButton
                     ]
             ))
+         | ScrollView ->
+            let scrollToValue (x, y) animated =
+                (x, y, animated)
+
+            View.ContentPage(
+                content = View.StackLayout(
+                    children = [
+                        MainPageButton
+                        View.Label(text = (sprintf "Is scrolling: %b" model.IsScrolling))
+                        View.Button(text = "Scroll to top", command=(fun() -> dispatch (ScrollFabulous (0.0, 0.0, Animated))))
+                        View.ScrollView(
+                            ref = scrollViewRef,
+                            ?scrollTo= (if model.IsScrollingWithFabulous then Some (scrollToValue model.ScrollPosition model.AnimatedScroll) else None),
+                            scrolled=(fun args -> dispatch (Scrolled (args.ScrollX, args.ScrollY))),
+                            content = View.StackLayout(
+                                children = [
+                                    yield View.Button(text="Scroll animated with Fabulous", command=(fun() -> dispatch (ScrollFabulous (0.0, 750.0, Animated))))
+                                    yield View.Button(text="Scroll not animated with Fabulous", command=(fun() -> dispatch (ScrollFabulous (0.0, 750.0, NotAnimated))))
+                                    yield View.Button(text="Scroll animated with Xamarin.Forms", command=(fun() -> dispatch (ScrollXamarinForms (0.0, 750.0, Animated))))
+                                    yield View.Button(text="Scroll not animated with Xamarin.Forms", command=(fun() -> dispatch (ScrollXamarinForms (0.0, 750.0, NotAnimated))))
+
+                                    for i = 0 to 75 do
+                                        yield View.Label(text=(sprintf "Item %i" i))
+                                ]
+                            )
+                        )
+                    ]
+                ) 
+            )        
 
     
 type App () as app = 
