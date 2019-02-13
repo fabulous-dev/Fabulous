@@ -1,17 +1,16 @@
 <Project>
   <!-- NuGet Specs -->
   <PropertyGroup>
-    <Version>0.31.0</Version>
+    <Version>0.32.0</Version>
     <Authors>Fabulous Contributors</Authors>
-    <PackageVersion>0.31.0</PackageVersion>
-    <PackageReleaseNotes>[Fabulous.Core] Added XML docs for Fabulous helpers (https://github.com/fsprojects/Fabulous/pull/284)
-[Xamarin.Forms controls] Fixed the TitleView attached property on Page (https://github.com/fsprojects/Fabulous/pull/305)
-[Xamarin.Forms controls] Fixed the Accelerator property on MenuItem (https://github.com/fsprojects/Fabulous/pull/301)
-[Template] Fixed a typo in assembly name in macOS project (https://github.com/fsprojects/Fabulous/pull/300)
-[Template] Fixed an issue where NuGet restore would fail due to a space in path on Windows (https://github.com/fsprojects/Fabulous/pull/290)
-[LiveUpdate] Fixed: Using ViewRef produces a "No member found for key Fabulous.DynamicViews.ViewRef" error (https://github.com/fsprojects/Fabulous/pull/286)
-[LiveUpdate] Fixed: Using a list a "No member found for key Microsoft.FSharp.Collections.FSharpList" error (https://github.com/fsprojects/Fabulous/pull/286)
-[LiveUpdate] Fixed: Calling a function that takes unit from a module in a separate dll produces a "No member found for key" error (https://github.com/fsprojects/Fabulous/pull/286)</PackageReleaseNotes>
+    <PackageVersion>0.32.0</PackageVersion>
+    <PackageReleaseNotes>[Fabulous.Core] Added better type annotation to make the functions init and update easier to read (https://github.com/fsprojects/Fabulous/pull/313)
+[Template] Added new UWP template (https://github.com/fsprojects/Fabulous/pull/324)
+[Fabulous.Core] Added new helpers to extract data from ViewElement. Helpful for unit testing the views (https://github.com/fsprojects/Fabulous/pull/325)
+[Xamarin.Forms controls] Added the property ScrollTo and the event Scrolled for ScrollView (https://github.com/fsprojects/Fabulous/pull/332)
+[Xamarin.Forms controls] Added the events ChildrenReordered, MeasureInvalidated, Focused, SizeChanged and Unfocused for VisualElement (https://github.com/fsprojects/Fabulous/pull/327)
+[Fabulous.Core] Changed the modules behind View; The builder functions are no longer hidden from IntelliSense (https://github.com/fsprojects/Fabulous/pull/325)
+[Xamarin.Forms controls] Fixed the update of TableSection.Title (https://github.com/fsprojects/Fabulous/pull/330)</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/fsprojects/Fabulous</PackageProjectUrl>

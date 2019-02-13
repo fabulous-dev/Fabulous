@@ -1,3 +1,13 @@
+#### 0.32.0
+
+* [Fabulous.Core] Added better type annotation to make the functions init and update easier to read (https://github.com/fsprojects/Fabulous/pull/313)
+* [Template] Added new UWP template (https://github.com/fsprojects/Fabulous/pull/324)
+* [Fabulous.Core] Added new helpers to extract data from ViewElement. Helpful for unit testing the views (https://github.com/fsprojects/Fabulous/pull/325)
+* [Xamarin.Forms controls] Added the property ScrollTo and the event Scrolled for ScrollView (https://github.com/fsprojects/Fabulous/pull/332)
+* [Xamarin.Forms controls] Added the events ChildrenReordered, MeasureInvalidated, Focused, SizeChanged and Unfocused for VisualElement (https://github.com/fsprojects/Fabulous/pull/327)
+* [Fabulous.Core] Changed the modules behind View; The builder functions are no longer hidden from IntelliSense (https://github.com/fsprojects/Fabulous/pull/325)
+* [Xamarin.Forms controls] Fixed the update of TableSection.Title (https://github.com/fsprojects/Fabulous/pull/330)
+
 #### 0.31.0
 
 * [Fabulous.Core] Added XML docs for Fabulous helpers (https://github.com/fsprojects/Fabulous/pull/284)
