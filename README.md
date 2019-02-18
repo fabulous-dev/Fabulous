@@ -1,7 +1,8 @@
 F# Functional App Development, using Elmish and Xamarin.Forms 
 =======
 
-[![NuGet version](https://badge.fury.io/nu/Fabulous.Core.svg)](https://badge.fury.io/nu/Fabulous.Core) [![Build Status](https://dev.azure.com/timothelariviere/Fabulous/_apis/build/status/TimLariviere.Fabulous?branchName=master)] (https://dev.azure.com/timothelariviere/Fabulous/_build/latest?definitionId=3&branchName=master) [![Join the chat at https://gitter.im/fsprojects/Fabulous](https://badges.gitter.im/fsprojects/Fabulous.svg)](https://gitter.im/fsprojects/Fabulous?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![NuGet version](https://badge.fury.io/nu/Fabulous.Core.svg)](https://badge.fury.io/nu/Fabulous.Core) [![Build Status](https://dev.azure.com/timothelariviere/Fabulous/_apis/build/status/TimLariviere.Fabulous?branchName=master)](https://dev.azure.com/timothelariviere/Fabulous/_build/latest?definitionId=3&branchName=master) [![Join the chat at https://gitter.im/fsprojects/Fabulous](https://badges.gitter.im/fsprojects/Fabulous.svg)](https://gitter.im/fsprojects/Fabulous?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 
 Never write a ViewModel class again! Conquer the world with clean dynamic UIs!
 
