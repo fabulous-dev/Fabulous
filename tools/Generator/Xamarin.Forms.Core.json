@@ -177,8 +177,8 @@
         {
           "name": "SizeChanged",
           "defaultValue": "null",
-          "inputType": "System.EventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler(fun _sender args -> f args))"
+          "inputType": "Fabulous.CustomControls.SizeChangedEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun sender _args -> let visualElement = sender :?> Xamarin.Forms.VisualElement in f (Fabulous.CustomControls.SizeChangedEventArgs(visualElement.Width, visualElement.Height))))"
         },
         {
           "name": "Unfocused",
