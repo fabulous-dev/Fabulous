@@ -60,19 +60,20 @@ let tools = { Name = "Tools"; Path = !! "tools/**/*.fsproj"; Action = MSBuild Re
 let samples = { Name = "Samples"; Path = (!! "samples/**/*.fsproj" |> removeIncompatiblePlatformProjects); Action = MSBuild Debug; OutputPath = buildDir + "/samples" } 
 let controls = { Name = "CustomControls"; Path = !! "src/Fabulous.CustomControls/Fabulous.CustomControls.fsproj"; Action = MSBuild Release; OutputPath = buildDir + "/controls" }
 
-
 let getOutputDir basePath proj =
     let folderName = Path.GetFileNameWithoutExtension(proj)
     sprintf "%s/%s/" basePath folderName
 
 let msbuild (buildType: BuildType) (definition: ProjectDefinition) =
     let configuration = match buildType with Debug -> "Debug" | Release -> "Release"
-    let properties = [ ("Configuration", configuration) ] 
+    let properties = [ ("Configuration", configuration); ("m", "") ] 
 
     for project in definition.Path do
         let outputDir = getOutputDir definition.OutputPath project
         MSBuild.run id outputDir "Restore" properties [project] |> Trace.logItems (definition.Name + "Restore-Output: ")
         MSBuild.run id outputDir "Build" properties [project] |> Trace.logItems (definition.Name + "Build-Output: ")
+
+
 
 let dotnetPack (definition: ProjectDefinition) =
     for project in definition.Path do
@@ -164,9 +165,21 @@ Target.create "BuildSamples" (fun _ ->
 )
 
 Target.create "RunTests" (fun _ ->
-    let testProjects = !! "tests/**/*.fsproj"
-    for testProject in testProjects do
-        DotNet.test id testProject
+    let setDotNetOptions (projectName:string) : (DotNet.TestOptions-> DotNet.TestOptions) =
+        fun (dotNetTestOptions:DotNet.TestOptions) -> 
+          { dotNetTestOptions with
+              TestAdapterPath = Some "."
+              Logger = Some "trx"
+              ResultsDirectory = Some (Path.Combine(buildDir, "testresults"))
+          }
+
+    !!("tests/**/*.fsproj")
+    |> Seq.toArray
+    |> Array.Parallel.iter (
+        fun testProject -> 
+          let testprojectName = Path.GetFileName(testProject)
+          DotNet.test (setDotNetOptions testprojectName) testProject
+        )
 )
 
 Target.create "RunSamplesTests" (fun _ ->
@@ -193,7 +206,7 @@ Target.create "TestTemplatesNuGet" (fun _ ->
         elif Environment.isMacOS then " --macOS"
         else ""
         
-    DotNet.exec id "new fabulous-app" (sprintf "-n %s -lang F# --GTK%s" testAppName extraArgs) |> ignore
+    DotNet.exec id "new fabulous-app" (sprintf "-n %s -lang F# --GTK %s" testAppName extraArgs) |> ignore
 
     // The shared project and WPF need to be restored manually as they're using the new SDK-style format
     // When restoring, using the build_output as a package source to pick up the package we just compiled

@@ -19,6 +19,7 @@
     <PackageReference Include="NUnit3TestAdapter" />
     <PackageReference Include="Mono.Cecil" />
     <PackageReference Include="Xamarin.Forms" />
+    <PackageReference Include="NunitXml.TestLogger" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\tools\Generator\Generator.fsproj" />

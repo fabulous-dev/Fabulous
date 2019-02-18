@@ -1,4 +1,6 @@
-
+NUGET
+  remote: https://www.nuget.org/api/v2
+    NunitXml.TestLogger (2.1.36)
 
 GROUP androidapp
 RESTRICTION: == monoandroid7.1

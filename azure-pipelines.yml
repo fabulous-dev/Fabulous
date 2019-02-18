@@ -1,0 +1,90 @@
+trigger:
+  batch: true
+  branches:
+    include:
+    - master
+pr:
+  paths:
+    exclude:
+    - README.md
+    - docs/*
+phases:
+- phase: Windows
+  displayName: Windows
+
+  condition: succeeded()
+  queue:
+    name: Hosted VS2017
+  steps:
+  - script: |
+      echo Install fake-cli and GTK#
+      dotnet tool install --tool-path . fake-cli 
+      choco install gtksharp
+    displayName: 'Install Fake and GTK#'
+
+  - script: |  
+      echo run build script
+      mkdir -p build_output
+      set PATH=%PATH%;C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin\
+      ./build.cmd Test
+    displayName: 'Build Fabulous'
+  - task: PublishTestResults@1
+    inputs:
+      testResultsFormat: 'VSTest' # Options: JUnit, NUnit, VSTest, xUnit
+      testResultsFiles: 'build_output\testresults\*.xml' 
+  - task: CopyFiles@2
+    inputs:
+      contents: build_output\*.nupkg
+      targetFolder: $(Build.ArtifactStagingDirectory)
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: $(Build.ArtifactStagingDirectory)
+      artifactName: Windows-FabulousBuildOutputs
+
+
+- phase: macOS
+  displayName: macOS
+
+  condition: succeeded()
+  queue:
+    name: Hosted macOS
+  steps:
+  - script: |
+        echo install fake
+        export DOTNET_ROOT=$HOME/.dotnet/
+        export PATH=$PATH:$HOME/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands
+        dotnet tool install fake-cli -g
+
+        echo run build script
+        mkdir -p build_output
+        echo $PATH
+        ./build.sh Test
+    displayName: 'Build Fabulous'
+  - task: PublishTestResults@1
+    inputs:
+      testResultsFormat: 'VSTest' # Options: JUnit, NUnit, VSTest, xUnit
+      testResultsFiles: 'build_output/testresults/*.xml' 
+  - task: CopyFiles@1
+    inputs:
+      contents: build_output/*.nupkg
+      targetFolder: $(Build.ArtifactStagingDirectory)
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: $(Build.ArtifactStagingDirectory)
+      artifactName: macOS-FabulousBuildOutputs
+
+# - phase: Linux
+#   displayName: Linux
+
+#   condition: succeeded()
+#   queue:
+#     name: Hosted Ubuntu 1604
+#   steps:
+#   - script: |
+#         echo install fake
+#         export PATH=$PATH:$HOME/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands
+#         dotnet tool install fake-cli -g
+#         echo run build script
+#         mkdir -p build_output
+#         ./build.sh Test
+#     displayName: 'Build Fabulous'
