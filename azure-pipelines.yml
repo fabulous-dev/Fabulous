@@ -34,11 +34,11 @@ jobs:
   - task: PublishTestResults@1
     inputs:
       testResultsFormat: 'NUnit'
-      testResultsFiles: 'build_output\TestResults\*.xml'
+      testResultsFiles: '.\build_output\TestResults\*.xml'
 
   - task: CopyFiles@2
     inputs:
-      contents: build_output\*.nupkg
+      contents: .\build_output\*.nupkg
       targetFolder: $(Build.ArtifactStagingDirectory)
 
   - task: PublishBuildArtifacts@1
@@ -67,11 +67,11 @@ jobs:
   - task: PublishTestResults@1
     inputs:
       testResultsFormat: 'NUnit'
-      testResultsFiles: 'build_output/TestResults/*.xml'
+      testResultsFiles: './build_output/TestResults/*.xml'
 
   - task: CopyFiles@1
     inputs:
-      contents: build_output/*.nupkg
+      contents: ./build_output/*.nupkg
       targetFolder: $(Build.ArtifactStagingDirectory)
 
   - task: PublishBuildArtifacts@1
@@ -100,11 +100,11 @@ jobs:
   - task: PublishTestResults@1
     inputs:
       testResultsFormat: 'NUnit' # Options: JUnit, NUnit, VSTest, xUnit
-      testResultsFiles: 'build_output/TestResults/*.xml'
+      testResultsFiles: './build_output/TestResults/*.xml'
 
   - task: CopyFiles@1
     inputs:
-      contents: build_output/*.nupkg
+      contents: ./build_output/*.nupkg
       targetFolder: $(Build.ArtifactStagingDirectory)
 
   - task: PublishBuildArtifacts@1
