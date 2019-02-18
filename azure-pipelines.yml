@@ -1,20 +1,22 @@
+# Continuous integration is enabled for master
 trigger:
   batch: true
   branches:
     include:
     - master
+
+# Pull Request build is enabled for all except PRs only updating documentation
 pr:
   paths:
     exclude:
     - README.md
     - docs/*
-phases:
-- phase: Windows
-  displayName: Windows
 
-  condition: succeeded()
-  queue:
-    name: Hosted VS2017
+jobs:
+- job: Windows
+  displayName: Windows
+  pool:
+    vmImage: 'vs2017-win2016'
   steps:
   - script: |
       echo Install fake-cli and GTK#
@@ -28,63 +30,84 @@ phases:
       set PATH=%PATH%;C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin\
       ./build.cmd Test
     displayName: 'Build Fabulous'
+
   - task: PublishTestResults@1
     inputs:
-      testResultsFormat: 'VSTest' # Options: JUnit, NUnit, VSTest, xUnit
-      testResultsFiles: 'build_output\testresults\*.xml' 
+      testResultsFormat: 'NUnit'
+      testResultsFiles: 'build_output\TestResults\*.xml'
+
   - task: CopyFiles@2
     inputs:
       contents: build_output\*.nupkg
       targetFolder: $(Build.ArtifactStagingDirectory)
+
   - task: PublishBuildArtifacts@1
     inputs:
       pathtoPublish: $(Build.ArtifactStagingDirectory)
       artifactName: Windows-FabulousBuildOutputs
 
-
-- phase: macOS
+- job: macOS
   displayName: macOS
-
-  condition: succeeded()
-  queue:
-    name: Hosted macOS
+  pool:
+    vmImage: 'macOS-10.13'
   steps:
   - script: |
         echo install fake
         export DOTNET_ROOT=$HOME/.dotnet/
         export PATH=$PATH:$HOME/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands
         dotnet tool install fake-cli -g
+    displayName: 'Install Fake'
 
+  - script: |
         echo run build script
         mkdir -p build_output
-        echo $PATH
         ./build.sh Test
     displayName: 'Build Fabulous'
+
   - task: PublishTestResults@1
     inputs:
-      testResultsFormat: 'VSTest' # Options: JUnit, NUnit, VSTest, xUnit
-      testResultsFiles: 'build_output/testresults/*.xml' 
+      testResultsFormat: 'NUnit'
+      testResultsFiles: 'build_output/TestResults/*.xml'
+
   - task: CopyFiles@1
     inputs:
       contents: build_output/*.nupkg
       targetFolder: $(Build.ArtifactStagingDirectory)
+
   - task: PublishBuildArtifacts@1
     inputs:
       pathtoPublish: $(Build.ArtifactStagingDirectory)
       artifactName: macOS-FabulousBuildOutputs
 
-# - phase: Linux
-#   displayName: Linux
+- job: Linux
+  displayName: Linux
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - script: |
+        echo install fake
+        export DOTNET_ROOT=$HOME/.dotnet/
+        export PATH=$PATH:$HOME/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands
+        dotnet tool install fake-cli -g
+    displayName: 'Install Fake'
 
-#   condition: succeeded()
-#   queue:
-#     name: Hosted Ubuntu 1604
-#   steps:
-#   - script: |
-#         echo install fake
-#         export PATH=$PATH:$HOME/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands
-#         dotnet tool install fake-cli -g
-#         echo run build script
-#         mkdir -p build_output
-#         ./build.sh Test
-#     displayName: 'Build Fabulous'
+  - script: |
+        echo run build script
+        mkdir -p build_output
+        ./build.sh Test
+    displayName: 'Build Fabulous'
+
+  - task: PublishTestResults@1
+    inputs:
+      testResultsFormat: 'NUnit' # Options: JUnit, NUnit, VSTest, xUnit
+      testResultsFiles: 'build_output/TestResults/*.xml'
+
+  - task: CopyFiles@1
+    inputs:
+      contents: build_output/*.nupkg
+      targetFolder: $(Build.ArtifactStagingDirectory)
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: $(Build.ArtifactStagingDirectory)
+      artifactName: macOS-FabulousBuildOutputs

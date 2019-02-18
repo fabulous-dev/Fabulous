@@ -165,21 +165,15 @@ Target.create "BuildSamples" (fun _ ->
 )
 
 Target.create "RunTests" (fun _ ->
-    let setDotNetOptions (projectName:string) : (DotNet.TestOptions-> DotNet.TestOptions) =
-        fun (dotNetTestOptions:DotNet.TestOptions) -> 
-          { dotNetTestOptions with
+    let setDotNetOptions (options: DotNet.TestOptions) =
+        { options with
               TestAdapterPath = Some "."
               Logger = Some "trx"
-              ResultsDirectory = Some (Path.Combine(buildDir, "testresults"))
-          }
+              ResultsDirectory = Some (Path.Combine(buildDir, "TestResults")) }
 
-    !!("tests/**/*.fsproj")
-    |> Seq.toArray
-    |> Array.Parallel.iter (
-        fun testProject -> 
-          let testprojectName = Path.GetFileName(testProject)
-          DotNet.test (setDotNetOptions testprojectName) testProject
-        )
+    let testProjects = !! "tests/**/*.fsproj"
+    for testProject in testProjects do
+        DotNet.test setDotNetOptions testProject
 )
 
 Target.create "RunSamplesTests" (fun _ ->
