@@ -1,6 +1,8 @@
 ﻿// Copyright 2018 Elmish and Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.Core
 
+//Test
+
 /// Dispatch - feed new message into the processing loop
 type Dispatch<'msg> = 'msg -> unit
 
