@@ -22,3 +22,10 @@ type CustomEntryCell() as self =
                 textChanged.Trigger(self, TextChangedEventArgs(oldValue, self.Text)))
 
     [<CLIEvent>] member __.TextChanged = textChanged.Publish
+
+/// EventArgs for the SizeChanged event
+type SizeChangedEventArgs(width: float, height: float) =
+    inherit EventArgs()
+
+    member __.Width = width
+    member __.Height = height
