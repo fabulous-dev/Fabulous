@@ -192,7 +192,7 @@ module Extensions =
     let rec tryFindMemberByName name (decls: DDecl[]) = 
         decls |> Array.tryPick (function 
             | DDeclEntity (_, ds) -> tryFindMemberByName name ds 
-            | DDeclMember (membDef, body) -> if membDef.Name = name then Some (membDef, body) else None
+            | DDeclMember (membDef, body, _range) -> if membDef.Name = name then Some (membDef, body) else None
             | _ -> None)
 
     /// Trace all the updates to the console
@@ -255,7 +255,7 @@ module Extensions =
 
                                 printfn "LiveUpdate: evaluating 'program'...."
                                 let entity = interp.ResolveEntity(membDef.EnclosingEntity)
-                                let programObj = interp.GetExprDeclResult(entity, membDef.Name) 
+                                let (_, programObj) = interp.GetExprDeclResult(entity, membDef.Name) 
                                 match getVal programObj with 
                     
                                 | :? Program<obj, obj, obj -> (obj -> unit) -> ViewElement> as programErased -> 
