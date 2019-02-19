@@ -82,9 +82,16 @@ On Windows:
 .\build Test
 ```
 
-## Dev Notes - Testing LiveUpdte
+## Dev Notes - Testing LiveUpdate
 
 Use the CounterApp to test.  Here's how to update your (global!) install of the `fabulous-cli` tool:
+
+
+    cd Samples\CounterApp\CounterApp
+    adb -d forward  tcp:9867 tcp:9867
+    dotnet run --project ..\..\..\src\Fabulous.Cli\Fabulous.Cli.fsproj -- --watch --send 
+
+Testing the CLI tool - first bump the version number to avoid clashes, then:
 
     dotnet pack src\Fabulous.Cli
     dotnet tool uninstall --global fabulous-cli  

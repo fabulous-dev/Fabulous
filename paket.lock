@@ -559,12 +559,12 @@ NUGET
       Xamarin.Forms (>= 2.3.3.180)
 GITHUB
   remote: fsprojects/FSharp.Compiler.PortaCode
-    src/CodeModel.fs (e042e0dfb1c9aa396a51c44a711110b145972ac1)
-    src/FromCompilerService.fs (e042e0dfb1c9aa396a51c44a711110b145972ac1)
-    src/Interpreter.fs (e042e0dfb1c9aa396a51c44a711110b145972ac1)
-    src/ProcessCommandLine.fs (e042e0dfb1c9aa396a51c44a711110b145972ac1)
-    src/ProjectCracker.fs (e042e0dfb1c9aa396a51c44a711110b145972ac1)
-    tests/PortaCodeTests.fs (e042e0dfb1c9aa396a51c44a711110b145972ac1)
+    src/CodeModel.fs (0c6686bcc518246d879bb3d0e3cd4cdbbc72d5ad)
+    src/FromCompilerService.fs (0c6686bcc518246d879bb3d0e3cd4cdbbc72d5ad)
+    src/Interpreter.fs (0c6686bcc518246d879bb3d0e3cd4cdbbc72d5ad)
+    src/ProcessCommandLine.fs (0c6686bcc518246d879bb3d0e3cd4cdbbc72d5ad)
+    src/ProjectCracker.fs (0c6686bcc518246d879bb3d0e3cd4cdbbc72d5ad)
+    tests/PortaCodeTests.fs (0c6686bcc518246d879bb3d0e3cd4cdbbc72d5ad)
 GROUP wpfapp
 RESTRICTION: == net472
 NUGET
