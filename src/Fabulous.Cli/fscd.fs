@@ -7,7 +7,7 @@
 // cd Fabulous\Samples\CounterApp\CounterApp
 //   adb -d forward  tcp:9867 tcp:9867
 // dotnet run --project ..\..\..\Fabulous.Cli\Fabulous.Cli.fsproj -- --eval @out.args
-// dotnet run --project ..\..\..\Fabulous.Cli\Fabulous.Cli.fsproj -- --watch --webhook:http://localhost:9867/update @out.args
+// dotnet run --project ..\..\..\Fabulous.Cli\Fabulous.Cli.fsproj -- --send @out.args
 
 module FSharpDaemon.Driver
 

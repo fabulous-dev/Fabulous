@@ -82,6 +82,17 @@ On Windows:
 .\build Test
 ```
 
+## Dev Notes - Testing LiveUpdte
+
+Use the CounterApp to test.  Here's how to update your (global!) install of the `fabulous-cli` tool:
+
+    dotnet pack src\Fabulous.Cli
+    dotnet tool uninstall --global fabulous-cli  
+    dotnet tool install --global --add-source C:\GitHub\dsyme\Fabulous\src\Fabulous.Cli\bin\Debug\ fabulous-cli
+    fabulous --watch --send
+
+
+
 ## Dev Notes - Releasing
 
 Before releasing a new version, add a new entry at the top of [RELEASE_NOTES.md](RELEASE_NOTES.md) (FAKE will use that version when building).
