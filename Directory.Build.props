@@ -1,9 +1,9 @@
 <Project>
   <!-- NuGet Specs -->
   <PropertyGroup>
-    <Version>0.33.0</Version>
+    <Version>0.32.0</Version>
     <Authors>Fabulous Contributors</Authors>
-    <PackageVersion>0.33.0</PackageVersion>
+    <PackageVersion>0.32.0</PackageVersion>
     <PackageReleaseNotes>[Fabulous.Core] Added better type annotation to make the functions init and update easier to read (https://github.com/fsprojects/Fabulous/pull/313)
 [Template] Added new UWP template (https://github.com/fsprojects/Fabulous/pull/324)
 [Fabulous.Core] Added new helpers to extract data from ViewElement. Helpful for unit testing the views (https://github.com/fsprojects/Fabulous/pull/325)
