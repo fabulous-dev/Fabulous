@@ -16,9 +16,10 @@ At the time of writing this has been trialled with
 
 Some manual set-up is required.  The following assumes your app is called `SqueakyApp`:
 
-1. Install `fabulous-cli` as a global tool
+1. Install or update `fabulous-cli` as a global tool
 
         dotnet tool install -g fabulous-cli
+        dotnet tool update -g fabulous-cli
 
 2. Check your projects have a reference to nuget package `Fabulous.LiveUpdate` for all projects in your app.
    This is the default for apps created with templates 0.13.10 and higher. Do a clean build.
@@ -44,7 +45,7 @@ Some manual set-up is required.  The following assumes your app is called `Squea
 6. Run the following from your core project directory (e.g. `SqueakyApp\SqueakyApp`)
 
         cd SqueakyApp\SqueakyApp
-        fabulous --watch --webhook:http://localhost:9867/update 
+        fabulous --watch --send 
 
 Now, whenever you save a file in your core project directory, the `fabulous` watcher will attempt to recompile your changed file and
 send a representation of its contents to your app via a PUT request to the given webhook.  The app then deserializes this representation and

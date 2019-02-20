@@ -82,6 +82,21 @@ On Windows:
 .\build Test
 ```
 
+## Dev Notes - Testing LiveUpdate
+
+Use the CounterApp to test.  To run the equivalent of the `fabulous` CLI tool use this:
+
+    cd Samples\CounterApp\CounterApp
+    adb -d forward  tcp:9867 tcp:9867
+    dotnet run --project ..\..\..\src\Fabulous.Cli\Fabulous.Cli.fsproj -- --watch --send 
+
+If you want to update your (global!) install of the `fabulous-cli` tool, first bump the version number to avoid clashes, then:
+
+    dotnet pack src\Fabulous.Cli
+    dotnet tool uninstall --global fabulous-cli  
+    dotnet tool install --global --add-source C:\GitHub\dsyme\Fabulous\src\Fabulous.Cli\bin\Debug\ fabulous-cli
+    fabulous --watch --send
+
 ## Dev Notes - Releasing
 
 Before releasing a new version, add a new entry at the top of [RELEASE_NOTES.md](RELEASE_NOTES.md) (FAKE will use that version when building).

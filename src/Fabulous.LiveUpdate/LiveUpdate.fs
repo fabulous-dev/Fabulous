@@ -71,15 +71,24 @@ type BroadcastInfo =
                             elif Device.RuntimePlatform = Device.Android then
                                 printfn "  LiveUpdate: On USB connect using:"
                                 printfn "      adb -d forward  tcp:%d tcp:%d" httpPort httpPort
-                                printfn "      fabulous --watch --webhook:http://localhost:%d/update" httpPort
+                                if httpPort = Ports.DefaultPort then
+                                    printfn "      fabulous --watch --send"
+                                else
+                                    printfn "      fabulous --watch --webhook:http://localhost:%d/update" httpPort
                                 printfn "  "
                                 printfn "  LiveUpdate: On Emulator connect using:"
                                 printfn "      adb -e forward  tcp:%d tcp:%d" httpPort httpPort
-                                printfn "      fabulous --watch --webhook:http://localhost:%d/update" httpPort
+                                if httpPort = Ports.DefaultPort then
+                                    printfn "      fabulous --watch --send"
+                                else
+                                    printfn "      fabulous --watch --webhook:http://localhost:%d/update" httpPort
                             else
                                 printfn "  LiveUpdate: %s is not officially supported" Device.RuntimePlatform 
                                 printfn "  LiveUpdate: You can still try to connect using:" 
-                                printfn "      fabulous --watch --webhook:http://localhost:%d/update" httpPort
+                                if httpPort = Ports.DefaultPort then
+                                    printfn "      fabulous --watch --send"
+                                else
+                                    printfn "      fabulous --watch --webhook:http://localhost:%d/update" httpPort
 
                             printfn "  "
                             printfn "  See https://fsprojects.github.io/Fabulous/tools.html for more details"
@@ -192,7 +201,7 @@ module Extensions =
     let rec tryFindMemberByName name (decls: DDecl[]) = 
         decls |> Array.tryPick (function 
             | DDeclEntity (_, ds) -> tryFindMemberByName name ds 
-            | DDeclMember (membDef, body) -> if membDef.Name = name then Some (membDef, body) else None
+            | DDeclMember (membDef, body, _range) -> if membDef.Name = name then Some (membDef, body) else None
             | _ -> None)
 
     /// Trace all the updates to the console
@@ -255,7 +264,7 @@ module Extensions =
 
                                 printfn "LiveUpdate: evaluating 'program'...."
                                 let entity = interp.ResolveEntity(membDef.EnclosingEntity)
-                                let programObj = interp.GetExprDeclResult(entity, membDef.Name) 
+                                let (_, programObj) = interp.GetExprDeclResult(entity, membDef.Name) 
                                 match getVal programObj with 
                     
                                 | :? Program<obj, obj, obj -> (obj -> unit) -> ViewElement> as programErased -> 

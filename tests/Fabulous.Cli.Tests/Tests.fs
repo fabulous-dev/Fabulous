@@ -3,7 +3,7 @@ namespace FSharpDaemon.Tests
 open System
 open NUnit.Framework
 open FsUnit
-open FSharp.Compiler.PortaCode.Tests // for TestHelpers
+open FSharp.Compiler.PortaCode.Tests.Basic// for TestHelpers
 
 module Versions = 
     let XamarinForms = "3.4.0.1009999"
