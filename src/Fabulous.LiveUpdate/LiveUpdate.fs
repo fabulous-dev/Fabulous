@@ -71,15 +71,24 @@ type BroadcastInfo =
                             elif Device.RuntimePlatform = Device.Android then
                                 printfn "  LiveUpdate: On USB connect using:"
                                 printfn "      adb -d forward  tcp:%d tcp:%d" httpPort httpPort
-                                printfn "      fabulous --watch --webhook:http://localhost:%d/update" httpPort
+                                if httpPort = Ports.DefaultPort then
+                                    printfn "      fabulous --watch --send"
+                                else
+                                    printfn "      fabulous --watch --webhook:http://localhost:%d/update" httpPort
                                 printfn "  "
                                 printfn "  LiveUpdate: On Emulator connect using:"
                                 printfn "      adb -e forward  tcp:%d tcp:%d" httpPort httpPort
-                                printfn "      fabulous --watch --webhook:http://localhost:%d/update" httpPort
+                                if httpPort = Ports.DefaultPort then
+                                    printfn "      fabulous --watch --send"
+                                else
+                                    printfn "      fabulous --watch --webhook:http://localhost:%d/update" httpPort
                             else
                                 printfn "  LiveUpdate: %s is not officially supported" Device.RuntimePlatform 
                                 printfn "  LiveUpdate: You can still try to connect using:" 
-                                printfn "      fabulous --watch --webhook:http://localhost:%d/update" httpPort
+                                if httpPort = Ports.DefaultPort then
+                                    printfn "      fabulous --watch --send"
+                                else
+                                    printfn "      fabulous --watch --webhook:http://localhost:%d/update" httpPort
 
                             printfn "  "
                             printfn "  See https://fsprojects.github.io/Fabulous/tools.html for more details"
