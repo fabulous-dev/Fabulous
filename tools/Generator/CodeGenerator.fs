@@ -75,7 +75,7 @@ module CodeGenerator =
         w
 
     let generateCreateFunction (data: CreateData) (w: StringWriter) =
-        w.printfn "    static member val CreateFunc%s : (unit -> %s) = (fun () -> ViewBuilders.Create%s())" data.Name data.FullName data.Name
+        w.printfn "    static member val CreateFunc%s : (unit -> %s) = (fun () -> ViewBuilders.Create%s()) with get, set" data.Name data.FullName data.Name
         w.printfn ""
         w.printfn "    static member Create%s () : %s =" data.Name data.FullName
 
