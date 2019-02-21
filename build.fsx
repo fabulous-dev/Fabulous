@@ -110,10 +110,10 @@ Target.create "Restore" (fun _ ->
 
 Target.create "FormatBindings" (fun _ ->
     for binding in !! "tools/Generator/*.json" do
-        File.ReadAllText binding
+        File.readAsString binding
         |> JToken.Parse
         |> (fun token -> token.ToString(Formatting.Indented))
-        |> (fun json -> File.WriteAllText(binding, json))
+        |> File.writeString false binding
 )
 
 Target.create "UpdateVersion" (fun _ ->
@@ -139,16 +139,18 @@ Target.create "UpdateVersion" (fun _ ->
         |> File.writeString false template
 )
 
-Target.create "BuildControls" (fun _ ->
-    controls |> buildProject
+Target.create "BuildTools" (fun _ ->
+    let toolProjects = !!"tools/**/*.fsproj"
+    for tool in toolProjects do
+        DotNet.build id tool
 )
 
-Target.create "BuildTools" (fun _ ->
-    tools |> buildProject
+Target.create "BuildControls" (fun _ ->
+    DotNet.build id "src/Fabulous.CustomControls/Fabulous.CustomControls.fsproj"
 )
 
 Target.create "RunGenerator" (fun _ ->
-    DotNet.exec id (tools.OutputPath + "/Generator/Generator.dll") "tools/Generator/Xamarin.Forms.Core.json src/Fabulous.Core/Xamarin.Forms.Core.fs"
+    DotNet.exec id "tools/Generator/bin/Release/netcoreapp2.1/Generator.dll" " tools/Generator/Xamarin.Forms.Core.json src/Fabulous.Core/Xamarin.Forms.Core.fs"
     |> (fun x ->
         match x.OK with
         | true -> ()
@@ -156,38 +158,28 @@ Target.create "RunGenerator" (fun _ ->
     )
 )
 
-Target.create "BuildFabulous" (fun _ -> 
-    projects |> List.iter buildProject
+Target.create "BuildFabulous" (fun _ ->
+    let projects = !!"src/**/*.fsproj"
+                   -- "src/Fabulous.CustomControls/Fabulous.CustomControls.fsproj"
+
+    for project in projects do
+        DotNet.build id project
+)
+
+Target.create "BuildExtensions" (fun _ ->
+    let extensionsProjects = !!"extensions/**/*.fsproj"
+    for project in extensionsProjects do
+        DotNet.build id project
+)
+
+Target.create "RunTests" (fun _ ->
+    let testProjects = !! "tests/**/*.fsproj"
+    for testProject in testProjects do
+        DotNet.test id testProject
 )
 
 Target.create "BuildSamples" (fun _ ->
     samples |> buildProject
-)
-
-Target.create "RunTests" (fun _ ->
-    let setDotNetOptions (projectName:string) : (DotNet.TestOptions-> DotNet.TestOptions) =
-        fun (dotNetTestOptions:DotNet.TestOptions) -> 
-          { dotNetTestOptions with
-              Logger = Some (sprintf "nunit;LogFilePath=%s.xml" (Path.Combine(buildDir, projectName)))
-              ResultsDirectory = Some buildDir
-          }
-    
-    !!("tests/**/*.fsproj")
-    |> Seq.toArray
-    |> Array.Parallel.iter (
-        fun testProject -> 
-          let testprojectName = Path.GetFileName(testProject)
-          DotNet.test (setDotNetOptions testprojectName) testProject
-        )
-    // let testProjects = !! "tests/**/*.fsproj"
-    // for testProject in testProjects do
-    //     let testprojectName = Path.GetFileName(testProject)
-    //     DotNet.test (setDotNetOptions testprojectName) testProject )
-
-    // !! "tests/**/*.fsproj"
-    // |> Seq.iter (fun (testProject) -> 
-    //       let testprojectName = Path.GetFileName(testProject)
-    //       DotNet.test (setDotNetOptions testprojectName) testProject )
 )
 
 Target.create "RunSamplesTests" (fun _ ->
@@ -210,8 +202,8 @@ Target.create "TestTemplatesNuGet" (fun _ ->
     Shell.cleanDir testAppName
 
     let extraArgs =
-        if Environment.isWindows then "--WPF --UWP"
-        elif Environment.isMacOS then "--macOS"
+        if Environment.isWindows then " --WPF --UWP"
+        elif Environment.isMacOS then " --macOS"
         else ""
         
     DotNet.exec id "new fabulous-app" (sprintf "-n %s -lang F# --GTK %s" testAppName extraArgs) |> ignore
@@ -234,26 +226,71 @@ Target.create "TestTemplatesNuGet" (fun _ ->
             if code <> 0 then failwithf "%s %s failed, error code %d" "msbuild" args code
 )
 
-Target.create "Build" ignore
-Target.create "Test" ignore
+Target.create "PackFabulous" (fun _ ->
+    let setParams (options: DotNet.PackOptions) =
+        { options with OutputPath = Some buildDir }
+
+    let projects = !!"src/**/*.fsproj"
+    for project in projects do
+        DotNet.pack setParams project
+)
+
+Target.create "PackExtensions" (fun _ ->
+    let setParams (options: DotNet.PackOptions) =
+        { options with OutputPath = Some buildDir }
+
+    let projects = !!"extensions/**/*.fsproj"
+    for project in projects do
+        DotNet.pack setParams project
+)
+
+Target.create "PackTemplates" (fun _ ->
+    let nuspecs = !!"templates/**/*.nuspec"
+    for nuspec in nuspecs do
+        NuGet.NuGetPack (fun opt ->
+            { opt with
+                WorkingDir = "templates"
+                OutputPath = buildDir
+                Version = release.NugetVersion
+                ReleaseNotes = (String.toLines release.Notes) }) nuspec
+)
+
+Target.create "Prepare" ignore
+Target.create "Main" ignore
+Target.create "Samples" ignore
+Target.create "Pack" ignore
+Target.create "Full" ignore
 
 open Fake.Core.TargetOperators
 
+"FormatBindings"
+  ==> "UpdateVersion"
+  ==> "Prepare"
+
 "Clean"
   ==> "Restore"
-  ==> "FormatBindings"
-  ==> "UpdateVersion"
+  ==> "Prepare"
   ==> "BuildTools"
   ==> "BuildControls"
   ==> "RunGenerator"
   ==> "BuildFabulous"
+  ==> "BuildExtensions"
   ==> "RunTests"
-  ==> "Build"
+  ==> "Main"
 
-"Build"
-  ==> "TestTemplatesNuGet"
+"Main"
   ==> "BuildSamples"
   ==> "RunSamplesTests"
-  ==> "Test"
+  ==> "Samples"
 
-Target.runOrDefault "Build"
+"Samples"
+  ==> "PackFabulous"
+  ==> "PackExtensions"
+  ==> "PackTemplates"
+  ==> "Pack"
+
+"Pack"
+  ==> "TestTemplatesNuGet"
+  ==> "Full"
+
+Target.runOrDefault "Main"

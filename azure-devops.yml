@@ -1,20 +1,36 @@
+# Continuous integration is enabled for master
 trigger:
   batch: true
   branches:
     include:
     - master
+
+# Pull Request build is enabled for all except PRs only updating documentation
 pr:
   paths:
     exclude:
     - README.md
     - docs/*
-phases:
-- phase: Windows
-  displayName: Windows
 
-  condition: succeeded()
-  queue:
-    name: Hosted VS2017
+jobs:
+- job: Windows_BuildOnly
+  displayName: 'Windows (Build only)'
+  pool:
+    vmImage: 'vs2017-win2016'
+  steps:
+  - script: |
+      dotnet tool install --tool-path . fake-cli
+    displayName: 'Install Fake'
+
+  - script: |
+      set PATH=%PATH%;C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin\
+      ./build.cmd
+    displayName: 'Build Fabulous'
+
+- job: Windows
+  displayName: 'Windows (Complete)'
+  pool:
+    vmImage: 'vs2017-win2016'
   steps:
   - script: |
       echo Install fake-cli and GTK#
@@ -24,67 +40,77 @@ phases:
 
   - script: |  
       echo run build script
-      mkdir -p build_output
       set PATH=%PATH%;C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin\
-      ./build.cmd Test
+      ./build.cmd Full
     displayName: 'Build Fabulous'
-  - task: PublishTestResults@1
-    inputs:
-      testResultsFormat: 'NUnit' # Options: JUnit, NUnit, VSTest, xUnit
-      testResultsFiles: 'build_output\*.xml' 
+
   - task: CopyFiles@2
     inputs:
       contents: build_output\*.nupkg
       targetFolder: $(Build.ArtifactStagingDirectory)
+
   - task: PublishBuildArtifacts@1
     inputs:
       pathtoPublish: $(Build.ArtifactStagingDirectory)
       artifactName: Windows-FabulousBuildOutputs
 
-
-- phase: macOS
-  displayName: macOS
-
-  condition: succeeded()
-  queue:
-    name: Hosted macOS
+- job: macOS
+  displayName: 'macOS (Complete)'
+  pool:
+    vmImage: 'macOS-10.13'
   steps:
   - script: |
         echo install fake
         export DOTNET_ROOT=$HOME/.dotnet/
-        export PATH=$PATH:$HOME/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands
         dotnet tool install fake-cli -g
+    displayName: 'Install Fake'
 
+  - script: |
         echo run build script
-        mkdir -p build_output
-        echo $PATH
-        ./build.sh Test
+        export DOTNET_ROOT=$HOME/.dotnet/
+        export PATH=$PATH:$HOME/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands
+        ./build.sh Full
     displayName: 'Build Fabulous'
-  - task: PublishTestResults@1
-    inputs:
-      testResultsFormat: 'NUnit' # Options: JUnit, NUnit, VSTest, xUnit
-      testResultsFiles: 'build_output/*.xml' 
+
   - task: CopyFiles@1
     inputs:
-      contents: build_output/*.nupkg
+      contents: ./build_output/*.nupkg
       targetFolder: $(Build.ArtifactStagingDirectory)
+
   - task: PublishBuildArtifacts@1
     inputs:
       pathtoPublish: $(Build.ArtifactStagingDirectory)
       artifactName: macOS-FabulousBuildOutputs
 
-# - phase: Linux
-#   displayName: Linux
+- job: Linux
+  displayName: 'Linux (Complete)'
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - script: |
+        echo install fake
+        export DOTNET_ROOT=/usr/share/dotnet
+        dotnet tool install fake-cli -g
+    displayName: 'Install Fake'
 
-#   condition: succeeded()
-#   queue:
-#     name: Hosted Ubuntu 1604
-#   steps:
-#   - script: |
-#         echo install fake
-#         export PATH=$PATH:$HOME/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands
-#         dotnet tool install fake-cli -g
-#         echo run build script
-#         mkdir -p build_output
-#         ./build.sh Test
-#     displayName: 'Build Fabulous'
+  - script: |
+        sudo apt-get update
+        sudo apt-get install fsharp
+    displayName: 'Install Fsharp'
+
+  - script: |
+        echo run build script
+        export DOTNET_ROOT=/usr/share/dotnet
+        export PATH=$PATH:$HOME/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands
+        ./build.sh Full
+    displayName: 'Build Fabulous'
+
+  - task: CopyFiles@1
+    inputs:
+      contents: ./build_output/*.nupkg
+      targetFolder: $(Build.ArtifactStagingDirectory)
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: $(Build.ArtifactStagingDirectory)
+      artifactName: linux-FabulousBuildOutputs
