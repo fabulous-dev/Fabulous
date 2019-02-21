@@ -96,7 +96,7 @@ jobs:
   - script: |
         sudo apt-get update
         sudo apt-get install fsharp
-    displayName: 'Install Fsharp'
+    displayName: 'Install F#'
 
   - script: |
         echo run build script

@@ -211,6 +211,7 @@ Target.create "TestTemplatesNuGet" (fun _ ->
     let extraArgs =
         if Environment.isWindows then " --WPF --UWP"
         elif Environment.isMacOS then " --macOS"
+        elif Environment.isLinux then " --Android=false --iOS=false"
         else ""
         
     DotNet.exec id "new fabulous-app" (sprintf "-n %s -lang F# --GTK %s" testAppName extraArgs) |> ignore
