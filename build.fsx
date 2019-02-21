@@ -46,11 +46,11 @@ let removeIncompatiblePlatformProjects pattern =
         
     elif Environment.isWindows then
         pattern
-        -- "samples/**/*.MacOS.fsproj"
+        -- "samples/**/*.macOS.fsproj"
         -- "samples/**/*.iOS.fsproj"
     else    
         pattern
-        -- "samples/**/*.MacOS.fsproj"
+        -- "samples/**/*.macOS.fsproj"
         -- "samples/**/*.iOS.fsproj"
         -- "samples/**/*.WPF.fsproj"
         -- "samples/**/*.UWP.fsproj"
