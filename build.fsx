@@ -54,6 +54,7 @@ let removeIncompatiblePlatformProjects pattern =
         -- "samples/**/*.iOS.fsproj"
         -- "samples/**/*.WPF.fsproj"
         -- "samples/**/*.UWP.fsproj"
+        -- "samples/**/*.Droid.fsproj"
 
 let projects = [
     { Name = "Src";         Path = !! "src/**/*.fsproj";        Action = DotNetPack;         OutputPath = buildDir }
