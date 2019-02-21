@@ -51,9 +51,8 @@ phases:
   steps:
   - script: |
         echo install fake
-        #export DOTNET_ROOT=$HOME/.dotnet/
-        #export PATH=$PATH:$HOME/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands
-        #export PATH=$PATH:$HOME/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands
+        export DOTNET_ROOT=$HOME/.dotnet/
+        export PATH=$PATH:$HOME/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands
         dotnet tool install fake-cli -g
 
         echo run build script
