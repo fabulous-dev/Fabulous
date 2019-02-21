@@ -18,5 +18,5 @@ install:
 script:
   - mkdir -p build_output
   - ./install-xamarin-android-ios.sh
-  - ./build.sh Test
+  - ./build.sh Full
 
