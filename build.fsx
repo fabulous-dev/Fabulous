@@ -39,15 +39,21 @@ let release = ReleaseNotes.load "RELEASE_NOTES.md"
 let buildDir = Path.getFullName "./build_output"
 
 let removeIncompatiblePlatformProjects pattern = 
-    if not Environment.isWindows then
+    if Environment.isMacOS then
         pattern
         -- "samples/**/*.WPF.fsproj"
         -- "samples/**/*.UWP.fsproj"
-    elif not Environment.isMacOS then
+        
+    elif Environment.isWindows then
         pattern
         -- "samples/**/*.MacOS.fsproj"
+        -- "samples/**/*.iOS.fsproj"
     else    
         pattern
+        -- "samples/**/*.MacOS.fsproj"
+        -- "samples/**/*.iOS.fsproj"
+        -- "samples/**/*.WPF.fsproj"
+        -- "samples/**/*.UWP.fsproj"
 
 let projects = [
     { Name = "Src";         Path = !! "src/**/*.fsproj";        Action = DotNetPack;         OutputPath = buildDir }
