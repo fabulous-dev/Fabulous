@@ -1,0 +1,64 @@
+name: build
+
+# Pull Request build is enabled for all except PRs only updating documentation
+pr:
+  paths:
+    exclude:
+    - README.md
+    - docs/*
+
+jobs:
+- job: Windows_BuildOnly
+  displayName: 'Windows (Build only)'
+  pool:
+    vmImage: 'vs2017-win2016'
+  steps:
+  - script: |
+      dotnet tool install --tool-path . fake-cli
+    displayName: 'Install Fake'
+
+  - script: |
+      set PATH=%PATH%;C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin\
+      ./build.cmd
+    displayName: 'Build Fabulous'
+
+- job: macOS
+  displayName: 'macOS (Build only)'
+  pool:
+    vmImage: 'macOS-10.13'
+  steps:
+  - script: |
+        echo install fake
+        export DOTNET_ROOT=$HOME/.dotnet/
+        dotnet tool install fake-cli -g
+    displayName: 'Install Fake'
+
+  - script: |
+        echo run build script
+        export DOTNET_ROOT=$HOME/.dotnet/
+        export PATH=$PATH:$HOME/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands
+        ./build.sh
+    displayName: 'Build Fabulous'
+
+- job: Linux
+  displayName: 'Linux (Build only)'
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - script: |
+        echo install fake
+        export DOTNET_ROOT=/usr/share/dotnet
+        dotnet tool install fake-cli -g
+    displayName: 'Install Fake'
+
+  - script: |
+        sudo apt-get update
+        sudo apt-get install fsharp
+    displayName: 'Install F#'
+
+  - script: |
+        echo run build script
+        export DOTNET_ROOT=/usr/share/dotnet
+        export PATH=$PATH:$HOME/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands
+        ./build.sh
+    displayName: 'Build Fabulous'

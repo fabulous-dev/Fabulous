@@ -1,31 +1,14 @@
+name: full
 # Continuous integration is enabled for master
 trigger:
   batch: true
   branches:
     include:
     - master
-
-# Pull Request build is enabled for all except PRs only updating documentation
-pr:
   paths:
     exclude:
     - README.md
     - docs/*
-
-jobs:
-- job: Windows_BuildOnly
-  displayName: 'Windows (Build only)'
-  pool:
-    vmImage: 'vs2017-win2016'
-  steps:
-  - script: |
-      dotnet tool install --tool-path . fake-cli
-    displayName: 'Install Fake'
-
-  - script: |
-      set PATH=%PATH%;C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin\
-      ./build.cmd
-    displayName: 'Build Fabulous'
 
 - job: Windows
   displayName: 'Windows (Complete)'
