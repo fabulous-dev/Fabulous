@@ -330,7 +330,7 @@ type ViewBuilders() =
         match ref with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ElementViewRefAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncElement : (unit -> Xamarin.Forms.Element) = (fun () -> ViewBuilders.CreateElement())
+    static member val CreateFuncElement : (unit -> Xamarin.Forms.Element) = (fun () -> ViewBuilders.CreateElement()) with get, set
 
     static member CreateElement () : Xamarin.Forms.Element =
         failwith "can't create Xamarin.Forms.Element"
@@ -512,7 +512,7 @@ type ViewBuilders() =
         match unfocused with None -> () | Some v -> attribBuilder.Add(ViewAttributes.UnfocusedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.FocusEventArgs>(fun _sender args -> f args))(v)) 
         attribBuilder
 
-    static member val CreateFuncVisualElement : (unit -> Xamarin.Forms.VisualElement) = (fun () -> ViewBuilders.CreateVisualElement())
+    static member val CreateFuncVisualElement : (unit -> Xamarin.Forms.VisualElement) = (fun () -> ViewBuilders.CreateVisualElement()) with get, set
 
     static member CreateVisualElement () : Xamarin.Forms.VisualElement =
         failwith "can't create Xamarin.Forms.VisualElement"
@@ -992,7 +992,7 @@ type ViewBuilders() =
         match gestureRecognizers with None -> () | Some v -> attribBuilder.Add(ViewAttributes.GestureRecognizersAttribKey, Array.ofList(v)) 
         attribBuilder
 
-    static member val CreateFuncView : (unit -> Xamarin.Forms.View) = (fun () -> ViewBuilders.CreateView())
+    static member val CreateFuncView : (unit -> Xamarin.Forms.View) = (fun () -> ViewBuilders.CreateView()) with get, set
 
     static member CreateView () : Xamarin.Forms.View =
         failwith "can't create Xamarin.Forms.View"
@@ -1144,7 +1144,7 @@ type ViewBuilders() =
         let attribBuilder = new AttributesBuilder(attribCount)
         attribBuilder
 
-    static member val CreateFuncIGestureRecognizer : (unit -> Xamarin.Forms.IGestureRecognizer) = (fun () -> ViewBuilders.CreateIGestureRecognizer())
+    static member val CreateFuncIGestureRecognizer : (unit -> Xamarin.Forms.IGestureRecognizer) = (fun () -> ViewBuilders.CreateIGestureRecognizer()) with get, set
 
     static member CreateIGestureRecognizer () : Xamarin.Forms.IGestureRecognizer =
         failwith "can't create Xamarin.Forms.IGestureRecognizer"
@@ -1181,7 +1181,7 @@ type ViewBuilders() =
         match panUpdated with None -> () | Some v -> attribBuilder.Add(ViewAttributes.PanUpdatedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.PanUpdatedEventArgs>(fun _sender args -> f args))(v)) 
         attribBuilder
 
-    static member val CreateFuncPanGestureRecognizer : (unit -> Xamarin.Forms.PanGestureRecognizer) = (fun () -> ViewBuilders.CreatePanGestureRecognizer())
+    static member val CreateFuncPanGestureRecognizer : (unit -> Xamarin.Forms.PanGestureRecognizer) = (fun () -> ViewBuilders.CreatePanGestureRecognizer()) with get, set
 
     static member CreatePanGestureRecognizer () : Xamarin.Forms.PanGestureRecognizer =
         upcast (new Xamarin.Forms.PanGestureRecognizer())
@@ -1259,7 +1259,7 @@ type ViewBuilders() =
         match numberOfTapsRequired with None -> () | Some v -> attribBuilder.Add(ViewAttributes.NumberOfTapsRequiredAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncTapGestureRecognizer : (unit -> Xamarin.Forms.TapGestureRecognizer) = (fun () -> ViewBuilders.CreateTapGestureRecognizer())
+    static member val CreateFuncTapGestureRecognizer : (unit -> Xamarin.Forms.TapGestureRecognizer) = (fun () -> ViewBuilders.CreateTapGestureRecognizer()) with get, set
 
     static member CreateTapGestureRecognizer () : Xamarin.Forms.TapGestureRecognizer =
         upcast (new Xamarin.Forms.TapGestureRecognizer())
@@ -1339,7 +1339,7 @@ type ViewBuilders() =
         match buttons with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ButtonsAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncClickGestureRecognizer : (unit -> Xamarin.Forms.ClickGestureRecognizer) = (fun () -> ViewBuilders.CreateClickGestureRecognizer())
+    static member val CreateFuncClickGestureRecognizer : (unit -> Xamarin.Forms.ClickGestureRecognizer) = (fun () -> ViewBuilders.CreateClickGestureRecognizer()) with get, set
 
     static member CreateClickGestureRecognizer () : Xamarin.Forms.ClickGestureRecognizer =
         upcast (new Xamarin.Forms.ClickGestureRecognizer())
@@ -1429,7 +1429,7 @@ type ViewBuilders() =
         match pinchUpdated with None -> () | Some v -> attribBuilder.Add(ViewAttributes.PinchUpdatedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.PinchGestureUpdatedEventArgs>(fun _sender args -> f args))(v)) 
         attribBuilder
 
-    static member val CreateFuncPinchGestureRecognizer : (unit -> Xamarin.Forms.PinchGestureRecognizer) = (fun () -> ViewBuilders.CreatePinchGestureRecognizer())
+    static member val CreateFuncPinchGestureRecognizer : (unit -> Xamarin.Forms.PinchGestureRecognizer) = (fun () -> ViewBuilders.CreatePinchGestureRecognizer()) with get, set
 
     static member CreatePinchGestureRecognizer () : Xamarin.Forms.PinchGestureRecognizer =
         upcast (new Xamarin.Forms.PinchGestureRecognizer())
@@ -1513,7 +1513,7 @@ type ViewBuilders() =
         match swiped with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SwipedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.SwipedEventArgs>(fun _sender args -> f args))(v)) 
         attribBuilder
 
-    static member val CreateFuncSwipeGestureRecognizer : (unit -> Xamarin.Forms.SwipeGestureRecognizer) = (fun () -> ViewBuilders.CreateSwipeGestureRecognizer())
+    static member val CreateFuncSwipeGestureRecognizer : (unit -> Xamarin.Forms.SwipeGestureRecognizer) = (fun () -> ViewBuilders.CreateSwipeGestureRecognizer()) with get, set
 
     static member CreateSwipeGestureRecognizer () : Xamarin.Forms.SwipeGestureRecognizer =
         upcast (new Xamarin.Forms.SwipeGestureRecognizer())
@@ -1652,7 +1652,7 @@ type ViewBuilders() =
         match isRunning with None -> () | Some v -> attribBuilder.Add(ViewAttributes.IsRunningAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncActivityIndicator : (unit -> Xamarin.Forms.ActivityIndicator) = (fun () -> ViewBuilders.CreateActivityIndicator())
+    static member val CreateFuncActivityIndicator : (unit -> Xamarin.Forms.ActivityIndicator) = (fun () -> ViewBuilders.CreateActivityIndicator()) with get, set
 
     static member CreateActivityIndicator () : Xamarin.Forms.ActivityIndicator =
         upcast (new Xamarin.Forms.ActivityIndicator())
@@ -1834,7 +1834,7 @@ type ViewBuilders() =
         match cornerRadius with None -> () | Some v -> attribBuilder.Add(ViewAttributes.BoxViewCornerRadiusAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncBoxView : (unit -> Xamarin.Forms.BoxView) = (fun () -> ViewBuilders.CreateBoxView())
+    static member val CreateFuncBoxView : (unit -> Xamarin.Forms.BoxView) = (fun () -> ViewBuilders.CreateBoxView()) with get, set
 
     static member CreateBoxView () : Xamarin.Forms.BoxView =
         upcast (new Xamarin.Forms.BoxView())
@@ -2013,7 +2013,7 @@ type ViewBuilders() =
         match progress with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ProgressAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncProgressBar : (unit -> Xamarin.Forms.ProgressBar) = (fun () -> ViewBuilders.CreateProgressBar())
+    static member val CreateFuncProgressBar : (unit -> Xamarin.Forms.ProgressBar) = (fun () -> ViewBuilders.CreateProgressBar()) with get, set
 
     static member CreateProgressBar () : Xamarin.Forms.ProgressBar =
         upcast (new Xamarin.Forms.ProgressBar())
@@ -2182,7 +2182,7 @@ type ViewBuilders() =
         match padding with None -> () | Some v -> attribBuilder.Add(ViewAttributes.PaddingAttribKey, makeThickness(v)) 
         attribBuilder
 
-    static member val CreateFuncLayout : (unit -> Xamarin.Forms.Layout) = (fun () -> ViewBuilders.CreateLayout())
+    static member val CreateFuncLayout : (unit -> Xamarin.Forms.Layout) = (fun () -> ViewBuilders.CreateLayout()) with get, set
 
     static member CreateLayout () : Xamarin.Forms.Layout =
         failwith "can't create Xamarin.Forms.Layout"
@@ -2378,7 +2378,7 @@ type ViewBuilders() =
         match scrolled with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ScrolledAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ScrolledEventArgs>(fun _sender args -> f args))(v)) 
         attribBuilder
 
-    static member val CreateFuncScrollView : (unit -> Xamarin.Forms.ScrollView) = (fun () -> ViewBuilders.CreateScrollView())
+    static member val CreateFuncScrollView : (unit -> Xamarin.Forms.ScrollView) = (fun () -> ViewBuilders.CreateScrollView()) with get, set
 
     static member CreateScrollView () : Xamarin.Forms.ScrollView =
         upcast (new Xamarin.Forms.ScrollView())
@@ -2648,7 +2648,7 @@ type ViewBuilders() =
         match textChanged with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SearchBarTextChangedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))(v)) 
         attribBuilder
 
-    static member val CreateFuncSearchBar : (unit -> Xamarin.Forms.SearchBar) = (fun () -> ViewBuilders.CreateSearchBar())
+    static member val CreateFuncSearchBar : (unit -> Xamarin.Forms.SearchBar) = (fun () -> ViewBuilders.CreateSearchBar()) with get, set
 
     static member CreateSearchBar () : Xamarin.Forms.SearchBar =
         upcast (new Xamarin.Forms.SearchBar())
@@ -2989,7 +2989,7 @@ type ViewBuilders() =
         match padding with None -> () | Some v -> attribBuilder.Add(ViewAttributes.PaddingAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncButton : (unit -> Xamarin.Forms.Button) = (fun () -> ViewBuilders.CreateButton())
+    static member val CreateFuncButton : (unit -> Xamarin.Forms.Button) = (fun () -> ViewBuilders.CreateButton()) with get, set
 
     static member CreateButton () : Xamarin.Forms.Button =
         upcast (new Xamarin.Forms.Button())
@@ -3322,7 +3322,7 @@ type ViewBuilders() =
         match valueChanged with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ValueChangedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>(fun _sender args -> f args))(v)) 
         attribBuilder
 
-    static member val CreateFuncSlider : (unit -> Xamarin.Forms.Slider) = (fun () -> ViewBuilders.CreateSlider())
+    static member val CreateFuncSlider : (unit -> Xamarin.Forms.Slider) = (fun () -> ViewBuilders.CreateSlider()) with get, set
 
     static member CreateSlider () : Xamarin.Forms.Slider =
         upcast (new Xamarin.Forms.Slider())
@@ -3520,7 +3520,7 @@ type ViewBuilders() =
         match valueChanged with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ValueChangedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>(fun _sender args -> f args))(v)) 
         attribBuilder
 
-    static member val CreateFuncStepper : (unit -> Xamarin.Forms.Stepper) = (fun () -> ViewBuilders.CreateStepper())
+    static member val CreateFuncStepper : (unit -> Xamarin.Forms.Stepper) = (fun () -> ViewBuilders.CreateStepper()) with get, set
 
     static member CreateStepper () : Xamarin.Forms.Stepper =
         upcast (new Xamarin.Forms.Stepper())
@@ -3728,7 +3728,7 @@ type ViewBuilders() =
         match onColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.OnColorAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncSwitch : (unit -> Xamarin.Forms.Switch) = (fun () -> ViewBuilders.CreateSwitch())
+    static member val CreateFuncSwitch : (unit -> Xamarin.Forms.Switch) = (fun () -> ViewBuilders.CreateSwitch()) with get, set
 
     static member CreateSwitch () : Xamarin.Forms.Switch =
         upcast (new Xamarin.Forms.Switch())
@@ -3889,7 +3889,7 @@ type ViewBuilders() =
         match isEnabled with None -> () | Some v -> attribBuilder.Add(ViewAttributes.IsEnabledAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncCell : (unit -> Xamarin.Forms.Cell) = (fun () -> ViewBuilders.CreateCell())
+    static member val CreateFuncCell : (unit -> Xamarin.Forms.Cell) = (fun () -> ViewBuilders.CreateCell()) with get, set
 
     static member CreateCell () : Xamarin.Forms.Cell =
         failwith "can't create Xamarin.Forms.Cell"
@@ -3971,7 +3971,7 @@ type ViewBuilders() =
         match onChanged with None -> () | Some v -> attribBuilder.Add(ViewAttributes.OnChangedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ToggledEventArgs>(fun _sender args -> f args))(v)) 
         attribBuilder
 
-    static member val CreateFuncSwitchCell : (unit -> Xamarin.Forms.SwitchCell) = (fun () -> ViewBuilders.CreateSwitchCell())
+    static member val CreateFuncSwitchCell : (unit -> Xamarin.Forms.SwitchCell) = (fun () -> ViewBuilders.CreateSwitchCell()) with get, set
 
     static member CreateSwitchCell () : Xamarin.Forms.SwitchCell =
         upcast (new Xamarin.Forms.SwitchCell())
@@ -4107,7 +4107,7 @@ type ViewBuilders() =
         match items with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TableRootAttribKey, (fun es -> es |> Array.ofList |> Array.map (fun (title, es) -> (title, Array.ofList es)))(v)) 
         attribBuilder
 
-    static member val CreateFuncTableView : (unit -> Xamarin.Forms.TableView) = (fun () -> ViewBuilders.CreateTableView())
+    static member val CreateFuncTableView : (unit -> Xamarin.Forms.TableView) = (fun () -> ViewBuilders.CreateTableView()) with get, set
 
     static member CreateTableView () : Xamarin.Forms.TableView =
         upcast (new Xamarin.Forms.TableView())
@@ -4268,7 +4268,7 @@ type ViewBuilders() =
         match height with None -> () | Some v -> attribBuilder.Add(ViewAttributes.RowDefinitionHeightAttribKey, makeGridLength(v)) 
         attribBuilder
 
-    static member val CreateFuncRowDefinition : (unit -> Xamarin.Forms.RowDefinition) = (fun () -> ViewBuilders.CreateRowDefinition())
+    static member val CreateFuncRowDefinition : (unit -> Xamarin.Forms.RowDefinition) = (fun () -> ViewBuilders.CreateRowDefinition()) with get, set
 
     static member CreateRowDefinition () : Xamarin.Forms.RowDefinition =
         upcast (new Xamarin.Forms.RowDefinition())
@@ -4311,7 +4311,7 @@ type ViewBuilders() =
         match width with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ColumnDefinitionWidthAttribKey, makeGridLength(v)) 
         attribBuilder
 
-    static member val CreateFuncColumnDefinition : (unit -> Xamarin.Forms.ColumnDefinition) = (fun () -> ViewBuilders.CreateColumnDefinition())
+    static member val CreateFuncColumnDefinition : (unit -> Xamarin.Forms.ColumnDefinition) = (fun () -> ViewBuilders.CreateColumnDefinition()) with get, set
 
     static member CreateColumnDefinition () : Xamarin.Forms.ColumnDefinition =
         upcast (new Xamarin.Forms.ColumnDefinition())
@@ -4408,7 +4408,7 @@ type ViewBuilders() =
         match children with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ChildrenAttribKey, Array.ofList(v)) 
         attribBuilder
 
-    static member val CreateFuncGrid : (unit -> Xamarin.Forms.Grid) = (fun () -> ViewBuilders.CreateGrid())
+    static member val CreateFuncGrid : (unit -> Xamarin.Forms.Grid) = (fun () -> ViewBuilders.CreateGrid()) with get, set
 
     static member CreateGrid () : Xamarin.Forms.Grid =
         upcast (new Xamarin.Forms.Grid())
@@ -4665,7 +4665,7 @@ type ViewBuilders() =
         match children with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ChildrenAttribKey, Array.ofList(v)) 
         attribBuilder
 
-    static member val CreateFuncAbsoluteLayout : (unit -> Xamarin.Forms.AbsoluteLayout) = (fun () -> ViewBuilders.CreateAbsoluteLayout())
+    static member val CreateFuncAbsoluteLayout : (unit -> Xamarin.Forms.AbsoluteLayout) = (fun () -> ViewBuilders.CreateAbsoluteLayout()) with get, set
 
     static member CreateAbsoluteLayout () : Xamarin.Forms.AbsoluteLayout =
         upcast (new Xamarin.Forms.AbsoluteLayout())
@@ -4854,7 +4854,7 @@ type ViewBuilders() =
         match children with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ChildrenAttribKey, Array.ofList(v)) 
         attribBuilder
 
-    static member val CreateFuncRelativeLayout : (unit -> Xamarin.Forms.RelativeLayout) = (fun () -> ViewBuilders.CreateRelativeLayout())
+    static member val CreateFuncRelativeLayout : (unit -> Xamarin.Forms.RelativeLayout) = (fun () -> ViewBuilders.CreateRelativeLayout()) with get, set
 
     static member CreateRelativeLayout () : Xamarin.Forms.RelativeLayout =
         upcast (new Xamarin.Forms.RelativeLayout())
@@ -5085,7 +5085,7 @@ type ViewBuilders() =
         match children with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ChildrenAttribKey, Array.ofList(v)) 
         attribBuilder
 
-    static member val CreateFuncFlexLayout : (unit -> Xamarin.Forms.FlexLayout) = (fun () -> ViewBuilders.CreateFlexLayout())
+    static member val CreateFuncFlexLayout : (unit -> Xamarin.Forms.FlexLayout) = (fun () -> ViewBuilders.CreateFlexLayout()) with get, set
 
     static member CreateFlexLayout () : Xamarin.Forms.FlexLayout =
         upcast (new Xamarin.Forms.FlexLayout())
@@ -5371,7 +5371,7 @@ type ViewBuilders() =
         let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         attribBuilder
 
-    static member val CreateFuncTemplatedView : (unit -> Xamarin.Forms.TemplatedView) = (fun () -> ViewBuilders.CreateTemplatedView())
+    static member val CreateFuncTemplatedView : (unit -> Xamarin.Forms.TemplatedView) = (fun () -> ViewBuilders.CreateTemplatedView()) with get, set
 
     static member CreateTemplatedView () : Xamarin.Forms.TemplatedView =
         upcast (new Xamarin.Forms.TemplatedView())
@@ -5528,7 +5528,7 @@ type ViewBuilders() =
         match content with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ContentAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncContentView : (unit -> Xamarin.Forms.ContentView) = (fun () -> ViewBuilders.CreateContentView())
+    static member val CreateFuncContentView : (unit -> Xamarin.Forms.ContentView) = (fun () -> ViewBuilders.CreateContentView()) with get, set
 
     static member CreateContentView () : Xamarin.Forms.ContentView =
         upcast (new Xamarin.Forms.ContentView())
@@ -5715,7 +5715,7 @@ type ViewBuilders() =
         match dateSelected with None -> () | Some v -> attribBuilder.Add(ViewAttributes.DateSelectedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.DateChangedEventArgs>(fun _sender args -> f args))(v)) 
         attribBuilder
 
-    static member val CreateFuncDatePicker : (unit -> Xamarin.Forms.DatePicker) = (fun () -> ViewBuilders.CreateDatePicker())
+    static member val CreateFuncDatePicker : (unit -> Xamarin.Forms.DatePicker) = (fun () -> ViewBuilders.CreateDatePicker()) with get, set
 
     static member CreateDatePicker () : Xamarin.Forms.DatePicker =
         upcast (new Xamarin.Forms.DatePicker())
@@ -5946,7 +5946,7 @@ type ViewBuilders() =
         match selectedIndexChanged with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SelectedIndexChangedAttribKey, (fun f -> System.EventHandler(fun sender args -> let picker = (sender :?> Xamarin.Forms.Picker) in f (picker.SelectedIndex, (picker.SelectedItem |> Option.ofObj |> Option.map unbox<'T>))))(v)) 
         attribBuilder
 
-    static member val CreateFuncPicker : (unit -> Xamarin.Forms.Picker) = (fun () -> ViewBuilders.CreatePicker())
+    static member val CreateFuncPicker : (unit -> Xamarin.Forms.Picker) = (fun () -> ViewBuilders.CreatePicker()) with get, set
 
     static member CreatePicker () : Xamarin.Forms.Picker =
         upcast (new Xamarin.Forms.Picker())
@@ -6174,7 +6174,7 @@ type ViewBuilders() =
         match hasShadow with None -> () | Some v -> attribBuilder.Add(ViewAttributes.HasShadowAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncFrame : (unit -> Xamarin.Forms.Frame) = (fun () -> ViewBuilders.CreateFrame())
+    static member val CreateFuncFrame : (unit -> Xamarin.Forms.Frame) = (fun () -> ViewBuilders.CreateFrame()) with get, set
 
     static member CreateFrame () : Xamarin.Forms.Frame =
         upcast (new Xamarin.Forms.Frame())
@@ -6378,7 +6378,7 @@ type ViewBuilders() =
         match isOpaque with None -> () | Some v -> attribBuilder.Add(ViewAttributes.IsOpaqueAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncImage : (unit -> Xamarin.Forms.Image) = (fun () -> ViewBuilders.CreateImage())
+    static member val CreateFuncImage : (unit -> Xamarin.Forms.Image) = (fun () -> ViewBuilders.CreateImage()) with get, set
 
     static member CreateImage () : Xamarin.Forms.Image =
         upcast (new Xamarin.Forms.Image())
@@ -6600,7 +6600,7 @@ type ViewBuilders() =
         match released with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ReleasedAttribKey, (fun f -> System.EventHandler(fun _sender args -> f args))(v)) 
         attribBuilder
 
-    static member val CreateFuncImageButton : (unit -> Xamarin.Forms.ImageButton) = (fun () -> ViewBuilders.CreateImageButton())
+    static member val CreateFuncImageButton : (unit -> Xamarin.Forms.ImageButton) = (fun () -> ViewBuilders.CreateImageButton()) with get, set
 
     static member CreateImageButton () : Xamarin.Forms.ImageButton =
         upcast (new Xamarin.Forms.ImageButton())
@@ -6895,7 +6895,7 @@ type ViewBuilders() =
         match keyboard with None -> () | Some v -> attribBuilder.Add(ViewAttributes.KeyboardAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncInputView : (unit -> Xamarin.Forms.InputView) = (fun () -> ViewBuilders.CreateInputView())
+    static member val CreateFuncInputView : (unit -> Xamarin.Forms.InputView) = (fun () -> ViewBuilders.CreateInputView()) with get, set
 
     static member CreateInputView () : Xamarin.Forms.InputView =
         failwith "can't create Xamarin.Forms.InputView"
@@ -7089,7 +7089,7 @@ type ViewBuilders() =
         match placeholderColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.PlaceholderColorAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncEditor : (unit -> Xamarin.Forms.Editor) = (fun () -> ViewBuilders.CreateEditor())
+    static member val CreateFuncEditor : (unit -> Xamarin.Forms.Editor) = (fun () -> ViewBuilders.CreateEditor()) with get, set
 
     static member CreateEditor () : Xamarin.Forms.Editor =
         upcast (new Xamarin.Forms.Editor())
@@ -7422,7 +7422,7 @@ type ViewBuilders() =
         match selectionLength with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SelectionLengthAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncEntry : (unit -> Xamarin.Forms.Entry) = (fun () -> ViewBuilders.CreateEntry())
+    static member val CreateFuncEntry : (unit -> Xamarin.Forms.Entry) = (fun () -> ViewBuilders.CreateEntry()) with get, set
 
     static member CreateEntry () : Xamarin.Forms.Entry =
         upcast (new Xamarin.Forms.Entry())
@@ -7764,7 +7764,7 @@ type ViewBuilders() =
         match textChanged with None -> () | Some v -> attribBuilder.Add(ViewAttributes.EntryCellTextChangedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))(v)) 
         attribBuilder
 
-    static member val CreateFuncEntryCell : (unit -> Fabulous.CustomControls.CustomEntryCell) = (fun () -> ViewBuilders.CreateEntryCell())
+    static member val CreateFuncEntryCell : (unit -> Fabulous.CustomControls.CustomEntryCell) = (fun () -> ViewBuilders.CreateEntryCell()) with get, set
 
     static member CreateEntryCell () : Fabulous.CustomControls.CustomEntryCell =
         upcast (new Fabulous.CustomControls.CustomEntryCell())
@@ -7977,7 +7977,7 @@ type ViewBuilders() =
         match textDecorations with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextDecorationsAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncLabel : (unit -> Xamarin.Forms.Label) = (fun () -> ViewBuilders.CreateLabel())
+    static member val CreateFuncLabel : (unit -> Xamarin.Forms.Label) = (fun () -> ViewBuilders.CreateLabel()) with get, set
 
     static member CreateLabel () : Xamarin.Forms.Label =
         upcast (new Xamarin.Forms.Label())
@@ -8299,7 +8299,7 @@ type ViewBuilders() =
         match spacing with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SpacingAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncStackLayout : (unit -> Xamarin.Forms.StackLayout) = (fun () -> ViewBuilders.CreateStackLayout())
+    static member val CreateFuncStackLayout : (unit -> Xamarin.Forms.StackLayout) = (fun () -> ViewBuilders.CreateStackLayout()) with get, set
 
     static member CreateStackLayout () : Xamarin.Forms.StackLayout =
         upcast (new Xamarin.Forms.StackLayout())
@@ -8484,7 +8484,7 @@ type ViewBuilders() =
         match textDecorations with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextDecorationsAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncSpan : (unit -> Xamarin.Forms.Span) = (fun () -> ViewBuilders.CreateSpan())
+    static member val CreateFuncSpan : (unit -> Xamarin.Forms.Span) = (fun () -> ViewBuilders.CreateSpan()) with get, set
 
     static member CreateSpan () : Xamarin.Forms.Span =
         upcast (new Xamarin.Forms.Span())
@@ -8650,7 +8650,7 @@ type ViewBuilders() =
         match spans with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SpansAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncFormattedString : (unit -> Xamarin.Forms.FormattedString) = (fun () -> ViewBuilders.CreateFormattedString())
+    static member val CreateFuncFormattedString : (unit -> Xamarin.Forms.FormattedString) = (fun () -> ViewBuilders.CreateFormattedString()) with get, set
 
     static member CreateFormattedString () : Xamarin.Forms.FormattedString =
         upcast (new Xamarin.Forms.FormattedString())
@@ -8752,7 +8752,7 @@ type ViewBuilders() =
         match textColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextColorAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncTimePicker : (unit -> Xamarin.Forms.TimePicker) = (fun () -> ViewBuilders.CreateTimePicker())
+    static member val CreateFuncTimePicker : (unit -> Xamarin.Forms.TimePicker) = (fun () -> ViewBuilders.CreateTimePicker()) with get, set
 
     static member CreateTimePicker () : Xamarin.Forms.TimePicker =
         upcast (new Xamarin.Forms.TimePicker())
@@ -8956,7 +8956,7 @@ type ViewBuilders() =
         match reloadRequested with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ReloadRequestedAttribKey, (fun f -> System.EventHandler(fun _sender args -> f args))(v)) 
         attribBuilder
 
-    static member val CreateFuncWebView : (unit -> Xamarin.Forms.WebView) = (fun () -> ViewBuilders.CreateWebView())
+    static member val CreateFuncWebView : (unit -> Xamarin.Forms.WebView) = (fun () -> ViewBuilders.CreateWebView()) with get, set
 
     static member CreateWebView () : Xamarin.Forms.WebView =
         upcast (new Xamarin.Forms.WebView())
@@ -9196,7 +9196,7 @@ type ViewBuilders() =
         match layoutChanged with None -> () | Some v -> attribBuilder.Add(ViewAttributes.Page_LayoutChangedAttribKey, (fun f -> System.EventHandler(fun _sender _args -> f ()))(v)) 
         attribBuilder
 
-    static member val CreateFuncPage : (unit -> Xamarin.Forms.Page) = (fun () -> ViewBuilders.CreatePage())
+    static member val CreateFuncPage : (unit -> Xamarin.Forms.Page) = (fun () -> ViewBuilders.CreatePage()) with get, set
 
     static member CreatePage () : Xamarin.Forms.Page =
         upcast (new Xamarin.Forms.Page())
@@ -9482,7 +9482,7 @@ type ViewBuilders() =
         match currentPageChanged with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CarouselPage_CurrentPageChangedAttribKey, makeCurrentPageChanged<Xamarin.Forms.ContentPage>(v)) 
         attribBuilder
 
-    static member val CreateFuncCarouselPage : (unit -> Xamarin.Forms.CarouselPage) = (fun () -> ViewBuilders.CreateCarouselPage())
+    static member val CreateFuncCarouselPage : (unit -> Xamarin.Forms.CarouselPage) = (fun () -> ViewBuilders.CreateCarouselPage()) with get, set
 
     static member CreateCarouselPage () : Xamarin.Forms.CarouselPage =
         upcast (new Xamarin.Forms.CarouselPage())
@@ -9704,7 +9704,7 @@ type ViewBuilders() =
         match pushed with None -> () | Some v -> attribBuilder.Add(ViewAttributes.PushedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(v)) 
         attribBuilder
 
-    static member val CreateFuncNavigationPage : (unit -> Xamarin.Forms.NavigationPage) = (fun () -> ViewBuilders.CreateNavigationPage())
+    static member val CreateFuncNavigationPage : (unit -> Xamarin.Forms.NavigationPage) = (fun () -> ViewBuilders.CreateNavigationPage()) with get, set
 
     static member CreateNavigationPage () : Xamarin.Forms.NavigationPage =
         upcast (new Xamarin.Forms.NavigationPage())
@@ -10002,7 +10002,7 @@ type ViewBuilders() =
         match currentPageChanged with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TabbedPage_CurrentPageChangedAttribKey, makeCurrentPageChanged<Xamarin.Forms.Page>(v)) 
         attribBuilder
 
-    static member val CreateFuncTabbedPage : (unit -> Xamarin.Forms.TabbedPage) = (fun () -> ViewBuilders.CreateTabbedPage())
+    static member val CreateFuncTabbedPage : (unit -> Xamarin.Forms.TabbedPage) = (fun () -> ViewBuilders.CreateTabbedPage()) with get, set
 
     static member CreateTabbedPage () : Xamarin.Forms.TabbedPage =
         upcast (new Xamarin.Forms.TabbedPage())
@@ -10238,7 +10238,7 @@ type ViewBuilders() =
         match onSizeAllocated with None -> () | Some v -> attribBuilder.Add(ViewAttributes.OnSizeAllocatedCallbackAttribKey, (fun f -> FSharp.Control.Handler<_>(fun _sender args -> f args))(v)) 
         attribBuilder
 
-    static member val CreateFuncContentPage : (unit -> Xamarin.Forms.ContentPage) = (fun () -> ViewBuilders.CreateContentPage())
+    static member val CreateFuncContentPage : (unit -> Xamarin.Forms.ContentPage) = (fun () -> ViewBuilders.CreateContentPage()) with get, set
 
     static member CreateContentPage () : Xamarin.Forms.ContentPage =
         upcast (new Fabulous.DynamicViews.CustomContentPage())
@@ -10451,7 +10451,7 @@ type ViewBuilders() =
         match isPresentedChanged with None -> () | Some v -> attribBuilder.Add(ViewAttributes.IsPresentedChangedAttribKey, (fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.MasterDetailPage).IsPresented))(v)) 
         attribBuilder
 
-    static member val CreateFuncMasterDetailPage : (unit -> Xamarin.Forms.MasterDetailPage) = (fun () -> ViewBuilders.CreateMasterDetailPage())
+    static member val CreateFuncMasterDetailPage : (unit -> Xamarin.Forms.MasterDetailPage) = (fun () -> ViewBuilders.CreateMasterDetailPage()) with get, set
 
     static member CreateMasterDetailPage () : Xamarin.Forms.MasterDetailPage =
         upcast (new Xamarin.Forms.MasterDetailPage())
@@ -10682,7 +10682,7 @@ type ViewBuilders() =
         match accelerator with None -> () | Some v -> attribBuilder.Add(ViewAttributes.AcceleratorAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncMenuItem : (unit -> Xamarin.Forms.MenuItem) = (fun () -> ViewBuilders.CreateMenuItem())
+    static member val CreateFuncMenuItem : (unit -> Xamarin.Forms.MenuItem) = (fun () -> ViewBuilders.CreateMenuItem()) with get, set
 
     static member CreateMenuItem () : Xamarin.Forms.MenuItem =
         upcast (new Xamarin.Forms.MenuItem())
@@ -10811,7 +10811,7 @@ type ViewBuilders() =
         match commandParameter with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CommandParameterAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncTextCell : (unit -> Xamarin.Forms.TextCell) = (fun () -> ViewBuilders.CreateTextCell())
+    static member val CreateFuncTextCell : (unit -> Xamarin.Forms.TextCell) = (fun () -> ViewBuilders.CreateTextCell()) with get, set
 
     static member CreateTextCell () : Xamarin.Forms.TextCell =
         upcast (new Xamarin.Forms.TextCell())
@@ -10954,7 +10954,7 @@ type ViewBuilders() =
         match priority with None -> () | Some v -> attribBuilder.Add(ViewAttributes.PriorityAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncToolbarItem : (unit -> Xamarin.Forms.ToolbarItem) = (fun () -> ViewBuilders.CreateToolbarItem())
+    static member val CreateFuncToolbarItem : (unit -> Xamarin.Forms.ToolbarItem) = (fun () -> ViewBuilders.CreateToolbarItem()) with get, set
 
     static member CreateToolbarItem () : Xamarin.Forms.ToolbarItem =
         upcast (new Xamarin.Forms.ToolbarItem())
@@ -11047,7 +11047,7 @@ type ViewBuilders() =
         match imageSource with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ImageSourceAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncImageCell : (unit -> Xamarin.Forms.ImageCell) = (fun () -> ViewBuilders.CreateImageCell())
+    static member val CreateFuncImageCell : (unit -> Xamarin.Forms.ImageCell) = (fun () -> ViewBuilders.CreateImageCell()) with get, set
 
     static member CreateImageCell () : Xamarin.Forms.ImageCell =
         upcast (new Xamarin.Forms.ImageCell())
@@ -11128,7 +11128,7 @@ type ViewBuilders() =
         match view with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ViewAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncViewCell : (unit -> Xamarin.Forms.ViewCell) = (fun () -> ViewBuilders.CreateViewCell())
+    static member val CreateFuncViewCell : (unit -> Xamarin.Forms.ViewCell) = (fun () -> ViewBuilders.CreateViewCell()) with get, set
 
     static member CreateViewCell () : Xamarin.Forms.ViewCell =
         upcast (new Xamarin.Forms.ViewCell())
@@ -11287,7 +11287,7 @@ type ViewBuilders() =
         match selectionMode with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SelectionModeAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncListView : (unit -> Xamarin.Forms.ListView) = (fun () -> ViewBuilders.CreateListView())
+    static member val CreateFuncListView : (unit -> Xamarin.Forms.ListView) = (fun () -> ViewBuilders.CreateListView()) with get, set
 
     static member CreateListView () : Xamarin.Forms.ListView =
         upcast (new Fabulous.DynamicViews.CustomListView())
@@ -11739,7 +11739,7 @@ type ViewBuilders() =
         match selectionMode with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SelectionModeAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncListViewGrouped : (unit -> Xamarin.Forms.ListView) = (fun () -> ViewBuilders.CreateListViewGrouped())
+    static member val CreateFuncListViewGrouped : (unit -> Xamarin.Forms.ListView) = (fun () -> ViewBuilders.CreateListViewGrouped()) with get, set
 
     static member CreateListViewGrouped () : Xamarin.Forms.ListView =
         upcast (new Fabulous.DynamicViews.CustomGroupListView())

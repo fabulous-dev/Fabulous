@@ -215,6 +215,21 @@ need not be added, you can set them on elements using the helper `With`, usable 
 View.Map(hasZoomEnabled = true, hasScrollEnabled = true).With(horizontalOptions = LayoutOptions.FillAndExpand)
 ```
 
+### Example: MasterDetailPage without a toolbar on UWP with custom ViewBuilders
+
+Fabulous uses ViewBuilders to create the underlying Xamarin.Forms classes. Customizing ViewBuilders is not the recommended way for custom controls but it is a great solution for overridden controls like in the following example:
+
+```fsharp
+type MasterDetailPageWithoutToolbar() =
+    inherit Xamarin.Forms.MasterDetailPage()
+    override __.ShouldShowToolbarButton() = false
+
+Fabulous.DynamicViews.ViewBuilders.CreateFuncMasterDetailPage <- fun () ->
+    upcast(new MasterDetailPageWithoutToolbar())
+
+View.MasterDetailPage() // this now uses MasterDetailPageWithoutToolbar
+```
+
 See also:
 
 * [Core Elements](views-elements.md)
