@@ -10,6 +10,7 @@ trigger:
     - README.md
     - docs/*
 
+jobs:
 - job: Windows
   displayName: 'Windows (Complete)'
   pool:
