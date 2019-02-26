@@ -10,6 +10,8 @@ trigger:
     - README.md
     - docs/*
 
+pr: none
+
 jobs:
 - job: Windows
   displayName: 'Windows (Complete)'
