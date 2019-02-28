@@ -286,6 +286,8 @@ module Converters =
                     targetColl.RemoveAt (targetColl.Count - 1)
 
                 // Count the existing targetColl
+                // Unused variable n' introduced as a temporary workaround for https://github.com/fsprojects/Fabulous/issues/343
+                let n' = targetColl.Count
                 let n = targetColl.Count
 
                 // Adjust the existing targetColl and create the new targetColl
