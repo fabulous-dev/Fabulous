@@ -11466,7 +11466,7 @@ type ViewBuilders() =
         | ValueNone, ValueNone -> ()
         match prevListView_SelectedItemOpt, currListView_SelectedItemOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.SelectedItem <- (function None -> null | Some i -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListElementData<ViewElement>> in if i >= 0 && i < items.Count then items.[i] else null) currValue
+        | _, ValueSome currValue -> target.SelectedItem <- (function None -> null | Some i -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListElementData> in if i >= 0 && i < items.Count then items.[i] else null) currValue
         | ValueSome _, ValueNone -> target.SelectedItem <- null
         | ValueNone, ValueNone -> ()
         match prevListView_SeparatorVisibilityOpt, currListView_SeparatorVisibilityOpt with
@@ -11903,7 +11903,7 @@ type ViewBuilders() =
         | ValueNone, ValueNone -> ()
         match prevListViewGrouped_SelectedItemOpt, currListViewGrouped_SelectedItemOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.SelectedItem <- (function None -> null | Some (i,j) -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListGroupData<ViewElement>> in (if i >= 0 && i < items.Count then (let items2 = items.[i] in if j >= 0 && j < items2.Count then items2.[j] else null) else null)) currValue
+        | _, ValueSome currValue -> target.SelectedItem <- (function None -> null | Some (i,j) -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListGroupData> in (if i >= 0 && i < items.Count then (let items2 = items.[i] in if j >= 0 && j < items2.Count then items2.[j] else null) else null)) currValue
         | ValueSome _, ValueNone -> target.SelectedItem <- null
         | ValueNone, ValueNone -> ()
         match prevSeparatorVisibilityOpt, currSeparatorVisibilityOpt with
