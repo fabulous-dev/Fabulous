@@ -5,7 +5,6 @@ namespace Fabulous.DynamicViews
 open System
 open System.Collections.Generic
 open System.ComponentModel
-open System.Reflection
 open System.IO
 open System.Windows.Input
 open Xamarin.Forms
@@ -23,16 +22,16 @@ type AnimationKind =
 [<AllowNullLiteral>]
 type IListElement = 
     inherit INotifyPropertyChanged
-    abstract Key : obj
+    abstract Key : ViewElement
 
 /// A custom data element for the ListView view element
 [<AllowNullLiteral>]
-type ListElementData<'T>(key:'T) = 
+type ListElementData(key) = 
     let ev = new Event<_,_>()
     let mutable data = key
     
     interface IListElement with
-        member x.Key = box data
+        member x.Key = data
         [<CLIEvent>] member x.PropertyChanged = ev.Publish
         
     member x.Key
@@ -43,15 +42,15 @@ type ListElementData<'T>(key:'T) =
 
 /// A custom data element for the GroupedListView view element
 [<AllowNullLiteral>]
-type ListGroupData<'T>(shortName: string, key:'T, coll: 'T[]) = 
-    inherit System.Collections.ObjectModel.ObservableCollection<ListElementData<'T>>(Seq.map ListElementData coll)
+type ListGroupData(shortName: string, key, coll: ViewElement[]) = 
+    inherit System.Collections.ObjectModel.ObservableCollection<ListElementData>(Seq.map ListElementData coll)
     
     let ev = new Event<_,_>()
     let mutable shortNameData = shortName
     let mutable keyData = key
     
     interface IListElement with
-        member x.Key = box keyData
+        member x.Key = keyData
         [<CLIEvent>] member x.PropertyChanged = ev.Publish
         
     member x.Key
@@ -73,24 +72,17 @@ type ViewElementCell() =
     inherit ViewCell()
 
     let mutable listElementOpt : IListElement option = None
-    let mutable modelOpt : obj option = None
+    let mutable modelOpt : ViewElement option = None
     
-    let createView newModel =
-        let ty = newModel.GetType()
-        let res = ty.InvokeMember("Create",(BindingFlags.InvokeMethod ||| BindingFlags.Public ||| BindingFlags.Instance), null, newModel, [| |] )
-        match res with 
+    let createView (newModel: ViewElement) =
+        match newModel.Create () with 
         | :? View as v -> v
-        | _ -> failwithf "The cells of a ListView must each be some kind of 'View' and not a '%A'" (res.GetType())
+        | x -> failwithf "The cells of a ListView must each be some kind of 'View' and not a '%A'" (x.GetType())
 
-    let updateIncremental view prevModel newModel =
-        let ty = newModel.GetType()
-        let res = ty.InvokeMember("UpdateIncremental",(BindingFlags.InvokeMethod ||| BindingFlags.Public ||| BindingFlags.Instance), null, newModel, [| prevModel; box view |] )
-        ignore res
-    
     member x.OnDataPropertyChanged = PropertyChangedEventHandler(fun _ args ->
         match args.PropertyName, listElementOpt, modelOpt with
         | "Key", Some curr, Some prevModel ->
-            updateIncremental x.View prevModel curr.Key
+            curr.Key.UpdateIncremental (prevModel, x.View)
             modelOpt <- Some curr.Key
         | _ -> ()
     )
@@ -104,7 +96,7 @@ type ViewElementCell() =
             | Some prev ->
                 prev.PropertyChanged.RemoveHandler x.OnDataPropertyChanged
                 curr.PropertyChanged.AddHandler x.OnDataPropertyChanged
-                updateIncremental x.View prev.Key newModel
+                newModel.UpdateIncremental (prev.Key, x.View)
             | None -> 
                 curr.PropertyChanged.AddHandler x.OnDataPropertyChanged
                 x.View <- createView newModel
@@ -359,25 +351,25 @@ module Converters =
     let internal updateListViewItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.ListView) = 
         let targetColl = 
             match target.ItemsSource with 
-            | :? ObservableCollection<ListElementData<'T>> as oc -> oc
+            | :? ObservableCollection<ListElementData> as oc -> oc
             | _ -> 
-                let oc = ObservableCollection<ListElementData<'T>>()
+                let oc = ObservableCollection<ListElementData>()
                 target.ItemsSource <- oc
                 oc
         updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetColl ListElementData (fun _ _ _ -> ()) canReuseChild (fun _ curr target -> target.Key <- curr) 
 
-    let private updateListGroupData (_prevShortName: string, _prevKey: 'T, prevColl: 'T[]) (currShortName: string, currKey: 'T, currColl: 'T[]) (target: ListGroupData<'T>) =
+    let private updateListGroupData (_prevShortName: string, _prevKey, prevColl: ViewElement[]) (currShortName: string, currKey, currColl: ViewElement[]) (target: ListGroupData) =
         target.ShortName <- currShortName
         target.Key <- currKey
         updateCollectionGeneric (ValueSome prevColl) (ValueSome currColl) target ListElementData (fun _ _ _ -> ()) canReuseChild (fun _ curr target -> target.Key <- curr) 
 
     /// Update the items in a GroupedListView control, given previous and current view elements
-    let internal updateListViewGroupedItems (prevCollOpt: (string * 'T * 'T[])[] voption) (collOpt: (string * 'T * 'T[])[] voption) (target: Xamarin.Forms.ListView) = 
+    let internal updateListViewGroupedItems (prevCollOpt: (string * ViewElement * ViewElement[])[] voption) (collOpt: (string * ViewElement * ViewElement[])[] voption) (target: Xamarin.Forms.ListView) = 
         let targetColl = 
             match target.ItemsSource with 
-            | :? ObservableCollection<ListGroupData<'T>> as oc -> oc
+            | :? ObservableCollection<ListGroupData> as oc -> oc
             | _ -> 
-                let oc = ObservableCollection<ListGroupData<'T>>()
+                let oc = ObservableCollection<ListGroupData>()
                 target.ItemsSource <- oc
                 oc
         updateCollectionGeneric prevCollOpt collOpt targetColl ListGroupData (fun _ _ _ -> ()) (fun (_, prevKey, _) (_, currKey, _) -> canReuseChild prevKey currKey) updateListGroupData
@@ -675,13 +667,13 @@ module Converters =
     let tryFindListViewItem (sender: obj) (item: obj) =
         match item with 
         | null -> None
-        | :? ListElementData<ViewElement> as item -> 
-            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListElementData<ViewElement>> 
+        | :? ListElementData as item -> 
+            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListElementData> 
             // POSSIBLE IMPROVEMENT: don't use a linear search
             items |> Seq.tryFindIndex (fun item2 -> identical item.Key item2.Key)
         | _ -> None
 
-    let private tryFindGroupedListViewItemIndex (items: System.Collections.Generic.IList<ListGroupData<ViewElement>>) (item: ListElementData<ViewElement>) =
+    let private tryFindGroupedListViewItemIndex (items: System.Collections.Generic.IList<ListGroupData>) (item: ListElementData) =
         // POSSIBLE IMPROVEMENT: don't use a linear search
         items 
         |> Seq.indexed 
@@ -695,14 +687,14 @@ module Converters =
     let tryFindGroupedListViewItemOrGroupItem (sender: obj) (item: obj) = 
         match item with 
         | null -> None
-        | :? ListGroupData<ViewElement> as item ->
-            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData<ViewElement>> 
+        | :? ListGroupData as item ->
+            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData> 
             // POSSIBLE IMPROVEMENT: don't use a linear search
             items 
             |> Seq.indexed 
             |> Seq.tryPick (fun (i, item2) -> if identical item.Key item2.Key then Some (i, None) else None)
-        | :? ListElementData<ViewElement> as item ->
-            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData<ViewElement>> 
+        | :? ListElementData as item ->
+            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData> 
             tryFindGroupedListViewItemIndex items item
             |> (function
                 | None -> None
@@ -713,7 +705,7 @@ module Converters =
     let tryFindGroupedListViewItem (sender: obj) (item: obj) =
         match item with 
         | null -> None
-        | :? ListElementData<ViewElement> as item ->
-            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData<ViewElement>> 
+        | :? ListElementData as item ->
+            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData> 
             tryFindGroupedListViewItemIndex items item
         | _ -> None
