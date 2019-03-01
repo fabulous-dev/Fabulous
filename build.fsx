@@ -19,22 +19,6 @@ open System.IO
 open Newtonsoft.Json
 open Newtonsoft.Json.Linq
 
-type BuildType =
-    | Debug
-    | Release
-
-type BuildAction =
-    | MSBuild of BuildType
-    | DotNetPack
-    | NuGetPack
-
-[<NoComparison>]
-type ProjectDefinition =
-    { Name: string
-      Path: IGlobbingPattern
-      Action: BuildAction
-      OutputPath: string }
-
 let release = ReleaseNotes.load "RELEASE_NOTES.md"
 let buildDir = Path.getFullName "./build_output"
 
@@ -42,8 +26,7 @@ let removeIncompatiblePlatformProjects pattern =
     if Environment.isMacOS then
         pattern
         -- "samples/**/*.WPF.fsproj"
-        -- "samples/**/*.UWP.fsproj"
-        
+        -- "samples/**/*.UWP.fsproj"        
     elif Environment.isWindows then
         pattern
         -- "samples/**/*.macOS.fsproj"
@@ -55,56 +38,6 @@ let removeIncompatiblePlatformProjects pattern =
         -- "samples/**/*.WPF.fsproj"
         -- "samples/**/*.UWP.fsproj"
         -- "samples/**/*.Droid.fsproj"
-
-let projects = [
-    { Name = "Src";         Path = !! "src/**/*.fsproj";        Action = DotNetPack;         OutputPath = buildDir }
-    { Name = "Extensions";  Path = !! "extensions/**/*.fsproj"; Action = DotNetPack;         OutputPath = buildDir }
-    { Name = "Tests";       Path = !! "tests/**/*.fsproj";      Action = MSBuild Release;    OutputPath = buildDir + "/tests" }
-    { Name = "Templates";   Path = !! "templates/**/*.nuspec";  Action = NuGetPack;          OutputPath = buildDir }
-]
-
-let tools = { Name = "Tools"; Path = !! "tools/**/*.fsproj"; Action = MSBuild Release; OutputPath = buildDir + "/tools" }
-let samples = { Name = "Samples"; Path = (!! "samples/**/*.fsproj" |> removeIncompatiblePlatformProjects); Action = MSBuild Debug; OutputPath = buildDir + "/samples" } 
-let controls = { Name = "CustomControls"; Path = !! "src/Fabulous.CustomControls/Fabulous.CustomControls.fsproj"; Action = MSBuild Release; OutputPath = buildDir + "/controls" }
-
-let getOutputDir basePath proj =
-    let folderName = Path.GetFileNameWithoutExtension(proj)
-    sprintf "%s/%s/" basePath folderName
-
-let msbuild (buildType: BuildType) (definition: ProjectDefinition) =
-    let configuration = match buildType with Debug -> "Debug" | Release -> "Release"
-    let properties = [ ("Configuration", configuration); ("m", "") ] 
-
-    for project in definition.Path do
-        let outputDir = getOutputDir definition.OutputPath project
-        MSBuild.run id outputDir "Restore" properties [project] |> Trace.logItems (definition.Name + "Restore-Output: ")
-        MSBuild.run id outputDir "Build" properties [project] |> Trace.logItems (definition.Name + "Build-Output: ")
-
-
-
-let dotnetPack (definition: ProjectDefinition) =
-    for project in definition.Path do
-        DotNet.pack (fun opt ->
-            { opt with
-                Common = { opt.Common with CustomParams = Some "-p:IncludeSourceLink=True" }
-                Configuration = DotNet.BuildConfiguration.Release
-                OutputPath = Some definition.OutputPath }) project
-
-let nugetPack (definition: ProjectDefinition) =
-    for nuspec in definition.Path do
-        NuGet.NuGetPack (fun opt ->
-            { opt with
-                WorkingDir = "templates"
-                OutputPath = definition.OutputPath
-                Version = release.NugetVersion
-                ReleaseNotes = (String.toLines release.Notes) }) nuspec
-
-let buildProject (definition: ProjectDefinition) =    
-    match definition.Action with
-    | MSBuild buildType -> msbuild buildType definition
-    | DotNetPack -> dotnetPack definition
-    | NuGetPack -> nugetPack definition
-
 
 Target.create "Clean" (fun _ ->
     Shell.cleanDir buildDir
@@ -157,12 +90,10 @@ Target.create "BuildControls" (fun _ ->
 )
 
 Target.create "RunGenerator" (fun _ ->
-    DotNet.exec id "tools/Generator/bin/Release/netcoreapp2.1/Generator.dll" " tools/Generator/Xamarin.Forms.Core.json src/Fabulous.Core/Xamarin.Forms.Core.fs"
-    |> (fun x ->
-        match x.OK with
-        | true -> ()
-        | false -> failwith "The generator stopped due to an exception"
-    )
+    let result = DotNet.exec id "tools/Generator/bin/Release/netcoreapp2.1/Generator.dll" " tools/Generator/Xamarin.Forms.Core.json src/Fabulous.Core/Xamarin.Forms.Core.fs"
+    match result.OK with
+    | true -> ()
+    | false -> failwith "The generator stopped due to an exception"
 )
 
 Target.create "BuildFabulous" (fun _ ->
@@ -186,7 +117,14 @@ Target.create "RunTests" (fun _ ->
 )
 
 Target.create "BuildSamples" (fun _ ->
-    samples |> buildProject
+    let properties = [ ("Configuration", "Release") ] 
+
+    let samples = !! "samples/**/*.fsproj" |> removeIncompatiblePlatformProjects
+    for sample in samples do
+        let projectName = Path.GetFileNameWithoutExtension(sample)
+        let outputDir = Path.Combine(buildDir, "templates", projectName)
+        MSBuild.run id outputDir "Restore" properties [sample] |> Trace.logItems (projectName + "Restore-Output: ")
+        MSBuild.run id outputDir "Build" properties [sample] |> Trace.logItems (projectName + "Build-Output: ")
 )
 
 Target.create "RunSamplesTests" (fun _ ->
@@ -236,7 +174,10 @@ Target.create "TestTemplatesNuGet" (fun _ ->
 
 Target.create "PackFabulous" (fun _ ->
     let setParams (options: DotNet.PackOptions) =
-        { options with OutputPath = Some buildDir }
+        { options with
+            Common = { options.Common with CustomParams = Some "-p:IncludeSourceLink=True" }
+            Configuration = DotNet.BuildConfiguration.Release
+            OutputPath = Some buildDir }
 
     let projects = !!"src/**/*.fsproj"
     for project in projects do
@@ -245,7 +186,10 @@ Target.create "PackFabulous" (fun _ ->
 
 Target.create "PackExtensions" (fun _ ->
     let setParams (options: DotNet.PackOptions) =
-        { options with OutputPath = Some buildDir }
+        { options with
+            Common = { options.Common with CustomParams = Some "-p:IncludeSourceLink=True" }
+            Configuration = DotNet.BuildConfiguration.Release
+            OutputPath = Some buildDir }
 
     let projects = !!"extensions/**/*.fsproj"
     for project in projects do
