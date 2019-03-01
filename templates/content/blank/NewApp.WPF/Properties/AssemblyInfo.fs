@@ -1,12 +1,12 @@
-﻿namespace NewApp.WindowsWPFClassic
+﻿namespace NewApp.WPF
 open System.Reflection
 open System.Runtime.CompilerServices
 
 // the name of the type here needs to match the name inside the ResourceDesigner attribute
 //type Resources = NewApp.Droid.Resource
-//[<assembly: Android.Runtime.ResourceDesigner("NewApp.WindowsWPFClassic.Resources", IsApplication=true)>]
+//[<assembly: Android.Runtime.ResourceDesigner("NewApp.WPF.Resources", IsApplication=true)>]
 
-[<assembly: AssemblyTitle("NewApp.WindowsWPFClassic")>]
+[<assembly: AssemblyTitle("NewApp.WPF")>]
 [<assembly: AssemblyDescription("")>]
 [<assembly: AssemblyConfiguration("")>]
 [<assembly: AssemblyCompany("")>]
