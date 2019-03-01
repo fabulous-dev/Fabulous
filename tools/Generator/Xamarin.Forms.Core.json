@@ -1855,7 +1855,7 @@
           "uniqueName": "ListView_SelectedItem",
           "defaultValue": "null",
           "modelType": "int option",
-          "convToValue": "(function None -> null | Some i -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListElementData<ViewElement>> in if i >= 0 && i < items.Count then items.[i] else null)"
+          "convToValue": "(function None -> null | Some i -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListElementData> in if i >= 0 && i < items.Count then items.[i] else null)"
         },
         {
           "name": "SeparatorVisibility",
@@ -1965,7 +1965,7 @@
           "uniqueName": "ListViewGrouped_SelectedItem",
           "defaultValue": "null",
           "modelType": "(int * int) option",
-          "convToValue": "(function None -> null | Some (i,j) -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListGroupData<ViewElement>> in (if i >= 0 && i < items.Count then (let items2 = items.[i] in if j >= 0 && j < items2.Count then items2.[j] else null) else null))"
+          "convToValue": "(function None -> null | Some (i,j) -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListGroupData> in (if i >= 0 && i < items.Count then (let items2 = items.[i] in if j >= 0 && j < items2.Count then items2.[j] else null) else null))"
         },
         {
           "name": "SeparatorVisibility",
