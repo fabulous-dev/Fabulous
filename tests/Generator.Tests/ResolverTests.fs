@@ -73,6 +73,7 @@ module ``Resolvers Tests`` =
             [| "Xamarin.Forms.Button"
                "Xamarin.Forms.View"
                "Xamarin.Forms.VisualElement"
+               "Xamarin.Forms.NavigableElement"
                "Xamarin.Forms.Element"
                "Xamarin.Forms.BindableObject"
                "System.Object" |]

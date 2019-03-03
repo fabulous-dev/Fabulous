@@ -392,6 +392,10 @@
           "defaultValue": "null",
           "inputType": "Xamarin.Forms.ScrolledEventArgs -> unit",
           "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ScrolledEventArgs>(fun _sender args -> f args))"
+        },
+        {
+          "name": "LayoutAreaOverride",
+          "defaultValue": "Xamarin.Forms.Rectangle.Zero"
         }
       ]
     },
@@ -629,6 +633,10 @@
           "defaultValue": "null",
           "inputType": "Xamarin.Forms.ToggledEventArgs -> unit",
           "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ToggledEventArgs>(fun _sender args -> f args))"
+        },
+        {
+          "name": "OnColor",
+          "defaultValue": "Xamarin.Forms.Color.Default"
         }
       ]
     },
@@ -1135,6 +1143,12 @@
         {
           "name": "PlaceholderColor",
           "defaultValue": "Xamarin.Forms.Color.Default"
+        },
+        {
+          "name": "IsTextPredictionEnabled",
+          "defaultValue": "false",
+          "inputType": "bool",
+          "modelType": "bool"
         }
       ]
     },
@@ -1905,6 +1919,18 @@
         {
           "name": "SelectionMode",
           "defaultValue": "Xamarin.Forms.ListViewSelectionMode.Single"
+        },
+        {
+          "name": "HorizontalScrollBarVisibility",
+          "defaultValue": "Xamarin.Forms.ScrollBarVisibility.Default"
+        },
+        {
+          "name": "VerticalScrollBarVisibility",
+          "defaultValue": "Xamarin.Forms.ScrollBarVisibility.Default"
+        },
+        {
+          "name": "RefreshControlColor",
+          "defaultValue": "Xamarin.Forms.Color.Default"
         }
       ]
     },
@@ -2012,6 +2038,206 @@
         {
           "name": "SelectionMode",
           "defaultValue": "Xamarin.Forms.ListViewSelectionMode.Single"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.BackButtonBehavior",
+      "members": [
+        {
+          "name": "TextOverride",
+          "defaultValue": "null"
+        },
+        {
+          "name": "Command",
+          "defaultValue": "null",
+          "inputType": "unit -> unit",
+          "convToModel": "makeCommand"
+        },
+        {
+          "name": "CommandParameter",
+          "defaultValue": "null"
+        },
+        {
+          "name": "IconOverride",
+          "inputType": "string",
+          "modelType": "string",
+          "convToValue": "makeFileImageSource",
+          "defaultValue": "null"
+        },
+        {
+          "name": "IsEnabled",
+          "inputType": "bool",
+          "modelType": "bool",
+          "defaultValue": "true"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.BaseShellItem",
+      "members": [
+        {
+          "name": "Title",
+          "inputType": "string",
+          "modelType": "string",
+          "defaultValue": "null"
+        },
+        {
+          "name": "Route",
+          "inputType": "string",
+          "modelType": "string",
+          "defaultValue": "null"
+        },
+        {
+          "name": "Icon",
+          "inputType": "string",
+          "modelType": "string",
+          "convToValue": "makeFileImageSource",
+          "defaultValue": "null"
+        },
+        {
+          "name": "FlyoutIcon",
+          "inputType": "string",
+          "modelType": "string",
+          "convToValue": "makeFileImageSource",
+          "defaultValue": "null"
+        },
+        {
+          "name": "IsEnabled",
+          "inputType": "bool",
+          "modelType": "bool",
+          "defaultValue": "true"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.GridItemsLayout",
+      "members": [
+        {
+          "name": "Span",
+          "defaultValue": "0",
+          "modelType": "int",
+          "inputType": "int"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.SearchHandler",
+      "members": [
+        {
+          "name": "ClearIcon",
+          "inputType": "string",
+          "modelType": "string",
+          "convToValue": "makeFileImageSource",
+          "defaultValue": "null"
+        },
+        {
+          "name": "ClearIconHelpText",
+          "defaultValue": "null",
+          "modelType": "string",
+          "inputType": "string"
+        },
+        {
+          "name": "ClearIconName",
+          "defaultValue": "null",
+          "modelType": "string",
+          "inputType": "string"
+        },
+        {
+          "name": "ClearPlaceholderCommand",
+          "defaultValue": "null",
+          "inputType": "unit -> unit",
+          "convToModel": "makeCommand"
+        },
+        {
+          "name": "ClearPlaceholderCommandParameter",
+          "defaultValue": "null"
+        },
+        {
+          "name": "ClearPlaceholderEnabled",
+          "inputType": "bool",
+          "modelType": "bool",
+          "defaultValue": "true"
+        },
+        {
+          "name": "ClearPlaceholderHelpText",
+          "defaultValue": "null",
+          "modelType": "string",
+          "inputType": "string"
+        },
+        {
+          "name": "ClearPlaceholderIcon",
+          "inputType": "string",
+          "modelType": "string",
+          "convToValue": "makeFileImageSource",
+          "defaultValue": "null"
+        },
+        {
+          "name": "ClearPlaceholderName",
+          "defaultValue": "null",
+          "modelType": "string",
+          "inputType": "string"
+        },
+        {
+          "name": "Command",
+          "defaultValue": "null",
+          "inputType": "unit -> unit",
+          "convToModel": "makeCommand"
+        },
+        {
+          "name": "CommandParameter",
+          "defaultValue": "null"
+        },
+        {
+          "name": "DisplayMemberName",
+          "defaultValue": "null",
+          "modelType": "string",
+          "inputType": "string"
+        },
+        {
+          "name": "IsSearchEnabled",
+          "defaultValue": "true"
+        },
+        {
+          "name": "Placeholder",
+          "defaultValue": "null",
+          "modelType": "string",
+          "inputType": "string"
+        },
+        {
+          "name": "Query",
+          "defaultValue": "null",
+          "modelType": "string",
+          "inputType": "string"
+        },
+        {
+          "name": "QueryIcon",
+          "inputType": "string",
+          "modelType": "string",
+          "convToValue": "makeFileImageSource",
+          "defaultValue": "null"
+        },
+        {
+          "name": "QueryIconHelpText",
+          "defaultValue": "null",
+          "modelType": "string",
+          "inputType": "string"
+        },
+        {
+          "name": "QueryIconName",
+          "defaultValue": "null",
+          "modelType": "string",
+          "inputType": "string"
+        },
+        {
+          "name": "SearchBoxVisibility",
+          "defaultValue": "Xamarin.Forms.SearchBoxVisiblity.Hidden"
+        },
+        {
+          "name": "ShowsResults",
+          "defaultValue": "true",
+          "inputType": "bool",
+          "modelType": "bool"
         }
       ]
     }
