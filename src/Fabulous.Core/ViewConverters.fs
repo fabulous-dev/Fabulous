@@ -214,6 +214,13 @@ module Converters =
             f index
         )
 
+    /// Converts a string or uri to a Xamarin.Forms ShellNavigation
+    let makeUri (v: obj) =
+        match v with
+        | :? string as path -> ShellNavigationState.op_Implicit path
+        | :? Uri as uri -> ShellNavigationState.op_Implicit uri
+        | _ -> failwithf "makeUri: invalid argument %O" v
+
     /// Checks whether two objects are reference-equal
     let identical (x: 'T) (y:'T) = System.Object.ReferenceEquals(x, y)
 

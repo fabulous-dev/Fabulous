@@ -2122,6 +2122,31 @@
       ]
     },
     {
+      "name": "Xamarin.Forms.ItemsView",
+      "members": [
+        {
+          "name": "EmptyView",
+          "defaultValue": "null"
+        },
+        {
+          "name": "EmptyViewTemplate",
+          "defaultValue": "null"
+        },
+        {
+          "name": "ItemsLayout",
+          "defaultValue": "null"
+        },
+        {
+          "name": "ItemsSource",
+          "defaultValue": "null"
+        },
+        {
+          "name": "ItemTemplate",
+          "defaultValue": "null"
+        }
+      ]
+    },
+    {
       "name": "Xamarin.Forms.SearchHandler",
       "members": [
         {
@@ -2279,6 +2304,17 @@
           "defaultValue": "null",
           "inputType": "Xamarin.Forms.SelectionChangedEventArgs -> unit",
           "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.SelectionChangedEventArgs>(fun _sender args -> f args))"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.ShellNavigationState",
+      "members": [
+        {
+          "name": "Location",
+          "defaultValue": "null",
+          "inputType": "System.Uri",
+          "convToModel": "makeUri"
         }
       ]
     }
