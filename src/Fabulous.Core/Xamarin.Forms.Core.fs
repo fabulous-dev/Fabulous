@@ -275,6 +275,17 @@ module ViewAttributes =
     let QueryIconNameAttribKey : AttributeKey<_> = AttributeKey<_>("QueryIconName")
     let SearchBoxVisibilityAttribKey : AttributeKey<_> = AttributeKey<_>("SearchBoxVisibility")
     let ShowsResultsAttribKey : AttributeKey<_> = AttributeKey<_>("ShowsResults")
+    let CurrentItemAttribKey : AttributeKey<_> = AttributeKey<_>("CurrentItem")
+    let FlyoutBackgroundColorAttribKey : AttributeKey<_> = AttributeKey<_>("FlyoutBackgroundColor")
+    let FlyoutBehaviorAttribKey : AttributeKey<_> = AttributeKey<_>("FlyoutBehavior")
+    let FlyoutHeaderAttribKey : AttributeKey<_> = AttributeKey<_>("FlyoutHeader")
+    let FlyoutHeaderBehaviorAttribKey : AttributeKey<_> = AttributeKey<_>("FlyoutHeaderBehavior")
+    let FlyoutHeaderTemplateAttribKey : AttributeKey<_> = AttributeKey<_>("FlyoutHeaderTemplate")
+    let FlyoutIsPresentedAttribKey : AttributeKey<_> = AttributeKey<_>("FlyoutIsPresented")
+    let GroupHeaderTemplateAttribKey : AttributeKey<_> = AttributeKey<_>("GroupHeaderTemplate")
+    let MenuItemTemplateAttribKey : AttributeKey<_> = AttributeKey<_>("MenuItemTemplate")
+    let RouteHostAttribKey : AttributeKey<_> = AttributeKey<_>("RouteHost")
+    let RouteSchemeAttribKey : AttributeKey<_> = AttributeKey<_>("RouteScheme")
     let FlyoutDisplayOptionsAttribKey : AttributeKey<_> = AttributeKey<_>("FlyoutDisplayOptions")
     let SelectedItemAttribKey : AttributeKey<_> = AttributeKey<_>("SelectedItem")
     let SelectionChangedCommandAttribKey : AttributeKey<_> = AttributeKey<_>("SelectionChangedCommand")
@@ -347,6 +358,7 @@ type ViewProto() =
     static member val ProtoGridItemsLayout : ViewElement option = None with get, set
     static member val ProtoItemsView : ViewElement option = None with get, set
     static member val ProtoSearchHandler : ViewElement option = None with get, set
+    static member val ProtoShell : ViewElement option = None with get, set
     static member val ProtoShellGroupItem : ViewElement option = None with get, set
     static member val ProtoSelectableItemsView : ViewElement option = None with get, set
     static member val ProtoShellNavigationState : ViewElement option = None with get, set
@@ -13065,6 +13077,382 @@ type ViewBuilders() =
 
         ViewElement.Create<Xamarin.Forms.SearchHandler>(ViewBuilders.CreateFuncSearchHandler, ViewBuilders.UpdateFuncSearchHandler, attribBuilder)
 
+    /// Builds the attributes for a Shell in the view
+    static member inline BuildShell(attribCount: int,
+                                    ?currentItem: Xamarin.Forms.ShellItem,
+                                    ?flyoutBackgroundColor: Xamarin.Forms.Color,
+                                    ?flyoutBehavior: Xamarin.Forms.FlyoutBehavior,
+                                    ?flyoutHeader: System.Object,
+                                    ?flyoutHeaderBehavior: Xamarin.Forms.FlyoutHeaderBehavior,
+                                    ?flyoutHeaderTemplate: Xamarin.Forms.DataTemplate,
+                                    ?flyoutIsPresented: bool,
+                                    ?groupHeaderTemplate: Xamarin.Forms.DataTemplate,
+                                    ?itemTemplate: Xamarin.Forms.DataTemplate,
+                                    ?menuItemTemplate: Xamarin.Forms.DataTemplate,
+                                    ?route: string,
+                                    ?routeHost: string,
+                                    ?routeScheme: string,
+                                    ?title: string,
+                                    ?backgroundImage: string,
+                                    ?icon: string,
+                                    ?isBusy: bool,
+                                    ?padding: obj,
+                                    ?toolbarItems: ViewElement list,
+                                    ?useSafeArea: bool,
+                                    ?appearing: unit -> unit,
+                                    ?disappearing: unit -> unit,
+                                    ?layoutChanged: unit -> unit,
+                                    ?anchorX: double,
+                                    ?anchorY: double,
+                                    ?backgroundColor: Xamarin.Forms.Color,
+                                    ?heightRequest: double,
+                                    ?inputTransparent: bool,
+                                    ?isEnabled: bool,
+                                    ?isVisible: bool,
+                                    ?minimumHeightRequest: double,
+                                    ?minimumWidthRequest: double,
+                                    ?opacity: double,
+                                    ?rotation: double,
+                                    ?rotationX: double,
+                                    ?rotationY: double,
+                                    ?scale: double,
+                                    ?style: Xamarin.Forms.Style,
+                                    ?styleClass: obj,
+                                    ?translationX: double,
+                                    ?translationY: double,
+                                    ?widthRequest: double,
+                                    ?resources: (string * obj) list,
+                                    ?styles: Xamarin.Forms.Style list,
+                                    ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                    ?isTabStop: bool,
+                                    ?scaleX: double,
+                                    ?scaleY: double,
+                                    ?tabIndex: int,
+                                    ?childrenReordered: System.EventArgs -> unit,
+                                    ?measureInvalidated: System.EventArgs -> unit,
+                                    ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                    ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                                    ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                    ?classId: string,
+                                    ?styleId: string,
+                                    ?automationId: string,
+                                    ?created: obj -> unit,
+                                    ?ref: ViewRef) = 
+
+        let attribCount = match currentItem with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match flyoutBackgroundColor with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match flyoutBehavior with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match flyoutHeader with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match flyoutHeaderBehavior with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match flyoutHeaderTemplate with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match flyoutIsPresented with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match groupHeaderTemplate with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match itemTemplate with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match menuItemTemplate with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match route with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match routeHost with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match routeScheme with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = ViewBuilders.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        match currentItem with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CurrentItemAttribKey, (v)) 
+        match flyoutBackgroundColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FlyoutBackgroundColorAttribKey, (v)) 
+        match flyoutBehavior with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FlyoutBehaviorAttribKey, (v)) 
+        match flyoutHeader with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FlyoutHeaderAttribKey, (v)) 
+        match flyoutHeaderBehavior with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FlyoutHeaderBehaviorAttribKey, (v)) 
+        match flyoutHeaderTemplate with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FlyoutHeaderTemplateAttribKey, (v)) 
+        match flyoutIsPresented with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FlyoutIsPresentedAttribKey, (v)) 
+        match groupHeaderTemplate with None -> () | Some v -> attribBuilder.Add(ViewAttributes.GroupHeaderTemplateAttribKey, (v)) 
+        match itemTemplate with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ItemTemplateAttribKey, (v)) 
+        match menuItemTemplate with None -> () | Some v -> attribBuilder.Add(ViewAttributes.MenuItemTemplateAttribKey, (v)) 
+        match route with None -> () | Some v -> attribBuilder.Add(ViewAttributes.RouteAttribKey, (v)) 
+        match routeHost with None -> () | Some v -> attribBuilder.Add(ViewAttributes.RouteHostAttribKey, (v)) 
+        match routeScheme with None -> () | Some v -> attribBuilder.Add(ViewAttributes.RouteSchemeAttribKey, (v)) 
+        attribBuilder
+
+    static member val CreateFuncShell : (unit -> Xamarin.Forms.Shell) = (fun () -> ViewBuilders.CreateShell()) with get, set
+
+    static member CreateShell () : Xamarin.Forms.Shell =
+        upcast (new Xamarin.Forms.Shell())
+
+    static member val UpdateFuncShell =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.Shell) -> ViewBuilders.UpdateShell (prevOpt, curr, target)) 
+
+    static member UpdateShell (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.Shell) = 
+        // update the inherited Page element
+        let baseElement = (if ViewProto.ProtoPage.IsNone then ViewProto.ProtoPage <- Some (ViewBuilders.ConstructPage())); ViewProto.ProtoPage.Value
+        baseElement.UpdateInherited (prevOpt, curr, target)
+        let mutable prevCurrentItemOpt = ValueNone
+        let mutable currCurrentItemOpt = ValueNone
+        let mutable prevFlyoutBackgroundColorOpt = ValueNone
+        let mutable currFlyoutBackgroundColorOpt = ValueNone
+        let mutable prevFlyoutBehaviorOpt = ValueNone
+        let mutable currFlyoutBehaviorOpt = ValueNone
+        let mutable prevFlyoutHeaderOpt = ValueNone
+        let mutable currFlyoutHeaderOpt = ValueNone
+        let mutable prevFlyoutHeaderBehaviorOpt = ValueNone
+        let mutable currFlyoutHeaderBehaviorOpt = ValueNone
+        let mutable prevFlyoutHeaderTemplateOpt = ValueNone
+        let mutable currFlyoutHeaderTemplateOpt = ValueNone
+        let mutable prevFlyoutIsPresentedOpt = ValueNone
+        let mutable currFlyoutIsPresentedOpt = ValueNone
+        let mutable prevGroupHeaderTemplateOpt = ValueNone
+        let mutable currGroupHeaderTemplateOpt = ValueNone
+        let mutable prevItemTemplateOpt = ValueNone
+        let mutable currItemTemplateOpt = ValueNone
+        let mutable prevMenuItemTemplateOpt = ValueNone
+        let mutable currMenuItemTemplateOpt = ValueNone
+        let mutable prevRouteOpt = ValueNone
+        let mutable currRouteOpt = ValueNone
+        let mutable prevRouteHostOpt = ValueNone
+        let mutable currRouteHostOpt = ValueNone
+        let mutable prevRouteSchemeOpt = ValueNone
+        let mutable currRouteSchemeOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.CurrentItemAttribKey.KeyValue then 
+                currCurrentItemOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.ShellItem)
+            if kvp.Key = ViewAttributes.FlyoutBackgroundColorAttribKey.KeyValue then 
+                currFlyoutBackgroundColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
+            if kvp.Key = ViewAttributes.FlyoutBehaviorAttribKey.KeyValue then 
+                currFlyoutBehaviorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlyoutBehavior)
+            if kvp.Key = ViewAttributes.FlyoutHeaderAttribKey.KeyValue then 
+                currFlyoutHeaderOpt <- ValueSome (kvp.Value :?> System.Object)
+            if kvp.Key = ViewAttributes.FlyoutHeaderBehaviorAttribKey.KeyValue then 
+                currFlyoutHeaderBehaviorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlyoutHeaderBehavior)
+            if kvp.Key = ViewAttributes.FlyoutHeaderTemplateAttribKey.KeyValue then 
+                currFlyoutHeaderTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
+            if kvp.Key = ViewAttributes.FlyoutIsPresentedAttribKey.KeyValue then 
+                currFlyoutIsPresentedOpt <- ValueSome (kvp.Value :?> bool)
+            if kvp.Key = ViewAttributes.GroupHeaderTemplateAttribKey.KeyValue then 
+                currGroupHeaderTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
+            if kvp.Key = ViewAttributes.ItemTemplateAttribKey.KeyValue then 
+                currItemTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
+            if kvp.Key = ViewAttributes.MenuItemTemplateAttribKey.KeyValue then 
+                currMenuItemTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
+            if kvp.Key = ViewAttributes.RouteAttribKey.KeyValue then 
+                currRouteOpt <- ValueSome (kvp.Value :?> string)
+            if kvp.Key = ViewAttributes.RouteHostAttribKey.KeyValue then 
+                currRouteHostOpt <- ValueSome (kvp.Value :?> string)
+            if kvp.Key = ViewAttributes.RouteSchemeAttribKey.KeyValue then 
+                currRouteSchemeOpt <- ValueSome (kvp.Value :?> string)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.CurrentItemAttribKey.KeyValue then 
+                    prevCurrentItemOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.ShellItem)
+                if kvp.Key = ViewAttributes.FlyoutBackgroundColorAttribKey.KeyValue then 
+                    prevFlyoutBackgroundColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
+                if kvp.Key = ViewAttributes.FlyoutBehaviorAttribKey.KeyValue then 
+                    prevFlyoutBehaviorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlyoutBehavior)
+                if kvp.Key = ViewAttributes.FlyoutHeaderAttribKey.KeyValue then 
+                    prevFlyoutHeaderOpt <- ValueSome (kvp.Value :?> System.Object)
+                if kvp.Key = ViewAttributes.FlyoutHeaderBehaviorAttribKey.KeyValue then 
+                    prevFlyoutHeaderBehaviorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlyoutHeaderBehavior)
+                if kvp.Key = ViewAttributes.FlyoutHeaderTemplateAttribKey.KeyValue then 
+                    prevFlyoutHeaderTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
+                if kvp.Key = ViewAttributes.FlyoutIsPresentedAttribKey.KeyValue then 
+                    prevFlyoutIsPresentedOpt <- ValueSome (kvp.Value :?> bool)
+                if kvp.Key = ViewAttributes.GroupHeaderTemplateAttribKey.KeyValue then 
+                    prevGroupHeaderTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
+                if kvp.Key = ViewAttributes.ItemTemplateAttribKey.KeyValue then 
+                    prevItemTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
+                if kvp.Key = ViewAttributes.MenuItemTemplateAttribKey.KeyValue then 
+                    prevMenuItemTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
+                if kvp.Key = ViewAttributes.RouteAttribKey.KeyValue then 
+                    prevRouteOpt <- ValueSome (kvp.Value :?> string)
+                if kvp.Key = ViewAttributes.RouteHostAttribKey.KeyValue then 
+                    prevRouteHostOpt <- ValueSome (kvp.Value :?> string)
+                if kvp.Key = ViewAttributes.RouteSchemeAttribKey.KeyValue then 
+                    prevRouteSchemeOpt <- ValueSome (kvp.Value :?> string)
+        match prevCurrentItemOpt, currCurrentItemOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.CurrentItem <-  currValue
+        | ValueSome _, ValueNone -> target.CurrentItem <- null
+        | ValueNone, ValueNone -> ()
+        match prevFlyoutBackgroundColorOpt, currFlyoutBackgroundColorOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.FlyoutBackgroundColor <-  currValue
+        | ValueSome _, ValueNone -> target.FlyoutBackgroundColor <- Xamarin.Forms.Color.Default
+        | ValueNone, ValueNone -> ()
+        match prevFlyoutBehaviorOpt, currFlyoutBehaviorOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.FlyoutBehavior <-  currValue
+        | ValueSome _, ValueNone -> target.FlyoutBehavior <- Xamarin.Forms.FlyoutBehavior.Flyout
+        | ValueNone, ValueNone -> ()
+        match prevFlyoutHeaderOpt, currFlyoutHeaderOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.FlyoutHeader <-  currValue
+        | ValueSome _, ValueNone -> target.FlyoutHeader <- null
+        | ValueNone, ValueNone -> ()
+        match prevFlyoutHeaderBehaviorOpt, currFlyoutHeaderBehaviorOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.FlyoutHeaderBehavior <-  currValue
+        | ValueSome _, ValueNone -> target.FlyoutHeaderBehavior <- Xamarin.Forms.FlyoutHeaderBehavior.Default
+        | ValueNone, ValueNone -> ()
+        match prevFlyoutHeaderTemplateOpt, currFlyoutHeaderTemplateOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.FlyoutHeaderTemplate <-  currValue
+        | ValueSome _, ValueNone -> target.FlyoutHeaderTemplate <- null
+        | ValueNone, ValueNone -> ()
+        match prevFlyoutIsPresentedOpt, currFlyoutIsPresentedOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.FlyoutIsPresented <-  currValue
+        | ValueSome _, ValueNone -> target.FlyoutIsPresented <- false
+        | ValueNone, ValueNone -> ()
+        match prevGroupHeaderTemplateOpt, currGroupHeaderTemplateOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.GroupHeaderTemplate <-  currValue
+        | ValueSome _, ValueNone -> target.GroupHeaderTemplate <- null
+        | ValueNone, ValueNone -> ()
+        match prevItemTemplateOpt, currItemTemplateOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.ItemTemplate <-  currValue
+        | ValueSome _, ValueNone -> target.ItemTemplate <- null
+        | ValueNone, ValueNone -> ()
+        match prevMenuItemTemplateOpt, currMenuItemTemplateOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.MenuItemTemplate <-  currValue
+        | ValueSome _, ValueNone -> target.MenuItemTemplate <- null
+        | ValueNone, ValueNone -> ()
+        match prevRouteOpt, currRouteOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Route <-  currValue
+        | ValueSome _, ValueNone -> target.Route <- null
+        | ValueNone, ValueNone -> ()
+        match prevRouteHostOpt, currRouteHostOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.RouteHost <-  currValue
+        | ValueSome _, ValueNone -> target.RouteHost <- null
+        | ValueNone, ValueNone -> ()
+        match prevRouteSchemeOpt, currRouteSchemeOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.RouteScheme <-  currValue
+        | ValueSome _, ValueNone -> target.RouteScheme <- null
+        | ValueNone, ValueNone -> ()
+
+    static member inline ConstructShell(?currentItem: Xamarin.Forms.ShellItem,
+                                        ?flyoutBackgroundColor: Xamarin.Forms.Color,
+                                        ?flyoutBehavior: Xamarin.Forms.FlyoutBehavior,
+                                        ?flyoutHeader: System.Object,
+                                        ?flyoutHeaderBehavior: Xamarin.Forms.FlyoutHeaderBehavior,
+                                        ?flyoutHeaderTemplate: Xamarin.Forms.DataTemplate,
+                                        ?flyoutIsPresented: bool,
+                                        ?groupHeaderTemplate: Xamarin.Forms.DataTemplate,
+                                        ?itemTemplate: Xamarin.Forms.DataTemplate,
+                                        ?menuItemTemplate: Xamarin.Forms.DataTemplate,
+                                        ?route: string,
+                                        ?routeHost: string,
+                                        ?routeScheme: string,
+                                        ?title: string,
+                                        ?backgroundImage: string,
+                                        ?icon: string,
+                                        ?isBusy: bool,
+                                        ?padding: obj,
+                                        ?toolbarItems: ViewElement list,
+                                        ?useSafeArea: bool,
+                                        ?appearing: unit -> unit,
+                                        ?disappearing: unit -> unit,
+                                        ?layoutChanged: unit -> unit,
+                                        ?anchorX: double,
+                                        ?anchorY: double,
+                                        ?backgroundColor: Xamarin.Forms.Color,
+                                        ?heightRequest: double,
+                                        ?inputTransparent: bool,
+                                        ?isEnabled: bool,
+                                        ?isVisible: bool,
+                                        ?minimumHeightRequest: double,
+                                        ?minimumWidthRequest: double,
+                                        ?opacity: double,
+                                        ?rotation: double,
+                                        ?rotationX: double,
+                                        ?rotationY: double,
+                                        ?scale: double,
+                                        ?style: Xamarin.Forms.Style,
+                                        ?styleClass: obj,
+                                        ?translationX: double,
+                                        ?translationY: double,
+                                        ?widthRequest: double,
+                                        ?resources: (string * obj) list,
+                                        ?styles: Xamarin.Forms.Style list,
+                                        ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                        ?isTabStop: bool,
+                                        ?scaleX: double,
+                                        ?scaleY: double,
+                                        ?tabIndex: int,
+                                        ?childrenReordered: System.EventArgs -> unit,
+                                        ?measureInvalidated: System.EventArgs -> unit,
+                                        ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                                        ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?classId: string,
+                                        ?styleId: string,
+                                        ?automationId: string,
+                                        ?created: (Xamarin.Forms.Shell -> unit),
+                                        ?ref: ViewRef<Xamarin.Forms.Shell>) = 
+
+        let attribBuilder = ViewBuilders.BuildShell(0,
+                               ?currentItem=currentItem,
+                               ?flyoutBackgroundColor=flyoutBackgroundColor,
+                               ?flyoutBehavior=flyoutBehavior,
+                               ?flyoutHeader=flyoutHeader,
+                               ?flyoutHeaderBehavior=flyoutHeaderBehavior,
+                               ?flyoutHeaderTemplate=flyoutHeaderTemplate,
+                               ?flyoutIsPresented=flyoutIsPresented,
+                               ?groupHeaderTemplate=groupHeaderTemplate,
+                               ?itemTemplate=itemTemplate,
+                               ?menuItemTemplate=menuItemTemplate,
+                               ?route=route,
+                               ?routeHost=routeHost,
+                               ?routeScheme=routeScheme,
+                               ?title=title,
+                               ?backgroundImage=backgroundImage,
+                               ?icon=icon,
+                               ?isBusy=isBusy,
+                               ?padding=padding,
+                               ?toolbarItems=toolbarItems,
+                               ?useSafeArea=useSafeArea,
+                               ?appearing=appearing,
+                               ?disappearing=disappearing,
+                               ?layoutChanged=layoutChanged,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?isTabStop=isTabStop,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Shell> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Shell>) -> Some ref.Unbox))
+
+        ViewElement.Create<Xamarin.Forms.Shell>(ViewBuilders.CreateFuncShell, ViewBuilders.UpdateFuncShell, attribBuilder)
+
     /// Builds the attributes for a ShellGroupItem in the view
     static member inline BuildShellGroupItem(attribCount: int,
                                              ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions,
@@ -14431,6 +14819,37 @@ type SearchHandlerViewer(element: ViewElement) =
     member this.SearchBoxVisibility = element.GetAttributeKeyed(ViewAttributes.SearchBoxVisibilityAttribKey)
     /// Get the value of the ShowsResults property
     member this.ShowsResults = element.GetAttributeKeyed(ViewAttributes.ShowsResultsAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a Shell
+type ShellViewer(element: ViewElement) =
+    inherit PageViewer(element)
+    do if not ((typeof<Xamarin.Forms.Shell>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.Shell' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the CurrentItem property
+    member this.CurrentItem = element.GetAttributeKeyed(ViewAttributes.CurrentItemAttribKey)
+    /// Get the value of the FlyoutBackgroundColor property
+    member this.FlyoutBackgroundColor = element.GetAttributeKeyed(ViewAttributes.FlyoutBackgroundColorAttribKey)
+    /// Get the value of the FlyoutBehavior property
+    member this.FlyoutBehavior = element.GetAttributeKeyed(ViewAttributes.FlyoutBehaviorAttribKey)
+    /// Get the value of the FlyoutHeader property
+    member this.FlyoutHeader = element.GetAttributeKeyed(ViewAttributes.FlyoutHeaderAttribKey)
+    /// Get the value of the FlyoutHeaderBehavior property
+    member this.FlyoutHeaderBehavior = element.GetAttributeKeyed(ViewAttributes.FlyoutHeaderBehaviorAttribKey)
+    /// Get the value of the FlyoutHeaderTemplate property
+    member this.FlyoutHeaderTemplate = element.GetAttributeKeyed(ViewAttributes.FlyoutHeaderTemplateAttribKey)
+    /// Get the value of the FlyoutIsPresented property
+    member this.FlyoutIsPresented = element.GetAttributeKeyed(ViewAttributes.FlyoutIsPresentedAttribKey)
+    /// Get the value of the GroupHeaderTemplate property
+    member this.GroupHeaderTemplate = element.GetAttributeKeyed(ViewAttributes.GroupHeaderTemplateAttribKey)
+    /// Get the value of the ItemTemplate property
+    member this.ItemTemplate = element.GetAttributeKeyed(ViewAttributes.ItemTemplateAttribKey)
+    /// Get the value of the MenuItemTemplate property
+    member this.MenuItemTemplate = element.GetAttributeKeyed(ViewAttributes.MenuItemTemplateAttribKey)
+    /// Get the value of the Route property
+    member this.Route = element.GetAttributeKeyed(ViewAttributes.RouteAttribKey)
+    /// Get the value of the RouteHost property
+    member this.RouteHost = element.GetAttributeKeyed(ViewAttributes.RouteHostAttribKey)
+    /// Get the value of the RouteScheme property
+    member this.RouteScheme = element.GetAttributeKeyed(ViewAttributes.RouteSchemeAttribKey)
 
 /// Viewer that allows to read the properties of a ViewElement representing a ShellGroupItem
 type ShellGroupItemViewer(element: ViewElement) =
@@ -18770,6 +19189,127 @@ type View() =
                                ?searchBoxVisibility=searchBoxVisibility,
                                ?showsResults=showsResults)
 
+    /// Describes a Shell in the view
+    static member inline Shell(?currentItem: Xamarin.Forms.ShellItem,
+                               ?flyoutBackgroundColor: Xamarin.Forms.Color,
+                               ?flyoutBehavior: Xamarin.Forms.FlyoutBehavior,
+                               ?flyoutHeader: System.Object,
+                               ?flyoutHeaderBehavior: Xamarin.Forms.FlyoutHeaderBehavior,
+                               ?flyoutHeaderTemplate: Xamarin.Forms.DataTemplate,
+                               ?flyoutIsPresented: bool,
+                               ?groupHeaderTemplate: Xamarin.Forms.DataTemplate,
+                               ?itemTemplate: Xamarin.Forms.DataTemplate,
+                               ?menuItemTemplate: Xamarin.Forms.DataTemplate,
+                               ?route: string,
+                               ?routeHost: string,
+                               ?routeScheme: string,
+                               ?title: string,
+                               ?backgroundImage: string,
+                               ?icon: string,
+                               ?isBusy: bool,
+                               ?padding: obj,
+                               ?toolbarItems: ViewElement list,
+                               ?useSafeArea: bool,
+                               ?appearing: unit -> unit,
+                               ?disappearing: unit -> unit,
+                               ?layoutChanged: unit -> unit,
+                               ?anchorX: double,
+                               ?anchorY: double,
+                               ?backgroundColor: Xamarin.Forms.Color,
+                               ?heightRequest: double,
+                               ?inputTransparent: bool,
+                               ?isEnabled: bool,
+                               ?isVisible: bool,
+                               ?minimumHeightRequest: double,
+                               ?minimumWidthRequest: double,
+                               ?opacity: double,
+                               ?rotation: double,
+                               ?rotationX: double,
+                               ?rotationY: double,
+                               ?scale: double,
+                               ?style: Xamarin.Forms.Style,
+                               ?styleClass: obj,
+                               ?translationX: double,
+                               ?translationY: double,
+                               ?widthRequest: double,
+                               ?resources: (string * obj) list,
+                               ?styles: Xamarin.Forms.Style list,
+                               ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                               ?isTabStop: bool,
+                               ?scaleX: double,
+                               ?scaleY: double,
+                               ?tabIndex: int,
+                               ?childrenReordered: System.EventArgs -> unit,
+                               ?measureInvalidated: System.EventArgs -> unit,
+                               ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                               ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                               ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                               ?classId: string,
+                               ?styleId: string,
+                               ?automationId: string,
+                               ?created: (Xamarin.Forms.Shell -> unit),
+                               ?ref: ViewRef<Xamarin.Forms.Shell>) =
+
+        ViewBuilders.ConstructShell(?currentItem=currentItem,
+                               ?flyoutBackgroundColor=flyoutBackgroundColor,
+                               ?flyoutBehavior=flyoutBehavior,
+                               ?flyoutHeader=flyoutHeader,
+                               ?flyoutHeaderBehavior=flyoutHeaderBehavior,
+                               ?flyoutHeaderTemplate=flyoutHeaderTemplate,
+                               ?flyoutIsPresented=flyoutIsPresented,
+                               ?groupHeaderTemplate=groupHeaderTemplate,
+                               ?itemTemplate=itemTemplate,
+                               ?menuItemTemplate=menuItemTemplate,
+                               ?route=route,
+                               ?routeHost=routeHost,
+                               ?routeScheme=routeScheme,
+                               ?title=title,
+                               ?backgroundImage=backgroundImage,
+                               ?icon=icon,
+                               ?isBusy=isBusy,
+                               ?padding=padding,
+                               ?toolbarItems=toolbarItems,
+                               ?useSafeArea=useSafeArea,
+                               ?appearing=appearing,
+                               ?disappearing=disappearing,
+                               ?layoutChanged=layoutChanged,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?isTabStop=isTabStop,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=created,
+                               ?ref=ref)
+
     /// Describes a ShellGroupItem in the view
     static member inline ShellGroupItem(?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions,
                                         ?title: string,
@@ -19710,6 +20250,39 @@ module ViewElementExtensions =
         /// Adjusts the ShowsResults property in the visual element
         member x.ShowsResults(value: bool) = x.WithAttribute(ViewAttributes.ShowsResultsAttribKey, (value))
 
+        /// Adjusts the CurrentItem property in the visual element
+        member x.CurrentItem(value: Xamarin.Forms.ShellItem) = x.WithAttribute(ViewAttributes.CurrentItemAttribKey, (value))
+
+        /// Adjusts the FlyoutBackgroundColor property in the visual element
+        member x.FlyoutBackgroundColor(value: Xamarin.Forms.Color) = x.WithAttribute(ViewAttributes.FlyoutBackgroundColorAttribKey, (value))
+
+        /// Adjusts the FlyoutBehavior property in the visual element
+        member x.FlyoutBehavior(value: Xamarin.Forms.FlyoutBehavior) = x.WithAttribute(ViewAttributes.FlyoutBehaviorAttribKey, (value))
+
+        /// Adjusts the FlyoutHeader property in the visual element
+        member x.FlyoutHeader(value: System.Object) = x.WithAttribute(ViewAttributes.FlyoutHeaderAttribKey, (value))
+
+        /// Adjusts the FlyoutHeaderBehavior property in the visual element
+        member x.FlyoutHeaderBehavior(value: Xamarin.Forms.FlyoutHeaderBehavior) = x.WithAttribute(ViewAttributes.FlyoutHeaderBehaviorAttribKey, (value))
+
+        /// Adjusts the FlyoutHeaderTemplate property in the visual element
+        member x.FlyoutHeaderTemplate(value: Xamarin.Forms.DataTemplate) = x.WithAttribute(ViewAttributes.FlyoutHeaderTemplateAttribKey, (value))
+
+        /// Adjusts the FlyoutIsPresented property in the visual element
+        member x.FlyoutIsPresented(value: bool) = x.WithAttribute(ViewAttributes.FlyoutIsPresentedAttribKey, (value))
+
+        /// Adjusts the GroupHeaderTemplate property in the visual element
+        member x.GroupHeaderTemplate(value: Xamarin.Forms.DataTemplate) = x.WithAttribute(ViewAttributes.GroupHeaderTemplateAttribKey, (value))
+
+        /// Adjusts the MenuItemTemplate property in the visual element
+        member x.MenuItemTemplate(value: Xamarin.Forms.DataTemplate) = x.WithAttribute(ViewAttributes.MenuItemTemplateAttribKey, (value))
+
+        /// Adjusts the RouteHost property in the visual element
+        member x.RouteHost(value: string) = x.WithAttribute(ViewAttributes.RouteHostAttribKey, (value))
+
+        /// Adjusts the RouteScheme property in the visual element
+        member x.RouteScheme(value: string) = x.WithAttribute(ViewAttributes.RouteSchemeAttribKey, (value))
+
         /// Adjusts the FlyoutDisplayOptions property in the visual element
         member x.FlyoutDisplayOptions(value: Xamarin.Forms.FlyoutDisplayOptions) = x.WithAttribute(ViewAttributes.FlyoutDisplayOptionsAttribKey, (value))
 
@@ -19784,8 +20357,10 @@ module ViewElementExtensions =
                       ?clearIcon: string, ?clearIconHelpText: string, ?clearIconName: string, ?clearPlaceholderCommand: unit -> unit, ?clearPlaceholderCommandParameter: System.Object, 
                       ?clearPlaceholderEnabled: bool, ?clearPlaceholderHelpText: string, ?clearPlaceholderIcon: string, ?clearPlaceholderName: string, ?displayMemberName: string, 
                       ?isSearchEnabled: bool, ?query: string, ?queryIcon: string, ?queryIconHelpText: string, ?queryIconName: string, 
-                      ?searchBoxVisibility: Xamarin.Forms.SearchBoxVisiblity, ?showsResults: bool, ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions, ?selectedItem: System.Object, ?selectionChangedCommand: unit -> unit, 
-                      ?selectionChangedCommandParameter: System.Object, ?selectableItemsMode: Xamarin.Forms.SelectionMode, ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit, ?location: System.Uri) =
+                      ?searchBoxVisibility: Xamarin.Forms.SearchBoxVisiblity, ?showsResults: bool, ?currentItem: Xamarin.Forms.ShellItem, ?flyoutBackgroundColor: Xamarin.Forms.Color, ?flyoutBehavior: Xamarin.Forms.FlyoutBehavior, 
+                      ?flyoutHeader: System.Object, ?flyoutHeaderBehavior: Xamarin.Forms.FlyoutHeaderBehavior, ?flyoutHeaderTemplate: Xamarin.Forms.DataTemplate, ?flyoutIsPresented: bool, ?groupHeaderTemplate: Xamarin.Forms.DataTemplate, 
+                      ?menuItemTemplate: Xamarin.Forms.DataTemplate, ?routeHost: string, ?routeScheme: string, ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions, ?selectedItem: System.Object, 
+                      ?selectionChangedCommand: unit -> unit, ?selectionChangedCommandParameter: System.Object, ?selectableItemsMode: Xamarin.Forms.SelectionMode, ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit, ?location: System.Uri) =
             let x = match classId with None -> x | Some opt -> x.ClassId(opt)
             let x = match styleId with None -> x | Some opt -> x.StyleId(opt)
             let x = match automationId with None -> x | Some opt -> x.AutomationId(opt)
@@ -20053,6 +20628,17 @@ module ViewElementExtensions =
             let x = match queryIconName with None -> x | Some opt -> x.QueryIconName(opt)
             let x = match searchBoxVisibility with None -> x | Some opt -> x.SearchBoxVisibility(opt)
             let x = match showsResults with None -> x | Some opt -> x.ShowsResults(opt)
+            let x = match currentItem with None -> x | Some opt -> x.CurrentItem(opt)
+            let x = match flyoutBackgroundColor with None -> x | Some opt -> x.FlyoutBackgroundColor(opt)
+            let x = match flyoutBehavior with None -> x | Some opt -> x.FlyoutBehavior(opt)
+            let x = match flyoutHeader with None -> x | Some opt -> x.FlyoutHeader(opt)
+            let x = match flyoutHeaderBehavior with None -> x | Some opt -> x.FlyoutHeaderBehavior(opt)
+            let x = match flyoutHeaderTemplate with None -> x | Some opt -> x.FlyoutHeaderTemplate(opt)
+            let x = match flyoutIsPresented with None -> x | Some opt -> x.FlyoutIsPresented(opt)
+            let x = match groupHeaderTemplate with None -> x | Some opt -> x.GroupHeaderTemplate(opt)
+            let x = match menuItemTemplate with None -> x | Some opt -> x.MenuItemTemplate(opt)
+            let x = match routeHost with None -> x | Some opt -> x.RouteHost(opt)
+            let x = match routeScheme with None -> x | Some opt -> x.RouteScheme(opt)
             let x = match flyoutDisplayOptions with None -> x | Some opt -> x.FlyoutDisplayOptions(opt)
             let x = match selectedItem with None -> x | Some opt -> x.SelectedItem(opt)
             let x = match selectionChangedCommand with None -> x | Some opt -> x.SelectionChangedCommand(opt)
@@ -20596,6 +21182,28 @@ module ViewElementExtensions =
     let searchBoxVisibility (value: Xamarin.Forms.SearchBoxVisiblity) (x: ViewElement) = x.SearchBoxVisibility(value)
     /// Adjusts the ShowsResults property in the visual element
     let showsResults (value: bool) (x: ViewElement) = x.ShowsResults(value)
+    /// Adjusts the CurrentItem property in the visual element
+    let currentItem (value: Xamarin.Forms.ShellItem) (x: ViewElement) = x.CurrentItem(value)
+    /// Adjusts the FlyoutBackgroundColor property in the visual element
+    let flyoutBackgroundColor (value: Xamarin.Forms.Color) (x: ViewElement) = x.FlyoutBackgroundColor(value)
+    /// Adjusts the FlyoutBehavior property in the visual element
+    let flyoutBehavior (value: Xamarin.Forms.FlyoutBehavior) (x: ViewElement) = x.FlyoutBehavior(value)
+    /// Adjusts the FlyoutHeader property in the visual element
+    let flyoutHeader (value: System.Object) (x: ViewElement) = x.FlyoutHeader(value)
+    /// Adjusts the FlyoutHeaderBehavior property in the visual element
+    let flyoutHeaderBehavior (value: Xamarin.Forms.FlyoutHeaderBehavior) (x: ViewElement) = x.FlyoutHeaderBehavior(value)
+    /// Adjusts the FlyoutHeaderTemplate property in the visual element
+    let flyoutHeaderTemplate (value: Xamarin.Forms.DataTemplate) (x: ViewElement) = x.FlyoutHeaderTemplate(value)
+    /// Adjusts the FlyoutIsPresented property in the visual element
+    let flyoutIsPresented (value: bool) (x: ViewElement) = x.FlyoutIsPresented(value)
+    /// Adjusts the GroupHeaderTemplate property in the visual element
+    let groupHeaderTemplate (value: Xamarin.Forms.DataTemplate) (x: ViewElement) = x.GroupHeaderTemplate(value)
+    /// Adjusts the MenuItemTemplate property in the visual element
+    let menuItemTemplate (value: Xamarin.Forms.DataTemplate) (x: ViewElement) = x.MenuItemTemplate(value)
+    /// Adjusts the RouteHost property in the visual element
+    let routeHost (value: string) (x: ViewElement) = x.RouteHost(value)
+    /// Adjusts the RouteScheme property in the visual element
+    let routeScheme (value: string) (x: ViewElement) = x.RouteScheme(value)
     /// Adjusts the FlyoutDisplayOptions property in the visual element
     let flyoutDisplayOptions (value: Xamarin.Forms.FlyoutDisplayOptions) (x: ViewElement) = x.FlyoutDisplayOptions(value)
     /// Adjusts the SelectedItem property in the visual element

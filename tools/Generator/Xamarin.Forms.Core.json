@@ -2267,6 +2267,63 @@
       ]
     },
     {
+      "name": "Xamarin.Forms.Shell",
+      "members": [
+        {
+          "name": "CurrentItem",
+          "defaultValue": "null"
+        },
+        {
+          "name": "FlyoutBackgroundColor",
+          "defaultValue": "Xamarin.Forms.Color.Default"
+        },
+        {
+          "name": "FlyoutBehavior",
+          "defaultValue": "Xamarin.Forms.FlyoutBehavior.Flyout"
+        },
+        {
+          "name": "FlyoutHeader",
+          "defaultValue": "null"
+        },
+        {
+          "name": "FlyoutHeaderBehavior",
+          "defaultValue": "Xamarin.Forms.FlyoutHeaderBehavior.Default"
+        },
+        {
+          "name": "FlyoutHeaderTemplate",
+          "defaultValue": "null"
+        },
+        {
+          "name": "FlyoutIsPresented",
+          "defaultValue": "false"
+        },
+        {
+          "name": "GroupHeaderTemplate",
+          "defaultValue": "null"
+        },
+        {
+          "name": "ItemTemplate",
+          "defaultValue": "null"
+        },
+        {
+          "name": "MenuItemTemplate",
+          "defaultValue": "null"
+        },
+        {
+          "name": "Route",
+          "defaultValue": "null"
+        },
+        {
+          "name": "RouteHost",
+          "defaultValue": "null"
+        },
+        {
+          "name": "RouteScheme",
+          "defaultValue": "null"
+        }
+      ]
+    },
+    {
       "name": "Xamarin.Forms.ShellGroupItem",
       "members": [
         {
