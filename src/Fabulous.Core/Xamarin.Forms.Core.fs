@@ -270,6 +270,12 @@ module ViewAttributes =
     let QueryIconNameAttribKey : AttributeKey<_> = AttributeKey<_>("QueryIconName")
     let SearchBoxVisibilityAttribKey : AttributeKey<_> = AttributeKey<_>("SearchBoxVisibility")
     let ShowsResultsAttribKey : AttributeKey<_> = AttributeKey<_>("ShowsResults")
+    let FlyoutDisplayOptionsAttribKey : AttributeKey<_> = AttributeKey<_>("FlyoutDisplayOptions")
+    let SelectedItemAttribKey : AttributeKey<_> = AttributeKey<_>("SelectedItem")
+    let SelectionChangedCommandAttribKey : AttributeKey<_> = AttributeKey<_>("SelectionChangedCommand")
+    let SelectionChangedCommandParameterAttribKey : AttributeKey<_> = AttributeKey<_>("SelectionChangedCommandParameter")
+    let selectableItemsModeAttribKey : AttributeKey<_> = AttributeKey<_>("selectableItemsMode")
+    let SelectionChangedAttribKey : AttributeKey<_> = AttributeKey<_>("SelectionChanged")
 
 type ViewProto() =
     static member val ProtoElement : ViewElement option = None with get, set
@@ -334,6 +340,8 @@ type ViewProto() =
     static member val ProtoBaseShellItem : ViewElement option = None with get, set
     static member val ProtoGridItemsLayout : ViewElement option = None with get, set
     static member val ProtoSearchHandler : ViewElement option = None with get, set
+    static member val ProtoShellGroupItem : ViewElement option = None with get, set
+    static member val ProtoSelectableItemsView : ViewElement option = None with get, set
 
 type ViewBuilders() =
     /// Builds the attributes for a Element in the view
@@ -12819,6 +12827,313 @@ type ViewBuilders() =
 
         ViewElement.Create<Xamarin.Forms.SearchHandler>(ViewBuilders.CreateFuncSearchHandler, ViewBuilders.UpdateFuncSearchHandler, attribBuilder)
 
+    /// Builds the attributes for a ShellGroupItem in the view
+    static member inline BuildShellGroupItem(attribCount: int,
+                                             ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions,
+                                             ?title: string,
+                                             ?route: string,
+                                             ?icon: string,
+                                             ?flyoutIcon: string,
+                                             ?isEnabled: bool,
+                                             ?classId: string,
+                                             ?styleId: string,
+                                             ?automationId: string,
+                                             ?created: obj -> unit,
+                                             ?ref: ViewRef) = 
+
+        let attribCount = match flyoutDisplayOptions with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = ViewBuilders.BuildBaseShellItem(attribCount, ?title=title, ?route=route, ?icon=icon, ?flyoutIcon=flyoutIcon, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        match flyoutDisplayOptions with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FlyoutDisplayOptionsAttribKey, (v)) 
+        attribBuilder
+
+    static member val CreateFuncShellGroupItem : (unit -> Xamarin.Forms.ShellGroupItem) = (fun () -> ViewBuilders.CreateShellGroupItem()) with get, set
+
+    static member CreateShellGroupItem () : Xamarin.Forms.ShellGroupItem =
+        upcast (new Xamarin.Forms.ShellGroupItem())
+
+    static member val UpdateFuncShellGroupItem =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.ShellGroupItem) -> ViewBuilders.UpdateShellGroupItem (prevOpt, curr, target)) 
+
+    static member UpdateShellGroupItem (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.ShellGroupItem) = 
+        // update the inherited BaseShellItem element
+        let baseElement = (if ViewProto.ProtoBaseShellItem.IsNone then ViewProto.ProtoBaseShellItem <- Some (ViewBuilders.ConstructBaseShellItem())); ViewProto.ProtoBaseShellItem.Value
+        baseElement.UpdateInherited (prevOpt, curr, target)
+        let mutable prevFlyoutDisplayOptionsOpt = ValueNone
+        let mutable currFlyoutDisplayOptionsOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.FlyoutDisplayOptionsAttribKey.KeyValue then 
+                currFlyoutDisplayOptionsOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlyoutDisplayOptions)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.FlyoutDisplayOptionsAttribKey.KeyValue then 
+                    prevFlyoutDisplayOptionsOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlyoutDisplayOptions)
+        match prevFlyoutDisplayOptionsOpt, currFlyoutDisplayOptionsOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.FlyoutDisplayOptions <-  currValue
+        | ValueSome _, ValueNone -> target.FlyoutDisplayOptions <- Xamarin.Forms.FlyoutDisplayOptions.AsSingleItem
+        | ValueNone, ValueNone -> ()
+
+    static member inline ConstructShellGroupItem(?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions,
+                                                 ?title: string,
+                                                 ?route: string,
+                                                 ?icon: string,
+                                                 ?flyoutIcon: string,
+                                                 ?isEnabled: bool,
+                                                 ?classId: string,
+                                                 ?styleId: string,
+                                                 ?automationId: string,
+                                                 ?created: (Xamarin.Forms.ShellGroupItem -> unit),
+                                                 ?ref: ViewRef<Xamarin.Forms.ShellGroupItem>) = 
+
+        let attribBuilder = ViewBuilders.BuildShellGroupItem(0,
+                               ?flyoutDisplayOptions=flyoutDisplayOptions,
+                               ?title=title,
+                               ?route=route,
+                               ?icon=icon,
+                               ?flyoutIcon=flyoutIcon,
+                               ?isEnabled=isEnabled,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ShellGroupItem> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ShellGroupItem>) -> Some ref.Unbox))
+
+        ViewElement.Create<Xamarin.Forms.ShellGroupItem>(ViewBuilders.CreateFuncShellGroupItem, ViewBuilders.UpdateFuncShellGroupItem, attribBuilder)
+
+    /// Builds the attributes for a SelectableItemsView in the view
+    static member inline BuildSelectableItemsView(attribCount: int,
+                                                  ?selectedItem: System.Object,
+                                                  ?selectionChangedCommand: unit -> unit,
+                                                  ?selectionChangedCommandParameter: System.Object,
+                                                  ?selectionMode: Xamarin.Forms.SelectionMode,
+                                                  ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit,
+                                                  ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                                  ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                                  ?margin: obj,
+                                                  ?gestureRecognizers: ViewElement list,
+                                                  ?anchorX: double,
+                                                  ?anchorY: double,
+                                                  ?backgroundColor: Xamarin.Forms.Color,
+                                                  ?heightRequest: double,
+                                                  ?inputTransparent: bool,
+                                                  ?isEnabled: bool,
+                                                  ?isVisible: bool,
+                                                  ?minimumHeightRequest: double,
+                                                  ?minimumWidthRequest: double,
+                                                  ?opacity: double,
+                                                  ?rotation: double,
+                                                  ?rotationX: double,
+                                                  ?rotationY: double,
+                                                  ?scale: double,
+                                                  ?style: Xamarin.Forms.Style,
+                                                  ?styleClass: obj,
+                                                  ?translationX: double,
+                                                  ?translationY: double,
+                                                  ?widthRequest: double,
+                                                  ?resources: (string * obj) list,
+                                                  ?styles: Xamarin.Forms.Style list,
+                                                  ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                                  ?isTabStop: bool,
+                                                  ?scaleX: double,
+                                                  ?scaleY: double,
+                                                  ?tabIndex: int,
+                                                  ?childrenReordered: System.EventArgs -> unit,
+                                                  ?measureInvalidated: System.EventArgs -> unit,
+                                                  ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                  ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                                                  ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                  ?classId: string,
+                                                  ?styleId: string,
+                                                  ?automationId: string,
+                                                  ?created: obj -> unit,
+                                                  ?ref: ViewRef) = 
+
+        let attribCount = match selectedItem with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match selectionChangedCommand with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match selectionChangedCommandParameter with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match selectionMode with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match selectionChanged with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        match selectedItem with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SelectedItemAttribKey, (v)) 
+        match selectionChangedCommand with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SelectionChangedCommandAttribKey, makeCommand(v)) 
+        match selectionChangedCommandParameter with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SelectionChangedCommandParameterAttribKey, (v)) 
+        match selectionMode with None -> () | Some v -> attribBuilder.Add(ViewAttributes.selectableItemsModeAttribKey, (v)) 
+        match selectionChanged with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SelectionChangedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.SelectionChangedEventArgs>(fun _sender args -> f args))(v)) 
+        attribBuilder
+
+    static member val CreateFuncSelectableItemsView : (unit -> Xamarin.Forms.SelectableItemsView) = (fun () -> ViewBuilders.CreateSelectableItemsView()) with get, set
+
+    static member CreateSelectableItemsView () : Xamarin.Forms.SelectableItemsView =
+        upcast (new Xamarin.Forms.SelectableItemsView())
+
+    static member val UpdateFuncSelectableItemsView =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.SelectableItemsView) -> ViewBuilders.UpdateSelectableItemsView (prevOpt, curr, target)) 
+
+    static member UpdateSelectableItemsView (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.SelectableItemsView) = 
+        // update the inherited View element
+        let baseElement = (if ViewProto.ProtoView.IsNone then ViewProto.ProtoView <- Some (ViewBuilders.ConstructView())); ViewProto.ProtoView.Value
+        baseElement.UpdateInherited (prevOpt, curr, target)
+        let mutable prevSelectedItemOpt = ValueNone
+        let mutable currSelectedItemOpt = ValueNone
+        let mutable prevSelectionChangedCommandOpt = ValueNone
+        let mutable currSelectionChangedCommandOpt = ValueNone
+        let mutable prevSelectionChangedCommandParameterOpt = ValueNone
+        let mutable currSelectionChangedCommandParameterOpt = ValueNone
+        let mutable prevselectableItemsModeOpt = ValueNone
+        let mutable currselectableItemsModeOpt = ValueNone
+        let mutable prevSelectionChangedOpt = ValueNone
+        let mutable currSelectionChangedOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.SelectedItemAttribKey.KeyValue then 
+                currSelectedItemOpt <- ValueSome (kvp.Value :?> System.Object)
+            if kvp.Key = ViewAttributes.SelectionChangedCommandAttribKey.KeyValue then 
+                currSelectionChangedCommandOpt <- ValueSome (kvp.Value :?> System.Windows.Input.ICommand)
+            if kvp.Key = ViewAttributes.SelectionChangedCommandParameterAttribKey.KeyValue then 
+                currSelectionChangedCommandParameterOpt <- ValueSome (kvp.Value :?> System.Object)
+            if kvp.Key = ViewAttributes.selectableItemsModeAttribKey.KeyValue then 
+                currselectableItemsModeOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.SelectionMode)
+            if kvp.Key = ViewAttributes.SelectionChangedAttribKey.KeyValue then 
+                currSelectionChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.SelectionChangedEventArgs>)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.SelectedItemAttribKey.KeyValue then 
+                    prevSelectedItemOpt <- ValueSome (kvp.Value :?> System.Object)
+                if kvp.Key = ViewAttributes.SelectionChangedCommandAttribKey.KeyValue then 
+                    prevSelectionChangedCommandOpt <- ValueSome (kvp.Value :?> System.Windows.Input.ICommand)
+                if kvp.Key = ViewAttributes.SelectionChangedCommandParameterAttribKey.KeyValue then 
+                    prevSelectionChangedCommandParameterOpt <- ValueSome (kvp.Value :?> System.Object)
+                if kvp.Key = ViewAttributes.selectableItemsModeAttribKey.KeyValue then 
+                    prevselectableItemsModeOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.SelectionMode)
+                if kvp.Key = ViewAttributes.SelectionChangedAttribKey.KeyValue then 
+                    prevSelectionChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.SelectionChangedEventArgs>)
+        match prevSelectedItemOpt, currSelectedItemOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.SelectedItem <-  currValue
+        | ValueSome _, ValueNone -> target.SelectedItem <- null
+        | ValueNone, ValueNone -> ()
+        match prevSelectionChangedCommandOpt, currSelectionChangedCommandOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.SelectionChangedCommand <-  currValue
+        | ValueSome _, ValueNone -> target.SelectionChangedCommand <- null
+        | ValueNone, ValueNone -> ()
+        match prevSelectionChangedCommandParameterOpt, currSelectionChangedCommandParameterOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.SelectionChangedCommandParameter <-  currValue
+        | ValueSome _, ValueNone -> target.SelectionChangedCommandParameter <- null
+        | ValueNone, ValueNone -> ()
+        match prevselectableItemsModeOpt, currselectableItemsModeOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.SelectionMode <-  currValue
+        | ValueSome _, ValueNone -> target.SelectionMode <- Xamarin.Forms.SelectionMode.None
+        | ValueNone, ValueNone -> ()
+        match prevSelectionChangedOpt, currSelectionChangedOpt with
+        | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
+        | ValueSome prevValue, ValueSome currValue -> target.SelectionChanged.RemoveHandler(prevValue); target.SelectionChanged.AddHandler(currValue)
+        | ValueNone, ValueSome currValue -> target.SelectionChanged.AddHandler(currValue)
+        | ValueSome prevValue, ValueNone -> target.SelectionChanged.RemoveHandler(prevValue)
+        | ValueNone, ValueNone -> ()
+
+    static member inline ConstructSelectableItemsView(?selectedItem: System.Object,
+                                                      ?selectionChangedCommand: unit -> unit,
+                                                      ?selectionChangedCommandParameter: System.Object,
+                                                      ?selectionMode: Xamarin.Forms.SelectionMode,
+                                                      ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit,
+                                                      ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                                      ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                                      ?margin: obj,
+                                                      ?gestureRecognizers: ViewElement list,
+                                                      ?anchorX: double,
+                                                      ?anchorY: double,
+                                                      ?backgroundColor: Xamarin.Forms.Color,
+                                                      ?heightRequest: double,
+                                                      ?inputTransparent: bool,
+                                                      ?isEnabled: bool,
+                                                      ?isVisible: bool,
+                                                      ?minimumHeightRequest: double,
+                                                      ?minimumWidthRequest: double,
+                                                      ?opacity: double,
+                                                      ?rotation: double,
+                                                      ?rotationX: double,
+                                                      ?rotationY: double,
+                                                      ?scale: double,
+                                                      ?style: Xamarin.Forms.Style,
+                                                      ?styleClass: obj,
+                                                      ?translationX: double,
+                                                      ?translationY: double,
+                                                      ?widthRequest: double,
+                                                      ?resources: (string * obj) list,
+                                                      ?styles: Xamarin.Forms.Style list,
+                                                      ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                                      ?isTabStop: bool,
+                                                      ?scaleX: double,
+                                                      ?scaleY: double,
+                                                      ?tabIndex: int,
+                                                      ?childrenReordered: System.EventArgs -> unit,
+                                                      ?measureInvalidated: System.EventArgs -> unit,
+                                                      ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                      ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                                                      ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                      ?classId: string,
+                                                      ?styleId: string,
+                                                      ?automationId: string,
+                                                      ?created: (Xamarin.Forms.SelectableItemsView -> unit),
+                                                      ?ref: ViewRef<Xamarin.Forms.SelectableItemsView>) = 
+
+        let attribBuilder = ViewBuilders.BuildSelectableItemsView(0,
+                               ?selectedItem=selectedItem,
+                               ?selectionChangedCommand=selectionChangedCommand,
+                               ?selectionChangedCommandParameter=selectionChangedCommandParameter,
+                               ?selectionMode=selectionMode,
+                               ?selectionChanged=selectionChanged,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?isTabStop=isTabStop,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.SelectableItemsView> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.SelectableItemsView>) -> Some ref.Unbox))
+
+        ViewElement.Create<Xamarin.Forms.SelectableItemsView>(ViewBuilders.CreateFuncSelectableItemsView, ViewBuilders.UpdateFuncSelectableItemsView, attribBuilder)
+
 /// Viewer that allows to read the properties of a ViewElement representing a Element
 type ElementViewer(element: ViewElement) =
     do if not ((typeof<Xamarin.Forms.Element>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.Element' is expected, but '%s' was provided." element.TargetType.FullName
@@ -13805,6 +14120,28 @@ type SearchHandlerViewer(element: ViewElement) =
     member this.SearchBoxVisibility = element.GetAttributeKeyed(ViewAttributes.SearchBoxVisibilityAttribKey)
     /// Get the value of the ShowsResults property
     member this.ShowsResults = element.GetAttributeKeyed(ViewAttributes.ShowsResultsAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a ShellGroupItem
+type ShellGroupItemViewer(element: ViewElement) =
+    inherit BaseShellItemViewer(element)
+    do if not ((typeof<Xamarin.Forms.ShellGroupItem>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.ShellGroupItem' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the FlyoutDisplayOptions property
+    member this.FlyoutDisplayOptions = element.GetAttributeKeyed(ViewAttributes.FlyoutDisplayOptionsAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a SelectableItemsView
+type SelectableItemsViewViewer(element: ViewElement) =
+    inherit ViewViewer(element)
+    do if not ((typeof<Xamarin.Forms.SelectableItemsView>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.SelectableItemsView' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the SelectedItem property
+    member this.SelectedItem = element.GetAttributeKeyed(ViewAttributes.SelectedItemAttribKey)
+    /// Get the value of the SelectionChangedCommand property
+    member this.SelectionChangedCommand = element.GetAttributeKeyed(ViewAttributes.SelectionChangedCommandAttribKey)
+    /// Get the value of the SelectionChangedCommandParameter property
+    member this.SelectionChangedCommandParameter = element.GetAttributeKeyed(ViewAttributes.SelectionChangedCommandParameterAttribKey)
+    /// Get the value of the SelectionMode property
+    member this.SelectionMode = element.GetAttributeKeyed(ViewAttributes.selectableItemsModeAttribKey)
+    /// Get the value of the SelectionChanged property
+    member this.SelectionChanged = element.GetAttributeKeyed(ViewAttributes.SelectionChangedAttribKey)
 
 type View() =
     /// Describes a Element in the view
@@ -18023,6 +18360,124 @@ type View() =
                                ?searchBoxVisibility=searchBoxVisibility,
                                ?showsResults=showsResults)
 
+    /// Describes a ShellGroupItem in the view
+    static member inline ShellGroupItem(?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions,
+                                        ?title: string,
+                                        ?route: string,
+                                        ?icon: string,
+                                        ?flyoutIcon: string,
+                                        ?isEnabled: bool,
+                                        ?classId: string,
+                                        ?styleId: string,
+                                        ?automationId: string,
+                                        ?created: (Xamarin.Forms.ShellGroupItem -> unit),
+                                        ?ref: ViewRef<Xamarin.Forms.ShellGroupItem>) =
+
+        ViewBuilders.ConstructShellGroupItem(?flyoutDisplayOptions=flyoutDisplayOptions,
+                               ?title=title,
+                               ?route=route,
+                               ?icon=icon,
+                               ?flyoutIcon=flyoutIcon,
+                               ?isEnabled=isEnabled,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=created,
+                               ?ref=ref)
+
+    /// Describes a SelectableItemsView in the view
+    static member inline SelectableItemsView(?selectedItem: System.Object,
+                                             ?selectionChangedCommand: unit -> unit,
+                                             ?selectionChangedCommandParameter: System.Object,
+                                             ?selectionMode: Xamarin.Forms.SelectionMode,
+                                             ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit,
+                                             ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                             ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                             ?margin: obj,
+                                             ?gestureRecognizers: ViewElement list,
+                                             ?anchorX: double,
+                                             ?anchorY: double,
+                                             ?backgroundColor: Xamarin.Forms.Color,
+                                             ?heightRequest: double,
+                                             ?inputTransparent: bool,
+                                             ?isEnabled: bool,
+                                             ?isVisible: bool,
+                                             ?minimumHeightRequest: double,
+                                             ?minimumWidthRequest: double,
+                                             ?opacity: double,
+                                             ?rotation: double,
+                                             ?rotationX: double,
+                                             ?rotationY: double,
+                                             ?scale: double,
+                                             ?style: Xamarin.Forms.Style,
+                                             ?styleClass: obj,
+                                             ?translationX: double,
+                                             ?translationY: double,
+                                             ?widthRequest: double,
+                                             ?resources: (string * obj) list,
+                                             ?styles: Xamarin.Forms.Style list,
+                                             ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                             ?isTabStop: bool,
+                                             ?scaleX: double,
+                                             ?scaleY: double,
+                                             ?tabIndex: int,
+                                             ?childrenReordered: System.EventArgs -> unit,
+                                             ?measureInvalidated: System.EventArgs -> unit,
+                                             ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                             ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                                             ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                             ?classId: string,
+                                             ?styleId: string,
+                                             ?automationId: string,
+                                             ?created: (Xamarin.Forms.SelectableItemsView -> unit),
+                                             ?ref: ViewRef<Xamarin.Forms.SelectableItemsView>) =
+
+        ViewBuilders.ConstructSelectableItemsView(?selectedItem=selectedItem,
+                               ?selectionChangedCommand=selectionChangedCommand,
+                               ?selectionChangedCommandParameter=selectionChangedCommandParameter,
+                               ?selectionMode=selectionMode,
+                               ?selectionChanged=selectionChanged,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?isTabStop=isTabStop,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=created,
+                               ?ref=ref)
+
 
 [<AutoOpen>]
 module ViewElementExtensions = 
@@ -18815,6 +19270,24 @@ module ViewElementExtensions =
         /// Adjusts the ShowsResults property in the visual element
         member x.ShowsResults(value: bool) = x.WithAttribute(ViewAttributes.ShowsResultsAttribKey, (value))
 
+        /// Adjusts the FlyoutDisplayOptions property in the visual element
+        member x.FlyoutDisplayOptions(value: Xamarin.Forms.FlyoutDisplayOptions) = x.WithAttribute(ViewAttributes.FlyoutDisplayOptionsAttribKey, (value))
+
+        /// Adjusts the SelectedItem property in the visual element
+        member x.SelectedItem(value: System.Object) = x.WithAttribute(ViewAttributes.SelectedItemAttribKey, (value))
+
+        /// Adjusts the SelectionChangedCommand property in the visual element
+        member x.SelectionChangedCommand(value: unit -> unit) = x.WithAttribute(ViewAttributes.SelectionChangedCommandAttribKey, makeCommand(value))
+
+        /// Adjusts the SelectionChangedCommandParameter property in the visual element
+        member x.SelectionChangedCommandParameter(value: System.Object) = x.WithAttribute(ViewAttributes.SelectionChangedCommandParameterAttribKey, (value))
+
+        /// Adjusts the selectableItemsMode property in the visual element
+        member x.selectableItemsMode(value: Xamarin.Forms.SelectionMode) = x.WithAttribute(ViewAttributes.selectableItemsModeAttribKey, (value))
+
+        /// Adjusts the SelectionChanged property in the visual element
+        member x.SelectionChanged(value: Xamarin.Forms.SelectionChangedEventArgs -> unit) = x.WithAttribute(ViewAttributes.SelectionChangedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.SelectionChangedEventArgs>(fun _sender args -> f args))(value))
+
         member x.With(?classId: string, ?styleId: string, ?automationId: string, ?anchorX: double, ?anchorY: double, 
                       ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, 
                       ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, 
@@ -18867,7 +19340,8 @@ module ViewElementExtensions =
                       ?clearIcon: string, ?clearIconHelpText: string, ?clearIconName: string, ?clearPlaceholderCommand: unit -> unit, ?clearPlaceholderCommandParameter: System.Object, 
                       ?clearPlaceholderEnabled: bool, ?clearPlaceholderHelpText: string, ?clearPlaceholderIcon: string, ?clearPlaceholderName: string, ?displayMemberName: string, 
                       ?isSearchEnabled: bool, ?query: string, ?queryIcon: string, ?queryIconHelpText: string, ?queryIconName: string, 
-                      ?searchBoxVisibility: Xamarin.Forms.SearchBoxVisiblity, ?showsResults: bool) =
+                      ?searchBoxVisibility: Xamarin.Forms.SearchBoxVisiblity, ?showsResults: bool, ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions, ?selectedItem: System.Object, ?selectionChangedCommand: unit -> unit, 
+                      ?selectionChangedCommandParameter: System.Object, ?selectableItemsMode: Xamarin.Forms.SelectionMode, ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit) =
             let x = match classId with None -> x | Some opt -> x.ClassId(opt)
             let x = match styleId with None -> x | Some opt -> x.StyleId(opt)
             let x = match automationId with None -> x | Some opt -> x.AutomationId(opt)
@@ -19130,6 +19604,12 @@ module ViewElementExtensions =
             let x = match queryIconName with None -> x | Some opt -> x.QueryIconName(opt)
             let x = match searchBoxVisibility with None -> x | Some opt -> x.SearchBoxVisibility(opt)
             let x = match showsResults with None -> x | Some opt -> x.ShowsResults(opt)
+            let x = match flyoutDisplayOptions with None -> x | Some opt -> x.FlyoutDisplayOptions(opt)
+            let x = match selectedItem with None -> x | Some opt -> x.SelectedItem(opt)
+            let x = match selectionChangedCommand with None -> x | Some opt -> x.SelectionChangedCommand(opt)
+            let x = match selectionChangedCommandParameter with None -> x | Some opt -> x.SelectionChangedCommandParameter(opt)
+            let x = match selectableItemsMode with None -> x | Some opt -> x.selectableItemsMode(opt)
+            let x = match selectionChanged with None -> x | Some opt -> x.SelectionChanged(opt)
             x
 
     /// Adjusts the ClassId property in the visual element
@@ -19656,3 +20136,15 @@ module ViewElementExtensions =
     let searchBoxVisibility (value: Xamarin.Forms.SearchBoxVisiblity) (x: ViewElement) = x.SearchBoxVisibility(value)
     /// Adjusts the ShowsResults property in the visual element
     let showsResults (value: bool) (x: ViewElement) = x.ShowsResults(value)
+    /// Adjusts the FlyoutDisplayOptions property in the visual element
+    let flyoutDisplayOptions (value: Xamarin.Forms.FlyoutDisplayOptions) (x: ViewElement) = x.FlyoutDisplayOptions(value)
+    /// Adjusts the SelectedItem property in the visual element
+    let selectedItem (value: System.Object) (x: ViewElement) = x.SelectedItem(value)
+    /// Adjusts the SelectionChangedCommand property in the visual element
+    let selectionChangedCommand (value: unit -> unit) (x: ViewElement) = x.SelectionChangedCommand(value)
+    /// Adjusts the SelectionChangedCommandParameter property in the visual element
+    let selectionChangedCommandParameter (value: System.Object) (x: ViewElement) = x.SelectionChangedCommandParameter(value)
+    /// Adjusts the selectableItemsMode property in the visual element
+    let selectableItemsMode (value: Xamarin.Forms.SelectionMode) (x: ViewElement) = x.selectableItemsMode(value)
+    /// Adjusts the SelectionChanged property in the visual element
+    let selectionChanged (value: Xamarin.Forms.SelectionChangedEventArgs -> unit) (x: ViewElement) = x.SelectionChanged(value)

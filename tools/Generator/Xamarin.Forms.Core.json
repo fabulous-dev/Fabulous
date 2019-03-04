@@ -2240,6 +2240,47 @@
           "modelType": "bool"
         }
       ]
+    },
+    {
+      "name": "Xamarin.Forms.ShellGroupItem",
+      "members": [
+        {
+          "name": "FlyoutDisplayOptions",
+          "defaultValue": "Xamarin.Forms.FlyoutDisplayOptions.AsSingleItem"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.SelectableItemsView",
+      "members": [
+        {
+          "name": "SelectedItem",
+          "defaultValue": "null"
+        },
+        {
+          "name": "SelectionChangedCommand",
+          "defaultValue": "null",
+          "inputType": "unit -> unit",
+          "convToModel": "makeCommand"
+        },
+        {
+          "name": "SelectionChangedCommandParameter",
+          "defaultValue": "null"
+        },
+        {
+          "name": "SelectionMode",
+          "uniqueName": "selectableItemsMode",
+          "defaultValue": "Xamarin.Forms.SelectionMode.None",
+          "inputType": "Xamarin.Forms.SelectionMode",
+          "modelType": "Xamarin.Forms.SelectionMode"
+        },
+        {
+          "name": "SelectionChanged",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.SelectionChangedEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.SelectionChangedEventArgs>(fun _sender args -> f args))"
+        }
+      ]
     }
   ]
 }
