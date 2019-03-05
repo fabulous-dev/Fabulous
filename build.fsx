@@ -176,8 +176,8 @@ Target.create "RunSamplesTests" (fun _ ->
 )
 
 Target.create "TestTemplatesNuGet" (fun _ ->
-    let restorePackageDotnetCli appName projectName pkgs =
-        DotNet.exec id "restore" (sprintf "%s/%s/%s.fsproj  --source https://api.nuget.org/v3/index.json --source %s" appName projectName projectName pkgs) |> ignore
+    let restorePackageDotnetCli appName projectName projectExtension pkgs =
+        DotNet.exec id "restore" (sprintf "%s/%s/%s.%s  --source https://api.nuget.org/v3/index.json --source %s" appName projectName projectName projectExtension pkgs) |> ignore
 
     let ticks = let now = System.DateTime.Now in now.Ticks // Prevents warning FS0052
     let testAppName = "testapp2" + string (abs (hash ticks) % 100)
@@ -198,11 +198,11 @@ Target.create "TestTemplatesNuGet" (fun _ ->
     // The shared project and WPF need to be restored manually as they're using the new SDK-style format
     // When restoring, using the build_output as a package source to pick up the package we just compiled
     let pkgs = Path.GetFullPath(buildDir)
-    restorePackageDotnetCli testAppName testAppName pkgs
+    restorePackageDotnetCli testAppName testAppName "fsproj" pkgs
     
     if Environment.isWindows then
-        restorePackageDotnetCli testAppName (testAppName + ".WPF") pkgs
-        restorePackageDotnetCli testAppName (testAppName + ".UWP") pkgs
+        restorePackageDotnetCli testAppName (testAppName + ".WPF") "fsproj" pkgs
+        restorePackageDotnetCli testAppName (testAppName + ".UWP") "csproj" pkgs
 
     // Build for all combinations
     let slash = if Environment.isUnix then "\\" else ""
