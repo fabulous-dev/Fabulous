@@ -1,3 +1,11 @@
+#### 0.33.0
+
+* [DynamicViews] Added SizeChangedEventArgs to give access to the new size when SizeChanged is raised (https://github.com/fsprojects/Fabulous/pull/336)
+* [DynamicViews] Added an extension point to give a new default implementation for a control (https://github.com/fsprojects/Fabulous/pull/342)
+* [LiveUpdate] Updated Interpreter to fix some bugs. Plus changed the watcher with a new and easier command line syntax (https://github.com/fsprojects/Fabulous/pull/338)
+* [Fabulous.Core] Fixed a bug (possibly from Mono) that made Fabulous act weird on some Android devices (https://github.com/fsprojects/Fabulous/pull/347)
+* [Templates] Fixed the consistency of the namespace between the files in the WPF template
+
 #### 0.32.0
 
 * [Fabulous.Core] Added better type annotation to make the functions init and update easier to read (https://github.com/fsprojects/Fabulous/pull/313)
