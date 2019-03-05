@@ -221,6 +221,12 @@ module Converters =
         | :? Uri as uri -> ShellNavigationState.op_Implicit uri
         | _ -> failwithf "makeUri: invalid argument %O" v
 
+    /// Converts a datatemplate to a Xamarin.Forms TemplatedPage
+    let makeTemplate (v: obj) =
+        match v with
+        | :? TemplatedPage as p -> ShellContent.op_Implicit p
+        | _ -> failwithf "makeTemplate: invalid argument %O" v
+
     /// Checks whether two objects are reference-equal
     let identical (x: 'T) (y:'T) = System.Object.ReferenceEquals(x, y)
 

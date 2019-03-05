@@ -2374,6 +2374,40 @@
           "convToModel": "makeUri"
         }
       ]
+    },
+    {
+      "name": "Xamarin.Forms.ShellContent",
+      "members": [
+        {
+          "name": "Content",
+          "defaultValue": "null",
+          "inputType": "ViewElement"
+        },
+        {
+          "name": "ContentTemplate",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.DataTemplate",
+          "convToModel": "makeTemplate"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.ShellItem",
+      "members": [
+        {
+          "name": "CurrentItem",
+          "defaultValue": "null"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.ShellSection",
+      "members": [
+        {
+          "name": "CurrentItem",
+          "defaultValue": "null"
+        }
+      ]
     }
   ]
 }

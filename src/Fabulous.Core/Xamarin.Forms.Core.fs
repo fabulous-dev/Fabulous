@@ -293,6 +293,7 @@ module ViewAttributes =
     let selectableItemsModeAttribKey : AttributeKey<_> = AttributeKey<_>("selectableItemsMode")
     let SelectionChangedAttribKey : AttributeKey<_> = AttributeKey<_>("SelectionChanged")
     let LocationAttribKey : AttributeKey<_> = AttributeKey<_>("Location")
+    let ContentTemplateAttribKey : AttributeKey<_> = AttributeKey<_>("ContentTemplate")
 
 type ViewProto() =
     static member val ProtoElement : ViewElement option = None with get, set
@@ -362,6 +363,9 @@ type ViewProto() =
     static member val ProtoShellGroupItem : ViewElement option = None with get, set
     static member val ProtoSelectableItemsView : ViewElement option = None with get, set
     static member val ProtoShellNavigationState : ViewElement option = None with get, set
+    static member val ProtoShellContent : ViewElement option = None with get, set
+    static member val ProtoShellItem : ViewElement option = None with get, set
+    static member val ProtoShellSection : ViewElement option = None with get, set
 
 type ViewBuilders() =
     /// Builds the attributes for a Element in the view
@@ -13079,7 +13083,7 @@ type ViewBuilders() =
 
     /// Builds the attributes for a Shell in the view
     static member inline BuildShell(attribCount: int,
-                                    ?currentItem: Xamarin.Forms.ShellItem,
+                                    ?currentItem: ViewElement,
                                     ?flyoutBackgroundColor: Xamarin.Forms.Color,
                                     ?flyoutBehavior: Xamarin.Forms.FlyoutBehavior,
                                     ?flyoutHeader: System.Object,
@@ -13209,7 +13213,7 @@ type ViewBuilders() =
         let mutable currRouteSchemeOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = ViewAttributes.CurrentItemAttribKey.KeyValue then 
-                currCurrentItemOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.ShellItem)
+                currCurrentItemOpt <- ValueSome (kvp.Value :?> ViewElement)
             if kvp.Key = ViewAttributes.FlyoutBackgroundColorAttribKey.KeyValue then 
                 currFlyoutBackgroundColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
             if kvp.Key = ViewAttributes.FlyoutBehaviorAttribKey.KeyValue then 
@@ -13239,7 +13243,7 @@ type ViewBuilders() =
         | ValueSome prev ->
             for kvp in prev.AttributesKeyed do
                 if kvp.Key = ViewAttributes.CurrentItemAttribKey.KeyValue then 
-                    prevCurrentItemOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.ShellItem)
+                    prevCurrentItemOpt <- ValueSome (kvp.Value :?> ViewElement)
                 if kvp.Key = ViewAttributes.FlyoutBackgroundColorAttribKey.KeyValue then 
                     prevFlyoutBackgroundColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
                 if kvp.Key = ViewAttributes.FlyoutBehaviorAttribKey.KeyValue then 
@@ -13265,9 +13269,14 @@ type ViewBuilders() =
                 if kvp.Key = ViewAttributes.RouteSchemeAttribKey.KeyValue then 
                     prevRouteSchemeOpt <- ValueSome (kvp.Value :?> string)
         match prevCurrentItemOpt, currCurrentItemOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.CurrentItem <-  currValue
-        | ValueSome _, ValueNone -> target.CurrentItem <- null
+        // For structured objects, dependsOn on reference equality
+        | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()
+        | ValueSome prevValue, ValueSome newValue when canReuseChild prevValue newValue ->
+            newValue.UpdateIncremental(prevValue, target.CurrentItem)
+        | _, ValueSome newValue ->
+            target.CurrentItem <- (newValue.Create() :?> Xamarin.Forms.ShellItem)
+        | ValueSome _, ValueNone ->
+            target.CurrentItem <- null
         | ValueNone, ValueNone -> ()
         match prevFlyoutBackgroundColorOpt, currFlyoutBackgroundColorOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
@@ -13330,7 +13339,7 @@ type ViewBuilders() =
         | ValueSome _, ValueNone -> target.RouteScheme <- null
         | ValueNone, ValueNone -> ()
 
-    static member inline ConstructShell(?currentItem: Xamarin.Forms.ShellItem,
+    static member inline ConstructShell(?currentItem: ViewElement,
                                         ?flyoutBackgroundColor: Xamarin.Forms.Color,
                                         ?flyoutBehavior: Xamarin.Forms.FlyoutBehavior,
                                         ?flyoutHeader: System.Object,
@@ -13817,6 +13826,266 @@ type ViewBuilders() =
                                ?location=location)
 
         ViewElement.Create<Xamarin.Forms.ShellNavigationState>(ViewBuilders.CreateFuncShellNavigationState, ViewBuilders.UpdateFuncShellNavigationState, attribBuilder)
+
+    /// Builds the attributes for a ShellContent in the view
+    static member inline BuildShellContent(attribCount: int,
+                                           ?content: ViewElement,
+                                           ?contentTemplate: Xamarin.Forms.DataTemplate,
+                                           ?title: string,
+                                           ?route: string,
+                                           ?icon: string,
+                                           ?flyoutIcon: string,
+                                           ?isEnabled: bool,
+                                           ?classId: string,
+                                           ?styleId: string,
+                                           ?automationId: string,
+                                           ?created: obj -> unit,
+                                           ?ref: ViewRef) = 
+
+        let attribCount = match content with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match contentTemplate with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = ViewBuilders.BuildBaseShellItem(attribCount, ?title=title, ?route=route, ?icon=icon, ?flyoutIcon=flyoutIcon, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        match content with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ContentAttribKey, (v)) 
+        match contentTemplate with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ContentTemplateAttribKey, makeTemplate(v)) 
+        attribBuilder
+
+    static member val CreateFuncShellContent : (unit -> Xamarin.Forms.ShellContent) = (fun () -> ViewBuilders.CreateShellContent()) with get, set
+
+    static member CreateShellContent () : Xamarin.Forms.ShellContent =
+        upcast (new Xamarin.Forms.ShellContent())
+
+    static member val UpdateFuncShellContent =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.ShellContent) -> ViewBuilders.UpdateShellContent (prevOpt, curr, target)) 
+
+    static member UpdateShellContent (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.ShellContent) = 
+        // update the inherited BaseShellItem element
+        let baseElement = (if ViewProto.ProtoBaseShellItem.IsNone then ViewProto.ProtoBaseShellItem <- Some (ViewBuilders.ConstructBaseShellItem())); ViewProto.ProtoBaseShellItem.Value
+        baseElement.UpdateInherited (prevOpt, curr, target)
+        let mutable prevContentOpt = ValueNone
+        let mutable currContentOpt = ValueNone
+        let mutable prevContentTemplateOpt = ValueNone
+        let mutable currContentTemplateOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.ContentAttribKey.KeyValue then 
+                currContentOpt <- ValueSome (kvp.Value :?> System.Object)
+            if kvp.Key = ViewAttributes.ContentTemplateAttribKey.KeyValue then 
+                currContentTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.ContentAttribKey.KeyValue then 
+                    prevContentOpt <- ValueSome (kvp.Value :?> System.Object)
+                if kvp.Key = ViewAttributes.ContentTemplateAttribKey.KeyValue then 
+                    prevContentTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
+        match prevContentOpt, currContentOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Content <-  currValue
+        | ValueSome _, ValueNone -> target.Content <- null
+        | ValueNone, ValueNone -> ()
+        match prevContentTemplateOpt, currContentTemplateOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.ContentTemplate <-  currValue
+        | ValueSome _, ValueNone -> target.ContentTemplate <- null
+        | ValueNone, ValueNone -> ()
+
+    static member inline ConstructShellContent(?content: ViewElement,
+                                               ?contentTemplate: Xamarin.Forms.DataTemplate,
+                                               ?title: string,
+                                               ?route: string,
+                                               ?icon: string,
+                                               ?flyoutIcon: string,
+                                               ?isEnabled: bool,
+                                               ?classId: string,
+                                               ?styleId: string,
+                                               ?automationId: string,
+                                               ?created: (Xamarin.Forms.ShellContent -> unit),
+                                               ?ref: ViewRef<Xamarin.Forms.ShellContent>) = 
+
+        let attribBuilder = ViewBuilders.BuildShellContent(0,
+                               ?content=content,
+                               ?contentTemplate=contentTemplate,
+                               ?title=title,
+                               ?route=route,
+                               ?icon=icon,
+                               ?flyoutIcon=flyoutIcon,
+                               ?isEnabled=isEnabled,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ShellContent> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ShellContent>) -> Some ref.Unbox))
+
+        ViewElement.Create<Xamarin.Forms.ShellContent>(ViewBuilders.CreateFuncShellContent, ViewBuilders.UpdateFuncShellContent, attribBuilder)
+
+    /// Builds the attributes for a ShellItem in the view
+    static member inline BuildShellItem(attribCount: int,
+                                        ?currentItem: ViewElement,
+                                        ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions,
+                                        ?title: string,
+                                        ?route: string,
+                                        ?icon: string,
+                                        ?flyoutIcon: string,
+                                        ?isEnabled: bool,
+                                        ?classId: string,
+                                        ?styleId: string,
+                                        ?automationId: string,
+                                        ?created: obj -> unit,
+                                        ?ref: ViewRef) = 
+
+        let attribCount = match currentItem with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = ViewBuilders.BuildShellGroupItem(attribCount, ?flyoutDisplayOptions=flyoutDisplayOptions, ?title=title, ?route=route, ?icon=icon, ?flyoutIcon=flyoutIcon, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        match currentItem with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CurrentItemAttribKey, (v)) 
+        attribBuilder
+
+    static member val CreateFuncShellItem : (unit -> Xamarin.Forms.ShellItem) = (fun () -> ViewBuilders.CreateShellItem()) with get, set
+
+    static member CreateShellItem () : Xamarin.Forms.ShellItem =
+        upcast (new Xamarin.Forms.ShellItem())
+
+    static member val UpdateFuncShellItem =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.ShellItem) -> ViewBuilders.UpdateShellItem (prevOpt, curr, target)) 
+
+    static member UpdateShellItem (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.ShellItem) = 
+        // update the inherited ShellGroupItem element
+        let baseElement = (if ViewProto.ProtoShellGroupItem.IsNone then ViewProto.ProtoShellGroupItem <- Some (ViewBuilders.ConstructShellGroupItem())); ViewProto.ProtoShellGroupItem.Value
+        baseElement.UpdateInherited (prevOpt, curr, target)
+        let mutable prevCurrentItemOpt = ValueNone
+        let mutable currCurrentItemOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.CurrentItemAttribKey.KeyValue then 
+                currCurrentItemOpt <- ValueSome (kvp.Value :?> ViewElement)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.CurrentItemAttribKey.KeyValue then 
+                    prevCurrentItemOpt <- ValueSome (kvp.Value :?> ViewElement)
+        match prevCurrentItemOpt, currCurrentItemOpt with
+        // For structured objects, dependsOn on reference equality
+        | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()
+        | ValueSome prevValue, ValueSome newValue when canReuseChild prevValue newValue ->
+            newValue.UpdateIncremental(prevValue, target.CurrentItem)
+        | _, ValueSome newValue ->
+            target.CurrentItem <- (newValue.Create() :?> Xamarin.Forms.ShellSection)
+        | ValueSome _, ValueNone ->
+            target.CurrentItem <- null
+        | ValueNone, ValueNone -> ()
+
+    static member inline ConstructShellItem(?currentItem: ViewElement,
+                                            ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions,
+                                            ?title: string,
+                                            ?route: string,
+                                            ?icon: string,
+                                            ?flyoutIcon: string,
+                                            ?isEnabled: bool,
+                                            ?classId: string,
+                                            ?styleId: string,
+                                            ?automationId: string,
+                                            ?created: (Xamarin.Forms.ShellItem -> unit),
+                                            ?ref: ViewRef<Xamarin.Forms.ShellItem>) = 
+
+        let attribBuilder = ViewBuilders.BuildShellItem(0,
+                               ?currentItem=currentItem,
+                               ?flyoutDisplayOptions=flyoutDisplayOptions,
+                               ?title=title,
+                               ?route=route,
+                               ?icon=icon,
+                               ?flyoutIcon=flyoutIcon,
+                               ?isEnabled=isEnabled,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ShellItem> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ShellItem>) -> Some ref.Unbox))
+
+        ViewElement.Create<Xamarin.Forms.ShellItem>(ViewBuilders.CreateFuncShellItem, ViewBuilders.UpdateFuncShellItem, attribBuilder)
+
+    /// Builds the attributes for a ShellSection in the view
+    static member inline BuildShellSection(attribCount: int,
+                                           ?currentItem: ViewElement,
+                                           ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions,
+                                           ?title: string,
+                                           ?route: string,
+                                           ?icon: string,
+                                           ?flyoutIcon: string,
+                                           ?isEnabled: bool,
+                                           ?classId: string,
+                                           ?styleId: string,
+                                           ?automationId: string,
+                                           ?created: obj -> unit,
+                                           ?ref: ViewRef) = 
+
+        let attribCount = match currentItem with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = ViewBuilders.BuildShellGroupItem(attribCount, ?flyoutDisplayOptions=flyoutDisplayOptions, ?title=title, ?route=route, ?icon=icon, ?flyoutIcon=flyoutIcon, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        match currentItem with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CurrentItemAttribKey, (v)) 
+        attribBuilder
+
+    static member val CreateFuncShellSection : (unit -> Xamarin.Forms.ShellSection) = (fun () -> ViewBuilders.CreateShellSection()) with get, set
+
+    static member CreateShellSection () : Xamarin.Forms.ShellSection =
+        upcast (new Xamarin.Forms.ShellSection())
+
+    static member val UpdateFuncShellSection =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.ShellSection) -> ViewBuilders.UpdateShellSection (prevOpt, curr, target)) 
+
+    static member UpdateShellSection (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.ShellSection) = 
+        // update the inherited ShellGroupItem element
+        let baseElement = (if ViewProto.ProtoShellGroupItem.IsNone then ViewProto.ProtoShellGroupItem <- Some (ViewBuilders.ConstructShellGroupItem())); ViewProto.ProtoShellGroupItem.Value
+        baseElement.UpdateInherited (prevOpt, curr, target)
+        let mutable prevCurrentItemOpt = ValueNone
+        let mutable currCurrentItemOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.CurrentItemAttribKey.KeyValue then 
+                currCurrentItemOpt <- ValueSome (kvp.Value :?> ViewElement)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.CurrentItemAttribKey.KeyValue then 
+                    prevCurrentItemOpt <- ValueSome (kvp.Value :?> ViewElement)
+        match prevCurrentItemOpt, currCurrentItemOpt with
+        // For structured objects, dependsOn on reference equality
+        | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()
+        | ValueSome prevValue, ValueSome newValue when canReuseChild prevValue newValue ->
+            newValue.UpdateIncremental(prevValue, target.CurrentItem)
+        | _, ValueSome newValue ->
+            target.CurrentItem <- (newValue.Create() :?> Xamarin.Forms.ShellContent)
+        | ValueSome _, ValueNone ->
+            target.CurrentItem <- null
+        | ValueNone, ValueNone -> ()
+
+    static member inline ConstructShellSection(?currentItem: ViewElement,
+                                               ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions,
+                                               ?title: string,
+                                               ?route: string,
+                                               ?icon: string,
+                                               ?flyoutIcon: string,
+                                               ?isEnabled: bool,
+                                               ?classId: string,
+                                               ?styleId: string,
+                                               ?automationId: string,
+                                               ?created: (Xamarin.Forms.ShellSection -> unit),
+                                               ?ref: ViewRef<Xamarin.Forms.ShellSection>) = 
+
+        let attribBuilder = ViewBuilders.BuildShellSection(0,
+                               ?currentItem=currentItem,
+                               ?flyoutDisplayOptions=flyoutDisplayOptions,
+                               ?title=title,
+                               ?route=route,
+                               ?icon=icon,
+                               ?flyoutIcon=flyoutIcon,
+                               ?isEnabled=isEnabled,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ShellSection> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ShellSection>) -> Some ref.Unbox))
+
+        ViewElement.Create<Xamarin.Forms.ShellSection>(ViewBuilders.CreateFuncShellSection, ViewBuilders.UpdateFuncShellSection, attribBuilder)
 
 /// Viewer that allows to read the properties of a ViewElement representing a Element
 type ElementViewer(element: ViewElement) =
@@ -14878,6 +15147,29 @@ type ShellNavigationStateViewer(element: ViewElement) =
     do if not ((typeof<Xamarin.Forms.ShellNavigationState>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.ShellNavigationState' is expected, but '%s' was provided." element.TargetType.FullName
     /// Get the value of the Location property
     member this.Location = element.GetAttributeKeyed(ViewAttributes.LocationAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a ShellContent
+type ShellContentViewer(element: ViewElement) =
+    inherit BaseShellItemViewer(element)
+    do if not ((typeof<Xamarin.Forms.ShellContent>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.ShellContent' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the Content property
+    member this.Content = element.GetAttributeKeyed(ViewAttributes.ContentAttribKey)
+    /// Get the value of the ContentTemplate property
+    member this.ContentTemplate = element.GetAttributeKeyed(ViewAttributes.ContentTemplateAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a ShellItem
+type ShellItemViewer(element: ViewElement) =
+    inherit ShellGroupItemViewer(element)
+    do if not ((typeof<Xamarin.Forms.ShellItem>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.ShellItem' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the CurrentItem property
+    member this.CurrentItem = element.GetAttributeKeyed(ViewAttributes.CurrentItemAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a ShellSection
+type ShellSectionViewer(element: ViewElement) =
+    inherit ShellGroupItemViewer(element)
+    do if not ((typeof<Xamarin.Forms.ShellSection>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.ShellSection' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the CurrentItem property
+    member this.CurrentItem = element.GetAttributeKeyed(ViewAttributes.CurrentItemAttribKey)
 
 type View() =
     /// Describes a Element in the view
@@ -19190,7 +19482,7 @@ type View() =
                                ?showsResults=showsResults)
 
     /// Describes a Shell in the view
-    static member inline Shell(?currentItem: Xamarin.Forms.ShellItem,
+    static member inline Shell(?currentItem: ViewElement,
                                ?flyoutBackgroundColor: Xamarin.Forms.Color,
                                ?flyoutBehavior: Xamarin.Forms.FlyoutBehavior,
                                ?flyoutHeader: System.Object,
@@ -19442,6 +19734,87 @@ type View() =
     static member inline ShellNavigationState(?location: System.Uri) =
 
         ViewBuilders.ConstructShellNavigationState(?location=location)
+
+    /// Describes a ShellContent in the view
+    static member inline ShellContent(?content: ViewElement,
+                                      ?contentTemplate: Xamarin.Forms.DataTemplate,
+                                      ?title: string,
+                                      ?route: string,
+                                      ?icon: string,
+                                      ?flyoutIcon: string,
+                                      ?isEnabled: bool,
+                                      ?classId: string,
+                                      ?styleId: string,
+                                      ?automationId: string,
+                                      ?created: (Xamarin.Forms.ShellContent -> unit),
+                                      ?ref: ViewRef<Xamarin.Forms.ShellContent>) =
+
+        ViewBuilders.ConstructShellContent(?content=content,
+                               ?contentTemplate=contentTemplate,
+                               ?title=title,
+                               ?route=route,
+                               ?icon=icon,
+                               ?flyoutIcon=flyoutIcon,
+                               ?isEnabled=isEnabled,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=created,
+                               ?ref=ref)
+
+    /// Describes a ShellItem in the view
+    static member inline ShellItem(?currentItem: ViewElement,
+                                   ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions,
+                                   ?title: string,
+                                   ?route: string,
+                                   ?icon: string,
+                                   ?flyoutIcon: string,
+                                   ?isEnabled: bool,
+                                   ?classId: string,
+                                   ?styleId: string,
+                                   ?automationId: string,
+                                   ?created: (Xamarin.Forms.ShellItem -> unit),
+                                   ?ref: ViewRef<Xamarin.Forms.ShellItem>) =
+
+        ViewBuilders.ConstructShellItem(?currentItem=currentItem,
+                               ?flyoutDisplayOptions=flyoutDisplayOptions,
+                               ?title=title,
+                               ?route=route,
+                               ?icon=icon,
+                               ?flyoutIcon=flyoutIcon,
+                               ?isEnabled=isEnabled,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=created,
+                               ?ref=ref)
+
+    /// Describes a ShellSection in the view
+    static member inline ShellSection(?currentItem: ViewElement,
+                                      ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions,
+                                      ?title: string,
+                                      ?route: string,
+                                      ?icon: string,
+                                      ?flyoutIcon: string,
+                                      ?isEnabled: bool,
+                                      ?classId: string,
+                                      ?styleId: string,
+                                      ?automationId: string,
+                                      ?created: (Xamarin.Forms.ShellSection -> unit),
+                                      ?ref: ViewRef<Xamarin.Forms.ShellSection>) =
+
+        ViewBuilders.ConstructShellSection(?currentItem=currentItem,
+                               ?flyoutDisplayOptions=flyoutDisplayOptions,
+                               ?title=title,
+                               ?route=route,
+                               ?icon=icon,
+                               ?flyoutIcon=flyoutIcon,
+                               ?isEnabled=isEnabled,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=created,
+                               ?ref=ref)
 
 
 [<AutoOpen>]
@@ -20251,7 +20624,7 @@ module ViewElementExtensions =
         member x.ShowsResults(value: bool) = x.WithAttribute(ViewAttributes.ShowsResultsAttribKey, (value))
 
         /// Adjusts the CurrentItem property in the visual element
-        member x.CurrentItem(value: Xamarin.Forms.ShellItem) = x.WithAttribute(ViewAttributes.CurrentItemAttribKey, (value))
+        member x.CurrentItem(value: ViewElement) = x.WithAttribute(ViewAttributes.CurrentItemAttribKey, (value))
 
         /// Adjusts the FlyoutBackgroundColor property in the visual element
         member x.FlyoutBackgroundColor(value: Xamarin.Forms.Color) = x.WithAttribute(ViewAttributes.FlyoutBackgroundColorAttribKey, (value))
@@ -20303,6 +20676,9 @@ module ViewElementExtensions =
 
         /// Adjusts the Location property in the visual element
         member x.Location(value: System.Uri) = x.WithAttribute(ViewAttributes.LocationAttribKey, makeUri(value))
+
+        /// Adjusts the ContentTemplate property in the visual element
+        member x.ContentTemplate(value: Xamarin.Forms.DataTemplate) = x.WithAttribute(ViewAttributes.ContentTemplateAttribKey, makeTemplate(value))
 
         member x.With(?classId: string, ?styleId: string, ?automationId: string, ?anchorX: double, ?anchorY: double, 
                       ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, 
@@ -20357,10 +20733,11 @@ module ViewElementExtensions =
                       ?clearIcon: string, ?clearIconHelpText: string, ?clearIconName: string, ?clearPlaceholderCommand: unit -> unit, ?clearPlaceholderCommandParameter: System.Object, 
                       ?clearPlaceholderEnabled: bool, ?clearPlaceholderHelpText: string, ?clearPlaceholderIcon: string, ?clearPlaceholderName: string, ?displayMemberName: string, 
                       ?isSearchEnabled: bool, ?query: string, ?queryIcon: string, ?queryIconHelpText: string, ?queryIconName: string, 
-                      ?searchBoxVisibility: Xamarin.Forms.SearchBoxVisiblity, ?showsResults: bool, ?currentItem: Xamarin.Forms.ShellItem, ?flyoutBackgroundColor: Xamarin.Forms.Color, ?flyoutBehavior: Xamarin.Forms.FlyoutBehavior, 
+                      ?searchBoxVisibility: Xamarin.Forms.SearchBoxVisiblity, ?showsResults: bool, ?currentItem: ViewElement, ?flyoutBackgroundColor: Xamarin.Forms.Color, ?flyoutBehavior: Xamarin.Forms.FlyoutBehavior, 
                       ?flyoutHeader: System.Object, ?flyoutHeaderBehavior: Xamarin.Forms.FlyoutHeaderBehavior, ?flyoutHeaderTemplate: Xamarin.Forms.DataTemplate, ?flyoutIsPresented: bool, ?groupHeaderTemplate: Xamarin.Forms.DataTemplate, 
                       ?menuItemTemplate: Xamarin.Forms.DataTemplate, ?routeHost: string, ?routeScheme: string, ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions, ?selectedItem: System.Object, 
-                      ?selectionChangedCommand: unit -> unit, ?selectionChangedCommandParameter: System.Object, ?selectableItemsMode: Xamarin.Forms.SelectionMode, ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit, ?location: System.Uri) =
+                      ?selectionChangedCommand: unit -> unit, ?selectionChangedCommandParameter: System.Object, ?selectableItemsMode: Xamarin.Forms.SelectionMode, ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit, ?location: System.Uri, 
+                      ?contentTemplate: Xamarin.Forms.DataTemplate) =
             let x = match classId with None -> x | Some opt -> x.ClassId(opt)
             let x = match styleId with None -> x | Some opt -> x.StyleId(opt)
             let x = match automationId with None -> x | Some opt -> x.AutomationId(opt)
@@ -20646,6 +21023,7 @@ module ViewElementExtensions =
             let x = match selectableItemsMode with None -> x | Some opt -> x.selectableItemsMode(opt)
             let x = match selectionChanged with None -> x | Some opt -> x.SelectionChanged(opt)
             let x = match location with None -> x | Some opt -> x.Location(opt)
+            let x = match contentTemplate with None -> x | Some opt -> x.ContentTemplate(opt)
             x
 
     /// Adjusts the ClassId property in the visual element
@@ -21183,7 +21561,7 @@ module ViewElementExtensions =
     /// Adjusts the ShowsResults property in the visual element
     let showsResults (value: bool) (x: ViewElement) = x.ShowsResults(value)
     /// Adjusts the CurrentItem property in the visual element
-    let currentItem (value: Xamarin.Forms.ShellItem) (x: ViewElement) = x.CurrentItem(value)
+    let currentItem (value: ViewElement) (x: ViewElement) = x.CurrentItem(value)
     /// Adjusts the FlyoutBackgroundColor property in the visual element
     let flyoutBackgroundColor (value: Xamarin.Forms.Color) (x: ViewElement) = x.FlyoutBackgroundColor(value)
     /// Adjusts the FlyoutBehavior property in the visual element
@@ -21218,3 +21596,5 @@ module ViewElementExtensions =
     let selectionChanged (value: Xamarin.Forms.SelectionChangedEventArgs -> unit) (x: ViewElement) = x.SelectionChanged(value)
     /// Adjusts the Location property in the visual element
     let location (value: System.Uri) (x: ViewElement) = x.Location(value)
+    /// Adjusts the ContentTemplate property in the visual element
+    let contentTemplate (value: Xamarin.Forms.DataTemplate) (x: ViewElement) = x.ContentTemplate(value)
