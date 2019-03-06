@@ -7,6 +7,7 @@
         <authors>Fabulous contributors</authors>
         <description>Templates for building apps with Fabulous.</description>
         <projectUrl>https://fsprojects.github.io/Fabulous/</projectUrl>
+        <license type="expression">Apache-2.0</license>
         <iconUrl>http://xamarin.com/content/images/nuget/xamarin.png</iconUrl>
         <copyright>Copyright 2018</copyright>
         <packageTypes>
