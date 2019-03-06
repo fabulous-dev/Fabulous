@@ -215,11 +215,11 @@ module Extensions =
               lock interp (fun () -> 
                 let res = 
                     try 
-                        for (fileName, file) in files do
+                        for (_, file) in files do
                             printfn "LiveUpdate: adding declarations...."
                             interp.AddDecls file.Code
 
-                        for (fileName, file) in files do
+                        for (_, file) in files do
                             printfn "LiveUpdate: evaluating decls in code package for side effects...."
                             interp.EvalDecls (envEmpty, file.Code)
                         Result.Ok ()
@@ -239,7 +239,7 @@ module Extensions =
                 | 0 -> { Quacked = "couldn't quack! Files were empty!" }
                 | _ -> 
                 let result = 
-                    files |> Array.tryPick (fun (fileName, file) -> 
+                    files |> Array.tryPick (fun (_, file) -> 
 
                         let programOptD = 
                             match tryFindMemberByName "programLiveUpdate" file.Code with
