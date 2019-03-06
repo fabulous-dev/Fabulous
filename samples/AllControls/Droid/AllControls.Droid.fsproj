@@ -150,19 +150,19 @@
       <HintPath>../../../packages/androidapp/Xamarin.Android.Support.Vector.Drawable/lib/MonoAndroid81/Xamarin.Android.Support.Vector.Drawable.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Core">
-      <HintPath>../../../packages/androidapp/Xamarin.Forms/lib/MonoAndroid10/Xamarin.Forms.Core.dll</HintPath>
+      <HintPath>../../../packages/androidapp/Xamarin.Forms/lib/MonoAndroid81/Xamarin.Forms.Core.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Platform">
-      <HintPath>../../../packages/androidapp/Xamarin.Forms/lib/MonoAndroid10/Xamarin.Forms.Platform.dll</HintPath>
+      <HintPath>../../../packages/androidapp/Xamarin.Forms/lib/MonoAndroid81/Xamarin.Forms.Platform.dll</HintPath>
     </Reference>
     <Reference Include="FormsViewGroup">
-      <HintPath>../../../packages/androidapp/Xamarin.Forms/lib/MonoAndroid10/FormsViewGroup.dll</HintPath>
+      <HintPath>../../../packages/androidapp/Xamarin.Forms/lib/MonoAndroid81/FormsViewGroup.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Platform.Android">
-      <HintPath>../../../packages/androidapp/Xamarin.Forms/lib/MonoAndroid10/Xamarin.Forms.Platform.Android.dll</HintPath>
+      <HintPath>../../../packages/androidapp/Xamarin.Forms/lib/MonoAndroid81/Xamarin.Forms.Platform.Android.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml">
-      <HintPath>../../../packages/androidapp/Xamarin.Forms/lib/MonoAndroid10/Xamarin.Forms.Xaml.dll</HintPath>
+      <HintPath>../../../packages/androidapp/Xamarin.Forms/lib/MonoAndroid81/Xamarin.Forms.Xaml.dll</HintPath>
     </Reference> 
     <Reference Include="FSharp.Core">
       <HintPath>../../../packages/androidapp/FSharp.Core/lib/netstandard1.6/FSharp.Core.dll</HintPath>
