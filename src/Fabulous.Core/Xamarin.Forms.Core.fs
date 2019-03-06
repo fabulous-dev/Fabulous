@@ -286,6 +286,9 @@ module ViewAttributes =
     let MenuItemTemplateAttribKey : AttributeKey<_> = AttributeKey<_>("MenuItemTemplate")
     let RouteHostAttribKey : AttributeKey<_> = AttributeKey<_>("RouteHost")
     let RouteSchemeAttribKey : AttributeKey<_> = AttributeKey<_>("RouteScheme")
+    let OnNavigatedAttribKey : AttributeKey<_> = AttributeKey<_>("OnNavigated")
+    let OnNavigatingAttribKey : AttributeKey<_> = AttributeKey<_>("OnNavigating")
+    let GoToAsyncAttribKey : AttributeKey<_> = AttributeKey<_>("GoToAsync")
     let FlyoutDisplayOptionsAttribKey : AttributeKey<_> = AttributeKey<_>("FlyoutDisplayOptions")
     let SelectedItemAttribKey : AttributeKey<_> = AttributeKey<_>("SelectedItem")
     let SelectionChangedCommandAttribKey : AttributeKey<_> = AttributeKey<_>("SelectionChangedCommand")
@@ -294,6 +297,7 @@ module ViewAttributes =
     let SelectionChangedAttribKey : AttributeKey<_> = AttributeKey<_>("SelectionChanged")
     let LocationAttribKey : AttributeKey<_> = AttributeKey<_>("Location")
     let ContentTemplateAttribKey : AttributeKey<_> = AttributeKey<_>("ContentTemplate")
+    let ssGoToAsyncAttribKey : AttributeKey<_> = AttributeKey<_>("ssGoToAsync")
 
 type ViewProto() =
     static member val ProtoElement : ViewElement option = None with get, set
@@ -13096,6 +13100,9 @@ type ViewBuilders() =
                                     ?route: string,
                                     ?routeHost: string,
                                     ?routeScheme: string,
+                                    ?navigated: Xamarin.Forms.ShellNavigatedEventArgs -> unit,
+                                    ?navigating: Xamarin.Forms.ShellNavigatingEventArgs -> unit,
+                                    ?goToAsync: Xamarin.Forms.ShellNavigationState * Fabulous.DynamicViews.AnimationKind,
                                     ?title: string,
                                     ?backgroundImage: string,
                                     ?icon: string,
@@ -13156,6 +13163,9 @@ type ViewBuilders() =
         let attribCount = match route with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match routeHost with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match routeScheme with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match navigated with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match navigating with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match goToAsync with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = ViewBuilders.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match currentItem with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CurrentItemAttribKey, (v)) 
@@ -13171,6 +13181,9 @@ type ViewBuilders() =
         match route with None -> () | Some v -> attribBuilder.Add(ViewAttributes.RouteAttribKey, (v)) 
         match routeHost with None -> () | Some v -> attribBuilder.Add(ViewAttributes.RouteHostAttribKey, (v)) 
         match routeScheme with None -> () | Some v -> attribBuilder.Add(ViewAttributes.RouteSchemeAttribKey, (v)) 
+        match navigated with None -> () | Some v -> attribBuilder.Add(ViewAttributes.OnNavigatedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ShellNavigatedEventArgs>(fun _sender args -> f args))(v)) 
+        match navigating with None -> () | Some v -> attribBuilder.Add(ViewAttributes.OnNavigatingAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ShellNavigatingEventArgs>(fun _sender args -> f args))(v)) 
+        match goToAsync with None -> () | Some v -> attribBuilder.Add(ViewAttributes.GoToAsyncAttribKey, (v)) 
         attribBuilder
 
     static member val CreateFuncShell : (unit -> Xamarin.Forms.Shell) = (fun () -> ViewBuilders.CreateShell()) with get, set
@@ -13211,6 +13224,12 @@ type ViewBuilders() =
         let mutable currRouteHostOpt = ValueNone
         let mutable prevRouteSchemeOpt = ValueNone
         let mutable currRouteSchemeOpt = ValueNone
+        let mutable prevOnNavigatedOpt = ValueNone
+        let mutable currOnNavigatedOpt = ValueNone
+        let mutable prevOnNavigatingOpt = ValueNone
+        let mutable currOnNavigatingOpt = ValueNone
+        let mutable prevGoToAsyncOpt = ValueNone
+        let mutable currGoToAsyncOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = ViewAttributes.CurrentItemAttribKey.KeyValue then 
                 currCurrentItemOpt <- ValueSome (kvp.Value :?> ViewElement)
@@ -13238,6 +13257,12 @@ type ViewBuilders() =
                 currRouteHostOpt <- ValueSome (kvp.Value :?> string)
             if kvp.Key = ViewAttributes.RouteSchemeAttribKey.KeyValue then 
                 currRouteSchemeOpt <- ValueSome (kvp.Value :?> string)
+            if kvp.Key = ViewAttributes.OnNavigatedAttribKey.KeyValue then 
+                currOnNavigatedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.ShellNavigatedEventArgs>)
+            if kvp.Key = ViewAttributes.OnNavigatingAttribKey.KeyValue then 
+                currOnNavigatingOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.ShellNavigatingEventArgs>)
+            if kvp.Key = ViewAttributes.GoToAsyncAttribKey.KeyValue then 
+                currGoToAsyncOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.ShellNavigationState * Fabulous.DynamicViews.AnimationKind)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
@@ -13268,6 +13293,12 @@ type ViewBuilders() =
                     prevRouteHostOpt <- ValueSome (kvp.Value :?> string)
                 if kvp.Key = ViewAttributes.RouteSchemeAttribKey.KeyValue then 
                     prevRouteSchemeOpt <- ValueSome (kvp.Value :?> string)
+                if kvp.Key = ViewAttributes.OnNavigatedAttribKey.KeyValue then 
+                    prevOnNavigatedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.ShellNavigatedEventArgs>)
+                if kvp.Key = ViewAttributes.OnNavigatingAttribKey.KeyValue then 
+                    prevOnNavigatingOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.ShellNavigatingEventArgs>)
+                if kvp.Key = ViewAttributes.GoToAsyncAttribKey.KeyValue then 
+                    prevGoToAsyncOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.ShellNavigationState * Fabulous.DynamicViews.AnimationKind)
         match prevCurrentItemOpt, currCurrentItemOpt with
         // For structured objects, dependsOn on reference equality
         | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()
@@ -13338,6 +13369,19 @@ type ViewBuilders() =
         | _, ValueSome currValue -> target.RouteScheme <-  currValue
         | ValueSome _, ValueNone -> target.RouteScheme <- null
         | ValueNone, ValueNone -> ()
+        match prevOnNavigatedOpt, currOnNavigatedOpt with
+        | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
+        | ValueSome prevValue, ValueSome currValue -> target.Navigated.RemoveHandler(prevValue); target.Navigated.AddHandler(currValue)
+        | ValueNone, ValueSome currValue -> target.Navigated.AddHandler(currValue)
+        | ValueSome prevValue, ValueNone -> target.Navigated.RemoveHandler(prevValue)
+        | ValueNone, ValueNone -> ()
+        match prevOnNavigatingOpt, currOnNavigatingOpt with
+        | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
+        | ValueSome prevValue, ValueSome currValue -> target.Navigating.RemoveHandler(prevValue); target.Navigating.AddHandler(currValue)
+        | ValueNone, ValueSome currValue -> target.Navigating.AddHandler(currValue)
+        | ValueSome prevValue, ValueNone -> target.Navigating.RemoveHandler(prevValue)
+        | ValueNone, ValueNone -> ()
+        (fun _ curr target -> triggerGoToAsync curr target) prevGoToAsyncOpt currGoToAsyncOpt target
 
     static member inline ConstructShell(?currentItem: ViewElement,
                                         ?flyoutBackgroundColor: Xamarin.Forms.Color,
@@ -13352,6 +13396,9 @@ type ViewBuilders() =
                                         ?route: string,
                                         ?routeHost: string,
                                         ?routeScheme: string,
+                                        ?navigated: Xamarin.Forms.ShellNavigatedEventArgs -> unit,
+                                        ?navigating: Xamarin.Forms.ShellNavigatingEventArgs -> unit,
+                                        ?goToAsync: Xamarin.Forms.ShellNavigationState * Fabulous.DynamicViews.AnimationKind,
                                         ?title: string,
                                         ?backgroundImage: string,
                                         ?icon: string,
@@ -13413,6 +13460,9 @@ type ViewBuilders() =
                                ?route=route,
                                ?routeHost=routeHost,
                                ?routeScheme=routeScheme,
+                               ?navigated=navigated,
+                               ?navigating=navigating,
+                               ?goToAsync=goToAsync,
                                ?title=title,
                                ?backgroundImage=backgroundImage,
                                ?icon=icon,
@@ -14006,6 +14056,7 @@ type ViewBuilders() =
     /// Builds the attributes for a ShellSection in the view
     static member inline BuildShellSection(attribCount: int,
                                            ?currentItem: ViewElement,
+                                           ?goToAsync: string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind,
                                            ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions,
                                            ?title: string,
                                            ?route: string,
@@ -14019,9 +14070,11 @@ type ViewBuilders() =
                                            ?ref: ViewRef) = 
 
         let attribCount = match currentItem with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match goToAsync with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = ViewBuilders.BuildShellGroupItem(attribCount, ?flyoutDisplayOptions=flyoutDisplayOptions, ?title=title, ?route=route, ?icon=icon, ?flyoutIcon=flyoutIcon, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match currentItem with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CurrentItemAttribKey, (v)) 
+        match goToAsync with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ssGoToAsyncAttribKey, (v)) 
         attribBuilder
 
     static member val CreateFuncShellSection : (unit -> Xamarin.Forms.ShellSection) = (fun () -> ViewBuilders.CreateShellSection()) with get, set
@@ -14038,15 +14091,21 @@ type ViewBuilders() =
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevCurrentItemOpt = ValueNone
         let mutable currCurrentItemOpt = ValueNone
+        let mutable prevssGoToAsyncOpt = ValueNone
+        let mutable currssGoToAsyncOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = ViewAttributes.CurrentItemAttribKey.KeyValue then 
                 currCurrentItemOpt <- ValueSome (kvp.Value :?> ViewElement)
+            if kvp.Key = ViewAttributes.ssGoToAsyncAttribKey.KeyValue then 
+                currssGoToAsyncOpt <- ValueSome (kvp.Value :?> string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
             for kvp in prev.AttributesKeyed do
                 if kvp.Key = ViewAttributes.CurrentItemAttribKey.KeyValue then 
                     prevCurrentItemOpt <- ValueSome (kvp.Value :?> ViewElement)
+                if kvp.Key = ViewAttributes.ssGoToAsyncAttribKey.KeyValue then 
+                    prevssGoToAsyncOpt <- ValueSome (kvp.Value :?> string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind)
         match prevCurrentItemOpt, currCurrentItemOpt with
         // For structured objects, dependsOn on reference equality
         | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()
@@ -14057,8 +14116,10 @@ type ViewBuilders() =
         | ValueSome _, ValueNone ->
             target.CurrentItem <- null
         | ValueNone, ValueNone -> ()
+        (fun _ curr target -> triggerSSGoToAsync curr target) prevssGoToAsyncOpt currssGoToAsyncOpt target
 
     static member inline ConstructShellSection(?currentItem: ViewElement,
+                                               ?goToAsync: string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind,
                                                ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions,
                                                ?title: string,
                                                ?route: string,
@@ -14073,6 +14134,7 @@ type ViewBuilders() =
 
         let attribBuilder = ViewBuilders.BuildShellSection(0,
                                ?currentItem=currentItem,
+                               ?goToAsync=goToAsync,
                                ?flyoutDisplayOptions=flyoutDisplayOptions,
                                ?title=title,
                                ?route=route,
@@ -15119,6 +15181,12 @@ type ShellViewer(element: ViewElement) =
     member this.RouteHost = element.GetAttributeKeyed(ViewAttributes.RouteHostAttribKey)
     /// Get the value of the RouteScheme property
     member this.RouteScheme = element.GetAttributeKeyed(ViewAttributes.RouteSchemeAttribKey)
+    /// Get the value of the Navigated property
+    member this.Navigated = element.GetAttributeKeyed(ViewAttributes.OnNavigatedAttribKey)
+    /// Get the value of the Navigating property
+    member this.Navigating = element.GetAttributeKeyed(ViewAttributes.OnNavigatingAttribKey)
+    /// Get the value of the GoToAsync property
+    member this.GoToAsync = element.GetAttributeKeyed(ViewAttributes.GoToAsyncAttribKey)
 
 /// Viewer that allows to read the properties of a ViewElement representing a ShellGroupItem
 type ShellGroupItemViewer(element: ViewElement) =
@@ -15170,6 +15238,8 @@ type ShellSectionViewer(element: ViewElement) =
     do if not ((typeof<Xamarin.Forms.ShellSection>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.ShellSection' is expected, but '%s' was provided." element.TargetType.FullName
     /// Get the value of the CurrentItem property
     member this.CurrentItem = element.GetAttributeKeyed(ViewAttributes.CurrentItemAttribKey)
+    /// Get the value of the GoToAsync property
+    member this.GoToAsync = element.GetAttributeKeyed(ViewAttributes.ssGoToAsyncAttribKey)
 
 type View() =
     /// Describes a Element in the view
@@ -19495,6 +19565,9 @@ type View() =
                                ?route: string,
                                ?routeHost: string,
                                ?routeScheme: string,
+                               ?navigated: Xamarin.Forms.ShellNavigatedEventArgs -> unit,
+                               ?navigating: Xamarin.Forms.ShellNavigatingEventArgs -> unit,
+                               ?goToAsync: Xamarin.Forms.ShellNavigationState * Fabulous.DynamicViews.AnimationKind,
                                ?title: string,
                                ?backgroundImage: string,
                                ?icon: string,
@@ -19555,6 +19628,9 @@ type View() =
                                ?route=route,
                                ?routeHost=routeHost,
                                ?routeScheme=routeScheme,
+                               ?navigated=navigated,
+                               ?navigating=navigating,
+                               ?goToAsync=goToAsync,
                                ?title=title,
                                ?backgroundImage=backgroundImage,
                                ?icon=icon,
@@ -19791,6 +19867,7 @@ type View() =
 
     /// Describes a ShellSection in the view
     static member inline ShellSection(?currentItem: ViewElement,
+                                      ?goToAsync: string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind,
                                       ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions,
                                       ?title: string,
                                       ?route: string,
@@ -19804,6 +19881,7 @@ type View() =
                                       ?ref: ViewRef<Xamarin.Forms.ShellSection>) =
 
         ViewBuilders.ConstructShellSection(?currentItem=currentItem,
+                               ?goToAsync=goToAsync,
                                ?flyoutDisplayOptions=flyoutDisplayOptions,
                                ?title=title,
                                ?route=route,
@@ -20656,6 +20734,15 @@ module ViewElementExtensions =
         /// Adjusts the RouteScheme property in the visual element
         member x.RouteScheme(value: string) = x.WithAttribute(ViewAttributes.RouteSchemeAttribKey, (value))
 
+        /// Adjusts the OnNavigated property in the visual element
+        member x.OnNavigated(value: Xamarin.Forms.ShellNavigatedEventArgs -> unit) = x.WithAttribute(ViewAttributes.OnNavigatedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ShellNavigatedEventArgs>(fun _sender args -> f args))(value))
+
+        /// Adjusts the OnNavigating property in the visual element
+        member x.OnNavigating(value: Xamarin.Forms.ShellNavigatingEventArgs -> unit) = x.WithAttribute(ViewAttributes.OnNavigatingAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ShellNavigatingEventArgs>(fun _sender args -> f args))(value))
+
+        /// Adjusts the GoToAsync property in the visual element
+        member x.GoToAsync(value: Xamarin.Forms.ShellNavigationState * Fabulous.DynamicViews.AnimationKind) = x.WithAttribute(ViewAttributes.GoToAsyncAttribKey, (value))
+
         /// Adjusts the FlyoutDisplayOptions property in the visual element
         member x.FlyoutDisplayOptions(value: Xamarin.Forms.FlyoutDisplayOptions) = x.WithAttribute(ViewAttributes.FlyoutDisplayOptionsAttribKey, (value))
 
@@ -20679,6 +20766,9 @@ module ViewElementExtensions =
 
         /// Adjusts the ContentTemplate property in the visual element
         member x.ContentTemplate(value: Xamarin.Forms.DataTemplate) = x.WithAttribute(ViewAttributes.ContentTemplateAttribKey, makeTemplate(value))
+
+        /// Adjusts the ssGoToAsync property in the visual element
+        member x.ssGoToAsync(value: string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind) = x.WithAttribute(ViewAttributes.ssGoToAsyncAttribKey, (value))
 
         member x.With(?classId: string, ?styleId: string, ?automationId: string, ?anchorX: double, ?anchorY: double, 
                       ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, 
@@ -20735,9 +20825,9 @@ module ViewElementExtensions =
                       ?isSearchEnabled: bool, ?query: string, ?queryIcon: string, ?queryIconHelpText: string, ?queryIconName: string, 
                       ?searchBoxVisibility: Xamarin.Forms.SearchBoxVisiblity, ?showsResults: bool, ?currentItem: ViewElement, ?flyoutBackgroundColor: Xamarin.Forms.Color, ?flyoutBehavior: Xamarin.Forms.FlyoutBehavior, 
                       ?flyoutHeader: System.Object, ?flyoutHeaderBehavior: Xamarin.Forms.FlyoutHeaderBehavior, ?flyoutHeaderTemplate: Xamarin.Forms.DataTemplate, ?flyoutIsPresented: bool, ?groupHeaderTemplate: Xamarin.Forms.DataTemplate, 
-                      ?menuItemTemplate: Xamarin.Forms.DataTemplate, ?routeHost: string, ?routeScheme: string, ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions, ?selectedItem: System.Object, 
-                      ?selectionChangedCommand: unit -> unit, ?selectionChangedCommandParameter: System.Object, ?selectableItemsMode: Xamarin.Forms.SelectionMode, ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit, ?location: System.Uri, 
-                      ?contentTemplate: Xamarin.Forms.DataTemplate) =
+                      ?menuItemTemplate: Xamarin.Forms.DataTemplate, ?routeHost: string, ?routeScheme: string, ?onNavigated: Xamarin.Forms.ShellNavigatedEventArgs -> unit, ?onNavigating: Xamarin.Forms.ShellNavigatingEventArgs -> unit, 
+                      ?goToAsync: Xamarin.Forms.ShellNavigationState * Fabulous.DynamicViews.AnimationKind, ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions, ?selectedItem: System.Object, ?selectionChangedCommand: unit -> unit, ?selectionChangedCommandParameter: System.Object, 
+                      ?selectableItemsMode: Xamarin.Forms.SelectionMode, ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit, ?location: System.Uri, ?contentTemplate: Xamarin.Forms.DataTemplate, ?ssGoToAsync: string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind) =
             let x = match classId with None -> x | Some opt -> x.ClassId(opt)
             let x = match styleId with None -> x | Some opt -> x.StyleId(opt)
             let x = match automationId with None -> x | Some opt -> x.AutomationId(opt)
@@ -21016,6 +21106,9 @@ module ViewElementExtensions =
             let x = match menuItemTemplate with None -> x | Some opt -> x.MenuItemTemplate(opt)
             let x = match routeHost with None -> x | Some opt -> x.RouteHost(opt)
             let x = match routeScheme with None -> x | Some opt -> x.RouteScheme(opt)
+            let x = match onNavigated with None -> x | Some opt -> x.OnNavigated(opt)
+            let x = match onNavigating with None -> x | Some opt -> x.OnNavigating(opt)
+            let x = match goToAsync with None -> x | Some opt -> x.GoToAsync(opt)
             let x = match flyoutDisplayOptions with None -> x | Some opt -> x.FlyoutDisplayOptions(opt)
             let x = match selectedItem with None -> x | Some opt -> x.SelectedItem(opt)
             let x = match selectionChangedCommand with None -> x | Some opt -> x.SelectionChangedCommand(opt)
@@ -21024,6 +21117,7 @@ module ViewElementExtensions =
             let x = match selectionChanged with None -> x | Some opt -> x.SelectionChanged(opt)
             let x = match location with None -> x | Some opt -> x.Location(opt)
             let x = match contentTemplate with None -> x | Some opt -> x.ContentTemplate(opt)
+            let x = match ssGoToAsync with None -> x | Some opt -> x.ssGoToAsync(opt)
             x
 
     /// Adjusts the ClassId property in the visual element
@@ -21582,6 +21676,12 @@ module ViewElementExtensions =
     let routeHost (value: string) (x: ViewElement) = x.RouteHost(value)
     /// Adjusts the RouteScheme property in the visual element
     let routeScheme (value: string) (x: ViewElement) = x.RouteScheme(value)
+    /// Adjusts the OnNavigated property in the visual element
+    let onNavigated (value: Xamarin.Forms.ShellNavigatedEventArgs -> unit) (x: ViewElement) = x.OnNavigated(value)
+    /// Adjusts the OnNavigating property in the visual element
+    let onNavigating (value: Xamarin.Forms.ShellNavigatingEventArgs -> unit) (x: ViewElement) = x.OnNavigating(value)
+    /// Adjusts the GoToAsync property in the visual element
+    let goToAsync (value: Xamarin.Forms.ShellNavigationState * Fabulous.DynamicViews.AnimationKind) (x: ViewElement) = x.GoToAsync(value)
     /// Adjusts the FlyoutDisplayOptions property in the visual element
     let flyoutDisplayOptions (value: Xamarin.Forms.FlyoutDisplayOptions) (x: ViewElement) = x.FlyoutDisplayOptions(value)
     /// Adjusts the SelectedItem property in the visual element
@@ -21598,3 +21698,5 @@ module ViewElementExtensions =
     let location (value: System.Uri) (x: ViewElement) = x.Location(value)
     /// Adjusts the ContentTemplate property in the visual element
     let contentTemplate (value: Xamarin.Forms.DataTemplate) (x: ViewElement) = x.ContentTemplate(value)
+    /// Adjusts the ssGoToAsync property in the visual element
+    let ssGoToAsync (value: string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind) (x: ViewElement) = x.ssGoToAsync(value)

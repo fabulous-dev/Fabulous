@@ -2320,6 +2320,26 @@
         {
           "name": "RouteScheme",
           "defaultValue": "null"
+        },
+        {
+          "name": "Navigated",
+          "uniqueName": "OnNavigated",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.ShellNavigatedEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ShellNavigatedEventArgs>(fun _sender args -> f args))"
+        },
+        {
+          "name": "Navigating",
+          "uniqueName": "OnNavigating",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.ShellNavigatingEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ShellNavigatingEventArgs>(fun _sender args -> f args))"
+        },
+        {
+          "name": "GoToAsync",
+          "inputType": "Xamarin.Forms.ShellNavigationState * Fabulous.DynamicViews.AnimationKind",
+          "modelType": "Xamarin.Forms.ShellNavigationState * Fabulous.DynamicViews.AnimationKind",
+          "updateCode": "(fun _ curr target -> triggerGoToAsync curr target)"
         }
       ]
     },
@@ -2406,6 +2426,13 @@
         {
           "name": "CurrentItem",
           "defaultValue": "null"
+        },
+        {
+          "name": "GoToAsync",
+          "uniqueName": "ssGoToAsync",
+          "inputType": "string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind",
+          "modelType": "string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind",
+          "updateCode": "(fun _ curr target -> triggerSSGoToAsync curr target)"
         }
       ]
     }

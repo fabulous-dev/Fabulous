@@ -668,6 +668,30 @@ module Converters =
             target.ScrollToAsync(x, y, animated) |> ignore
         | _ -> ()
 
+    /// Trigger Shell.GoToAsync if needed, given the current values
+    let internal triggerGoToAsync (currValue: (ShellNavigationState * AnimationKind) voption) (target: Xamarin.Forms.Shell) =
+        match currValue with
+        | ValueSome (navigationState, animationKind) ->
+            let animated =
+                match animationKind with
+                | Animated -> true
+                | NotAnimated -> false
+            target.GoToAsync(navigationState, animated) |> ignore
+        | _ -> ()
+
+    /// Trigger ShellSection.GoToAsync if needed, given the current values
+    let internal triggerSSGoToAsync (currValue: (string list * Map<string, string> * AnimationKind) voption) (target: Xamarin.Forms.ShellSection) =
+        match currValue with
+        | ValueSome (routes, queryData, animationKind) ->
+            let animated =
+                match animationKind with
+                | Animated -> true
+                | NotAnimated -> false
+            let lst = ResizeArray<string>()
+            lst.AddRange(routes)
+            target.GoToAsync(lst, queryData, animated) |> ignore
+        | _ -> ()
+        
     /// Check if two LayoutOptions are equal
     let internal equalLayoutOptions (x:Xamarin.Forms.LayoutOptions) (y:Xamarin.Forms.LayoutOptions)  =
         x.Alignment = y.Alignment && x.Expands = y.Expands
