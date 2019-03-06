@@ -230,8 +230,8 @@ module Extensions =
                 | Result.Error exn -> 
                     printfn "*** LiveUpdate failure:"
                     printfn "***   [x] got code package"
-                    printfn "***   FAIL: the evaluation of the decalarations in the code package failed: %A" exn
-                    { Quacked = sprintf "couldn't quack! the evaluation of the decalarations in the code package failed: %A" exn }
+                    printfn "***   FAIL: the evaluation of the declarations in the code package failed: %A" exn
+                    { Quacked = sprintf "couldn't quack! the evaluation of the declarations in the code package failed: %A" exn }
 
                 | Result.Ok () -> 
 
