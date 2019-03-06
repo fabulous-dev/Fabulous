@@ -258,6 +258,8 @@ module ViewAttributes =
     let ItemsLayoutAttribKey : AttributeKey<_> = AttributeKey<_>("ItemsLayout")
     let ItemsSourceAttribKey : AttributeKey<_> = AttributeKey<_>("ItemsSource")
     let ItemTemplateAttribKey : AttributeKey<_> = AttributeKey<_>("ItemTemplate")
+    let ScrollToRequestedAttribKey : AttributeKey<_> = AttributeKey<_>("ScrollToRequested")
+    let iScrollToAttribKey : AttributeKey<_> = AttributeKey<_>("iScrollTo")
     let ClearIconAttribKey : AttributeKey<_> = AttributeKey<_>("ClearIcon")
     let ClearIconHelpTextAttribKey : AttributeKey<_> = AttributeKey<_>("ClearIconHelpText")
     let ClearIconNameAttribKey : AttributeKey<_> = AttributeKey<_>("ClearIconName")
@@ -370,6 +372,8 @@ type ViewProto() =
     static member val ProtoShellContent : ViewElement option = None with get, set
     static member val ProtoShellItem : ViewElement option = None with get, set
     static member val ProtoShellSection : ViewElement option = None with get, set
+    static member val ProtoCarouselView : ViewElement option = None with get, set
+    static member val ProtoCollectionView : ViewElement option = None with get, set
 
 type ViewBuilders() =
     /// Builds the attributes for a Element in the view
@@ -12515,6 +12519,8 @@ type ViewBuilders() =
                                         ?itemsLayout: Xamarin.Forms.IItemsLayout,
                                         ?itemsSource: System.Collections.IEnumerable,
                                         ?itemTemplate: Xamarin.Forms.DataTemplate,
+                                        ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
+                                        ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
                                         ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                         ?verticalOptions: Xamarin.Forms.LayoutOptions,
                                         ?margin: obj,
@@ -12561,6 +12567,8 @@ type ViewBuilders() =
         let attribCount = match itemsLayout with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match itemsSource with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match itemTemplate with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match scrollToRequested with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match scrollTo with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match emptyView with None -> () | Some v -> attribBuilder.Add(ViewAttributes.EmptyViewAttribKey, (v)) 
@@ -12568,6 +12576,8 @@ type ViewBuilders() =
         match itemsLayout with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ItemsLayoutAttribKey, (v)) 
         match itemsSource with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ItemsSourceAttribKey, (v)) 
         match itemTemplate with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ItemTemplateAttribKey, (v)) 
+        match scrollToRequested with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ScrollToRequestedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ScrollToRequestEventArgs>(fun _sender args -> f args))(v)) 
+        match scrollTo with None -> () | Some v -> attribBuilder.Add(ViewAttributes.iScrollToAttribKey, (v)) 
         attribBuilder
 
     static member val CreateFuncItemsView : (unit -> Xamarin.Forms.ItemsView) = (fun () -> ViewBuilders.CreateItemsView()) with get, set
@@ -12592,6 +12602,10 @@ type ViewBuilders() =
         let mutable currItemsSourceOpt = ValueNone
         let mutable prevItemTemplateOpt = ValueNone
         let mutable currItemTemplateOpt = ValueNone
+        let mutable prevScrollToRequestedOpt = ValueNone
+        let mutable currScrollToRequestedOpt = ValueNone
+        let mutable previScrollToOpt = ValueNone
+        let mutable curriScrollToOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = ViewAttributes.EmptyViewAttribKey.KeyValue then 
                 currEmptyViewOpt <- ValueSome (kvp.Value :?> System.Object)
@@ -12603,6 +12617,10 @@ type ViewBuilders() =
                 currItemsSourceOpt <- ValueSome (kvp.Value :?> System.Collections.IEnumerable)
             if kvp.Key = ViewAttributes.ItemTemplateAttribKey.KeyValue then 
                 currItemTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
+            if kvp.Key = ViewAttributes.ScrollToRequestedAttribKey.KeyValue then 
+                currScrollToRequestedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.ScrollToRequestEventArgs>)
+            if kvp.Key = ViewAttributes.iScrollToAttribKey.KeyValue then 
+                curriScrollToOpt <- ValueSome (kvp.Value :?> obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
@@ -12617,6 +12635,10 @@ type ViewBuilders() =
                     prevItemsSourceOpt <- ValueSome (kvp.Value :?> System.Collections.IEnumerable)
                 if kvp.Key = ViewAttributes.ItemTemplateAttribKey.KeyValue then 
                     prevItemTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
+                if kvp.Key = ViewAttributes.ScrollToRequestedAttribKey.KeyValue then 
+                    prevScrollToRequestedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.ScrollToRequestEventArgs>)
+                if kvp.Key = ViewAttributes.iScrollToAttribKey.KeyValue then 
+                    previScrollToOpt <- ValueSome (kvp.Value :?> obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind)
         match prevEmptyViewOpt, currEmptyViewOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.EmptyView <-  currValue
@@ -12642,12 +12664,21 @@ type ViewBuilders() =
         | _, ValueSome currValue -> target.ItemTemplate <-  currValue
         | ValueSome _, ValueNone -> target.ItemTemplate <- null
         | ValueNone, ValueNone -> ()
+        match prevScrollToRequestedOpt, currScrollToRequestedOpt with
+        | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
+        | ValueSome prevValue, ValueSome currValue -> target.ScrollToRequested.RemoveHandler(prevValue); target.ScrollToRequested.AddHandler(currValue)
+        | ValueNone, ValueSome currValue -> target.ScrollToRequested.AddHandler(currValue)
+        | ValueSome prevValue, ValueNone -> target.ScrollToRequested.RemoveHandler(prevValue)
+        | ValueNone, ValueNone -> ()
+        (fun _ curr target -> triggerScrollTo curr target) previScrollToOpt curriScrollToOpt target
 
     static member inline ConstructItemsView(?emptyView: System.Object,
                                             ?emptyViewTemplate: Xamarin.Forms.DataTemplate,
                                             ?itemsLayout: Xamarin.Forms.IItemsLayout,
                                             ?itemsSource: System.Collections.IEnumerable,
                                             ?itemTemplate: Xamarin.Forms.DataTemplate,
+                                            ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
+                                            ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
                                             ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                             ?verticalOptions: Xamarin.Forms.LayoutOptions,
                                             ?margin: obj,
@@ -12695,6 +12726,8 @@ type ViewBuilders() =
                                ?itemsLayout=itemsLayout,
                                ?itemsSource=itemsSource,
                                ?itemTemplate=itemTemplate,
+                               ?scrollToRequested=scrollToRequested,
+                               ?scrollTo=scrollTo,
                                ?horizontalOptions=horizontalOptions,
                                ?verticalOptions=verticalOptions,
                                ?margin=margin,
@@ -12759,7 +12792,9 @@ type ViewBuilders() =
                                             ?queryIconHelpText: string,
                                             ?queryIconName: string,
                                             ?searchBoxVisibility: Xamarin.Forms.SearchBoxVisiblity,
-                                            ?showsResults: bool) = 
+                                            ?showsResults: bool,
+                                            ?itemsSource: System.Collections.IEnumerable,
+                                            ?itemTemplate: Xamarin.Forms.DataTemplate) = 
 
         let attribCount = match clearIcon with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match clearIconHelpText with Some _ -> attribCount + 1 | None -> attribCount
@@ -12781,6 +12816,8 @@ type ViewBuilders() =
         let attribCount = match queryIconName with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match searchBoxVisibility with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match showsResults with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match itemsSource with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match itemTemplate with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = new AttributesBuilder(attribCount)
         match clearIcon with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ClearIconAttribKey, (v)) 
@@ -12803,6 +12840,8 @@ type ViewBuilders() =
         match queryIconName with None -> () | Some v -> attribBuilder.Add(ViewAttributes.QueryIconNameAttribKey, (v)) 
         match searchBoxVisibility with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SearchBoxVisibilityAttribKey, (v)) 
         match showsResults with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ShowsResultsAttribKey, (v)) 
+        match itemsSource with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ItemsSourceAttribKey, (v)) 
+        match itemTemplate with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ItemTemplateAttribKey, (v)) 
         attribBuilder
 
     static member val CreateFuncSearchHandler : (unit -> Xamarin.Forms.SearchHandler) = (fun () -> ViewBuilders.CreateSearchHandler()) with get, set
@@ -12854,6 +12893,10 @@ type ViewBuilders() =
         let mutable currSearchBoxVisibilityOpt = ValueNone
         let mutable prevShowsResultsOpt = ValueNone
         let mutable currShowsResultsOpt = ValueNone
+        let mutable prevItemsSourceOpt = ValueNone
+        let mutable currItemsSourceOpt = ValueNone
+        let mutable prevItemTemplateOpt = ValueNone
+        let mutable currItemTemplateOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = ViewAttributes.ClearIconAttribKey.KeyValue then 
                 currClearIconOpt <- ValueSome (kvp.Value :?> string)
@@ -12895,6 +12938,10 @@ type ViewBuilders() =
                 currSearchBoxVisibilityOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.SearchBoxVisiblity)
             if kvp.Key = ViewAttributes.ShowsResultsAttribKey.KeyValue then 
                 currShowsResultsOpt <- ValueSome (kvp.Value :?> bool)
+            if kvp.Key = ViewAttributes.ItemsSourceAttribKey.KeyValue then 
+                currItemsSourceOpt <- ValueSome (kvp.Value :?> System.Collections.IEnumerable)
+            if kvp.Key = ViewAttributes.ItemTemplateAttribKey.KeyValue then 
+                currItemTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
@@ -12939,9 +12986,13 @@ type ViewBuilders() =
                     prevSearchBoxVisibilityOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.SearchBoxVisiblity)
                 if kvp.Key = ViewAttributes.ShowsResultsAttribKey.KeyValue then 
                     prevShowsResultsOpt <- ValueSome (kvp.Value :?> bool)
+                if kvp.Key = ViewAttributes.ItemsSourceAttribKey.KeyValue then 
+                    prevItemsSourceOpt <- ValueSome (kvp.Value :?> System.Collections.IEnumerable)
+                if kvp.Key = ViewAttributes.ItemTemplateAttribKey.KeyValue then 
+                    prevItemTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
         match prevClearIconOpt, currClearIconOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.ClearIcon <- makeFileImageSource currValue
+        | _, ValueSome currValue -> target.ClearIcon <- makeImageSource currValue
         | ValueSome _, ValueNone -> target.ClearIcon <- null
         | ValueNone, ValueNone -> ()
         match prevClearIconHelpTextOpt, currClearIconHelpTextOpt with
@@ -12976,7 +13027,7 @@ type ViewBuilders() =
         | ValueNone, ValueNone -> ()
         match prevClearPlaceholderIconOpt, currClearPlaceholderIconOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.ClearPlaceholderIcon <- makeFileImageSource currValue
+        | _, ValueSome currValue -> target.ClearPlaceholderIcon <- makeImageSource currValue
         | ValueSome _, ValueNone -> target.ClearPlaceholderIcon <- null
         | ValueNone, ValueNone -> ()
         match prevClearPlaceholderNameOpt, currClearPlaceholderNameOpt with
@@ -13016,7 +13067,7 @@ type ViewBuilders() =
         | ValueNone, ValueNone -> ()
         match prevQueryIconOpt, currQueryIconOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.QueryIcon <- makeFileImageSource currValue
+        | _, ValueSome currValue -> target.QueryIcon <- makeImageSource currValue
         | ValueSome _, ValueNone -> target.QueryIcon <- null
         | ValueNone, ValueNone -> ()
         match prevQueryIconHelpTextOpt, currQueryIconHelpTextOpt with
@@ -13039,6 +13090,16 @@ type ViewBuilders() =
         | _, ValueSome currValue -> target.ShowsResults <-  currValue
         | ValueSome _, ValueNone -> target.ShowsResults <- true
         | ValueNone, ValueNone -> ()
+        match prevItemsSourceOpt, currItemsSourceOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.ItemsSource <-  currValue
+        | ValueSome _, ValueNone -> target.ItemsSource <- null
+        | ValueNone, ValueNone -> ()
+        match prevItemTemplateOpt, currItemTemplateOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.ItemTemplate <-  currValue
+        | ValueSome _, ValueNone -> target.ItemTemplate <- null
+        | ValueNone, ValueNone -> ()
 
     static member inline ConstructSearchHandler(?clearIcon: string,
                                                 ?clearIconHelpText: string,
@@ -13059,7 +13120,9 @@ type ViewBuilders() =
                                                 ?queryIconHelpText: string,
                                                 ?queryIconName: string,
                                                 ?searchBoxVisibility: Xamarin.Forms.SearchBoxVisiblity,
-                                                ?showsResults: bool) = 
+                                                ?showsResults: bool,
+                                                ?itemsSource: System.Collections.IEnumerable,
+                                                ?itemTemplate: Xamarin.Forms.DataTemplate) = 
 
         let attribBuilder = ViewBuilders.BuildSearchHandler(0,
                                ?clearIcon=clearIcon,
@@ -13081,7 +13144,9 @@ type ViewBuilders() =
                                ?queryIconHelpText=queryIconHelpText,
                                ?queryIconName=queryIconName,
                                ?searchBoxVisibility=searchBoxVisibility,
-                               ?showsResults=showsResults)
+                               ?showsResults=showsResults,
+                               ?itemsSource=itemsSource,
+                               ?itemTemplate=itemTemplate)
 
         ViewElement.Create<Xamarin.Forms.SearchHandler>(ViewBuilders.CreateFuncSearchHandler, ViewBuilders.UpdateFuncSearchHandler, attribBuilder)
 
@@ -13600,6 +13665,8 @@ type ViewBuilders() =
                                                   ?itemsLayout: Xamarin.Forms.IItemsLayout,
                                                   ?itemsSource: System.Collections.IEnumerable,
                                                   ?itemTemplate: Xamarin.Forms.DataTemplate,
+                                                  ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
+                                                  ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
                                                   ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                                   ?verticalOptions: Xamarin.Forms.LayoutOptions,
                                                   ?margin: obj,
@@ -13647,7 +13714,7 @@ type ViewBuilders() =
         let attribCount = match selectionMode with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match selectionChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildItemsView(attribCount, ?emptyView=emptyView, ?emptyViewTemplate=emptyViewTemplate, ?itemsLayout=itemsLayout, ?itemsSource=itemsSource, ?itemTemplate=itemTemplate, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildItemsView(attribCount, ?emptyView=emptyView, ?emptyViewTemplate=emptyViewTemplate, ?itemsLayout=itemsLayout, ?itemsSource=itemsSource, ?itemTemplate=itemTemplate, ?scrollToRequested=scrollToRequested, ?scrollTo=scrollTo, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match selectedItem with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SelectedItemAttribKey, (v)) 
         match selectionChangedCommand with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SelectionChangedCommandAttribKey, makeCommand(v)) 
         match selectionChangedCommandParameter with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SelectionChangedCommandParameterAttribKey, (v)) 
@@ -13739,6 +13806,8 @@ type ViewBuilders() =
                                                       ?itemsLayout: Xamarin.Forms.IItemsLayout,
                                                       ?itemsSource: System.Collections.IEnumerable,
                                                       ?itemTemplate: Xamarin.Forms.DataTemplate,
+                                                      ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
+                                                      ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
                                                       ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                                       ?verticalOptions: Xamarin.Forms.LayoutOptions,
                                                       ?margin: obj,
@@ -13791,6 +13860,8 @@ type ViewBuilders() =
                                ?itemsLayout=itemsLayout,
                                ?itemsSource=itemsSource,
                                ?itemTemplate=itemTemplate,
+                               ?scrollToRequested=scrollToRequested,
+                               ?scrollTo=scrollTo,
                                ?horizontalOptions=horizontalOptions,
                                ?verticalOptions=verticalOptions,
                                ?margin=margin,
@@ -14148,6 +14219,355 @@ type ViewBuilders() =
                                ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ShellSection>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.ShellSection>(ViewBuilders.CreateFuncShellSection, ViewBuilders.UpdateFuncShellSection, attribBuilder)
+
+    /// Builds the attributes for a CarouselView in the view
+    static member inline BuildCarouselView(attribCount: int,
+                                           ?emptyView: System.Object,
+                                           ?emptyViewTemplate: Xamarin.Forms.DataTemplate,
+                                           ?itemsLayout: Xamarin.Forms.IItemsLayout,
+                                           ?itemsSource: System.Collections.IEnumerable,
+                                           ?itemTemplate: Xamarin.Forms.DataTemplate,
+                                           ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
+                                           ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
+                                           ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                           ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                           ?margin: obj,
+                                           ?gestureRecognizers: ViewElement list,
+                                           ?anchorX: double,
+                                           ?anchorY: double,
+                                           ?backgroundColor: Xamarin.Forms.Color,
+                                           ?heightRequest: double,
+                                           ?inputTransparent: bool,
+                                           ?isEnabled: bool,
+                                           ?isVisible: bool,
+                                           ?minimumHeightRequest: double,
+                                           ?minimumWidthRequest: double,
+                                           ?opacity: double,
+                                           ?rotation: double,
+                                           ?rotationX: double,
+                                           ?rotationY: double,
+                                           ?scale: double,
+                                           ?style: Xamarin.Forms.Style,
+                                           ?styleClass: obj,
+                                           ?translationX: double,
+                                           ?translationY: double,
+                                           ?widthRequest: double,
+                                           ?resources: (string * obj) list,
+                                           ?styles: Xamarin.Forms.Style list,
+                                           ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                           ?isTabStop: bool,
+                                           ?scaleX: double,
+                                           ?scaleY: double,
+                                           ?tabIndex: int,
+                                           ?childrenReordered: System.EventArgs -> unit,
+                                           ?measureInvalidated: System.EventArgs -> unit,
+                                           ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                           ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                                           ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                           ?classId: string,
+                                           ?styleId: string,
+                                           ?automationId: string,
+                                           ?created: obj -> unit,
+                                           ?ref: ViewRef) = 
+        let attribBuilder = ViewBuilders.BuildItemsView(attribCount, ?emptyView=emptyView, ?emptyViewTemplate=emptyViewTemplate, ?itemsLayout=itemsLayout, ?itemsSource=itemsSource, ?itemTemplate=itemTemplate, ?scrollToRequested=scrollToRequested, ?scrollTo=scrollTo, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        attribBuilder
+
+    static member val CreateFuncCarouselView : (unit -> Xamarin.Forms.CarouselView) = (fun () -> ViewBuilders.CreateCarouselView()) with get, set
+
+    static member CreateCarouselView () : Xamarin.Forms.CarouselView =
+        upcast (new Xamarin.Forms.CarouselView())
+
+    static member val UpdateFuncCarouselView =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.CarouselView) -> ViewBuilders.UpdateCarouselView (prevOpt, curr, target)) 
+
+    static member UpdateCarouselView (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.CarouselView) = 
+        // update the inherited ItemsView element
+        let baseElement = (if ViewProto.ProtoItemsView.IsNone then ViewProto.ProtoItemsView <- Some (ViewBuilders.ConstructItemsView())); ViewProto.ProtoItemsView.Value
+        baseElement.UpdateInherited (prevOpt, curr, target)
+        ignore prevOpt
+        ignore curr
+        ignore target
+
+    static member inline ConstructCarouselView(?emptyView: System.Object,
+                                               ?emptyViewTemplate: Xamarin.Forms.DataTemplate,
+                                               ?itemsLayout: Xamarin.Forms.IItemsLayout,
+                                               ?itemsSource: System.Collections.IEnumerable,
+                                               ?itemTemplate: Xamarin.Forms.DataTemplate,
+                                               ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
+                                               ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
+                                               ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                               ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                               ?margin: obj,
+                                               ?gestureRecognizers: ViewElement list,
+                                               ?anchorX: double,
+                                               ?anchorY: double,
+                                               ?backgroundColor: Xamarin.Forms.Color,
+                                               ?heightRequest: double,
+                                               ?inputTransparent: bool,
+                                               ?isEnabled: bool,
+                                               ?isVisible: bool,
+                                               ?minimumHeightRequest: double,
+                                               ?minimumWidthRequest: double,
+                                               ?opacity: double,
+                                               ?rotation: double,
+                                               ?rotationX: double,
+                                               ?rotationY: double,
+                                               ?scale: double,
+                                               ?style: Xamarin.Forms.Style,
+                                               ?styleClass: obj,
+                                               ?translationX: double,
+                                               ?translationY: double,
+                                               ?widthRequest: double,
+                                               ?resources: (string * obj) list,
+                                               ?styles: Xamarin.Forms.Style list,
+                                               ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                               ?isTabStop: bool,
+                                               ?scaleX: double,
+                                               ?scaleY: double,
+                                               ?tabIndex: int,
+                                               ?childrenReordered: System.EventArgs -> unit,
+                                               ?measureInvalidated: System.EventArgs -> unit,
+                                               ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                               ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                                               ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                               ?classId: string,
+                                               ?styleId: string,
+                                               ?automationId: string,
+                                               ?created: (Xamarin.Forms.CarouselView -> unit),
+                                               ?ref: ViewRef<Xamarin.Forms.CarouselView>) = 
+
+        let attribBuilder = ViewBuilders.BuildCarouselView(0,
+                               ?emptyView=emptyView,
+                               ?emptyViewTemplate=emptyViewTemplate,
+                               ?itemsLayout=itemsLayout,
+                               ?itemsSource=itemsSource,
+                               ?itemTemplate=itemTemplate,
+                               ?scrollToRequested=scrollToRequested,
+                               ?scrollTo=scrollTo,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?isTabStop=isTabStop,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.CarouselView> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.CarouselView>) -> Some ref.Unbox))
+
+        ViewElement.Create<Xamarin.Forms.CarouselView>(ViewBuilders.CreateFuncCarouselView, ViewBuilders.UpdateFuncCarouselView, attribBuilder)
+
+    /// Builds the attributes for a CollectionView in the view
+    static member inline BuildCollectionView(attribCount: int,
+                                             ?selectedItem: System.Object,
+                                             ?selectionChangedCommand: unit -> unit,
+                                             ?selectionChangedCommandParameter: System.Object,
+                                             ?selectionMode: Xamarin.Forms.SelectionMode,
+                                             ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit,
+                                             ?emptyView: System.Object,
+                                             ?emptyViewTemplate: Xamarin.Forms.DataTemplate,
+                                             ?itemsLayout: Xamarin.Forms.IItemsLayout,
+                                             ?itemsSource: System.Collections.IEnumerable,
+                                             ?itemTemplate: Xamarin.Forms.DataTemplate,
+                                             ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
+                                             ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
+                                             ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                             ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                             ?margin: obj,
+                                             ?gestureRecognizers: ViewElement list,
+                                             ?anchorX: double,
+                                             ?anchorY: double,
+                                             ?backgroundColor: Xamarin.Forms.Color,
+                                             ?heightRequest: double,
+                                             ?inputTransparent: bool,
+                                             ?isEnabled: bool,
+                                             ?isVisible: bool,
+                                             ?minimumHeightRequest: double,
+                                             ?minimumWidthRequest: double,
+                                             ?opacity: double,
+                                             ?rotation: double,
+                                             ?rotationX: double,
+                                             ?rotationY: double,
+                                             ?scale: double,
+                                             ?style: Xamarin.Forms.Style,
+                                             ?styleClass: obj,
+                                             ?translationX: double,
+                                             ?translationY: double,
+                                             ?widthRequest: double,
+                                             ?resources: (string * obj) list,
+                                             ?styles: Xamarin.Forms.Style list,
+                                             ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                             ?isTabStop: bool,
+                                             ?scaleX: double,
+                                             ?scaleY: double,
+                                             ?tabIndex: int,
+                                             ?childrenReordered: System.EventArgs -> unit,
+                                             ?measureInvalidated: System.EventArgs -> unit,
+                                             ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                             ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                                             ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                             ?classId: string,
+                                             ?styleId: string,
+                                             ?automationId: string,
+                                             ?created: obj -> unit,
+                                             ?ref: ViewRef) = 
+        let attribBuilder = ViewBuilders.BuildSelectableItemsView(attribCount, ?selectedItem=selectedItem, ?selectionChangedCommand=selectionChangedCommand, ?selectionChangedCommandParameter=selectionChangedCommandParameter, ?selectionMode=selectionMode, ?selectionChanged=selectionChanged, ?emptyView=emptyView, ?emptyViewTemplate=emptyViewTemplate, ?itemsLayout=itemsLayout, ?itemsSource=itemsSource, ?itemTemplate=itemTemplate, ?scrollToRequested=scrollToRequested, ?scrollTo=scrollTo, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        attribBuilder
+
+    static member val CreateFuncCollectionView : (unit -> Xamarin.Forms.CollectionView) = (fun () -> ViewBuilders.CreateCollectionView()) with get, set
+
+    static member CreateCollectionView () : Xamarin.Forms.CollectionView =
+        upcast (new Xamarin.Forms.CollectionView())
+
+    static member val UpdateFuncCollectionView =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.CollectionView) -> ViewBuilders.UpdateCollectionView (prevOpt, curr, target)) 
+
+    static member UpdateCollectionView (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.CollectionView) = 
+        // update the inherited SelectableItemsView element
+        let baseElement = (if ViewProto.ProtoSelectableItemsView.IsNone then ViewProto.ProtoSelectableItemsView <- Some (ViewBuilders.ConstructSelectableItemsView())); ViewProto.ProtoSelectableItemsView.Value
+        baseElement.UpdateInherited (prevOpt, curr, target)
+        ignore prevOpt
+        ignore curr
+        ignore target
+
+    static member inline ConstructCollectionView(?selectedItem: System.Object,
+                                                 ?selectionChangedCommand: unit -> unit,
+                                                 ?selectionChangedCommandParameter: System.Object,
+                                                 ?selectionMode: Xamarin.Forms.SelectionMode,
+                                                 ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit,
+                                                 ?emptyView: System.Object,
+                                                 ?emptyViewTemplate: Xamarin.Forms.DataTemplate,
+                                                 ?itemsLayout: Xamarin.Forms.IItemsLayout,
+                                                 ?itemsSource: System.Collections.IEnumerable,
+                                                 ?itemTemplate: Xamarin.Forms.DataTemplate,
+                                                 ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
+                                                 ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
+                                                 ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                                 ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                                 ?margin: obj,
+                                                 ?gestureRecognizers: ViewElement list,
+                                                 ?anchorX: double,
+                                                 ?anchorY: double,
+                                                 ?backgroundColor: Xamarin.Forms.Color,
+                                                 ?heightRequest: double,
+                                                 ?inputTransparent: bool,
+                                                 ?isEnabled: bool,
+                                                 ?isVisible: bool,
+                                                 ?minimumHeightRequest: double,
+                                                 ?minimumWidthRequest: double,
+                                                 ?opacity: double,
+                                                 ?rotation: double,
+                                                 ?rotationX: double,
+                                                 ?rotationY: double,
+                                                 ?scale: double,
+                                                 ?style: Xamarin.Forms.Style,
+                                                 ?styleClass: obj,
+                                                 ?translationX: double,
+                                                 ?translationY: double,
+                                                 ?widthRequest: double,
+                                                 ?resources: (string * obj) list,
+                                                 ?styles: Xamarin.Forms.Style list,
+                                                 ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                                 ?isTabStop: bool,
+                                                 ?scaleX: double,
+                                                 ?scaleY: double,
+                                                 ?tabIndex: int,
+                                                 ?childrenReordered: System.EventArgs -> unit,
+                                                 ?measureInvalidated: System.EventArgs -> unit,
+                                                 ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                 ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                                                 ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                 ?classId: string,
+                                                 ?styleId: string,
+                                                 ?automationId: string,
+                                                 ?created: (Xamarin.Forms.CollectionView -> unit),
+                                                 ?ref: ViewRef<Xamarin.Forms.CollectionView>) = 
+
+        let attribBuilder = ViewBuilders.BuildCollectionView(0,
+                               ?selectedItem=selectedItem,
+                               ?selectionChangedCommand=selectionChangedCommand,
+                               ?selectionChangedCommandParameter=selectionChangedCommandParameter,
+                               ?selectionMode=selectionMode,
+                               ?selectionChanged=selectionChanged,
+                               ?emptyView=emptyView,
+                               ?emptyViewTemplate=emptyViewTemplate,
+                               ?itemsLayout=itemsLayout,
+                               ?itemsSource=itemsSource,
+                               ?itemTemplate=itemTemplate,
+                               ?scrollToRequested=scrollToRequested,
+                               ?scrollTo=scrollTo,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?isTabStop=isTabStop,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.CollectionView> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.CollectionView>) -> Some ref.Unbox))
+
+        ViewElement.Create<Xamarin.Forms.CollectionView>(ViewBuilders.CreateFuncCollectionView, ViewBuilders.UpdateFuncCollectionView, attribBuilder)
 
 /// Viewer that allows to read the properties of a ViewElement representing a Element
 type ElementViewer(element: ViewElement) =
@@ -15106,6 +15526,10 @@ type ItemsViewViewer(element: ViewElement) =
     member this.ItemsSource = element.GetAttributeKeyed(ViewAttributes.ItemsSourceAttribKey)
     /// Get the value of the ItemTemplate property
     member this.ItemTemplate = element.GetAttributeKeyed(ViewAttributes.ItemTemplateAttribKey)
+    /// Get the value of the ScrollToRequested property
+    member this.ScrollToRequested = element.GetAttributeKeyed(ViewAttributes.ScrollToRequestedAttribKey)
+    /// Get the value of the ScrollTo property
+    member this.ScrollTo = element.GetAttributeKeyed(ViewAttributes.iScrollToAttribKey)
 
 /// Viewer that allows to read the properties of a ViewElement representing a SearchHandler
 type SearchHandlerViewer(element: ViewElement) =
@@ -15150,6 +15574,10 @@ type SearchHandlerViewer(element: ViewElement) =
     member this.SearchBoxVisibility = element.GetAttributeKeyed(ViewAttributes.SearchBoxVisibilityAttribKey)
     /// Get the value of the ShowsResults property
     member this.ShowsResults = element.GetAttributeKeyed(ViewAttributes.ShowsResultsAttribKey)
+    /// Get the value of the ItemsSource property
+    member this.ItemsSource = element.GetAttributeKeyed(ViewAttributes.ItemsSourceAttribKey)
+    /// Get the value of the ItemTemplate property
+    member this.ItemTemplate = element.GetAttributeKeyed(ViewAttributes.ItemTemplateAttribKey)
 
 /// Viewer that allows to read the properties of a ViewElement representing a Shell
 type ShellViewer(element: ViewElement) =
@@ -15240,6 +15668,16 @@ type ShellSectionViewer(element: ViewElement) =
     member this.CurrentItem = element.GetAttributeKeyed(ViewAttributes.CurrentItemAttribKey)
     /// Get the value of the GoToAsync property
     member this.GoToAsync = element.GetAttributeKeyed(ViewAttributes.ssGoToAsyncAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a CarouselView
+type CarouselViewViewer(element: ViewElement) =
+    inherit ItemsViewViewer(element)
+    do if not ((typeof<Xamarin.Forms.CarouselView>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.CarouselView' is expected, but '%s' was provided." element.TargetType.FullName
+
+/// Viewer that allows to read the properties of a ViewElement representing a CollectionView
+type CollectionViewViewer(element: ViewElement) =
+    inherit SelectableItemsViewViewer(element)
+    do if not ((typeof<Xamarin.Forms.CollectionView>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.CollectionView' is expected, but '%s' was provided." element.TargetType.FullName
 
 type View() =
     /// Describes a Element in the view
@@ -19421,6 +19859,8 @@ type View() =
                                    ?itemsLayout: Xamarin.Forms.IItemsLayout,
                                    ?itemsSource: System.Collections.IEnumerable,
                                    ?itemTemplate: Xamarin.Forms.DataTemplate,
+                                   ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
+                                   ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
                                    ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                    ?verticalOptions: Xamarin.Forms.LayoutOptions,
                                    ?margin: obj,
@@ -19467,6 +19907,8 @@ type View() =
                                ?itemsLayout=itemsLayout,
                                ?itemsSource=itemsSource,
                                ?itemTemplate=itemTemplate,
+                               ?scrollToRequested=scrollToRequested,
+                               ?scrollTo=scrollTo,
                                ?horizontalOptions=horizontalOptions,
                                ?verticalOptions=verticalOptions,
                                ?margin=margin,
@@ -19528,7 +19970,9 @@ type View() =
                                        ?queryIconHelpText: string,
                                        ?queryIconName: string,
                                        ?searchBoxVisibility: Xamarin.Forms.SearchBoxVisiblity,
-                                       ?showsResults: bool) =
+                                       ?showsResults: bool,
+                                       ?itemsSource: System.Collections.IEnumerable,
+                                       ?itemTemplate: Xamarin.Forms.DataTemplate) =
 
         ViewBuilders.ConstructSearchHandler(?clearIcon=clearIcon,
                                ?clearIconHelpText=clearIconHelpText,
@@ -19549,7 +19993,9 @@ type View() =
                                ?queryIconHelpText=queryIconHelpText,
                                ?queryIconName=queryIconName,
                                ?searchBoxVisibility=searchBoxVisibility,
-                               ?showsResults=showsResults)
+                               ?showsResults=showsResults,
+                               ?itemsSource=itemsSource,
+                               ?itemTemplate=itemTemplate)
 
     /// Describes a Shell in the view
     static member inline Shell(?currentItem: ViewElement,
@@ -19714,6 +20160,8 @@ type View() =
                                              ?itemsLayout: Xamarin.Forms.IItemsLayout,
                                              ?itemsSource: System.Collections.IEnumerable,
                                              ?itemTemplate: Xamarin.Forms.DataTemplate,
+                                             ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
+                                             ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
                                              ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                              ?verticalOptions: Xamarin.Forms.LayoutOptions,
                                              ?margin: obj,
@@ -19765,6 +20213,8 @@ type View() =
                                ?itemsLayout=itemsLayout,
                                ?itemsSource=itemsSource,
                                ?itemTemplate=itemTemplate,
+                               ?scrollToRequested=scrollToRequested,
+                               ?scrollTo=scrollTo,
                                ?horizontalOptions=horizontalOptions,
                                ?verticalOptions=verticalOptions,
                                ?margin=margin,
@@ -19888,6 +20338,210 @@ type View() =
                                ?icon=icon,
                                ?flyoutIcon=flyoutIcon,
                                ?isEnabled=isEnabled,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=created,
+                               ?ref=ref)
+
+    /// Describes a CarouselView in the view
+    static member inline CarouselView(?emptyView: System.Object,
+                                      ?emptyViewTemplate: Xamarin.Forms.DataTemplate,
+                                      ?itemsLayout: Xamarin.Forms.IItemsLayout,
+                                      ?itemsSource: System.Collections.IEnumerable,
+                                      ?itemTemplate: Xamarin.Forms.DataTemplate,
+                                      ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
+                                      ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
+                                      ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                      ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                      ?margin: obj,
+                                      ?gestureRecognizers: ViewElement list,
+                                      ?anchorX: double,
+                                      ?anchorY: double,
+                                      ?backgroundColor: Xamarin.Forms.Color,
+                                      ?heightRequest: double,
+                                      ?inputTransparent: bool,
+                                      ?isEnabled: bool,
+                                      ?isVisible: bool,
+                                      ?minimumHeightRequest: double,
+                                      ?minimumWidthRequest: double,
+                                      ?opacity: double,
+                                      ?rotation: double,
+                                      ?rotationX: double,
+                                      ?rotationY: double,
+                                      ?scale: double,
+                                      ?style: Xamarin.Forms.Style,
+                                      ?styleClass: obj,
+                                      ?translationX: double,
+                                      ?translationY: double,
+                                      ?widthRequest: double,
+                                      ?resources: (string * obj) list,
+                                      ?styles: Xamarin.Forms.Style list,
+                                      ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                      ?isTabStop: bool,
+                                      ?scaleX: double,
+                                      ?scaleY: double,
+                                      ?tabIndex: int,
+                                      ?childrenReordered: System.EventArgs -> unit,
+                                      ?measureInvalidated: System.EventArgs -> unit,
+                                      ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                      ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                                      ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                      ?classId: string,
+                                      ?styleId: string,
+                                      ?automationId: string,
+                                      ?created: (Xamarin.Forms.CarouselView -> unit),
+                                      ?ref: ViewRef<Xamarin.Forms.CarouselView>) =
+
+        ViewBuilders.ConstructCarouselView(?emptyView=emptyView,
+                               ?emptyViewTemplate=emptyViewTemplate,
+                               ?itemsLayout=itemsLayout,
+                               ?itemsSource=itemsSource,
+                               ?itemTemplate=itemTemplate,
+                               ?scrollToRequested=scrollToRequested,
+                               ?scrollTo=scrollTo,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?isTabStop=isTabStop,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=created,
+                               ?ref=ref)
+
+    /// Describes a CollectionView in the view
+    static member inline CollectionView(?selectedItem: System.Object,
+                                        ?selectionChangedCommand: unit -> unit,
+                                        ?selectionChangedCommandParameter: System.Object,
+                                        ?selectionMode: Xamarin.Forms.SelectionMode,
+                                        ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit,
+                                        ?emptyView: System.Object,
+                                        ?emptyViewTemplate: Xamarin.Forms.DataTemplate,
+                                        ?itemsLayout: Xamarin.Forms.IItemsLayout,
+                                        ?itemsSource: System.Collections.IEnumerable,
+                                        ?itemTemplate: Xamarin.Forms.DataTemplate,
+                                        ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
+                                        ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
+                                        ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                        ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                        ?margin: obj,
+                                        ?gestureRecognizers: ViewElement list,
+                                        ?anchorX: double,
+                                        ?anchorY: double,
+                                        ?backgroundColor: Xamarin.Forms.Color,
+                                        ?heightRequest: double,
+                                        ?inputTransparent: bool,
+                                        ?isEnabled: bool,
+                                        ?isVisible: bool,
+                                        ?minimumHeightRequest: double,
+                                        ?minimumWidthRequest: double,
+                                        ?opacity: double,
+                                        ?rotation: double,
+                                        ?rotationX: double,
+                                        ?rotationY: double,
+                                        ?scale: double,
+                                        ?style: Xamarin.Forms.Style,
+                                        ?styleClass: obj,
+                                        ?translationX: double,
+                                        ?translationY: double,
+                                        ?widthRequest: double,
+                                        ?resources: (string * obj) list,
+                                        ?styles: Xamarin.Forms.Style list,
+                                        ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                        ?isTabStop: bool,
+                                        ?scaleX: double,
+                                        ?scaleY: double,
+                                        ?tabIndex: int,
+                                        ?childrenReordered: System.EventArgs -> unit,
+                                        ?measureInvalidated: System.EventArgs -> unit,
+                                        ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                                        ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?classId: string,
+                                        ?styleId: string,
+                                        ?automationId: string,
+                                        ?created: (Xamarin.Forms.CollectionView -> unit),
+                                        ?ref: ViewRef<Xamarin.Forms.CollectionView>) =
+
+        ViewBuilders.ConstructCollectionView(?selectedItem=selectedItem,
+                               ?selectionChangedCommand=selectionChangedCommand,
+                               ?selectionChangedCommandParameter=selectionChangedCommandParameter,
+                               ?selectionMode=selectionMode,
+                               ?selectionChanged=selectionChanged,
+                               ?emptyView=emptyView,
+                               ?emptyViewTemplate=emptyViewTemplate,
+                               ?itemsLayout=itemsLayout,
+                               ?itemsSource=itemsSource,
+                               ?itemTemplate=itemTemplate,
+                               ?scrollToRequested=scrollToRequested,
+                               ?scrollTo=scrollTo,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?isTabStop=isTabStop,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -20650,6 +21304,12 @@ module ViewElementExtensions =
         /// Adjusts the ItemTemplate property in the visual element
         member x.ItemTemplate(value: Xamarin.Forms.DataTemplate) = x.WithAttribute(ViewAttributes.ItemTemplateAttribKey, (value))
 
+        /// Adjusts the ScrollToRequested property in the visual element
+        member x.ScrollToRequested(value: Xamarin.Forms.ScrollToRequestEventArgs -> unit) = x.WithAttribute(ViewAttributes.ScrollToRequestedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ScrollToRequestEventArgs>(fun _sender args -> f args))(value))
+
+        /// Adjusts the iScrollTo property in the visual element
+        member x.iScrollTo(value: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind) = x.WithAttribute(ViewAttributes.iScrollToAttribKey, (value))
+
         /// Adjusts the ClearIcon property in the visual element
         member x.ClearIcon(value: string) = x.WithAttribute(ViewAttributes.ClearIconAttribKey, (value))
 
@@ -20820,14 +21480,15 @@ module ViewElementExtensions =
                       ?listViewGrouped_ItemAppearing: int * int option -> unit, ?listViewGrouped_ItemDisappearing: int * int option -> unit, ?listViewGrouped_ItemSelected: (int * int) option -> unit, ?listViewGrouped_ItemTapped: int * int -> unit, ?refreshing: unit -> unit, 
                       ?textOverride: string, ?iconOverride: string, ?route: string, ?flyoutIcon: string, ?span: int, 
                       ?emptyView: System.Object, ?emptyViewTemplate: Xamarin.Forms.DataTemplate, ?itemsLayout: Xamarin.Forms.IItemsLayout, ?itemsSource: System.Collections.IEnumerable, ?itemTemplate: Xamarin.Forms.DataTemplate, 
-                      ?clearIcon: string, ?clearIconHelpText: string, ?clearIconName: string, ?clearPlaceholderCommand: unit -> unit, ?clearPlaceholderCommandParameter: System.Object, 
-                      ?clearPlaceholderEnabled: bool, ?clearPlaceholderHelpText: string, ?clearPlaceholderIcon: string, ?clearPlaceholderName: string, ?displayMemberName: string, 
-                      ?isSearchEnabled: bool, ?query: string, ?queryIcon: string, ?queryIconHelpText: string, ?queryIconName: string, 
-                      ?searchBoxVisibility: Xamarin.Forms.SearchBoxVisiblity, ?showsResults: bool, ?currentItem: ViewElement, ?flyoutBackgroundColor: Xamarin.Forms.Color, ?flyoutBehavior: Xamarin.Forms.FlyoutBehavior, 
-                      ?flyoutHeader: System.Object, ?flyoutHeaderBehavior: Xamarin.Forms.FlyoutHeaderBehavior, ?flyoutHeaderTemplate: Xamarin.Forms.DataTemplate, ?flyoutIsPresented: bool, ?groupHeaderTemplate: Xamarin.Forms.DataTemplate, 
-                      ?menuItemTemplate: Xamarin.Forms.DataTemplate, ?routeHost: string, ?routeScheme: string, ?onNavigated: Xamarin.Forms.ShellNavigatedEventArgs -> unit, ?onNavigating: Xamarin.Forms.ShellNavigatingEventArgs -> unit, 
-                      ?goToAsync: Xamarin.Forms.ShellNavigationState * Fabulous.DynamicViews.AnimationKind, ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions, ?selectedItem: System.Object, ?selectionChangedCommand: unit -> unit, ?selectionChangedCommandParameter: System.Object, 
-                      ?selectableItemsMode: Xamarin.Forms.SelectionMode, ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit, ?location: System.Uri, ?contentTemplate: Xamarin.Forms.DataTemplate, ?ssGoToAsync: string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind) =
+                      ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit, ?iScrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind, ?clearIcon: string, ?clearIconHelpText: string, ?clearIconName: string, 
+                      ?clearPlaceholderCommand: unit -> unit, ?clearPlaceholderCommandParameter: System.Object, ?clearPlaceholderEnabled: bool, ?clearPlaceholderHelpText: string, ?clearPlaceholderIcon: string, 
+                      ?clearPlaceholderName: string, ?displayMemberName: string, ?isSearchEnabled: bool, ?query: string, ?queryIcon: string, 
+                      ?queryIconHelpText: string, ?queryIconName: string, ?searchBoxVisibility: Xamarin.Forms.SearchBoxVisiblity, ?showsResults: bool, ?currentItem: ViewElement, 
+                      ?flyoutBackgroundColor: Xamarin.Forms.Color, ?flyoutBehavior: Xamarin.Forms.FlyoutBehavior, ?flyoutHeader: System.Object, ?flyoutHeaderBehavior: Xamarin.Forms.FlyoutHeaderBehavior, ?flyoutHeaderTemplate: Xamarin.Forms.DataTemplate, 
+                      ?flyoutIsPresented: bool, ?groupHeaderTemplate: Xamarin.Forms.DataTemplate, ?menuItemTemplate: Xamarin.Forms.DataTemplate, ?routeHost: string, ?routeScheme: string, 
+                      ?onNavigated: Xamarin.Forms.ShellNavigatedEventArgs -> unit, ?onNavigating: Xamarin.Forms.ShellNavigatingEventArgs -> unit, ?goToAsync: Xamarin.Forms.ShellNavigationState * Fabulous.DynamicViews.AnimationKind, ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions, ?selectedItem: System.Object, 
+                      ?selectionChangedCommand: unit -> unit, ?selectionChangedCommandParameter: System.Object, ?selectableItemsMode: Xamarin.Forms.SelectionMode, ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit, ?location: System.Uri, 
+                      ?contentTemplate: Xamarin.Forms.DataTemplate, ?ssGoToAsync: string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind) =
             let x = match classId with None -> x | Some opt -> x.ClassId(opt)
             let x = match styleId with None -> x | Some opt -> x.StyleId(opt)
             let x = match automationId with None -> x | Some opt -> x.AutomationId(opt)
@@ -21078,6 +21739,8 @@ module ViewElementExtensions =
             let x = match itemsLayout with None -> x | Some opt -> x.ItemsLayout(opt)
             let x = match itemsSource with None -> x | Some opt -> x.ItemsSource(opt)
             let x = match itemTemplate with None -> x | Some opt -> x.ItemTemplate(opt)
+            let x = match scrollToRequested with None -> x | Some opt -> x.ScrollToRequested(opt)
+            let x = match iScrollTo with None -> x | Some opt -> x.iScrollTo(opt)
             let x = match clearIcon with None -> x | Some opt -> x.ClearIcon(opt)
             let x = match clearIconHelpText with None -> x | Some opt -> x.ClearIconHelpText(opt)
             let x = match clearIconName with None -> x | Some opt -> x.ClearIconName(opt)
@@ -21620,6 +22283,10 @@ module ViewElementExtensions =
     let itemsSource (value: System.Collections.IEnumerable) (x: ViewElement) = x.ItemsSource(value)
     /// Adjusts the ItemTemplate property in the visual element
     let itemTemplate (value: Xamarin.Forms.DataTemplate) (x: ViewElement) = x.ItemTemplate(value)
+    /// Adjusts the ScrollToRequested property in the visual element
+    let scrollToRequested (value: Xamarin.Forms.ScrollToRequestEventArgs -> unit) (x: ViewElement) = x.ScrollToRequested(value)
+    /// Adjusts the iScrollTo property in the visual element
+    let iScrollTo (value: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind) (x: ViewElement) = x.iScrollTo(value)
     /// Adjusts the ClearIcon property in the visual element
     let clearIcon (value: string) (x: ViewElement) = x.ClearIcon(value)
     /// Adjusts the ClearIconHelpText property in the visual element

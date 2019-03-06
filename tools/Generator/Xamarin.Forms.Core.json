@@ -2143,6 +2143,19 @@
         {
           "name": "ItemTemplate",
           "defaultValue": "null"
+        },
+        {
+          "name": "ScrollToRequested",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.ScrollToRequestEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ScrollToRequestEventArgs>(fun _sender args -> f args))"
+        },
+        {
+          "name": "ScrollTo",
+          "uniqueName": "iScrollTo",
+          "inputType": "obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind",
+          "modelType": "obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind",
+          "updateCode": "(fun _ curr target -> triggerScrollTo curr target)"
         }
       ]
     },
@@ -2153,7 +2166,7 @@
           "name": "ClearIcon",
           "inputType": "string",
           "modelType": "string",
-          "convToValue": "makeFileImageSource",
+          "convToValue": "makeImageSource",
           "defaultValue": "null"
         },
         {
@@ -2194,7 +2207,7 @@
           "name": "ClearPlaceholderIcon",
           "inputType": "string",
           "modelType": "string",
-          "convToValue": "makeFileImageSource",
+          "convToValue": "makeImageSource",
           "defaultValue": "null"
         },
         {
@@ -2239,7 +2252,7 @@
           "name": "QueryIcon",
           "inputType": "string",
           "modelType": "string",
-          "convToValue": "makeFileImageSource",
+          "convToValue": "makeImageSource",
           "defaultValue": "null"
         },
         {
@@ -2263,6 +2276,14 @@
           "defaultValue": "true",
           "inputType": "bool",
           "modelType": "bool"
+        },
+        {
+          "name": "ItemsSource",
+          "defaultValue": "null"
+        },
+        {
+          "name": "ItemTemplate",
+          "defaultValue": "null"
         }
       ]
     },
@@ -2435,6 +2456,14 @@
           "updateCode": "(fun _ curr target -> triggerSSGoToAsync curr target)"
         }
       ]
+    },
+    {
+      "name": "Xamarin.Forms.CarouselView",
+      "members": []
+    },
+    {
+      "name": "Xamarin.Forms.CollectionView",
+      "members": []
     }
   ]
 }

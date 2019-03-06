@@ -668,6 +668,17 @@ module Converters =
             target.ScrollToAsync(x, y, animated) |> ignore
         | _ -> ()
 
+    /// Trigger ItemsView.ScrollTo if needed, given the current values
+    let internal triggerScrollTo (currValue: (obj * obj * ScrollToPosition * AnimationKind) voption) (target: Xamarin.Forms.ItemsView) =
+        match currValue with
+        | ValueSome (x, y, scrollToPosition, animationKind) ->
+            let animated =
+                match animationKind with
+                | Animated -> true
+                | NotAnimated -> false
+            target.ScrollTo(x,y, scrollToPosition, animated)
+        | _ -> ()
+
     /// Trigger Shell.GoToAsync if needed, given the current values
     let internal triggerGoToAsync (currValue: (ShellNavigationState * AnimationKind) voption) (target: Xamarin.Forms.Shell) =
         match currValue with
