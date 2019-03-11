@@ -657,6 +657,46 @@ module Converters =
         | _, ValueNone -> Xamarin.Forms.MenuItem.SetAccelerator(target, null)
         | _, ValueSome newVal -> Xamarin.Forms.MenuItem.SetAccelerator(target, makeAccelerator newVal)
 
+    let internal updateShellItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.Shell) =
+        let create (desc: ViewElement) =
+            desc.Create() :?> Xamarin.Forms.ShellItem
+
+        let prevArray = ValueOption.map seqToArray prevCollOpt
+        let currArray = ValueOption.map seqToArray collOpt
+        updateCollectionGeneric prevArray currArray target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
+
+    let internal updateMenuItemsShell (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.Shell) =
+        let create (desc: ViewElement) =
+            desc.Create() :?> Xamarin.Forms.MenuItem
+
+        let prevArray = ValueOption.map seqToArray prevCollOpt
+        let currArray = ValueOption.map seqToArray collOpt
+        updateCollectionGeneric prevArray currArray target.MenuItems create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
+
+    let internal updateMenuItemsShellContent (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.ShellContent) =
+        let create (desc: ViewElement) =
+            desc.Create() :?> Xamarin.Forms.MenuItem
+
+        let prevArray = ValueOption.map seqToArray prevCollOpt
+        let currArray = ValueOption.map seqToArray collOpt
+        updateCollectionGeneric prevArray currArray target.MenuItems create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
+
+    let internal updateShellItemItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.ShellItem) =
+        let create (desc: ViewElement) =
+            desc.Create() :?> Xamarin.Forms.ShellSection
+
+        let prevArray = ValueOption.map seqToArray prevCollOpt
+        let currArray = ValueOption.map seqToArray collOpt
+        updateCollectionGeneric prevArray currArray target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
+
+    let internal updateShellSectionItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.ShellSection) =
+        let create (desc: ViewElement) =
+            desc.Create() :?> Xamarin.Forms.ShellContent
+
+        let prevArray = ValueOption.map seqToArray prevCollOpt
+        let currArray = ValueOption.map seqToArray collOpt
+        updateCollectionGeneric prevArray currArray target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
+    
     /// Trigger ScrollView.ScrollToAsync if needed, given the current values
     let internal triggerScrollToAsync (currValue: (float * float * AnimationKind) voption) (target: Xamarin.Forms.ScrollView) =
         match currValue with

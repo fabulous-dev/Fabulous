@@ -2291,6 +2291,20 @@
       "name": "Xamarin.Forms.Shell",
       "members": [
         {
+          "name": "Items",
+          "defaultValue": "null",
+          "inputType": "seq<ViewElement>",
+          "modelType": "seq<ViewElement>",
+          "updateCode": "updateShellItems"
+        },
+        {
+          "name": "MenuItems",
+          "defaultValue": "null",
+          "inputType": "seq<ViewElement>",
+          "modelType": "seq<ViewElement>",
+          "updateCode": "updateMenuItemsShell"
+        },
+        {
           "name": "CurrentItem",
           "defaultValue": "null"
         },
@@ -2429,6 +2443,13 @@
           "defaultValue": "null",
           "inputType": "Xamarin.Forms.DataTemplate",
           "convToModel": "makeTemplate"
+        },
+        {
+          "name": "MenuItems",
+          "defaultValue": "null",
+          "inputType": "seq<ViewElement>",
+          "modelType": "seq<ViewElement>",
+          "updateCode": "updateMenuItemsShellContent"
         }
       ]
     },
@@ -2437,7 +2458,16 @@
       "members": [
         {
           "name": "CurrentItem",
-          "defaultValue": "null"
+          "defaultValue": "null",
+          "inputType": "ViewElement",
+          "modelType": "ViewElement"
+        },
+        {
+          "name": "Items",
+          "defaultValue": "null",
+          "inputType": "seq<ViewElement>",
+          "modelType": "seq<ViewElement>",
+          "updateCode": "updateShellItemItems"
         }
       ]
     },
@@ -2454,6 +2484,13 @@
           "inputType": "string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind",
           "modelType": "string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind",
           "updateCode": "(fun _ curr target -> triggerSSGoToAsync curr target)"
+        },
+        {
+          "name": "Items",
+          "defaultValue": "null",
+          "inputType": "seq<ViewElement>",
+          "modelType": "seq<ViewElement>",
+          "updateCode": "updateShellSectionItems"
         }
       ]
     },

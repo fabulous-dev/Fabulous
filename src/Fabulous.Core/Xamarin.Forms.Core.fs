@@ -277,6 +277,8 @@ module ViewAttributes =
     let QueryIconNameAttribKey : AttributeKey<_> = AttributeKey<_>("QueryIconName")
     let SearchBoxVisibilityAttribKey : AttributeKey<_> = AttributeKey<_>("SearchBoxVisibility")
     let ShowsResultsAttribKey : AttributeKey<_> = AttributeKey<_>("ShowsResults")
+    let ItemsAttribKey : AttributeKey<_> = AttributeKey<_>("Items")
+    let MenuItemsAttribKey : AttributeKey<_> = AttributeKey<_>("MenuItems")
     let CurrentItemAttribKey : AttributeKey<_> = AttributeKey<_>("CurrentItem")
     let FlyoutBackgroundColorAttribKey : AttributeKey<_> = AttributeKey<_>("FlyoutBackgroundColor")
     let FlyoutBehaviorAttribKey : AttributeKey<_> = AttributeKey<_>("FlyoutBehavior")
@@ -13152,6 +13154,8 @@ type ViewBuilders() =
 
     /// Builds the attributes for a Shell in the view
     static member inline BuildShell(attribCount: int,
+                                    ?items: seq<ViewElement>,
+                                    ?menuItems: seq<ViewElement>,
                                     ?currentItem: ViewElement,
                                     ?flyoutBackgroundColor: Xamarin.Forms.Color,
                                     ?flyoutBehavior: Xamarin.Forms.FlyoutBehavior,
@@ -13215,6 +13219,8 @@ type ViewBuilders() =
                                     ?created: obj -> unit,
                                     ?ref: ViewRef) = 
 
+        let attribCount = match items with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match menuItems with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match currentItem with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match flyoutBackgroundColor with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match flyoutBehavior with Some _ -> attribCount + 1 | None -> attribCount
@@ -13233,6 +13239,8 @@ type ViewBuilders() =
         let attribCount = match goToAsync with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = ViewBuilders.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        match items with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ItemsAttribKey, (v)) 
+        match menuItems with None -> () | Some v -> attribBuilder.Add(ViewAttributes.MenuItemsAttribKey, (v)) 
         match currentItem with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CurrentItemAttribKey, (v)) 
         match flyoutBackgroundColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FlyoutBackgroundColorAttribKey, (v)) 
         match flyoutBehavior with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FlyoutBehaviorAttribKey, (v)) 
@@ -13263,6 +13271,10 @@ type ViewBuilders() =
         // update the inherited Page element
         let baseElement = (if ViewProto.ProtoPage.IsNone then ViewProto.ProtoPage <- Some (ViewBuilders.ConstructPage())); ViewProto.ProtoPage.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
+        let mutable prevItemsOpt = ValueNone
+        let mutable currItemsOpt = ValueNone
+        let mutable prevMenuItemsOpt = ValueNone
+        let mutable currMenuItemsOpt = ValueNone
         let mutable prevCurrentItemOpt = ValueNone
         let mutable currCurrentItemOpt = ValueNone
         let mutable prevFlyoutBackgroundColorOpt = ValueNone
@@ -13296,6 +13308,10 @@ type ViewBuilders() =
         let mutable prevGoToAsyncOpt = ValueNone
         let mutable currGoToAsyncOpt = ValueNone
         for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.ItemsAttribKey.KeyValue then 
+                currItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
+            if kvp.Key = ViewAttributes.MenuItemsAttribKey.KeyValue then 
+                currMenuItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
             if kvp.Key = ViewAttributes.CurrentItemAttribKey.KeyValue then 
                 currCurrentItemOpt <- ValueSome (kvp.Value :?> ViewElement)
             if kvp.Key = ViewAttributes.FlyoutBackgroundColorAttribKey.KeyValue then 
@@ -13332,6 +13348,10 @@ type ViewBuilders() =
         | ValueNone -> ()
         | ValueSome prev ->
             for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.ItemsAttribKey.KeyValue then 
+                    prevItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
+                if kvp.Key = ViewAttributes.MenuItemsAttribKey.KeyValue then 
+                    prevMenuItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
                 if kvp.Key = ViewAttributes.CurrentItemAttribKey.KeyValue then 
                     prevCurrentItemOpt <- ValueSome (kvp.Value :?> ViewElement)
                 if kvp.Key = ViewAttributes.FlyoutBackgroundColorAttribKey.KeyValue then 
@@ -13364,6 +13384,8 @@ type ViewBuilders() =
                     prevOnNavigatingOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.ShellNavigatingEventArgs>)
                 if kvp.Key = ViewAttributes.GoToAsyncAttribKey.KeyValue then 
                     prevGoToAsyncOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.ShellNavigationState * Fabulous.DynamicViews.AnimationKind)
+        updateShellItems prevItemsOpt currItemsOpt target
+        updateMenuItemsShell prevMenuItemsOpt currMenuItemsOpt target
         match prevCurrentItemOpt, currCurrentItemOpt with
         // For structured objects, dependsOn on reference equality
         | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()
@@ -13448,7 +13470,9 @@ type ViewBuilders() =
         | ValueNone, ValueNone -> ()
         (fun _ curr target -> triggerGoToAsync curr target) prevGoToAsyncOpt currGoToAsyncOpt target
 
-    static member inline ConstructShell(?currentItem: ViewElement,
+    static member inline ConstructShell(?items: seq<ViewElement>,
+                                        ?menuItems: seq<ViewElement>,
+                                        ?currentItem: ViewElement,
                                         ?flyoutBackgroundColor: Xamarin.Forms.Color,
                                         ?flyoutBehavior: Xamarin.Forms.FlyoutBehavior,
                                         ?flyoutHeader: System.Object,
@@ -13512,6 +13536,8 @@ type ViewBuilders() =
                                         ?ref: ViewRef<Xamarin.Forms.Shell>) = 
 
         let attribBuilder = ViewBuilders.BuildShell(0,
+                               ?items=items,
+                               ?menuItems=menuItems,
                                ?currentItem=currentItem,
                                ?flyoutBackgroundColor=flyoutBackgroundColor,
                                ?flyoutBehavior=flyoutBehavior,
@@ -13952,6 +13978,7 @@ type ViewBuilders() =
     static member inline BuildShellContent(attribCount: int,
                                            ?content: ViewElement,
                                            ?contentTemplate: Xamarin.Forms.DataTemplate,
+                                           ?menuItems: seq<ViewElement>,
                                            ?title: string,
                                            ?route: string,
                                            ?icon: string,
@@ -13965,10 +13992,12 @@ type ViewBuilders() =
 
         let attribCount = match content with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match contentTemplate with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match menuItems with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = ViewBuilders.BuildBaseShellItem(attribCount, ?title=title, ?route=route, ?icon=icon, ?flyoutIcon=flyoutIcon, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match content with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ContentAttribKey, (v)) 
         match contentTemplate with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ContentTemplateAttribKey, makeTemplate(v)) 
+        match menuItems with None -> () | Some v -> attribBuilder.Add(ViewAttributes.MenuItemsAttribKey, (v)) 
         attribBuilder
 
     static member val CreateFuncShellContent : (unit -> Xamarin.Forms.ShellContent) = (fun () -> ViewBuilders.CreateShellContent()) with get, set
@@ -13987,11 +14016,15 @@ type ViewBuilders() =
         let mutable currContentOpt = ValueNone
         let mutable prevContentTemplateOpt = ValueNone
         let mutable currContentTemplateOpt = ValueNone
+        let mutable prevMenuItemsOpt = ValueNone
+        let mutable currMenuItemsOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = ViewAttributes.ContentAttribKey.KeyValue then 
                 currContentOpt <- ValueSome (kvp.Value :?> System.Object)
             if kvp.Key = ViewAttributes.ContentTemplateAttribKey.KeyValue then 
                 currContentTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
+            if kvp.Key = ViewAttributes.MenuItemsAttribKey.KeyValue then 
+                currMenuItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
@@ -14000,6 +14033,8 @@ type ViewBuilders() =
                     prevContentOpt <- ValueSome (kvp.Value :?> System.Object)
                 if kvp.Key = ViewAttributes.ContentTemplateAttribKey.KeyValue then 
                     prevContentTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
+                if kvp.Key = ViewAttributes.MenuItemsAttribKey.KeyValue then 
+                    prevMenuItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
         match prevContentOpt, currContentOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.Content <-  currValue
@@ -14010,9 +14045,11 @@ type ViewBuilders() =
         | _, ValueSome currValue -> target.ContentTemplate <-  currValue
         | ValueSome _, ValueNone -> target.ContentTemplate <- null
         | ValueNone, ValueNone -> ()
+        updateMenuItemsShellContent prevMenuItemsOpt currMenuItemsOpt target
 
     static member inline ConstructShellContent(?content: ViewElement,
                                                ?contentTemplate: Xamarin.Forms.DataTemplate,
+                                               ?menuItems: seq<ViewElement>,
                                                ?title: string,
                                                ?route: string,
                                                ?icon: string,
@@ -14027,6 +14064,7 @@ type ViewBuilders() =
         let attribBuilder = ViewBuilders.BuildShellContent(0,
                                ?content=content,
                                ?contentTemplate=contentTemplate,
+                               ?menuItems=menuItems,
                                ?title=title,
                                ?route=route,
                                ?icon=icon,
@@ -14043,6 +14081,7 @@ type ViewBuilders() =
     /// Builds the attributes for a ShellItem in the view
     static member inline BuildShellItem(attribCount: int,
                                         ?currentItem: ViewElement,
+                                        ?items: seq<ViewElement>,
                                         ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions,
                                         ?title: string,
                                         ?route: string,
@@ -14056,9 +14095,11 @@ type ViewBuilders() =
                                         ?ref: ViewRef) = 
 
         let attribCount = match currentItem with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match items with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = ViewBuilders.BuildShellGroupItem(attribCount, ?flyoutDisplayOptions=flyoutDisplayOptions, ?title=title, ?route=route, ?icon=icon, ?flyoutIcon=flyoutIcon, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match currentItem with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CurrentItemAttribKey, (v)) 
+        match items with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ItemsAttribKey, (v)) 
         attribBuilder
 
     static member val CreateFuncShellItem : (unit -> Xamarin.Forms.ShellItem) = (fun () -> ViewBuilders.CreateShellItem()) with get, set
@@ -14075,15 +14116,21 @@ type ViewBuilders() =
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevCurrentItemOpt = ValueNone
         let mutable currCurrentItemOpt = ValueNone
+        let mutable prevItemsOpt = ValueNone
+        let mutable currItemsOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = ViewAttributes.CurrentItemAttribKey.KeyValue then 
                 currCurrentItemOpt <- ValueSome (kvp.Value :?> ViewElement)
+            if kvp.Key = ViewAttributes.ItemsAttribKey.KeyValue then 
+                currItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
             for kvp in prev.AttributesKeyed do
                 if kvp.Key = ViewAttributes.CurrentItemAttribKey.KeyValue then 
                     prevCurrentItemOpt <- ValueSome (kvp.Value :?> ViewElement)
+                if kvp.Key = ViewAttributes.ItemsAttribKey.KeyValue then 
+                    prevItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
         match prevCurrentItemOpt, currCurrentItemOpt with
         // For structured objects, dependsOn on reference equality
         | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()
@@ -14094,8 +14141,10 @@ type ViewBuilders() =
         | ValueSome _, ValueNone ->
             target.CurrentItem <- null
         | ValueNone, ValueNone -> ()
+        updateShellItemItems prevItemsOpt currItemsOpt target
 
     static member inline ConstructShellItem(?currentItem: ViewElement,
+                                            ?items: seq<ViewElement>,
                                             ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions,
                                             ?title: string,
                                             ?route: string,
@@ -14110,6 +14159,7 @@ type ViewBuilders() =
 
         let attribBuilder = ViewBuilders.BuildShellItem(0,
                                ?currentItem=currentItem,
+                               ?items=items,
                                ?flyoutDisplayOptions=flyoutDisplayOptions,
                                ?title=title,
                                ?route=route,
@@ -14128,6 +14178,7 @@ type ViewBuilders() =
     static member inline BuildShellSection(attribCount: int,
                                            ?currentItem: ViewElement,
                                            ?goToAsync: string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind,
+                                           ?items: seq<ViewElement>,
                                            ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions,
                                            ?title: string,
                                            ?route: string,
@@ -14142,10 +14193,12 @@ type ViewBuilders() =
 
         let attribCount = match currentItem with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match goToAsync with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match items with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = ViewBuilders.BuildShellGroupItem(attribCount, ?flyoutDisplayOptions=flyoutDisplayOptions, ?title=title, ?route=route, ?icon=icon, ?flyoutIcon=flyoutIcon, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match currentItem with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CurrentItemAttribKey, (v)) 
         match goToAsync with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ssGoToAsyncAttribKey, (v)) 
+        match items with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ItemsAttribKey, (v)) 
         attribBuilder
 
     static member val CreateFuncShellSection : (unit -> Xamarin.Forms.ShellSection) = (fun () -> ViewBuilders.CreateShellSection()) with get, set
@@ -14164,11 +14217,15 @@ type ViewBuilders() =
         let mutable currCurrentItemOpt = ValueNone
         let mutable prevssGoToAsyncOpt = ValueNone
         let mutable currssGoToAsyncOpt = ValueNone
+        let mutable prevItemsOpt = ValueNone
+        let mutable currItemsOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = ViewAttributes.CurrentItemAttribKey.KeyValue then 
                 currCurrentItemOpt <- ValueSome (kvp.Value :?> ViewElement)
             if kvp.Key = ViewAttributes.ssGoToAsyncAttribKey.KeyValue then 
                 currssGoToAsyncOpt <- ValueSome (kvp.Value :?> string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind)
+            if kvp.Key = ViewAttributes.ItemsAttribKey.KeyValue then 
+                currItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
@@ -14177,6 +14234,8 @@ type ViewBuilders() =
                     prevCurrentItemOpt <- ValueSome (kvp.Value :?> ViewElement)
                 if kvp.Key = ViewAttributes.ssGoToAsyncAttribKey.KeyValue then 
                     prevssGoToAsyncOpt <- ValueSome (kvp.Value :?> string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind)
+                if kvp.Key = ViewAttributes.ItemsAttribKey.KeyValue then 
+                    prevItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
         match prevCurrentItemOpt, currCurrentItemOpt with
         // For structured objects, dependsOn on reference equality
         | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()
@@ -14188,9 +14247,11 @@ type ViewBuilders() =
             target.CurrentItem <- null
         | ValueNone, ValueNone -> ()
         (fun _ curr target -> triggerSSGoToAsync curr target) prevssGoToAsyncOpt currssGoToAsyncOpt target
+        updateShellSectionItems prevItemsOpt currItemsOpt target
 
     static member inline ConstructShellSection(?currentItem: ViewElement,
                                                ?goToAsync: string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind,
+                                               ?items: seq<ViewElement>,
                                                ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions,
                                                ?title: string,
                                                ?route: string,
@@ -14206,6 +14267,7 @@ type ViewBuilders() =
         let attribBuilder = ViewBuilders.BuildShellSection(0,
                                ?currentItem=currentItem,
                                ?goToAsync=goToAsync,
+                               ?items=items,
                                ?flyoutDisplayOptions=flyoutDisplayOptions,
                                ?title=title,
                                ?route=route,
@@ -15583,6 +15645,10 @@ type SearchHandlerViewer(element: ViewElement) =
 type ShellViewer(element: ViewElement) =
     inherit PageViewer(element)
     do if not ((typeof<Xamarin.Forms.Shell>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.Shell' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the Items property
+    member this.Items = element.GetAttributeKeyed(ViewAttributes.ItemsAttribKey)
+    /// Get the value of the MenuItems property
+    member this.MenuItems = element.GetAttributeKeyed(ViewAttributes.MenuItemsAttribKey)
     /// Get the value of the CurrentItem property
     member this.CurrentItem = element.GetAttributeKeyed(ViewAttributes.CurrentItemAttribKey)
     /// Get the value of the FlyoutBackgroundColor property
@@ -15652,6 +15718,8 @@ type ShellContentViewer(element: ViewElement) =
     member this.Content = element.GetAttributeKeyed(ViewAttributes.ContentAttribKey)
     /// Get the value of the ContentTemplate property
     member this.ContentTemplate = element.GetAttributeKeyed(ViewAttributes.ContentTemplateAttribKey)
+    /// Get the value of the MenuItems property
+    member this.MenuItems = element.GetAttributeKeyed(ViewAttributes.MenuItemsAttribKey)
 
 /// Viewer that allows to read the properties of a ViewElement representing a ShellItem
 type ShellItemViewer(element: ViewElement) =
@@ -15659,6 +15727,8 @@ type ShellItemViewer(element: ViewElement) =
     do if not ((typeof<Xamarin.Forms.ShellItem>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.ShellItem' is expected, but '%s' was provided." element.TargetType.FullName
     /// Get the value of the CurrentItem property
     member this.CurrentItem = element.GetAttributeKeyed(ViewAttributes.CurrentItemAttribKey)
+    /// Get the value of the Items property
+    member this.Items = element.GetAttributeKeyed(ViewAttributes.ItemsAttribKey)
 
 /// Viewer that allows to read the properties of a ViewElement representing a ShellSection
 type ShellSectionViewer(element: ViewElement) =
@@ -15668,6 +15738,8 @@ type ShellSectionViewer(element: ViewElement) =
     member this.CurrentItem = element.GetAttributeKeyed(ViewAttributes.CurrentItemAttribKey)
     /// Get the value of the GoToAsync property
     member this.GoToAsync = element.GetAttributeKeyed(ViewAttributes.ssGoToAsyncAttribKey)
+    /// Get the value of the Items property
+    member this.Items = element.GetAttributeKeyed(ViewAttributes.ItemsAttribKey)
 
 /// Viewer that allows to read the properties of a ViewElement representing a CarouselView
 type CarouselViewViewer(element: ViewElement) =
@@ -19998,7 +20070,9 @@ type View() =
                                ?itemTemplate=itemTemplate)
 
     /// Describes a Shell in the view
-    static member inline Shell(?currentItem: ViewElement,
+    static member inline Shell(?items: seq<ViewElement>,
+                               ?menuItems: seq<ViewElement>,
+                               ?currentItem: ViewElement,
                                ?flyoutBackgroundColor: Xamarin.Forms.Color,
                                ?flyoutBehavior: Xamarin.Forms.FlyoutBehavior,
                                ?flyoutHeader: System.Object,
@@ -20061,7 +20135,9 @@ type View() =
                                ?created: (Xamarin.Forms.Shell -> unit),
                                ?ref: ViewRef<Xamarin.Forms.Shell>) =
 
-        ViewBuilders.ConstructShell(?currentItem=currentItem,
+        ViewBuilders.ConstructShell(?items=items,
+                               ?menuItems=menuItems,
+                               ?currentItem=currentItem,
                                ?flyoutBackgroundColor=flyoutBackgroundColor,
                                ?flyoutBehavior=flyoutBehavior,
                                ?flyoutHeader=flyoutHeader,
@@ -20264,6 +20340,7 @@ type View() =
     /// Describes a ShellContent in the view
     static member inline ShellContent(?content: ViewElement,
                                       ?contentTemplate: Xamarin.Forms.DataTemplate,
+                                      ?menuItems: seq<ViewElement>,
                                       ?title: string,
                                       ?route: string,
                                       ?icon: string,
@@ -20277,6 +20354,7 @@ type View() =
 
         ViewBuilders.ConstructShellContent(?content=content,
                                ?contentTemplate=contentTemplate,
+                               ?menuItems=menuItems,
                                ?title=title,
                                ?route=route,
                                ?icon=icon,
@@ -20290,6 +20368,7 @@ type View() =
 
     /// Describes a ShellItem in the view
     static member inline ShellItem(?currentItem: ViewElement,
+                                   ?items: seq<ViewElement>,
                                    ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions,
                                    ?title: string,
                                    ?route: string,
@@ -20303,6 +20382,7 @@ type View() =
                                    ?ref: ViewRef<Xamarin.Forms.ShellItem>) =
 
         ViewBuilders.ConstructShellItem(?currentItem=currentItem,
+                               ?items=items,
                                ?flyoutDisplayOptions=flyoutDisplayOptions,
                                ?title=title,
                                ?route=route,
@@ -20318,6 +20398,7 @@ type View() =
     /// Describes a ShellSection in the view
     static member inline ShellSection(?currentItem: ViewElement,
                                       ?goToAsync: string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind,
+                                      ?items: seq<ViewElement>,
                                       ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions,
                                       ?title: string,
                                       ?route: string,
@@ -20332,6 +20413,7 @@ type View() =
 
         ViewBuilders.ConstructShellSection(?currentItem=currentItem,
                                ?goToAsync=goToAsync,
+                               ?items=items,
                                ?flyoutDisplayOptions=flyoutDisplayOptions,
                                ?title=title,
                                ?route=route,
@@ -21361,6 +21443,12 @@ module ViewElementExtensions =
         /// Adjusts the ShowsResults property in the visual element
         member x.ShowsResults(value: bool) = x.WithAttribute(ViewAttributes.ShowsResultsAttribKey, (value))
 
+        /// Adjusts the Items property in the visual element
+        member x.Items(value: seq<ViewElement>) = x.WithAttribute(ViewAttributes.ItemsAttribKey, (value))
+
+        /// Adjusts the MenuItems property in the visual element
+        member x.MenuItems(value: seq<ViewElement>) = x.WithAttribute(ViewAttributes.MenuItemsAttribKey, (value))
+
         /// Adjusts the CurrentItem property in the visual element
         member x.CurrentItem(value: ViewElement) = x.WithAttribute(ViewAttributes.CurrentItemAttribKey, (value))
 
@@ -21483,12 +21571,12 @@ module ViewElementExtensions =
                       ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit, ?iScrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind, ?clearIcon: string, ?clearIconHelpText: string, ?clearIconName: string, 
                       ?clearPlaceholderCommand: unit -> unit, ?clearPlaceholderCommandParameter: System.Object, ?clearPlaceholderEnabled: bool, ?clearPlaceholderHelpText: string, ?clearPlaceholderIcon: string, 
                       ?clearPlaceholderName: string, ?displayMemberName: string, ?isSearchEnabled: bool, ?query: string, ?queryIcon: string, 
-                      ?queryIconHelpText: string, ?queryIconName: string, ?searchBoxVisibility: Xamarin.Forms.SearchBoxVisiblity, ?showsResults: bool, ?currentItem: ViewElement, 
-                      ?flyoutBackgroundColor: Xamarin.Forms.Color, ?flyoutBehavior: Xamarin.Forms.FlyoutBehavior, ?flyoutHeader: System.Object, ?flyoutHeaderBehavior: Xamarin.Forms.FlyoutHeaderBehavior, ?flyoutHeaderTemplate: Xamarin.Forms.DataTemplate, 
-                      ?flyoutIsPresented: bool, ?groupHeaderTemplate: Xamarin.Forms.DataTemplate, ?menuItemTemplate: Xamarin.Forms.DataTemplate, ?routeHost: string, ?routeScheme: string, 
-                      ?onNavigated: Xamarin.Forms.ShellNavigatedEventArgs -> unit, ?onNavigating: Xamarin.Forms.ShellNavigatingEventArgs -> unit, ?goToAsync: Xamarin.Forms.ShellNavigationState * Fabulous.DynamicViews.AnimationKind, ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions, ?selectedItem: System.Object, 
-                      ?selectionChangedCommand: unit -> unit, ?selectionChangedCommandParameter: System.Object, ?selectableItemsMode: Xamarin.Forms.SelectionMode, ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit, ?location: System.Uri, 
-                      ?contentTemplate: Xamarin.Forms.DataTemplate, ?ssGoToAsync: string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind) =
+                      ?queryIconHelpText: string, ?queryIconName: string, ?searchBoxVisibility: Xamarin.Forms.SearchBoxVisiblity, ?showsResults: bool, ?items: seq<ViewElement>, 
+                      ?menuItems: seq<ViewElement>, ?currentItem: ViewElement, ?flyoutBackgroundColor: Xamarin.Forms.Color, ?flyoutBehavior: Xamarin.Forms.FlyoutBehavior, ?flyoutHeader: System.Object, 
+                      ?flyoutHeaderBehavior: Xamarin.Forms.FlyoutHeaderBehavior, ?flyoutHeaderTemplate: Xamarin.Forms.DataTemplate, ?flyoutIsPresented: bool, ?groupHeaderTemplate: Xamarin.Forms.DataTemplate, ?menuItemTemplate: Xamarin.Forms.DataTemplate, 
+                      ?routeHost: string, ?routeScheme: string, ?onNavigated: Xamarin.Forms.ShellNavigatedEventArgs -> unit, ?onNavigating: Xamarin.Forms.ShellNavigatingEventArgs -> unit, ?goToAsync: Xamarin.Forms.ShellNavigationState * Fabulous.DynamicViews.AnimationKind, 
+                      ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions, ?selectedItem: System.Object, ?selectionChangedCommand: unit -> unit, ?selectionChangedCommandParameter: System.Object, ?selectableItemsMode: Xamarin.Forms.SelectionMode, 
+                      ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit, ?location: System.Uri, ?contentTemplate: Xamarin.Forms.DataTemplate, ?ssGoToAsync: string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind) =
             let x = match classId with None -> x | Some opt -> x.ClassId(opt)
             let x = match styleId with None -> x | Some opt -> x.StyleId(opt)
             let x = match automationId with None -> x | Some opt -> x.AutomationId(opt)
@@ -21758,6 +21846,8 @@ module ViewElementExtensions =
             let x = match queryIconName with None -> x | Some opt -> x.QueryIconName(opt)
             let x = match searchBoxVisibility with None -> x | Some opt -> x.SearchBoxVisibility(opt)
             let x = match showsResults with None -> x | Some opt -> x.ShowsResults(opt)
+            let x = match items with None -> x | Some opt -> x.Items(opt)
+            let x = match menuItems with None -> x | Some opt -> x.MenuItems(opt)
             let x = match currentItem with None -> x | Some opt -> x.CurrentItem(opt)
             let x = match flyoutBackgroundColor with None -> x | Some opt -> x.FlyoutBackgroundColor(opt)
             let x = match flyoutBehavior with None -> x | Some opt -> x.FlyoutBehavior(opt)
@@ -22321,6 +22411,10 @@ module ViewElementExtensions =
     let searchBoxVisibility (value: Xamarin.Forms.SearchBoxVisiblity) (x: ViewElement) = x.SearchBoxVisibility(value)
     /// Adjusts the ShowsResults property in the visual element
     let showsResults (value: bool) (x: ViewElement) = x.ShowsResults(value)
+    /// Adjusts the Items property in the visual element
+    let items (value: seq<ViewElement>) (x: ViewElement) = x.Items(value)
+    /// Adjusts the MenuItems property in the visual element
+    let menuItems (value: seq<ViewElement>) (x: ViewElement) = x.MenuItems(value)
     /// Adjusts the CurrentItem property in the visual element
     let currentItem (value: ViewElement) (x: ViewElement) = x.CurrentItem(value)
     /// Adjusts the FlyoutBackgroundColor property in the visual element

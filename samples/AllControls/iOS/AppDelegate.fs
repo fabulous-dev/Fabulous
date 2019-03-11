@@ -15,6 +15,7 @@ type AppDelegate () =
     let mutable _app: AllControls.App option = None
 
     override this.FinishedLaunching (uiApp, options) =
+        Xamarin.Forms.Forms.SetFlags("Shell_Experimental");
         Forms.Init()
         let app = new AllControls.App()
         this.LoadApplication (app)
