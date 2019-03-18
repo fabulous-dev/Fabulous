@@ -2074,43 +2074,6 @@
       ]
     },
     {
-      "name": "Xamarin.Forms.BaseShellItem",
-      "members": [
-        {
-          "name": "Title",
-          "inputType": "string",
-          "modelType": "string",
-          "defaultValue": "null"
-        },
-        {
-          "name": "Route",
-          "inputType": "string",
-          "modelType": "string",
-          "defaultValue": "null"
-        },
-        {
-          "name": "Icon",
-          "inputType": "string",
-          "modelType": "string",
-          "convToValue": "makeFileImageSource",
-          "defaultValue": "null"
-        },
-        {
-          "name": "FlyoutIcon",
-          "inputType": "string",
-          "modelType": "string",
-          "convToValue": "makeFileImageSource",
-          "defaultValue": "null"
-        },
-        {
-          "name": "IsEnabled",
-          "inputType": "bool",
-          "modelType": "bool",
-          "defaultValue": "true"
-        }
-      ]
-    },
-    {
       "name": "Xamarin.Forms.GridItemsLayout",
       "members": [
         {
