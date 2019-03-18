@@ -581,15 +581,15 @@ type Msg =
 let update (msg : Msg) (model : Model) =
     match msg with
     | DisplayAlert ->
-        let r = async {
-            let! r =
+        let alertResult = async {
+            let! alert =
                 Application.Current.MainPage.DisplayAlert("Display Alert", "Confirm", "Ok", "Cancel")
                 |> Async.AwaitTask
-            return AlertResult r }
+            return AlertResult alert }
 
-        model, Cmd.ofAsyncMsg r
+        model, Cmd.ofAsyncMsg alertResult
 
-    | AlertResult r -> ... // Do something with the result
+    | AlertResult alertResult -> ... // Do something with the result
 ```
 
 _Why don't we add a Fabulous wrapper for those?_
