@@ -178,8 +178,8 @@ View.ScrollView(content=(...),
     scrolled=(fun args -> dispatch Scrolled))
 ```
 
-For more complex scenarios, you can directly use the method from Xamarin.Forms [`ScrollView.ScrollToAsync(x, y, animated)`](https://docs.microsoft.com/dotnet/api/xamarin.forms.scrollview.scrolltoasync?view=xamarin-forms)  
-This method offers the advantage of being awaitable until the end of the scrolling.  
+For more complex scenarios, you can directly use the method from Xamarin.Forms [`ScrollView.ScrollToAsync(x, y, animated)`](https://docs.microsoft.com/dotnet/api/xamarin.forms.scrollview.scrolltoasync?view=xamarin-forms)
+This method offers the advantage of being awaitable until the end of the scrolling.
 To do this, a reference to the underlying ScrollView is needed.
 
 
@@ -568,31 +568,32 @@ See also:
 Pop-ups
 -------------------
 
-Pop-ups are a special case in Fabulous.  
-They are part of the view, but don't follow the same lifecycle as the rest of the UI.
+Pop-ups are a special case in Fabulous: they are part of the view, but don't follow the same lifecycle as the rest of the UI. In Xamarin.Forms pop-ups are exposed through 2 methods of the current page: `DisplayAlert` and `DisplayActionSheet`.
 
-In Xamarin.Forms, those pop-ups are exposed through 2 methods of the current page, `DisplayAlert` and `DisplayActionSheet`.
+In Fabulous we only describe what a page should look like and have no access to UI elements. As such, there is no direct implementation of those 2 methods in Fabulous but instead we can use the static property `Application.Current.MainPage` exposed by Xamarin.Forms.
 
-In Fabulous, we only describe what a page should look like and have no access to UI elements.  
-As such, there is no direct implementation of those 2 methods in Fabulous.
-
-Instead, we can use the static property `Application.Current.MainPage` exposed by Xamarin.Forms.
-
-Here is an example of the use of a confirmation pop-up.
+Here is an example of the use of a confirmation pop-up - note the requirement of `Cmd.AsyncMsg` so as not to block on the UI thread:
 ```fsharp
-let! confirm = Application.Current.MainPage.DisplayAlert(
-                   "Share this contact",
-                   "Are you sure you want to share this contact?",
-                   "Yes", "No")
-               |> Async.AwaitTask
+type Msg =
+    | DisplayAlert
+    | AlertResult of bool
 
-match confirm with
-| true -> (...)
-| false -> (...)
+let update (msg : Msg) (model : Model) =
+    match msg with
+    | DisplayAlert ->
+        let alertResult = async {
+            let! alert =
+                Application.Current.MainPage.DisplayAlert("Display Alert", "Confirm", "Ok", "Cancel")
+                |> Async.AwaitTask
+            return AlertResult alert }
+
+        model, Cmd.ofAsyncMsg alertResult
+
+    | AlertResult alertResult -> ... // Do something with the result
 ```
 
-_Why don't we add a Fabulous wrapper for those?_  
-Doing so would only end up duplicating the existing methods and compel us to maintain these in sync with Xamarin.Forms.  
+_Why don't we add a Fabulous wrapper for those?_
+Doing so would only end up duplicating the existing methods and compel us to maintain these in sync with Xamarin.Forms.
 See [Pull Request #147](https://github.com/fsprojects/Fabulous/pull/147) for more information
 
 See also:
