@@ -2092,19 +2092,11 @@
           "defaultValue": "null"
         },
         {
-          "name": "EmptyViewTemplate",
-          "defaultValue": "null"
-        },
-        {
           "name": "ItemsLayout",
           "defaultValue": "null"
         },
         {
           "name": "ItemsSource",
-          "defaultValue": "null"
-        },
-        {
-          "name": "ItemTemplate",
           "defaultValue": "null"
         },
         {
@@ -2243,10 +2235,6 @@
         {
           "name": "ItemsSource",
           "defaultValue": "null"
-        },
-        {
-          "name": "ItemTemplate",
-          "defaultValue": "null"
         }
       ]
     },
@@ -2288,24 +2276,8 @@
           "defaultValue": "Xamarin.Forms.FlyoutHeaderBehavior.Default"
         },
         {
-          "name": "FlyoutHeaderTemplate",
-          "defaultValue": "null"
-        },
-        {
           "name": "FlyoutIsPresented",
           "defaultValue": "false"
-        },
-        {
-          "name": "GroupHeaderTemplate",
-          "defaultValue": "null"
-        },
-        {
-          "name": "ItemTemplate",
-          "defaultValue": "null"
-        },
-        {
-          "name": "MenuItemTemplate",
-          "defaultValue": "null"
         },
         {
           "name": "Route",
@@ -2400,12 +2372,6 @@
           "name": "Content",
           "defaultValue": "null",
           "inputType": "ViewElement"
-        },
-        {
-          "name": "ContentTemplate",
-          "defaultValue": "null",
-          "inputType": "Xamarin.Forms.DataTemplate",
-          "convToModel": "makeTemplate"
         },
         {
           "name": "MenuItems",

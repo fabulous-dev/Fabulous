@@ -252,10 +252,8 @@ module ViewAttributes =
     let IconOverrideAttribKey : AttributeKey<_> = AttributeKey<_>("IconOverride")
     let SpanAttribKey : AttributeKey<_> = AttributeKey<_>("Span")
     let EmptyViewAttribKey : AttributeKey<_> = AttributeKey<_>("EmptyView")
-    let EmptyViewTemplateAttribKey : AttributeKey<_> = AttributeKey<_>("EmptyViewTemplate")
     let ItemsLayoutAttribKey : AttributeKey<_> = AttributeKey<_>("ItemsLayout")
     let ItemsSourceAttribKey : AttributeKey<_> = AttributeKey<_>("ItemsSource")
-    let ItemTemplateAttribKey : AttributeKey<_> = AttributeKey<_>("ItemTemplate")
     let ScrollToRequestedAttribKey : AttributeKey<_> = AttributeKey<_>("ScrollToRequested")
     let iScrollToAttribKey : AttributeKey<_> = AttributeKey<_>("iScrollTo")
     let ClearIconAttribKey : AttributeKey<_> = AttributeKey<_>("ClearIcon")
@@ -282,10 +280,7 @@ module ViewAttributes =
     let FlyoutBehaviorAttribKey : AttributeKey<_> = AttributeKey<_>("FlyoutBehavior")
     let FlyoutHeaderAttribKey : AttributeKey<_> = AttributeKey<_>("FlyoutHeader")
     let FlyoutHeaderBehaviorAttribKey : AttributeKey<_> = AttributeKey<_>("FlyoutHeaderBehavior")
-    let FlyoutHeaderTemplateAttribKey : AttributeKey<_> = AttributeKey<_>("FlyoutHeaderTemplate")
     let FlyoutIsPresentedAttribKey : AttributeKey<_> = AttributeKey<_>("FlyoutIsPresented")
-    let GroupHeaderTemplateAttribKey : AttributeKey<_> = AttributeKey<_>("GroupHeaderTemplate")
-    let MenuItemTemplateAttribKey : AttributeKey<_> = AttributeKey<_>("MenuItemTemplate")
     let RouteAttribKey : AttributeKey<_> = AttributeKey<_>("Route")
     let RouteHostAttribKey : AttributeKey<_> = AttributeKey<_>("RouteHost")
     let RouteSchemeAttribKey : AttributeKey<_> = AttributeKey<_>("RouteScheme")
@@ -299,7 +294,6 @@ module ViewAttributes =
     let selectableItemsModeAttribKey : AttributeKey<_> = AttributeKey<_>("selectableItemsMode")
     let SelectionChangedAttribKey : AttributeKey<_> = AttributeKey<_>("SelectionChanged")
     let LocationAttribKey : AttributeKey<_> = AttributeKey<_>("Location")
-    let ContentTemplateAttribKey : AttributeKey<_> = AttributeKey<_>("ContentTemplate")
     let ssGoToAsyncAttribKey : AttributeKey<_> = AttributeKey<_>("ssGoToAsync")
 
 type ViewProto() =
@@ -12390,10 +12384,8 @@ type ViewBuilders() =
     /// Builds the attributes for a ItemsView in the view
     static member inline BuildItemsView(attribCount: int,
                                         ?emptyView: System.Object,
-                                        ?emptyViewTemplate: Xamarin.Forms.DataTemplate,
                                         ?itemsLayout: Xamarin.Forms.IItemsLayout,
                                         ?itemsSource: System.Collections.IEnumerable,
-                                        ?itemTemplate: Xamarin.Forms.DataTemplate,
                                         ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
                                         ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
                                         ?horizontalOptions: Xamarin.Forms.LayoutOptions,
@@ -12438,19 +12430,15 @@ type ViewBuilders() =
                                         ?ref: ViewRef) = 
 
         let attribCount = match emptyView with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match emptyViewTemplate with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match itemsLayout with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match itemsSource with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match itemTemplate with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match scrollToRequested with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match scrollTo with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match emptyView with None -> () | Some v -> attribBuilder.Add(ViewAttributes.EmptyViewAttribKey, (v)) 
-        match emptyViewTemplate with None -> () | Some v -> attribBuilder.Add(ViewAttributes.EmptyViewTemplateAttribKey, (v)) 
         match itemsLayout with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ItemsLayoutAttribKey, (v)) 
         match itemsSource with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ItemsSourceAttribKey, (v)) 
-        match itemTemplate with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ItemTemplateAttribKey, (v)) 
         match scrollToRequested with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ScrollToRequestedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ScrollToRequestEventArgs>(fun _sender args -> f args))(v)) 
         match scrollTo with None -> () | Some v -> attribBuilder.Add(ViewAttributes.iScrollToAttribKey, (v)) 
         attribBuilder
@@ -12469,14 +12457,10 @@ type ViewBuilders() =
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevEmptyViewOpt = ValueNone
         let mutable currEmptyViewOpt = ValueNone
-        let mutable prevEmptyViewTemplateOpt = ValueNone
-        let mutable currEmptyViewTemplateOpt = ValueNone
         let mutable prevItemsLayoutOpt = ValueNone
         let mutable currItemsLayoutOpt = ValueNone
         let mutable prevItemsSourceOpt = ValueNone
         let mutable currItemsSourceOpt = ValueNone
-        let mutable prevItemTemplateOpt = ValueNone
-        let mutable currItemTemplateOpt = ValueNone
         let mutable prevScrollToRequestedOpt = ValueNone
         let mutable currScrollToRequestedOpt = ValueNone
         let mutable previScrollToOpt = ValueNone
@@ -12484,14 +12468,10 @@ type ViewBuilders() =
         for kvp in curr.AttributesKeyed do
             if kvp.Key = ViewAttributes.EmptyViewAttribKey.KeyValue then 
                 currEmptyViewOpt <- ValueSome (kvp.Value :?> System.Object)
-            if kvp.Key = ViewAttributes.EmptyViewTemplateAttribKey.KeyValue then 
-                currEmptyViewTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
             if kvp.Key = ViewAttributes.ItemsLayoutAttribKey.KeyValue then 
                 currItemsLayoutOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.IItemsLayout)
             if kvp.Key = ViewAttributes.ItemsSourceAttribKey.KeyValue then 
                 currItemsSourceOpt <- ValueSome (kvp.Value :?> System.Collections.IEnumerable)
-            if kvp.Key = ViewAttributes.ItemTemplateAttribKey.KeyValue then 
-                currItemTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
             if kvp.Key = ViewAttributes.ScrollToRequestedAttribKey.KeyValue then 
                 currScrollToRequestedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.ScrollToRequestEventArgs>)
             if kvp.Key = ViewAttributes.iScrollToAttribKey.KeyValue then 
@@ -12502,14 +12482,10 @@ type ViewBuilders() =
             for kvp in prev.AttributesKeyed do
                 if kvp.Key = ViewAttributes.EmptyViewAttribKey.KeyValue then 
                     prevEmptyViewOpt <- ValueSome (kvp.Value :?> System.Object)
-                if kvp.Key = ViewAttributes.EmptyViewTemplateAttribKey.KeyValue then 
-                    prevEmptyViewTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
                 if kvp.Key = ViewAttributes.ItemsLayoutAttribKey.KeyValue then 
                     prevItemsLayoutOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.IItemsLayout)
                 if kvp.Key = ViewAttributes.ItemsSourceAttribKey.KeyValue then 
                     prevItemsSourceOpt <- ValueSome (kvp.Value :?> System.Collections.IEnumerable)
-                if kvp.Key = ViewAttributes.ItemTemplateAttribKey.KeyValue then 
-                    prevItemTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
                 if kvp.Key = ViewAttributes.ScrollToRequestedAttribKey.KeyValue then 
                     prevScrollToRequestedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.ScrollToRequestEventArgs>)
                 if kvp.Key = ViewAttributes.iScrollToAttribKey.KeyValue then 
@@ -12518,11 +12494,6 @@ type ViewBuilders() =
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.EmptyView <-  currValue
         | ValueSome _, ValueNone -> target.EmptyView <- null
-        | ValueNone, ValueNone -> ()
-        match prevEmptyViewTemplateOpt, currEmptyViewTemplateOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.EmptyViewTemplate <-  currValue
-        | ValueSome _, ValueNone -> target.EmptyViewTemplate <- null
         | ValueNone, ValueNone -> ()
         match prevItemsLayoutOpt, currItemsLayoutOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
@@ -12534,11 +12505,6 @@ type ViewBuilders() =
         | _, ValueSome currValue -> target.ItemsSource <-  currValue
         | ValueSome _, ValueNone -> target.ItemsSource <- null
         | ValueNone, ValueNone -> ()
-        match prevItemTemplateOpt, currItemTemplateOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.ItemTemplate <-  currValue
-        | ValueSome _, ValueNone -> target.ItemTemplate <- null
-        | ValueNone, ValueNone -> ()
         match prevScrollToRequestedOpt, currScrollToRequestedOpt with
         | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
         | ValueSome prevValue, ValueSome currValue -> target.ScrollToRequested.RemoveHandler(prevValue); target.ScrollToRequested.AddHandler(currValue)
@@ -12548,10 +12514,8 @@ type ViewBuilders() =
         (fun _ curr target -> triggerScrollTo curr target) previScrollToOpt curriScrollToOpt target
 
     static member inline ConstructItemsView(?emptyView: System.Object,
-                                            ?emptyViewTemplate: Xamarin.Forms.DataTemplate,
                                             ?itemsLayout: Xamarin.Forms.IItemsLayout,
                                             ?itemsSource: System.Collections.IEnumerable,
-                                            ?itemTemplate: Xamarin.Forms.DataTemplate,
                                             ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
                                             ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
                                             ?horizontalOptions: Xamarin.Forms.LayoutOptions,
@@ -12597,10 +12561,8 @@ type ViewBuilders() =
 
         let attribBuilder = ViewBuilders.BuildItemsView(0,
                                ?emptyView=emptyView,
-                               ?emptyViewTemplate=emptyViewTemplate,
                                ?itemsLayout=itemsLayout,
                                ?itemsSource=itemsSource,
-                               ?itemTemplate=itemTemplate,
                                ?scrollToRequested=scrollToRequested,
                                ?scrollTo=scrollTo,
                                ?horizontalOptions=horizontalOptions,
@@ -12668,8 +12630,7 @@ type ViewBuilders() =
                                             ?queryIconName: string,
                                             ?searchBoxVisibility: Xamarin.Forms.SearchBoxVisiblity,
                                             ?showsResults: bool,
-                                            ?itemsSource: System.Collections.IEnumerable,
-                                            ?itemTemplate: Xamarin.Forms.DataTemplate) = 
+                                            ?itemsSource: System.Collections.IEnumerable) = 
 
         let attribCount = match clearIcon with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match clearIconHelpText with Some _ -> attribCount + 1 | None -> attribCount
@@ -12692,7 +12653,6 @@ type ViewBuilders() =
         let attribCount = match searchBoxVisibility with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match showsResults with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match itemsSource with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match itemTemplate with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = new AttributesBuilder(attribCount)
         match clearIcon with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ClearIconAttribKey, (v)) 
@@ -12716,7 +12676,6 @@ type ViewBuilders() =
         match searchBoxVisibility with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SearchBoxVisibilityAttribKey, (v)) 
         match showsResults with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ShowsResultsAttribKey, (v)) 
         match itemsSource with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ItemsSourceAttribKey, (v)) 
-        match itemTemplate with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ItemTemplateAttribKey, (v)) 
         attribBuilder
 
     static member val CreateFuncSearchHandler : (unit -> Xamarin.Forms.SearchHandler) = (fun () -> ViewBuilders.CreateSearchHandler()) with get, set
@@ -12770,8 +12729,6 @@ type ViewBuilders() =
         let mutable currShowsResultsOpt = ValueNone
         let mutable prevItemsSourceOpt = ValueNone
         let mutable currItemsSourceOpt = ValueNone
-        let mutable prevItemTemplateOpt = ValueNone
-        let mutable currItemTemplateOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = ViewAttributes.ClearIconAttribKey.KeyValue then 
                 currClearIconOpt <- ValueSome (kvp.Value :?> string)
@@ -12815,8 +12772,6 @@ type ViewBuilders() =
                 currShowsResultsOpt <- ValueSome (kvp.Value :?> bool)
             if kvp.Key = ViewAttributes.ItemsSourceAttribKey.KeyValue then 
                 currItemsSourceOpt <- ValueSome (kvp.Value :?> System.Collections.IEnumerable)
-            if kvp.Key = ViewAttributes.ItemTemplateAttribKey.KeyValue then 
-                currItemTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
@@ -12863,8 +12818,6 @@ type ViewBuilders() =
                     prevShowsResultsOpt <- ValueSome (kvp.Value :?> bool)
                 if kvp.Key = ViewAttributes.ItemsSourceAttribKey.KeyValue then 
                     prevItemsSourceOpt <- ValueSome (kvp.Value :?> System.Collections.IEnumerable)
-                if kvp.Key = ViewAttributes.ItemTemplateAttribKey.KeyValue then 
-                    prevItemTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
         match prevClearIconOpt, currClearIconOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.ClearIcon <- makeImageSource currValue
@@ -12970,11 +12923,6 @@ type ViewBuilders() =
         | _, ValueSome currValue -> target.ItemsSource <-  currValue
         | ValueSome _, ValueNone -> target.ItemsSource <- null
         | ValueNone, ValueNone -> ()
-        match prevItemTemplateOpt, currItemTemplateOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.ItemTemplate <-  currValue
-        | ValueSome _, ValueNone -> target.ItemTemplate <- null
-        | ValueNone, ValueNone -> ()
 
     static member inline ConstructSearchHandler(?clearIcon: string,
                                                 ?clearIconHelpText: string,
@@ -12996,8 +12944,7 @@ type ViewBuilders() =
                                                 ?queryIconName: string,
                                                 ?searchBoxVisibility: Xamarin.Forms.SearchBoxVisiblity,
                                                 ?showsResults: bool,
-                                                ?itemsSource: System.Collections.IEnumerable,
-                                                ?itemTemplate: Xamarin.Forms.DataTemplate) = 
+                                                ?itemsSource: System.Collections.IEnumerable) = 
 
         let attribBuilder = ViewBuilders.BuildSearchHandler(0,
                                ?clearIcon=clearIcon,
@@ -13020,8 +12967,7 @@ type ViewBuilders() =
                                ?queryIconName=queryIconName,
                                ?searchBoxVisibility=searchBoxVisibility,
                                ?showsResults=showsResults,
-                               ?itemsSource=itemsSource,
-                               ?itemTemplate=itemTemplate)
+                               ?itemsSource=itemsSource)
 
         ViewElement.Create<Xamarin.Forms.SearchHandler>(ViewBuilders.CreateFuncSearchHandler, ViewBuilders.UpdateFuncSearchHandler, attribBuilder)
 
@@ -13034,11 +12980,7 @@ type ViewBuilders() =
                                     ?flyoutBehavior: Xamarin.Forms.FlyoutBehavior,
                                     ?flyoutHeader: System.Object,
                                     ?flyoutHeaderBehavior: Xamarin.Forms.FlyoutHeaderBehavior,
-                                    ?flyoutHeaderTemplate: Xamarin.Forms.DataTemplate,
                                     ?flyoutIsPresented: bool,
-                                    ?groupHeaderTemplate: Xamarin.Forms.DataTemplate,
-                                    ?itemTemplate: Xamarin.Forms.DataTemplate,
-                                    ?menuItemTemplate: Xamarin.Forms.DataTemplate,
                                     ?route: string,
                                     ?routeHost: string,
                                     ?routeScheme: string,
@@ -13099,11 +13041,7 @@ type ViewBuilders() =
         let attribCount = match flyoutBehavior with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match flyoutHeader with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match flyoutHeaderBehavior with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match flyoutHeaderTemplate with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match flyoutIsPresented with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match groupHeaderTemplate with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match itemTemplate with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match menuItemTemplate with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match route with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match routeHost with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match routeScheme with Some _ -> attribCount + 1 | None -> attribCount
@@ -13119,11 +13057,7 @@ type ViewBuilders() =
         match flyoutBehavior with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FlyoutBehaviorAttribKey, (v)) 
         match flyoutHeader with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FlyoutHeaderAttribKey, (v)) 
         match flyoutHeaderBehavior with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FlyoutHeaderBehaviorAttribKey, (v)) 
-        match flyoutHeaderTemplate with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FlyoutHeaderTemplateAttribKey, (v)) 
         match flyoutIsPresented with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FlyoutIsPresentedAttribKey, (v)) 
-        match groupHeaderTemplate with None -> () | Some v -> attribBuilder.Add(ViewAttributes.GroupHeaderTemplateAttribKey, (v)) 
-        match itemTemplate with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ItemTemplateAttribKey, (v)) 
-        match menuItemTemplate with None -> () | Some v -> attribBuilder.Add(ViewAttributes.MenuItemTemplateAttribKey, (v)) 
         match route with None -> () | Some v -> attribBuilder.Add(ViewAttributes.RouteAttribKey, (v)) 
         match routeHost with None -> () | Some v -> attribBuilder.Add(ViewAttributes.RouteHostAttribKey, (v)) 
         match routeScheme with None -> () | Some v -> attribBuilder.Add(ViewAttributes.RouteSchemeAttribKey, (v)) 
@@ -13158,16 +13092,8 @@ type ViewBuilders() =
         let mutable currFlyoutHeaderOpt = ValueNone
         let mutable prevFlyoutHeaderBehaviorOpt = ValueNone
         let mutable currFlyoutHeaderBehaviorOpt = ValueNone
-        let mutable prevFlyoutHeaderTemplateOpt = ValueNone
-        let mutable currFlyoutHeaderTemplateOpt = ValueNone
         let mutable prevFlyoutIsPresentedOpt = ValueNone
         let mutable currFlyoutIsPresentedOpt = ValueNone
-        let mutable prevGroupHeaderTemplateOpt = ValueNone
-        let mutable currGroupHeaderTemplateOpt = ValueNone
-        let mutable prevItemTemplateOpt = ValueNone
-        let mutable currItemTemplateOpt = ValueNone
-        let mutable prevMenuItemTemplateOpt = ValueNone
-        let mutable currMenuItemTemplateOpt = ValueNone
         let mutable prevRouteOpt = ValueNone
         let mutable currRouteOpt = ValueNone
         let mutable prevRouteHostOpt = ValueNone
@@ -13195,16 +13121,8 @@ type ViewBuilders() =
                 currFlyoutHeaderOpt <- ValueSome (kvp.Value :?> System.Object)
             if kvp.Key = ViewAttributes.FlyoutHeaderBehaviorAttribKey.KeyValue then 
                 currFlyoutHeaderBehaviorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlyoutHeaderBehavior)
-            if kvp.Key = ViewAttributes.FlyoutHeaderTemplateAttribKey.KeyValue then 
-                currFlyoutHeaderTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
             if kvp.Key = ViewAttributes.FlyoutIsPresentedAttribKey.KeyValue then 
                 currFlyoutIsPresentedOpt <- ValueSome (kvp.Value :?> bool)
-            if kvp.Key = ViewAttributes.GroupHeaderTemplateAttribKey.KeyValue then 
-                currGroupHeaderTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
-            if kvp.Key = ViewAttributes.ItemTemplateAttribKey.KeyValue then 
-                currItemTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
-            if kvp.Key = ViewAttributes.MenuItemTemplateAttribKey.KeyValue then 
-                currMenuItemTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
             if kvp.Key = ViewAttributes.RouteAttribKey.KeyValue then 
                 currRouteOpt <- ValueSome (kvp.Value :?> string)
             if kvp.Key = ViewAttributes.RouteHostAttribKey.KeyValue then 
@@ -13235,16 +13153,8 @@ type ViewBuilders() =
                     prevFlyoutHeaderOpt <- ValueSome (kvp.Value :?> System.Object)
                 if kvp.Key = ViewAttributes.FlyoutHeaderBehaviorAttribKey.KeyValue then 
                     prevFlyoutHeaderBehaviorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlyoutHeaderBehavior)
-                if kvp.Key = ViewAttributes.FlyoutHeaderTemplateAttribKey.KeyValue then 
-                    prevFlyoutHeaderTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
                 if kvp.Key = ViewAttributes.FlyoutIsPresentedAttribKey.KeyValue then 
                     prevFlyoutIsPresentedOpt <- ValueSome (kvp.Value :?> bool)
-                if kvp.Key = ViewAttributes.GroupHeaderTemplateAttribKey.KeyValue then 
-                    prevGroupHeaderTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
-                if kvp.Key = ViewAttributes.ItemTemplateAttribKey.KeyValue then 
-                    prevItemTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
-                if kvp.Key = ViewAttributes.MenuItemTemplateAttribKey.KeyValue then 
-                    prevMenuItemTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
                 if kvp.Key = ViewAttributes.RouteAttribKey.KeyValue then 
                     prevRouteOpt <- ValueSome (kvp.Value :?> string)
                 if kvp.Key = ViewAttributes.RouteHostAttribKey.KeyValue then 
@@ -13289,30 +13199,10 @@ type ViewBuilders() =
         | _, ValueSome currValue -> target.FlyoutHeaderBehavior <-  currValue
         | ValueSome _, ValueNone -> target.FlyoutHeaderBehavior <- Xamarin.Forms.FlyoutHeaderBehavior.Default
         | ValueNone, ValueNone -> ()
-        match prevFlyoutHeaderTemplateOpt, currFlyoutHeaderTemplateOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.FlyoutHeaderTemplate <-  currValue
-        | ValueSome _, ValueNone -> target.FlyoutHeaderTemplate <- null
-        | ValueNone, ValueNone -> ()
         match prevFlyoutIsPresentedOpt, currFlyoutIsPresentedOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.FlyoutIsPresented <-  currValue
         | ValueSome _, ValueNone -> target.FlyoutIsPresented <- false
-        | ValueNone, ValueNone -> ()
-        match prevGroupHeaderTemplateOpt, currGroupHeaderTemplateOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.GroupHeaderTemplate <-  currValue
-        | ValueSome _, ValueNone -> target.GroupHeaderTemplate <- null
-        | ValueNone, ValueNone -> ()
-        match prevItemTemplateOpt, currItemTemplateOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.ItemTemplate <-  currValue
-        | ValueSome _, ValueNone -> target.ItemTemplate <- null
-        | ValueNone, ValueNone -> ()
-        match prevMenuItemTemplateOpt, currMenuItemTemplateOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.MenuItemTemplate <-  currValue
-        | ValueSome _, ValueNone -> target.MenuItemTemplate <- null
         | ValueNone, ValueNone -> ()
         match prevRouteOpt, currRouteOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
@@ -13350,11 +13240,7 @@ type ViewBuilders() =
                                         ?flyoutBehavior: Xamarin.Forms.FlyoutBehavior,
                                         ?flyoutHeader: System.Object,
                                         ?flyoutHeaderBehavior: Xamarin.Forms.FlyoutHeaderBehavior,
-                                        ?flyoutHeaderTemplate: Xamarin.Forms.DataTemplate,
                                         ?flyoutIsPresented: bool,
-                                        ?groupHeaderTemplate: Xamarin.Forms.DataTemplate,
-                                        ?itemTemplate: Xamarin.Forms.DataTemplate,
-                                        ?menuItemTemplate: Xamarin.Forms.DataTemplate,
                                         ?route: string,
                                         ?routeHost: string,
                                         ?routeScheme: string,
@@ -13416,11 +13302,7 @@ type ViewBuilders() =
                                ?flyoutBehavior=flyoutBehavior,
                                ?flyoutHeader=flyoutHeader,
                                ?flyoutHeaderBehavior=flyoutHeaderBehavior,
-                               ?flyoutHeaderTemplate=flyoutHeaderTemplate,
                                ?flyoutIsPresented=flyoutIsPresented,
-                               ?groupHeaderTemplate=groupHeaderTemplate,
-                               ?itemTemplate=itemTemplate,
-                               ?menuItemTemplate=menuItemTemplate,
                                ?route=route,
                                ?routeHost=routeHost,
                                ?routeScheme=routeScheme,
@@ -13545,10 +13427,8 @@ type ViewBuilders() =
                                                   ?selectionMode: Xamarin.Forms.SelectionMode,
                                                   ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit,
                                                   ?emptyView: System.Object,
-                                                  ?emptyViewTemplate: Xamarin.Forms.DataTemplate,
                                                   ?itemsLayout: Xamarin.Forms.IItemsLayout,
                                                   ?itemsSource: System.Collections.IEnumerable,
-                                                  ?itemTemplate: Xamarin.Forms.DataTemplate,
                                                   ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
                                                   ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
                                                   ?horizontalOptions: Xamarin.Forms.LayoutOptions,
@@ -13598,7 +13478,7 @@ type ViewBuilders() =
         let attribCount = match selectionMode with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match selectionChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildItemsView(attribCount, ?emptyView=emptyView, ?emptyViewTemplate=emptyViewTemplate, ?itemsLayout=itemsLayout, ?itemsSource=itemsSource, ?itemTemplate=itemTemplate, ?scrollToRequested=scrollToRequested, ?scrollTo=scrollTo, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildItemsView(attribCount, ?emptyView=emptyView, ?itemsLayout=itemsLayout, ?itemsSource=itemsSource, ?scrollToRequested=scrollToRequested, ?scrollTo=scrollTo, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match selectedItem with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SelectedItemAttribKey, (v)) 
         match selectionChangedCommand with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SelectionChangedCommandAttribKey, makeCommand(v)) 
         match selectionChangedCommandParameter with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SelectionChangedCommandParameterAttribKey, (v)) 
@@ -13686,10 +13566,8 @@ type ViewBuilders() =
                                                       ?selectionMode: Xamarin.Forms.SelectionMode,
                                                       ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit,
                                                       ?emptyView: System.Object,
-                                                      ?emptyViewTemplate: Xamarin.Forms.DataTemplate,
                                                       ?itemsLayout: Xamarin.Forms.IItemsLayout,
                                                       ?itemsSource: System.Collections.IEnumerable,
-                                                      ?itemTemplate: Xamarin.Forms.DataTemplate,
                                                       ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
                                                       ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
                                                       ?horizontalOptions: Xamarin.Forms.LayoutOptions,
@@ -13740,10 +13618,8 @@ type ViewBuilders() =
                                ?selectionMode=selectionMode,
                                ?selectionChanged=selectionChanged,
                                ?emptyView=emptyView,
-                               ?emptyViewTemplate=emptyViewTemplate,
                                ?itemsLayout=itemsLayout,
                                ?itemsSource=itemsSource,
-                               ?itemTemplate=itemTemplate,
                                ?scrollToRequested=scrollToRequested,
                                ?scrollTo=scrollTo,
                                ?horizontalOptions=horizontalOptions,
@@ -13835,7 +13711,6 @@ type ViewBuilders() =
     /// Builds the attributes for a ShellContent in the view
     static member inline BuildShellContent(attribCount: int,
                                            ?content: ViewElement,
-                                           ?contentTemplate: Xamarin.Forms.DataTemplate,
                                            ?menuItems: seq<ViewElement>,
                                            ?classId: string,
                                            ?styleId: string,
@@ -13844,12 +13719,10 @@ type ViewBuilders() =
                                            ?ref: ViewRef) = 
 
         let attribCount = match content with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match contentTemplate with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match menuItems with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = ViewBuilders.BuildElement(attribCount, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match content with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ContentAttribKey, (v)) 
-        match contentTemplate with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ContentTemplateAttribKey, makeTemplate(v)) 
         match menuItems with None -> () | Some v -> attribBuilder.Add(ViewAttributes.MenuItemsAttribKey, (v)) 
         attribBuilder
 
@@ -13867,15 +13740,11 @@ type ViewBuilders() =
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevContentOpt = ValueNone
         let mutable currContentOpt = ValueNone
-        let mutable prevContentTemplateOpt = ValueNone
-        let mutable currContentTemplateOpt = ValueNone
         let mutable prevMenuItemsOpt = ValueNone
         let mutable currMenuItemsOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = ViewAttributes.ContentAttribKey.KeyValue then 
                 currContentOpt <- ValueSome (kvp.Value :?> System.Object)
-            if kvp.Key = ViewAttributes.ContentTemplateAttribKey.KeyValue then 
-                currContentTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
             if kvp.Key = ViewAttributes.MenuItemsAttribKey.KeyValue then 
                 currMenuItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
         match prevOpt with
@@ -13884,8 +13753,6 @@ type ViewBuilders() =
             for kvp in prev.AttributesKeyed do
                 if kvp.Key = ViewAttributes.ContentAttribKey.KeyValue then 
                     prevContentOpt <- ValueSome (kvp.Value :?> System.Object)
-                if kvp.Key = ViewAttributes.ContentTemplateAttribKey.KeyValue then 
-                    prevContentTemplateOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.DataTemplate)
                 if kvp.Key = ViewAttributes.MenuItemsAttribKey.KeyValue then 
                     prevMenuItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
         match prevContentOpt, currContentOpt with
@@ -13893,15 +13760,9 @@ type ViewBuilders() =
         | _, ValueSome currValue -> target.Content <-  currValue
         | ValueSome _, ValueNone -> target.Content <- null
         | ValueNone, ValueNone -> ()
-        match prevContentTemplateOpt, currContentTemplateOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.ContentTemplate <-  currValue
-        | ValueSome _, ValueNone -> target.ContentTemplate <- null
-        | ValueNone, ValueNone -> ()
         updateMenuItemsShellContent prevMenuItemsOpt currMenuItemsOpt target
 
     static member inline ConstructShellContent(?content: ViewElement,
-                                               ?contentTemplate: Xamarin.Forms.DataTemplate,
                                                ?menuItems: seq<ViewElement>,
                                                ?classId: string,
                                                ?styleId: string,
@@ -13911,7 +13772,6 @@ type ViewBuilders() =
 
         let attribBuilder = ViewBuilders.BuildShellContent(0,
                                ?content=content,
-                               ?contentTemplate=contentTemplate,
                                ?menuItems=menuItems,
                                ?classId=classId,
                                ?styleId=styleId,
@@ -14098,10 +13958,8 @@ type ViewBuilders() =
     /// Builds the attributes for a CarouselView in the view
     static member inline BuildCarouselView(attribCount: int,
                                            ?emptyView: System.Object,
-                                           ?emptyViewTemplate: Xamarin.Forms.DataTemplate,
                                            ?itemsLayout: Xamarin.Forms.IItemsLayout,
                                            ?itemsSource: System.Collections.IEnumerable,
-                                           ?itemTemplate: Xamarin.Forms.DataTemplate,
                                            ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
                                            ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
                                            ?horizontalOptions: Xamarin.Forms.LayoutOptions,
@@ -14144,7 +14002,7 @@ type ViewBuilders() =
                                            ?automationId: string,
                                            ?created: obj -> unit,
                                            ?ref: ViewRef) = 
-        let attribBuilder = ViewBuilders.BuildItemsView(attribCount, ?emptyView=emptyView, ?emptyViewTemplate=emptyViewTemplate, ?itemsLayout=itemsLayout, ?itemsSource=itemsSource, ?itemTemplate=itemTemplate, ?scrollToRequested=scrollToRequested, ?scrollTo=scrollTo, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildItemsView(attribCount, ?emptyView=emptyView, ?itemsLayout=itemsLayout, ?itemsSource=itemsSource, ?scrollToRequested=scrollToRequested, ?scrollTo=scrollTo, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         attribBuilder
 
     static member val CreateFuncCarouselView : (unit -> Xamarin.Forms.CarouselView) = (fun () -> ViewBuilders.CreateCarouselView()) with get, set
@@ -14164,10 +14022,8 @@ type ViewBuilders() =
         ignore target
 
     static member inline ConstructCarouselView(?emptyView: System.Object,
-                                               ?emptyViewTemplate: Xamarin.Forms.DataTemplate,
                                                ?itemsLayout: Xamarin.Forms.IItemsLayout,
                                                ?itemsSource: System.Collections.IEnumerable,
-                                               ?itemTemplate: Xamarin.Forms.DataTemplate,
                                                ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
                                                ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
                                                ?horizontalOptions: Xamarin.Forms.LayoutOptions,
@@ -14213,10 +14069,8 @@ type ViewBuilders() =
 
         let attribBuilder = ViewBuilders.BuildCarouselView(0,
                                ?emptyView=emptyView,
-                               ?emptyViewTemplate=emptyViewTemplate,
                                ?itemsLayout=itemsLayout,
                                ?itemsSource=itemsSource,
-                               ?itemTemplate=itemTemplate,
                                ?scrollToRequested=scrollToRequested,
                                ?scrollTo=scrollTo,
                                ?horizontalOptions=horizontalOptions,
@@ -14270,10 +14124,8 @@ type ViewBuilders() =
                                              ?selectionMode: Xamarin.Forms.SelectionMode,
                                              ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit,
                                              ?emptyView: System.Object,
-                                             ?emptyViewTemplate: Xamarin.Forms.DataTemplate,
                                              ?itemsLayout: Xamarin.Forms.IItemsLayout,
                                              ?itemsSource: System.Collections.IEnumerable,
-                                             ?itemTemplate: Xamarin.Forms.DataTemplate,
                                              ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
                                              ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
                                              ?horizontalOptions: Xamarin.Forms.LayoutOptions,
@@ -14316,7 +14168,7 @@ type ViewBuilders() =
                                              ?automationId: string,
                                              ?created: obj -> unit,
                                              ?ref: ViewRef) = 
-        let attribBuilder = ViewBuilders.BuildSelectableItemsView(attribCount, ?selectedItem=selectedItem, ?selectionChangedCommand=selectionChangedCommand, ?selectionChangedCommandParameter=selectionChangedCommandParameter, ?selectionMode=selectionMode, ?selectionChanged=selectionChanged, ?emptyView=emptyView, ?emptyViewTemplate=emptyViewTemplate, ?itemsLayout=itemsLayout, ?itemsSource=itemsSource, ?itemTemplate=itemTemplate, ?scrollToRequested=scrollToRequested, ?scrollTo=scrollTo, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildSelectableItemsView(attribCount, ?selectedItem=selectedItem, ?selectionChangedCommand=selectionChangedCommand, ?selectionChangedCommandParameter=selectionChangedCommandParameter, ?selectionMode=selectionMode, ?selectionChanged=selectionChanged, ?emptyView=emptyView, ?itemsLayout=itemsLayout, ?itemsSource=itemsSource, ?scrollToRequested=scrollToRequested, ?scrollTo=scrollTo, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         attribBuilder
 
     static member val CreateFuncCollectionView : (unit -> Xamarin.Forms.CollectionView) = (fun () -> ViewBuilders.CreateCollectionView()) with get, set
@@ -14341,10 +14193,8 @@ type ViewBuilders() =
                                                  ?selectionMode: Xamarin.Forms.SelectionMode,
                                                  ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit,
                                                  ?emptyView: System.Object,
-                                                 ?emptyViewTemplate: Xamarin.Forms.DataTemplate,
                                                  ?itemsLayout: Xamarin.Forms.IItemsLayout,
                                                  ?itemsSource: System.Collections.IEnumerable,
-                                                 ?itemTemplate: Xamarin.Forms.DataTemplate,
                                                  ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
                                                  ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
                                                  ?horizontalOptions: Xamarin.Forms.LayoutOptions,
@@ -14395,10 +14245,8 @@ type ViewBuilders() =
                                ?selectionMode=selectionMode,
                                ?selectionChanged=selectionChanged,
                                ?emptyView=emptyView,
-                               ?emptyViewTemplate=emptyViewTemplate,
                                ?itemsLayout=itemsLayout,
                                ?itemsSource=itemsSource,
-                               ?itemTemplate=itemTemplate,
                                ?scrollToRequested=scrollToRequested,
                                ?scrollTo=scrollTo,
                                ?horizontalOptions=horizontalOptions,
@@ -15378,14 +15226,10 @@ type ItemsViewViewer(element: ViewElement) =
     do if not ((typeof<Xamarin.Forms.ItemsView>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.ItemsView' is expected, but '%s' was provided." element.TargetType.FullName
     /// Get the value of the EmptyView property
     member this.EmptyView = element.GetAttributeKeyed(ViewAttributes.EmptyViewAttribKey)
-    /// Get the value of the EmptyViewTemplate property
-    member this.EmptyViewTemplate = element.GetAttributeKeyed(ViewAttributes.EmptyViewTemplateAttribKey)
     /// Get the value of the ItemsLayout property
     member this.ItemsLayout = element.GetAttributeKeyed(ViewAttributes.ItemsLayoutAttribKey)
     /// Get the value of the ItemsSource property
     member this.ItemsSource = element.GetAttributeKeyed(ViewAttributes.ItemsSourceAttribKey)
-    /// Get the value of the ItemTemplate property
-    member this.ItemTemplate = element.GetAttributeKeyed(ViewAttributes.ItemTemplateAttribKey)
     /// Get the value of the ScrollToRequested property
     member this.ScrollToRequested = element.GetAttributeKeyed(ViewAttributes.ScrollToRequestedAttribKey)
     /// Get the value of the ScrollTo property
@@ -15436,8 +15280,6 @@ type SearchHandlerViewer(element: ViewElement) =
     member this.ShowsResults = element.GetAttributeKeyed(ViewAttributes.ShowsResultsAttribKey)
     /// Get the value of the ItemsSource property
     member this.ItemsSource = element.GetAttributeKeyed(ViewAttributes.ItemsSourceAttribKey)
-    /// Get the value of the ItemTemplate property
-    member this.ItemTemplate = element.GetAttributeKeyed(ViewAttributes.ItemTemplateAttribKey)
 
 /// Viewer that allows to read the properties of a ViewElement representing a Shell
 type ShellViewer(element: ViewElement) =
@@ -15457,16 +15299,8 @@ type ShellViewer(element: ViewElement) =
     member this.FlyoutHeader = element.GetAttributeKeyed(ViewAttributes.FlyoutHeaderAttribKey)
     /// Get the value of the FlyoutHeaderBehavior property
     member this.FlyoutHeaderBehavior = element.GetAttributeKeyed(ViewAttributes.FlyoutHeaderBehaviorAttribKey)
-    /// Get the value of the FlyoutHeaderTemplate property
-    member this.FlyoutHeaderTemplate = element.GetAttributeKeyed(ViewAttributes.FlyoutHeaderTemplateAttribKey)
     /// Get the value of the FlyoutIsPresented property
     member this.FlyoutIsPresented = element.GetAttributeKeyed(ViewAttributes.FlyoutIsPresentedAttribKey)
-    /// Get the value of the GroupHeaderTemplate property
-    member this.GroupHeaderTemplate = element.GetAttributeKeyed(ViewAttributes.GroupHeaderTemplateAttribKey)
-    /// Get the value of the ItemTemplate property
-    member this.ItemTemplate = element.GetAttributeKeyed(ViewAttributes.ItemTemplateAttribKey)
-    /// Get the value of the MenuItemTemplate property
-    member this.MenuItemTemplate = element.GetAttributeKeyed(ViewAttributes.MenuItemTemplateAttribKey)
     /// Get the value of the Route property
     member this.Route = element.GetAttributeKeyed(ViewAttributes.RouteAttribKey)
     /// Get the value of the RouteHost property
@@ -15514,8 +15348,6 @@ type ShellContentViewer(element: ViewElement) =
     do if not ((typeof<Xamarin.Forms.ShellContent>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.ShellContent' is expected, but '%s' was provided." element.TargetType.FullName
     /// Get the value of the Content property
     member this.Content = element.GetAttributeKeyed(ViewAttributes.ContentAttribKey)
-    /// Get the value of the ContentTemplate property
-    member this.ContentTemplate = element.GetAttributeKeyed(ViewAttributes.ContentTemplateAttribKey)
     /// Get the value of the MenuItems property
     member this.MenuItems = element.GetAttributeKeyed(ViewAttributes.MenuItemsAttribKey)
 
@@ -19702,10 +19534,8 @@ type View() =
 
     /// Describes a ItemsView in the view
     static member inline ItemsView(?emptyView: System.Object,
-                                   ?emptyViewTemplate: Xamarin.Forms.DataTemplate,
                                    ?itemsLayout: Xamarin.Forms.IItemsLayout,
                                    ?itemsSource: System.Collections.IEnumerable,
-                                   ?itemTemplate: Xamarin.Forms.DataTemplate,
                                    ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
                                    ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
                                    ?horizontalOptions: Xamarin.Forms.LayoutOptions,
@@ -19750,10 +19580,8 @@ type View() =
                                    ?ref: ViewRef<Xamarin.Forms.ItemsView>) =
 
         ViewBuilders.ConstructItemsView(?emptyView=emptyView,
-                               ?emptyViewTemplate=emptyViewTemplate,
                                ?itemsLayout=itemsLayout,
                                ?itemsSource=itemsSource,
-                               ?itemTemplate=itemTemplate,
                                ?scrollToRequested=scrollToRequested,
                                ?scrollTo=scrollTo,
                                ?horizontalOptions=horizontalOptions,
@@ -19818,8 +19646,7 @@ type View() =
                                        ?queryIconName: string,
                                        ?searchBoxVisibility: Xamarin.Forms.SearchBoxVisiblity,
                                        ?showsResults: bool,
-                                       ?itemsSource: System.Collections.IEnumerable,
-                                       ?itemTemplate: Xamarin.Forms.DataTemplate) =
+                                       ?itemsSource: System.Collections.IEnumerable) =
 
         ViewBuilders.ConstructSearchHandler(?clearIcon=clearIcon,
                                ?clearIconHelpText=clearIconHelpText,
@@ -19841,8 +19668,7 @@ type View() =
                                ?queryIconName=queryIconName,
                                ?searchBoxVisibility=searchBoxVisibility,
                                ?showsResults=showsResults,
-                               ?itemsSource=itemsSource,
-                               ?itemTemplate=itemTemplate)
+                               ?itemsSource=itemsSource)
 
     /// Describes a Shell in the view
     static member inline Shell(?items: seq<ViewElement>,
@@ -19852,11 +19678,7 @@ type View() =
                                ?flyoutBehavior: Xamarin.Forms.FlyoutBehavior,
                                ?flyoutHeader: System.Object,
                                ?flyoutHeaderBehavior: Xamarin.Forms.FlyoutHeaderBehavior,
-                               ?flyoutHeaderTemplate: Xamarin.Forms.DataTemplate,
                                ?flyoutIsPresented: bool,
-                               ?groupHeaderTemplate: Xamarin.Forms.DataTemplate,
-                               ?itemTemplate: Xamarin.Forms.DataTemplate,
-                               ?menuItemTemplate: Xamarin.Forms.DataTemplate,
                                ?route: string,
                                ?routeHost: string,
                                ?routeScheme: string,
@@ -19917,11 +19739,7 @@ type View() =
                                ?flyoutBehavior=flyoutBehavior,
                                ?flyoutHeader=flyoutHeader,
                                ?flyoutHeaderBehavior=flyoutHeaderBehavior,
-                               ?flyoutHeaderTemplate=flyoutHeaderTemplate,
                                ?flyoutIsPresented=flyoutIsPresented,
-                               ?groupHeaderTemplate=groupHeaderTemplate,
-                               ?itemTemplate=itemTemplate,
-                               ?menuItemTemplate=menuItemTemplate,
                                ?route=route,
                                ?routeHost=routeHost,
                                ?routeScheme=routeScheme,
@@ -19997,10 +19815,8 @@ type View() =
                                              ?selectionMode: Xamarin.Forms.SelectionMode,
                                              ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit,
                                              ?emptyView: System.Object,
-                                             ?emptyViewTemplate: Xamarin.Forms.DataTemplate,
                                              ?itemsLayout: Xamarin.Forms.IItemsLayout,
                                              ?itemsSource: System.Collections.IEnumerable,
-                                             ?itemTemplate: Xamarin.Forms.DataTemplate,
                                              ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
                                              ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
                                              ?horizontalOptions: Xamarin.Forms.LayoutOptions,
@@ -20050,10 +19866,8 @@ type View() =
                                ?selectionMode=selectionMode,
                                ?selectionChanged=selectionChanged,
                                ?emptyView=emptyView,
-                               ?emptyViewTemplate=emptyViewTemplate,
                                ?itemsLayout=itemsLayout,
                                ?itemsSource=itemsSource,
-                               ?itemTemplate=itemTemplate,
                                ?scrollToRequested=scrollToRequested,
                                ?scrollTo=scrollTo,
                                ?horizontalOptions=horizontalOptions,
@@ -20104,7 +19918,6 @@ type View() =
 
     /// Describes a ShellContent in the view
     static member inline ShellContent(?content: ViewElement,
-                                      ?contentTemplate: Xamarin.Forms.DataTemplate,
                                       ?menuItems: seq<ViewElement>,
                                       ?classId: string,
                                       ?styleId: string,
@@ -20113,7 +19926,6 @@ type View() =
                                       ?ref: ViewRef<Xamarin.Forms.ShellContent>) =
 
         ViewBuilders.ConstructShellContent(?content=content,
-                               ?contentTemplate=contentTemplate,
                                ?menuItems=menuItems,
                                ?classId=classId,
                                ?styleId=styleId,
@@ -20163,10 +19975,8 @@ type View() =
 
     /// Describes a CarouselView in the view
     static member inline CarouselView(?emptyView: System.Object,
-                                      ?emptyViewTemplate: Xamarin.Forms.DataTemplate,
                                       ?itemsLayout: Xamarin.Forms.IItemsLayout,
                                       ?itemsSource: System.Collections.IEnumerable,
-                                      ?itemTemplate: Xamarin.Forms.DataTemplate,
                                       ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
                                       ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
                                       ?horizontalOptions: Xamarin.Forms.LayoutOptions,
@@ -20211,10 +20021,8 @@ type View() =
                                       ?ref: ViewRef<Xamarin.Forms.CarouselView>) =
 
         ViewBuilders.ConstructCarouselView(?emptyView=emptyView,
-                               ?emptyViewTemplate=emptyViewTemplate,
                                ?itemsLayout=itemsLayout,
                                ?itemsSource=itemsSource,
-                               ?itemTemplate=itemTemplate,
                                ?scrollToRequested=scrollToRequested,
                                ?scrollTo=scrollTo,
                                ?horizontalOptions=horizontalOptions,
@@ -20265,10 +20073,8 @@ type View() =
                                         ?selectionMode: Xamarin.Forms.SelectionMode,
                                         ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit,
                                         ?emptyView: System.Object,
-                                        ?emptyViewTemplate: Xamarin.Forms.DataTemplate,
                                         ?itemsLayout: Xamarin.Forms.IItemsLayout,
                                         ?itemsSource: System.Collections.IEnumerable,
-                                        ?itemTemplate: Xamarin.Forms.DataTemplate,
                                         ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
                                         ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
                                         ?horizontalOptions: Xamarin.Forms.LayoutOptions,
@@ -20318,10 +20124,8 @@ type View() =
                                ?selectionMode=selectionMode,
                                ?selectionChanged=selectionChanged,
                                ?emptyView=emptyView,
-                               ?emptyViewTemplate=emptyViewTemplate,
                                ?itemsLayout=itemsLayout,
                                ?itemsSource=itemsSource,
-                               ?itemTemplate=itemTemplate,
                                ?scrollToRequested=scrollToRequested,
                                ?scrollTo=scrollTo,
                                ?horizontalOptions=horizontalOptions,
@@ -21103,17 +20907,11 @@ module ViewElementExtensions =
         /// Adjusts the EmptyView property in the visual element
         member x.EmptyView(value: System.Object) = x.WithAttribute(ViewAttributes.EmptyViewAttribKey, (value))
 
-        /// Adjusts the EmptyViewTemplate property in the visual element
-        member x.EmptyViewTemplate(value: Xamarin.Forms.DataTemplate) = x.WithAttribute(ViewAttributes.EmptyViewTemplateAttribKey, (value))
-
         /// Adjusts the ItemsLayout property in the visual element
         member x.ItemsLayout(value: Xamarin.Forms.IItemsLayout) = x.WithAttribute(ViewAttributes.ItemsLayoutAttribKey, (value))
 
         /// Adjusts the ItemsSource property in the visual element
         member x.ItemsSource(value: System.Collections.IEnumerable) = x.WithAttribute(ViewAttributes.ItemsSourceAttribKey, (value))
-
-        /// Adjusts the ItemTemplate property in the visual element
-        member x.ItemTemplate(value: Xamarin.Forms.DataTemplate) = x.WithAttribute(ViewAttributes.ItemTemplateAttribKey, (value))
 
         /// Adjusts the ScrollToRequested property in the visual element
         member x.ScrollToRequested(value: Xamarin.Forms.ScrollToRequestEventArgs -> unit) = x.WithAttribute(ViewAttributes.ScrollToRequestedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ScrollToRequestEventArgs>(fun _sender args -> f args))(value))
@@ -21193,17 +20991,8 @@ module ViewElementExtensions =
         /// Adjusts the FlyoutHeaderBehavior property in the visual element
         member x.FlyoutHeaderBehavior(value: Xamarin.Forms.FlyoutHeaderBehavior) = x.WithAttribute(ViewAttributes.FlyoutHeaderBehaviorAttribKey, (value))
 
-        /// Adjusts the FlyoutHeaderTemplate property in the visual element
-        member x.FlyoutHeaderTemplate(value: Xamarin.Forms.DataTemplate) = x.WithAttribute(ViewAttributes.FlyoutHeaderTemplateAttribKey, (value))
-
         /// Adjusts the FlyoutIsPresented property in the visual element
         member x.FlyoutIsPresented(value: bool) = x.WithAttribute(ViewAttributes.FlyoutIsPresentedAttribKey, (value))
-
-        /// Adjusts the GroupHeaderTemplate property in the visual element
-        member x.GroupHeaderTemplate(value: Xamarin.Forms.DataTemplate) = x.WithAttribute(ViewAttributes.GroupHeaderTemplateAttribKey, (value))
-
-        /// Adjusts the MenuItemTemplate property in the visual element
-        member x.MenuItemTemplate(value: Xamarin.Forms.DataTemplate) = x.WithAttribute(ViewAttributes.MenuItemTemplateAttribKey, (value))
 
         /// Adjusts the Route property in the visual element
         member x.Route(value: string) = x.WithAttribute(ViewAttributes.RouteAttribKey, (value))
@@ -21243,9 +21032,6 @@ module ViewElementExtensions =
 
         /// Adjusts the Location property in the visual element
         member x.Location(value: System.Uri) = x.WithAttribute(ViewAttributes.LocationAttribKey, makeUri(value))
-
-        /// Adjusts the ContentTemplate property in the visual element
-        member x.ContentTemplate(value: Xamarin.Forms.DataTemplate) = x.WithAttribute(ViewAttributes.ContentTemplateAttribKey, makeTemplate(value))
 
         /// Adjusts the ssGoToAsync property in the visual element
         member x.ssGoToAsync(value: string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind) = x.WithAttribute(ViewAttributes.ssGoToAsyncAttribKey, (value))
@@ -21298,17 +21084,16 @@ module ViewElementExtensions =
                       ?listView_ItemSelected: int option -> unit, ?listView_ItemTapped: int -> unit, ?listView_Refreshing: unit -> unit, ?selectionMode: Xamarin.Forms.ListViewSelectionMode, ?refreshControlColor: Xamarin.Forms.Color, 
                       ?listViewGrouped_ItemsSource: (string * ViewElement * ViewElement list) list, ?listViewGrouped_ShowJumpList: bool, ?listViewGrouped_SelectedItem: (int * int) option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, 
                       ?listViewGrouped_ItemAppearing: int * int option -> unit, ?listViewGrouped_ItemDisappearing: int * int option -> unit, ?listViewGrouped_ItemSelected: (int * int) option -> unit, ?listViewGrouped_ItemTapped: int * int -> unit, ?refreshing: unit -> unit, 
-                      ?textOverride: string, ?iconOverride: string, ?span: int, ?emptyView: System.Object, ?emptyViewTemplate: Xamarin.Forms.DataTemplate, 
-                      ?itemsLayout: Xamarin.Forms.IItemsLayout, ?itemsSource: System.Collections.IEnumerable, ?itemTemplate: Xamarin.Forms.DataTemplate, ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit, ?iScrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind, 
-                      ?clearIcon: string, ?clearIconHelpText: string, ?clearIconName: string, ?clearPlaceholderCommand: unit -> unit, ?clearPlaceholderCommandParameter: System.Object, 
-                      ?clearPlaceholderEnabled: bool, ?clearPlaceholderHelpText: string, ?clearPlaceholderIcon: string, ?clearPlaceholderName: string, ?displayMemberName: string, 
-                      ?isSearchEnabled: bool, ?query: string, ?queryIcon: string, ?queryIconHelpText: string, ?queryIconName: string, 
-                      ?searchBoxVisibility: Xamarin.Forms.SearchBoxVisiblity, ?showsResults: bool, ?items: seq<ViewElement>, ?menuItems: seq<ViewElement>, ?currentItem: ViewElement, 
-                      ?flyoutBackgroundColor: Xamarin.Forms.Color, ?flyoutBehavior: Xamarin.Forms.FlyoutBehavior, ?flyoutHeader: System.Object, ?flyoutHeaderBehavior: Xamarin.Forms.FlyoutHeaderBehavior, ?flyoutHeaderTemplate: Xamarin.Forms.DataTemplate, 
-                      ?flyoutIsPresented: bool, ?groupHeaderTemplate: Xamarin.Forms.DataTemplate, ?menuItemTemplate: Xamarin.Forms.DataTemplate, ?route: string, ?routeHost: string, 
+                      ?textOverride: string, ?iconOverride: string, ?span: int, ?emptyView: System.Object, ?itemsLayout: Xamarin.Forms.IItemsLayout, 
+                      ?itemsSource: System.Collections.IEnumerable, ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit, ?iScrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind, ?clearIcon: string, ?clearIconHelpText: string, 
+                      ?clearIconName: string, ?clearPlaceholderCommand: unit -> unit, ?clearPlaceholderCommandParameter: System.Object, ?clearPlaceholderEnabled: bool, ?clearPlaceholderHelpText: string, 
+                      ?clearPlaceholderIcon: string, ?clearPlaceholderName: string, ?displayMemberName: string, ?isSearchEnabled: bool, ?query: string, 
+                      ?queryIcon: string, ?queryIconHelpText: string, ?queryIconName: string, ?searchBoxVisibility: Xamarin.Forms.SearchBoxVisiblity, ?showsResults: bool, 
+                      ?items: seq<ViewElement>, ?menuItems: seq<ViewElement>, ?currentItem: ViewElement, ?flyoutBackgroundColor: Xamarin.Forms.Color, ?flyoutBehavior: Xamarin.Forms.FlyoutBehavior, 
+                      ?flyoutHeader: System.Object, ?flyoutHeaderBehavior: Xamarin.Forms.FlyoutHeaderBehavior, ?flyoutIsPresented: bool, ?route: string, ?routeHost: string, 
                       ?routeScheme: string, ?onNavigated: Xamarin.Forms.ShellNavigatedEventArgs -> unit, ?onNavigating: Xamarin.Forms.ShellNavigatingEventArgs -> unit, ?goToAsync: Xamarin.Forms.ShellNavigationState * Fabulous.DynamicViews.AnimationKind, ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions, 
                       ?selectedItem: System.Object, ?selectionChangedCommand: unit -> unit, ?selectionChangedCommandParameter: System.Object, ?selectableItemsMode: Xamarin.Forms.SelectionMode, ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit, 
-                      ?location: System.Uri, ?contentTemplate: Xamarin.Forms.DataTemplate, ?ssGoToAsync: string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind) =
+                      ?location: System.Uri, ?ssGoToAsync: string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind) =
             let x = match classId with None -> x | Some opt -> x.ClassId(opt)
             let x = match styleId with None -> x | Some opt -> x.StyleId(opt)
             let x = match automationId with None -> x | Some opt -> x.AutomationId(opt)
@@ -21553,10 +21338,8 @@ module ViewElementExtensions =
             let x = match iconOverride with None -> x | Some opt -> x.IconOverride(opt)
             let x = match span with None -> x | Some opt -> x.Span(opt)
             let x = match emptyView with None -> x | Some opt -> x.EmptyView(opt)
-            let x = match emptyViewTemplate with None -> x | Some opt -> x.EmptyViewTemplate(opt)
             let x = match itemsLayout with None -> x | Some opt -> x.ItemsLayout(opt)
             let x = match itemsSource with None -> x | Some opt -> x.ItemsSource(opt)
-            let x = match itemTemplate with None -> x | Some opt -> x.ItemTemplate(opt)
             let x = match scrollToRequested with None -> x | Some opt -> x.ScrollToRequested(opt)
             let x = match iScrollTo with None -> x | Some opt -> x.iScrollTo(opt)
             let x = match clearIcon with None -> x | Some opt -> x.ClearIcon(opt)
@@ -21583,10 +21366,7 @@ module ViewElementExtensions =
             let x = match flyoutBehavior with None -> x | Some opt -> x.FlyoutBehavior(opt)
             let x = match flyoutHeader with None -> x | Some opt -> x.FlyoutHeader(opt)
             let x = match flyoutHeaderBehavior with None -> x | Some opt -> x.FlyoutHeaderBehavior(opt)
-            let x = match flyoutHeaderTemplate with None -> x | Some opt -> x.FlyoutHeaderTemplate(opt)
             let x = match flyoutIsPresented with None -> x | Some opt -> x.FlyoutIsPresented(opt)
-            let x = match groupHeaderTemplate with None -> x | Some opt -> x.GroupHeaderTemplate(opt)
-            let x = match menuItemTemplate with None -> x | Some opt -> x.MenuItemTemplate(opt)
             let x = match route with None -> x | Some opt -> x.Route(opt)
             let x = match routeHost with None -> x | Some opt -> x.RouteHost(opt)
             let x = match routeScheme with None -> x | Some opt -> x.RouteScheme(opt)
@@ -21600,7 +21380,6 @@ module ViewElementExtensions =
             let x = match selectableItemsMode with None -> x | Some opt -> x.selectableItemsMode(opt)
             let x = match selectionChanged with None -> x | Some opt -> x.SelectionChanged(opt)
             let x = match location with None -> x | Some opt -> x.Location(opt)
-            let x = match contentTemplate with None -> x | Some opt -> x.ContentTemplate(opt)
             let x = match ssGoToAsync with None -> x | Some opt -> x.ssGoToAsync(opt)
             x
 
@@ -22092,14 +21871,10 @@ module ViewElementExtensions =
     let span (value: int) (x: ViewElement) = x.Span(value)
     /// Adjusts the EmptyView property in the visual element
     let emptyView (value: System.Object) (x: ViewElement) = x.EmptyView(value)
-    /// Adjusts the EmptyViewTemplate property in the visual element
-    let emptyViewTemplate (value: Xamarin.Forms.DataTemplate) (x: ViewElement) = x.EmptyViewTemplate(value)
     /// Adjusts the ItemsLayout property in the visual element
     let itemsLayout (value: Xamarin.Forms.IItemsLayout) (x: ViewElement) = x.ItemsLayout(value)
     /// Adjusts the ItemsSource property in the visual element
     let itemsSource (value: System.Collections.IEnumerable) (x: ViewElement) = x.ItemsSource(value)
-    /// Adjusts the ItemTemplate property in the visual element
-    let itemTemplate (value: Xamarin.Forms.DataTemplate) (x: ViewElement) = x.ItemTemplate(value)
     /// Adjusts the ScrollToRequested property in the visual element
     let scrollToRequested (value: Xamarin.Forms.ScrollToRequestEventArgs -> unit) (x: ViewElement) = x.ScrollToRequested(value)
     /// Adjusts the iScrollTo property in the visual element
@@ -22152,14 +21927,8 @@ module ViewElementExtensions =
     let flyoutHeader (value: System.Object) (x: ViewElement) = x.FlyoutHeader(value)
     /// Adjusts the FlyoutHeaderBehavior property in the visual element
     let flyoutHeaderBehavior (value: Xamarin.Forms.FlyoutHeaderBehavior) (x: ViewElement) = x.FlyoutHeaderBehavior(value)
-    /// Adjusts the FlyoutHeaderTemplate property in the visual element
-    let flyoutHeaderTemplate (value: Xamarin.Forms.DataTemplate) (x: ViewElement) = x.FlyoutHeaderTemplate(value)
     /// Adjusts the FlyoutIsPresented property in the visual element
     let flyoutIsPresented (value: bool) (x: ViewElement) = x.FlyoutIsPresented(value)
-    /// Adjusts the GroupHeaderTemplate property in the visual element
-    let groupHeaderTemplate (value: Xamarin.Forms.DataTemplate) (x: ViewElement) = x.GroupHeaderTemplate(value)
-    /// Adjusts the MenuItemTemplate property in the visual element
-    let menuItemTemplate (value: Xamarin.Forms.DataTemplate) (x: ViewElement) = x.MenuItemTemplate(value)
     /// Adjusts the Route property in the visual element
     let route (value: string) (x: ViewElement) = x.Route(value)
     /// Adjusts the RouteHost property in the visual element
@@ -22186,7 +21955,5 @@ module ViewElementExtensions =
     let selectionChanged (value: Xamarin.Forms.SelectionChangedEventArgs -> unit) (x: ViewElement) = x.SelectionChanged(value)
     /// Adjusts the Location property in the visual element
     let location (value: System.Uri) (x: ViewElement) = x.Location(value)
-    /// Adjusts the ContentTemplate property in the visual element
-    let contentTemplate (value: Xamarin.Forms.DataTemplate) (x: ViewElement) = x.ContentTemplate(value)
     /// Adjusts the ssGoToAsync property in the visual element
     let ssGoToAsync (value: string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind) (x: ViewElement) = x.ssGoToAsync(value)

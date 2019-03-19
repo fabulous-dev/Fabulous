@@ -922,7 +922,7 @@ module App =
                     
                     View.Shell( title = "TitleShell",
                         items = [
-                            View.ShellItem( title = "TitleshellItem",
+                            View.ShellItem(
                                 items = [
                                     View.ShellSection(items = [
                                         View.ShellContent(content=View.ContentPage(content=MainPageButton, title="ContentpageTitle"))         
