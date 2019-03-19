@@ -360,12 +360,12 @@ module App =
                                  View.Button(text = "ScrollView", command=(fun () -> dispatch (SetRootPageKind ScrollView)))
                                  View.Button(text = "Shell", command=(fun () -> dispatch (SetRootPageKind ShellView)))
                             ]))
-                     //.ToolbarItems([View.ToolbarItem(text="about", command=(fun () -> dispatch (SetRootPageKind (Choice true))))] )
-                     //.TitleView(View.StackLayout(orientation=StackOrientation.Horizontal, children=[
-                     //        View.Label(text="fabulous", verticalOptions=LayoutOptions.Center)
-                     //        View.Label(text="rootpage", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.CenterAndExpand)
-                     //    ]
-                     //))
+                     .ToolbarItems([View.ToolbarItem(text="about", command=(fun () -> dispatch (SetRootPageKind (Choice true))))] )
+                     .TitleView(View.StackLayout(orientation=StackOrientation.Horizontal, children=[
+                             View.Label(text="fabulous", verticalOptions=LayoutOptions.Center)
+                             View.Label(text="rootpage", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.CenterAndExpand)
+                         ]
+                     ))
 
                   if showAbout then 
                     yield 
