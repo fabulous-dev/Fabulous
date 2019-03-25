@@ -34,13 +34,13 @@ let view (model: Model) dispatch : ViewElement =
     let makeEntryCell text = View.Entry(text = text, textChanged = fun textArgs -> UpdateAnimal textArgs.NewTextValue |> dispatch)
     View.ContentPage(
         content =
-			View.StackLayout(
-				children =
-					match model.AnimalName with
-					| ValidAnimal validName -> [ makeEntryCell validName ]
-					| InvalidAnimal invalidName ->
-						[ makeEntryCell invalidName
-						  View.Label(text = sprintf "%s is not a valid animal name. Try %A" invalidName validAnimalNames) ]))
+            View.StackLayout(
+                children =
+                    match model.AnimalName with
+                    | ValidAnimal validName -> [ makeEntryCell validName ]
+                    | InvalidAnimal invalidName ->
+                        [ makeEntryCell invalidName
+                          View.Label(text = sprintf "%s is not a valid animal name. Try %A" invalidName validAnimalNames) ]))
 
 let init () = { AnimalName = validateAnimal "Emu" }
 ```
