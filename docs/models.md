@@ -44,7 +44,7 @@ let view (model: Model) dispatch : ViewElement =
 
 let init () = { AnimalName = validateAnimal "Emu" }
 ```
-A more advanced validation might use the `Result<'T,'TError>` type to wrap parts of the model that require validation: in the previous example the `Result` type has somewhat been reinvented. Using `Result` provides a consistient way of knowing which parts of the model are in a valid state, use of the standard `Result` functions like `map` and `bind` to peform branching logic, and more comprehensive error messaging. One thing to note is that `'TError` will usually need to carry the original input value so it can be displayed back to the user.
+A more advanced validation might use the `Result<'T,'TError>` type to wrap parts of the model that require validation: in the previous example the `Result` type has somewhat been reinvented. Using `Result` provides a consistent way of knowing which parts of the model are in a valid state, use of the standard `Result` functions like `map` and `bind` to perform branching logic, and more comprehensive error messaging. One thing to note is that `'TError` will usually need to carry the original input value so it can be displayed back to the user.
 
 ```fSharp
 type Animal = Animal of string
