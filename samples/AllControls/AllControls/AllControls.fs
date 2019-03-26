@@ -20,6 +20,8 @@ type RootPageKind =
     | WebCall
     | ScrollView
     | ShellView
+    | CollectionView
+    | CarouselView
 
 type Model = 
   { RootPageKind: RootPageKind
@@ -359,6 +361,8 @@ module App =
                                  View.Button(text = "WebRequest", command=(fun () -> dispatch (SetRootPageKind WebCall)))
                                  View.Button(text = "ScrollView", command=(fun () -> dispatch (SetRootPageKind ScrollView)))
                                  View.Button(text = "Shell", command=(fun () -> dispatch (SetRootPageKind ShellView)))
+                                 View.Button(text = "CollectionView", command=(fun () -> dispatch (SetRootPageKind CollectionView)))
+                                 View.Button(text = "CarouselView", command=(fun () -> dispatch (SetRootPageKind CarouselView)))
                             ]))
                      .ToolbarItems([View.ToolbarItem(text="about", command=(fun () -> dispatch (SetRootPageKind (Choice true))))] )
                      .TitleView(View.StackLayout(orientation=StackOrientation.Horizontal, children=[
@@ -930,6 +934,58 @@ module App =
                                 ])
                         ])
                 | _ -> View.ContentPage(content = View.Label(text="Your Platform does not support Shell"))
+
+         | CollectionView ->
+            match Device.RuntimePlatform with
+                | Device.iOS | Device.Android -> 
+                    View.ContentPage(content=View.StackLayout(children = [
+                            MainPageButton
+                            // use Collectionview instead of listview 
+                            View.CollectionView(itemsSource= ["Person 1"; "Person2";"Person3";"Person4";"Person5";"Person6";"Person7";"Person8";"Person9";"Person11";"Person12";"Person13";"Person14";] )
+                        ]
+                    ))
+
+                | _ -> View.ContentPage(content = View.Label(text="Your Platform does not support CollectionView"))
+
+         | CarouselView ->
+            match Device.RuntimePlatform with
+                | Device.iOS | Device.Android -> 
+                    View.ContentPage(content=
+                        View.StackLayout(
+                            children = [
+                                MainPageButton
+                                View.CarouselView(itemsSource = [
+                                    "Alan"
+                                    "Betty"
+                                    "Charles"
+                                    "David"
+                                    "Edward"
+                                    "Francis"
+                                    "Gary"
+                                    "Helen"
+                                    "Ivan"
+                                    "Joel"
+                                    "Kelly"
+                                    "Larry"
+                                    "Mary"
+                                    "Nancy"
+                                    "Olivia"
+                                    "Peter"
+                                    "Quincy"
+                                    "Robert"
+                                    "Stephen"
+                                    "Timothy"
+                                    "Ursula"
+                                    "Vincent"
+                                    "William"
+                                    "Xavier"
+                                    "Yvonne"
+                                    "Zack"
+                                ], margin=10.)
+                            ]
+                    ))
+
+                | _ -> View.ContentPage(content = View.Label(text="Your Platform does not support CarouselView"))
 
     
 type App () as app = 
