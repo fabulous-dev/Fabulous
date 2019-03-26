@@ -389,8 +389,8 @@ module Converters =
         let create (desc: ViewElement) = (desc.Create() :?> Cell)
 
         match prevCollOpt with
-        | ValueNone -> ()
-        | ValueSome _ -> target.Root <- TableRoot()
+        | ValueNone -> target.Root <- TableRoot()
+        | ValueSome _ -> ()
 
         updateCollectionGeneric prevCollOpt collOpt target.Root 
             (fun (s, es) -> let section = TableSection(s) in section.Add(Seq.map create es); section) 
