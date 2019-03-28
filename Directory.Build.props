@@ -1,10 +1,10 @@
 <Project>
   <!-- NuGet Specs -->
   <PropertyGroup>
-    <Version>0.33.1</Version>
+    <Version>0.33.2</Version>
     <Authors>Fabulous Contributors</Authors>
-    <PackageVersion>0.33.1</PackageVersion>
-    <PackageReleaseNotes>[LiveUpdate] Fixed a bug where any changes throw a NullReferenceException (https://github.com/fsprojects/Fabulous/pull/355)</PackageReleaseNotes>
+    <PackageVersion>0.33.2</PackageVersion>
+    <PackageReleaseNotes>[DynamicViews] Fixed an issue in TableView where the items weren't recycled (https://github.com/fsprojects/Fabulous/pull/364)</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/fsprojects/Fabulous</PackageProjectUrl>
