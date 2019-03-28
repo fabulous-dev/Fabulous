@@ -1,3 +1,7 @@
+#### 0.33.2
+
+* [DynamicViews] Fixed an issue in TableView where the items weren't recycled (https://github.com/fsprojects/Fabulous/pull/364)
+
 #### 0.33.1
 
 * [LiveUpdate] Fixed a bug where any changes throw a NullReferenceException (https://github.com/fsprojects/Fabulous/pull/355)
