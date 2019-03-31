@@ -9,7 +9,14 @@ Using OxyPlot Charts
 Below is an example of an extension for [OxyPlot](http://docs.oxyplot.org/). To use the extension:
 
 1. Follow the instructions to [add references and initialize renderers](http://docs.oxyplot.org/en/latest/getting-started/hello-xamarin-forms.html)
-2. Add a reference to the [`Fabulous.OxyPlot`](https://www.nuget.org/packages/Fabulous.OxyPlot) package across your solution.
+2. `Fabulous.Oxyplot` references a version of `Oxyplot.Xamarin.Forms` that is on the Oxyplot MyGet feed instead of NuGet.
+Therefore, add these lines inside your cross-platform .NET Standard `.fsproj` file:
+```xml
+  <PropertyGroup>
+    <RestoreSources>$(RestoreSources);https://www.myget.org/F/oxyplot/api/v3/index.json;https://api.nuget.org/v3/index.json</RestoreSources>
+  </PropertyGroup>
+```
+3. Add a reference to the [`Fabulous.OxyPlot`](https://www.nuget.org/packages/Fabulous.OxyPlot) package across your solution.
 
 [![OxyPlot example](https://user-images.githubusercontent.com/7204669/42291878-777cb47c-7fc6-11e8-9eaa-4dfd784bddf2.png)](https://user-images.githubusercontent.com/7204669/42291878-777cb47c-7fc6-11e8-9eaa-4dfd784bddf2.png)
 
