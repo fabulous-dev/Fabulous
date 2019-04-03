@@ -116,6 +116,8 @@ The model state of the app is re-initialized.
 
 6. There may be issues running on networks with network policy restrictions
 
+7. In Visual Studio 2019, by default you cannot edit files whilst debugging. To enable file edits, turn **OFF** Edit and Continue by going to *Tools->Options*, selecting *Debug->General* and **unchecking** *Enable Edit and Continue*.
+
 ### Troubleshooting
 
 The LiveUpdate mechanism is very experimental.
