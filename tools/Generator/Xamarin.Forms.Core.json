@@ -2425,11 +2425,31 @@
     },
     {
       "name": "Xamarin.Forms.CarouselView",
-      "members": []
+      "customType": "Fabulous.DynamicViews.CustomCarouselView",
+      "members": [
+        {
+          "name": "ItemsSource",
+          "uniqueName": "CarouselViewItems",
+          "shortName": "items",
+          "inputType": "seq<ViewElement>",
+          "modelType": "seq<ViewElement>",
+          "updateCode": "updateCarouselViewItems"
+        }
+      ]
     },
     {
       "name": "Xamarin.Forms.CollectionView",
-      "members": []
+      "customType": "Fabulous.DynamicViews.CustomCollectionListView",
+      "members": [
+        {
+          "name": "ItemsSource",
+          "uniqueName": "CollectionViewItems",
+          "shortName": "items",
+          "inputType": "seq<ViewElement>",
+          "modelType": "seq<ViewElement>",
+          "updateCode": "updateCollectionViewItems"
+        }
+      ]
     }
   ]
 }

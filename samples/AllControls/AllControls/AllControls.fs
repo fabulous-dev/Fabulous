@@ -941,7 +941,20 @@ module App =
                     View.ContentPage(content=View.StackLayout(children = [
                             MainPageButton
                             // use Collectionview instead of listview 
-                            View.CollectionView(itemsSource= ["Person 1"; "Person2";"Person3";"Person4";"Person5";"Person6";"Person7";"Person8";"Person9";"Person11";"Person12";"Person13";"Person14";] )
+                            View.CollectionView(items= [
+                                View.Label(text="Person 1") 
+                                View.Label(text="Person2")
+                                View.Label(text="Person3")
+                                View.Label(text="Person4")
+                                View.Label(text="Person5")
+                                View.Label(text="Person6")
+                                View.Label(text="Person7")
+                                View.Label(text="Person8")
+                                View.Label(text="Person9")
+                                View.Label(text="Person11")
+                                View.Label(text="Person12")
+                                View.Label(text="Person13")
+                                View.Label(text="Person14")] )
                         ]
                     ))
 
@@ -955,32 +968,19 @@ module App =
                             children = [
                                 MainPageButton
                                 View.CarouselView(itemsSource = [
-                                    "Alan"
-                                    "Betty"
-                                    "Charles"
-                                    "David"
-                                    "Edward"
-                                    "Francis"
-                                    "Gary"
-                                    "Helen"
-                                    "Ivan"
-                                    "Joel"
-                                    "Kelly"
-                                    "Larry"
-                                    "Mary"
-                                    "Nancy"
-                                    "Olivia"
-                                    "Peter"
-                                    "Quincy"
-                                    "Robert"
-                                    "Stephen"
-                                    "Timothy"
-                                    "Ursula"
-                                    "Vincent"
-                                    "William"
-                                    "Xavier"
-                                    "Yvonne"
-                                    "Zack"
+                                    View.Label(text="Person1") 
+                                    View.Label(text="Person2")
+                                    View.Label(text="Person3")
+                                    View.Label(text="Person4")
+                                    View.Label(text="Person5")
+                                    View.Label(text="Person6")
+                                    View.Label(text="Person7")
+                                    View.Label(text="Person8")
+                                    View.Label(text="Person9")
+                                    View.Label(text="Person11")
+                                    View.Label(text="Person12")
+                                    View.Label(text="Person13")
+                                    View.Label(text="Person14")
                                 ], margin=10.)
                             ]
                     ))

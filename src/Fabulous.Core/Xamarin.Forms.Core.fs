@@ -295,6 +295,8 @@ module ViewAttributes =
     let SelectionChangedAttribKey : AttributeKey<_> = AttributeKey<_>("SelectionChanged")
     let LocationAttribKey : AttributeKey<_> = AttributeKey<_>("Location")
     let ssGoToAsyncAttribKey : AttributeKey<_> = AttributeKey<_>("ssGoToAsync")
+    let CarouselViewItemsAttribKey : AttributeKey<_> = AttributeKey<_>("CarouselViewItems")
+    let CollectionViewItemsAttribKey : AttributeKey<_> = AttributeKey<_>("CollectionViewItems")
 
 type ViewProto() =
     static member val ProtoElement : ViewElement option = None with get, set
@@ -13957,6 +13959,7 @@ type ViewBuilders() =
 
     /// Builds the attributes for a CarouselView in the view
     static member inline BuildCarouselView(attribCount: int,
+                                           ?items: seq<ViewElement>,
                                            ?emptyView: System.Object,
                                            ?itemsLayout: Xamarin.Forms.IItemsLayout,
                                            ?itemsSource: System.Collections.IEnumerable,
@@ -14002,13 +14005,17 @@ type ViewBuilders() =
                                            ?automationId: string,
                                            ?created: obj -> unit,
                                            ?ref: ViewRef) = 
+
+        let attribCount = match items with Some _ -> attribCount + 1 | None -> attribCount
+
         let attribBuilder = ViewBuilders.BuildItemsView(attribCount, ?emptyView=emptyView, ?itemsLayout=itemsLayout, ?itemsSource=itemsSource, ?scrollToRequested=scrollToRequested, ?scrollTo=scrollTo, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        match items with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CarouselViewItemsAttribKey, (v)) 
         attribBuilder
 
     static member val CreateFuncCarouselView : (unit -> Xamarin.Forms.CarouselView) = (fun () -> ViewBuilders.CreateCarouselView()) with get, set
 
     static member CreateCarouselView () : Xamarin.Forms.CarouselView =
-        upcast (new Xamarin.Forms.CarouselView())
+        upcast (new Fabulous.DynamicViews.CustomCarouselView())
 
     static member val UpdateFuncCarouselView =
         (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.CarouselView) -> ViewBuilders.UpdateCarouselView (prevOpt, curr, target)) 
@@ -14017,11 +14024,21 @@ type ViewBuilders() =
         // update the inherited ItemsView element
         let baseElement = (if ViewProto.ProtoItemsView.IsNone then ViewProto.ProtoItemsView <- Some (ViewBuilders.ConstructItemsView())); ViewProto.ProtoItemsView.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
-        ignore prevOpt
-        ignore curr
-        ignore target
+        let mutable prevCarouselViewItemsOpt = ValueNone
+        let mutable currCarouselViewItemsOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.CarouselViewItemsAttribKey.KeyValue then 
+                currCarouselViewItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.CarouselViewItemsAttribKey.KeyValue then 
+                    prevCarouselViewItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
+        updateCarouselViewItems prevCarouselViewItemsOpt currCarouselViewItemsOpt target
 
-    static member inline ConstructCarouselView(?emptyView: System.Object,
+    static member inline ConstructCarouselView(?items: seq<ViewElement>,
+                                               ?emptyView: System.Object,
                                                ?itemsLayout: Xamarin.Forms.IItemsLayout,
                                                ?itemsSource: System.Collections.IEnumerable,
                                                ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
@@ -14068,6 +14085,7 @@ type ViewBuilders() =
                                                ?ref: ViewRef<Xamarin.Forms.CarouselView>) = 
 
         let attribBuilder = ViewBuilders.BuildCarouselView(0,
+                               ?items=items,
                                ?emptyView=emptyView,
                                ?itemsLayout=itemsLayout,
                                ?itemsSource=itemsSource,
@@ -14118,6 +14136,7 @@ type ViewBuilders() =
 
     /// Builds the attributes for a CollectionView in the view
     static member inline BuildCollectionView(attribCount: int,
+                                             ?items: seq<ViewElement>,
                                              ?selectedItem: System.Object,
                                              ?selectionChangedCommand: unit -> unit,
                                              ?selectionChangedCommandParameter: System.Object,
@@ -14168,13 +14187,17 @@ type ViewBuilders() =
                                              ?automationId: string,
                                              ?created: obj -> unit,
                                              ?ref: ViewRef) = 
+
+        let attribCount = match items with Some _ -> attribCount + 1 | None -> attribCount
+
         let attribBuilder = ViewBuilders.BuildSelectableItemsView(attribCount, ?selectedItem=selectedItem, ?selectionChangedCommand=selectionChangedCommand, ?selectionChangedCommandParameter=selectionChangedCommandParameter, ?selectionMode=selectionMode, ?selectionChanged=selectionChanged, ?emptyView=emptyView, ?itemsLayout=itemsLayout, ?itemsSource=itemsSource, ?scrollToRequested=scrollToRequested, ?scrollTo=scrollTo, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        match items with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CollectionViewItemsAttribKey, (v)) 
         attribBuilder
 
     static member val CreateFuncCollectionView : (unit -> Xamarin.Forms.CollectionView) = (fun () -> ViewBuilders.CreateCollectionView()) with get, set
 
     static member CreateCollectionView () : Xamarin.Forms.CollectionView =
-        upcast (new Xamarin.Forms.CollectionView())
+        upcast (new Fabulous.DynamicViews.CustomCollectionListView())
 
     static member val UpdateFuncCollectionView =
         (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.CollectionView) -> ViewBuilders.UpdateCollectionView (prevOpt, curr, target)) 
@@ -14183,11 +14206,21 @@ type ViewBuilders() =
         // update the inherited SelectableItemsView element
         let baseElement = (if ViewProto.ProtoSelectableItemsView.IsNone then ViewProto.ProtoSelectableItemsView <- Some (ViewBuilders.ConstructSelectableItemsView())); ViewProto.ProtoSelectableItemsView.Value
         baseElement.UpdateInherited (prevOpt, curr, target)
-        ignore prevOpt
-        ignore curr
-        ignore target
+        let mutable prevCollectionViewItemsOpt = ValueNone
+        let mutable currCollectionViewItemsOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.CollectionViewItemsAttribKey.KeyValue then 
+                currCollectionViewItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.CollectionViewItemsAttribKey.KeyValue then 
+                    prevCollectionViewItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
+        updateCollectionViewItems prevCollectionViewItemsOpt currCollectionViewItemsOpt target
 
-    static member inline ConstructCollectionView(?selectedItem: System.Object,
+    static member inline ConstructCollectionView(?items: seq<ViewElement>,
+                                                 ?selectedItem: System.Object,
                                                  ?selectionChangedCommand: unit -> unit,
                                                  ?selectionChangedCommandParameter: System.Object,
                                                  ?selectionMode: Xamarin.Forms.SelectionMode,
@@ -14239,6 +14272,7 @@ type ViewBuilders() =
                                                  ?ref: ViewRef<Xamarin.Forms.CollectionView>) = 
 
         let attribBuilder = ViewBuilders.BuildCollectionView(0,
+                               ?items=items,
                                ?selectedItem=selectedItem,
                                ?selectionChangedCommand=selectionChangedCommand,
                                ?selectionChangedCommandParameter=selectionChangedCommandParameter,
@@ -15375,11 +15409,15 @@ type ShellSectionViewer(element: ViewElement) =
 type CarouselViewViewer(element: ViewElement) =
     inherit ItemsViewViewer(element)
     do if not ((typeof<Xamarin.Forms.CarouselView>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.CarouselView' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the ItemsSource property
+    member this.ItemsSource = element.GetAttributeKeyed(ViewAttributes.CarouselViewItemsAttribKey)
 
 /// Viewer that allows to read the properties of a ViewElement representing a CollectionView
 type CollectionViewViewer(element: ViewElement) =
     inherit SelectableItemsViewViewer(element)
     do if not ((typeof<Xamarin.Forms.CollectionView>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.CollectionView' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the ItemsSource property
+    member this.ItemsSource = element.GetAttributeKeyed(ViewAttributes.CollectionViewItemsAttribKey)
 
 type View() =
     /// Describes a Element in the view
@@ -19974,7 +20012,8 @@ type View() =
                                ?ref=ref)
 
     /// Describes a CarouselView in the view
-    static member inline CarouselView(?emptyView: System.Object,
+    static member inline CarouselView(?items: seq<ViewElement>,
+                                      ?emptyView: System.Object,
                                       ?itemsLayout: Xamarin.Forms.IItemsLayout,
                                       ?itemsSource: System.Collections.IEnumerable,
                                       ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
@@ -20020,7 +20059,8 @@ type View() =
                                       ?created: (Xamarin.Forms.CarouselView -> unit),
                                       ?ref: ViewRef<Xamarin.Forms.CarouselView>) =
 
-        ViewBuilders.ConstructCarouselView(?emptyView=emptyView,
+        ViewBuilders.ConstructCarouselView(?items=items,
+                               ?emptyView=emptyView,
                                ?itemsLayout=itemsLayout,
                                ?itemsSource=itemsSource,
                                ?scrollToRequested=scrollToRequested,
@@ -20067,7 +20107,8 @@ type View() =
                                ?ref=ref)
 
     /// Describes a CollectionView in the view
-    static member inline CollectionView(?selectedItem: System.Object,
+    static member inline CollectionView(?items: seq<ViewElement>,
+                                        ?selectedItem: System.Object,
                                         ?selectionChangedCommand: unit -> unit,
                                         ?selectionChangedCommandParameter: System.Object,
                                         ?selectionMode: Xamarin.Forms.SelectionMode,
@@ -20118,7 +20159,8 @@ type View() =
                                         ?created: (Xamarin.Forms.CollectionView -> unit),
                                         ?ref: ViewRef<Xamarin.Forms.CollectionView>) =
 
-        ViewBuilders.ConstructCollectionView(?selectedItem=selectedItem,
+        ViewBuilders.ConstructCollectionView(?items=items,
+                               ?selectedItem=selectedItem,
                                ?selectionChangedCommand=selectionChangedCommand,
                                ?selectionChangedCommandParameter=selectionChangedCommandParameter,
                                ?selectionMode=selectionMode,
@@ -21036,6 +21078,12 @@ module ViewElementExtensions =
         /// Adjusts the ssGoToAsync property in the visual element
         member x.ssGoToAsync(value: string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind) = x.WithAttribute(ViewAttributes.ssGoToAsyncAttribKey, (value))
 
+        /// Adjusts the CarouselViewItems property in the visual element
+        member x.CarouselViewItems(value: seq<ViewElement>) = x.WithAttribute(ViewAttributes.CarouselViewItemsAttribKey, (value))
+
+        /// Adjusts the CollectionViewItems property in the visual element
+        member x.CollectionViewItems(value: seq<ViewElement>) = x.WithAttribute(ViewAttributes.CollectionViewItemsAttribKey, (value))
+
         member x.With(?classId: string, ?styleId: string, ?automationId: string, ?anchorX: double, ?anchorY: double, 
                       ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, 
                       ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, 
@@ -21093,7 +21141,7 @@ module ViewElementExtensions =
                       ?flyoutHeader: System.Object, ?flyoutHeaderBehavior: Xamarin.Forms.FlyoutHeaderBehavior, ?flyoutIsPresented: bool, ?route: string, ?routeHost: string, 
                       ?routeScheme: string, ?onNavigated: Xamarin.Forms.ShellNavigatedEventArgs -> unit, ?onNavigating: Xamarin.Forms.ShellNavigatingEventArgs -> unit, ?goToAsync: Xamarin.Forms.ShellNavigationState * Fabulous.DynamicViews.AnimationKind, ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions, 
                       ?selectedItem: System.Object, ?selectionChangedCommand: unit -> unit, ?selectionChangedCommandParameter: System.Object, ?selectableItemsMode: Xamarin.Forms.SelectionMode, ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit, 
-                      ?location: System.Uri, ?ssGoToAsync: string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind) =
+                      ?location: System.Uri, ?ssGoToAsync: string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind, ?carouselViewItems: seq<ViewElement>, ?collectionViewItems: seq<ViewElement>) =
             let x = match classId with None -> x | Some opt -> x.ClassId(opt)
             let x = match styleId with None -> x | Some opt -> x.StyleId(opt)
             let x = match automationId with None -> x | Some opt -> x.AutomationId(opt)
@@ -21381,6 +21429,8 @@ module ViewElementExtensions =
             let x = match selectionChanged with None -> x | Some opt -> x.SelectionChanged(opt)
             let x = match location with None -> x | Some opt -> x.Location(opt)
             let x = match ssGoToAsync with None -> x | Some opt -> x.ssGoToAsync(opt)
+            let x = match carouselViewItems with None -> x | Some opt -> x.CarouselViewItems(opt)
+            let x = match collectionViewItems with None -> x | Some opt -> x.CollectionViewItems(opt)
             x
 
     /// Adjusts the ClassId property in the visual element
@@ -21957,3 +22007,7 @@ module ViewElementExtensions =
     let location (value: System.Uri) (x: ViewElement) = x.Location(value)
     /// Adjusts the ssGoToAsync property in the visual element
     let ssGoToAsync (value: string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind) (x: ViewElement) = x.ssGoToAsync(value)
+    /// Adjusts the CarouselViewItems property in the visual element
+    let carouselViewItems (value: seq<ViewElement>) (x: ViewElement) = x.CarouselViewItems(value)
+    /// Adjusts the CollectionViewItems property in the visual element
+    let collectionViewItems (value: seq<ViewElement>) (x: ViewElement) = x.CollectionViewItems(value)

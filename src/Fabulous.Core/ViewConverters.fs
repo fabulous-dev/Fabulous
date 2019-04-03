@@ -24,6 +24,11 @@ type IListElement =
     inherit INotifyPropertyChanged
     abstract Key : ViewElement
 
+[<AllowNullLiteral>]
+type IItemListElement = 
+    inherit INotifyPropertyChanged
+    abstract Key : ViewElement
+
 /// A custom data element for the ListView view element
 [<AllowNullLiteral>]
 type ListElementData(key) = 
@@ -39,6 +44,21 @@ type ListElementData(key) =
         and set(value) =
             data <- value
             ev.Trigger(x, PropertyChangedEventArgs "Key")
+
+[<AllowNullLiteral>]
+type ItemListElementData(key) = 
+    let ev = new Event<_,_>()
+    let mutable data = key
+    
+    interface IItemListElement with
+        member x.Key = data
+        [<CLIEvent>] member x.PropertyChanged = ev.Publish
+        
+    member x.Key
+        with get() = data
+        and set(value) =
+            data <- value
+            ev.Trigger(x, PropertyChangedEventArgs "Key")        
 
 /// A custom data element for the GroupedListView view element
 [<AllowNullLiteral>]
@@ -111,9 +131,58 @@ type ViewElementCell() =
                 modelOpt <- None
             | None -> ()
 
+type ItemViewElementCell() = 
+    inherit ContentView()
+
+    let mutable listElementOpt : IItemListElement option = None
+    let mutable modelOpt : ViewElement option = None
+    
+    let createView (newModel: ViewElement) =
+        match newModel.Create () with 
+        | :? View as v -> v
+        | x -> failwithf "The cells of a CollectionView must each be some kind of 'View' and not a '%A'" (x.GetType())
+
+    member x.OnDataPropertyChanged = PropertyChangedEventHandler(fun _ args ->
+        match args.PropertyName, listElementOpt, modelOpt with
+        | "Key", Some curr, Some prevModel ->
+            curr.Key.UpdateIncremental (prevModel, x.Content)
+            modelOpt <- Some curr.Key
+        | _ -> ()
+    )
+
+    override x.OnBindingContextChanged () =
+        base.OnBindingContextChanged ()
+        match x.BindingContext with
+        | :? IItemListElement as curr -> 
+            let newModel = curr.Key
+            match listElementOpt with 
+            | Some prev ->
+                prev.PropertyChanged.RemoveHandler x.OnDataPropertyChanged
+                curr.PropertyChanged.AddHandler x.OnDataPropertyChanged
+                newModel.UpdateIncremental (prev.Key, x.Content)
+            | None -> 
+                curr.PropertyChanged.AddHandler x.OnDataPropertyChanged
+                x.Content <- createView newModel
+
+            listElementOpt <- Some curr
+            modelOpt <- Some curr.Key
+        | _ ->
+            match listElementOpt with
+            | Some prev -> 
+                prev.PropertyChanged.RemoveHandler x.OnDataPropertyChanged
+                listElementOpt <- None
+                modelOpt <- None
+            | None -> ()
+
 /// A custom control for the ListView view element
 type CustomListView() = 
     inherit ListView(ItemTemplate=DataTemplate(typeof<ViewElementCell>))
+
+type CustomCollectionListView() = 
+    inherit CollectionView(ItemTemplate=DataTemplate(typeof<ItemViewElementCell>))
+
+type CustomCarouselView() = 
+    inherit CarouselView(ItemTemplate=DataTemplate(typeof<ItemViewElementCell>))
 
 /// A custom control for the ListViewGrouped view element
 type CustomGroupListView() = 
@@ -370,6 +439,26 @@ module Converters =
                 target.ItemsSource <- oc
                 oc
         updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetColl ListElementData (fun _ _ _ -> ()) canReuseChild (fun _ curr target -> target.Key <- curr) 
+
+    let internal updateCollectionViewItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.CollectionView) = 
+        let targetColl = 
+            match target.ItemsSource with 
+            | :? ObservableCollection<ItemListElementData> as oc -> oc
+            | _ -> 
+                let oc = ObservableCollection<ItemListElementData>()
+                target.ItemsSource <- oc
+                oc
+        updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetColl ItemListElementData (fun _ _ _ -> ()) canReuseChild (fun _ curr target -> target.Key <- curr) 
+
+    let internal updateCarouselViewItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.CarouselView) = 
+        let targetColl = 
+            match target.ItemsSource with 
+            | :? ObservableCollection<ItemListElementData> as oc -> oc
+            | _ -> 
+                let oc = ObservableCollection<ItemListElementData>()
+                target.ItemsSource <- oc
+                oc
+        updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetColl ItemListElementData (fun _ _ _ -> ()) canReuseChild (fun _ curr target -> target.Key <- curr) 
 
     let private updateListGroupData (_prevShortName: string, _prevKey, prevColl: ViewElement[]) (currShortName: string, currKey, currColl: ViewElement[]) (target: ListGroupData) =
         target.ShortName <- currShortName
