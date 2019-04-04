@@ -101,7 +101,7 @@ In Fabulous, resources dictionaries are replaced by "simple F# programming", e.g
 let horzOptions = LayoutOptions.Center
 let vertOptions = LayoutOptions.CenterAndExpand
 ```
-is basically the eqivalent of Xaml:
+is basically the equivalent of Xaml:
 ```xml
 <ContentPage.Resources>
     <ResourceDictionary>
