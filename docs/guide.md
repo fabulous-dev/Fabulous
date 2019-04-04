@@ -65,7 +65,7 @@ The view function computes an immutable Xaml-like description. In the above exam
 ### The update function
 
 Each model gets an `update` function for message processing. The messages are either messages from the `view` or from external events.
-If using `Program.mkProgram` your model may also return new commands to trigger as a result of processing a message.
+If using `Program.mkProgram` your `update` function may also return new commands to trigger as a result of processing a message. (A command is simply a function that may dispatch one or more messages at some point, and is called by the Fabulous runtime.)
 
 Structure of a Project
 ------
