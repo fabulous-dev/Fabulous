@@ -60,7 +60,7 @@ The init function returns your initial model.  The update function updates the m
 
 ### The view function
 
-The view function computes an immutable Xaml-like description. In the above example, the choice between a label and button depends on the `model.Pressed` value.
+The view function computes an immutable Xaml-like description.
 
 ### The update function
 
