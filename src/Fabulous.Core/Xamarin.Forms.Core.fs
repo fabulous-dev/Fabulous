@@ -86,7 +86,6 @@ module ViewAttributes =
     let ButtonCanExecuteAttribKey : AttributeKey<_> = AttributeKey<_>("ButtonCanExecute")
     let BorderColorAttribKey : AttributeKey<_> = AttributeKey<_>("BorderColor")
     let BorderWidthAttribKey : AttributeKey<_> = AttributeKey<_>("BorderWidth")
-    let CommandParameterAttribKey : AttributeKey<_> = AttributeKey<_>("CommandParameter")
     let ContentLayoutAttribKey : AttributeKey<_> = AttributeKey<_>("ContentLayout")
     let ButtonCornerRadiusAttribKey : AttributeKey<_> = AttributeKey<_>("ButtonCornerRadius")
     let ButtonImageSourceAttribKey : AttributeKey<_> = AttributeKey<_>("ButtonImageSource")
@@ -2987,7 +2986,6 @@ type ViewBuilders() =
                                      ?canExecute: bool,
                                      ?borderColor: Xamarin.Forms.Color,
                                      ?borderWidth: double,
-                                     ?commandParameter: System.Object,
                                      ?contentLayout: Xamarin.Forms.Button.ButtonContentLayout,
                                      ?cornerRadius: int,
                                      ?fontFamily: string,
@@ -3042,7 +3040,6 @@ type ViewBuilders() =
         let attribCount = match canExecute with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match borderColor with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match borderWidth with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match commandParameter with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match contentLayout with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match cornerRadius with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match fontFamily with Some _ -> attribCount + 1 | None -> attribCount
@@ -3058,7 +3055,6 @@ type ViewBuilders() =
         match canExecute with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ButtonCanExecuteAttribKey, (v)) 
         match borderColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.BorderColorAttribKey, (v)) 
         match borderWidth with None -> () | Some v -> attribBuilder.Add(ViewAttributes.BorderWidthAttribKey, (v)) 
-        match commandParameter with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CommandParameterAttribKey, (v)) 
         match contentLayout with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ContentLayoutAttribKey, (v)) 
         match cornerRadius with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ButtonCornerRadiusAttribKey, (v)) 
         match fontFamily with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FontFamilyAttribKey, (v)) 
@@ -3091,8 +3087,6 @@ type ViewBuilders() =
         let mutable currBorderColorOpt = ValueNone
         let mutable prevBorderWidthOpt = ValueNone
         let mutable currBorderWidthOpt = ValueNone
-        let mutable prevCommandParameterOpt = ValueNone
-        let mutable currCommandParameterOpt = ValueNone
         let mutable prevContentLayoutOpt = ValueNone
         let mutable currContentLayoutOpt = ValueNone
         let mutable prevButtonCornerRadiusOpt = ValueNone
@@ -3120,8 +3114,6 @@ type ViewBuilders() =
                 currBorderColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
             if kvp.Key = ViewAttributes.BorderWidthAttribKey.KeyValue then 
                 currBorderWidthOpt <- ValueSome (kvp.Value :?> double)
-            if kvp.Key = ViewAttributes.CommandParameterAttribKey.KeyValue then 
-                currCommandParameterOpt <- ValueSome (kvp.Value :?> System.Object)
             if kvp.Key = ViewAttributes.ContentLayoutAttribKey.KeyValue then 
                 currContentLayoutOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Button.ButtonContentLayout)
             if kvp.Key = ViewAttributes.ButtonCornerRadiusAttribKey.KeyValue then 
@@ -3152,8 +3144,6 @@ type ViewBuilders() =
                     prevBorderColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
                 if kvp.Key = ViewAttributes.BorderWidthAttribKey.KeyValue then 
                     prevBorderWidthOpt <- ValueSome (kvp.Value :?> double)
-                if kvp.Key = ViewAttributes.CommandParameterAttribKey.KeyValue then 
-                    prevCommandParameterOpt <- ValueSome (kvp.Value :?> System.Object)
                 if kvp.Key = ViewAttributes.ContentLayoutAttribKey.KeyValue then 
                     prevContentLayoutOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Button.ButtonContentLayout)
                 if kvp.Key = ViewAttributes.ButtonCornerRadiusAttribKey.KeyValue then 
@@ -3186,11 +3176,6 @@ type ViewBuilders() =
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.BorderWidth <-  currValue
         | ValueSome _, ValueNone -> target.BorderWidth <- -1.0
-        | ValueNone, ValueNone -> ()
-        match prevCommandParameterOpt, currCommandParameterOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.CommandParameter <-  currValue
-        | ValueSome _, ValueNone -> target.CommandParameter <- null
         | ValueNone, ValueNone -> ()
         match prevContentLayoutOpt, currContentLayoutOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
@@ -3238,7 +3223,6 @@ type ViewBuilders() =
                                          ?canExecute: bool,
                                          ?borderColor: Xamarin.Forms.Color,
                                          ?borderWidth: double,
-                                         ?commandParameter: System.Object,
                                          ?contentLayout: Xamarin.Forms.Button.ButtonContentLayout,
                                          ?cornerRadius: int,
                                          ?fontFamily: string,
@@ -3294,7 +3278,6 @@ type ViewBuilders() =
                                ?canExecute=canExecute,
                                ?borderColor=borderColor,
                                ?borderWidth=borderWidth,
-                               ?commandParameter=commandParameter,
                                ?contentLayout=contentLayout,
                                ?cornerRadius=cornerRadius,
                                ?fontFamily=fontFamily,
@@ -10771,7 +10754,6 @@ type ViewBuilders() =
     static member inline BuildMenuItem(attribCount: int,
                                        ?text: string,
                                        ?command: unit -> unit,
-                                       ?commandParameter: System.Object,
                                        ?icon: string,
                                        ?accelerator: string,
                                        ?classId: string,
@@ -10782,14 +10764,12 @@ type ViewBuilders() =
 
         let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match command with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match commandParameter with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match icon with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match accelerator with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = ViewBuilders.BuildElement(attribCount, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match text with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextAttribKey, (v)) 
         match command with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CommandAttribKey, makeCommand(v)) 
-        match commandParameter with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CommandParameterAttribKey, (v)) 
         match icon with None -> () | Some v -> attribBuilder.Add(ViewAttributes.IconAttribKey, (v)) 
         match accelerator with None -> () | Some v -> attribBuilder.Add(ViewAttributes.AcceleratorAttribKey, (v)) 
         attribBuilder
@@ -10810,8 +10790,6 @@ type ViewBuilders() =
         let mutable currTextOpt = ValueNone
         let mutable prevCommandOpt = ValueNone
         let mutable currCommandOpt = ValueNone
-        let mutable prevCommandParameterOpt = ValueNone
-        let mutable currCommandParameterOpt = ValueNone
         let mutable prevIconOpt = ValueNone
         let mutable currIconOpt = ValueNone
         let mutable prevAcceleratorOpt = ValueNone
@@ -10821,8 +10799,6 @@ type ViewBuilders() =
                 currTextOpt <- ValueSome (kvp.Value :?> string)
             if kvp.Key = ViewAttributes.CommandAttribKey.KeyValue then 
                 currCommandOpt <- ValueSome (kvp.Value :?> System.Windows.Input.ICommand)
-            if kvp.Key = ViewAttributes.CommandParameterAttribKey.KeyValue then 
-                currCommandParameterOpt <- ValueSome (kvp.Value :?> System.Object)
             if kvp.Key = ViewAttributes.IconAttribKey.KeyValue then 
                 currIconOpt <- ValueSome (kvp.Value :?> string)
             if kvp.Key = ViewAttributes.AcceleratorAttribKey.KeyValue then 
@@ -10835,8 +10811,6 @@ type ViewBuilders() =
                     prevTextOpt <- ValueSome (kvp.Value :?> string)
                 if kvp.Key = ViewAttributes.CommandAttribKey.KeyValue then 
                     prevCommandOpt <- ValueSome (kvp.Value :?> System.Windows.Input.ICommand)
-                if kvp.Key = ViewAttributes.CommandParameterAttribKey.KeyValue then 
-                    prevCommandParameterOpt <- ValueSome (kvp.Value :?> System.Object)
                 if kvp.Key = ViewAttributes.IconAttribKey.KeyValue then 
                     prevIconOpt <- ValueSome (kvp.Value :?> string)
                 if kvp.Key = ViewAttributes.AcceleratorAttribKey.KeyValue then 
@@ -10851,11 +10825,6 @@ type ViewBuilders() =
         | _, ValueSome currValue -> target.Command <-  currValue
         | ValueSome _, ValueNone -> target.Command <- null
         | ValueNone, ValueNone -> ()
-        match prevCommandParameterOpt, currCommandParameterOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.CommandParameter <-  currValue
-        | ValueSome _, ValueNone -> target.CommandParameter <- null
-        | ValueNone, ValueNone -> ()
         match prevIconOpt, currIconOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.Icon <- makeFileImageSource currValue
@@ -10865,7 +10834,6 @@ type ViewBuilders() =
 
     static member inline ConstructMenuItem(?text: string,
                                            ?command: unit -> unit,
-                                           ?commandParameter: System.Object,
                                            ?icon: string,
                                            ?accelerator: string,
                                            ?classId: string,
@@ -10877,7 +10845,6 @@ type ViewBuilders() =
         let attribBuilder = ViewBuilders.BuildMenuItem(0,
                                ?text=text,
                                ?command=command,
-                               ?commandParameter=commandParameter,
                                ?icon=icon,
                                ?accelerator=accelerator,
                                ?classId=classId,
@@ -10896,7 +10863,6 @@ type ViewBuilders() =
                                        ?detailColor: Xamarin.Forms.Color,
                                        ?command: unit -> unit,
                                        ?canExecute: bool,
-                                       ?commandParameter: System.Object,
                                        ?height: double,
                                        ?isEnabled: bool,
                                        ?classId: string,
@@ -10911,7 +10877,6 @@ type ViewBuilders() =
         let attribCount = match detailColor with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match command with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match canExecute with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match commandParameter with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = ViewBuilders.BuildCell(attribCount, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match text with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextAttribKey, (v)) 
@@ -10920,7 +10885,6 @@ type ViewBuilders() =
         match detailColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextDetailColorAttribKey, (v)) 
         match command with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextCellCommandAttribKey, (v)) 
         match canExecute with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextCellCanExecuteAttribKey, (v)) 
-        match commandParameter with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CommandParameterAttribKey, (v)) 
         attribBuilder
 
     static member val CreateFuncTextCell : (unit -> Xamarin.Forms.TextCell) = (fun () -> ViewBuilders.CreateTextCell()) with get, set
@@ -10947,8 +10911,6 @@ type ViewBuilders() =
         let mutable currTextCellCommandOpt = ValueNone
         let mutable prevTextCellCanExecuteOpt = ValueNone
         let mutable currTextCellCanExecuteOpt = ValueNone
-        let mutable prevCommandParameterOpt = ValueNone
-        let mutable currCommandParameterOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = ViewAttributes.TextAttribKey.KeyValue then 
                 currTextOpt <- ValueSome (kvp.Value :?> string)
@@ -10962,8 +10924,6 @@ type ViewBuilders() =
                 currTextCellCommandOpt <- ValueSome (kvp.Value :?> unit -> unit)
             if kvp.Key = ViewAttributes.TextCellCanExecuteAttribKey.KeyValue then 
                 currTextCellCanExecuteOpt <- ValueSome (kvp.Value :?> bool)
-            if kvp.Key = ViewAttributes.CommandParameterAttribKey.KeyValue then 
-                currCommandParameterOpt <- ValueSome (kvp.Value :?> System.Object)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
@@ -10980,8 +10940,6 @@ type ViewBuilders() =
                     prevTextCellCommandOpt <- ValueSome (kvp.Value :?> unit -> unit)
                 if kvp.Key = ViewAttributes.TextCellCanExecuteAttribKey.KeyValue then 
                     prevTextCellCanExecuteOpt <- ValueSome (kvp.Value :?> bool)
-                if kvp.Key = ViewAttributes.CommandParameterAttribKey.KeyValue then 
-                    prevCommandParameterOpt <- ValueSome (kvp.Value :?> System.Object)
         match prevTextOpt, currTextOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.Text <-  currValue
@@ -11004,11 +10962,6 @@ type ViewBuilders() =
         | ValueNone, ValueNone -> ()
         (fun _ _ _ -> ()) prevTextCellCommandOpt currTextCellCommandOpt target
         updateCommand prevTextCellCommandOpt currTextCellCommandOpt (fun _target -> ()) (fun (target: Xamarin.Forms.TextCell) cmd -> target.Command <- cmd) prevTextCellCanExecuteOpt currTextCellCanExecuteOpt target
-        match prevCommandParameterOpt, currCommandParameterOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.CommandParameter <-  currValue
-        | ValueSome _, ValueNone -> target.CommandParameter <- null
-        | ValueNone, ValueNone -> ()
 
     static member inline ConstructTextCell(?text: string,
                                            ?detail: string,
@@ -11016,7 +10969,6 @@ type ViewBuilders() =
                                            ?detailColor: Xamarin.Forms.Color,
                                            ?command: unit -> unit,
                                            ?canExecute: bool,
-                                           ?commandParameter: System.Object,
                                            ?height: double,
                                            ?isEnabled: bool,
                                            ?classId: string,
@@ -11032,7 +10984,6 @@ type ViewBuilders() =
                                ?detailColor=detailColor,
                                ?command=command,
                                ?canExecute=canExecute,
-                               ?commandParameter=commandParameter,
                                ?height=height,
                                ?isEnabled=isEnabled,
                                ?classId=classId,
@@ -11049,7 +11000,6 @@ type ViewBuilders() =
                                           ?priority: int,
                                           ?text: string,
                                           ?command: unit -> unit,
-                                          ?commandParameter: System.Object,
                                           ?icon: string,
                                           ?accelerator: string,
                                           ?classId: string,
@@ -11061,7 +11011,7 @@ type ViewBuilders() =
         let attribCount = match order with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match priority with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildMenuItem(attribCount, ?text=text, ?command=command, ?commandParameter=commandParameter, ?icon=icon, ?accelerator=accelerator, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildMenuItem(attribCount, ?text=text, ?command=command, ?icon=icon, ?accelerator=accelerator, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match order with None -> () | Some v -> attribBuilder.Add(ViewAttributes.OrderAttribKey, (v)) 
         match priority with None -> () | Some v -> attribBuilder.Add(ViewAttributes.PriorityAttribKey, (v)) 
         attribBuilder
@@ -11110,7 +11060,6 @@ type ViewBuilders() =
                                               ?priority: int,
                                               ?text: string,
                                               ?command: unit -> unit,
-                                              ?commandParameter: System.Object,
                                               ?icon: string,
                                               ?accelerator: string,
                                               ?classId: string,
@@ -11124,7 +11073,6 @@ type ViewBuilders() =
                                ?priority=priority,
                                ?text=text,
                                ?command=command,
-                               ?commandParameter=commandParameter,
                                ?icon=icon,
                                ?accelerator=accelerator,
                                ?classId=classId,
@@ -11144,7 +11092,6 @@ type ViewBuilders() =
                                         ?detailColor: Xamarin.Forms.Color,
                                         ?command: unit -> unit,
                                         ?canExecute: bool,
-                                        ?commandParameter: System.Object,
                                         ?height: double,
                                         ?isEnabled: bool,
                                         ?classId: string,
@@ -11155,7 +11102,7 @@ type ViewBuilders() =
 
         let attribCount = match imageSource with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildTextCell(attribCount, ?text=text, ?detail=detail, ?textColor=textColor, ?detailColor=detailColor, ?command=command, ?canExecute=canExecute, ?commandParameter=commandParameter, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildTextCell(attribCount, ?text=text, ?detail=detail, ?textColor=textColor, ?detailColor=detailColor, ?command=command, ?canExecute=canExecute, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match imageSource with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ImageSourceAttribKey, (v)) 
         attribBuilder
 
@@ -11195,7 +11142,6 @@ type ViewBuilders() =
                                             ?detailColor: Xamarin.Forms.Color,
                                             ?command: unit -> unit,
                                             ?canExecute: bool,
-                                            ?commandParameter: System.Object,
                                             ?height: double,
                                             ?isEnabled: bool,
                                             ?classId: string,
@@ -11212,7 +11158,6 @@ type ViewBuilders() =
                                ?detailColor=detailColor,
                                ?command=command,
                                ?canExecute=canExecute,
-                               ?commandParameter=commandParameter,
                                ?height=height,
                                ?isEnabled=isEnabled,
                                ?classId=classId,
@@ -12355,6 +12300,37 @@ type ViewBuilders() =
     static member CreateGridItemsLayout () : Xamarin.Forms.GridItemsLayout =
         failwith "can't create Xamarin.Forms.GridItemsLayout"
 
+/// Viewer that allows to read the properties of a ViewElement representing a Button
+type ButtonViewer(element: ViewElement) =
+    inherit ViewViewer(element)
+    do if not ((typeof<Xamarin.Forms.Button>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.Button' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the Text property
+    member this.Text = element.GetAttributeKeyed(ViewAttributes.TextAttribKey)
+    /// Get the value of the Command property
+    member this.Command = element.GetAttributeKeyed(ViewAttributes.ButtonCommandAttribKey)
+    /// Get the value of the CanExecute property
+    member this.CanExecute = element.GetAttributeKeyed(ViewAttributes.ButtonCanExecuteAttribKey)
+    /// Get the value of the BorderColor property
+    member this.BorderColor = element.GetAttributeKeyed(ViewAttributes.BorderColorAttribKey)
+    /// Get the value of the BorderWidth property
+    member this.BorderWidth = element.GetAttributeKeyed(ViewAttributes.BorderWidthAttribKey)
+    /// Get the value of the ContentLayout property
+    member this.ContentLayout = element.GetAttributeKeyed(ViewAttributes.ContentLayoutAttribKey)
+    /// Get the value of the CornerRadius property
+    member this.CornerRadius = element.GetAttributeKeyed(ViewAttributes.ButtonCornerRadiusAttribKey)
+    /// Get the value of the FontFamily property
+    member this.FontFamily = element.GetAttributeKeyed(ViewAttributes.FontFamilyAttribKey)
+    /// Get the value of the FontAttributes property
+    member this.FontAttributes = element.GetAttributeKeyed(ViewAttributes.FontAttributesAttribKey)
+    /// Get the value of the FontSize property
+    member this.FontSize = element.GetAttributeKeyed(ViewAttributes.FontSizeAttribKey)
+    /// Get the value of the Image property
+    member this.Image = element.GetAttributeKeyed(ViewAttributes.ButtonImageSourceAttribKey)
+    /// Get the value of the TextColor property
+    member this.TextColor = element.GetAttributeKeyed(ViewAttributes.TextColorAttribKey)
+    /// Get the value of the Padding property
+    member this.Padding = element.GetAttributeKeyed(ViewAttributes.PaddingAttribKey)
+
     static member val UpdateFuncGridItemsLayout =
         (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.GridItemsLayout) -> ViewBuilders.UpdateGridItemsLayout (prevOpt, curr, target)) 
 
@@ -13377,11 +13353,42 @@ type ViewBuilders() =
 
     static member val CreateFuncShellGroupItem : (unit -> Xamarin.Forms.ShellGroupItem) = (fun () -> ViewBuilders.CreateShellGroupItem()) with get, set
 
+
     static member CreateShellGroupItem () : Xamarin.Forms.ShellGroupItem =
         upcast (new Xamarin.Forms.ShellGroupItem())
 
     static member val UpdateFuncShellGroupItem =
         (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.ShellGroupItem) -> ViewBuilders.UpdateShellGroupItem (prevOpt, curr, target)) 
+
+/// Viewer that allows to read the properties of a ViewElement representing a MenuItem
+type MenuItemViewer(element: ViewElement) =
+    inherit ElementViewer(element)
+    do if not ((typeof<Xamarin.Forms.MenuItem>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.MenuItem' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the Text property
+    member this.Text = element.GetAttributeKeyed(ViewAttributes.TextAttribKey)
+    /// Get the value of the Command property
+    member this.Command = element.GetAttributeKeyed(ViewAttributes.CommandAttribKey)
+    /// Get the value of the Icon property
+    member this.Icon = element.GetAttributeKeyed(ViewAttributes.IconAttribKey)
+    /// Get the value of the Accelerator property
+    member this.Accelerator = element.GetAttributeKeyed(ViewAttributes.AcceleratorAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a TextCell
+type TextCellViewer(element: ViewElement) =
+    inherit CellViewer(element)
+    do if not ((typeof<Xamarin.Forms.TextCell>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.TextCell' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the Text property
+    member this.Text = element.GetAttributeKeyed(ViewAttributes.TextAttribKey)
+    /// Get the value of the Detail property
+    member this.Detail = element.GetAttributeKeyed(ViewAttributes.TextDetailAttribKey)
+    /// Get the value of the TextColor property
+    member this.TextColor = element.GetAttributeKeyed(ViewAttributes.TextColorAttribKey)
+    /// Get the value of the DetailColor property
+    member this.DetailColor = element.GetAttributeKeyed(ViewAttributes.TextDetailColorAttribKey)
+    /// Get the value of the Command property
+    member this.Command = element.GetAttributeKeyed(ViewAttributes.TextCellCommandAttribKey)
+    /// Get the value of the CanExecute property
+    member this.CanExecute = element.GetAttributeKeyed(ViewAttributes.TextCellCanExecuteAttribKey)
 
     static member UpdateShellGroupItem (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.ShellGroupItem) = 
         // update the inherited Element element
@@ -16819,6 +16826,74 @@ type View() =
                                ?columnSpacing=columnSpacing,
                                ?children=children,
                                ?isClippedToBounds=isClippedToBounds,
+
+    /// Describes a Button in the view
+    static member inline Button(?text: string,
+                                ?command: unit -> unit,
+                                ?canExecute: bool,
+                                ?borderColor: Xamarin.Forms.Color,
+                                ?borderWidth: double,
+                                ?contentLayout: Xamarin.Forms.Button.ButtonContentLayout,
+                                ?cornerRadius: int,
+                                ?fontFamily: string,
+                                ?fontAttributes: Xamarin.Forms.FontAttributes,
+                                ?fontSize: obj,
+                                ?image: string,
+                                ?textColor: Xamarin.Forms.Color,
+                                ?padding: Xamarin.Forms.Thickness,
+                                ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                ?margin: obj,
+                                ?gestureRecognizers: ViewElement list,
+                                ?anchorX: double,
+                                ?anchorY: double,
+                                ?backgroundColor: Xamarin.Forms.Color,
+                                ?heightRequest: double,
+                                ?inputTransparent: bool,
+                                ?isEnabled: bool,
+                                ?isVisible: bool,
+                                ?minimumHeightRequest: double,
+                                ?minimumWidthRequest: double,
+                                ?opacity: double,
+                                ?rotation: double,
+                                ?rotationX: double,
+                                ?rotationY: double,
+                                ?scale: double,
+                                ?style: Xamarin.Forms.Style,
+                                ?styleClass: obj,
+                                ?translationX: double,
+                                ?translationY: double,
+                                ?widthRequest: double,
+                                ?resources: (string * obj) list,
+                                ?styles: Xamarin.Forms.Style list,
+                                ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                ?isTabStop: bool,
+                                ?scaleX: double,
+                                ?scaleY: double,
+                                ?tabIndex: int,
+                                ?childrenReordered: System.EventArgs -> unit,
+                                ?measureInvalidated: System.EventArgs -> unit,
+                                ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                                ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                ?classId: string,
+                                ?styleId: string,
+                                ?automationId: string,
+                                ?created: (Xamarin.Forms.Button -> unit),
+                                ?ref: ViewRef<Xamarin.Forms.Button>) =
+
+        ViewBuilders.ConstructButton(?text=text,
+                               ?command=command,
+                               ?canExecute=canExecute,
+                               ?borderColor=borderColor,
+                               ?borderWidth=borderWidth,
+                               ?contentLayout=contentLayout,
+                               ?cornerRadius=cornerRadius,
+                               ?fontFamily=fontFamily,
+                               ?fontAttributes=fontAttributes,
+                               ?fontSize=fontSize,
+                               ?image=image,
+                               ?textColor=textColor,
                                ?padding=padding,
                                ?horizontalOptions=horizontalOptions,
                                ?verticalOptions=verticalOptions,
@@ -19840,6 +19915,22 @@ type View() =
                                         ?ref: ViewRef<Xamarin.Forms.ShellGroupItem>) =
 
         ViewBuilders.ConstructShellGroupItem(?flyoutDisplayOptions=flyoutDisplayOptions,
+
+    /// Describes a MenuItem in the view
+    static member inline MenuItem(?text: string,
+                                  ?command: unit -> unit,
+                                  ?icon: string,
+                                  ?accelerator: string,
+                                  ?classId: string,
+                                  ?styleId: string,
+                                  ?automationId: string,
+                                  ?created: (Xamarin.Forms.MenuItem -> unit),
+                                  ?ref: ViewRef<Xamarin.Forms.MenuItem>) =
+
+        ViewBuilders.ConstructMenuItem(?text=text,
+                               ?command=command,
+                               ?icon=icon,
+                               ?accelerator=accelerator,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -19917,6 +20008,29 @@ type View() =
                                ?backgroundColor=backgroundColor,
                                ?heightRequest=heightRequest,
                                ?inputTransparent=inputTransparent,
+
+    /// Describes a TextCell in the view
+    static member inline TextCell(?text: string,
+                                  ?detail: string,
+                                  ?textColor: Xamarin.Forms.Color,
+                                  ?detailColor: Xamarin.Forms.Color,
+                                  ?command: unit -> unit,
+                                  ?canExecute: bool,
+                                  ?height: double,
+                                  ?isEnabled: bool,
+                                  ?classId: string,
+                                  ?styleId: string,
+                                  ?automationId: string,
+                                  ?created: (Xamarin.Forms.TextCell -> unit),
+                                  ?ref: ViewRef<Xamarin.Forms.TextCell>) =
+
+        ViewBuilders.ConstructTextCell(?text=text,
+                               ?detail=detail,
+                               ?textColor=textColor,
+                               ?detailColor=detailColor,
+                               ?command=command,
+                               ?canExecute=canExecute,
+                               ?height=height,
                                ?isEnabled=isEnabled,
                                ?isVisible=isVisible,
                                ?minimumHeightRequest=minimumHeightRequest,
@@ -19965,6 +20079,26 @@ type View() =
 
         ViewBuilders.ConstructShellContent(?content=content,
                                ?menuItems=menuItems,
+
+    /// Describes a ToolbarItem in the view
+    static member inline ToolbarItem(?order: Xamarin.Forms.ToolbarItemOrder,
+                                     ?priority: int,
+                                     ?text: string,
+                                     ?command: unit -> unit,
+                                     ?icon: string,
+                                     ?accelerator: string,
+                                     ?classId: string,
+                                     ?styleId: string,
+                                     ?automationId: string,
+                                     ?created: (Xamarin.Forms.ToolbarItem -> unit),
+                                     ?ref: ViewRef<Xamarin.Forms.ToolbarItem>) =
+
+        ViewBuilders.ConstructToolbarItem(?order=order,
+                               ?priority=priority,
+                               ?text=text,
+                               ?command=command,
+                               ?icon=icon,
+                               ?accelerator=accelerator,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -19980,6 +20114,117 @@ type View() =
                                    ?automationId: string,
                                    ?created: (Xamarin.Forms.ShellItem -> unit),
                                    ?ref: ViewRef<Xamarin.Forms.ShellItem>) =
+
+    /// Describes a ImageCell in the view
+    static member inline ImageCell(?imageSource: obj,
+                                   ?text: string,
+                                   ?detail: string,
+                                   ?textColor: Xamarin.Forms.Color,
+                                   ?detailColor: Xamarin.Forms.Color,
+                                   ?command: unit -> unit,
+                                   ?canExecute: bool,
+                                   ?height: double,
+                                   ?isEnabled: bool,
+                                   ?classId: string,
+                                   ?styleId: string,
+                                   ?automationId: string,
+                                   ?created: (Xamarin.Forms.ImageCell -> unit),
+                                   ?ref: ViewRef<Xamarin.Forms.ImageCell>) =
+
+        ViewBuilders.ConstructImageCell(?imageSource=imageSource,
+                               ?text=text,
+                               ?detail=detail,
+                               ?textColor=textColor,
+                               ?detailColor=detailColor,
+                               ?command=command,
+                               ?canExecute=canExecute,
+                               ?height=height,
+                               ?isEnabled=isEnabled,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=created,
+                               ?ref=ref)
+
+    /// Describes a ViewCell in the view
+    static member inline ViewCell(?view: ViewElement,
+                                  ?height: double,
+                                  ?isEnabled: bool,
+                                  ?classId: string,
+                                  ?styleId: string,
+                                  ?automationId: string,
+                                  ?created: (Xamarin.Forms.ViewCell -> unit),
+                                  ?ref: ViewRef<Xamarin.Forms.ViewCell>) =
+
+        ViewBuilders.ConstructViewCell(?view=view,
+                               ?height=height,
+                               ?isEnabled=isEnabled,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=created,
+                               ?ref=ref)
+
+    /// Describes a ListView in the view
+    static member inline ListView(?items: seq<ViewElement>,
+                                  ?footer: System.Object,
+                                  ?hasUnevenRows: bool,
+                                  ?header: System.Object,
+                                  ?headerTemplate: Xamarin.Forms.DataTemplate,
+                                  ?isGroupingEnabled: bool,
+                                  ?isPullToRefreshEnabled: bool,
+                                  ?isRefreshing: bool,
+                                  ?refreshCommand: unit -> unit,
+                                  ?rowHeight: int,
+                                  ?selectedItem: int option,
+                                  ?separatorVisibility: Xamarin.Forms.SeparatorVisibility,
+                                  ?separatorColor: Xamarin.Forms.Color,
+                                  ?itemAppearing: int -> unit,
+                                  ?itemDisappearing: int -> unit,
+                                  ?itemSelected: int option -> unit,
+                                  ?itemTapped: int -> unit,
+                                  ?refreshing: unit -> unit,
+                                  ?selectionMode: Xamarin.Forms.ListViewSelectionMode,
+                                  ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                  ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                  ?margin: obj,
+                                  ?gestureRecognizers: ViewElement list,
+                                  ?anchorX: double,
+                                  ?anchorY: double,
+                                  ?backgroundColor: Xamarin.Forms.Color,
+                                  ?heightRequest: double,
+                                  ?inputTransparent: bool,
+                                  ?isEnabled: bool,
+                                  ?isVisible: bool,
+                                  ?minimumHeightRequest: double,
+                                  ?minimumWidthRequest: double,
+                                  ?opacity: double,
+                                  ?rotation: double,
+                                  ?rotationX: double,
+                                  ?rotationY: double,
+                                  ?scale: double,
+                                  ?style: Xamarin.Forms.Style,
+                                  ?styleClass: obj,
+                                  ?translationX: double,
+                                  ?translationY: double,
+                                  ?widthRequest: double,
+                                  ?resources: (string * obj) list,
+                                  ?styles: Xamarin.Forms.Style list,
+                                  ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                  ?isTabStop: bool,
+                                  ?scaleX: double,
+                                  ?scaleY: double,
+                                  ?tabIndex: int,
+                                  ?childrenReordered: System.EventArgs -> unit,
+                                  ?measureInvalidated: System.EventArgs -> unit,
+                                  ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                  ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                                  ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                  ?classId: string,
+                                  ?styleId: string,
+                                  ?automationId: string,
+                                  ?created: (Xamarin.Forms.ListView -> unit),
+                                  ?ref: ViewRef<Xamarin.Forms.ListView>) =
 
         ViewBuilders.ConstructShellItem(?currentItem=currentItem,
                                ?items=items,
@@ -20450,9 +20695,6 @@ module ViewElementExtensions =
 
         /// Adjusts the BorderWidth property in the visual element
         member x.BorderWidth(value: double) = x.WithAttribute(ViewAttributes.BorderWidthAttribKey, (value))
-
-        /// Adjusts the CommandParameter property in the visual element
-        member x.CommandParameter(value: System.Object) = x.WithAttribute(ViewAttributes.CommandParameterAttribKey, (value))
 
         /// Adjusts the ContentLayout property in the visual element
         member x.ContentLayout(value: Xamarin.Forms.Button.ButtonContentLayout) = x.WithAttribute(ViewAttributes.ContentLayoutAttribKey, (value))
@@ -21141,7 +21383,44 @@ module ViewElementExtensions =
                       ?flyoutHeader: System.Object, ?flyoutHeaderBehavior: Xamarin.Forms.FlyoutHeaderBehavior, ?flyoutIsPresented: bool, ?route: string, ?routeHost: string, 
                       ?routeScheme: string, ?onNavigated: Xamarin.Forms.ShellNavigatedEventArgs -> unit, ?onNavigating: Xamarin.Forms.ShellNavigatingEventArgs -> unit, ?goToAsync: Xamarin.Forms.ShellNavigationState * Fabulous.DynamicViews.AnimationKind, ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions, 
                       ?selectedItem: System.Object, ?selectionChangedCommand: unit -> unit, ?selectionChangedCommandParameter: System.Object, ?selectableItemsMode: Xamarin.Forms.SelectionMode, ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit, 
-                      ?location: System.Uri, ?ssGoToAsync: string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind, ?carouselViewItems: seq<ViewElement>, ?collectionViewItems: seq<ViewElement>) =
+                      ?location: System.Uri, ?ssGoToAsync: string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind, ?carouselViewItems: seq<ViewElement>, ?collectionViewItems: seq<ViewElement>),
+                      ?scrolled: Xamarin.Forms.ScrolledEventArgs -> unit, ?cancelButtonColor: Xamarin.Forms.Color, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, 
+                      ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?placeholder: string, ?placeholderColor: Xamarin.Forms.Color, ?searchBarCommand: string -> unit, ?searchBarCanExecute: bool, 
+                      ?text: string, ?textColor: Xamarin.Forms.Color, ?searchBarTextChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?buttonCommand: unit -> unit, ?buttonCanExecute: bool, 
+                      ?borderColor: Xamarin.Forms.Color, ?borderWidth: double, ?contentLayout: Xamarin.Forms.Button.ButtonContentLayout, ?buttonCornerRadius: int, ?buttonImageSource: string, 
+                      ?minimumMaximum: float * float, ?value: double, ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit, ?increment: double, ?isToggled: bool, 
+                      ?toggled: Xamarin.Forms.ToggledEventArgs -> unit, ?onColor: Xamarin.Forms.Color, ?height: double, ?on: bool, ?onChanged: Xamarin.Forms.ToggledEventArgs -> unit, 
+                      ?intent: Xamarin.Forms.TableIntent, ?hasUnevenRows: bool, ?rowHeight: int, ?tableRoot: (string * ViewElement list) list, ?rowDefinitionHeight: obj, 
+                      ?columnDefinitionWidth: obj, ?gridRowDefinitions: obj list, ?gridColumnDefinitions: obj list, ?rowSpacing: double, ?columnSpacing: double, 
+                      ?children: ViewElement list, ?gridRow: int, ?gridRowSpan: int, ?gridColumn: int, ?gridColumnSpan: int, 
+                      ?layoutBounds: Xamarin.Forms.Rectangle, ?layoutFlags: Xamarin.Forms.AbsoluteLayoutFlags, ?boundsConstraint: Xamarin.Forms.BoundsConstraint, ?heightConstraint: Xamarin.Forms.Constraint, ?widthConstraint: Xamarin.Forms.Constraint, 
+                      ?xConstraint: Xamarin.Forms.Constraint, ?yConstraint: Xamarin.Forms.Constraint, ?alignContent: Xamarin.Forms.FlexAlignContent, ?alignItems: Xamarin.Forms.FlexAlignItems, ?flexLayoutDirection: Xamarin.Forms.FlexDirection, 
+                      ?position: Xamarin.Forms.FlexPosition, ?wrap: Xamarin.Forms.FlexWrap, ?justifyContent: Xamarin.Forms.FlexJustify, ?flexAlignSelf: Xamarin.Forms.FlexAlignSelf, ?flexOrder: int, 
+                      ?flexBasis: Xamarin.Forms.FlexBasis, ?flexGrow: double, ?flexShrink: double, ?date: System.DateTime, ?format: string, 
+                      ?minimumDate: System.DateTime, ?maximumDate: System.DateTime, ?dateSelected: Xamarin.Forms.DateChangedEventArgs -> unit, ?pickerItemsSource: seq<'T>, ?selectedIndex: int, 
+                      ?title: string, ?selectedIndexChanged: (int * 'T option) -> unit, ?frameCornerRadius: double, ?hasShadow: bool, ?imageSource: obj, 
+                      ?aspect: Xamarin.Forms.Aspect, ?isOpaque: bool, ?imageButtonCommand: unit -> unit, ?imageButtonCornerRadius: int, ?clicked: System.EventArgs -> unit, 
+                      ?pressed: System.EventArgs -> unit, ?released: System.EventArgs -> unit, ?keyboard: Xamarin.Forms.Keyboard, ?editorCompleted: string -> unit, ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit, 
+                      ?autoSize: Xamarin.Forms.EditorAutoSizeOption, ?isPassword: bool, ?entryCompleted: string -> unit, ?isTextPredictionEnabled: bool, ?returnType: Xamarin.Forms.ReturnType, 
+                      ?returnCommand: unit -> unit, ?cursorPosition: int, ?selectionLength: int, ?label: string, ?entryCellTextChanged: Xamarin.Forms.TextChangedEventArgs -> unit, 
+                      ?verticalTextAlignment: Xamarin.Forms.TextAlignment, ?formattedText: ViewElement, ?lineBreakMode: Xamarin.Forms.LineBreakMode, ?lineHeight: double, ?maxLines: int, 
+                      ?textDecorations: Xamarin.Forms.TextDecorations, ?stackOrientation: Xamarin.Forms.StackOrientation, ?spacing: double, ?foregroundColor: Xamarin.Forms.Color, ?propertyChanged: System.ComponentModel.PropertyChangedEventArgs -> unit, 
+                      ?spans: ViewElement[], ?time: System.TimeSpan, ?webSource: Xamarin.Forms.WebViewSource, ?reload: bool, ?navigated: Xamarin.Forms.WebNavigatedEventArgs -> unit, 
+                      ?navigating: Xamarin.Forms.WebNavigatingEventArgs -> unit, ?reloadRequested: System.EventArgs -> unit, ?backgroundImage: string, ?icon: string, ?isBusy: bool, 
+                      ?toolbarItems: ViewElement list, ?useSafeArea: bool, ?page_Appearing: unit -> unit, ?page_Disappearing: unit -> unit, ?page_LayoutChanged: unit -> unit, 
+                      ?carouselPage_CurrentPage: int, ?carouselPage_CurrentPageChanged: int option -> unit, ?pages: ViewElement list, ?backButtonTitle: string, ?hasBackButton: bool, 
+                      ?hasNavigationBar: bool, ?titleIcon: string, ?titleView: ViewElement, ?barBackgroundColor: Xamarin.Forms.Color, ?barTextColor: Xamarin.Forms.Color, 
+                      ?popped: Xamarin.Forms.NavigationEventArgs -> unit, ?poppedToRoot: Xamarin.Forms.NavigationEventArgs -> unit, ?pushed: Xamarin.Forms.NavigationEventArgs -> unit, ?tabbedPage_CurrentPage: int, ?tabbedPage_CurrentPageChanged: int option -> unit, 
+                      ?onSizeAllocatedCallback: (double * double) -> unit, ?master: ViewElement, ?detail: ViewElement, ?isGestureEnabled: bool, ?isPresented: bool, 
+                      ?masterBehavior: Xamarin.Forms.MasterBehavior, ?isPresentedChanged: bool -> unit, ?accelerator: string, ?textDetail: string, ?textDetailColor: Xamarin.Forms.Color, 
+                      ?textCellCommand: unit -> unit, ?textCellCanExecute: bool, ?order: Xamarin.Forms.ToolbarItemOrder, ?priority: int, ?view: ViewElement, 
+                      ?listViewItems: seq<ViewElement>, ?footer: System.Object, ?header: System.Object, ?headerTemplate: Xamarin.Forms.DataTemplate, ?isGroupingEnabled: bool, 
+                      ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, ?listView_SelectedItem: int option, ?listView_SeparatorVisibility: Xamarin.Forms.SeparatorVisibility, 
+                      ?listView_SeparatorColor: Xamarin.Forms.Color, ?listView_ItemAppearing: int -> unit, ?listView_ItemDisappearing: int -> unit, ?listView_ItemSelected: int option -> unit, ?listView_ItemTapped: int -> unit, 
+                      ?listView_Refreshing: unit -> unit, ?selectionMode: Xamarin.Forms.ListViewSelectionMode, ?listViewGrouped_ItemsSource: (string * ViewElement * ViewElement list) list, ?listViewGrouped_ShowJumpList: bool, ?listViewGrouped_SelectedItem: (int * int) option, 
+                      ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?listViewGrouped_ItemAppearing: int * int option -> unit, ?listViewGrouped_ItemDisappearing: int * int option -> unit, ?listViewGrouped_ItemSelected: (int * int) option -> unit, 
+                      ?listViewGrouped_ItemTapped: int * int -> unit, ?refreshing: unit -> unit) =
+
             let x = match classId with None -> x | Some opt -> x.ClassId(opt)
             let x = match styleId with None -> x | Some opt -> x.StyleId(opt)
             let x = match automationId with None -> x | Some opt -> x.AutomationId(opt)
@@ -21220,7 +21499,6 @@ module ViewElementExtensions =
             let x = match buttonCanExecute with None -> x | Some opt -> x.ButtonCanExecute(opt)
             let x = match borderColor with None -> x | Some opt -> x.BorderColor(opt)
             let x = match borderWidth with None -> x | Some opt -> x.BorderWidth(opt)
-            let x = match commandParameter with None -> x | Some opt -> x.CommandParameter(opt)
             let x = match contentLayout with None -> x | Some opt -> x.ContentLayout(opt)
             let x = match buttonCornerRadius with None -> x | Some opt -> x.ButtonCornerRadius(opt)
             let x = match buttonImageSource with None -> x | Some opt -> x.ButtonImageSource(opt)
@@ -21589,8 +21867,6 @@ module ViewElementExtensions =
     let borderColor (value: Xamarin.Forms.Color) (x: ViewElement) = x.BorderColor(value)
     /// Adjusts the BorderWidth property in the visual element
     let borderWidth (value: double) (x: ViewElement) = x.BorderWidth(value)
-    /// Adjusts the CommandParameter property in the visual element
-    let commandParameter (value: System.Object) (x: ViewElement) = x.CommandParameter(value)
     /// Adjusts the ContentLayout property in the visual element
     let contentLayout (value: Xamarin.Forms.Button.ButtonContentLayout) (x: ViewElement) = x.ContentLayout(value)
     /// Adjusts the ButtonCornerRadius property in the visual element

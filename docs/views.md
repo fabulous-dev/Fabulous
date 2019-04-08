@@ -11,8 +11,8 @@ The `view` function is a function returning your view elements based on the curr
 ```fsharp
 let view model dispatch =
     View.ContentPage(
-        title = "Pocket Piggy Bank",
-        content= View.Label(text = sprintf "Hello world!")
+        title="Pocket Piggy Bank",
+        content=View.Label(text = sprintf "Hello world!")
     )
 ```
 
@@ -37,8 +37,8 @@ type Msg =
 
 let update msg model =
     match msg with
-    | Spend x -> {model with Balance = model.Balance - x}, Cmd.none
-    | Add x -> {model with Balance = model.Balance + x}, Cmd.none
+    | Spend x -> { model with Balance = model.Balance - x }, Cmd.none
+    | Add x -> { model with Balance = model.Balance + x }, Cmd.none
     | Login user -> { model with User = user }, Cmd.none
 
 let view model dispatch =

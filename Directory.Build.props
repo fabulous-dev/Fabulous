@@ -1,14 +1,10 @@
 <Project>
   <!-- NuGet Specs -->
   <PropertyGroup>
-    <Version>0.33.0</Version>
+    <Version>0.33.2</Version>
     <Authors>Fabulous Contributors</Authors>
-    <PackageVersion>0.33.0</PackageVersion>
-    <PackageReleaseNotes>[DynamicViews] Added SizeChangedEventArgs to give access to the new size when SizeChanged is raised (https://github.com/fsprojects/Fabulous/pull/336)
-[DynamicViews] Added an extension point to give a new default implementation for a control (https://github.com/fsprojects/Fabulous/pull/342)
-[LiveUpdate] Updated Interpreter to fix some bugs. Plus changed the watcher with a new and easier command line syntax (https://github.com/fsprojects/Fabulous/pull/338)
-[Fabulous.Core] Fixed a bug (possibly from Mono) that made Fabulous act weird on some Android devices (https://github.com/fsprojects/Fabulous/pull/347)
-[Templates] Fixed the consistency of the namespace between the files in the WPF template</PackageReleaseNotes>
+    <PackageVersion>0.33.2</PackageVersion>
+    <PackageReleaseNotes>[DynamicViews] Fixed an issue in TableView where the items weren't recycled (https://github.com/fsprojects/Fabulous/pull/364)</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/fsprojects/Fabulous</PackageProjectUrl>

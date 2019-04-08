@@ -493,10 +493,6 @@
           "defaultValue": "-1.0"
         },
         {
-          "name": "CommandParameter",
-          "defaultValue": "null"
-        },
-        {
           "name": "ContentLayout",
           "defaultValue": "null"
         },
@@ -1719,10 +1715,6 @@
           "convToModel": "makeCommand"
         },
         {
-          "name": "CommandParameter",
-          "defaultValue": "null"
-        },
-        {
           "name": "Icon",
           "inputType": "string",
           "modelType": "string",
@@ -1773,10 +1765,6 @@
           "inputType": "bool",
           "modelType": "bool",
           "updateCode": "updateCommand prevTextCellCommandOpt currTextCellCommandOpt (fun _target -> ()) (fun (target: Xamarin.Forms.TextCell) cmd -> target.Command <- cmd)"
-        },
-        {
-          "name": "CommandParameter",
-          "defaultValue": "null"
         }
       ]
     },
