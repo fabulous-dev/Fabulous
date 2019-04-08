@@ -2,7 +2,6 @@
 group neutral
   framework: netstandard2.0
   source https://api.nuget.org/v3/index.json
-  source https://www.myget.org/F/oxyplot
   github fsprojects/FSharp.Compiler.PortaCode:master src/ProjectCracker.fs
   github fsprojects/FSharp.Compiler.PortaCode:master src/CodeModel.fs
   github fsprojects/FSharp.Compiler.PortaCode:master src/Interpreter.fs
@@ -15,8 +14,7 @@ group neutral
   nuget Xamarin.Forms.Maps 3.4.0.1009999
   nuget SkiaSharp
   nuget SkiaSharp.Views.Forms
-  nuget OxyPlot.Core 2.0.0-unstable0956 # version matching last updated version of OxyPlot.Xamarin.Forms
-  nuget OxyPlot.Xamarin.Forms 1.1.0-unstable0013 # last version seen on myget
+  nuget OxyPlot.Xamarin.Forms 1.0.0
   nuget Newtonsoft.Json 11.0.2
 
 # Dependencies used when compiling and running Android samples. We can normally use the latest FSharp.Core and 
