@@ -545,7 +545,10 @@ NUGET
   remote: https://api.nuget.org/v3/index.json
     FSharp.Core (4.5.2)
     Newtonsoft.Json (11.0.2)
-    OxyPlot.Core (2.0.0-unstable0956)
+    OxyPlot.Core (1.0)
+    OxyPlot.Xamarin.Forms (1.0)
+      OxyPlot.Core (>= 1.0)
+      Xamarin.Forms (>= 2.3.3.180)
     SkiaSharp (1.68)
     SkiaSharp.Views.Forms (1.68)
       SkiaSharp (>= 1.68)
@@ -553,10 +556,6 @@ NUGET
     Xamarin.Forms (3.4.0.1009999)
     Xamarin.Forms.Maps (3.4.0.1009999)
       Xamarin.Forms (>= 3.4.0.1009999)
-  remote: https://www.myget.org/F/oxyplot
-    OxyPlot.Xamarin.Forms (1.1.0-unstable0013)
-      OxyPlot.Core (>= 2.0.0-unstable0956)
-      Xamarin.Forms (>= 2.3.3.180)
 GITHUB
   remote: fsprojects/FSharp.Compiler.PortaCode
     src/CodeModel.fs (0c6686bcc518246d879bb3d0e3cd4cdbbc72d5ad)
