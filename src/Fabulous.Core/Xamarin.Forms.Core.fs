@@ -6570,7 +6570,7 @@ type ViewBuilders() =
         let attribCount = match released with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
-        match command with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ImageButtonCommandAttribKey, (v)) 
+        match command with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ImageButtonCommandAttribKey, makeCommand(v)) 
         match source with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ImageSourceAttribKey, (v)) 
         match aspect with None -> () | Some v -> attribBuilder.Add(ViewAttributes.AspectAttribKey, (v)) 
         match borderColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.BorderColorAttribKey, (v)) 
@@ -6619,7 +6619,7 @@ type ViewBuilders() =
         let mutable currReleasedOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = ViewAttributes.ImageButtonCommandAttribKey.KeyValue then 
-                currImageButtonCommandOpt <- ValueSome (kvp.Value :?> unit -> unit)
+                currImageButtonCommandOpt <- ValueSome (kvp.Value :?> System.Windows.Input.ICommand)
             if kvp.Key = ViewAttributes.ImageSourceAttribKey.KeyValue then 
                 currImageSourceOpt <- ValueSome (kvp.Value :?> obj)
             if kvp.Key = ViewAttributes.AspectAttribKey.KeyValue then 
@@ -6645,7 +6645,7 @@ type ViewBuilders() =
         | ValueSome prev ->
             for kvp in prev.AttributesKeyed do
                 if kvp.Key = ViewAttributes.ImageButtonCommandAttribKey.KeyValue then 
-                    prevImageButtonCommandOpt <- ValueSome (kvp.Value :?> unit -> unit)
+                    prevImageButtonCommandOpt <- ValueSome (kvp.Value :?> System.Windows.Input.ICommand)
                 if kvp.Key = ViewAttributes.ImageSourceAttribKey.KeyValue then 
                     prevImageSourceOpt <- ValueSome (kvp.Value :?> obj)
                 if kvp.Key = ViewAttributes.AspectAttribKey.KeyValue then 
@@ -6666,7 +6666,11 @@ type ViewBuilders() =
                     prevPressedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
                 if kvp.Key = ViewAttributes.ReleasedAttribKey.KeyValue then 
                     prevReleasedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
-        (fun _ _ _ -> ()) prevImageButtonCommandOpt currImageButtonCommandOpt target
+        match prevImageButtonCommandOpt, currImageButtonCommandOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Command <-  currValue
+        | ValueSome _, ValueNone -> target.Command <- null
+        | ValueNone, ValueNone -> ()
         match prevImageSourceOpt, currImageSourceOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.Source <- makeImageSource currValue
@@ -17437,7 +17441,7 @@ module ViewElementExtensions =
         member x.IsOpaque(value: bool) = x.WithAttribute(ViewAttributes.IsOpaqueAttribKey, (value))
 
         /// Adjusts the ImageButtonCommand property in the visual element
-        member x.ImageButtonCommand(value: unit -> unit) = x.WithAttribute(ViewAttributes.ImageButtonCommandAttribKey, (value))
+        member x.ImageButtonCommand(value: unit -> unit) = x.WithAttribute(ViewAttributes.ImageButtonCommandAttribKey, makeCommand(value))
 
         /// Adjusts the ImageButtonCornerRadius property in the visual element
         member x.ImageButtonCornerRadius(value: int) = x.WithAttribute(ViewAttributes.ImageButtonCornerRadiusAttribKey, (value))
