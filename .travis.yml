@@ -12,9 +12,6 @@ env:
 
 mono: latest
 
-install:
-  - dotnet tool install fake-cli -g
-
 script:
   - mkdir -p build_output
   - ./install-xamarin-android-ios.sh

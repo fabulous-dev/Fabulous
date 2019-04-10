@@ -1,6 +1,7 @@
 #!/bin/bash
+dotnet restore build.proj
 if [ $# -eq 0 ]; then
-    fake build
+    dotnet fake build
 else
-    fake run build.fsx -t $@
+    dotnet fake run build.fsx -t $@
 fi

@@ -1,3 +1,4 @@
 @echo off
 cls
-if "%~1"=="" (fake build) else (fake run build.fsx -t %*)
+dotnet restore build.proj
+if "%~1"=="" (dotnet fake build) else (dotnet fake run build.fsx -t %*)

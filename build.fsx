@@ -1,13 +1,4 @@
-#r "paket:
-nuget Fake.Core.ReleaseNotes
-nuget Fake.Core.Target
-nuget Fake.Core.Xml
-nuget Fake.DotNet.Cli
-nuget Fake.DotNet.MSBuild
-nuget Fake.Dotnet.NuGet
-nuget Fake.DotNet.Paket
-nuget Fake.IO.FileSystem
-nuget Newtonsoft.Json //"
+#r "paket: groupref fakebuild //"
 #load "./.fake/build.fsx/intellisense.fsx"
 
 open Fake.Core
