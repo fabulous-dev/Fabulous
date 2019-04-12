@@ -41,9 +41,8 @@ On Windows:
 .\build
 ```
 
-It is recommended to run this command at least once before working on Fabulous.
-
-Alternatively, you can run `dotnet restore build.proj`, `.paket/paket.exe restore` and `dotnet restore` to ensure that you have all the dependencies before opening Visual Studio.
+It is recommended to run this command at least once before working on Fabulous, as some of the code will be generated.
+At minimum, you need to run `.\build RunGenerator` to ensure that you have all the dependencies before opening Visual Studio.
 
 ## Dev Notes - Running the generator
 
