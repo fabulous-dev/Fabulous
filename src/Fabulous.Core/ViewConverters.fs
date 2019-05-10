@@ -219,14 +219,11 @@ module Converters =
 
     /// Checks whether an underlying control can be reused given the previous and new view elements
     let rec canReuseChild (prevChild:ViewElement) (newChild:ViewElement) =
-        if prevChild.TargetType = newChild.TargetType then
-            if canReuseAutomationId prevChild newChild then
-                if newChild.TargetType.IsAssignableFrom(typeof<NavigationPage>) then
-                    canReuseNavigationPage prevChild newChild
-                else
-                    true
+        if prevChild.TargetType = newChild.TargetType && canReuseAutomationId prevChild newChild then
+            if newChild.TargetType.IsAssignableFrom(typeof<NavigationPage>) then
+                canReuseNavigationPage prevChild newChild
             else
-                false
+                true
         else
             false
 
@@ -248,9 +245,9 @@ module Converters =
         let prevAutomationId = prevChild.TryGetAttribute<string>("AutomationId")
         let newAutomationId = newChild.TryGetAttribute<string>("AutomationId")
 
-        match prevAutomationId, newAutomationId with
-        | ValueSome _, _ when prevAutomationId <> newAutomationId -> false
-        | _, _ -> true
+        match prevAutomationId with
+        | ValueSome _ when prevAutomationId <> newAutomationId -> false
+        | _ -> true
 
     /// Update a control given the previous and new view elements
     let inline updateChild (prevChild:ViewElement) (newChild:ViewElement) targetChild = 
