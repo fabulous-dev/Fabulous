@@ -1,8 +1,26 @@
+version 5.198.0
+
+# dependencies used for retrieving FAKE and its modules
+group fakebuild
+  source https://api.nuget.org/v3/index.json
+  framework: netstandard2.0
+  storage: none
+
+  clitool dotnet-fake
+  nuget Fake.Core.ReleaseNotes
+  nuget Fake.Core.Target
+  nuget Fake.Core.Xml
+  nuget Fake.DotNet.Cli
+  nuget Fake.DotNet.MSBuild
+  nuget Fake.Dotnet.NuGet
+  nuget Fake.DotNet.Paket
+  nuget Fake.IO.FileSystem
+  nuget Newtonsoft.Json
+
 # dependencies used when compiling and running the library and neutral parts of samples
 group neutral
   framework: netstandard2.0
   source https://api.nuget.org/v3/index.json
-  source https://www.myget.org/F/oxyplot
   github fsprojects/FSharp.Compiler.PortaCode:master src/ProjectCracker.fs
   github fsprojects/FSharp.Compiler.PortaCode:master src/CodeModel.fs
   github fsprojects/FSharp.Compiler.PortaCode:master src/Interpreter.fs
@@ -15,8 +33,7 @@ group neutral
   nuget Xamarin.Forms.Maps 3.5.0.129452
   nuget SkiaSharp
   nuget SkiaSharp.Views.Forms
-  nuget OxyPlot.Core 2.0.0-unstable0956 # version matching last updated version of OxyPlot.Xamarin.Forms
-  nuget OxyPlot.Xamarin.Forms 1.1.0-unstable0013 # last version seen on myget
+  nuget OxyPlot.Xamarin.Forms 1.0.0
   nuget Newtonsoft.Json 11.0.2
 
 # Dependencies used when compiling and running Android samples. We can normally use the latest FSharp.Core and 

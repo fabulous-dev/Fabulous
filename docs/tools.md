@@ -13,6 +13,7 @@ At the time of writing this has been trialled with
 * Visual Studio + Android (USB Device or Emulator)
 * Visual Studio for Mac + Android (USB Device or Emulator)
 * Visual Studio for Mac + iOS (USB Device or Emulator)
+* Visual Studio + WPF
 
 Some manual set-up is required.  The following assumes your app is called `SqueakyApp`:
 
@@ -46,6 +47,8 @@ Some manual set-up is required.  The following assumes your app is called `Squea
 
         cd SqueakyApp\SqueakyApp
         fabulous --watch --send 
+        
+7. It may be necessary to launch Visual Studio with elevated permissions ("Run as administrator"); otherwise, "runner.EnableLiveUpdate()" may fail to start the HttpListener, which will cause LiveUpdate to fail.
 
 Now, whenever you save a file in your core project directory, the `fabulous` watcher will attempt to recompile your changed file and
 send a representation of its contents to your app via a PUT request to the given webhook.  The app then deserializes this representation and
@@ -123,6 +126,10 @@ The model state of the app is re-initialized.
 The LiveUpdate mechanism is very experimental.
 - Debug output is printed to console by `fabulous`
 - Debug output is printed to app-output by the on-device web server
+
+**ERROR SENDING TO WEBHOOK: "System.Net.WebException: No connection could be made because the target machine actively refused it."**
+
+If the LiveUpdate console displays this error, it is because Visual Studio needs elevated permissions to execute "EnableLiveUpdate()".  The solution is to launch Visual Studio using the "Run as Administrator" option.
 
 ### Design
 

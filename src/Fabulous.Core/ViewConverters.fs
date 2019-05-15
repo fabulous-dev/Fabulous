@@ -301,7 +301,7 @@ module Converters =
 
     /// Checks whether an underlying control can be reused given the previous and new view elements
     let rec canReuseChild (prevChild:ViewElement) (newChild:ViewElement) =
-        if prevChild.TargetType = newChild.TargetType then
+        if prevChild.TargetType = newChild.TargetType && canReuseAutomationId prevChild newChild then
             if newChild.TargetType.IsAssignableFrom(typeof<NavigationPage>) then
                 canReuseNavigationPage prevChild newChild
             else
@@ -320,6 +320,16 @@ module Converters =
         match prevPages, newPages with
         | ValueSome prevPages, ValueSome newPages -> (prevPages, newPages) ||> Seq.forall2 canReuseChild
         | _, _ -> true
+
+    /// Checks whether the control can be reused given the previous and the new AutomationId.
+    /// Xamarin.Forms can't change an already setted AutomationId
+    and internal canReuseAutomationId (prevChild: ViewElement) (newChild: ViewElement) =
+        let prevAutomationId = prevChild.TryGetAttribute<string>("AutomationId")
+        let newAutomationId = newChild.TryGetAttribute<string>("AutomationId")
+
+        match prevAutomationId with
+        | ValueSome _ when prevAutomationId <> newAutomationId -> false
+        | _ -> true
 
     /// Update a control given the previous and new view elements
     let inline updateChild (prevChild:ViewElement) (newChild:ViewElement) targetChild = 

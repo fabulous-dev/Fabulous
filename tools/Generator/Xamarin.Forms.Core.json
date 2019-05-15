@@ -1024,9 +1024,9 @@
         {
           "name": "Command",
           "uniqueName": "ImageButtonCommand",
+          "defaultValue": "null",
           "inputType": "unit -> unit",
-          "modelType": "unit -> unit",
-          "updateCode": "(fun _ _ _ -> ())"
+          "convToModel": "makeCommand"
         },
         {
           "name": "Source",

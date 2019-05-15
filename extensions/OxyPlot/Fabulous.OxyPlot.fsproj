@@ -15,7 +15,6 @@
     <ItemGroup>
         <PackageReference Include="FSharp.Core" />
         <PackageReference Include="Xamarin.Forms" />
-        <PackageReference Include="OxyPlot.Core" />
         <PackageReference Include="OxyPlot.Xamarin.Forms" />
     </ItemGroup>
     <ItemGroup>
