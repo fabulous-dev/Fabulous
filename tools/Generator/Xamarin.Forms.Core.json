@@ -1842,7 +1842,9 @@
         },
         {
           "name": "Footer",
-          "defaultValue": "null"
+          "defaultValue": "null",
+          "inputType": "obj",
+          "convToModel": "makeViewOrString"
         },
         {
           "name": "HasUnevenRows",
@@ -1850,7 +1852,9 @@
         },
         {
           "name": "Header",
-          "defaultValue": "null"
+          "defaultValue": "null",
+          "inputType": "obj",
+          "convToModel": "makeViewOrString"
         },
         {
           "name": "HeaderTemplate",
@@ -1972,7 +1976,9 @@
         },
         {
           "name": "Footer",
-          "defaultValue": "null"
+          "defaultValue": "null",
+          "inputType": "obj",
+          "convToModel": "makeViewOrString"
         },
         {
           "name": "HasUnevenRows",
@@ -1980,7 +1986,9 @@
         },
         {
           "name": "Header",
-          "defaultValue": "null"
+          "defaultValue": "null",
+          "inputType": "obj",
+          "convToModel": "makeViewOrString"
         },
         {
           "name": "IsPullToRefreshEnabled",

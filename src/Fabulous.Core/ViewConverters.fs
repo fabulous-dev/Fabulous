@@ -296,6 +296,15 @@ module Converters =
         | :? TemplatedPage as p -> ShellContent.op_Implicit p
         | _ -> failwithf "makeTemplate: invalid argument %O" v
 
+    /// Converts a ViewElement to a View, or other types to string
+    let makeViewOrString (v: obj) : obj =
+        match v with
+        | null -> null
+        | :? View as view -> view :> obj
+        | :? ViewElement as viewElement -> viewElement.Create()
+        | :? string as str -> str :> obj
+        | _ -> v.ToString() :> obj
+
     /// Checks whether two objects are reference-equal
     let identical (x: 'T) (y:'T) = System.Object.ReferenceEquals(x, y)
 
@@ -450,6 +459,7 @@ module Converters =
                 oc
         updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetColl ListElementData (fun _ _ _ -> ()) canReuseChild (fun _ curr target -> target.Key <- curr) 
 
+    /// Update the items in a CollectionView control, given previous and current view elements
     let internal updateCollectionViewItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.CollectionView) = 
         let targetColl = 
             match target.ItemsSource with 
@@ -460,6 +470,7 @@ module Converters =
                 oc
         updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetColl ItemListElementData (fun _ _ _ -> ()) canReuseChild (fun _ curr target -> target.Key <- curr) 
 
+    /// Update the items in a CarouselView control, given previous and current view elements
     let internal updateCarouselViewItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.CarouselView) = 
         let targetColl = 
             match target.ItemsSource with 
@@ -756,6 +767,7 @@ module Converters =
         | _, ValueNone -> Xamarin.Forms.MenuItem.SetAccelerator(target, null)
         | _, ValueSome newVal -> Xamarin.Forms.MenuItem.SetAccelerator(target, makeAccelerator newVal)
 
+    /// Update the items of a Shell, given previous and current view elements
     let internal updateShellItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.Shell) =
         let create (desc: ViewElement) =
             desc.Create() :?> Xamarin.Forms.ShellItem
@@ -764,6 +776,7 @@ module Converters =
         let currArray = ValueOption.map seqToArray collOpt
         updateCollectionGeneric prevArray currArray target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
 
+    /// Update the menu items of a Shell, given previous and current view elements
     let internal updateMenuItemsShell (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.Shell) =
         let create (desc: ViewElement) =
             desc.Create() :?> Xamarin.Forms.MenuItem
@@ -772,6 +785,7 @@ module Converters =
         let currArray = ValueOption.map seqToArray collOpt
         updateCollectionGeneric prevArray currArray target.MenuItems create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
 
+    /// Update the menu items of a ShellContent, given previous and current view elements
     let internal updateMenuItemsShellContent (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.ShellContent) =
         let create (desc: ViewElement) =
             desc.Create() :?> Xamarin.Forms.MenuItem
@@ -780,6 +794,7 @@ module Converters =
         let currArray = ValueOption.map seqToArray collOpt
         updateCollectionGeneric prevArray currArray target.MenuItems create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
 
+    /// Update the items of a ShellItem, given previous and current view elements
     let internal updateShellItemItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.ShellItem) =
         let create (desc: ViewElement) =
             desc.Create() :?> Xamarin.Forms.ShellSection
@@ -788,6 +803,7 @@ module Converters =
         let currArray = ValueOption.map seqToArray collOpt
         updateCollectionGeneric prevArray currArray target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
 
+    /// Update the items of a ShellSection, given previous and current view elements
     let internal updateShellSectionItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.ShellSection) =
         let create (desc: ViewElement) =
             desc.Create() :?> Xamarin.Forms.ShellContent
