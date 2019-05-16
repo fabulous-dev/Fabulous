@@ -171,7 +171,7 @@ type ViewProto() =
               TypeToInstantiate = "Fabulous.DynamicViews.CustomListView"
               Parameters = [||] }
             """
-    static member val CreateFuncListView : (unit -> Xamarin.Forms.ListView) = (fun () -> ViewBuilders.CreateListView())
+    static member val CreateFuncListView : (unit -> Xamarin.Forms.ListView) = (fun () -> ViewBuilders.CreateListView()) with get, set
 
     static member CreateListView () : Xamarin.Forms.ListView =
         failwith "can't create Xamarin.Forms.ListView"
@@ -187,7 +187,7 @@ type ViewProto() =
               TypeToInstantiate = "Fabulous.DynamicViews.CustomListView"
               Parameters = [||] }
             """
-    static member val CreateFuncListView : (unit -> Xamarin.Forms.ListView) = (fun () -> ViewBuilders.CreateListView())
+    static member val CreateFuncListView : (unit -> Xamarin.Forms.ListView) = (fun () -> ViewBuilders.CreateListView()) with get, set
 
     static member CreateListView () : Xamarin.Forms.ListView =
         upcast (new Fabulous.DynamicViews.CustomListView())
@@ -204,7 +204,7 @@ type ViewProto() =
               TypeToInstantiate = "Fabulous.DynamicViews.CustomListView"
               Parameters = [| "parameter1"; "parameter2" |] }
             """
-    static member val CreateFuncListView : (unit -> Xamarin.Forms.ListView) = (fun () -> ViewBuilders.CreateListView())
+    static member val CreateFuncListView : (unit -> Xamarin.Forms.ListView) = (fun () -> ViewBuilders.CreateListView()) with get, set
 
     static member CreateListView () : Xamarin.Forms.ListView =
         match parameter1, parameter2 with
@@ -481,7 +481,7 @@ type ViewBuilders() =
         match text with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncButton : (unit -> Xamarin.Forms.Button) = (fun () -> ViewBuilders.CreateButton())
+    static member val CreateFuncButton : (unit -> Xamarin.Forms.Button) = (fun () -> ViewBuilders.CreateButton()) with get, set
 
     static member CreateButton () : Xamarin.Forms.Button =
         upcast (new Xamarin.Forms.Button())

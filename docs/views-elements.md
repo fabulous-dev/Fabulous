@@ -178,8 +178,8 @@ View.ScrollView(content=(...),
     scrolled=(fun args -> dispatch Scrolled))
 ```
 
-For more complex scenarios, you can directly use the method from Xamarin.Forms [`ScrollView.ScrollToAsync(x, y, animated)`](https://docs.microsoft.com/dotnet/api/xamarin.forms.scrollview.scrolltoasync?view=xamarin-forms)  
-This method offers the advantage of being awaitable until the end of the scrolling.  
+For more complex scenarios, you can directly use the method from Xamarin.Forms [`ScrollView.ScrollToAsync(x, y, animated)`](https://docs.microsoft.com/dotnet/api/xamarin.forms.scrollview.scrolltoasync?view=xamarin-forms)
+This method offers the advantage of being awaitable until the end of the scrolling.
 To do this, a reference to the underlying ScrollView is needed.
 
 
@@ -500,6 +500,74 @@ See also:
 
 * [Xamarin.Forms.Core.SearchBar](https://docs.microsoft.com/en-us/dotnet/api/xamarin.forms.searchbar?view=xamarin-forms)
 
+
+### CollectionView, CarouselView, Shell
+
+`CollectionView`, `CarouselView` and `Shell` are available in preview in Xamarin.Forms 3.5.  
+Please read the Xamarin.Forms documentation to check whether those controls are available for the platforms you target.
+
+Fabulous provides an initial but partial support for them.  
+We will fully support them once officially released.
+
+As they are experimental, each one of these controls requires a flag before they can be used.
+- Shell = Shell_Experimental
+- CollectionView/CarouselView = CollectionView_Experimental
+
+```fsharp
+
+// iOS
+[<Register ("AppDelegate")>]
+type AppDelegate () =
+    inherit FormsApplicationDelegate ()
+
+    override this.FinishedLaunching (uiApp, options) =
+        Xamarin.Forms.Forms.SetFlags([|"Shell_Experimental"; "CollectionView_Experimental"|]);
+        (...)
+
+// Android
+[<Activity>]
+type MainActivity() =
+    inherit FormsApplicationActivity()
+
+    override this.OnCreate (bundle: Bundle) =
+        base.OnCreate (bundle)
+        global.Xamarin.Forms.Forms.SetFlags([|"Shell_Experimental"; "CollectionView_Experimental"|])
+        (...)
+```
+
+Usage:
+```fsharp
+View.Shell(title = "TitleShell",
+           items = [
+               View.ShellItem(
+                   items = [
+                       View.ShellSection(items = [
+                           View.ShellContent(title = "Section 1", content = View.ContentPage(content = View.Button(text = "Button")))         
+                       ])
+                   ])
+           ])
+
+View.CarouselView(itemsSource = [
+            View.Label(text="Person1") 
+            View.Label(text="Person2")
+            View.Label(text="Person3")
+            View.Label(text="Person4")
+            View.Label(text="Person5")
+        ])
+
+View.CollectionView(items=[
+            View.Label(text="Person1") 
+            View.Label(text="Person2")
+            View.Label(text="Person3")
+            View.Label(text="Person4")
+            View.Label(text="Person5")
+        ])
+```
+
+See also:
+
+* [Xamarin.Forms 4.0 Preview](https://devblogs.microsoft.com/xamarin/xamarin-forms-4-0-preview/)
+
 Gestures
 -------------------
 
@@ -568,31 +636,32 @@ See also:
 Pop-ups
 -------------------
 
-Pop-ups are a special case in Fabulous.  
-They are part of the view, but don't follow the same lifecycle as the rest of the UI.
+Pop-ups are a special case in Fabulous: they are part of the view, but don't follow the same lifecycle as the rest of the UI. In Xamarin.Forms pop-ups are exposed through 2 methods of the current page: `DisplayAlert` and `DisplayActionSheet`.
 
-In Xamarin.Forms, those pop-ups are exposed through 2 methods of the current page, `DisplayAlert` and `DisplayActionSheet`.
+In Fabulous we only describe what a page should look like and have no access to UI elements. As such, there is no direct implementation of those 2 methods in Fabulous but instead we can use the static property `Application.Current.MainPage` exposed by Xamarin.Forms.
 
-In Fabulous, we only describe what a page should look like and have no access to UI elements.  
-As such, there is no direct implementation of those 2 methods in Fabulous.
-
-Instead, we can use the static property `Application.Current.MainPage` exposed by Xamarin.Forms.
-
-Here is an example of the use of a confirmation pop-up.
+Here is an example of the use of a confirmation pop-up - note the requirement of `Cmd.AsyncMsg` so as not to block on the UI thread:
 ```fsharp
-let! confirm = Application.Current.MainPage.DisplayAlert(
-                   "Share this contact",
-                   "Are you sure you want to share this contact?",
-                   "Yes", "No")
-               |> Async.AwaitTask
+type Msg =
+    | DisplayAlert
+    | AlertResult of bool
 
-match confirm with
-| true -> (...)
-| false -> (...)
+let update (msg : Msg) (model : Model) =
+    match msg with
+    | DisplayAlert ->
+        let alertResult = async {
+            let! alert =
+                Application.Current.MainPage.DisplayAlert("Display Alert", "Confirm", "Ok", "Cancel")
+                |> Async.AwaitTask
+            return AlertResult alert }
+
+        model, Cmd.ofAsyncMsg alertResult
+
+    | AlertResult alertResult -> ... // Do something with the result
 ```
 
-_Why don't we add a Fabulous wrapper for those?_  
-Doing so would only end up duplicating the existing methods and compel us to maintain these in sync with Xamarin.Forms.  
+_Why don't we add a Fabulous wrapper for those?_
+Doing so would only end up duplicating the existing methods and compel us to maintain these in sync with Xamarin.Forms.
 See [Pull Request #147](https://github.com/fsprojects/Fabulous/pull/147) for more information
 
 See also:

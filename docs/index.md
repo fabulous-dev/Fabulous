@@ -96,10 +96,16 @@ let update (msg: Msg) (model: Model) =
 
 /// The view function giving updated content for the page
 let view (model: Model) dispatch =
-    if model.Pressed then
-        View.Label(text="I was pressed!")
-    else
-        View.Button(text="Press Me!", command=(fun () -> dispatch Pressed))
+    View.ContentPage(
+        content=View.StackLayout(
+            children=[
+                if model.Pressed then
+                    yield View.Label(text="I was pressed!")
+                else
+                    yield View.Button(text="Press Me!", command=(fun () -> dispatch Pressed))
+            ]
+        )
+    )
 
 type App () as app =
     inherit Application ()

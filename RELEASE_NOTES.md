@@ -1,3 +1,29 @@
+#### 0.33.2
+
+* [DynamicViews] Fixed an issue in TableView where the items weren't recycled (https://github.com/fsprojects/Fabulous/pull/364)
+
+#### 0.33.1
+
+* [LiveUpdate] Fixed a bug where any changes throw a NullReferenceException (https://github.com/fsprojects/Fabulous/pull/355)
+
+#### 0.33.0
+
+* [DynamicViews] Added SizeChangedEventArgs to give access to the new size when SizeChanged is raised (https://github.com/fsprojects/Fabulous/pull/336)
+* [DynamicViews] Added an extension point to give a new default implementation for a control (https://github.com/fsprojects/Fabulous/pull/342)
+* [LiveUpdate] Updated Interpreter to fix some bugs. Plus changed the watcher with a new and easier command line syntax (https://github.com/fsprojects/Fabulous/pull/338)
+* [Fabulous.Core] Fixed a bug (possibly from Mono) that made Fabulous act weird on some Android devices (https://github.com/fsprojects/Fabulous/pull/347)
+* [Templates] Fixed the consistency of the namespace between the files in the WPF template (https://github.com/fsprojects/Fabulous/pull/349)
+
+#### 0.32.0
+
+* [Fabulous.Core] Added better type annotation to make the functions init and update easier to read (https://github.com/fsprojects/Fabulous/pull/313)
+* [Template] Added new UWP template (https://github.com/fsprojects/Fabulous/pull/324)
+* [Fabulous.Core] Added new helpers to extract data from ViewElement. Helpful for unit testing the views (https://github.com/fsprojects/Fabulous/pull/325)
+* [Xamarin.Forms controls] Added the property ScrollTo and the event Scrolled for ScrollView (https://github.com/fsprojects/Fabulous/pull/332)
+* [Xamarin.Forms controls] Added the events ChildrenReordered, MeasureInvalidated, Focused, SizeChanged and Unfocused for VisualElement (https://github.com/fsprojects/Fabulous/pull/327)
+* [Fabulous.Core] Changed the modules behind View; The builder functions are no longer hidden from IntelliSense (https://github.com/fsprojects/Fabulous/pull/325)
+* [Xamarin.Forms controls] Fixed the update of TableSection.Title (https://github.com/fsprojects/Fabulous/pull/330)
+
 #### 0.31.0
 
 * [Fabulous.Core] Added XML docs for Fabulous helpers (https://github.com/fsprojects/Fabulous/pull/284)

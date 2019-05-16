@@ -5,7 +5,6 @@ namespace Fabulous.DynamicViews
 open System
 open System.Collections.Generic
 open System.ComponentModel
-open System.Reflection
 open System.IO
 open System.Windows.Input
 open Xamarin.Forms
@@ -23,16 +22,21 @@ type AnimationKind =
 [<AllowNullLiteral>]
 type IListElement = 
     inherit INotifyPropertyChanged
-    abstract Key : obj
+    abstract Key : ViewElement
+
+[<AllowNullLiteral>]
+type IItemListElement = 
+    inherit INotifyPropertyChanged
+    abstract Key : ViewElement
 
 /// A custom data element for the ListView view element
 [<AllowNullLiteral>]
-type ListElementData<'T>(key:'T) = 
+type ListElementData(key) = 
     let ev = new Event<_,_>()
     let mutable data = key
     
     interface IListElement with
-        member x.Key = box data
+        member x.Key = data
         [<CLIEvent>] member x.PropertyChanged = ev.Publish
         
     member x.Key
@@ -41,17 +45,32 @@ type ListElementData<'T>(key:'T) =
             data <- value
             ev.Trigger(x, PropertyChangedEventArgs "Key")
 
+[<AllowNullLiteral>]
+type ItemListElementData(key) = 
+    let ev = new Event<_,_>()
+    let mutable data = key
+    
+    interface IItemListElement with
+        member x.Key = data
+        [<CLIEvent>] member x.PropertyChanged = ev.Publish
+        
+    member x.Key
+        with get() = data
+        and set(value) =
+            data <- value
+            ev.Trigger(x, PropertyChangedEventArgs "Key")        
+
 /// A custom data element for the GroupedListView view element
 [<AllowNullLiteral>]
-type ListGroupData<'T>(shortName: string, key:'T, coll: 'T[]) = 
-    inherit System.Collections.ObjectModel.ObservableCollection<ListElementData<'T>>(Seq.map ListElementData coll)
+type ListGroupData(shortName: string, key, coll: ViewElement[]) = 
+    inherit System.Collections.ObjectModel.ObservableCollection<ListElementData>(Seq.map ListElementData coll)
     
     let ev = new Event<_,_>()
     let mutable shortNameData = shortName
     let mutable keyData = key
     
     interface IListElement with
-        member x.Key = box keyData
+        member x.Key = keyData
         [<CLIEvent>] member x.PropertyChanged = ev.Publish
         
     member x.Key
@@ -73,24 +92,17 @@ type ViewElementCell() =
     inherit ViewCell()
 
     let mutable listElementOpt : IListElement option = None
-    let mutable modelOpt : obj option = None
+    let mutable modelOpt : ViewElement option = None
     
-    let createView newModel =
-        let ty = newModel.GetType()
-        let res = ty.InvokeMember("Create",(BindingFlags.InvokeMethod ||| BindingFlags.Public ||| BindingFlags.Instance), null, newModel, [| |] )
-        match res with 
+    let createView (newModel: ViewElement) =
+        match newModel.Create () with 
         | :? View as v -> v
-        | _ -> failwithf "The cells of a ListView must each be some kind of 'View' and not a '%A'" (res.GetType())
+        | x -> failwithf "The cells of a ListView must each be some kind of 'View' and not a '%A'" (x.GetType())
 
-    let updateIncremental view prevModel newModel =
-        let ty = newModel.GetType()
-        let res = ty.InvokeMember("UpdateIncremental",(BindingFlags.InvokeMethod ||| BindingFlags.Public ||| BindingFlags.Instance), null, newModel, [| prevModel; box view |] )
-        ignore res
-    
     member x.OnDataPropertyChanged = PropertyChangedEventHandler(fun _ args ->
         match args.PropertyName, listElementOpt, modelOpt with
         | "Key", Some curr, Some prevModel ->
-            updateIncremental x.View prevModel curr.Key
+            curr.Key.UpdateIncremental (prevModel, x.View)
             modelOpt <- Some curr.Key
         | _ -> ()
     )
@@ -104,7 +116,7 @@ type ViewElementCell() =
             | Some prev ->
                 prev.PropertyChanged.RemoveHandler x.OnDataPropertyChanged
                 curr.PropertyChanged.AddHandler x.OnDataPropertyChanged
-                updateIncremental x.View prev.Key newModel
+                newModel.UpdateIncremental (prev.Key, x.View)
             | None -> 
                 curr.PropertyChanged.AddHandler x.OnDataPropertyChanged
                 x.View <- createView newModel
@@ -119,9 +131,58 @@ type ViewElementCell() =
                 modelOpt <- None
             | None -> ()
 
+type ItemViewElementCell() = 
+    inherit ContentView()
+
+    let mutable listElementOpt : IItemListElement option = None
+    let mutable modelOpt : ViewElement option = None
+    
+    let createView (newModel: ViewElement) =
+        match newModel.Create () with 
+        | :? View as v -> v
+        | x -> failwithf "The cells of a CollectionView must each be some kind of 'View' and not a '%A'" (x.GetType())
+
+    member x.OnDataPropertyChanged = PropertyChangedEventHandler(fun _ args ->
+        match args.PropertyName, listElementOpt, modelOpt with
+        | "Key", Some curr, Some prevModel ->
+            curr.Key.UpdateIncremental (prevModel, x.Content)
+            modelOpt <- Some curr.Key
+        | _ -> ()
+    )
+
+    override x.OnBindingContextChanged () =
+        base.OnBindingContextChanged ()
+        match x.BindingContext with
+        | :? IItemListElement as curr -> 
+            let newModel = curr.Key
+            match listElementOpt with 
+            | Some prev ->
+                prev.PropertyChanged.RemoveHandler x.OnDataPropertyChanged
+                curr.PropertyChanged.AddHandler x.OnDataPropertyChanged
+                newModel.UpdateIncremental (prev.Key, x.Content)
+            | None -> 
+                curr.PropertyChanged.AddHandler x.OnDataPropertyChanged
+                x.Content <- createView newModel
+
+            listElementOpt <- Some curr
+            modelOpt <- Some curr.Key
+        | _ ->
+            match listElementOpt with
+            | Some prev -> 
+                prev.PropertyChanged.RemoveHandler x.OnDataPropertyChanged
+                listElementOpt <- None
+                modelOpt <- None
+            | None -> ()
+
 /// A custom control for the ListView view element
 type CustomListView() = 
     inherit ListView(ItemTemplate=DataTemplate(typeof<ViewElementCell>))
+
+type CustomCollectionListView() = 
+    inherit CollectionView(ItemTemplate=DataTemplate(typeof<ItemViewElementCell>))
+
+type CustomCarouselView() = 
+    inherit CarouselView(ItemTemplate=DataTemplate(typeof<ItemViewElementCell>))
 
 /// A custom control for the ListViewGrouped view element
 type CustomGroupListView() = 
@@ -222,12 +283,25 @@ module Converters =
             f index
         )
 
+    /// Converts a string or uri to a Xamarin.Forms ShellNavigation
+    let makeUri (v: obj) =
+        match v with
+        | :? string as path -> ShellNavigationState.op_Implicit path
+        | :? Uri as uri -> ShellNavigationState.op_Implicit uri
+        | _ -> failwithf "makeUri: invalid argument %O" v
+
+    /// Converts a datatemplate to a Xamarin.Forms TemplatedPage
+    let makeTemplate (v: obj) =
+        match v with
+        | :? TemplatedPage as p -> ShellContent.op_Implicit p
+        | _ -> failwithf "makeTemplate: invalid argument %O" v
+
     /// Checks whether two objects are reference-equal
     let identical (x: 'T) (y:'T) = System.Object.ReferenceEquals(x, y)
 
     /// Checks whether an underlying control can be reused given the previous and new view elements
     let rec canReuseChild (prevChild:ViewElement) (newChild:ViewElement) =
-        if prevChild.TargetType = newChild.TargetType then
+        if prevChild.TargetType = newChild.TargetType && canReuseAutomationId prevChild newChild then
             if newChild.TargetType.IsAssignableFrom(typeof<NavigationPage>) then
                 canReuseNavigationPage prevChild newChild
             else
@@ -246,6 +320,16 @@ module Converters =
         match prevPages, newPages with
         | ValueSome prevPages, ValueSome newPages -> (prevPages, newPages) ||> Seq.forall2 canReuseChild
         | _, _ -> true
+
+    /// Checks whether the control can be reused given the previous and the new AutomationId.
+    /// Xamarin.Forms can't change an already setted AutomationId
+    and internal canReuseAutomationId (prevChild: ViewElement) (newChild: ViewElement) =
+        let prevAutomationId = prevChild.TryGetAttribute<string>("AutomationId")
+        let newAutomationId = newChild.TryGetAttribute<string>("AutomationId")
+
+        match prevAutomationId with
+        | ValueSome _ when prevAutomationId <> newAutomationId -> false
+        | _ -> true
 
     /// Update a control given the previous and new view elements
     let inline updateChild (prevChild:ViewElement) (newChild:ViewElement) targetChild = 
@@ -286,12 +370,14 @@ module Converters =
                     targetColl.RemoveAt (targetColl.Count - 1)
 
                 // Count the existing targetColl
+                // Unused variable n' introduced as a temporary workaround for https://github.com/fsprojects/Fabulous/issues/343
+                let n' = targetColl.Count
                 let n = targetColl.Count
 
                 // Adjust the existing targetColl and create the new targetColl
                 for i in 0 .. coll.Length-1 do
                     let newChild = coll.[i]
-                    let prevChildOpt = match prevCollOpt with ValueNone -> ValueNone | ValueSome coll when i < coll.Length && i < n -> ValueSome coll.[i] | _ -> ValueNone
+                    let prevChildOpt = match prevCollOpt with ValueNone -> ValueNone | ValueSome coll when i < n -> ValueSome coll.[i] | _ -> ValueNone
                     let prevChildOpt, targetChild = 
                         if (match prevChildOpt with ValueNone -> true | ValueSome prevChild -> not (identical prevChild newChild)) then
                             let mustCreate = (i >= n || match prevChildOpt with ValueNone -> true | ValueSome prevChild -> not (canReuse prevChild newChild))
@@ -357,25 +443,45 @@ module Converters =
     let internal updateListViewItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.ListView) = 
         let targetColl = 
             match target.ItemsSource with 
-            | :? ObservableCollection<ListElementData<'T>> as oc -> oc
+            | :? ObservableCollection<ListElementData> as oc -> oc
             | _ -> 
-                let oc = ObservableCollection<ListElementData<'T>>()
+                let oc = ObservableCollection<ListElementData>()
                 target.ItemsSource <- oc
                 oc
         updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetColl ListElementData (fun _ _ _ -> ()) canReuseChild (fun _ curr target -> target.Key <- curr) 
 
-    let private updateListGroupData (_prevShortName: string, _prevKey: 'T, prevColl: 'T[]) (currShortName: string, currKey: 'T, currColl: 'T[]) (target: ListGroupData<'T>) =
+    let internal updateCollectionViewItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.CollectionView) = 
+        let targetColl = 
+            match target.ItemsSource with 
+            | :? ObservableCollection<ItemListElementData> as oc -> oc
+            | _ -> 
+                let oc = ObservableCollection<ItemListElementData>()
+                target.ItemsSource <- oc
+                oc
+        updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetColl ItemListElementData (fun _ _ _ -> ()) canReuseChild (fun _ curr target -> target.Key <- curr) 
+
+    let internal updateCarouselViewItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.CarouselView) = 
+        let targetColl = 
+            match target.ItemsSource with 
+            | :? ObservableCollection<ItemListElementData> as oc -> oc
+            | _ -> 
+                let oc = ObservableCollection<ItemListElementData>()
+                target.ItemsSource <- oc
+                oc
+        updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetColl ItemListElementData (fun _ _ _ -> ()) canReuseChild (fun _ curr target -> target.Key <- curr) 
+
+    let private updateListGroupData (_prevShortName: string, _prevKey, prevColl: ViewElement[]) (currShortName: string, currKey, currColl: ViewElement[]) (target: ListGroupData) =
         target.ShortName <- currShortName
         target.Key <- currKey
         updateCollectionGeneric (ValueSome prevColl) (ValueSome currColl) target ListElementData (fun _ _ _ -> ()) canReuseChild (fun _ curr target -> target.Key <- curr) 
 
     /// Update the items in a GroupedListView control, given previous and current view elements
-    let internal updateListViewGroupedItems (prevCollOpt: (string * 'T * 'T[])[] voption) (collOpt: (string * 'T * 'T[])[] voption) (target: Xamarin.Forms.ListView) = 
+    let internal updateListViewGroupedItems (prevCollOpt: (string * ViewElement * ViewElement[])[] voption) (collOpt: (string * ViewElement * ViewElement[])[] voption) (target: Xamarin.Forms.ListView) = 
         let targetColl = 
             match target.ItemsSource with 
-            | :? ObservableCollection<ListGroupData<'T>> as oc -> oc
+            | :? ObservableCollection<ListGroupData> as oc -> oc
             | _ -> 
-                let oc = ObservableCollection<ListGroupData<'T>>()
+                let oc = ObservableCollection<ListGroupData>()
                 target.ItemsSource <- oc
                 oc
         updateCollectionGeneric prevCollOpt collOpt targetColl ListGroupData (fun _ _ _ -> ()) (fun (_, prevKey, _) (_, currKey, _) -> canReuseChild prevKey currKey) updateListGroupData
@@ -395,8 +501,8 @@ module Converters =
         let create (desc: ViewElement) = (desc.Create() :?> Cell)
 
         match prevCollOpt with
-        | ValueNone -> ()
-        | ValueSome _ -> target.Root <- TableRoot()
+        | ValueNone -> target.Root <- TableRoot()
+        | ValueSome _ -> ()
 
         updateCollectionGeneric prevCollOpt collOpt target.Root 
             (fun (s, es) -> let section = TableSection(s) in section.Add(Seq.map create es); section) 
@@ -650,6 +756,46 @@ module Converters =
         | _, ValueNone -> Xamarin.Forms.MenuItem.SetAccelerator(target, null)
         | _, ValueSome newVal -> Xamarin.Forms.MenuItem.SetAccelerator(target, makeAccelerator newVal)
 
+    let internal updateShellItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.Shell) =
+        let create (desc: ViewElement) =
+            desc.Create() :?> Xamarin.Forms.ShellItem
+
+        let prevArray = ValueOption.map seqToArray prevCollOpt
+        let currArray = ValueOption.map seqToArray collOpt
+        updateCollectionGeneric prevArray currArray target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
+
+    let internal updateMenuItemsShell (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.Shell) =
+        let create (desc: ViewElement) =
+            desc.Create() :?> Xamarin.Forms.MenuItem
+
+        let prevArray = ValueOption.map seqToArray prevCollOpt
+        let currArray = ValueOption.map seqToArray collOpt
+        updateCollectionGeneric prevArray currArray target.MenuItems create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
+
+    let internal updateMenuItemsShellContent (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.ShellContent) =
+        let create (desc: ViewElement) =
+            desc.Create() :?> Xamarin.Forms.MenuItem
+
+        let prevArray = ValueOption.map seqToArray prevCollOpt
+        let currArray = ValueOption.map seqToArray collOpt
+        updateCollectionGeneric prevArray currArray target.MenuItems create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
+
+    let internal updateShellItemItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.ShellItem) =
+        let create (desc: ViewElement) =
+            desc.Create() :?> Xamarin.Forms.ShellSection
+
+        let prevArray = ValueOption.map seqToArray prevCollOpt
+        let currArray = ValueOption.map seqToArray collOpt
+        updateCollectionGeneric prevArray currArray target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
+
+    let internal updateShellSectionItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.ShellSection) =
+        let create (desc: ViewElement) =
+            desc.Create() :?> Xamarin.Forms.ShellContent
+
+        let prevArray = ValueOption.map seqToArray prevCollOpt
+        let currArray = ValueOption.map seqToArray collOpt
+        updateCollectionGeneric prevArray currArray target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
+    
     /// Trigger ScrollView.ScrollToAsync if needed, given the current values
     let internal triggerScrollToAsync (currValue: (float * float * AnimationKind) voption) (target: Xamarin.Forms.ScrollView) =
         match currValue with
@@ -660,7 +806,7 @@ module Converters =
                 | NotAnimated -> false
             target.ScrollToAsync(x, y, animated) |> ignore
         | _ -> ()
-
+        
     /// Update the items in a Menu control, given previous and current view elements
     let internal updateMenuItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.Menu) =
         let create (desc: ViewElement) =
@@ -670,7 +816,42 @@ module Converters =
         let currArray = ValueOption.map seqToArray collOpt
 
         updateCollectionGeneric prevArray currArray target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
+        
+    /// Trigger ItemsView.ScrollTo if needed, given the current values
+    let internal triggerScrollTo (currValue: (obj * obj * ScrollToPosition * AnimationKind) voption) (target: Xamarin.Forms.ItemsView) =
+        match currValue with
+        | ValueSome (x, y, scrollToPosition, animationKind) ->
+            let animated =
+                match animationKind with
+                | Animated -> true
+                | NotAnimated -> false
+            target.ScrollTo(x,y, scrollToPosition, animated)
+        | _ -> ()
 
+    /// Trigger Shell.GoToAsync if needed, given the current values
+    let internal triggerGoToAsync (currValue: (ShellNavigationState * AnimationKind) voption) (target: Xamarin.Forms.Shell) =
+        match currValue with
+        | ValueSome (navigationState, animationKind) ->
+            let animated =
+                match animationKind with
+                | Animated -> true
+                | NotAnimated -> false
+            target.GoToAsync(navigationState, animated) |> ignore
+        | _ -> ()
+
+    /// Trigger ShellSection.GoToAsync if needed, given the current values
+    let internal triggerSSGoToAsync (currValue: (string list * Map<string, string> * AnimationKind) voption) (target: Xamarin.Forms.ShellSection) =
+        match currValue with
+        | ValueSome (routes, queryData, animationKind) ->
+            let animated =
+                match animationKind with
+                | Animated -> true
+                | NotAnimated -> false
+            let lst = ResizeArray<string>()
+            lst.AddRange(routes)
+            target.GoToAsync(lst, queryData, animated) |> ignore
+        | _ -> ()
+        
     /// Check if two LayoutOptions are equal
     let internal equalLayoutOptions (x:Xamarin.Forms.LayoutOptions) (y:Xamarin.Forms.LayoutOptions)  =
         x.Alignment = y.Alignment && x.Expands = y.Expands
@@ -683,13 +864,13 @@ module Converters =
     let tryFindListViewItem (sender: obj) (item: obj) =
         match item with 
         | null -> None
-        | :? ListElementData<ViewElement> as item -> 
-            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListElementData<ViewElement>> 
+        | :? ListElementData as item -> 
+            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListElementData> 
             // POSSIBLE IMPROVEMENT: don't use a linear search
             items |> Seq.tryFindIndex (fun item2 -> identical item.Key item2.Key)
         | _ -> None
 
-    let private tryFindGroupedListViewItemIndex (items: System.Collections.Generic.IList<ListGroupData<ViewElement>>) (item: ListElementData<ViewElement>) =
+    let private tryFindGroupedListViewItemIndex (items: System.Collections.Generic.IList<ListGroupData>) (item: ListElementData) =
         // POSSIBLE IMPROVEMENT: don't use a linear search
         items 
         |> Seq.indexed 
@@ -703,14 +884,14 @@ module Converters =
     let tryFindGroupedListViewItemOrGroupItem (sender: obj) (item: obj) = 
         match item with 
         | null -> None
-        | :? ListGroupData<ViewElement> as item ->
-            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData<ViewElement>> 
+        | :? ListGroupData as item ->
+            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData> 
             // POSSIBLE IMPROVEMENT: don't use a linear search
             items 
             |> Seq.indexed 
             |> Seq.tryPick (fun (i, item2) -> if identical item.Key item2.Key then Some (i, None) else None)
-        | :? ListElementData<ViewElement> as item ->
-            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData<ViewElement>> 
+        | :? ListElementData as item ->
+            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData> 
             tryFindGroupedListViewItemIndex items item
             |> (function
                 | None -> None
@@ -721,7 +902,7 @@ module Converters =
     let tryFindGroupedListViewItem (sender: obj) (item: obj) =
         match item with 
         | null -> None
-        | :? ListElementData<ViewElement> as item ->
-            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData<ViewElement>> 
+        | :? ListElementData as item ->
+            let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData> 
             tryFindGroupedListViewItemIndex items item
         | _ -> None

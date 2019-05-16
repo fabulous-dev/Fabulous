@@ -71,15 +71,24 @@ type BroadcastInfo =
                             elif Device.RuntimePlatform = Device.Android then
                                 printfn "  LiveUpdate: On USB connect using:"
                                 printfn "      adb -d forward  tcp:%d tcp:%d" httpPort httpPort
-                                printfn "      fabulous --watch --webhook:http://localhost:%d/update" httpPort
+                                if httpPort = Ports.DefaultPort then
+                                    printfn "      fabulous --watch --send"
+                                else
+                                    printfn "      fabulous --watch --webhook:http://localhost:%d/update" httpPort
                                 printfn "  "
                                 printfn "  LiveUpdate: On Emulator connect using:"
                                 printfn "      adb -e forward  tcp:%d tcp:%d" httpPort httpPort
-                                printfn "      fabulous --watch --webhook:http://localhost:%d/update" httpPort
+                                if httpPort = Ports.DefaultPort then
+                                    printfn "      fabulous --watch --send"
+                                else
+                                    printfn "      fabulous --watch --webhook:http://localhost:%d/update" httpPort
                             else
                                 printfn "  LiveUpdate: %s is not officially supported" Device.RuntimePlatform 
                                 printfn "  LiveUpdate: You can still try to connect using:" 
-                                printfn "      fabulous --watch --webhook:http://localhost:%d/update" httpPort
+                                if httpPort = Ports.DefaultPort then
+                                    printfn "      fabulous --watch --send"
+                                else
+                                    printfn "      fabulous --watch --webhook:http://localhost:%d/update" httpPort
 
                             printfn "  "
                             printfn "  See https://fsprojects.github.io/Fabulous/tools.html for more details"
@@ -136,7 +145,7 @@ type HttpServer(?port) =
                                 if (path = "/update") then
                                     let reader = new StreamReader (c.Request.InputStream, Encoding.UTF8)
                                     let! requestText = reader.ReadToEndAsync () |> Async.AwaitTask
-                                    let req = Newtonsoft.Json.JsonConvert.DeserializeObject<DFile[]>(requestText)
+                                    let req = Newtonsoft.Json.JsonConvert.DeserializeObject<(string * DFile)[]>(requestText)
                                     //let req = serializer.UnPickleOfString<DFile>(requestText)
                                     let resp = switchD req
                                     return Newtonsoft.Json.JsonConvert.SerializeObject resp
@@ -192,7 +201,7 @@ module Extensions =
     let rec tryFindMemberByName name (decls: DDecl[]) = 
         decls |> Array.tryPick (function 
             | DDeclEntity (_, ds) -> tryFindMemberByName name ds 
-            | DDeclMember (membDef, body) -> if membDef.Name = name then Some (membDef, body) else None
+            | DDeclMember (membDef, body, _range) -> if membDef.Name = name then Some (membDef, body) else None
             | _ -> None)
 
     /// Trace all the updates to the console
@@ -202,15 +211,15 @@ module Extensions =
 
             let interp = EvalContext(System.Reflection.Assembly.Load)
 
-            let switchD (files: DFile[]) =
+            let switchD (files: (string * DFile)[]) =
               lock interp (fun () -> 
                 let res = 
                     try 
-                        for file in files do
+                        for (_, file) in files do
                             printfn "LiveUpdate: adding declarations...."
                             interp.AddDecls file.Code
 
-                        for file in files do
+                        for (_, file) in files do
                             printfn "LiveUpdate: evaluating decls in code package for side effects...."
                             interp.EvalDecls (envEmpty, file.Code)
                         Result.Ok ()
@@ -221,8 +230,8 @@ module Extensions =
                 | Result.Error exn -> 
                     printfn "*** LiveUpdate failure:"
                     printfn "***   [x] got code package"
-                    printfn "***   FAIL: the evaluation of the decalarations in the code package failed: %A" exn
-                    { Quacked = sprintf "couldn't quack! the evaluation of the decalarations in the code package failed: %A" exn }
+                    printfn "***   FAIL: the evaluation of the declarations in the code package failed: %A" exn
+                    { Quacked = sprintf "couldn't quack! the evaluation of the declarations in the code package failed: %A" exn }
 
                 | Result.Ok () -> 
 
@@ -230,7 +239,7 @@ module Extensions =
                 | 0 -> { Quacked = "couldn't quack! Files were empty!" }
                 | _ -> 
                 let result = 
-                    files |> Array.tryPick (fun file -> 
+                    files |> Array.tryPick (fun (_, file) -> 
 
                         let programOptD = 
                             match tryFindMemberByName "programLiveUpdate" file.Code with
@@ -255,7 +264,7 @@ module Extensions =
 
                                 printfn "LiveUpdate: evaluating 'program'...."
                                 let entity = interp.ResolveEntity(membDef.EnclosingEntity)
-                                let programObj = interp.GetExprDeclResult(entity, membDef.Name) 
+                                let (_, programObj) = interp.GetExprDeclResult(entity, membDef.Name) 
                                 match getVal programObj with 
                     
                                 | :? Program<obj, obj, obj -> (obj -> unit) -> ViewElement> as programErased -> 

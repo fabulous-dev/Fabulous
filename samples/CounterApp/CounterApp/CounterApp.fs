@@ -65,6 +65,8 @@ type CounterApp () as app =
     let runner = App.program |> Program.runWithDynamicView app
 
 #if DEBUG
+    // Run LiveUpdate using: 
+    //    
     do runner.EnableLiveUpdate ()
 #endif
 

@@ -42,6 +42,7 @@ module ViewAttributes =
     let FocusedAttribKey : AttributeKey<_> = AttributeKey<_>("Focused")
     let SizeChangedAttribKey : AttributeKey<_> = AttributeKey<_>("SizeChanged")
     let UnfocusedAttribKey : AttributeKey<_> = AttributeKey<_>("Unfocused")
+    let VisualAttribKey : AttributeKey<_> = AttributeKey<_>("Visual")
     let HorizontalOptionsAttribKey : AttributeKey<_> = AttributeKey<_>("HorizontalOptions")
     let VerticalOptionsAttribKey : AttributeKey<_> = AttributeKey<_>("VerticalOptions")
     let MarginAttribKey : AttributeKey<_> = AttributeKey<_>("Margin")
@@ -69,29 +70,24 @@ module ViewAttributes =
     let VerticalScrollBarVisibilityAttribKey : AttributeKey<_> = AttributeKey<_>("VerticalScrollBarVisibility")
     let ScrollToAttribKey : AttributeKey<_> = AttributeKey<_>("ScrollTo")
     let ScrolledAttribKey : AttributeKey<_> = AttributeKey<_>("Scrolled")
-    let CancelButtonColorAttribKey : AttributeKey<_> = AttributeKey<_>("CancelButtonColor")
-    let FontFamilyAttribKey : AttributeKey<_> = AttributeKey<_>("FontFamily")
-    let FontAttributesAttribKey : AttributeKey<_> = AttributeKey<_>("FontAttributes")
-    let FontSizeAttribKey : AttributeKey<_> = AttributeKey<_>("FontSize")
-    let HorizontalTextAlignmentAttribKey : AttributeKey<_> = AttributeKey<_>("HorizontalTextAlignment")
-    let PlaceholderAttribKey : AttributeKey<_> = AttributeKey<_>("Placeholder")
-    let PlaceholderColorAttribKey : AttributeKey<_> = AttributeKey<_>("PlaceholderColor")
-    let SearchBarCommandAttribKey : AttributeKey<_> = AttributeKey<_>("SearchBarCommand")
-    let SearchBarCanExecuteAttribKey : AttributeKey<_> = AttributeKey<_>("SearchBarCanExecute")
+    let LayoutAreaOverrideAttribKey : AttributeKey<_> = AttributeKey<_>("LayoutAreaOverride")
     let TextAttribKey : AttributeKey<_> = AttributeKey<_>("Text")
-    let TextColorAttribKey : AttributeKey<_> = AttributeKey<_>("TextColor")
-    let SearchBarTextChangedAttribKey : AttributeKey<_> = AttributeKey<_>("SearchBarTextChanged")
     let ButtonCommandAttribKey : AttributeKey<_> = AttributeKey<_>("ButtonCommand")
     let ButtonCanExecuteAttribKey : AttributeKey<_> = AttributeKey<_>("ButtonCanExecute")
     let BorderColorAttribKey : AttributeKey<_> = AttributeKey<_>("BorderColor")
     let BorderWidthAttribKey : AttributeKey<_> = AttributeKey<_>("BorderWidth")
-    let CommandParameterAttribKey : AttributeKey<_> = AttributeKey<_>("CommandParameter")
     let ContentLayoutAttribKey : AttributeKey<_> = AttributeKey<_>("ContentLayout")
     let ButtonCornerRadiusAttribKey : AttributeKey<_> = AttributeKey<_>("ButtonCornerRadius")
+    let FontFamilyAttribKey : AttributeKey<_> = AttributeKey<_>("FontFamily")
+    let FontAttributesAttribKey : AttributeKey<_> = AttributeKey<_>("FontAttributes")
+    let FontSizeAttribKey : AttributeKey<_> = AttributeKey<_>("FontSize")
     let ButtonImageSourceAttribKey : AttributeKey<_> = AttributeKey<_>("ButtonImageSource")
+    let TextColorAttribKey : AttributeKey<_> = AttributeKey<_>("TextColor")
     let MinimumMaximumAttribKey : AttributeKey<_> = AttributeKey<_>("MinimumMaximum")
     let ValueAttribKey : AttributeKey<_> = AttributeKey<_>("Value")
     let ValueChangedAttribKey : AttributeKey<_> = AttributeKey<_>("ValueChanged")
+    let DragCompletedAttribKey : AttributeKey<_> = AttributeKey<_>("DragCompleted")
+    let DragStartedAttribKey : AttributeKey<_> = AttributeKey<_>("DragStarted")
     let IncrementAttribKey : AttributeKey<_> = AttributeKey<_>("Increment")
     let IsToggledAttribKey : AttributeKey<_> = AttributeKey<_>("IsToggled")
     let ToggledAttribKey : AttributeKey<_> = AttributeKey<_>("Toggled")
@@ -140,6 +136,7 @@ module ViewAttributes =
     let PickerItemsSourceAttribKey : AttributeKey<_> = AttributeKey<_>("PickerItemsSource")
     let SelectedIndexAttribKey : AttributeKey<_> = AttributeKey<_>("SelectedIndex")
     let TitleAttribKey : AttributeKey<_> = AttributeKey<_>("Title")
+    let TitleColorAttribKey : AttributeKey<_> = AttributeKey<_>("TitleColor")
     let SelectedIndexChangedAttribKey : AttributeKey<_> = AttributeKey<_>("SelectedIndexChanged")
     let FrameCornerRadiusAttribKey : AttributeKey<_> = AttributeKey<_>("FrameCornerRadius")
     let HasShadowAttribKey : AttributeKey<_> = AttributeKey<_>("HasShadow")
@@ -152,12 +149,20 @@ module ViewAttributes =
     let PressedAttribKey : AttributeKey<_> = AttributeKey<_>("Pressed")
     let ReleasedAttribKey : AttributeKey<_> = AttributeKey<_>("Released")
     let KeyboardAttribKey : AttributeKey<_> = AttributeKey<_>("Keyboard")
+    let IsReadOnlyAttribKey : AttributeKey<_> = AttributeKey<_>("IsReadOnly")
+    let CancelButtonColorAttribKey : AttributeKey<_> = AttributeKey<_>("CancelButtonColor")
+    let HorizontalTextAlignmentAttribKey : AttributeKey<_> = AttributeKey<_>("HorizontalTextAlignment")
+    let PlaceholderAttribKey : AttributeKey<_> = AttributeKey<_>("Placeholder")
+    let PlaceholderColorAttribKey : AttributeKey<_> = AttributeKey<_>("PlaceholderColor")
+    let SearchBarCommandAttribKey : AttributeKey<_> = AttributeKey<_>("SearchBarCommand")
+    let SearchBarCanExecuteAttribKey : AttributeKey<_> = AttributeKey<_>("SearchBarCanExecute")
+    let SearchBarTextChangedAttribKey : AttributeKey<_> = AttributeKey<_>("SearchBarTextChanged")
     let EditorCompletedAttribKey : AttributeKey<_> = AttributeKey<_>("EditorCompleted")
     let TextChangedAttribKey : AttributeKey<_> = AttributeKey<_>("TextChanged")
     let AutoSizeAttribKey : AttributeKey<_> = AttributeKey<_>("AutoSize")
+    let IsTextPredictionEnabledAttribKey : AttributeKey<_> = AttributeKey<_>("IsTextPredictionEnabled")
     let IsPasswordAttribKey : AttributeKey<_> = AttributeKey<_>("IsPassword")
     let EntryCompletedAttribKey : AttributeKey<_> = AttributeKey<_>("EntryCompleted")
-    let IsTextPredictionEnabledAttribKey : AttributeKey<_> = AttributeKey<_>("IsTextPredictionEnabled")
     let ReturnTypeAttribKey : AttributeKey<_> = AttributeKey<_>("ReturnType")
     let ReturnCommandAttribKey : AttributeKey<_> = AttributeKey<_>("ReturnCommand")
     let CursorPositionAttribKey : AttributeKey<_> = AttributeKey<_>("CursorPosition")
@@ -237,6 +242,7 @@ module ViewAttributes =
     let ListView_ItemTappedAttribKey : AttributeKey<_> = AttributeKey<_>("ListView_ItemTapped")
     let ListView_RefreshingAttribKey : AttributeKey<_> = AttributeKey<_>("ListView_Refreshing")
     let SelectionModeAttribKey : AttributeKey<_> = AttributeKey<_>("SelectionMode")
+    let RefreshControlColorAttribKey : AttributeKey<_> = AttributeKey<_>("RefreshControlColor")
     let ListViewGrouped_ItemsSourceAttribKey : AttributeKey<_> = AttributeKey<_>("ListViewGrouped_ItemsSource")
     let ListViewGrouped_ShowJumpListAttribKey : AttributeKey<_> = AttributeKey<_>("ListViewGrouped_ShowJumpList")
     let ListViewGrouped_SelectedItemAttribKey : AttributeKey<_> = AttributeKey<_>("ListViewGrouped_SelectedItem")
@@ -247,6 +253,58 @@ module ViewAttributes =
     let ListViewGrouped_ItemSelectedAttribKey : AttributeKey<_> = AttributeKey<_>("ListViewGrouped_ItemSelected")
     let ListViewGrouped_ItemTappedAttribKey : AttributeKey<_> = AttributeKey<_>("ListViewGrouped_ItemTapped")
     let RefreshingAttribKey : AttributeKey<_> = AttributeKey<_>("Refreshing")
+    let TextOverrideAttribKey : AttributeKey<_> = AttributeKey<_>("TextOverride")
+    let CommandParameterAttribKey : AttributeKey<_> = AttributeKey<_>("CommandParameter")
+    let IconOverrideAttribKey : AttributeKey<_> = AttributeKey<_>("IconOverride")
+    let SpanAttribKey : AttributeKey<_> = AttributeKey<_>("Span")
+    let EmptyViewAttribKey : AttributeKey<_> = AttributeKey<_>("EmptyView")
+    let ItemsLayoutAttribKey : AttributeKey<_> = AttributeKey<_>("ItemsLayout")
+    let ItemsSourceAttribKey : AttributeKey<_> = AttributeKey<_>("ItemsSource")
+    let ItemSizingStrategyAttribKey : AttributeKey<_> = AttributeKey<_>("ItemSizingStrategy")
+    let ScrollToRequestedAttribKey : AttributeKey<_> = AttributeKey<_>("ScrollToRequested")
+    let iScrollToAttribKey : AttributeKey<_> = AttributeKey<_>("iScrollTo")
+    let ClearIconAttribKey : AttributeKey<_> = AttributeKey<_>("ClearIcon")
+    let ClearIconHelpTextAttribKey : AttributeKey<_> = AttributeKey<_>("ClearIconHelpText")
+    let ClearIconNameAttribKey : AttributeKey<_> = AttributeKey<_>("ClearIconName")
+    let ClearPlaceholderCommandAttribKey : AttributeKey<_> = AttributeKey<_>("ClearPlaceholderCommand")
+    let ClearPlaceholderCommandParameterAttribKey : AttributeKey<_> = AttributeKey<_>("ClearPlaceholderCommandParameter")
+    let ClearPlaceholderEnabledAttribKey : AttributeKey<_> = AttributeKey<_>("ClearPlaceholderEnabled")
+    let ClearPlaceholderHelpTextAttribKey : AttributeKey<_> = AttributeKey<_>("ClearPlaceholderHelpText")
+    let ClearPlaceholderIconAttribKey : AttributeKey<_> = AttributeKey<_>("ClearPlaceholderIcon")
+    let ClearPlaceholderNameAttribKey : AttributeKey<_> = AttributeKey<_>("ClearPlaceholderName")
+    let DisplayMemberNameAttribKey : AttributeKey<_> = AttributeKey<_>("DisplayMemberName")
+    let IsSearchEnabledAttribKey : AttributeKey<_> = AttributeKey<_>("IsSearchEnabled")
+    let QueryAttribKey : AttributeKey<_> = AttributeKey<_>("Query")
+    let QueryIconAttribKey : AttributeKey<_> = AttributeKey<_>("QueryIcon")
+    let QueryIconHelpTextAttribKey : AttributeKey<_> = AttributeKey<_>("QueryIconHelpText")
+    let QueryIconNameAttribKey : AttributeKey<_> = AttributeKey<_>("QueryIconName")
+    let SearchBoxVisibilityAttribKey : AttributeKey<_> = AttributeKey<_>("SearchBoxVisibility")
+    let ShowsResultsAttribKey : AttributeKey<_> = AttributeKey<_>("ShowsResults")
+    let ItemsAttribKey : AttributeKey<_> = AttributeKey<_>("Items")
+    let CurrentItemAttribKey : AttributeKey<_> = AttributeKey<_>("CurrentItem")
+    let FlyoutBackgroundColorAttribKey : AttributeKey<_> = AttributeKey<_>("FlyoutBackgroundColor")
+    let FlyoutBehaviorAttribKey : AttributeKey<_> = AttributeKey<_>("FlyoutBehavior")
+    let FlyoutHeaderAttribKey : AttributeKey<_> = AttributeKey<_>("FlyoutHeader")
+    let FlyoutHeaderBehaviorAttribKey : AttributeKey<_> = AttributeKey<_>("FlyoutHeaderBehavior")
+    let FlyoutIsPresentedAttribKey : AttributeKey<_> = AttributeKey<_>("FlyoutIsPresented")
+    let RouteAttribKey : AttributeKey<_> = AttributeKey<_>("Route")
+    let RouteHostAttribKey : AttributeKey<_> = AttributeKey<_>("RouteHost")
+    let RouteSchemeAttribKey : AttributeKey<_> = AttributeKey<_>("RouteScheme")
+    let OnNavigatedAttribKey : AttributeKey<_> = AttributeKey<_>("OnNavigated")
+    let OnNavigatingAttribKey : AttributeKey<_> = AttributeKey<_>("OnNavigating")
+    let GoToAsyncAttribKey : AttributeKey<_> = AttributeKey<_>("GoToAsync")
+    let FlyoutDisplayOptionsAttribKey : AttributeKey<_> = AttributeKey<_>("FlyoutDisplayOptions")
+    let SelectedItemAttribKey : AttributeKey<_> = AttributeKey<_>("SelectedItem")
+    let SelectionChangedCommandAttribKey : AttributeKey<_> = AttributeKey<_>("SelectionChangedCommand")
+    let SelectionChangedCommandParameterAttribKey : AttributeKey<_> = AttributeKey<_>("SelectionChangedCommandParameter")
+    let selectableItemsModeAttribKey : AttributeKey<_> = AttributeKey<_>("selectableItemsMode")
+    let SelectionChangedAttribKey : AttributeKey<_> = AttributeKey<_>("SelectionChanged")
+    let LocationAttribKey : AttributeKey<_> = AttributeKey<_>("Location")
+    let ssGoToAsyncAttribKey : AttributeKey<_> = AttributeKey<_>("ssGoToAsync")
+    let CarouselViewItemsAttribKey : AttributeKey<_> = AttributeKey<_>("CarouselViewItems")
+    let CollectionViewItemsAttribKey : AttributeKey<_> = AttributeKey<_>("CollectionViewItems")
+    let GlyphAttribKey : AttributeKey<_> = AttributeKey<_>("Glyph")
+    let SizeAttribKey : AttributeKey<_> = AttributeKey<_>("Size")
 
 type ViewProto() =
     static member val ProtoElement : ViewElement option = None with get, set
@@ -263,7 +321,6 @@ type ViewProto() =
     static member val ProtoProgressBar : ViewElement option = None with get, set
     static member val ProtoLayout : ViewElement option = None with get, set
     static member val ProtoScrollView : ViewElement option = None with get, set
-    static member val ProtoSearchBar : ViewElement option = None with get, set
     static member val ProtoButton : ViewElement option = None with get, set
     static member val ProtoSlider : ViewElement option = None with get, set
     static member val ProtoStepper : ViewElement option = None with get, set
@@ -285,6 +342,7 @@ type ViewProto() =
     static member val ProtoImage : ViewElement option = None with get, set
     static member val ProtoImageButton : ViewElement option = None with get, set
     static member val ProtoInputView : ViewElement option = None with get, set
+    static member val ProtoSearchBar : ViewElement option = None with get, set
     static member val ProtoEditor : ViewElement option = None with get, set
     static member val ProtoEntry : ViewElement option = None with get, set
     static member val ProtoEntryCell : ViewElement option = None with get, set
@@ -308,6 +366,20 @@ type ViewProto() =
     static member val ProtoViewCell : ViewElement option = None with get, set
     static member val ProtoListView : ViewElement option = None with get, set
     static member val ProtoListViewGrouped : ViewElement option = None with get, set
+    static member val ProtoBackButtonBehavior : ViewElement option = None with get, set
+    static member val ProtoGridItemsLayout : ViewElement option = None with get, set
+    static member val ProtoItemsView : ViewElement option = None with get, set
+    static member val ProtoSearchHandler : ViewElement option = None with get, set
+    static member val ProtoShell : ViewElement option = None with get, set
+    static member val ProtoShellGroupItem : ViewElement option = None with get, set
+    static member val ProtoSelectableItemsView : ViewElement option = None with get, set
+    static member val ProtoShellNavigationState : ViewElement option = None with get, set
+    static member val ProtoShellContent : ViewElement option = None with get, set
+    static member val ProtoShellItem : ViewElement option = None with get, set
+    static member val ProtoShellSection : ViewElement option = None with get, set
+    static member val ProtoCarouselView : ViewElement option = None with get, set
+    static member val ProtoCollectionView : ViewElement option = None with get, set
+    static member val ProtoFontImageSource : ViewElement option = None with get, set
 
 type ViewBuilders() =
     /// Builds the attributes for a Element in the view
@@ -332,7 +404,7 @@ type ViewBuilders() =
         match ref with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ElementViewRefAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncElement : (unit -> Xamarin.Forms.Element) = (fun () -> ViewBuilders.CreateElement())
+    static member val CreateFuncElement : (unit -> Xamarin.Forms.Element) = (fun () -> ViewBuilders.CreateElement()) with get, set
 
     static member CreateElement () : Xamarin.Forms.Element =
         failwith "can't create Xamarin.Forms.Element"
@@ -440,8 +512,9 @@ type ViewBuilders() =
                                             ?childrenReordered: System.EventArgs -> unit,
                                             ?measureInvalidated: System.EventArgs -> unit,
                                             ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                            ?sizeChanged: System.EventArgs -> unit,
+                                            ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                             ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                            ?visual: Xamarin.Forms.IVisual,
                                             ?classId: string,
                                             ?styleId: string,
                                             ?automationId: string,
@@ -479,6 +552,7 @@ type ViewBuilders() =
         let attribCount = match focused with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match sizeChanged with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match unfocused with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match visual with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = ViewBuilders.BuildElement(attribCount, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match anchorX with None -> () | Some v -> attribBuilder.Add(ViewAttributes.AnchorXAttribKey, (v)) 
@@ -510,11 +584,12 @@ type ViewBuilders() =
         match childrenReordered with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ChildrenReorderedAttribKey, (fun f -> System.EventHandler(fun _sender args -> f args))(v)) 
         match measureInvalidated with None -> () | Some v -> attribBuilder.Add(ViewAttributes.MeasureInvalidatedAttribKey, (fun f -> System.EventHandler(fun _sender args -> f args))(v)) 
         match focused with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FocusedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.FocusEventArgs>(fun _sender args -> f args))(v)) 
-        match sizeChanged with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SizeChangedAttribKey, (fun f -> System.EventHandler(fun _sender args -> f args))(v)) 
+        match sizeChanged with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SizeChangedAttribKey, (fun f -> System.EventHandler(fun sender _args -> let visualElement = sender :?> Xamarin.Forms.VisualElement in f (Fabulous.CustomControls.SizeChangedEventArgs(visualElement.Width, visualElement.Height))))(v)) 
         match unfocused with None -> () | Some v -> attribBuilder.Add(ViewAttributes.UnfocusedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.FocusEventArgs>(fun _sender args -> f args))(v)) 
+        match visual with None -> () | Some v -> attribBuilder.Add(ViewAttributes.VisualAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncVisualElement : (unit -> Xamarin.Forms.VisualElement) = (fun () -> ViewBuilders.CreateVisualElement())
+    static member val CreateFuncVisualElement : (unit -> Xamarin.Forms.VisualElement) = (fun () -> ViewBuilders.CreateVisualElement()) with get, set
 
     static member CreateVisualElement () : Xamarin.Forms.VisualElement =
         failwith "can't create Xamarin.Forms.VisualElement"
@@ -588,6 +663,8 @@ type ViewBuilders() =
         let mutable currSizeChangedOpt = ValueNone
         let mutable prevUnfocusedOpt = ValueNone
         let mutable currUnfocusedOpt = ValueNone
+        let mutable prevVisualOpt = ValueNone
+        let mutable currVisualOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = ViewAttributes.AnchorXAttribKey.KeyValue then 
                 currAnchorXOpt <- ValueSome (kvp.Value :?> double)
@@ -651,6 +728,8 @@ type ViewBuilders() =
                 currSizeChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
             if kvp.Key = ViewAttributes.UnfocusedAttribKey.KeyValue then 
                 currUnfocusedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.FocusEventArgs>)
+            if kvp.Key = ViewAttributes.VisualAttribKey.KeyValue then 
+                currVisualOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.IVisual)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
@@ -717,6 +796,8 @@ type ViewBuilders() =
                     prevSizeChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
                 if kvp.Key = ViewAttributes.UnfocusedAttribKey.KeyValue then 
                     prevUnfocusedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.FocusEventArgs>)
+                if kvp.Key = ViewAttributes.VisualAttribKey.KeyValue then 
+                    prevVisualOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.IVisual)
         match prevAnchorXOpt, currAnchorXOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.AnchorX <-  currValue
@@ -861,6 +942,11 @@ type ViewBuilders() =
         | ValueNone, ValueSome currValue -> target.Unfocused.AddHandler(currValue)
         | ValueSome prevValue, ValueNone -> target.Unfocused.RemoveHandler(prevValue)
         | ValueNone, ValueNone -> ()
+        match prevVisualOpt, currVisualOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Visual <-  currValue
+        | ValueSome _, ValueNone -> target.Visual <- Xamarin.Forms.VisualMarker.MatchParent
+        | ValueNone, ValueNone -> ()
 
     static member inline ConstructVisualElement(?anchorX: double,
                                                 ?anchorY: double,
@@ -891,8 +977,9 @@ type ViewBuilders() =
                                                 ?childrenReordered: System.EventArgs -> unit,
                                                 ?measureInvalidated: System.EventArgs -> unit,
                                                 ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                                ?sizeChanged: System.EventArgs -> unit,
+                                                ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                                 ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                ?visual: Xamarin.Forms.IVisual,
                                                 ?classId: string,
                                                 ?styleId: string,
                                                 ?automationId: string,
@@ -931,6 +1018,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -974,8 +1062,9 @@ type ViewBuilders() =
                                    ?childrenReordered: System.EventArgs -> unit,
                                    ?measureInvalidated: System.EventArgs -> unit,
                                    ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                   ?sizeChanged: System.EventArgs -> unit,
+                                   ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                    ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                   ?visual: Xamarin.Forms.IVisual,
                                    ?classId: string,
                                    ?styleId: string,
                                    ?automationId: string,
@@ -987,14 +1076,14 @@ type ViewBuilders() =
         let attribCount = match margin with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match gestureRecognizers with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildVisualElement(attribCount, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildVisualElement(attribCount, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match horizontalOptions with None -> () | Some v -> attribBuilder.Add(ViewAttributes.HorizontalOptionsAttribKey, (v)) 
         match verticalOptions with None -> () | Some v -> attribBuilder.Add(ViewAttributes.VerticalOptionsAttribKey, (v)) 
         match margin with None -> () | Some v -> attribBuilder.Add(ViewAttributes.MarginAttribKey, makeThickness(v)) 
         match gestureRecognizers with None -> () | Some v -> attribBuilder.Add(ViewAttributes.GestureRecognizersAttribKey, Array.ofList(v)) 
         attribBuilder
 
-    static member val CreateFuncView : (unit -> Xamarin.Forms.View) = (fun () -> ViewBuilders.CreateView())
+    static member val CreateFuncView : (unit -> Xamarin.Forms.View) = (fun () -> ViewBuilders.CreateView()) with get, set
 
     static member CreateView () : Xamarin.Forms.View =
         failwith "can't create Xamarin.Forms.View"
@@ -1089,8 +1178,9 @@ type ViewBuilders() =
                                        ?childrenReordered: System.EventArgs -> unit,
                                        ?measureInvalidated: System.EventArgs -> unit,
                                        ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                       ?sizeChanged: System.EventArgs -> unit,
+                                       ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                        ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                       ?visual: Xamarin.Forms.IVisual,
                                        ?classId: string,
                                        ?styleId: string,
                                        ?automationId: string,
@@ -1133,6 +1223,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -1146,7 +1237,7 @@ type ViewBuilders() =
         let attribBuilder = new AttributesBuilder(attribCount)
         attribBuilder
 
-    static member val CreateFuncIGestureRecognizer : (unit -> Xamarin.Forms.IGestureRecognizer) = (fun () -> ViewBuilders.CreateIGestureRecognizer())
+    static member val CreateFuncIGestureRecognizer : (unit -> Xamarin.Forms.IGestureRecognizer) = (fun () -> ViewBuilders.CreateIGestureRecognizer()) with get, set
 
     static member CreateIGestureRecognizer () : Xamarin.Forms.IGestureRecognizer =
         failwith "can't create Xamarin.Forms.IGestureRecognizer"
@@ -1183,7 +1274,7 @@ type ViewBuilders() =
         match panUpdated with None -> () | Some v -> attribBuilder.Add(ViewAttributes.PanUpdatedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.PanUpdatedEventArgs>(fun _sender args -> f args))(v)) 
         attribBuilder
 
-    static member val CreateFuncPanGestureRecognizer : (unit -> Xamarin.Forms.PanGestureRecognizer) = (fun () -> ViewBuilders.CreatePanGestureRecognizer())
+    static member val CreateFuncPanGestureRecognizer : (unit -> Xamarin.Forms.PanGestureRecognizer) = (fun () -> ViewBuilders.CreatePanGestureRecognizer()) with get, set
 
     static member CreatePanGestureRecognizer () : Xamarin.Forms.PanGestureRecognizer =
         upcast (new Xamarin.Forms.PanGestureRecognizer())
@@ -1261,7 +1352,7 @@ type ViewBuilders() =
         match numberOfTapsRequired with None -> () | Some v -> attribBuilder.Add(ViewAttributes.NumberOfTapsRequiredAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncTapGestureRecognizer : (unit -> Xamarin.Forms.TapGestureRecognizer) = (fun () -> ViewBuilders.CreateTapGestureRecognizer())
+    static member val CreateFuncTapGestureRecognizer : (unit -> Xamarin.Forms.TapGestureRecognizer) = (fun () -> ViewBuilders.CreateTapGestureRecognizer()) with get, set
 
     static member CreateTapGestureRecognizer () : Xamarin.Forms.TapGestureRecognizer =
         upcast (new Xamarin.Forms.TapGestureRecognizer())
@@ -1341,7 +1432,7 @@ type ViewBuilders() =
         match buttons with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ButtonsAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncClickGestureRecognizer : (unit -> Xamarin.Forms.ClickGestureRecognizer) = (fun () -> ViewBuilders.CreateClickGestureRecognizer())
+    static member val CreateFuncClickGestureRecognizer : (unit -> Xamarin.Forms.ClickGestureRecognizer) = (fun () -> ViewBuilders.CreateClickGestureRecognizer()) with get, set
 
     static member CreateClickGestureRecognizer () : Xamarin.Forms.ClickGestureRecognizer =
         upcast (new Xamarin.Forms.ClickGestureRecognizer())
@@ -1431,7 +1522,7 @@ type ViewBuilders() =
         match pinchUpdated with None -> () | Some v -> attribBuilder.Add(ViewAttributes.PinchUpdatedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.PinchGestureUpdatedEventArgs>(fun _sender args -> f args))(v)) 
         attribBuilder
 
-    static member val CreateFuncPinchGestureRecognizer : (unit -> Xamarin.Forms.PinchGestureRecognizer) = (fun () -> ViewBuilders.CreatePinchGestureRecognizer())
+    static member val CreateFuncPinchGestureRecognizer : (unit -> Xamarin.Forms.PinchGestureRecognizer) = (fun () -> ViewBuilders.CreatePinchGestureRecognizer()) with get, set
 
     static member CreatePinchGestureRecognizer () : Xamarin.Forms.PinchGestureRecognizer =
         upcast (new Xamarin.Forms.PinchGestureRecognizer())
@@ -1515,7 +1606,7 @@ type ViewBuilders() =
         match swiped with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SwipedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.SwipedEventArgs>(fun _sender args -> f args))(v)) 
         attribBuilder
 
-    static member val CreateFuncSwipeGestureRecognizer : (unit -> Xamarin.Forms.SwipeGestureRecognizer) = (fun () -> ViewBuilders.CreateSwipeGestureRecognizer())
+    static member val CreateFuncSwipeGestureRecognizer : (unit -> Xamarin.Forms.SwipeGestureRecognizer) = (fun () -> ViewBuilders.CreateSwipeGestureRecognizer()) with get, set
 
     static member CreateSwipeGestureRecognizer () : Xamarin.Forms.SwipeGestureRecognizer =
         upcast (new Xamarin.Forms.SwipeGestureRecognizer())
@@ -1638,8 +1729,9 @@ type ViewBuilders() =
                                                 ?childrenReordered: System.EventArgs -> unit,
                                                 ?measureInvalidated: System.EventArgs -> unit,
                                                 ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                                ?sizeChanged: System.EventArgs -> unit,
+                                                ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                                 ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                ?visual: Xamarin.Forms.IVisual,
                                                 ?classId: string,
                                                 ?styleId: string,
                                                 ?automationId: string,
@@ -1649,12 +1741,12 @@ type ViewBuilders() =
         let attribCount = match color with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match isRunning with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match color with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ColorAttribKey, (v)) 
         match isRunning with None -> () | Some v -> attribBuilder.Add(ViewAttributes.IsRunningAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncActivityIndicator : (unit -> Xamarin.Forms.ActivityIndicator) = (fun () -> ViewBuilders.CreateActivityIndicator())
+    static member val CreateFuncActivityIndicator : (unit -> Xamarin.Forms.ActivityIndicator) = (fun () -> ViewBuilders.CreateActivityIndicator()) with get, set
 
     static member CreateActivityIndicator () : Xamarin.Forms.ActivityIndicator =
         upcast (new Xamarin.Forms.ActivityIndicator())
@@ -1729,8 +1821,9 @@ type ViewBuilders() =
                                                     ?childrenReordered: System.EventArgs -> unit,
                                                     ?measureInvalidated: System.EventArgs -> unit,
                                                     ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                                    ?sizeChanged: System.EventArgs -> unit,
+                                                    ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                                     ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                    ?visual: Xamarin.Forms.IVisual,
                                                     ?classId: string,
                                                     ?styleId: string,
                                                     ?automationId: string,
@@ -1775,6 +1868,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -1820,8 +1914,9 @@ type ViewBuilders() =
                                       ?childrenReordered: System.EventArgs -> unit,
                                       ?measureInvalidated: System.EventArgs -> unit,
                                       ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                      ?sizeChanged: System.EventArgs -> unit,
+                                      ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                       ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                      ?visual: Xamarin.Forms.IVisual,
                                       ?classId: string,
                                       ?styleId: string,
                                       ?automationId: string,
@@ -1831,12 +1926,12 @@ type ViewBuilders() =
         let attribCount = match color with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match cornerRadius with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match color with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ColorAttribKey, (v)) 
         match cornerRadius with None -> () | Some v -> attribBuilder.Add(ViewAttributes.BoxViewCornerRadiusAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncBoxView : (unit -> Xamarin.Forms.BoxView) = (fun () -> ViewBuilders.CreateBoxView())
+    static member val CreateFuncBoxView : (unit -> Xamarin.Forms.BoxView) = (fun () -> ViewBuilders.CreateBoxView()) with get, set
 
     static member CreateBoxView () : Xamarin.Forms.BoxView =
         upcast (new Xamarin.Forms.BoxView())
@@ -1911,8 +2006,9 @@ type ViewBuilders() =
                                           ?childrenReordered: System.EventArgs -> unit,
                                           ?measureInvalidated: System.EventArgs -> unit,
                                           ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                          ?sizeChanged: System.EventArgs -> unit,
+                                          ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                           ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                          ?visual: Xamarin.Forms.IVisual,
                                           ?classId: string,
                                           ?styleId: string,
                                           ?automationId: string,
@@ -1957,6 +2053,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -2001,8 +2098,9 @@ type ViewBuilders() =
                                           ?childrenReordered: System.EventArgs -> unit,
                                           ?measureInvalidated: System.EventArgs -> unit,
                                           ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                          ?sizeChanged: System.EventArgs -> unit,
+                                          ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                           ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                          ?visual: Xamarin.Forms.IVisual,
                                           ?classId: string,
                                           ?styleId: string,
                                           ?automationId: string,
@@ -2011,11 +2109,11 @@ type ViewBuilders() =
 
         let attribCount = match progress with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match progress with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ProgressAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncProgressBar : (unit -> Xamarin.Forms.ProgressBar) = (fun () -> ViewBuilders.CreateProgressBar())
+    static member val CreateFuncProgressBar : (unit -> Xamarin.Forms.ProgressBar) = (fun () -> ViewBuilders.CreateProgressBar()) with get, set
 
     static member CreateProgressBar () : Xamarin.Forms.ProgressBar =
         upcast (new Xamarin.Forms.ProgressBar())
@@ -2078,8 +2176,9 @@ type ViewBuilders() =
                                               ?childrenReordered: System.EventArgs -> unit,
                                               ?measureInvalidated: System.EventArgs -> unit,
                                               ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                              ?sizeChanged: System.EventArgs -> unit,
+                                              ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                               ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                              ?visual: Xamarin.Forms.IVisual,
                                               ?classId: string,
                                               ?styleId: string,
                                               ?automationId: string,
@@ -2123,6 +2222,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -2168,8 +2268,9 @@ type ViewBuilders() =
                                      ?childrenReordered: System.EventArgs -> unit,
                                      ?measureInvalidated: System.EventArgs -> unit,
                                      ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                     ?sizeChanged: System.EventArgs -> unit,
+                                     ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                      ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                     ?visual: Xamarin.Forms.IVisual,
                                      ?classId: string,
                                      ?styleId: string,
                                      ?automationId: string,
@@ -2179,12 +2280,12 @@ type ViewBuilders() =
         let attribCount = match isClippedToBounds with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match padding with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match isClippedToBounds with None -> () | Some v -> attribBuilder.Add(ViewAttributes.IsClippedToBoundsAttribKey, (v)) 
         match padding with None -> () | Some v -> attribBuilder.Add(ViewAttributes.PaddingAttribKey, makeThickness(v)) 
         attribBuilder
 
-    static member val CreateFuncLayout : (unit -> Xamarin.Forms.Layout) = (fun () -> ViewBuilders.CreateLayout())
+    static member val CreateFuncLayout : (unit -> Xamarin.Forms.Layout) = (fun () -> ViewBuilders.CreateLayout()) with get, set
 
     static member CreateLayout () : Xamarin.Forms.Layout =
         failwith "can't create Xamarin.Forms.Layout"
@@ -2259,8 +2360,9 @@ type ViewBuilders() =
                                          ?childrenReordered: System.EventArgs -> unit,
                                          ?measureInvalidated: System.EventArgs -> unit,
                                          ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                         ?sizeChanged: System.EventArgs -> unit,
+                                         ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                          ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                         ?visual: Xamarin.Forms.IVisual,
                                          ?classId: string,
                                          ?styleId: string,
                                          ?automationId: string,
@@ -2305,6 +2407,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -2321,6 +2424,7 @@ type ViewBuilders() =
                                          ?verticalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility,
                                          ?scrollTo: float * float * Fabulous.DynamicViews.AnimationKind,
                                          ?scrolled: Xamarin.Forms.ScrolledEventArgs -> unit,
+                                         ?layoutAreaOverride: Xamarin.Forms.Rectangle,
                                          ?isClippedToBounds: bool,
                                          ?padding: obj,
                                          ?horizontalOptions: Xamarin.Forms.LayoutOptions,
@@ -2356,8 +2460,9 @@ type ViewBuilders() =
                                          ?childrenReordered: System.EventArgs -> unit,
                                          ?measureInvalidated: System.EventArgs -> unit,
                                          ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                         ?sizeChanged: System.EventArgs -> unit,
+                                         ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                          ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                         ?visual: Xamarin.Forms.IVisual,
                                          ?classId: string,
                                          ?styleId: string,
                                          ?automationId: string,
@@ -2370,17 +2475,19 @@ type ViewBuilders() =
         let attribCount = match verticalScrollBarVisibility with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match scrollTo with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match scrolled with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match layoutAreaOverride with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match content with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ContentAttribKey, (v)) 
         match orientation with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ScrollOrientationAttribKey, (v)) 
         match horizontalScrollBarVisibility with None -> () | Some v -> attribBuilder.Add(ViewAttributes.HorizontalScrollBarVisibilityAttribKey, (v)) 
         match verticalScrollBarVisibility with None -> () | Some v -> attribBuilder.Add(ViewAttributes.VerticalScrollBarVisibilityAttribKey, (v)) 
         match scrollTo with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ScrollToAttribKey, (v)) 
         match scrolled with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ScrolledAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ScrolledEventArgs>(fun _sender args -> f args))(v)) 
+        match layoutAreaOverride with None -> () | Some v -> attribBuilder.Add(ViewAttributes.LayoutAreaOverrideAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncScrollView : (unit -> Xamarin.Forms.ScrollView) = (fun () -> ViewBuilders.CreateScrollView())
+    static member val CreateFuncScrollView : (unit -> Xamarin.Forms.ScrollView) = (fun () -> ViewBuilders.CreateScrollView()) with get, set
 
     static member CreateScrollView () : Xamarin.Forms.ScrollView =
         upcast (new Xamarin.Forms.ScrollView())
@@ -2404,6 +2511,8 @@ type ViewBuilders() =
         let mutable currScrollToOpt = ValueNone
         let mutable prevScrolledOpt = ValueNone
         let mutable currScrolledOpt = ValueNone
+        let mutable prevLayoutAreaOverrideOpt = ValueNone
+        let mutable currLayoutAreaOverrideOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = ViewAttributes.ContentAttribKey.KeyValue then 
                 currContentOpt <- ValueSome (kvp.Value :?> ViewElement)
@@ -2417,6 +2526,8 @@ type ViewBuilders() =
                 currScrollToOpt <- ValueSome (kvp.Value :?> float * float * Fabulous.DynamicViews.AnimationKind)
             if kvp.Key = ViewAttributes.ScrolledAttribKey.KeyValue then 
                 currScrolledOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.ScrolledEventArgs>)
+            if kvp.Key = ViewAttributes.LayoutAreaOverrideAttribKey.KeyValue then 
+                currLayoutAreaOverrideOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Rectangle)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
@@ -2433,6 +2544,8 @@ type ViewBuilders() =
                     prevScrollToOpt <- ValueSome (kvp.Value :?> float * float * Fabulous.DynamicViews.AnimationKind)
                 if kvp.Key = ViewAttributes.ScrolledAttribKey.KeyValue then 
                     prevScrolledOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.ScrolledEventArgs>)
+                if kvp.Key = ViewAttributes.LayoutAreaOverrideAttribKey.KeyValue then 
+                    prevLayoutAreaOverrideOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Rectangle)
         match prevContentOpt, currContentOpt with
         // For structured objects, dependsOn on reference equality
         | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()
@@ -2465,6 +2578,11 @@ type ViewBuilders() =
         | ValueNone, ValueSome currValue -> target.Scrolled.AddHandler(currValue)
         | ValueSome prevValue, ValueNone -> target.Scrolled.RemoveHandler(prevValue)
         | ValueNone, ValueNone -> ()
+        match prevLayoutAreaOverrideOpt, currLayoutAreaOverrideOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.LayoutAreaOverride <-  currValue
+        | ValueSome _, ValueNone -> target.LayoutAreaOverride <- Xamarin.Forms.Rectangle.Zero
+        | ValueNone, ValueNone -> ()
 
     static member inline ConstructScrollView(?content: ViewElement,
                                              ?orientation: Xamarin.Forms.ScrollOrientation,
@@ -2472,6 +2590,7 @@ type ViewBuilders() =
                                              ?verticalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility,
                                              ?scrollTo: float * float * Fabulous.DynamicViews.AnimationKind,
                                              ?scrolled: Xamarin.Forms.ScrolledEventArgs -> unit,
+                                             ?layoutAreaOverride: Xamarin.Forms.Rectangle,
                                              ?isClippedToBounds: bool,
                                              ?padding: obj,
                                              ?horizontalOptions: Xamarin.Forms.LayoutOptions,
@@ -2507,8 +2626,9 @@ type ViewBuilders() =
                                              ?childrenReordered: System.EventArgs -> unit,
                                              ?measureInvalidated: System.EventArgs -> unit,
                                              ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                             ?sizeChanged: System.EventArgs -> unit,
+                                             ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                              ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                             ?visual: Xamarin.Forms.IVisual,
                                              ?classId: string,
                                              ?styleId: string,
                                              ?automationId: string,
@@ -2522,6 +2642,7 @@ type ViewBuilders() =
                                ?verticalScrollBarVisibility=verticalScrollBarVisibility,
                                ?scrollTo=scrollTo,
                                ?scrolled=scrolled,
+                               ?layoutAreaOverride=layoutAreaOverride,
                                ?isClippedToBounds=isClippedToBounds,
                                ?padding=padding,
                                ?horizontalOptions=horizontalOptions,
@@ -2559,6 +2680,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -2567,341 +2689,6 @@ type ViewBuilders() =
 
         ViewElement.Create<Xamarin.Forms.ScrollView>(ViewBuilders.CreateFuncScrollView, ViewBuilders.UpdateFuncScrollView, attribBuilder)
 
-    /// Builds the attributes for a SearchBar in the view
-    static member inline BuildSearchBar(attribCount: int,
-                                        ?cancelButtonColor: Xamarin.Forms.Color,
-                                        ?fontFamily: string,
-                                        ?fontAttributes: Xamarin.Forms.FontAttributes,
-                                        ?fontSize: obj,
-                                        ?horizontalTextAlignment: Xamarin.Forms.TextAlignment,
-                                        ?placeholder: string,
-                                        ?placeholderColor: Xamarin.Forms.Color,
-                                        ?searchCommand: string -> unit,
-                                        ?canExecute: bool,
-                                        ?text: string,
-                                        ?textColor: Xamarin.Forms.Color,
-                                        ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit,
-                                        ?horizontalOptions: Xamarin.Forms.LayoutOptions,
-                                        ?verticalOptions: Xamarin.Forms.LayoutOptions,
-                                        ?margin: obj,
-                                        ?gestureRecognizers: ViewElement list,
-                                        ?anchorX: double,
-                                        ?anchorY: double,
-                                        ?backgroundColor: Xamarin.Forms.Color,
-                                        ?heightRequest: double,
-                                        ?inputTransparent: bool,
-                                        ?isEnabled: bool,
-                                        ?isVisible: bool,
-                                        ?minimumHeightRequest: double,
-                                        ?minimumWidthRequest: double,
-                                        ?opacity: double,
-                                        ?rotation: double,
-                                        ?rotationX: double,
-                                        ?rotationY: double,
-                                        ?scale: double,
-                                        ?style: Xamarin.Forms.Style,
-                                        ?styleClass: obj,
-                                        ?translationX: double,
-                                        ?translationY: double,
-                                        ?widthRequest: double,
-                                        ?resources: (string * obj) list,
-                                        ?styles: Xamarin.Forms.Style list,
-                                        ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
-                                        ?isTabStop: bool,
-                                        ?scaleX: double,
-                                        ?scaleY: double,
-                                        ?tabIndex: int,
-                                        ?childrenReordered: System.EventArgs -> unit,
-                                        ?measureInvalidated: System.EventArgs -> unit,
-                                        ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                        ?sizeChanged: System.EventArgs -> unit,
-                                        ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
-                                        ?classId: string,
-                                        ?styleId: string,
-                                        ?automationId: string,
-                                        ?created: obj -> unit,
-                                        ?ref: ViewRef) = 
-
-        let attribCount = match cancelButtonColor with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match fontFamily with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match fontAttributes with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match fontSize with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match horizontalTextAlignment with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match placeholder with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match placeholderColor with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match searchCommand with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match canExecute with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match textColor with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match textChanged with Some _ -> attribCount + 1 | None -> attribCount
-
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
-        match cancelButtonColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CancelButtonColorAttribKey, (v)) 
-        match fontFamily with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FontFamilyAttribKey, (v)) 
-        match fontAttributes with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FontAttributesAttribKey, (v)) 
-        match fontSize with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FontSizeAttribKey, makeFontSize(v)) 
-        match horizontalTextAlignment with None -> () | Some v -> attribBuilder.Add(ViewAttributes.HorizontalTextAlignmentAttribKey, (v)) 
-        match placeholder with None -> () | Some v -> attribBuilder.Add(ViewAttributes.PlaceholderAttribKey, (v)) 
-        match placeholderColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.PlaceholderColorAttribKey, (v)) 
-        match searchCommand with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SearchBarCommandAttribKey, (v)) 
-        match canExecute with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SearchBarCanExecuteAttribKey, (v)) 
-        match text with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextAttribKey, (v)) 
-        match textColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextColorAttribKey, (v)) 
-        match textChanged with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SearchBarTextChangedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))(v)) 
-        attribBuilder
-
-    static member val CreateFuncSearchBar : (unit -> Xamarin.Forms.SearchBar) = (fun () -> ViewBuilders.CreateSearchBar())
-
-    static member CreateSearchBar () : Xamarin.Forms.SearchBar =
-        upcast (new Xamarin.Forms.SearchBar())
-
-    static member val UpdateFuncSearchBar =
-        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.SearchBar) -> ViewBuilders.UpdateSearchBar (prevOpt, curr, target)) 
-
-    static member UpdateSearchBar (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.SearchBar) = 
-        // update the inherited View element
-        let baseElement = (if ViewProto.ProtoView.IsNone then ViewProto.ProtoView <- Some (ViewBuilders.ConstructView())); ViewProto.ProtoView.Value
-        baseElement.UpdateInherited (prevOpt, curr, target)
-        let mutable prevCancelButtonColorOpt = ValueNone
-        let mutable currCancelButtonColorOpt = ValueNone
-        let mutable prevFontFamilyOpt = ValueNone
-        let mutable currFontFamilyOpt = ValueNone
-        let mutable prevFontAttributesOpt = ValueNone
-        let mutable currFontAttributesOpt = ValueNone
-        let mutable prevFontSizeOpt = ValueNone
-        let mutable currFontSizeOpt = ValueNone
-        let mutable prevHorizontalTextAlignmentOpt = ValueNone
-        let mutable currHorizontalTextAlignmentOpt = ValueNone
-        let mutable prevPlaceholderOpt = ValueNone
-        let mutable currPlaceholderOpt = ValueNone
-        let mutable prevPlaceholderColorOpt = ValueNone
-        let mutable currPlaceholderColorOpt = ValueNone
-        let mutable prevSearchBarCommandOpt = ValueNone
-        let mutable currSearchBarCommandOpt = ValueNone
-        let mutable prevSearchBarCanExecuteOpt = ValueNone
-        let mutable currSearchBarCanExecuteOpt = ValueNone
-        let mutable prevTextOpt = ValueNone
-        let mutable currTextOpt = ValueNone
-        let mutable prevTextColorOpt = ValueNone
-        let mutable currTextColorOpt = ValueNone
-        let mutable prevSearchBarTextChangedOpt = ValueNone
-        let mutable currSearchBarTextChangedOpt = ValueNone
-        for kvp in curr.AttributesKeyed do
-            if kvp.Key = ViewAttributes.CancelButtonColorAttribKey.KeyValue then 
-                currCancelButtonColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
-            if kvp.Key = ViewAttributes.FontFamilyAttribKey.KeyValue then 
-                currFontFamilyOpt <- ValueSome (kvp.Value :?> string)
-            if kvp.Key = ViewAttributes.FontAttributesAttribKey.KeyValue then 
-                currFontAttributesOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FontAttributes)
-            if kvp.Key = ViewAttributes.FontSizeAttribKey.KeyValue then 
-                currFontSizeOpt <- ValueSome (kvp.Value :?> double)
-            if kvp.Key = ViewAttributes.HorizontalTextAlignmentAttribKey.KeyValue then 
-                currHorizontalTextAlignmentOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.TextAlignment)
-            if kvp.Key = ViewAttributes.PlaceholderAttribKey.KeyValue then 
-                currPlaceholderOpt <- ValueSome (kvp.Value :?> string)
-            if kvp.Key = ViewAttributes.PlaceholderColorAttribKey.KeyValue then 
-                currPlaceholderColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
-            if kvp.Key = ViewAttributes.SearchBarCommandAttribKey.KeyValue then 
-                currSearchBarCommandOpt <- ValueSome (kvp.Value :?> string -> unit)
-            if kvp.Key = ViewAttributes.SearchBarCanExecuteAttribKey.KeyValue then 
-                currSearchBarCanExecuteOpt <- ValueSome (kvp.Value :?> bool)
-            if kvp.Key = ViewAttributes.TextAttribKey.KeyValue then 
-                currTextOpt <- ValueSome (kvp.Value :?> string)
-            if kvp.Key = ViewAttributes.TextColorAttribKey.KeyValue then 
-                currTextColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
-            if kvp.Key = ViewAttributes.SearchBarTextChangedAttribKey.KeyValue then 
-                currSearchBarTextChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>)
-        match prevOpt with
-        | ValueNone -> ()
-        | ValueSome prev ->
-            for kvp in prev.AttributesKeyed do
-                if kvp.Key = ViewAttributes.CancelButtonColorAttribKey.KeyValue then 
-                    prevCancelButtonColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
-                if kvp.Key = ViewAttributes.FontFamilyAttribKey.KeyValue then 
-                    prevFontFamilyOpt <- ValueSome (kvp.Value :?> string)
-                if kvp.Key = ViewAttributes.FontAttributesAttribKey.KeyValue then 
-                    prevFontAttributesOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FontAttributes)
-                if kvp.Key = ViewAttributes.FontSizeAttribKey.KeyValue then 
-                    prevFontSizeOpt <- ValueSome (kvp.Value :?> double)
-                if kvp.Key = ViewAttributes.HorizontalTextAlignmentAttribKey.KeyValue then 
-                    prevHorizontalTextAlignmentOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.TextAlignment)
-                if kvp.Key = ViewAttributes.PlaceholderAttribKey.KeyValue then 
-                    prevPlaceholderOpt <- ValueSome (kvp.Value :?> string)
-                if kvp.Key = ViewAttributes.PlaceholderColorAttribKey.KeyValue then 
-                    prevPlaceholderColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
-                if kvp.Key = ViewAttributes.SearchBarCommandAttribKey.KeyValue then 
-                    prevSearchBarCommandOpt <- ValueSome (kvp.Value :?> string -> unit)
-                if kvp.Key = ViewAttributes.SearchBarCanExecuteAttribKey.KeyValue then 
-                    prevSearchBarCanExecuteOpt <- ValueSome (kvp.Value :?> bool)
-                if kvp.Key = ViewAttributes.TextAttribKey.KeyValue then 
-                    prevTextOpt <- ValueSome (kvp.Value :?> string)
-                if kvp.Key = ViewAttributes.TextColorAttribKey.KeyValue then 
-                    prevTextColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
-                if kvp.Key = ViewAttributes.SearchBarTextChangedAttribKey.KeyValue then 
-                    prevSearchBarTextChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>)
-        match prevCancelButtonColorOpt, currCancelButtonColorOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.CancelButtonColor <-  currValue
-        | ValueSome _, ValueNone -> target.CancelButtonColor <- Xamarin.Forms.Color.Default
-        | ValueNone, ValueNone -> ()
-        match prevFontFamilyOpt, currFontFamilyOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.FontFamily <-  currValue
-        | ValueSome _, ValueNone -> target.FontFamily <- null
-        | ValueNone, ValueNone -> ()
-        match prevFontAttributesOpt, currFontAttributesOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.FontAttributes <-  currValue
-        | ValueSome _, ValueNone -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None
-        | ValueNone, ValueNone -> ()
-        match prevFontSizeOpt, currFontSizeOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.FontSize <-  currValue
-        | ValueSome _, ValueNone -> target.FontSize <- -1.0
-        | ValueNone, ValueNone -> ()
-        match prevHorizontalTextAlignmentOpt, currHorizontalTextAlignmentOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.HorizontalTextAlignment <-  currValue
-        | ValueSome _, ValueNone -> target.HorizontalTextAlignment <- Xamarin.Forms.TextAlignment.Start
-        | ValueNone, ValueNone -> ()
-        match prevPlaceholderOpt, currPlaceholderOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.Placeholder <-  currValue
-        | ValueSome _, ValueNone -> target.Placeholder <- null
-        | ValueNone, ValueNone -> ()
-        match prevPlaceholderColorOpt, currPlaceholderColorOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.PlaceholderColor <-  currValue
-        | ValueSome _, ValueNone -> target.PlaceholderColor <- Xamarin.Forms.Color.Default
-        | ValueNone, ValueNone -> ()
-        (fun _ _ _ -> ()) prevSearchBarCommandOpt currSearchBarCommandOpt target
-        updateCommand prevSearchBarCommandOpt currSearchBarCommandOpt (fun (target: Xamarin.Forms.SearchBar) -> target.Text) (fun (target: Xamarin.Forms.SearchBar) cmd -> target.SearchCommand <- cmd) prevSearchBarCanExecuteOpt currSearchBarCanExecuteOpt target
-        match prevTextOpt, currTextOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.Text <-  currValue
-        | ValueSome _, ValueNone -> target.Text <- null
-        | ValueNone, ValueNone -> ()
-        match prevTextColorOpt, currTextColorOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.TextColor <-  currValue
-        | ValueSome _, ValueNone -> target.TextColor <- Xamarin.Forms.Color.Default
-        | ValueNone, ValueNone -> ()
-        match prevSearchBarTextChangedOpt, currSearchBarTextChangedOpt with
-        | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
-        | ValueSome prevValue, ValueSome currValue -> target.TextChanged.RemoveHandler(prevValue); target.TextChanged.AddHandler(currValue)
-        | ValueNone, ValueSome currValue -> target.TextChanged.AddHandler(currValue)
-        | ValueSome prevValue, ValueNone -> target.TextChanged.RemoveHandler(prevValue)
-        | ValueNone, ValueNone -> ()
-
-    static member inline ConstructSearchBar(?cancelButtonColor: Xamarin.Forms.Color,
-                                            ?fontFamily: string,
-                                            ?fontAttributes: Xamarin.Forms.FontAttributes,
-                                            ?fontSize: obj,
-                                            ?horizontalTextAlignment: Xamarin.Forms.TextAlignment,
-                                            ?placeholder: string,
-                                            ?placeholderColor: Xamarin.Forms.Color,
-                                            ?searchCommand: string -> unit,
-                                            ?canExecute: bool,
-                                            ?text: string,
-                                            ?textColor: Xamarin.Forms.Color,
-                                            ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit,
-                                            ?horizontalOptions: Xamarin.Forms.LayoutOptions,
-                                            ?verticalOptions: Xamarin.Forms.LayoutOptions,
-                                            ?margin: obj,
-                                            ?gestureRecognizers: ViewElement list,
-                                            ?anchorX: double,
-                                            ?anchorY: double,
-                                            ?backgroundColor: Xamarin.Forms.Color,
-                                            ?heightRequest: double,
-                                            ?inputTransparent: bool,
-                                            ?isEnabled: bool,
-                                            ?isVisible: bool,
-                                            ?minimumHeightRequest: double,
-                                            ?minimumWidthRequest: double,
-                                            ?opacity: double,
-                                            ?rotation: double,
-                                            ?rotationX: double,
-                                            ?rotationY: double,
-                                            ?scale: double,
-                                            ?style: Xamarin.Forms.Style,
-                                            ?styleClass: obj,
-                                            ?translationX: double,
-                                            ?translationY: double,
-                                            ?widthRequest: double,
-                                            ?resources: (string * obj) list,
-                                            ?styles: Xamarin.Forms.Style list,
-                                            ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
-                                            ?isTabStop: bool,
-                                            ?scaleX: double,
-                                            ?scaleY: double,
-                                            ?tabIndex: int,
-                                            ?childrenReordered: System.EventArgs -> unit,
-                                            ?measureInvalidated: System.EventArgs -> unit,
-                                            ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                            ?sizeChanged: System.EventArgs -> unit,
-                                            ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
-                                            ?classId: string,
-                                            ?styleId: string,
-                                            ?automationId: string,
-                                            ?created: (Xamarin.Forms.SearchBar -> unit),
-                                            ?ref: ViewRef<Xamarin.Forms.SearchBar>) = 
-
-        let attribBuilder = ViewBuilders.BuildSearchBar(0,
-                               ?cancelButtonColor=cancelButtonColor,
-                               ?fontFamily=fontFamily,
-                               ?fontAttributes=fontAttributes,
-                               ?fontSize=fontSize,
-                               ?horizontalTextAlignment=horizontalTextAlignment,
-                               ?placeholder=placeholder,
-                               ?placeholderColor=placeholderColor,
-                               ?searchCommand=searchCommand,
-                               ?canExecute=canExecute,
-                               ?text=text,
-                               ?textColor=textColor,
-                               ?textChanged=textChanged,
-                               ?horizontalOptions=horizontalOptions,
-                               ?verticalOptions=verticalOptions,
-                               ?margin=margin,
-                               ?gestureRecognizers=gestureRecognizers,
-                               ?anchorX=anchorX,
-                               ?anchorY=anchorY,
-                               ?backgroundColor=backgroundColor,
-                               ?heightRequest=heightRequest,
-                               ?inputTransparent=inputTransparent,
-                               ?isEnabled=isEnabled,
-                               ?isVisible=isVisible,
-                               ?minimumHeightRequest=minimumHeightRequest,
-                               ?minimumWidthRequest=minimumWidthRequest,
-                               ?opacity=opacity,
-                               ?rotation=rotation,
-                               ?rotationX=rotationX,
-                               ?rotationY=rotationY,
-                               ?scale=scale,
-                               ?style=style,
-                               ?styleClass=styleClass,
-                               ?translationX=translationX,
-                               ?translationY=translationY,
-                               ?widthRequest=widthRequest,
-                               ?resources=resources,
-                               ?styles=styles,
-                               ?styleSheets=styleSheets,
-                               ?isTabStop=isTabStop,
-                               ?scaleX=scaleX,
-                               ?scaleY=scaleY,
-                               ?tabIndex=tabIndex,
-                               ?childrenReordered=childrenReordered,
-                               ?measureInvalidated=measureInvalidated,
-                               ?focused=focused,
-                               ?sizeChanged=sizeChanged,
-                               ?unfocused=unfocused,
-                               ?classId=classId,
-                               ?styleId=styleId,
-                               ?automationId=automationId,
-                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.SearchBar> target))),
-                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.SearchBar>) -> Some ref.Unbox))
-
-        ViewElement.Create<Xamarin.Forms.SearchBar>(ViewBuilders.CreateFuncSearchBar, ViewBuilders.UpdateFuncSearchBar, attribBuilder)
-
     /// Builds the attributes for a Button in the view
     static member inline BuildButton(attribCount: int,
                                      ?text: string,
@@ -2909,7 +2696,6 @@ type ViewBuilders() =
                                      ?canExecute: bool,
                                      ?borderColor: Xamarin.Forms.Color,
                                      ?borderWidth: double,
-                                     ?commandParameter: System.Object,
                                      ?contentLayout: Xamarin.Forms.Button.ButtonContentLayout,
                                      ?cornerRadius: int,
                                      ?fontFamily: string,
@@ -2951,8 +2737,9 @@ type ViewBuilders() =
                                      ?childrenReordered: System.EventArgs -> unit,
                                      ?measureInvalidated: System.EventArgs -> unit,
                                      ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                     ?sizeChanged: System.EventArgs -> unit,
+                                     ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                      ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                     ?visual: Xamarin.Forms.IVisual,
                                      ?classId: string,
                                      ?styleId: string,
                                      ?automationId: string,
@@ -2964,7 +2751,6 @@ type ViewBuilders() =
         let attribCount = match canExecute with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match borderColor with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match borderWidth with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match commandParameter with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match contentLayout with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match cornerRadius with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match fontFamily with Some _ -> attribCount + 1 | None -> attribCount
@@ -2974,13 +2760,12 @@ type ViewBuilders() =
         let attribCount = match textColor with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match padding with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match text with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextAttribKey, (v)) 
         match command with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ButtonCommandAttribKey, (v)) 
         match canExecute with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ButtonCanExecuteAttribKey, (v)) 
         match borderColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.BorderColorAttribKey, (v)) 
         match borderWidth with None -> () | Some v -> attribBuilder.Add(ViewAttributes.BorderWidthAttribKey, (v)) 
-        match commandParameter with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CommandParameterAttribKey, (v)) 
         match contentLayout with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ContentLayoutAttribKey, (v)) 
         match cornerRadius with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ButtonCornerRadiusAttribKey, (v)) 
         match fontFamily with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FontFamilyAttribKey, (v)) 
@@ -2991,7 +2776,7 @@ type ViewBuilders() =
         match padding with None -> () | Some v -> attribBuilder.Add(ViewAttributes.PaddingAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncButton : (unit -> Xamarin.Forms.Button) = (fun () -> ViewBuilders.CreateButton())
+    static member val CreateFuncButton : (unit -> Xamarin.Forms.Button) = (fun () -> ViewBuilders.CreateButton()) with get, set
 
     static member CreateButton () : Xamarin.Forms.Button =
         upcast (new Xamarin.Forms.Button())
@@ -3013,8 +2798,6 @@ type ViewBuilders() =
         let mutable currBorderColorOpt = ValueNone
         let mutable prevBorderWidthOpt = ValueNone
         let mutable currBorderWidthOpt = ValueNone
-        let mutable prevCommandParameterOpt = ValueNone
-        let mutable currCommandParameterOpt = ValueNone
         let mutable prevContentLayoutOpt = ValueNone
         let mutable currContentLayoutOpt = ValueNone
         let mutable prevButtonCornerRadiusOpt = ValueNone
@@ -3042,8 +2825,6 @@ type ViewBuilders() =
                 currBorderColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
             if kvp.Key = ViewAttributes.BorderWidthAttribKey.KeyValue then 
                 currBorderWidthOpt <- ValueSome (kvp.Value :?> double)
-            if kvp.Key = ViewAttributes.CommandParameterAttribKey.KeyValue then 
-                currCommandParameterOpt <- ValueSome (kvp.Value :?> System.Object)
             if kvp.Key = ViewAttributes.ContentLayoutAttribKey.KeyValue then 
                 currContentLayoutOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Button.ButtonContentLayout)
             if kvp.Key = ViewAttributes.ButtonCornerRadiusAttribKey.KeyValue then 
@@ -3074,8 +2855,6 @@ type ViewBuilders() =
                     prevBorderColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
                 if kvp.Key = ViewAttributes.BorderWidthAttribKey.KeyValue then 
                     prevBorderWidthOpt <- ValueSome (kvp.Value :?> double)
-                if kvp.Key = ViewAttributes.CommandParameterAttribKey.KeyValue then 
-                    prevCommandParameterOpt <- ValueSome (kvp.Value :?> System.Object)
                 if kvp.Key = ViewAttributes.ContentLayoutAttribKey.KeyValue then 
                     prevContentLayoutOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Button.ButtonContentLayout)
                 if kvp.Key = ViewAttributes.ButtonCornerRadiusAttribKey.KeyValue then 
@@ -3108,11 +2887,6 @@ type ViewBuilders() =
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.BorderWidth <-  currValue
         | ValueSome _, ValueNone -> target.BorderWidth <- -1.0
-        | ValueNone, ValueNone -> ()
-        match prevCommandParameterOpt, currCommandParameterOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.CommandParameter <-  currValue
-        | ValueSome _, ValueNone -> target.CommandParameter <- null
         | ValueNone, ValueNone -> ()
         match prevContentLayoutOpt, currContentLayoutOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
@@ -3160,7 +2934,6 @@ type ViewBuilders() =
                                          ?canExecute: bool,
                                          ?borderColor: Xamarin.Forms.Color,
                                          ?borderWidth: double,
-                                         ?commandParameter: System.Object,
                                          ?contentLayout: Xamarin.Forms.Button.ButtonContentLayout,
                                          ?cornerRadius: int,
                                          ?fontFamily: string,
@@ -3202,8 +2975,9 @@ type ViewBuilders() =
                                          ?childrenReordered: System.EventArgs -> unit,
                                          ?measureInvalidated: System.EventArgs -> unit,
                                          ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                         ?sizeChanged: System.EventArgs -> unit,
+                                         ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                          ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                         ?visual: Xamarin.Forms.IVisual,
                                          ?classId: string,
                                          ?styleId: string,
                                          ?automationId: string,
@@ -3216,7 +2990,6 @@ type ViewBuilders() =
                                ?canExecute=canExecute,
                                ?borderColor=borderColor,
                                ?borderWidth=borderWidth,
-                               ?commandParameter=commandParameter,
                                ?contentLayout=contentLayout,
                                ?cornerRadius=cornerRadius,
                                ?fontFamily=fontFamily,
@@ -3260,6 +3033,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -3273,6 +3047,8 @@ type ViewBuilders() =
                                      ?minimumMaximum: float * float,
                                      ?value: double,
                                      ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit,
+                                     ?dragCompleted: unit -> unit,
+                                     ?dragStarted: unit -> unit,
                                      ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                      ?verticalOptions: Xamarin.Forms.LayoutOptions,
                                      ?margin: obj,
@@ -3306,8 +3082,9 @@ type ViewBuilders() =
                                      ?childrenReordered: System.EventArgs -> unit,
                                      ?measureInvalidated: System.EventArgs -> unit,
                                      ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                     ?sizeChanged: System.EventArgs -> unit,
+                                     ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                      ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                     ?visual: Xamarin.Forms.IVisual,
                                      ?classId: string,
                                      ?styleId: string,
                                      ?automationId: string,
@@ -3317,14 +3094,18 @@ type ViewBuilders() =
         let attribCount = match minimumMaximum with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match value with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match valueChanged with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match dragCompleted with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match dragStarted with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match minimumMaximum with None -> () | Some v -> attribBuilder.Add(ViewAttributes.MinimumMaximumAttribKey, (v)) 
         match value with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ValueAttribKey, (v)) 
         match valueChanged with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ValueChangedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>(fun _sender args -> f args))(v)) 
+        match dragCompleted with None -> () | Some v -> attribBuilder.Add(ViewAttributes.DragCompletedAttribKey, makeCommand(v)) 
+        match dragStarted with None -> () | Some v -> attribBuilder.Add(ViewAttributes.DragStartedAttribKey, makeCommand(v)) 
         attribBuilder
 
-    static member val CreateFuncSlider : (unit -> Xamarin.Forms.Slider) = (fun () -> ViewBuilders.CreateSlider())
+    static member val CreateFuncSlider : (unit -> Xamarin.Forms.Slider) = (fun () -> ViewBuilders.CreateSlider()) with get, set
 
     static member CreateSlider () : Xamarin.Forms.Slider =
         upcast (new Xamarin.Forms.Slider())
@@ -3342,6 +3123,10 @@ type ViewBuilders() =
         let mutable currValueOpt = ValueNone
         let mutable prevValueChangedOpt = ValueNone
         let mutable currValueChangedOpt = ValueNone
+        let mutable prevDragCompletedOpt = ValueNone
+        let mutable currDragCompletedOpt = ValueNone
+        let mutable prevDragStartedOpt = ValueNone
+        let mutable currDragStartedOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = ViewAttributes.MinimumMaximumAttribKey.KeyValue then 
                 currMinimumMaximumOpt <- ValueSome (kvp.Value :?> float * float)
@@ -3349,6 +3134,10 @@ type ViewBuilders() =
                 currValueOpt <- ValueSome (kvp.Value :?> double)
             if kvp.Key = ViewAttributes.ValueChangedAttribKey.KeyValue then 
                 currValueChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>)
+            if kvp.Key = ViewAttributes.DragCompletedAttribKey.KeyValue then 
+                currDragCompletedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
+            if kvp.Key = ViewAttributes.DragStartedAttribKey.KeyValue then 
+                currDragStartedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
@@ -3359,6 +3148,10 @@ type ViewBuilders() =
                     prevValueOpt <- ValueSome (kvp.Value :?> double)
                 if kvp.Key = ViewAttributes.ValueChangedAttribKey.KeyValue then 
                     prevValueChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>)
+                if kvp.Key = ViewAttributes.DragCompletedAttribKey.KeyValue then 
+                    prevDragCompletedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
+                if kvp.Key = ViewAttributes.DragStartedAttribKey.KeyValue then 
+                    prevDragStartedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
         updateSliderMinimumMaximum prevMinimumMaximumOpt currMinimumMaximumOpt target
         match prevValueOpt, currValueOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
@@ -3371,10 +3164,24 @@ type ViewBuilders() =
         | ValueNone, ValueSome currValue -> target.ValueChanged.AddHandler(currValue)
         | ValueSome prevValue, ValueNone -> target.ValueChanged.RemoveHandler(prevValue)
         | ValueNone, ValueNone -> ()
+        match prevDragCompletedOpt, currDragCompletedOpt with
+        | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
+        | ValueSome prevValue, ValueSome currValue -> target.DragCompleted.RemoveHandler(prevValue); target.DragCompleted.AddHandler(currValue)
+        | ValueNone, ValueSome currValue -> target.DragCompleted.AddHandler(currValue)
+        | ValueSome prevValue, ValueNone -> target.DragCompleted.RemoveHandler(prevValue)
+        | ValueNone, ValueNone -> ()
+        match prevDragStartedOpt, currDragStartedOpt with
+        | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
+        | ValueSome prevValue, ValueSome currValue -> target.DragStarted.RemoveHandler(prevValue); target.DragStarted.AddHandler(currValue)
+        | ValueNone, ValueSome currValue -> target.DragStarted.AddHandler(currValue)
+        | ValueSome prevValue, ValueNone -> target.DragStarted.RemoveHandler(prevValue)
+        | ValueNone, ValueNone -> ()
 
     static member inline ConstructSlider(?minimumMaximum: float * float,
                                          ?value: double,
                                          ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit,
+                                         ?dragCompleted: unit -> unit,
+                                         ?dragStarted: unit -> unit,
                                          ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                          ?verticalOptions: Xamarin.Forms.LayoutOptions,
                                          ?margin: obj,
@@ -3408,8 +3215,9 @@ type ViewBuilders() =
                                          ?childrenReordered: System.EventArgs -> unit,
                                          ?measureInvalidated: System.EventArgs -> unit,
                                          ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                         ?sizeChanged: System.EventArgs -> unit,
+                                         ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                          ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                         ?visual: Xamarin.Forms.IVisual,
                                          ?classId: string,
                                          ?styleId: string,
                                          ?automationId: string,
@@ -3420,6 +3228,8 @@ type ViewBuilders() =
                                ?minimumMaximum=minimumMaximum,
                                ?value=value,
                                ?valueChanged=valueChanged,
+                               ?dragCompleted=dragCompleted,
+                               ?dragStarted=dragStarted,
                                ?horizontalOptions=horizontalOptions,
                                ?verticalOptions=verticalOptions,
                                ?margin=margin,
@@ -3455,6 +3265,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -3502,8 +3313,9 @@ type ViewBuilders() =
                                       ?childrenReordered: System.EventArgs -> unit,
                                       ?measureInvalidated: System.EventArgs -> unit,
                                       ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                      ?sizeChanged: System.EventArgs -> unit,
+                                      ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                       ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                      ?visual: Xamarin.Forms.IVisual,
                                       ?classId: string,
                                       ?styleId: string,
                                       ?automationId: string,
@@ -3515,14 +3327,14 @@ type ViewBuilders() =
         let attribCount = match increment with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match valueChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match minimumMaximum with None -> () | Some v -> attribBuilder.Add(ViewAttributes.MinimumMaximumAttribKey, (v)) 
         match value with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ValueAttribKey, (v)) 
         match increment with None -> () | Some v -> attribBuilder.Add(ViewAttributes.IncrementAttribKey, (v)) 
         match valueChanged with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ValueChangedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>(fun _sender args -> f args))(v)) 
         attribBuilder
 
-    static member val CreateFuncStepper : (unit -> Xamarin.Forms.Stepper) = (fun () -> ViewBuilders.CreateStepper())
+    static member val CreateFuncStepper : (unit -> Xamarin.Forms.Stepper) = (fun () -> ViewBuilders.CreateStepper()) with get, set
 
     static member CreateStepper () : Xamarin.Forms.Stepper =
         upcast (new Xamarin.Forms.Stepper())
@@ -3618,8 +3430,9 @@ type ViewBuilders() =
                                           ?childrenReordered: System.EventArgs -> unit,
                                           ?measureInvalidated: System.EventArgs -> unit,
                                           ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                          ?sizeChanged: System.EventArgs -> unit,
+                                          ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                           ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                          ?visual: Xamarin.Forms.IVisual,
                                           ?classId: string,
                                           ?styleId: string,
                                           ?automationId: string,
@@ -3666,6 +3479,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -3712,8 +3526,9 @@ type ViewBuilders() =
                                      ?childrenReordered: System.EventArgs -> unit,
                                      ?measureInvalidated: System.EventArgs -> unit,
                                      ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                     ?sizeChanged: System.EventArgs -> unit,
+                                     ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                      ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                     ?visual: Xamarin.Forms.IVisual,
                                      ?classId: string,
                                      ?styleId: string,
                                      ?automationId: string,
@@ -3724,13 +3539,13 @@ type ViewBuilders() =
         let attribCount = match toggled with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match onColor with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match isToggled with None -> () | Some v -> attribBuilder.Add(ViewAttributes.IsToggledAttribKey, (v)) 
         match toggled with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ToggledAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ToggledEventArgs>(fun _sender args -> f args))(v)) 
         match onColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.OnColorAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncSwitch : (unit -> Xamarin.Forms.Switch) = (fun () -> ViewBuilders.CreateSwitch())
+    static member val CreateFuncSwitch : (unit -> Xamarin.Forms.Switch) = (fun () -> ViewBuilders.CreateSwitch()) with get, set
 
     static member CreateSwitch () : Xamarin.Forms.Switch =
         upcast (new Xamarin.Forms.Switch())
@@ -3818,8 +3633,9 @@ type ViewBuilders() =
                                          ?childrenReordered: System.EventArgs -> unit,
                                          ?measureInvalidated: System.EventArgs -> unit,
                                          ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                         ?sizeChanged: System.EventArgs -> unit,
+                                         ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                          ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                         ?visual: Xamarin.Forms.IVisual,
                                          ?classId: string,
                                          ?styleId: string,
                                          ?automationId: string,
@@ -3865,6 +3681,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -3891,7 +3708,7 @@ type ViewBuilders() =
         match isEnabled with None -> () | Some v -> attribBuilder.Add(ViewAttributes.IsEnabledAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncCell : (unit -> Xamarin.Forms.Cell) = (fun () -> ViewBuilders.CreateCell())
+    static member val CreateFuncCell : (unit -> Xamarin.Forms.Cell) = (fun () -> ViewBuilders.CreateCell()) with get, set
 
     static member CreateCell () : Xamarin.Forms.Cell =
         failwith "can't create Xamarin.Forms.Cell"
@@ -3955,6 +3772,7 @@ type ViewBuilders() =
                                          ?on: bool,
                                          ?text: string,
                                          ?onChanged: Xamarin.Forms.ToggledEventArgs -> unit,
+                                         ?onColor: Xamarin.Forms.Color,
                                          ?height: double,
                                          ?isEnabled: bool,
                                          ?classId: string,
@@ -3966,14 +3784,16 @@ type ViewBuilders() =
         let attribCount = match on with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match onChanged with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match onColor with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = ViewBuilders.BuildCell(attribCount, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match on with None -> () | Some v -> attribBuilder.Add(ViewAttributes.OnAttribKey, (v)) 
         match text with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextAttribKey, (v)) 
         match onChanged with None -> () | Some v -> attribBuilder.Add(ViewAttributes.OnChangedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ToggledEventArgs>(fun _sender args -> f args))(v)) 
+        match onColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.OnColorAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncSwitchCell : (unit -> Xamarin.Forms.SwitchCell) = (fun () -> ViewBuilders.CreateSwitchCell())
+    static member val CreateFuncSwitchCell : (unit -> Xamarin.Forms.SwitchCell) = (fun () -> ViewBuilders.CreateSwitchCell()) with get, set
 
     static member CreateSwitchCell () : Xamarin.Forms.SwitchCell =
         upcast (new Xamarin.Forms.SwitchCell())
@@ -3991,6 +3811,8 @@ type ViewBuilders() =
         let mutable currTextOpt = ValueNone
         let mutable prevOnChangedOpt = ValueNone
         let mutable currOnChangedOpt = ValueNone
+        let mutable prevOnColorOpt = ValueNone
+        let mutable currOnColorOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = ViewAttributes.OnAttribKey.KeyValue then 
                 currOnOpt <- ValueSome (kvp.Value :?> bool)
@@ -3998,6 +3820,8 @@ type ViewBuilders() =
                 currTextOpt <- ValueSome (kvp.Value :?> string)
             if kvp.Key = ViewAttributes.OnChangedAttribKey.KeyValue then 
                 currOnChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.ToggledEventArgs>)
+            if kvp.Key = ViewAttributes.OnColorAttribKey.KeyValue then 
+                currOnColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
@@ -4008,6 +3832,8 @@ type ViewBuilders() =
                     prevTextOpt <- ValueSome (kvp.Value :?> string)
                 if kvp.Key = ViewAttributes.OnChangedAttribKey.KeyValue then 
                     prevOnChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.ToggledEventArgs>)
+                if kvp.Key = ViewAttributes.OnColorAttribKey.KeyValue then 
+                    prevOnColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
         match prevOnOpt, currOnOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.On <-  currValue
@@ -4024,10 +3850,16 @@ type ViewBuilders() =
         | ValueNone, ValueSome currValue -> target.OnChanged.AddHandler(currValue)
         | ValueSome prevValue, ValueNone -> target.OnChanged.RemoveHandler(prevValue)
         | ValueNone, ValueNone -> ()
+        match prevOnColorOpt, currOnColorOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.OnColor <-  currValue
+        | ValueSome _, ValueNone -> target.OnColor <- Xamarin.Forms.Color.Default
+        | ValueNone, ValueNone -> ()
 
     static member inline ConstructSwitchCell(?on: bool,
                                              ?text: string,
                                              ?onChanged: Xamarin.Forms.ToggledEventArgs -> unit,
+                                             ?onColor: Xamarin.Forms.Color,
                                              ?height: double,
                                              ?isEnabled: bool,
                                              ?classId: string,
@@ -4040,6 +3872,7 @@ type ViewBuilders() =
                                ?on=on,
                                ?text=text,
                                ?onChanged=onChanged,
+                               ?onColor=onColor,
                                ?height=height,
                                ?isEnabled=isEnabled,
                                ?classId=classId,
@@ -4089,8 +3922,9 @@ type ViewBuilders() =
                                         ?childrenReordered: System.EventArgs -> unit,
                                         ?measureInvalidated: System.EventArgs -> unit,
                                         ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                        ?sizeChanged: System.EventArgs -> unit,
+                                        ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                         ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?visual: Xamarin.Forms.IVisual,
                                         ?classId: string,
                                         ?styleId: string,
                                         ?automationId: string,
@@ -4102,14 +3936,14 @@ type ViewBuilders() =
         let attribCount = match rowHeight with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match items with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match intent with None -> () | Some v -> attribBuilder.Add(ViewAttributes.IntentAttribKey, (v)) 
         match hasUnevenRows with None -> () | Some v -> attribBuilder.Add(ViewAttributes.HasUnevenRowsAttribKey, (v)) 
         match rowHeight with None -> () | Some v -> attribBuilder.Add(ViewAttributes.RowHeightAttribKey, (v)) 
         match items with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TableRootAttribKey, (fun es -> es |> Array.ofList |> Array.map (fun (title, es) -> (title, Array.ofList es)))(v)) 
         attribBuilder
 
-    static member val CreateFuncTableView : (unit -> Xamarin.Forms.TableView) = (fun () -> ViewBuilders.CreateTableView())
+    static member val CreateFuncTableView : (unit -> Xamarin.Forms.TableView) = (fun () -> ViewBuilders.CreateTableView()) with get, set
 
     static member CreateTableView () : Xamarin.Forms.TableView =
         upcast (new Xamarin.Forms.TableView())
@@ -4204,8 +4038,9 @@ type ViewBuilders() =
                                             ?childrenReordered: System.EventArgs -> unit,
                                             ?measureInvalidated: System.EventArgs -> unit,
                                             ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                            ?sizeChanged: System.EventArgs -> unit,
+                                            ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                             ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                            ?visual: Xamarin.Forms.IVisual,
                                             ?classId: string,
                                             ?styleId: string,
                                             ?automationId: string,
@@ -4252,6 +4087,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -4270,7 +4106,7 @@ type ViewBuilders() =
         match height with None -> () | Some v -> attribBuilder.Add(ViewAttributes.RowDefinitionHeightAttribKey, makeGridLength(v)) 
         attribBuilder
 
-    static member val CreateFuncRowDefinition : (unit -> Xamarin.Forms.RowDefinition) = (fun () -> ViewBuilders.CreateRowDefinition())
+    static member val CreateFuncRowDefinition : (unit -> Xamarin.Forms.RowDefinition) = (fun () -> ViewBuilders.CreateRowDefinition()) with get, set
 
     static member CreateRowDefinition () : Xamarin.Forms.RowDefinition =
         upcast (new Xamarin.Forms.RowDefinition())
@@ -4313,7 +4149,7 @@ type ViewBuilders() =
         match width with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ColumnDefinitionWidthAttribKey, makeGridLength(v)) 
         attribBuilder
 
-    static member val CreateFuncColumnDefinition : (unit -> Xamarin.Forms.ColumnDefinition) = (fun () -> ViewBuilders.CreateColumnDefinition())
+    static member val CreateFuncColumnDefinition : (unit -> Xamarin.Forms.ColumnDefinition) = (fun () -> ViewBuilders.CreateColumnDefinition()) with get, set
 
     static member CreateColumnDefinition () : Xamarin.Forms.ColumnDefinition =
         upcast (new Xamarin.Forms.ColumnDefinition())
@@ -4388,8 +4224,9 @@ type ViewBuilders() =
                                    ?childrenReordered: System.EventArgs -> unit,
                                    ?measureInvalidated: System.EventArgs -> unit,
                                    ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                   ?sizeChanged: System.EventArgs -> unit,
+                                   ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                    ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                   ?visual: Xamarin.Forms.IVisual,
                                    ?classId: string,
                                    ?styleId: string,
                                    ?automationId: string,
@@ -4402,7 +4239,7 @@ type ViewBuilders() =
         let attribCount = match columnSpacing with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match children with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match rowdefs with None -> () | Some v -> attribBuilder.Add(ViewAttributes.GridRowDefinitionsAttribKey, (fun es -> es |> Array.ofList |> Array.map (fun h -> ViewBuilders.ConstructRowDefinition(height=h)))(v)) 
         match coldefs with None -> () | Some v -> attribBuilder.Add(ViewAttributes.GridColumnDefinitionsAttribKey, (fun es -> es |> Array.ofList |> Array.map (fun h -> ViewBuilders.ConstructColumnDefinition(width=h)))(v)) 
         match rowSpacing with None -> () | Some v -> attribBuilder.Add(ViewAttributes.RowSpacingAttribKey, (v)) 
@@ -4410,7 +4247,7 @@ type ViewBuilders() =
         match children with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ChildrenAttribKey, Array.ofList(v)) 
         attribBuilder
 
-    static member val CreateFuncGrid : (unit -> Xamarin.Forms.Grid) = (fun () -> ViewBuilders.CreateGrid())
+    static member val CreateFuncGrid : (unit -> Xamarin.Forms.Grid) = (fun () -> ViewBuilders.CreateGrid()) with get, set
 
     static member CreateGrid () : Xamarin.Forms.Grid =
         upcast (new Xamarin.Forms.Grid())
@@ -4556,8 +4393,9 @@ type ViewBuilders() =
                                        ?childrenReordered: System.EventArgs -> unit,
                                        ?measureInvalidated: System.EventArgs -> unit,
                                        ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                       ?sizeChanged: System.EventArgs -> unit,
+                                       ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                        ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                       ?visual: Xamarin.Forms.IVisual,
                                        ?classId: string,
                                        ?styleId: string,
                                        ?automationId: string,
@@ -4607,6 +4445,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -4653,8 +4492,9 @@ type ViewBuilders() =
                                              ?childrenReordered: System.EventArgs -> unit,
                                              ?measureInvalidated: System.EventArgs -> unit,
                                              ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                             ?sizeChanged: System.EventArgs -> unit,
+                                             ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                              ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                             ?visual: Xamarin.Forms.IVisual,
                                              ?classId: string,
                                              ?styleId: string,
                                              ?automationId: string,
@@ -4663,11 +4503,11 @@ type ViewBuilders() =
 
         let attribCount = match children with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match children with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ChildrenAttribKey, Array.ofList(v)) 
         attribBuilder
 
-    static member val CreateFuncAbsoluteLayout : (unit -> Xamarin.Forms.AbsoluteLayout) = (fun () -> ViewBuilders.CreateAbsoluteLayout())
+    static member val CreateFuncAbsoluteLayout : (unit -> Xamarin.Forms.AbsoluteLayout) = (fun () -> ViewBuilders.CreateAbsoluteLayout()) with get, set
 
     static member CreateAbsoluteLayout () : Xamarin.Forms.AbsoluteLayout =
         upcast (new Xamarin.Forms.AbsoluteLayout())
@@ -4749,8 +4589,9 @@ type ViewBuilders() =
                                                  ?childrenReordered: System.EventArgs -> unit,
                                                  ?measureInvalidated: System.EventArgs -> unit,
                                                  ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                                 ?sizeChanged: System.EventArgs -> unit,
+                                                 ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                                  ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                 ?visual: Xamarin.Forms.IVisual,
                                                  ?classId: string,
                                                  ?styleId: string,
                                                  ?automationId: string,
@@ -4796,6 +4637,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -4842,8 +4684,9 @@ type ViewBuilders() =
                                              ?childrenReordered: System.EventArgs -> unit,
                                              ?measureInvalidated: System.EventArgs -> unit,
                                              ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                             ?sizeChanged: System.EventArgs -> unit,
+                                             ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                              ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                             ?visual: Xamarin.Forms.IVisual,
                                              ?classId: string,
                                              ?styleId: string,
                                              ?automationId: string,
@@ -4852,11 +4695,11 @@ type ViewBuilders() =
 
         let attribCount = match children with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match children with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ChildrenAttribKey, Array.ofList(v)) 
         attribBuilder
 
-    static member val CreateFuncRelativeLayout : (unit -> Xamarin.Forms.RelativeLayout) = (fun () -> ViewBuilders.CreateRelativeLayout())
+    static member val CreateFuncRelativeLayout : (unit -> Xamarin.Forms.RelativeLayout) = (fun () -> ViewBuilders.CreateRelativeLayout()) with get, set
 
     static member CreateRelativeLayout () : Xamarin.Forms.RelativeLayout =
         upcast (new Xamarin.Forms.RelativeLayout())
@@ -4962,8 +4805,9 @@ type ViewBuilders() =
                                                  ?childrenReordered: System.EventArgs -> unit,
                                                  ?measureInvalidated: System.EventArgs -> unit,
                                                  ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                                 ?sizeChanged: System.EventArgs -> unit,
+                                                 ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                                  ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                 ?visual: Xamarin.Forms.IVisual,
                                                  ?classId: string,
                                                  ?styleId: string,
                                                  ?automationId: string,
@@ -5009,6 +4853,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -5061,8 +4906,9 @@ type ViewBuilders() =
                                          ?childrenReordered: System.EventArgs -> unit,
                                          ?measureInvalidated: System.EventArgs -> unit,
                                          ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                         ?sizeChanged: System.EventArgs -> unit,
+                                         ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                          ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                         ?visual: Xamarin.Forms.IVisual,
                                          ?classId: string,
                                          ?styleId: string,
                                          ?automationId: string,
@@ -5077,7 +4923,7 @@ type ViewBuilders() =
         let attribCount = match justifyContent with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match children with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match alignContent with None -> () | Some v -> attribBuilder.Add(ViewAttributes.AlignContentAttribKey, (v)) 
         match alignItems with None -> () | Some v -> attribBuilder.Add(ViewAttributes.AlignItemsAttribKey, (v)) 
         match direction with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FlexLayoutDirectionAttribKey, (v)) 
@@ -5087,7 +4933,7 @@ type ViewBuilders() =
         match children with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ChildrenAttribKey, Array.ofList(v)) 
         attribBuilder
 
-    static member val CreateFuncFlexLayout : (unit -> Xamarin.Forms.FlexLayout) = (fun () -> ViewBuilders.CreateFlexLayout())
+    static member val CreateFuncFlexLayout : (unit -> Xamarin.Forms.FlexLayout) = (fun () -> ViewBuilders.CreateFlexLayout()) with get, set
 
     static member CreateFlexLayout () : Xamarin.Forms.FlexLayout =
         upcast (new Xamarin.Forms.FlexLayout())
@@ -5265,8 +5111,9 @@ type ViewBuilders() =
                                              ?childrenReordered: System.EventArgs -> unit,
                                              ?measureInvalidated: System.EventArgs -> unit,
                                              ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                             ?sizeChanged: System.EventArgs -> unit,
+                                             ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                              ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                             ?visual: Xamarin.Forms.IVisual,
                                              ?classId: string,
                                              ?styleId: string,
                                              ?automationId: string,
@@ -5318,6 +5165,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -5363,17 +5211,18 @@ type ViewBuilders() =
                                             ?childrenReordered: System.EventArgs -> unit,
                                             ?measureInvalidated: System.EventArgs -> unit,
                                             ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                            ?sizeChanged: System.EventArgs -> unit,
+                                            ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                             ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                            ?visual: Xamarin.Forms.IVisual,
                                             ?classId: string,
                                             ?styleId: string,
                                             ?automationId: string,
                                             ?created: obj -> unit,
                                             ?ref: ViewRef) = 
-        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         attribBuilder
 
-    static member val CreateFuncTemplatedView : (unit -> Xamarin.Forms.TemplatedView) = (fun () -> ViewBuilders.CreateTemplatedView())
+    static member val CreateFuncTemplatedView : (unit -> Xamarin.Forms.TemplatedView) = (fun () -> ViewBuilders.CreateTemplatedView()) with get, set
 
     static member CreateTemplatedView () : Xamarin.Forms.TemplatedView =
         upcast (new Xamarin.Forms.TemplatedView())
@@ -5424,8 +5273,9 @@ type ViewBuilders() =
                                                 ?childrenReordered: System.EventArgs -> unit,
                                                 ?measureInvalidated: System.EventArgs -> unit,
                                                 ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                                ?sizeChanged: System.EventArgs -> unit,
+                                                ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                                 ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                ?visual: Xamarin.Forms.IVisual,
                                                 ?classId: string,
                                                 ?styleId: string,
                                                 ?automationId: string,
@@ -5470,6 +5320,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -5516,8 +5367,9 @@ type ViewBuilders() =
                                           ?childrenReordered: System.EventArgs -> unit,
                                           ?measureInvalidated: System.EventArgs -> unit,
                                           ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                          ?sizeChanged: System.EventArgs -> unit,
+                                          ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                           ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                          ?visual: Xamarin.Forms.IVisual,
                                           ?classId: string,
                                           ?styleId: string,
                                           ?automationId: string,
@@ -5526,11 +5378,11 @@ type ViewBuilders() =
 
         let attribCount = match content with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildTemplatedView(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildTemplatedView(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match content with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ContentAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncContentView : (unit -> Xamarin.Forms.ContentView) = (fun () -> ViewBuilders.CreateContentView())
+    static member val CreateFuncContentView : (unit -> Xamarin.Forms.ContentView) = (fun () -> ViewBuilders.CreateContentView()) with get, set
 
     static member CreateContentView () : Xamarin.Forms.ContentView =
         upcast (new Xamarin.Forms.ContentView())
@@ -5600,8 +5452,9 @@ type ViewBuilders() =
                                               ?childrenReordered: System.EventArgs -> unit,
                                               ?measureInvalidated: System.EventArgs -> unit,
                                               ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                              ?sizeChanged: System.EventArgs -> unit,
+                                              ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                               ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                              ?visual: Xamarin.Forms.IVisual,
                                               ?classId: string,
                                               ?styleId: string,
                                               ?automationId: string,
@@ -5647,6 +5500,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -5695,8 +5549,9 @@ type ViewBuilders() =
                                          ?childrenReordered: System.EventArgs -> unit,
                                          ?measureInvalidated: System.EventArgs -> unit,
                                          ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                         ?sizeChanged: System.EventArgs -> unit,
+                                         ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                          ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                         ?visual: Xamarin.Forms.IVisual,
                                          ?classId: string,
                                          ?styleId: string,
                                          ?automationId: string,
@@ -5709,7 +5564,7 @@ type ViewBuilders() =
         let attribCount = match maximumDate with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match dateSelected with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match date with None -> () | Some v -> attribBuilder.Add(ViewAttributes.DateAttribKey, (v)) 
         match format with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FormatAttribKey, (v)) 
         match minimumDate with None -> () | Some v -> attribBuilder.Add(ViewAttributes.MinimumDateAttribKey, (v)) 
@@ -5717,7 +5572,7 @@ type ViewBuilders() =
         match dateSelected with None -> () | Some v -> attribBuilder.Add(ViewAttributes.DateSelectedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.DateChangedEventArgs>(fun _sender args -> f args))(v)) 
         attribBuilder
 
-    static member val CreateFuncDatePicker : (unit -> Xamarin.Forms.DatePicker) = (fun () -> ViewBuilders.CreateDatePicker())
+    static member val CreateFuncDatePicker : (unit -> Xamarin.Forms.DatePicker) = (fun () -> ViewBuilders.CreateDatePicker()) with get, set
 
     static member CreateDatePicker () : Xamarin.Forms.DatePicker =
         upcast (new Xamarin.Forms.DatePicker())
@@ -5829,8 +5684,9 @@ type ViewBuilders() =
                                              ?childrenReordered: System.EventArgs -> unit,
                                              ?measureInvalidated: System.EventArgs -> unit,
                                              ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                             ?sizeChanged: System.EventArgs -> unit,
+                                             ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                              ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                             ?visual: Xamarin.Forms.IVisual,
                                              ?classId: string,
                                              ?styleId: string,
                                              ?automationId: string,
@@ -5878,6 +5734,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -5891,6 +5748,7 @@ type ViewBuilders() =
                                      ?itemsSource: seq<'T>,
                                      ?selectedIndex: int,
                                      ?title: string,
+                                     ?titleColor: Xamarin.Forms.Color,
                                      ?textColor: Xamarin.Forms.Color,
                                      ?selectedIndexChanged: (int * 'T option) -> unit,
                                      ?horizontalOptions: Xamarin.Forms.LayoutOptions,
@@ -5926,8 +5784,9 @@ type ViewBuilders() =
                                      ?childrenReordered: System.EventArgs -> unit,
                                      ?measureInvalidated: System.EventArgs -> unit,
                                      ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                     ?sizeChanged: System.EventArgs -> unit,
+                                     ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                      ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                     ?visual: Xamarin.Forms.IVisual,
                                      ?classId: string,
                                      ?styleId: string,
                                      ?automationId: string,
@@ -5937,18 +5796,20 @@ type ViewBuilders() =
         let attribCount = match itemsSource with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match selectedIndex with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match title with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match titleColor with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match textColor with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match selectedIndexChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match itemsSource with None -> () | Some v -> attribBuilder.Add(ViewAttributes.PickerItemsSourceAttribKey, seqToIListUntyped(v)) 
         match selectedIndex with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SelectedIndexAttribKey, (v)) 
         match title with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TitleAttribKey, (v)) 
+        match titleColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TitleColorAttribKey, (v)) 
         match textColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextColorAttribKey, (v)) 
         match selectedIndexChanged with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SelectedIndexChangedAttribKey, (fun f -> System.EventHandler(fun sender args -> let picker = (sender :?> Xamarin.Forms.Picker) in f (picker.SelectedIndex, (picker.SelectedItem |> Option.ofObj |> Option.map unbox<'T>))))(v)) 
         attribBuilder
 
-    static member val CreateFuncPicker : (unit -> Xamarin.Forms.Picker) = (fun () -> ViewBuilders.CreatePicker())
+    static member val CreateFuncPicker : (unit -> Xamarin.Forms.Picker) = (fun () -> ViewBuilders.CreatePicker()) with get, set
 
     static member CreatePicker () : Xamarin.Forms.Picker =
         upcast (new Xamarin.Forms.Picker())
@@ -5966,6 +5827,8 @@ type ViewBuilders() =
         let mutable currSelectedIndexOpt = ValueNone
         let mutable prevTitleOpt = ValueNone
         let mutable currTitleOpt = ValueNone
+        let mutable prevTitleColorOpt = ValueNone
+        let mutable currTitleColorOpt = ValueNone
         let mutable prevTextColorOpt = ValueNone
         let mutable currTextColorOpt = ValueNone
         let mutable prevSelectedIndexChangedOpt = ValueNone
@@ -5977,6 +5840,8 @@ type ViewBuilders() =
                 currSelectedIndexOpt <- ValueSome (kvp.Value :?> int)
             if kvp.Key = ViewAttributes.TitleAttribKey.KeyValue then 
                 currTitleOpt <- ValueSome (kvp.Value :?> string)
+            if kvp.Key = ViewAttributes.TitleColorAttribKey.KeyValue then 
+                currTitleColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
             if kvp.Key = ViewAttributes.TextColorAttribKey.KeyValue then 
                 currTextColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
             if kvp.Key = ViewAttributes.SelectedIndexChangedAttribKey.KeyValue then 
@@ -5991,6 +5856,8 @@ type ViewBuilders() =
                     prevSelectedIndexOpt <- ValueSome (kvp.Value :?> int)
                 if kvp.Key = ViewAttributes.TitleAttribKey.KeyValue then 
                     prevTitleOpt <- ValueSome (kvp.Value :?> string)
+                if kvp.Key = ViewAttributes.TitleColorAttribKey.KeyValue then 
+                    prevTitleColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
                 if kvp.Key = ViewAttributes.TextColorAttribKey.KeyValue then 
                     prevTextColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
                 if kvp.Key = ViewAttributes.SelectedIndexChangedAttribKey.KeyValue then 
@@ -6010,6 +5877,11 @@ type ViewBuilders() =
         | _, ValueSome currValue -> target.Title <-  currValue
         | ValueSome _, ValueNone -> target.Title <- null
         | ValueNone, ValueNone -> ()
+        match prevTitleColorOpt, currTitleColorOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.TitleColor <-  currValue
+        | ValueSome _, ValueNone -> target.TitleColor <- Xamarin.Forms.Color.Default
+        | ValueNone, ValueNone -> ()
         match prevTextColorOpt, currTextColorOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.TextColor <-  currValue
@@ -6025,6 +5897,7 @@ type ViewBuilders() =
     static member inline ConstructPicker(?itemsSource: seq<'T>,
                                          ?selectedIndex: int,
                                          ?title: string,
+                                         ?titleColor: Xamarin.Forms.Color,
                                          ?textColor: Xamarin.Forms.Color,
                                          ?selectedIndexChanged: (int * 'T option) -> unit,
                                          ?horizontalOptions: Xamarin.Forms.LayoutOptions,
@@ -6060,8 +5933,9 @@ type ViewBuilders() =
                                          ?childrenReordered: System.EventArgs -> unit,
                                          ?measureInvalidated: System.EventArgs -> unit,
                                          ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                         ?sizeChanged: System.EventArgs -> unit,
+                                         ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                          ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                         ?visual: Xamarin.Forms.IVisual,
                                          ?classId: string,
                                          ?styleId: string,
                                          ?automationId: string,
@@ -6072,6 +5946,7 @@ type ViewBuilders() =
                                ?itemsSource=itemsSource,
                                ?selectedIndex=selectedIndex,
                                ?title=title,
+                               ?titleColor=titleColor,
                                ?textColor=textColor,
                                ?selectedIndexChanged=selectedIndexChanged,
                                ?horizontalOptions=horizontalOptions,
@@ -6109,6 +5984,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -6158,8 +6034,9 @@ type ViewBuilders() =
                                     ?childrenReordered: System.EventArgs -> unit,
                                     ?measureInvalidated: System.EventArgs -> unit,
                                     ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                    ?sizeChanged: System.EventArgs -> unit,
+                                    ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                     ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                    ?visual: Xamarin.Forms.IVisual,
                                     ?classId: string,
                                     ?styleId: string,
                                     ?automationId: string,
@@ -6170,13 +6047,13 @@ type ViewBuilders() =
         let attribCount = match cornerRadius with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match hasShadow with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildContentView(attribCount, ?content=content, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildContentView(attribCount, ?content=content, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match borderColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.BorderColorAttribKey, (v)) 
         match cornerRadius with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FrameCornerRadiusAttribKey, single(v)) 
         match hasShadow with None -> () | Some v -> attribBuilder.Add(ViewAttributes.HasShadowAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncFrame : (unit -> Xamarin.Forms.Frame) = (fun () -> ViewBuilders.CreateFrame())
+    static member val CreateFuncFrame : (unit -> Xamarin.Forms.Frame) = (fun () -> ViewBuilders.CreateFrame()) with get, set
 
     static member CreateFrame () : Xamarin.Forms.Frame =
         upcast (new Xamarin.Forms.Frame())
@@ -6266,8 +6143,9 @@ type ViewBuilders() =
                                         ?childrenReordered: System.EventArgs -> unit,
                                         ?measureInvalidated: System.EventArgs -> unit,
                                         ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                        ?sizeChanged: System.EventArgs -> unit,
+                                        ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                         ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?visual: Xamarin.Forms.IVisual,
                                         ?classId: string,
                                         ?styleId: string,
                                         ?automationId: string,
@@ -6316,6 +6194,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -6362,8 +6241,9 @@ type ViewBuilders() =
                                     ?childrenReordered: System.EventArgs -> unit,
                                     ?measureInvalidated: System.EventArgs -> unit,
                                     ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                    ?sizeChanged: System.EventArgs -> unit,
+                                    ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                     ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                    ?visual: Xamarin.Forms.IVisual,
                                     ?classId: string,
                                     ?styleId: string,
                                     ?automationId: string,
@@ -6374,13 +6254,13 @@ type ViewBuilders() =
         let attribCount = match aspect with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match isOpaque with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match source with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ImageSourceAttribKey, (v)) 
         match aspect with None -> () | Some v -> attribBuilder.Add(ViewAttributes.AspectAttribKey, (v)) 
         match isOpaque with None -> () | Some v -> attribBuilder.Add(ViewAttributes.IsOpaqueAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncImage : (unit -> Xamarin.Forms.Image) = (fun () -> ViewBuilders.CreateImage())
+    static member val CreateFuncImage : (unit -> Xamarin.Forms.Image) = (fun () -> ViewBuilders.CreateImage()) with get, set
 
     static member CreateImage () : Xamarin.Forms.Image =
         upcast (new Xamarin.Forms.Image())
@@ -6467,8 +6347,9 @@ type ViewBuilders() =
                                         ?childrenReordered: System.EventArgs -> unit,
                                         ?measureInvalidated: System.EventArgs -> unit,
                                         ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                        ?sizeChanged: System.EventArgs -> unit,
+                                        ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                         ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?visual: Xamarin.Forms.IVisual,
                                         ?classId: string,
                                         ?styleId: string,
                                         ?automationId: string,
@@ -6514,6 +6395,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -6568,8 +6450,9 @@ type ViewBuilders() =
                                           ?childrenReordered: System.EventArgs -> unit,
                                           ?measureInvalidated: System.EventArgs -> unit,
                                           ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                          ?sizeChanged: System.EventArgs -> unit,
+                                          ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                           ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                          ?visual: Xamarin.Forms.IVisual,
                                           ?classId: string,
                                           ?styleId: string,
                                           ?automationId: string,
@@ -6588,8 +6471,8 @@ type ViewBuilders() =
         let attribCount = match pressed with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match released with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
-        match command with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ImageButtonCommandAttribKey, (v)) 
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        match command with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ImageButtonCommandAttribKey, makeCommand(v)) 
         match source with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ImageSourceAttribKey, (v)) 
         match aspect with None -> () | Some v -> attribBuilder.Add(ViewAttributes.AspectAttribKey, (v)) 
         match borderColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.BorderColorAttribKey, (v)) 
@@ -6602,7 +6485,7 @@ type ViewBuilders() =
         match released with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ReleasedAttribKey, (fun f -> System.EventHandler(fun _sender args -> f args))(v)) 
         attribBuilder
 
-    static member val CreateFuncImageButton : (unit -> Xamarin.Forms.ImageButton) = (fun () -> ViewBuilders.CreateImageButton())
+    static member val CreateFuncImageButton : (unit -> Xamarin.Forms.ImageButton) = (fun () -> ViewBuilders.CreateImageButton()) with get, set
 
     static member CreateImageButton () : Xamarin.Forms.ImageButton =
         upcast (new Xamarin.Forms.ImageButton())
@@ -6638,7 +6521,7 @@ type ViewBuilders() =
         let mutable currReleasedOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = ViewAttributes.ImageButtonCommandAttribKey.KeyValue then 
-                currImageButtonCommandOpt <- ValueSome (kvp.Value :?> unit -> unit)
+                currImageButtonCommandOpt <- ValueSome (kvp.Value :?> System.Windows.Input.ICommand)
             if kvp.Key = ViewAttributes.ImageSourceAttribKey.KeyValue then 
                 currImageSourceOpt <- ValueSome (kvp.Value :?> obj)
             if kvp.Key = ViewAttributes.AspectAttribKey.KeyValue then 
@@ -6664,7 +6547,7 @@ type ViewBuilders() =
         | ValueSome prev ->
             for kvp in prev.AttributesKeyed do
                 if kvp.Key = ViewAttributes.ImageButtonCommandAttribKey.KeyValue then 
-                    prevImageButtonCommandOpt <- ValueSome (kvp.Value :?> unit -> unit)
+                    prevImageButtonCommandOpt <- ValueSome (kvp.Value :?> System.Windows.Input.ICommand)
                 if kvp.Key = ViewAttributes.ImageSourceAttribKey.KeyValue then 
                     prevImageSourceOpt <- ValueSome (kvp.Value :?> obj)
                 if kvp.Key = ViewAttributes.AspectAttribKey.KeyValue then 
@@ -6685,7 +6568,11 @@ type ViewBuilders() =
                     prevPressedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
                 if kvp.Key = ViewAttributes.ReleasedAttribKey.KeyValue then 
                     prevReleasedOpt <- ValueSome (kvp.Value :?> System.EventHandler)
-        (fun _ _ _ -> ()) prevImageButtonCommandOpt currImageButtonCommandOpt target
+        match prevImageButtonCommandOpt, currImageButtonCommandOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Command <-  currValue
+        | ValueSome _, ValueNone -> target.Command <- null
+        | ValueNone, ValueNone -> ()
         match prevImageSourceOpt, currImageSourceOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.Source <- makeImageSource currValue
@@ -6784,8 +6671,9 @@ type ViewBuilders() =
                                               ?childrenReordered: System.EventArgs -> unit,
                                               ?measureInvalidated: System.EventArgs -> unit,
                                               ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                              ?sizeChanged: System.EventArgs -> unit,
+                                              ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                               ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                              ?visual: Xamarin.Forms.IVisual,
                                               ?classId: string,
                                               ?styleId: string,
                                               ?automationId: string,
@@ -6839,6 +6727,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -6850,6 +6739,7 @@ type ViewBuilders() =
     /// Builds the attributes for a InputView in the view
     static member inline BuildInputView(attribCount: int,
                                         ?keyboard: Xamarin.Forms.Keyboard,
+                                        ?isReadOnly: bool,
                                         ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                         ?verticalOptions: Xamarin.Forms.LayoutOptions,
                                         ?margin: obj,
@@ -6883,8 +6773,9 @@ type ViewBuilders() =
                                         ?childrenReordered: System.EventArgs -> unit,
                                         ?measureInvalidated: System.EventArgs -> unit,
                                         ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                        ?sizeChanged: System.EventArgs -> unit,
+                                        ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                         ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?visual: Xamarin.Forms.IVisual,
                                         ?classId: string,
                                         ?styleId: string,
                                         ?automationId: string,
@@ -6892,12 +6783,14 @@ type ViewBuilders() =
                                         ?ref: ViewRef) = 
 
         let attribCount = match keyboard with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match isReadOnly with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match keyboard with None -> () | Some v -> attribBuilder.Add(ViewAttributes.KeyboardAttribKey, (v)) 
+        match isReadOnly with None -> () | Some v -> attribBuilder.Add(ViewAttributes.IsReadOnlyAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncInputView : (unit -> Xamarin.Forms.InputView) = (fun () -> ViewBuilders.CreateInputView())
+    static member val CreateFuncInputView : (unit -> Xamarin.Forms.InputView) = (fun () -> ViewBuilders.CreateInputView()) with get, set
 
     static member CreateInputView () : Xamarin.Forms.InputView =
         failwith "can't create Xamarin.Forms.InputView"
@@ -6911,22 +6804,34 @@ type ViewBuilders() =
         baseElement.UpdateInherited (prevOpt, curr, target)
         let mutable prevKeyboardOpt = ValueNone
         let mutable currKeyboardOpt = ValueNone
+        let mutable prevIsReadOnlyOpt = ValueNone
+        let mutable currIsReadOnlyOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = ViewAttributes.KeyboardAttribKey.KeyValue then 
                 currKeyboardOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Keyboard)
+            if kvp.Key = ViewAttributes.IsReadOnlyAttribKey.KeyValue then 
+                currIsReadOnlyOpt <- ValueSome (kvp.Value :?> bool)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
             for kvp in prev.AttributesKeyed do
                 if kvp.Key = ViewAttributes.KeyboardAttribKey.KeyValue then 
                     prevKeyboardOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Keyboard)
+                if kvp.Key = ViewAttributes.IsReadOnlyAttribKey.KeyValue then 
+                    prevIsReadOnlyOpt <- ValueSome (kvp.Value :?> bool)
         match prevKeyboardOpt, currKeyboardOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.Keyboard <-  currValue
         | ValueSome _, ValueNone -> target.Keyboard <- Xamarin.Forms.Keyboard.Default
         | ValueNone, ValueNone -> ()
+        match prevIsReadOnlyOpt, currIsReadOnlyOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.IsReadOnly <-  currValue
+        | ValueSome _, ValueNone -> target.IsReadOnly <- false
+        | ValueNone, ValueNone -> ()
 
     static member inline ConstructInputView(?keyboard: Xamarin.Forms.Keyboard,
+                                            ?isReadOnly: bool,
                                             ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                             ?verticalOptions: Xamarin.Forms.LayoutOptions,
                                             ?margin: obj,
@@ -6960,8 +6865,9 @@ type ViewBuilders() =
                                             ?childrenReordered: System.EventArgs -> unit,
                                             ?measureInvalidated: System.EventArgs -> unit,
                                             ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                            ?sizeChanged: System.EventArgs -> unit,
+                                            ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                             ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                            ?visual: Xamarin.Forms.IVisual,
                                             ?classId: string,
                                             ?styleId: string,
                                             ?automationId: string,
@@ -6970,6 +6876,7 @@ type ViewBuilders() =
 
         let attribBuilder = ViewBuilders.BuildInputView(0,
                                ?keyboard=keyboard,
+                               ?isReadOnly=isReadOnly,
                                ?horizontalOptions=horizontalOptions,
                                ?verticalOptions=verticalOptions,
                                ?margin=margin,
@@ -7005,6 +6912,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -7012,6 +6920,350 @@ type ViewBuilders() =
                                ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.InputView>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.InputView>(ViewBuilders.CreateFuncInputView, ViewBuilders.UpdateFuncInputView, attribBuilder)
+
+    /// Builds the attributes for a SearchBar in the view
+    static member inline BuildSearchBar(attribCount: int,
+                                        ?cancelButtonColor: Xamarin.Forms.Color,
+                                        ?fontFamily: string,
+                                        ?fontAttributes: Xamarin.Forms.FontAttributes,
+                                        ?fontSize: obj,
+                                        ?horizontalTextAlignment: Xamarin.Forms.TextAlignment,
+                                        ?placeholder: string,
+                                        ?placeholderColor: Xamarin.Forms.Color,
+                                        ?searchCommand: string -> unit,
+                                        ?canExecute: bool,
+                                        ?text: string,
+                                        ?textColor: Xamarin.Forms.Color,
+                                        ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit,
+                                        ?keyboard: Xamarin.Forms.Keyboard,
+                                        ?isReadOnly: bool,
+                                        ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                        ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                        ?margin: obj,
+                                        ?gestureRecognizers: ViewElement list,
+                                        ?anchorX: double,
+                                        ?anchorY: double,
+                                        ?backgroundColor: Xamarin.Forms.Color,
+                                        ?heightRequest: double,
+                                        ?inputTransparent: bool,
+                                        ?isEnabled: bool,
+                                        ?isVisible: bool,
+                                        ?minimumHeightRequest: double,
+                                        ?minimumWidthRequest: double,
+                                        ?opacity: double,
+                                        ?rotation: double,
+                                        ?rotationX: double,
+                                        ?rotationY: double,
+                                        ?scale: double,
+                                        ?style: Xamarin.Forms.Style,
+                                        ?styleClass: obj,
+                                        ?translationX: double,
+                                        ?translationY: double,
+                                        ?widthRequest: double,
+                                        ?resources: (string * obj) list,
+                                        ?styles: Xamarin.Forms.Style list,
+                                        ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                        ?isTabStop: bool,
+                                        ?scaleX: double,
+                                        ?scaleY: double,
+                                        ?tabIndex: int,
+                                        ?childrenReordered: System.EventArgs -> unit,
+                                        ?measureInvalidated: System.EventArgs -> unit,
+                                        ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                                        ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?visual: Xamarin.Forms.IVisual,
+                                        ?classId: string,
+                                        ?styleId: string,
+                                        ?automationId: string,
+                                        ?created: obj -> unit,
+                                        ?ref: ViewRef) = 
+
+        let attribCount = match cancelButtonColor with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match fontFamily with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match fontAttributes with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match fontSize with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match horizontalTextAlignment with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match placeholder with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match placeholderColor with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match searchCommand with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match canExecute with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match textColor with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match textChanged with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = ViewBuilders.BuildInputView(attribCount, ?keyboard=keyboard, ?isReadOnly=isReadOnly, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        match cancelButtonColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CancelButtonColorAttribKey, (v)) 
+        match fontFamily with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FontFamilyAttribKey, (v)) 
+        match fontAttributes with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FontAttributesAttribKey, (v)) 
+        match fontSize with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FontSizeAttribKey, makeFontSize(v)) 
+        match horizontalTextAlignment with None -> () | Some v -> attribBuilder.Add(ViewAttributes.HorizontalTextAlignmentAttribKey, (v)) 
+        match placeholder with None -> () | Some v -> attribBuilder.Add(ViewAttributes.PlaceholderAttribKey, (v)) 
+        match placeholderColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.PlaceholderColorAttribKey, (v)) 
+        match searchCommand with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SearchBarCommandAttribKey, (v)) 
+        match canExecute with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SearchBarCanExecuteAttribKey, (v)) 
+        match text with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextAttribKey, (v)) 
+        match textColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextColorAttribKey, (v)) 
+        match textChanged with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SearchBarTextChangedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))(v)) 
+        attribBuilder
+
+    static member val CreateFuncSearchBar : (unit -> Xamarin.Forms.SearchBar) = (fun () -> ViewBuilders.CreateSearchBar()) with get, set
+
+    static member CreateSearchBar () : Xamarin.Forms.SearchBar =
+        upcast (new Xamarin.Forms.SearchBar())
+
+    static member val UpdateFuncSearchBar =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.SearchBar) -> ViewBuilders.UpdateSearchBar (prevOpt, curr, target)) 
+
+    static member UpdateSearchBar (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.SearchBar) = 
+        // update the inherited InputView element
+        let baseElement = (if ViewProto.ProtoInputView.IsNone then ViewProto.ProtoInputView <- Some (ViewBuilders.ConstructInputView())); ViewProto.ProtoInputView.Value
+        baseElement.UpdateInherited (prevOpt, curr, target)
+        let mutable prevCancelButtonColorOpt = ValueNone
+        let mutable currCancelButtonColorOpt = ValueNone
+        let mutable prevFontFamilyOpt = ValueNone
+        let mutable currFontFamilyOpt = ValueNone
+        let mutable prevFontAttributesOpt = ValueNone
+        let mutable currFontAttributesOpt = ValueNone
+        let mutable prevFontSizeOpt = ValueNone
+        let mutable currFontSizeOpt = ValueNone
+        let mutable prevHorizontalTextAlignmentOpt = ValueNone
+        let mutable currHorizontalTextAlignmentOpt = ValueNone
+        let mutable prevPlaceholderOpt = ValueNone
+        let mutable currPlaceholderOpt = ValueNone
+        let mutable prevPlaceholderColorOpt = ValueNone
+        let mutable currPlaceholderColorOpt = ValueNone
+        let mutable prevSearchBarCommandOpt = ValueNone
+        let mutable currSearchBarCommandOpt = ValueNone
+        let mutable prevSearchBarCanExecuteOpt = ValueNone
+        let mutable currSearchBarCanExecuteOpt = ValueNone
+        let mutable prevTextOpt = ValueNone
+        let mutable currTextOpt = ValueNone
+        let mutable prevTextColorOpt = ValueNone
+        let mutable currTextColorOpt = ValueNone
+        let mutable prevSearchBarTextChangedOpt = ValueNone
+        let mutable currSearchBarTextChangedOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.CancelButtonColorAttribKey.KeyValue then 
+                currCancelButtonColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
+            if kvp.Key = ViewAttributes.FontFamilyAttribKey.KeyValue then 
+                currFontFamilyOpt <- ValueSome (kvp.Value :?> string)
+            if kvp.Key = ViewAttributes.FontAttributesAttribKey.KeyValue then 
+                currFontAttributesOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FontAttributes)
+            if kvp.Key = ViewAttributes.FontSizeAttribKey.KeyValue then 
+                currFontSizeOpt <- ValueSome (kvp.Value :?> double)
+            if kvp.Key = ViewAttributes.HorizontalTextAlignmentAttribKey.KeyValue then 
+                currHorizontalTextAlignmentOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.TextAlignment)
+            if kvp.Key = ViewAttributes.PlaceholderAttribKey.KeyValue then 
+                currPlaceholderOpt <- ValueSome (kvp.Value :?> string)
+            if kvp.Key = ViewAttributes.PlaceholderColorAttribKey.KeyValue then 
+                currPlaceholderColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
+            if kvp.Key = ViewAttributes.SearchBarCommandAttribKey.KeyValue then 
+                currSearchBarCommandOpt <- ValueSome (kvp.Value :?> string -> unit)
+            if kvp.Key = ViewAttributes.SearchBarCanExecuteAttribKey.KeyValue then 
+                currSearchBarCanExecuteOpt <- ValueSome (kvp.Value :?> bool)
+            if kvp.Key = ViewAttributes.TextAttribKey.KeyValue then 
+                currTextOpt <- ValueSome (kvp.Value :?> string)
+            if kvp.Key = ViewAttributes.TextColorAttribKey.KeyValue then 
+                currTextColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
+            if kvp.Key = ViewAttributes.SearchBarTextChangedAttribKey.KeyValue then 
+                currSearchBarTextChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.CancelButtonColorAttribKey.KeyValue then 
+                    prevCancelButtonColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
+                if kvp.Key = ViewAttributes.FontFamilyAttribKey.KeyValue then 
+                    prevFontFamilyOpt <- ValueSome (kvp.Value :?> string)
+                if kvp.Key = ViewAttributes.FontAttributesAttribKey.KeyValue then 
+                    prevFontAttributesOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FontAttributes)
+                if kvp.Key = ViewAttributes.FontSizeAttribKey.KeyValue then 
+                    prevFontSizeOpt <- ValueSome (kvp.Value :?> double)
+                if kvp.Key = ViewAttributes.HorizontalTextAlignmentAttribKey.KeyValue then 
+                    prevHorizontalTextAlignmentOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.TextAlignment)
+                if kvp.Key = ViewAttributes.PlaceholderAttribKey.KeyValue then 
+                    prevPlaceholderOpt <- ValueSome (kvp.Value :?> string)
+                if kvp.Key = ViewAttributes.PlaceholderColorAttribKey.KeyValue then 
+                    prevPlaceholderColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
+                if kvp.Key = ViewAttributes.SearchBarCommandAttribKey.KeyValue then 
+                    prevSearchBarCommandOpt <- ValueSome (kvp.Value :?> string -> unit)
+                if kvp.Key = ViewAttributes.SearchBarCanExecuteAttribKey.KeyValue then 
+                    prevSearchBarCanExecuteOpt <- ValueSome (kvp.Value :?> bool)
+                if kvp.Key = ViewAttributes.TextAttribKey.KeyValue then 
+                    prevTextOpt <- ValueSome (kvp.Value :?> string)
+                if kvp.Key = ViewAttributes.TextColorAttribKey.KeyValue then 
+                    prevTextColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
+                if kvp.Key = ViewAttributes.SearchBarTextChangedAttribKey.KeyValue then 
+                    prevSearchBarTextChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>)
+        match prevCancelButtonColorOpt, currCancelButtonColorOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.CancelButtonColor <-  currValue
+        | ValueSome _, ValueNone -> target.CancelButtonColor <- Xamarin.Forms.Color.Default
+        | ValueNone, ValueNone -> ()
+        match prevFontFamilyOpt, currFontFamilyOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.FontFamily <-  currValue
+        | ValueSome _, ValueNone -> target.FontFamily <- null
+        | ValueNone, ValueNone -> ()
+        match prevFontAttributesOpt, currFontAttributesOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.FontAttributes <-  currValue
+        | ValueSome _, ValueNone -> target.FontAttributes <- Xamarin.Forms.FontAttributes.None
+        | ValueNone, ValueNone -> ()
+        match prevFontSizeOpt, currFontSizeOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.FontSize <-  currValue
+        | ValueSome _, ValueNone -> target.FontSize <- -1.0
+        | ValueNone, ValueNone -> ()
+        match prevHorizontalTextAlignmentOpt, currHorizontalTextAlignmentOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.HorizontalTextAlignment <-  currValue
+        | ValueSome _, ValueNone -> target.HorizontalTextAlignment <- Xamarin.Forms.TextAlignment.Start
+        | ValueNone, ValueNone -> ()
+        match prevPlaceholderOpt, currPlaceholderOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Placeholder <-  currValue
+        | ValueSome _, ValueNone -> target.Placeholder <- null
+        | ValueNone, ValueNone -> ()
+        match prevPlaceholderColorOpt, currPlaceholderColorOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.PlaceholderColor <-  currValue
+        | ValueSome _, ValueNone -> target.PlaceholderColor <- Xamarin.Forms.Color.Default
+        | ValueNone, ValueNone -> ()
+        (fun _ _ _ -> ()) prevSearchBarCommandOpt currSearchBarCommandOpt target
+        updateCommand prevSearchBarCommandOpt currSearchBarCommandOpt (fun (target: Xamarin.Forms.SearchBar) -> target.Text) (fun (target: Xamarin.Forms.SearchBar) cmd -> target.SearchCommand <- cmd) prevSearchBarCanExecuteOpt currSearchBarCanExecuteOpt target
+        match prevTextOpt, currTextOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Text <-  currValue
+        | ValueSome _, ValueNone -> target.Text <- null
+        | ValueNone, ValueNone -> ()
+        match prevTextColorOpt, currTextColorOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.TextColor <-  currValue
+        | ValueSome _, ValueNone -> target.TextColor <- Xamarin.Forms.Color.Default
+        | ValueNone, ValueNone -> ()
+        match prevSearchBarTextChangedOpt, currSearchBarTextChangedOpt with
+        | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
+        | ValueSome prevValue, ValueSome currValue -> target.TextChanged.RemoveHandler(prevValue); target.TextChanged.AddHandler(currValue)
+        | ValueNone, ValueSome currValue -> target.TextChanged.AddHandler(currValue)
+        | ValueSome prevValue, ValueNone -> target.TextChanged.RemoveHandler(prevValue)
+        | ValueNone, ValueNone -> ()
+
+    static member inline ConstructSearchBar(?cancelButtonColor: Xamarin.Forms.Color,
+                                            ?fontFamily: string,
+                                            ?fontAttributes: Xamarin.Forms.FontAttributes,
+                                            ?fontSize: obj,
+                                            ?horizontalTextAlignment: Xamarin.Forms.TextAlignment,
+                                            ?placeholder: string,
+                                            ?placeholderColor: Xamarin.Forms.Color,
+                                            ?searchCommand: string -> unit,
+                                            ?canExecute: bool,
+                                            ?text: string,
+                                            ?textColor: Xamarin.Forms.Color,
+                                            ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit,
+                                            ?keyboard: Xamarin.Forms.Keyboard,
+                                            ?isReadOnly: bool,
+                                            ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                            ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                            ?margin: obj,
+                                            ?gestureRecognizers: ViewElement list,
+                                            ?anchorX: double,
+                                            ?anchorY: double,
+                                            ?backgroundColor: Xamarin.Forms.Color,
+                                            ?heightRequest: double,
+                                            ?inputTransparent: bool,
+                                            ?isEnabled: bool,
+                                            ?isVisible: bool,
+                                            ?minimumHeightRequest: double,
+                                            ?minimumWidthRequest: double,
+                                            ?opacity: double,
+                                            ?rotation: double,
+                                            ?rotationX: double,
+                                            ?rotationY: double,
+                                            ?scale: double,
+                                            ?style: Xamarin.Forms.Style,
+                                            ?styleClass: obj,
+                                            ?translationX: double,
+                                            ?translationY: double,
+                                            ?widthRequest: double,
+                                            ?resources: (string * obj) list,
+                                            ?styles: Xamarin.Forms.Style list,
+                                            ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                            ?isTabStop: bool,
+                                            ?scaleX: double,
+                                            ?scaleY: double,
+                                            ?tabIndex: int,
+                                            ?childrenReordered: System.EventArgs -> unit,
+                                            ?measureInvalidated: System.EventArgs -> unit,
+                                            ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                            ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                                            ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                            ?visual: Xamarin.Forms.IVisual,
+                                            ?classId: string,
+                                            ?styleId: string,
+                                            ?automationId: string,
+                                            ?created: (Xamarin.Forms.SearchBar -> unit),
+                                            ?ref: ViewRef<Xamarin.Forms.SearchBar>) = 
+
+        let attribBuilder = ViewBuilders.BuildSearchBar(0,
+                               ?cancelButtonColor=cancelButtonColor,
+                               ?fontFamily=fontFamily,
+                               ?fontAttributes=fontAttributes,
+                               ?fontSize=fontSize,
+                               ?horizontalTextAlignment=horizontalTextAlignment,
+                               ?placeholder=placeholder,
+                               ?placeholderColor=placeholderColor,
+                               ?searchCommand=searchCommand,
+                               ?canExecute=canExecute,
+                               ?text=text,
+                               ?textColor=textColor,
+                               ?textChanged=textChanged,
+                               ?keyboard=keyboard,
+                               ?isReadOnly=isReadOnly,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?isTabStop=isTabStop,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
+                               ?visual=visual,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.SearchBar> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.SearchBar>) -> Some ref.Unbox))
+
+        ViewElement.Create<Xamarin.Forms.SearchBar>(ViewBuilders.CreateFuncSearchBar, ViewBuilders.UpdateFuncSearchBar, attribBuilder)
 
     /// Builds the attributes for a Editor in the view
     static member inline BuildEditor(attribCount: int,
@@ -7025,7 +7277,9 @@ type ViewBuilders() =
                                      ?autoSize: Xamarin.Forms.EditorAutoSizeOption,
                                      ?placeholder: string,
                                      ?placeholderColor: Xamarin.Forms.Color,
+                                     ?isTextPredictionEnabled: bool,
                                      ?keyboard: Xamarin.Forms.Keyboard,
+                                     ?isReadOnly: bool,
                                      ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                      ?verticalOptions: Xamarin.Forms.LayoutOptions,
                                      ?margin: obj,
@@ -7059,8 +7313,9 @@ type ViewBuilders() =
                                      ?childrenReordered: System.EventArgs -> unit,
                                      ?measureInvalidated: System.EventArgs -> unit,
                                      ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                     ?sizeChanged: System.EventArgs -> unit,
+                                     ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                      ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                     ?visual: Xamarin.Forms.IVisual,
                                      ?classId: string,
                                      ?styleId: string,
                                      ?automationId: string,
@@ -7077,8 +7332,9 @@ type ViewBuilders() =
         let attribCount = match autoSize with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match placeholder with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match placeholderColor with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match isTextPredictionEnabled with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildInputView(attribCount, ?keyboard=keyboard, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildInputView(attribCount, ?keyboard=keyboard, ?isReadOnly=isReadOnly, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match text with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextAttribKey, (v)) 
         match fontSize with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FontSizeAttribKey, makeFontSize(v)) 
         match fontFamily with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FontFamilyAttribKey, (v)) 
@@ -7089,9 +7345,10 @@ type ViewBuilders() =
         match autoSize with None -> () | Some v -> attribBuilder.Add(ViewAttributes.AutoSizeAttribKey, (v)) 
         match placeholder with None -> () | Some v -> attribBuilder.Add(ViewAttributes.PlaceholderAttribKey, (v)) 
         match placeholderColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.PlaceholderColorAttribKey, (v)) 
+        match isTextPredictionEnabled with None -> () | Some v -> attribBuilder.Add(ViewAttributes.IsTextPredictionEnabledAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncEditor : (unit -> Xamarin.Forms.Editor) = (fun () -> ViewBuilders.CreateEditor())
+    static member val CreateFuncEditor : (unit -> Xamarin.Forms.Editor) = (fun () -> ViewBuilders.CreateEditor()) with get, set
 
     static member CreateEditor () : Xamarin.Forms.Editor =
         upcast (new Xamarin.Forms.Editor())
@@ -7123,6 +7380,8 @@ type ViewBuilders() =
         let mutable currPlaceholderOpt = ValueNone
         let mutable prevPlaceholderColorOpt = ValueNone
         let mutable currPlaceholderColorOpt = ValueNone
+        let mutable prevIsTextPredictionEnabledOpt = ValueNone
+        let mutable currIsTextPredictionEnabledOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = ViewAttributes.TextAttribKey.KeyValue then 
                 currTextOpt <- ValueSome (kvp.Value :?> string)
@@ -7144,6 +7403,8 @@ type ViewBuilders() =
                 currPlaceholderOpt <- ValueSome (kvp.Value :?> string)
             if kvp.Key = ViewAttributes.PlaceholderColorAttribKey.KeyValue then 
                 currPlaceholderColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
+            if kvp.Key = ViewAttributes.IsTextPredictionEnabledAttribKey.KeyValue then 
+                currIsTextPredictionEnabledOpt <- ValueSome (kvp.Value :?> bool)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
@@ -7168,6 +7429,8 @@ type ViewBuilders() =
                     prevPlaceholderOpt <- ValueSome (kvp.Value :?> string)
                 if kvp.Key = ViewAttributes.PlaceholderColorAttribKey.KeyValue then 
                     prevPlaceholderColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
+                if kvp.Key = ViewAttributes.IsTextPredictionEnabledAttribKey.KeyValue then 
+                    prevIsTextPredictionEnabledOpt <- ValueSome (kvp.Value :?> bool)
         match prevTextOpt, currTextOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.Text <-  currValue
@@ -7220,6 +7483,11 @@ type ViewBuilders() =
         | _, ValueSome currValue -> target.PlaceholderColor <-  currValue
         | ValueSome _, ValueNone -> target.PlaceholderColor <- Xamarin.Forms.Color.Default
         | ValueNone, ValueNone -> ()
+        match prevIsTextPredictionEnabledOpt, currIsTextPredictionEnabledOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.IsTextPredictionEnabled <-  currValue
+        | ValueSome _, ValueNone -> target.IsTextPredictionEnabled <- false
+        | ValueNone, ValueNone -> ()
 
     static member inline ConstructEditor(?text: string,
                                          ?fontSize: obj,
@@ -7231,7 +7499,9 @@ type ViewBuilders() =
                                          ?autoSize: Xamarin.Forms.EditorAutoSizeOption,
                                          ?placeholder: string,
                                          ?placeholderColor: Xamarin.Forms.Color,
+                                         ?isTextPredictionEnabled: bool,
                                          ?keyboard: Xamarin.Forms.Keyboard,
+                                         ?isReadOnly: bool,
                                          ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                          ?verticalOptions: Xamarin.Forms.LayoutOptions,
                                          ?margin: obj,
@@ -7265,8 +7535,9 @@ type ViewBuilders() =
                                          ?childrenReordered: System.EventArgs -> unit,
                                          ?measureInvalidated: System.EventArgs -> unit,
                                          ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                         ?sizeChanged: System.EventArgs -> unit,
+                                         ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                          ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                         ?visual: Xamarin.Forms.IVisual,
                                          ?classId: string,
                                          ?styleId: string,
                                          ?automationId: string,
@@ -7284,7 +7555,9 @@ type ViewBuilders() =
                                ?autoSize=autoSize,
                                ?placeholder=placeholder,
                                ?placeholderColor=placeholderColor,
+                               ?isTextPredictionEnabled=isTextPredictionEnabled,
                                ?keyboard=keyboard,
+                               ?isReadOnly=isReadOnly,
                                ?horizontalOptions=horizontalOptions,
                                ?verticalOptions=verticalOptions,
                                ?margin=margin,
@@ -7320,6 +7593,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -7347,6 +7621,7 @@ type ViewBuilders() =
                                     ?cursorPosition: int,
                                     ?selectionLength: int,
                                     ?keyboard: Xamarin.Forms.Keyboard,
+                                    ?isReadOnly: bool,
                                     ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                     ?verticalOptions: Xamarin.Forms.LayoutOptions,
                                     ?margin: obj,
@@ -7380,8 +7655,9 @@ type ViewBuilders() =
                                     ?childrenReordered: System.EventArgs -> unit,
                                     ?measureInvalidated: System.EventArgs -> unit,
                                     ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                    ?sizeChanged: System.EventArgs -> unit,
+                                    ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                     ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                    ?visual: Xamarin.Forms.IVisual,
                                     ?classId: string,
                                     ?styleId: string,
                                     ?automationId: string,
@@ -7405,7 +7681,7 @@ type ViewBuilders() =
         let attribCount = match cursorPosition with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match selectionLength with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildInputView(attribCount, ?keyboard=keyboard, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildInputView(attribCount, ?keyboard=keyboard, ?isReadOnly=isReadOnly, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match text with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextAttribKey, (v)) 
         match placeholder with None -> () | Some v -> attribBuilder.Add(ViewAttributes.PlaceholderAttribKey, (v)) 
         match horizontalTextAlignment with None -> () | Some v -> attribBuilder.Add(ViewAttributes.HorizontalTextAlignmentAttribKey, (v)) 
@@ -7424,7 +7700,7 @@ type ViewBuilders() =
         match selectionLength with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SelectionLengthAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncEntry : (unit -> Xamarin.Forms.Entry) = (fun () -> ViewBuilders.CreateEntry())
+    static member val CreateFuncEntry : (unit -> Xamarin.Forms.Entry) = (fun () -> ViewBuilders.CreateEntry()) with get, set
 
     static member CreateEntry () : Xamarin.Forms.Entry =
         upcast (new Xamarin.Forms.Entry())
@@ -7629,6 +7905,7 @@ type ViewBuilders() =
                                         ?cursorPosition: int,
                                         ?selectionLength: int,
                                         ?keyboard: Xamarin.Forms.Keyboard,
+                                        ?isReadOnly: bool,
                                         ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                         ?verticalOptions: Xamarin.Forms.LayoutOptions,
                                         ?margin: obj,
@@ -7662,8 +7939,9 @@ type ViewBuilders() =
                                         ?childrenReordered: System.EventArgs -> unit,
                                         ?measureInvalidated: System.EventArgs -> unit,
                                         ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                        ?sizeChanged: System.EventArgs -> unit,
+                                        ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                         ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?visual: Xamarin.Forms.IVisual,
                                         ?classId: string,
                                         ?styleId: string,
                                         ?automationId: string,
@@ -7688,6 +7966,7 @@ type ViewBuilders() =
                                ?cursorPosition=cursorPosition,
                                ?selectionLength=selectionLength,
                                ?keyboard=keyboard,
+                               ?isReadOnly=isReadOnly,
                                ?horizontalOptions=horizontalOptions,
                                ?verticalOptions=verticalOptions,
                                ?margin=margin,
@@ -7723,6 +8002,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -7766,7 +8046,7 @@ type ViewBuilders() =
         match textChanged with None -> () | Some v -> attribBuilder.Add(ViewAttributes.EntryCellTextChangedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))(v)) 
         attribBuilder
 
-    static member val CreateFuncEntryCell : (unit -> Fabulous.CustomControls.CustomEntryCell) = (fun () -> ViewBuilders.CreateEntryCell())
+    static member val CreateFuncEntryCell : (unit -> Fabulous.CustomControls.CustomEntryCell) = (fun () -> ViewBuilders.CreateEntryCell()) with get, set
 
     static member CreateEntryCell () : Fabulous.CustomControls.CustomEntryCell =
         upcast (new Fabulous.CustomControls.CustomEntryCell())
@@ -7943,8 +8223,9 @@ type ViewBuilders() =
                                     ?childrenReordered: System.EventArgs -> unit,
                                     ?measureInvalidated: System.EventArgs -> unit,
                                     ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                    ?sizeChanged: System.EventArgs -> unit,
+                                    ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                     ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                    ?visual: Xamarin.Forms.IVisual,
                                     ?classId: string,
                                     ?styleId: string,
                                     ?automationId: string,
@@ -7964,7 +8245,7 @@ type ViewBuilders() =
         let attribCount = match maxLines with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match textDecorations with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match text with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextAttribKey, (v)) 
         match horizontalTextAlignment with None -> () | Some v -> attribBuilder.Add(ViewAttributes.HorizontalTextAlignmentAttribKey, (v)) 
         match verticalTextAlignment with None -> () | Some v -> attribBuilder.Add(ViewAttributes.VerticalTextAlignmentAttribKey, (v)) 
@@ -7979,7 +8260,7 @@ type ViewBuilders() =
         match textDecorations with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextDecorationsAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncLabel : (unit -> Xamarin.Forms.Label) = (fun () -> ViewBuilders.CreateLabel())
+    static member val CreateFuncLabel : (unit -> Xamarin.Forms.Label) = (fun () -> ViewBuilders.CreateLabel()) with get, set
 
     static member CreateLabel () : Xamarin.Forms.Label =
         upcast (new Xamarin.Forms.Label())
@@ -8179,8 +8460,9 @@ type ViewBuilders() =
                                         ?childrenReordered: System.EventArgs -> unit,
                                         ?measureInvalidated: System.EventArgs -> unit,
                                         ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                        ?sizeChanged: System.EventArgs -> unit,
+                                        ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                         ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?visual: Xamarin.Forms.IVisual,
                                         ?classId: string,
                                         ?styleId: string,
                                         ?automationId: string,
@@ -8235,6 +8517,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -8283,8 +8566,9 @@ type ViewBuilders() =
                                           ?childrenReordered: System.EventArgs -> unit,
                                           ?measureInvalidated: System.EventArgs -> unit,
                                           ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                          ?sizeChanged: System.EventArgs -> unit,
+                                          ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                           ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                          ?visual: Xamarin.Forms.IVisual,
                                           ?classId: string,
                                           ?styleId: string,
                                           ?automationId: string,
@@ -8295,13 +8579,13 @@ type ViewBuilders() =
         let attribCount = match orientation with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match spacing with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildLayout(attribCount, ?isClippedToBounds=isClippedToBounds, ?padding=padding, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match children with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ChildrenAttribKey, Array.ofList(v)) 
         match orientation with None -> () | Some v -> attribBuilder.Add(ViewAttributes.StackOrientationAttribKey, (v)) 
         match spacing with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SpacingAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncStackLayout : (unit -> Xamarin.Forms.StackLayout) = (fun () -> ViewBuilders.CreateStackLayout())
+    static member val CreateFuncStackLayout : (unit -> Xamarin.Forms.StackLayout) = (fun () -> ViewBuilders.CreateStackLayout()) with get, set
 
     static member CreateStackLayout () : Xamarin.Forms.StackLayout =
         upcast (new Xamarin.Forms.StackLayout())
@@ -8390,8 +8674,9 @@ type ViewBuilders() =
                                               ?childrenReordered: System.EventArgs -> unit,
                                               ?measureInvalidated: System.EventArgs -> unit,
                                               ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                              ?sizeChanged: System.EventArgs -> unit,
+                                              ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                               ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                              ?visual: Xamarin.Forms.IVisual,
                                               ?classId: string,
                                               ?styleId: string,
                                               ?automationId: string,
@@ -8439,6 +8724,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -8486,7 +8772,7 @@ type ViewBuilders() =
         match textDecorations with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextDecorationsAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncSpan : (unit -> Xamarin.Forms.Span) = (fun () -> ViewBuilders.CreateSpan())
+    static member val CreateFuncSpan : (unit -> Xamarin.Forms.Span) = (fun () -> ViewBuilders.CreateSpan()) with get, set
 
     static member CreateSpan () : Xamarin.Forms.Span =
         upcast (new Xamarin.Forms.Span())
@@ -8652,7 +8938,7 @@ type ViewBuilders() =
         match spans with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SpansAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncFormattedString : (unit -> Xamarin.Forms.FormattedString) = (fun () -> ViewBuilders.CreateFormattedString())
+    static member val CreateFuncFormattedString : (unit -> Xamarin.Forms.FormattedString) = (fun () -> ViewBuilders.CreateFormattedString()) with get, set
 
     static member CreateFormattedString () : Xamarin.Forms.FormattedString =
         upcast (new Xamarin.Forms.FormattedString())
@@ -8736,8 +9022,9 @@ type ViewBuilders() =
                                          ?childrenReordered: System.EventArgs -> unit,
                                          ?measureInvalidated: System.EventArgs -> unit,
                                          ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                         ?sizeChanged: System.EventArgs -> unit,
+                                         ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                          ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                         ?visual: Xamarin.Forms.IVisual,
                                          ?classId: string,
                                          ?styleId: string,
                                          ?automationId: string,
@@ -8748,13 +9035,13 @@ type ViewBuilders() =
         let attribCount = match format with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match textColor with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match time with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TimeAttribKey, (v)) 
         match format with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FormatAttribKey, (v)) 
         match textColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextColorAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncTimePicker : (unit -> Xamarin.Forms.TimePicker) = (fun () -> ViewBuilders.CreateTimePicker())
+    static member val CreateFuncTimePicker : (unit -> Xamarin.Forms.TimePicker) = (fun () -> ViewBuilders.CreateTimePicker()) with get, set
 
     static member CreateTimePicker () : Xamarin.Forms.TimePicker =
         upcast (new Xamarin.Forms.TimePicker())
@@ -8841,8 +9128,9 @@ type ViewBuilders() =
                                              ?childrenReordered: System.EventArgs -> unit,
                                              ?measureInvalidated: System.EventArgs -> unit,
                                              ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                             ?sizeChanged: System.EventArgs -> unit,
+                                             ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                              ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                             ?visual: Xamarin.Forms.IVisual,
                                              ?classId: string,
                                              ?styleId: string,
                                              ?automationId: string,
@@ -8888,6 +9176,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -8936,8 +9225,9 @@ type ViewBuilders() =
                                       ?childrenReordered: System.EventArgs -> unit,
                                       ?measureInvalidated: System.EventArgs -> unit,
                                       ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                      ?sizeChanged: System.EventArgs -> unit,
+                                      ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                       ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                      ?visual: Xamarin.Forms.IVisual,
                                       ?classId: string,
                                       ?styleId: string,
                                       ?automationId: string,
@@ -8950,7 +9240,7 @@ type ViewBuilders() =
         let attribCount = match navigating with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match reloadRequested with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match source with None -> () | Some v -> attribBuilder.Add(ViewAttributes.WebSourceAttribKey, (v)) 
         match reload with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ReloadAttribKey, (v)) 
         match navigated with None -> () | Some v -> attribBuilder.Add(ViewAttributes.NavigatedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.WebNavigatedEventArgs>(fun _sender args -> f args))(v)) 
@@ -8958,7 +9248,7 @@ type ViewBuilders() =
         match reloadRequested with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ReloadRequestedAttribKey, (fun f -> System.EventHandler(fun _sender args -> f args))(v)) 
         attribBuilder
 
-    static member val CreateFuncWebView : (unit -> Xamarin.Forms.WebView) = (fun () -> ViewBuilders.CreateWebView())
+    static member val CreateFuncWebView : (unit -> Xamarin.Forms.WebView) = (fun () -> ViewBuilders.CreateWebView()) with get, set
 
     static member CreateWebView () : Xamarin.Forms.WebView =
         upcast (new Xamarin.Forms.WebView())
@@ -9068,8 +9358,9 @@ type ViewBuilders() =
                                           ?childrenReordered: System.EventArgs -> unit,
                                           ?measureInvalidated: System.EventArgs -> unit,
                                           ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                          ?sizeChanged: System.EventArgs -> unit,
+                                          ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                           ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                          ?visual: Xamarin.Forms.IVisual,
                                           ?classId: string,
                                           ?styleId: string,
                                           ?automationId: string,
@@ -9117,6 +9408,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -9166,8 +9458,9 @@ type ViewBuilders() =
                                    ?childrenReordered: System.EventArgs -> unit,
                                    ?measureInvalidated: System.EventArgs -> unit,
                                    ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                   ?sizeChanged: System.EventArgs -> unit,
+                                   ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                    ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                   ?visual: Xamarin.Forms.IVisual,
                                    ?classId: string,
                                    ?styleId: string,
                                    ?automationId: string,
@@ -9185,7 +9478,7 @@ type ViewBuilders() =
         let attribCount = match disappearing with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match layoutChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildVisualElement(attribCount, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildVisualElement(attribCount, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match title with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TitleAttribKey, (v)) 
         match backgroundImage with None -> () | Some v -> attribBuilder.Add(ViewAttributes.BackgroundImageAttribKey, (v)) 
         match icon with None -> () | Some v -> attribBuilder.Add(ViewAttributes.IconAttribKey, (v)) 
@@ -9198,7 +9491,7 @@ type ViewBuilders() =
         match layoutChanged with None -> () | Some v -> attribBuilder.Add(ViewAttributes.Page_LayoutChangedAttribKey, (fun f -> System.EventHandler(fun _sender _args -> f ()))(v)) 
         attribBuilder
 
-    static member val CreateFuncPage : (unit -> Xamarin.Forms.Page) = (fun () -> ViewBuilders.CreatePage())
+    static member val CreateFuncPage : (unit -> Xamarin.Forms.Page) = (fun () -> ViewBuilders.CreatePage()) with get, set
 
     static member CreatePage () : Xamarin.Forms.Page =
         upcast (new Xamarin.Forms.Page())
@@ -9364,8 +9657,9 @@ type ViewBuilders() =
                                        ?childrenReordered: System.EventArgs -> unit,
                                        ?measureInvalidated: System.EventArgs -> unit,
                                        ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                       ?sizeChanged: System.EventArgs -> unit,
+                                       ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                        ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                       ?visual: Xamarin.Forms.IVisual,
                                        ?classId: string,
                                        ?styleId: string,
                                        ?automationId: string,
@@ -9414,6 +9708,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -9466,8 +9761,9 @@ type ViewBuilders() =
                                            ?childrenReordered: System.EventArgs -> unit,
                                            ?measureInvalidated: System.EventArgs -> unit,
                                            ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                           ?sizeChanged: System.EventArgs -> unit,
+                                           ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                            ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                           ?visual: Xamarin.Forms.IVisual,
                                            ?classId: string,
                                            ?styleId: string,
                                            ?automationId: string,
@@ -9478,13 +9774,13 @@ type ViewBuilders() =
         let attribCount = match currentPage with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match currentPageChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match children with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ChildrenAttribKey, Array.ofList(v)) 
         match currentPage with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CarouselPage_CurrentPageAttribKey, (v)) 
         match currentPageChanged with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CarouselPage_CurrentPageChangedAttribKey, makeCurrentPageChanged<Xamarin.Forms.ContentPage>(v)) 
         attribBuilder
 
-    static member val CreateFuncCarouselPage : (unit -> Xamarin.Forms.CarouselPage) = (fun () -> ViewBuilders.CreateCarouselPage())
+    static member val CreateFuncCarouselPage : (unit -> Xamarin.Forms.CarouselPage) = (fun () -> ViewBuilders.CreateCarouselPage()) with get, set
 
     static member CreateCarouselPage () : Xamarin.Forms.CarouselPage =
         upcast (new Xamarin.Forms.CarouselPage())
@@ -9574,8 +9870,9 @@ type ViewBuilders() =
                                                ?childrenReordered: System.EventArgs -> unit,
                                                ?measureInvalidated: System.EventArgs -> unit,
                                                ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                               ?sizeChanged: System.EventArgs -> unit,
+                                               ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                                ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                               ?visual: Xamarin.Forms.IVisual,
                                                ?classId: string,
                                                ?styleId: string,
                                                ?automationId: string,
@@ -9627,6 +9924,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -9682,8 +9980,9 @@ type ViewBuilders() =
                                              ?childrenReordered: System.EventArgs -> unit,
                                              ?measureInvalidated: System.EventArgs -> unit,
                                              ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                             ?sizeChanged: System.EventArgs -> unit,
+                                             ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                              ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                             ?visual: Xamarin.Forms.IVisual,
                                              ?classId: string,
                                              ?styleId: string,
                                              ?automationId: string,
@@ -9697,7 +9996,7 @@ type ViewBuilders() =
         let attribCount = match poppedToRoot with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match pushed with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match pages with None -> () | Some v -> attribBuilder.Add(ViewAttributes.PagesAttribKey, Array.ofList(v)) 
         match barBackgroundColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.BarBackgroundColorAttribKey, (v)) 
         match barTextColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.BarTextColorAttribKey, (v)) 
@@ -9706,7 +10005,7 @@ type ViewBuilders() =
         match pushed with None -> () | Some v -> attribBuilder.Add(ViewAttributes.PushedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))(v)) 
         attribBuilder
 
-    static member val CreateFuncNavigationPage : (unit -> Xamarin.Forms.NavigationPage) = (fun () -> ViewBuilders.CreateNavigationPage())
+    static member val CreateFuncNavigationPage : (unit -> Xamarin.Forms.NavigationPage) = (fun () -> ViewBuilders.CreateNavigationPage()) with get, set
 
     static member CreateNavigationPage () : Xamarin.Forms.NavigationPage =
         upcast (new Xamarin.Forms.NavigationPage())
@@ -9872,8 +10171,9 @@ type ViewBuilders() =
                                                  ?childrenReordered: System.EventArgs -> unit,
                                                  ?measureInvalidated: System.EventArgs -> unit,
                                                  ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                                 ?sizeChanged: System.EventArgs -> unit,
+                                                 ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                                  ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                 ?visual: Xamarin.Forms.IVisual,
                                                  ?classId: string,
                                                  ?styleId: string,
                                                  ?automationId: string,
@@ -9928,6 +10228,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -9982,8 +10283,9 @@ type ViewBuilders() =
                                          ?childrenReordered: System.EventArgs -> unit,
                                          ?measureInvalidated: System.EventArgs -> unit,
                                          ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                         ?sizeChanged: System.EventArgs -> unit,
+                                         ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                          ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                         ?visual: Xamarin.Forms.IVisual,
                                          ?classId: string,
                                          ?styleId: string,
                                          ?automationId: string,
@@ -9996,7 +10298,7 @@ type ViewBuilders() =
         let attribCount = match currentPage with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match currentPageChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match children with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ChildrenAttribKey, Array.ofList(v)) 
         match barBackgroundColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.BarBackgroundColorAttribKey, (v)) 
         match barTextColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.BarTextColorAttribKey, (v)) 
@@ -10004,7 +10306,7 @@ type ViewBuilders() =
         match currentPageChanged with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TabbedPage_CurrentPageChangedAttribKey, makeCurrentPageChanged<Xamarin.Forms.Page>(v)) 
         attribBuilder
 
-    static member val CreateFuncTabbedPage : (unit -> Xamarin.Forms.TabbedPage) = (fun () -> ViewBuilders.CreateTabbedPage())
+    static member val CreateFuncTabbedPage : (unit -> Xamarin.Forms.TabbedPage) = (fun () -> ViewBuilders.CreateTabbedPage()) with get, set
 
     static member CreateTabbedPage () : Xamarin.Forms.TabbedPage =
         upcast (new Xamarin.Forms.TabbedPage())
@@ -10118,8 +10420,9 @@ type ViewBuilders() =
                                              ?childrenReordered: System.EventArgs -> unit,
                                              ?measureInvalidated: System.EventArgs -> unit,
                                              ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                             ?sizeChanged: System.EventArgs -> unit,
+                                             ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                              ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                             ?visual: Xamarin.Forms.IVisual,
                                              ?classId: string,
                                              ?styleId: string,
                                              ?automationId: string,
@@ -10173,6 +10476,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -10224,8 +10528,9 @@ type ViewBuilders() =
                                           ?childrenReordered: System.EventArgs -> unit,
                                           ?measureInvalidated: System.EventArgs -> unit,
                                           ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                          ?sizeChanged: System.EventArgs -> unit,
+                                          ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                           ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                          ?visual: Xamarin.Forms.IVisual,
                                           ?classId: string,
                                           ?styleId: string,
                                           ?automationId: string,
@@ -10235,12 +10540,12 @@ type ViewBuilders() =
         let attribCount = match content with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match onSizeAllocated with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match content with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ContentAttribKey, (v)) 
         match onSizeAllocated with None -> () | Some v -> attribBuilder.Add(ViewAttributes.OnSizeAllocatedCallbackAttribKey, (fun f -> FSharp.Control.Handler<_>(fun _sender args -> f args))(v)) 
         attribBuilder
 
-    static member val CreateFuncContentPage : (unit -> Xamarin.Forms.ContentPage) = (fun () -> ViewBuilders.CreateContentPage())
+    static member val CreateFuncContentPage : (unit -> Xamarin.Forms.ContentPage) = (fun () -> ViewBuilders.CreateContentPage()) with get, set
 
     static member CreateContentPage () : Xamarin.Forms.ContentPage =
         upcast (new Fabulous.DynamicViews.CustomContentPage())
@@ -10322,8 +10627,9 @@ type ViewBuilders() =
                                               ?childrenReordered: System.EventArgs -> unit,
                                               ?measureInvalidated: System.EventArgs -> unit,
                                               ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                              ?sizeChanged: System.EventArgs -> unit,
+                                              ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                               ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                              ?visual: Xamarin.Forms.IVisual,
                                               ?classId: string,
                                               ?styleId: string,
                                               ?automationId: string,
@@ -10374,6 +10680,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -10429,8 +10736,9 @@ type ViewBuilders() =
                                                ?childrenReordered: System.EventArgs -> unit,
                                                ?measureInvalidated: System.EventArgs -> unit,
                                                ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                               ?sizeChanged: System.EventArgs -> unit,
+                                               ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                                ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                               ?visual: Xamarin.Forms.IVisual,
                                                ?classId: string,
                                                ?styleId: string,
                                                ?automationId: string,
@@ -10444,7 +10752,7 @@ type ViewBuilders() =
         let attribCount = match masterBehavior with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match isPresentedChanged with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match master with None -> () | Some v -> attribBuilder.Add(ViewAttributes.MasterAttribKey, (v)) 
         match detail with None -> () | Some v -> attribBuilder.Add(ViewAttributes.DetailAttribKey, (v)) 
         match isGestureEnabled with None -> () | Some v -> attribBuilder.Add(ViewAttributes.IsGestureEnabledAttribKey, (v)) 
@@ -10453,7 +10761,7 @@ type ViewBuilders() =
         match isPresentedChanged with None -> () | Some v -> attribBuilder.Add(ViewAttributes.IsPresentedChangedAttribKey, (fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.MasterDetailPage).IsPresented))(v)) 
         attribBuilder
 
-    static member val CreateFuncMasterDetailPage : (unit -> Xamarin.Forms.MasterDetailPage) = (fun () -> ViewBuilders.CreateMasterDetailPage())
+    static member val CreateFuncMasterDetailPage : (unit -> Xamarin.Forms.MasterDetailPage) = (fun () -> ViewBuilders.CreateMasterDetailPage()) with get, set
 
     static member CreateMasterDetailPage () : Xamarin.Forms.MasterDetailPage =
         upcast (new Xamarin.Forms.MasterDetailPage())
@@ -10593,8 +10901,9 @@ type ViewBuilders() =
                                                    ?childrenReordered: System.EventArgs -> unit,
                                                    ?measureInvalidated: System.EventArgs -> unit,
                                                    ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                                   ?sizeChanged: System.EventArgs -> unit,
+                                                   ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                                    ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                   ?visual: Xamarin.Forms.IVisual,
                                                    ?classId: string,
                                                    ?styleId: string,
                                                    ?automationId: string,
@@ -10649,6 +10958,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -10661,7 +10971,6 @@ type ViewBuilders() =
     static member inline BuildMenuItem(attribCount: int,
                                        ?text: string,
                                        ?command: unit -> unit,
-                                       ?commandParameter: System.Object,
                                        ?icon: string,
                                        ?accelerator: string,
                                        ?classId: string,
@@ -10672,19 +10981,17 @@ type ViewBuilders() =
 
         let attribCount = match text with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match command with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match commandParameter with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match icon with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match accelerator with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = ViewBuilders.BuildElement(attribCount, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match text with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextAttribKey, (v)) 
         match command with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CommandAttribKey, makeCommand(v)) 
-        match commandParameter with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CommandParameterAttribKey, (v)) 
         match icon with None -> () | Some v -> attribBuilder.Add(ViewAttributes.IconAttribKey, (v)) 
         match accelerator with None -> () | Some v -> attribBuilder.Add(ViewAttributes.AcceleratorAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncMenuItem : (unit -> Xamarin.Forms.MenuItem) = (fun () -> ViewBuilders.CreateMenuItem())
+    static member val CreateFuncMenuItem : (unit -> Xamarin.Forms.MenuItem) = (fun () -> ViewBuilders.CreateMenuItem()) with get, set
 
     static member CreateMenuItem () : Xamarin.Forms.MenuItem =
         upcast (new Xamarin.Forms.MenuItem())
@@ -10700,8 +11007,6 @@ type ViewBuilders() =
         let mutable currTextOpt = ValueNone
         let mutable prevCommandOpt = ValueNone
         let mutable currCommandOpt = ValueNone
-        let mutable prevCommandParameterOpt = ValueNone
-        let mutable currCommandParameterOpt = ValueNone
         let mutable prevIconOpt = ValueNone
         let mutable currIconOpt = ValueNone
         let mutable prevAcceleratorOpt = ValueNone
@@ -10711,8 +11016,6 @@ type ViewBuilders() =
                 currTextOpt <- ValueSome (kvp.Value :?> string)
             if kvp.Key = ViewAttributes.CommandAttribKey.KeyValue then 
                 currCommandOpt <- ValueSome (kvp.Value :?> System.Windows.Input.ICommand)
-            if kvp.Key = ViewAttributes.CommandParameterAttribKey.KeyValue then 
-                currCommandParameterOpt <- ValueSome (kvp.Value :?> System.Object)
             if kvp.Key = ViewAttributes.IconAttribKey.KeyValue then 
                 currIconOpt <- ValueSome (kvp.Value :?> string)
             if kvp.Key = ViewAttributes.AcceleratorAttribKey.KeyValue then 
@@ -10725,8 +11028,6 @@ type ViewBuilders() =
                     prevTextOpt <- ValueSome (kvp.Value :?> string)
                 if kvp.Key = ViewAttributes.CommandAttribKey.KeyValue then 
                     prevCommandOpt <- ValueSome (kvp.Value :?> System.Windows.Input.ICommand)
-                if kvp.Key = ViewAttributes.CommandParameterAttribKey.KeyValue then 
-                    prevCommandParameterOpt <- ValueSome (kvp.Value :?> System.Object)
                 if kvp.Key = ViewAttributes.IconAttribKey.KeyValue then 
                     prevIconOpt <- ValueSome (kvp.Value :?> string)
                 if kvp.Key = ViewAttributes.AcceleratorAttribKey.KeyValue then 
@@ -10741,11 +11042,6 @@ type ViewBuilders() =
         | _, ValueSome currValue -> target.Command <-  currValue
         | ValueSome _, ValueNone -> target.Command <- null
         | ValueNone, ValueNone -> ()
-        match prevCommandParameterOpt, currCommandParameterOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.CommandParameter <-  currValue
-        | ValueSome _, ValueNone -> target.CommandParameter <- null
-        | ValueNone, ValueNone -> ()
         match prevIconOpt, currIconOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.Icon <- makeFileImageSource currValue
@@ -10755,7 +11051,6 @@ type ViewBuilders() =
 
     static member inline ConstructMenuItem(?text: string,
                                            ?command: unit -> unit,
-                                           ?commandParameter: System.Object,
                                            ?icon: string,
                                            ?accelerator: string,
                                            ?classId: string,
@@ -10767,7 +11062,6 @@ type ViewBuilders() =
         let attribBuilder = ViewBuilders.BuildMenuItem(0,
                                ?text=text,
                                ?command=command,
-                               ?commandParameter=commandParameter,
                                ?icon=icon,
                                ?accelerator=accelerator,
                                ?classId=classId,
@@ -10796,7 +11090,7 @@ type ViewBuilders() =
         match items with None -> () | Some v -> attribBuilder.Add(ViewAttributes.MenuItemsAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncMenu : (unit -> Xamarin.Forms.Menu) = (fun () -> ViewBuilders.CreateMenu())
+    static member val CreateFuncMenu : (unit -> Xamarin.Forms.Menu) = (fun () -> ViewBuilders.CreateMenu()) with get, set
 
     static member CreateMenu () : Xamarin.Forms.Menu =
         upcast (new Xamarin.Forms.Menu())
@@ -10859,7 +11153,6 @@ type ViewBuilders() =
                                        ?detailColor: Xamarin.Forms.Color,
                                        ?command: unit -> unit,
                                        ?canExecute: bool,
-                                       ?commandParameter: System.Object,
                                        ?height: double,
                                        ?isEnabled: bool,
                                        ?classId: string,
@@ -10874,7 +11167,6 @@ type ViewBuilders() =
         let attribCount = match detailColor with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match command with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match canExecute with Some _ -> attribCount + 1 | None -> attribCount
-        let attribCount = match commandParameter with Some _ -> attribCount + 1 | None -> attribCount
 
         let attribBuilder = ViewBuilders.BuildCell(attribCount, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match text with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextAttribKey, (v)) 
@@ -10883,10 +11175,9 @@ type ViewBuilders() =
         match detailColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextDetailColorAttribKey, (v)) 
         match command with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextCellCommandAttribKey, (v)) 
         match canExecute with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextCellCanExecuteAttribKey, (v)) 
-        match commandParameter with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CommandParameterAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncTextCell : (unit -> Xamarin.Forms.TextCell) = (fun () -> ViewBuilders.CreateTextCell())
+    static member val CreateFuncTextCell : (unit -> Xamarin.Forms.TextCell) = (fun () -> ViewBuilders.CreateTextCell()) with get, set
 
     static member CreateTextCell () : Xamarin.Forms.TextCell =
         upcast (new Xamarin.Forms.TextCell())
@@ -10910,8 +11201,6 @@ type ViewBuilders() =
         let mutable currTextCellCommandOpt = ValueNone
         let mutable prevTextCellCanExecuteOpt = ValueNone
         let mutable currTextCellCanExecuteOpt = ValueNone
-        let mutable prevCommandParameterOpt = ValueNone
-        let mutable currCommandParameterOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = ViewAttributes.TextAttribKey.KeyValue then 
                 currTextOpt <- ValueSome (kvp.Value :?> string)
@@ -10925,8 +11214,6 @@ type ViewBuilders() =
                 currTextCellCommandOpt <- ValueSome (kvp.Value :?> unit -> unit)
             if kvp.Key = ViewAttributes.TextCellCanExecuteAttribKey.KeyValue then 
                 currTextCellCanExecuteOpt <- ValueSome (kvp.Value :?> bool)
-            if kvp.Key = ViewAttributes.CommandParameterAttribKey.KeyValue then 
-                currCommandParameterOpt <- ValueSome (kvp.Value :?> System.Object)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
@@ -10943,8 +11230,6 @@ type ViewBuilders() =
                     prevTextCellCommandOpt <- ValueSome (kvp.Value :?> unit -> unit)
                 if kvp.Key = ViewAttributes.TextCellCanExecuteAttribKey.KeyValue then 
                     prevTextCellCanExecuteOpt <- ValueSome (kvp.Value :?> bool)
-                if kvp.Key = ViewAttributes.CommandParameterAttribKey.KeyValue then 
-                    prevCommandParameterOpt <- ValueSome (kvp.Value :?> System.Object)
         match prevTextOpt, currTextOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | _, ValueSome currValue -> target.Text <-  currValue
@@ -10967,11 +11252,6 @@ type ViewBuilders() =
         | ValueNone, ValueNone -> ()
         (fun _ _ _ -> ()) prevTextCellCommandOpt currTextCellCommandOpt target
         updateCommand prevTextCellCommandOpt currTextCellCommandOpt (fun _target -> ()) (fun (target: Xamarin.Forms.TextCell) cmd -> target.Command <- cmd) prevTextCellCanExecuteOpt currTextCellCanExecuteOpt target
-        match prevCommandParameterOpt, currCommandParameterOpt with
-        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.CommandParameter <-  currValue
-        | ValueSome _, ValueNone -> target.CommandParameter <- null
-        | ValueNone, ValueNone -> ()
 
     static member inline ConstructTextCell(?text: string,
                                            ?detail: string,
@@ -10979,7 +11259,6 @@ type ViewBuilders() =
                                            ?detailColor: Xamarin.Forms.Color,
                                            ?command: unit -> unit,
                                            ?canExecute: bool,
-                                           ?commandParameter: System.Object,
                                            ?height: double,
                                            ?isEnabled: bool,
                                            ?classId: string,
@@ -10995,7 +11274,6 @@ type ViewBuilders() =
                                ?detailColor=detailColor,
                                ?command=command,
                                ?canExecute=canExecute,
-                               ?commandParameter=commandParameter,
                                ?height=height,
                                ?isEnabled=isEnabled,
                                ?classId=classId,
@@ -11012,7 +11290,6 @@ type ViewBuilders() =
                                           ?priority: int,
                                           ?text: string,
                                           ?command: unit -> unit,
-                                          ?commandParameter: System.Object,
                                           ?icon: string,
                                           ?accelerator: string,
                                           ?classId: string,
@@ -11024,12 +11301,12 @@ type ViewBuilders() =
         let attribCount = match order with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match priority with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildMenuItem(attribCount, ?text=text, ?command=command, ?commandParameter=commandParameter, ?icon=icon, ?accelerator=accelerator, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildMenuItem(attribCount, ?text=text, ?command=command, ?icon=icon, ?accelerator=accelerator, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match order with None -> () | Some v -> attribBuilder.Add(ViewAttributes.OrderAttribKey, (v)) 
         match priority with None -> () | Some v -> attribBuilder.Add(ViewAttributes.PriorityAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncToolbarItem : (unit -> Xamarin.Forms.ToolbarItem) = (fun () -> ViewBuilders.CreateToolbarItem())
+    static member val CreateFuncToolbarItem : (unit -> Xamarin.Forms.ToolbarItem) = (fun () -> ViewBuilders.CreateToolbarItem()) with get, set
 
     static member CreateToolbarItem () : Xamarin.Forms.ToolbarItem =
         upcast (new Xamarin.Forms.ToolbarItem())
@@ -11073,7 +11350,6 @@ type ViewBuilders() =
                                               ?priority: int,
                                               ?text: string,
                                               ?command: unit -> unit,
-                                              ?commandParameter: System.Object,
                                               ?icon: string,
                                               ?accelerator: string,
                                               ?classId: string,
@@ -11087,7 +11363,6 @@ type ViewBuilders() =
                                ?priority=priority,
                                ?text=text,
                                ?command=command,
-                               ?commandParameter=commandParameter,
                                ?icon=icon,
                                ?accelerator=accelerator,
                                ?classId=classId,
@@ -11107,7 +11382,6 @@ type ViewBuilders() =
                                         ?detailColor: Xamarin.Forms.Color,
                                         ?command: unit -> unit,
                                         ?canExecute: bool,
-                                        ?commandParameter: System.Object,
                                         ?height: double,
                                         ?isEnabled: bool,
                                         ?classId: string,
@@ -11118,11 +11392,11 @@ type ViewBuilders() =
 
         let attribCount = match imageSource with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildTextCell(attribCount, ?text=text, ?detail=detail, ?textColor=textColor, ?detailColor=detailColor, ?command=command, ?canExecute=canExecute, ?commandParameter=commandParameter, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildTextCell(attribCount, ?text=text, ?detail=detail, ?textColor=textColor, ?detailColor=detailColor, ?command=command, ?canExecute=canExecute, ?height=height, ?isEnabled=isEnabled, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match imageSource with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ImageSourceAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncImageCell : (unit -> Xamarin.Forms.ImageCell) = (fun () -> ViewBuilders.CreateImageCell())
+    static member val CreateFuncImageCell : (unit -> Xamarin.Forms.ImageCell) = (fun () -> ViewBuilders.CreateImageCell()) with get, set
 
     static member CreateImageCell () : Xamarin.Forms.ImageCell =
         upcast (new Xamarin.Forms.ImageCell())
@@ -11158,7 +11432,6 @@ type ViewBuilders() =
                                             ?detailColor: Xamarin.Forms.Color,
                                             ?command: unit -> unit,
                                             ?canExecute: bool,
-                                            ?commandParameter: System.Object,
                                             ?height: double,
                                             ?isEnabled: bool,
                                             ?classId: string,
@@ -11175,7 +11448,6 @@ type ViewBuilders() =
                                ?detailColor=detailColor,
                                ?command=command,
                                ?canExecute=canExecute,
-                               ?commandParameter=commandParameter,
                                ?height=height,
                                ?isEnabled=isEnabled,
                                ?classId=classId,
@@ -11203,7 +11475,7 @@ type ViewBuilders() =
         match view with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ViewAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncViewCell : (unit -> Xamarin.Forms.ViewCell) = (fun () -> ViewBuilders.CreateViewCell())
+    static member val CreateFuncViewCell : (unit -> Xamarin.Forms.ViewCell) = (fun () -> ViewBuilders.CreateViewCell()) with get, set
 
     static member CreateViewCell () : Xamarin.Forms.ViewCell =
         upcast (new Xamarin.Forms.ViewCell())
@@ -11279,6 +11551,9 @@ type ViewBuilders() =
                                        ?itemTapped: int -> unit,
                                        ?refreshing: unit -> unit,
                                        ?selectionMode: Xamarin.Forms.ListViewSelectionMode,
+                                       ?horizontalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility,
+                                       ?verticalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility,
+                                       ?refreshControlColor: Xamarin.Forms.Color,
                                        ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                        ?verticalOptions: Xamarin.Forms.LayoutOptions,
                                        ?margin: obj,
@@ -11312,8 +11587,9 @@ type ViewBuilders() =
                                        ?childrenReordered: System.EventArgs -> unit,
                                        ?measureInvalidated: System.EventArgs -> unit,
                                        ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                       ?sizeChanged: System.EventArgs -> unit,
+                                       ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                        ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                       ?visual: Xamarin.Forms.IVisual,
                                        ?classId: string,
                                        ?styleId: string,
                                        ?automationId: string,
@@ -11339,8 +11615,11 @@ type ViewBuilders() =
         let attribCount = match itemTapped with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match refreshing with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match selectionMode with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match horizontalScrollBarVisibility with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match verticalScrollBarVisibility with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match refreshControlColor with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match items with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ListViewItemsAttribKey, (v)) 
         match footer with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FooterAttribKey, (v)) 
         match hasUnevenRows with None -> () | Some v -> attribBuilder.Add(ViewAttributes.HasUnevenRowsAttribKey, (v)) 
@@ -11360,9 +11639,12 @@ type ViewBuilders() =
         match itemTapped with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ListView_ItemTappedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))(v)) 
         match refreshing with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ListView_RefreshingAttribKey, (fun f -> System.EventHandler(fun sender args -> f ()))(v)) 
         match selectionMode with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SelectionModeAttribKey, (v)) 
+        match horizontalScrollBarVisibility with None -> () | Some v -> attribBuilder.Add(ViewAttributes.HorizontalScrollBarVisibilityAttribKey, (v)) 
+        match verticalScrollBarVisibility with None -> () | Some v -> attribBuilder.Add(ViewAttributes.VerticalScrollBarVisibilityAttribKey, (v)) 
+        match refreshControlColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.RefreshControlColorAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncListView : (unit -> Xamarin.Forms.ListView) = (fun () -> ViewBuilders.CreateListView())
+    static member val CreateFuncListView : (unit -> Xamarin.Forms.ListView) = (fun () -> ViewBuilders.CreateListView()) with get, set
 
     static member CreateListView () : Xamarin.Forms.ListView =
         upcast (new Fabulous.DynamicViews.CustomListView())
@@ -11412,6 +11694,12 @@ type ViewBuilders() =
         let mutable currListView_RefreshingOpt = ValueNone
         let mutable prevSelectionModeOpt = ValueNone
         let mutable currSelectionModeOpt = ValueNone
+        let mutable prevHorizontalScrollBarVisibilityOpt = ValueNone
+        let mutable currHorizontalScrollBarVisibilityOpt = ValueNone
+        let mutable prevVerticalScrollBarVisibilityOpt = ValueNone
+        let mutable currVerticalScrollBarVisibilityOpt = ValueNone
+        let mutable prevRefreshControlColorOpt = ValueNone
+        let mutable currRefreshControlColorOpt = ValueNone
         for kvp in curr.AttributesKeyed do
             if kvp.Key = ViewAttributes.ListViewItemsAttribKey.KeyValue then 
                 currListViewItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
@@ -11451,6 +11739,12 @@ type ViewBuilders() =
                 currListView_RefreshingOpt <- ValueSome (kvp.Value :?> System.EventHandler)
             if kvp.Key = ViewAttributes.SelectionModeAttribKey.KeyValue then 
                 currSelectionModeOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.ListViewSelectionMode)
+            if kvp.Key = ViewAttributes.HorizontalScrollBarVisibilityAttribKey.KeyValue then 
+                currHorizontalScrollBarVisibilityOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.ScrollBarVisibility)
+            if kvp.Key = ViewAttributes.VerticalScrollBarVisibilityAttribKey.KeyValue then 
+                currVerticalScrollBarVisibilityOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.ScrollBarVisibility)
+            if kvp.Key = ViewAttributes.RefreshControlColorAttribKey.KeyValue then 
+                currRefreshControlColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
         match prevOpt with
         | ValueNone -> ()
         | ValueSome prev ->
@@ -11493,6 +11787,12 @@ type ViewBuilders() =
                     prevListView_RefreshingOpt <- ValueSome (kvp.Value :?> System.EventHandler)
                 if kvp.Key = ViewAttributes.SelectionModeAttribKey.KeyValue then 
                     prevSelectionModeOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.ListViewSelectionMode)
+                if kvp.Key = ViewAttributes.HorizontalScrollBarVisibilityAttribKey.KeyValue then 
+                    prevHorizontalScrollBarVisibilityOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.ScrollBarVisibility)
+                if kvp.Key = ViewAttributes.VerticalScrollBarVisibilityAttribKey.KeyValue then 
+                    prevVerticalScrollBarVisibilityOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.ScrollBarVisibility)
+                if kvp.Key = ViewAttributes.RefreshControlColorAttribKey.KeyValue then 
+                    prevRefreshControlColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
         updateListViewItems prevListViewItemsOpt currListViewItemsOpt target
         match prevFooterOpt, currFooterOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
@@ -11541,7 +11841,7 @@ type ViewBuilders() =
         | ValueNone, ValueNone -> ()
         match prevListView_SelectedItemOpt, currListView_SelectedItemOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.SelectedItem <- (function None -> null | Some i -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListElementData<ViewElement>> in if i >= 0 && i < items.Count then items.[i] else null) currValue
+        | _, ValueSome currValue -> target.SelectedItem <- (function None -> null | Some i -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListElementData> in if i >= 0 && i < items.Count then items.[i] else null) currValue
         | ValueSome _, ValueNone -> target.SelectedItem <- null
         | ValueNone, ValueNone -> ()
         match prevListView_SeparatorVisibilityOpt, currListView_SeparatorVisibilityOpt with
@@ -11589,6 +11889,21 @@ type ViewBuilders() =
         | _, ValueSome currValue -> target.SelectionMode <-  currValue
         | ValueSome _, ValueNone -> target.SelectionMode <- Xamarin.Forms.ListViewSelectionMode.Single
         | ValueNone, ValueNone -> ()
+        match prevHorizontalScrollBarVisibilityOpt, currHorizontalScrollBarVisibilityOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.HorizontalScrollBarVisibility <-  currValue
+        | ValueSome _, ValueNone -> target.HorizontalScrollBarVisibility <- Xamarin.Forms.ScrollBarVisibility.Default
+        | ValueNone, ValueNone -> ()
+        match prevVerticalScrollBarVisibilityOpt, currVerticalScrollBarVisibilityOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.VerticalScrollBarVisibility <-  currValue
+        | ValueSome _, ValueNone -> target.VerticalScrollBarVisibility <- Xamarin.Forms.ScrollBarVisibility.Default
+        | ValueNone, ValueNone -> ()
+        match prevRefreshControlColorOpt, currRefreshControlColorOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.RefreshControlColor <-  currValue
+        | ValueSome _, ValueNone -> target.RefreshControlColor <- Xamarin.Forms.Color.Default
+        | ValueNone, ValueNone -> ()
 
     static member inline ConstructListView(?items: seq<ViewElement>,
                                            ?footer: System.Object,
@@ -11609,6 +11924,9 @@ type ViewBuilders() =
                                            ?itemTapped: int -> unit,
                                            ?refreshing: unit -> unit,
                                            ?selectionMode: Xamarin.Forms.ListViewSelectionMode,
+                                           ?horizontalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility,
+                                           ?verticalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility,
+                                           ?refreshControlColor: Xamarin.Forms.Color,
                                            ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                            ?verticalOptions: Xamarin.Forms.LayoutOptions,
                                            ?margin: obj,
@@ -11642,8 +11960,9 @@ type ViewBuilders() =
                                            ?childrenReordered: System.EventArgs -> unit,
                                            ?measureInvalidated: System.EventArgs -> unit,
                                            ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                           ?sizeChanged: System.EventArgs -> unit,
+                                           ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                            ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                           ?visual: Xamarin.Forms.IVisual,
                                            ?classId: string,
                                            ?styleId: string,
                                            ?automationId: string,
@@ -11670,6 +11989,9 @@ type ViewBuilders() =
                                ?itemTapped=itemTapped,
                                ?refreshing=refreshing,
                                ?selectionMode=selectionMode,
+                               ?horizontalScrollBarVisibility=horizontalScrollBarVisibility,
+                               ?verticalScrollBarVisibility=verticalScrollBarVisibility,
+                               ?refreshControlColor=refreshControlColor,
                                ?horizontalOptions=horizontalOptions,
                                ?verticalOptions=verticalOptions,
                                ?margin=margin,
@@ -11705,6 +12027,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -11766,8 +12089,9 @@ type ViewBuilders() =
                                               ?childrenReordered: System.EventArgs -> unit,
                                               ?measureInvalidated: System.EventArgs -> unit,
                                               ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                              ?sizeChanged: System.EventArgs -> unit,
+                                              ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                               ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                              ?visual: Xamarin.Forms.IVisual,
                                               ?classId: string,
                                               ?styleId: string,
                                               ?automationId: string,
@@ -11793,7 +12117,7 @@ type ViewBuilders() =
         let attribCount = match refreshing with Some _ -> attribCount + 1 | None -> attribCount
         let attribCount = match selectionMode with Some _ -> attribCount + 1 | None -> attribCount
 
-        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
         match items with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ListViewGrouped_ItemsSourceAttribKey, (fun es -> es |> Array.ofList |> Array.map (fun (g, e, l) -> (g, e, Array.ofList l)))(v)) 
         match showJumpList with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ListViewGrouped_ShowJumpListAttribKey, (v)) 
         match footer with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FooterAttribKey, (v)) 
@@ -11814,7 +12138,7 @@ type ViewBuilders() =
         match selectionMode with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SelectionModeAttribKey, (v)) 
         attribBuilder
 
-    static member val CreateFuncListViewGrouped : (unit -> Xamarin.Forms.ListView) = (fun () -> ViewBuilders.CreateListViewGrouped())
+    static member val CreateFuncListViewGrouped : (unit -> Xamarin.Forms.ListView) = (fun () -> ViewBuilders.CreateListViewGrouped()) with get, set
 
     static member CreateListViewGrouped () : Xamarin.Forms.ListView =
         upcast (new Fabulous.DynamicViews.CustomGroupListView())
@@ -11978,7 +12302,7 @@ type ViewBuilders() =
         | ValueNone, ValueNone -> ()
         match prevListViewGrouped_SelectedItemOpt, currListViewGrouped_SelectedItemOpt with
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
-        | _, ValueSome currValue -> target.SelectedItem <- (function None -> null | Some (i,j) -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListGroupData<ViewElement>> in (if i >= 0 && i < items.Count then (let items2 = items.[i] in if j >= 0 && j < items2.Count then items2.[j] else null) else null)) currValue
+        | _, ValueSome currValue -> target.SelectedItem <- (function None -> null | Some (i,j) -> let items = target.ItemsSource :?> System.Collections.Generic.IList<ListGroupData> in (if i >= 0 && i < items.Count then (let items2 = items.[i] in if j >= 0 && j < items2.Count then items2.[j] else null) else null)) currValue
         | ValueSome _, ValueNone -> target.SelectedItem <- null
         | ValueNone, ValueNone -> ()
         match prevSeparatorVisibilityOpt, currSeparatorVisibilityOpt with
@@ -12078,8 +12402,9 @@ type ViewBuilders() =
                                                   ?childrenReordered: System.EventArgs -> unit,
                                                   ?measureInvalidated: System.EventArgs -> unit,
                                                   ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                                  ?sizeChanged: System.EventArgs -> unit,
+                                                  ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                                   ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                  ?visual: Xamarin.Forms.IVisual,
                                                   ?classId: string,
                                                   ?styleId: string,
                                                   ?automationId: string,
@@ -12140,6 +12465,7 @@ type ViewBuilders() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -12147,6 +12473,2248 @@ type ViewBuilders() =
                                ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ListView>) -> Some ref.Unbox))
 
         ViewElement.Create<Xamarin.Forms.ListView>(ViewBuilders.CreateFuncListViewGrouped, ViewBuilders.UpdateFuncListViewGrouped, attribBuilder)
+
+    /// Builds the attributes for a BackButtonBehavior in the view
+    static member inline BuildBackButtonBehavior(attribCount: int,
+                                                 ?textOverride: string,
+                                                 ?command: unit -> unit,
+                                                 ?commandParameter: System.Object,
+                                                 ?iconOverride: string,
+                                                 ?isEnabled: bool) = 
+
+        let attribCount = match textOverride with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match command with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match commandParameter with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match iconOverride with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match isEnabled with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = new AttributesBuilder(attribCount)
+        match textOverride with None -> () | Some v -> attribBuilder.Add(ViewAttributes.TextOverrideAttribKey, (v)) 
+        match command with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CommandAttribKey, makeCommand(v)) 
+        match commandParameter with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CommandParameterAttribKey, (v)) 
+        match iconOverride with None -> () | Some v -> attribBuilder.Add(ViewAttributes.IconOverrideAttribKey, (v)) 
+        match isEnabled with None -> () | Some v -> attribBuilder.Add(ViewAttributes.IsEnabledAttribKey, (v)) 
+        attribBuilder
+
+    static member val CreateFuncBackButtonBehavior : (unit -> Xamarin.Forms.BackButtonBehavior) = (fun () -> ViewBuilders.CreateBackButtonBehavior()) with get, set
+
+    static member CreateBackButtonBehavior () : Xamarin.Forms.BackButtonBehavior =
+        upcast (new Xamarin.Forms.BackButtonBehavior())
+
+    static member val UpdateFuncBackButtonBehavior =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.BackButtonBehavior) -> ViewBuilders.UpdateBackButtonBehavior (prevOpt, curr, target)) 
+
+    static member UpdateBackButtonBehavior (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.BackButtonBehavior) = 
+        let mutable prevTextOverrideOpt = ValueNone
+        let mutable currTextOverrideOpt = ValueNone
+        let mutable prevCommandOpt = ValueNone
+        let mutable currCommandOpt = ValueNone
+        let mutable prevCommandParameterOpt = ValueNone
+        let mutable currCommandParameterOpt = ValueNone
+        let mutable prevIconOverrideOpt = ValueNone
+        let mutable currIconOverrideOpt = ValueNone
+        let mutable prevIsEnabledOpt = ValueNone
+        let mutable currIsEnabledOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.TextOverrideAttribKey.KeyValue then 
+                currTextOverrideOpt <- ValueSome (kvp.Value :?> string)
+            if kvp.Key = ViewAttributes.CommandAttribKey.KeyValue then 
+                currCommandOpt <- ValueSome (kvp.Value :?> System.Windows.Input.ICommand)
+            if kvp.Key = ViewAttributes.CommandParameterAttribKey.KeyValue then 
+                currCommandParameterOpt <- ValueSome (kvp.Value :?> System.Object)
+            if kvp.Key = ViewAttributes.IconOverrideAttribKey.KeyValue then 
+                currIconOverrideOpt <- ValueSome (kvp.Value :?> string)
+            if kvp.Key = ViewAttributes.IsEnabledAttribKey.KeyValue then 
+                currIsEnabledOpt <- ValueSome (kvp.Value :?> bool)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.TextOverrideAttribKey.KeyValue then 
+                    prevTextOverrideOpt <- ValueSome (kvp.Value :?> string)
+                if kvp.Key = ViewAttributes.CommandAttribKey.KeyValue then 
+                    prevCommandOpt <- ValueSome (kvp.Value :?> System.Windows.Input.ICommand)
+                if kvp.Key = ViewAttributes.CommandParameterAttribKey.KeyValue then 
+                    prevCommandParameterOpt <- ValueSome (kvp.Value :?> System.Object)
+                if kvp.Key = ViewAttributes.IconOverrideAttribKey.KeyValue then 
+                    prevIconOverrideOpt <- ValueSome (kvp.Value :?> string)
+                if kvp.Key = ViewAttributes.IsEnabledAttribKey.KeyValue then 
+                    prevIsEnabledOpt <- ValueSome (kvp.Value :?> bool)
+        match prevTextOverrideOpt, currTextOverrideOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.TextOverride <-  currValue
+        | ValueSome _, ValueNone -> target.TextOverride <- null
+        | ValueNone, ValueNone -> ()
+        match prevCommandOpt, currCommandOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Command <-  currValue
+        | ValueSome _, ValueNone -> target.Command <- null
+        | ValueNone, ValueNone -> ()
+        match prevCommandParameterOpt, currCommandParameterOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.CommandParameter <-  currValue
+        | ValueSome _, ValueNone -> target.CommandParameter <- null
+        | ValueNone, ValueNone -> ()
+        match prevIconOverrideOpt, currIconOverrideOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.IconOverride <- makeFileImageSource currValue
+        | ValueSome _, ValueNone -> target.IconOverride <- null
+        | ValueNone, ValueNone -> ()
+        match prevIsEnabledOpt, currIsEnabledOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.IsEnabled <-  currValue
+        | ValueSome _, ValueNone -> target.IsEnabled <- true
+        | ValueNone, ValueNone -> ()
+
+    static member inline ConstructBackButtonBehavior(?textOverride: string,
+                                                     ?command: unit -> unit,
+                                                     ?commandParameter: System.Object,
+                                                     ?iconOverride: string,
+                                                     ?isEnabled: bool) = 
+
+        let attribBuilder = ViewBuilders.BuildBackButtonBehavior(0,
+                               ?textOverride=textOverride,
+                               ?command=command,
+                               ?commandParameter=commandParameter,
+                               ?iconOverride=iconOverride,
+                               ?isEnabled=isEnabled)
+
+        ViewElement.Create<Xamarin.Forms.BackButtonBehavior>(ViewBuilders.CreateFuncBackButtonBehavior, ViewBuilders.UpdateFuncBackButtonBehavior, attribBuilder)
+
+    /// Builds the attributes for a GridItemsLayout in the view
+    static member inline BuildGridItemsLayout(attribCount: int,
+                                              ?span: int) = 
+
+        let attribCount = match span with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = new AttributesBuilder(attribCount)
+        match span with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SpanAttribKey, (v)) 
+        attribBuilder
+
+    static member val CreateFuncGridItemsLayout : (unit -> Xamarin.Forms.GridItemsLayout) = (fun () -> ViewBuilders.CreateGridItemsLayout()) with get, set
+
+    static member CreateGridItemsLayout () : Xamarin.Forms.GridItemsLayout =
+        failwith "can't create Xamarin.Forms.GridItemsLayout"
+
+    static member val UpdateFuncGridItemsLayout =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.GridItemsLayout) -> ViewBuilders.UpdateGridItemsLayout (prevOpt, curr, target)) 
+
+    static member UpdateGridItemsLayout (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.GridItemsLayout) = 
+        let mutable prevSpanOpt = ValueNone
+        let mutable currSpanOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.SpanAttribKey.KeyValue then 
+                currSpanOpt <- ValueSome (kvp.Value :?> int)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.SpanAttribKey.KeyValue then 
+                    prevSpanOpt <- ValueSome (kvp.Value :?> int)
+        match prevSpanOpt, currSpanOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Span <-  currValue
+        | ValueSome _, ValueNone -> target.Span <- 0
+        | ValueNone, ValueNone -> ()
+
+    static member inline ConstructGridItemsLayout(?span: int) = 
+
+        let attribBuilder = ViewBuilders.BuildGridItemsLayout(0,
+                               ?span=span)
+
+        ViewElement.Create<Xamarin.Forms.GridItemsLayout>(ViewBuilders.CreateFuncGridItemsLayout, ViewBuilders.UpdateFuncGridItemsLayout, attribBuilder)
+
+    /// Builds the attributes for a ItemsView in the view
+    static member inline BuildItemsView(attribCount: int,
+                                        ?emptyView: System.Object,
+                                        ?itemsLayout: Xamarin.Forms.IItemsLayout,
+                                        ?itemsSource: System.Collections.IEnumerable,
+                                        ?itemSizingStrategy: Xamarin.Forms.ItemSizingStrategy,
+                                        ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
+                                        ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
+                                        ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                        ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                        ?margin: obj,
+                                        ?gestureRecognizers: ViewElement list,
+                                        ?anchorX: double,
+                                        ?anchorY: double,
+                                        ?backgroundColor: Xamarin.Forms.Color,
+                                        ?heightRequest: double,
+                                        ?inputTransparent: bool,
+                                        ?isEnabled: bool,
+                                        ?isVisible: bool,
+                                        ?minimumHeightRequest: double,
+                                        ?minimumWidthRequest: double,
+                                        ?opacity: double,
+                                        ?rotation: double,
+                                        ?rotationX: double,
+                                        ?rotationY: double,
+                                        ?scale: double,
+                                        ?style: Xamarin.Forms.Style,
+                                        ?styleClass: obj,
+                                        ?translationX: double,
+                                        ?translationY: double,
+                                        ?widthRequest: double,
+                                        ?resources: (string * obj) list,
+                                        ?styles: Xamarin.Forms.Style list,
+                                        ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                        ?isTabStop: bool,
+                                        ?scaleX: double,
+                                        ?scaleY: double,
+                                        ?tabIndex: int,
+                                        ?childrenReordered: System.EventArgs -> unit,
+                                        ?measureInvalidated: System.EventArgs -> unit,
+                                        ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                                        ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?visual: Xamarin.Forms.IVisual,
+                                        ?classId: string,
+                                        ?styleId: string,
+                                        ?automationId: string,
+                                        ?created: obj -> unit,
+                                        ?ref: ViewRef) = 
+
+        let attribCount = match emptyView with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match itemsLayout with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match itemsSource with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match itemSizingStrategy with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match scrollToRequested with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match scrollTo with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = ViewBuilders.BuildView(attribCount, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        match emptyView with None -> () | Some v -> attribBuilder.Add(ViewAttributes.EmptyViewAttribKey, (v)) 
+        match itemsLayout with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ItemsLayoutAttribKey, (v)) 
+        match itemsSource with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ItemsSourceAttribKey, (v)) 
+        match itemSizingStrategy with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ItemSizingStrategyAttribKey, (v)) 
+        match scrollToRequested with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ScrollToRequestedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ScrollToRequestEventArgs>(fun _sender args -> f args))(v)) 
+        match scrollTo with None -> () | Some v -> attribBuilder.Add(ViewAttributes.iScrollToAttribKey, (v)) 
+        attribBuilder
+
+    static member val CreateFuncItemsView : (unit -> Xamarin.Forms.ItemsView) = (fun () -> ViewBuilders.CreateItemsView()) with get, set
+
+    static member CreateItemsView () : Xamarin.Forms.ItemsView =
+        failwith "can't create Xamarin.Forms.ItemsView"
+
+    static member val UpdateFuncItemsView =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.ItemsView) -> ViewBuilders.UpdateItemsView (prevOpt, curr, target)) 
+
+    static member UpdateItemsView (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.ItemsView) = 
+        // update the inherited View element
+        let baseElement = (if ViewProto.ProtoView.IsNone then ViewProto.ProtoView <- Some (ViewBuilders.ConstructView())); ViewProto.ProtoView.Value
+        baseElement.UpdateInherited (prevOpt, curr, target)
+        let mutable prevEmptyViewOpt = ValueNone
+        let mutable currEmptyViewOpt = ValueNone
+        let mutable prevItemsLayoutOpt = ValueNone
+        let mutable currItemsLayoutOpt = ValueNone
+        let mutable prevItemsSourceOpt = ValueNone
+        let mutable currItemsSourceOpt = ValueNone
+        let mutable prevItemSizingStrategyOpt = ValueNone
+        let mutable currItemSizingStrategyOpt = ValueNone
+        let mutable prevScrollToRequestedOpt = ValueNone
+        let mutable currScrollToRequestedOpt = ValueNone
+        let mutable previScrollToOpt = ValueNone
+        let mutable curriScrollToOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.EmptyViewAttribKey.KeyValue then 
+                currEmptyViewOpt <- ValueSome (kvp.Value :?> System.Object)
+            if kvp.Key = ViewAttributes.ItemsLayoutAttribKey.KeyValue then 
+                currItemsLayoutOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.IItemsLayout)
+            if kvp.Key = ViewAttributes.ItemsSourceAttribKey.KeyValue then 
+                currItemsSourceOpt <- ValueSome (kvp.Value :?> System.Collections.IEnumerable)
+            if kvp.Key = ViewAttributes.ItemSizingStrategyAttribKey.KeyValue then 
+                currItemSizingStrategyOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.ItemSizingStrategy)
+            if kvp.Key = ViewAttributes.ScrollToRequestedAttribKey.KeyValue then 
+                currScrollToRequestedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.ScrollToRequestEventArgs>)
+            if kvp.Key = ViewAttributes.iScrollToAttribKey.KeyValue then 
+                curriScrollToOpt <- ValueSome (kvp.Value :?> obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.EmptyViewAttribKey.KeyValue then 
+                    prevEmptyViewOpt <- ValueSome (kvp.Value :?> System.Object)
+                if kvp.Key = ViewAttributes.ItemsLayoutAttribKey.KeyValue then 
+                    prevItemsLayoutOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.IItemsLayout)
+                if kvp.Key = ViewAttributes.ItemsSourceAttribKey.KeyValue then 
+                    prevItemsSourceOpt <- ValueSome (kvp.Value :?> System.Collections.IEnumerable)
+                if kvp.Key = ViewAttributes.ItemSizingStrategyAttribKey.KeyValue then 
+                    prevItemSizingStrategyOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.ItemSizingStrategy)
+                if kvp.Key = ViewAttributes.ScrollToRequestedAttribKey.KeyValue then 
+                    prevScrollToRequestedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.ScrollToRequestEventArgs>)
+                if kvp.Key = ViewAttributes.iScrollToAttribKey.KeyValue then 
+                    previScrollToOpt <- ValueSome (kvp.Value :?> obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind)
+        match prevEmptyViewOpt, currEmptyViewOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.EmptyView <-  currValue
+        | ValueSome _, ValueNone -> target.EmptyView <- null
+        | ValueNone, ValueNone -> ()
+        match prevItemsLayoutOpt, currItemsLayoutOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.ItemsLayout <-  currValue
+        | ValueSome _, ValueNone -> target.ItemsLayout <- null
+        | ValueNone, ValueNone -> ()
+        match prevItemsSourceOpt, currItemsSourceOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.ItemsSource <-  currValue
+        | ValueSome _, ValueNone -> target.ItemsSource <- null
+        | ValueNone, ValueNone -> ()
+        match prevItemSizingStrategyOpt, currItemSizingStrategyOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.ItemSizingStrategy <-  currValue
+        | ValueSome _, ValueNone -> target.ItemSizingStrategy <- Xamarin.Forms.ItemSizingStrategy.MeasureAllItems
+        | ValueNone, ValueNone -> ()
+        match prevScrollToRequestedOpt, currScrollToRequestedOpt with
+        | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
+        | ValueSome prevValue, ValueSome currValue -> target.ScrollToRequested.RemoveHandler(prevValue); target.ScrollToRequested.AddHandler(currValue)
+        | ValueNone, ValueSome currValue -> target.ScrollToRequested.AddHandler(currValue)
+        | ValueSome prevValue, ValueNone -> target.ScrollToRequested.RemoveHandler(prevValue)
+        | ValueNone, ValueNone -> ()
+        (fun _ curr target -> triggerScrollTo curr target) previScrollToOpt curriScrollToOpt target
+
+    static member inline ConstructItemsView(?emptyView: System.Object,
+                                            ?itemsLayout: Xamarin.Forms.IItemsLayout,
+                                            ?itemsSource: System.Collections.IEnumerable,
+                                            ?itemSizingStrategy: Xamarin.Forms.ItemSizingStrategy,
+                                            ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
+                                            ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
+                                            ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                            ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                            ?margin: obj,
+                                            ?gestureRecognizers: ViewElement list,
+                                            ?anchorX: double,
+                                            ?anchorY: double,
+                                            ?backgroundColor: Xamarin.Forms.Color,
+                                            ?heightRequest: double,
+                                            ?inputTransparent: bool,
+                                            ?isEnabled: bool,
+                                            ?isVisible: bool,
+                                            ?minimumHeightRequest: double,
+                                            ?minimumWidthRequest: double,
+                                            ?opacity: double,
+                                            ?rotation: double,
+                                            ?rotationX: double,
+                                            ?rotationY: double,
+                                            ?scale: double,
+                                            ?style: Xamarin.Forms.Style,
+                                            ?styleClass: obj,
+                                            ?translationX: double,
+                                            ?translationY: double,
+                                            ?widthRequest: double,
+                                            ?resources: (string * obj) list,
+                                            ?styles: Xamarin.Forms.Style list,
+                                            ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                            ?isTabStop: bool,
+                                            ?scaleX: double,
+                                            ?scaleY: double,
+                                            ?tabIndex: int,
+                                            ?childrenReordered: System.EventArgs -> unit,
+                                            ?measureInvalidated: System.EventArgs -> unit,
+                                            ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                            ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                                            ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                            ?visual: Xamarin.Forms.IVisual,
+                                            ?classId: string,
+                                            ?styleId: string,
+                                            ?automationId: string,
+                                            ?created: (Xamarin.Forms.ItemsView -> unit),
+                                            ?ref: ViewRef<Xamarin.Forms.ItemsView>) = 
+
+        let attribBuilder = ViewBuilders.BuildItemsView(0,
+                               ?emptyView=emptyView,
+                               ?itemsLayout=itemsLayout,
+                               ?itemsSource=itemsSource,
+                               ?itemSizingStrategy=itemSizingStrategy,
+                               ?scrollToRequested=scrollToRequested,
+                               ?scrollTo=scrollTo,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?isTabStop=isTabStop,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
+                               ?visual=visual,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ItemsView> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ItemsView>) -> Some ref.Unbox))
+
+        ViewElement.Create<Xamarin.Forms.ItemsView>(ViewBuilders.CreateFuncItemsView, ViewBuilders.UpdateFuncItemsView, attribBuilder)
+
+    /// Builds the attributes for a SearchHandler in the view
+    static member inline BuildSearchHandler(attribCount: int,
+                                            ?clearIcon: string,
+                                            ?clearIconHelpText: string,
+                                            ?clearIconName: string,
+                                            ?clearPlaceholderCommand: unit -> unit,
+                                            ?clearPlaceholderCommandParameter: System.Object,
+                                            ?clearPlaceholderEnabled: bool,
+                                            ?clearPlaceholderHelpText: string,
+                                            ?clearPlaceholderIcon: string,
+                                            ?clearPlaceholderName: string,
+                                            ?command: unit -> unit,
+                                            ?commandParameter: System.Object,
+                                            ?displayMemberName: string,
+                                            ?isSearchEnabled: bool,
+                                            ?placeholder: string,
+                                            ?query: string,
+                                            ?queryIcon: string,
+                                            ?queryIconHelpText: string,
+                                            ?queryIconName: string,
+                                            ?searchBoxVisibility: Xamarin.Forms.SearchBoxVisiblity,
+                                            ?showsResults: bool,
+                                            ?itemsSource: System.Collections.IEnumerable) = 
+
+        let attribCount = match clearIcon with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match clearIconHelpText with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match clearIconName with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match clearPlaceholderCommand with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match clearPlaceholderCommandParameter with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match clearPlaceholderEnabled with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match clearPlaceholderHelpText with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match clearPlaceholderIcon with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match clearPlaceholderName with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match command with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match commandParameter with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match displayMemberName with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match isSearchEnabled with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match placeholder with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match query with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match queryIcon with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match queryIconHelpText with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match queryIconName with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match searchBoxVisibility with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match showsResults with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match itemsSource with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = new AttributesBuilder(attribCount)
+        match clearIcon with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ClearIconAttribKey, (v)) 
+        match clearIconHelpText with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ClearIconHelpTextAttribKey, (v)) 
+        match clearIconName with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ClearIconNameAttribKey, (v)) 
+        match clearPlaceholderCommand with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ClearPlaceholderCommandAttribKey, makeCommand(v)) 
+        match clearPlaceholderCommandParameter with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ClearPlaceholderCommandParameterAttribKey, (v)) 
+        match clearPlaceholderEnabled with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ClearPlaceholderEnabledAttribKey, (v)) 
+        match clearPlaceholderHelpText with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ClearPlaceholderHelpTextAttribKey, (v)) 
+        match clearPlaceholderIcon with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ClearPlaceholderIconAttribKey, (v)) 
+        match clearPlaceholderName with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ClearPlaceholderNameAttribKey, (v)) 
+        match command with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CommandAttribKey, makeCommand(v)) 
+        match commandParameter with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CommandParameterAttribKey, (v)) 
+        match displayMemberName with None -> () | Some v -> attribBuilder.Add(ViewAttributes.DisplayMemberNameAttribKey, (v)) 
+        match isSearchEnabled with None -> () | Some v -> attribBuilder.Add(ViewAttributes.IsSearchEnabledAttribKey, (v)) 
+        match placeholder with None -> () | Some v -> attribBuilder.Add(ViewAttributes.PlaceholderAttribKey, (v)) 
+        match query with None -> () | Some v -> attribBuilder.Add(ViewAttributes.QueryAttribKey, (v)) 
+        match queryIcon with None -> () | Some v -> attribBuilder.Add(ViewAttributes.QueryIconAttribKey, (v)) 
+        match queryIconHelpText with None -> () | Some v -> attribBuilder.Add(ViewAttributes.QueryIconHelpTextAttribKey, (v)) 
+        match queryIconName with None -> () | Some v -> attribBuilder.Add(ViewAttributes.QueryIconNameAttribKey, (v)) 
+        match searchBoxVisibility with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SearchBoxVisibilityAttribKey, (v)) 
+        match showsResults with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ShowsResultsAttribKey, (v)) 
+        match itemsSource with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ItemsSourceAttribKey, (v)) 
+        attribBuilder
+
+    static member val CreateFuncSearchHandler : (unit -> Xamarin.Forms.SearchHandler) = (fun () -> ViewBuilders.CreateSearchHandler()) with get, set
+
+    static member CreateSearchHandler () : Xamarin.Forms.SearchHandler =
+        upcast (new Xamarin.Forms.SearchHandler())
+
+    static member val UpdateFuncSearchHandler =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.SearchHandler) -> ViewBuilders.UpdateSearchHandler (prevOpt, curr, target)) 
+
+    static member UpdateSearchHandler (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.SearchHandler) = 
+        let mutable prevClearIconOpt = ValueNone
+        let mutable currClearIconOpt = ValueNone
+        let mutable prevClearIconHelpTextOpt = ValueNone
+        let mutable currClearIconHelpTextOpt = ValueNone
+        let mutable prevClearIconNameOpt = ValueNone
+        let mutable currClearIconNameOpt = ValueNone
+        let mutable prevClearPlaceholderCommandOpt = ValueNone
+        let mutable currClearPlaceholderCommandOpt = ValueNone
+        let mutable prevClearPlaceholderCommandParameterOpt = ValueNone
+        let mutable currClearPlaceholderCommandParameterOpt = ValueNone
+        let mutable prevClearPlaceholderEnabledOpt = ValueNone
+        let mutable currClearPlaceholderEnabledOpt = ValueNone
+        let mutable prevClearPlaceholderHelpTextOpt = ValueNone
+        let mutable currClearPlaceholderHelpTextOpt = ValueNone
+        let mutable prevClearPlaceholderIconOpt = ValueNone
+        let mutable currClearPlaceholderIconOpt = ValueNone
+        let mutable prevClearPlaceholderNameOpt = ValueNone
+        let mutable currClearPlaceholderNameOpt = ValueNone
+        let mutable prevCommandOpt = ValueNone
+        let mutable currCommandOpt = ValueNone
+        let mutable prevCommandParameterOpt = ValueNone
+        let mutable currCommandParameterOpt = ValueNone
+        let mutable prevDisplayMemberNameOpt = ValueNone
+        let mutable currDisplayMemberNameOpt = ValueNone
+        let mutable prevIsSearchEnabledOpt = ValueNone
+        let mutable currIsSearchEnabledOpt = ValueNone
+        let mutable prevPlaceholderOpt = ValueNone
+        let mutable currPlaceholderOpt = ValueNone
+        let mutable prevQueryOpt = ValueNone
+        let mutable currQueryOpt = ValueNone
+        let mutable prevQueryIconOpt = ValueNone
+        let mutable currQueryIconOpt = ValueNone
+        let mutable prevQueryIconHelpTextOpt = ValueNone
+        let mutable currQueryIconHelpTextOpt = ValueNone
+        let mutable prevQueryIconNameOpt = ValueNone
+        let mutable currQueryIconNameOpt = ValueNone
+        let mutable prevSearchBoxVisibilityOpt = ValueNone
+        let mutable currSearchBoxVisibilityOpt = ValueNone
+        let mutable prevShowsResultsOpt = ValueNone
+        let mutable currShowsResultsOpt = ValueNone
+        let mutable prevItemsSourceOpt = ValueNone
+        let mutable currItemsSourceOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.ClearIconAttribKey.KeyValue then 
+                currClearIconOpt <- ValueSome (kvp.Value :?> string)
+            if kvp.Key = ViewAttributes.ClearIconHelpTextAttribKey.KeyValue then 
+                currClearIconHelpTextOpt <- ValueSome (kvp.Value :?> string)
+            if kvp.Key = ViewAttributes.ClearIconNameAttribKey.KeyValue then 
+                currClearIconNameOpt <- ValueSome (kvp.Value :?> string)
+            if kvp.Key = ViewAttributes.ClearPlaceholderCommandAttribKey.KeyValue then 
+                currClearPlaceholderCommandOpt <- ValueSome (kvp.Value :?> System.Windows.Input.ICommand)
+            if kvp.Key = ViewAttributes.ClearPlaceholderCommandParameterAttribKey.KeyValue then 
+                currClearPlaceholderCommandParameterOpt <- ValueSome (kvp.Value :?> System.Object)
+            if kvp.Key = ViewAttributes.ClearPlaceholderEnabledAttribKey.KeyValue then 
+                currClearPlaceholderEnabledOpt <- ValueSome (kvp.Value :?> bool)
+            if kvp.Key = ViewAttributes.ClearPlaceholderHelpTextAttribKey.KeyValue then 
+                currClearPlaceholderHelpTextOpt <- ValueSome (kvp.Value :?> string)
+            if kvp.Key = ViewAttributes.ClearPlaceholderIconAttribKey.KeyValue then 
+                currClearPlaceholderIconOpt <- ValueSome (kvp.Value :?> string)
+            if kvp.Key = ViewAttributes.ClearPlaceholderNameAttribKey.KeyValue then 
+                currClearPlaceholderNameOpt <- ValueSome (kvp.Value :?> string)
+            if kvp.Key = ViewAttributes.CommandAttribKey.KeyValue then 
+                currCommandOpt <- ValueSome (kvp.Value :?> System.Windows.Input.ICommand)
+            if kvp.Key = ViewAttributes.CommandParameterAttribKey.KeyValue then 
+                currCommandParameterOpt <- ValueSome (kvp.Value :?> System.Object)
+            if kvp.Key = ViewAttributes.DisplayMemberNameAttribKey.KeyValue then 
+                currDisplayMemberNameOpt <- ValueSome (kvp.Value :?> string)
+            if kvp.Key = ViewAttributes.IsSearchEnabledAttribKey.KeyValue then 
+                currIsSearchEnabledOpt <- ValueSome (kvp.Value :?> bool)
+            if kvp.Key = ViewAttributes.PlaceholderAttribKey.KeyValue then 
+                currPlaceholderOpt <- ValueSome (kvp.Value :?> string)
+            if kvp.Key = ViewAttributes.QueryAttribKey.KeyValue then 
+                currQueryOpt <- ValueSome (kvp.Value :?> string)
+            if kvp.Key = ViewAttributes.QueryIconAttribKey.KeyValue then 
+                currQueryIconOpt <- ValueSome (kvp.Value :?> string)
+            if kvp.Key = ViewAttributes.QueryIconHelpTextAttribKey.KeyValue then 
+                currQueryIconHelpTextOpt <- ValueSome (kvp.Value :?> string)
+            if kvp.Key = ViewAttributes.QueryIconNameAttribKey.KeyValue then 
+                currQueryIconNameOpt <- ValueSome (kvp.Value :?> string)
+            if kvp.Key = ViewAttributes.SearchBoxVisibilityAttribKey.KeyValue then 
+                currSearchBoxVisibilityOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.SearchBoxVisiblity)
+            if kvp.Key = ViewAttributes.ShowsResultsAttribKey.KeyValue then 
+                currShowsResultsOpt <- ValueSome (kvp.Value :?> bool)
+            if kvp.Key = ViewAttributes.ItemsSourceAttribKey.KeyValue then 
+                currItemsSourceOpt <- ValueSome (kvp.Value :?> System.Collections.IEnumerable)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.ClearIconAttribKey.KeyValue then 
+                    prevClearIconOpt <- ValueSome (kvp.Value :?> string)
+                if kvp.Key = ViewAttributes.ClearIconHelpTextAttribKey.KeyValue then 
+                    prevClearIconHelpTextOpt <- ValueSome (kvp.Value :?> string)
+                if kvp.Key = ViewAttributes.ClearIconNameAttribKey.KeyValue then 
+                    prevClearIconNameOpt <- ValueSome (kvp.Value :?> string)
+                if kvp.Key = ViewAttributes.ClearPlaceholderCommandAttribKey.KeyValue then 
+                    prevClearPlaceholderCommandOpt <- ValueSome (kvp.Value :?> System.Windows.Input.ICommand)
+                if kvp.Key = ViewAttributes.ClearPlaceholderCommandParameterAttribKey.KeyValue then 
+                    prevClearPlaceholderCommandParameterOpt <- ValueSome (kvp.Value :?> System.Object)
+                if kvp.Key = ViewAttributes.ClearPlaceholderEnabledAttribKey.KeyValue then 
+                    prevClearPlaceholderEnabledOpt <- ValueSome (kvp.Value :?> bool)
+                if kvp.Key = ViewAttributes.ClearPlaceholderHelpTextAttribKey.KeyValue then 
+                    prevClearPlaceholderHelpTextOpt <- ValueSome (kvp.Value :?> string)
+                if kvp.Key = ViewAttributes.ClearPlaceholderIconAttribKey.KeyValue then 
+                    prevClearPlaceholderIconOpt <- ValueSome (kvp.Value :?> string)
+                if kvp.Key = ViewAttributes.ClearPlaceholderNameAttribKey.KeyValue then 
+                    prevClearPlaceholderNameOpt <- ValueSome (kvp.Value :?> string)
+                if kvp.Key = ViewAttributes.CommandAttribKey.KeyValue then 
+                    prevCommandOpt <- ValueSome (kvp.Value :?> System.Windows.Input.ICommand)
+                if kvp.Key = ViewAttributes.CommandParameterAttribKey.KeyValue then 
+                    prevCommandParameterOpt <- ValueSome (kvp.Value :?> System.Object)
+                if kvp.Key = ViewAttributes.DisplayMemberNameAttribKey.KeyValue then 
+                    prevDisplayMemberNameOpt <- ValueSome (kvp.Value :?> string)
+                if kvp.Key = ViewAttributes.IsSearchEnabledAttribKey.KeyValue then 
+                    prevIsSearchEnabledOpt <- ValueSome (kvp.Value :?> bool)
+                if kvp.Key = ViewAttributes.PlaceholderAttribKey.KeyValue then 
+                    prevPlaceholderOpt <- ValueSome (kvp.Value :?> string)
+                if kvp.Key = ViewAttributes.QueryAttribKey.KeyValue then 
+                    prevQueryOpt <- ValueSome (kvp.Value :?> string)
+                if kvp.Key = ViewAttributes.QueryIconAttribKey.KeyValue then 
+                    prevQueryIconOpt <- ValueSome (kvp.Value :?> string)
+                if kvp.Key = ViewAttributes.QueryIconHelpTextAttribKey.KeyValue then 
+                    prevQueryIconHelpTextOpt <- ValueSome (kvp.Value :?> string)
+                if kvp.Key = ViewAttributes.QueryIconNameAttribKey.KeyValue then 
+                    prevQueryIconNameOpt <- ValueSome (kvp.Value :?> string)
+                if kvp.Key = ViewAttributes.SearchBoxVisibilityAttribKey.KeyValue then 
+                    prevSearchBoxVisibilityOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.SearchBoxVisiblity)
+                if kvp.Key = ViewAttributes.ShowsResultsAttribKey.KeyValue then 
+                    prevShowsResultsOpt <- ValueSome (kvp.Value :?> bool)
+                if kvp.Key = ViewAttributes.ItemsSourceAttribKey.KeyValue then 
+                    prevItemsSourceOpt <- ValueSome (kvp.Value :?> System.Collections.IEnumerable)
+        match prevClearIconOpt, currClearIconOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.ClearIcon <- makeImageSource currValue
+        | ValueSome _, ValueNone -> target.ClearIcon <- null
+        | ValueNone, ValueNone -> ()
+        match prevClearIconHelpTextOpt, currClearIconHelpTextOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.ClearIconHelpText <-  currValue
+        | ValueSome _, ValueNone -> target.ClearIconHelpText <- null
+        | ValueNone, ValueNone -> ()
+        match prevClearIconNameOpt, currClearIconNameOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.ClearIconName <-  currValue
+        | ValueSome _, ValueNone -> target.ClearIconName <- null
+        | ValueNone, ValueNone -> ()
+        match prevClearPlaceholderCommandOpt, currClearPlaceholderCommandOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.ClearPlaceholderCommand <-  currValue
+        | ValueSome _, ValueNone -> target.ClearPlaceholderCommand <- null
+        | ValueNone, ValueNone -> ()
+        match prevClearPlaceholderCommandParameterOpt, currClearPlaceholderCommandParameterOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.ClearPlaceholderCommandParameter <-  currValue
+        | ValueSome _, ValueNone -> target.ClearPlaceholderCommandParameter <- null
+        | ValueNone, ValueNone -> ()
+        match prevClearPlaceholderEnabledOpt, currClearPlaceholderEnabledOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.ClearPlaceholderEnabled <-  currValue
+        | ValueSome _, ValueNone -> target.ClearPlaceholderEnabled <- true
+        | ValueNone, ValueNone -> ()
+        match prevClearPlaceholderHelpTextOpt, currClearPlaceholderHelpTextOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.ClearPlaceholderHelpText <-  currValue
+        | ValueSome _, ValueNone -> target.ClearPlaceholderHelpText <- null
+        | ValueNone, ValueNone -> ()
+        match prevClearPlaceholderIconOpt, currClearPlaceholderIconOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.ClearPlaceholderIcon <- makeImageSource currValue
+        | ValueSome _, ValueNone -> target.ClearPlaceholderIcon <- null
+        | ValueNone, ValueNone -> ()
+        match prevClearPlaceholderNameOpt, currClearPlaceholderNameOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.ClearPlaceholderName <-  currValue
+        | ValueSome _, ValueNone -> target.ClearPlaceholderName <- null
+        | ValueNone, ValueNone -> ()
+        match prevCommandOpt, currCommandOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Command <-  currValue
+        | ValueSome _, ValueNone -> target.Command <- null
+        | ValueNone, ValueNone -> ()
+        match prevCommandParameterOpt, currCommandParameterOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.CommandParameter <-  currValue
+        | ValueSome _, ValueNone -> target.CommandParameter <- null
+        | ValueNone, ValueNone -> ()
+        match prevDisplayMemberNameOpt, currDisplayMemberNameOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.DisplayMemberName <-  currValue
+        | ValueSome _, ValueNone -> target.DisplayMemberName <- null
+        | ValueNone, ValueNone -> ()
+        match prevIsSearchEnabledOpt, currIsSearchEnabledOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.IsSearchEnabled <-  currValue
+        | ValueSome _, ValueNone -> target.IsSearchEnabled <- true
+        | ValueNone, ValueNone -> ()
+        match prevPlaceholderOpt, currPlaceholderOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Placeholder <-  currValue
+        | ValueSome _, ValueNone -> target.Placeholder <- null
+        | ValueNone, ValueNone -> ()
+        match prevQueryOpt, currQueryOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Query <-  currValue
+        | ValueSome _, ValueNone -> target.Query <- null
+        | ValueNone, ValueNone -> ()
+        match prevQueryIconOpt, currQueryIconOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.QueryIcon <- makeImageSource currValue
+        | ValueSome _, ValueNone -> target.QueryIcon <- null
+        | ValueNone, ValueNone -> ()
+        match prevQueryIconHelpTextOpt, currQueryIconHelpTextOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.QueryIconHelpText <-  currValue
+        | ValueSome _, ValueNone -> target.QueryIconHelpText <- null
+        | ValueNone, ValueNone -> ()
+        match prevQueryIconNameOpt, currQueryIconNameOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.QueryIconName <-  currValue
+        | ValueSome _, ValueNone -> target.QueryIconName <- null
+        | ValueNone, ValueNone -> ()
+        match prevSearchBoxVisibilityOpt, currSearchBoxVisibilityOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.SearchBoxVisibility <-  currValue
+        | ValueSome _, ValueNone -> target.SearchBoxVisibility <- Xamarin.Forms.SearchBoxVisiblity.Hidden
+        | ValueNone, ValueNone -> ()
+        match prevShowsResultsOpt, currShowsResultsOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.ShowsResults <-  currValue
+        | ValueSome _, ValueNone -> target.ShowsResults <- true
+        | ValueNone, ValueNone -> ()
+        match prevItemsSourceOpt, currItemsSourceOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.ItemsSource <-  currValue
+        | ValueSome _, ValueNone -> target.ItemsSource <- null
+        | ValueNone, ValueNone -> ()
+
+    static member inline ConstructSearchHandler(?clearIcon: string,
+                                                ?clearIconHelpText: string,
+                                                ?clearIconName: string,
+                                                ?clearPlaceholderCommand: unit -> unit,
+                                                ?clearPlaceholderCommandParameter: System.Object,
+                                                ?clearPlaceholderEnabled: bool,
+                                                ?clearPlaceholderHelpText: string,
+                                                ?clearPlaceholderIcon: string,
+                                                ?clearPlaceholderName: string,
+                                                ?command: unit -> unit,
+                                                ?commandParameter: System.Object,
+                                                ?displayMemberName: string,
+                                                ?isSearchEnabled: bool,
+                                                ?placeholder: string,
+                                                ?query: string,
+                                                ?queryIcon: string,
+                                                ?queryIconHelpText: string,
+                                                ?queryIconName: string,
+                                                ?searchBoxVisibility: Xamarin.Forms.SearchBoxVisiblity,
+                                                ?showsResults: bool,
+                                                ?itemsSource: System.Collections.IEnumerable) = 
+
+        let attribBuilder = ViewBuilders.BuildSearchHandler(0,
+                               ?clearIcon=clearIcon,
+                               ?clearIconHelpText=clearIconHelpText,
+                               ?clearIconName=clearIconName,
+                               ?clearPlaceholderCommand=clearPlaceholderCommand,
+                               ?clearPlaceholderCommandParameter=clearPlaceholderCommandParameter,
+                               ?clearPlaceholderEnabled=clearPlaceholderEnabled,
+                               ?clearPlaceholderHelpText=clearPlaceholderHelpText,
+                               ?clearPlaceholderIcon=clearPlaceholderIcon,
+                               ?clearPlaceholderName=clearPlaceholderName,
+                               ?command=command,
+                               ?commandParameter=commandParameter,
+                               ?displayMemberName=displayMemberName,
+                               ?isSearchEnabled=isSearchEnabled,
+                               ?placeholder=placeholder,
+                               ?query=query,
+                               ?queryIcon=queryIcon,
+                               ?queryIconHelpText=queryIconHelpText,
+                               ?queryIconName=queryIconName,
+                               ?searchBoxVisibility=searchBoxVisibility,
+                               ?showsResults=showsResults,
+                               ?itemsSource=itemsSource)
+
+        ViewElement.Create<Xamarin.Forms.SearchHandler>(ViewBuilders.CreateFuncSearchHandler, ViewBuilders.UpdateFuncSearchHandler, attribBuilder)
+
+    /// Builds the attributes for a Shell in the view
+    static member inline BuildShell(attribCount: int,
+                                    ?items: seq<ViewElement>,
+                                    ?menuItems: seq<ViewElement>,
+                                    ?currentItem: ViewElement,
+                                    ?flyoutBackgroundColor: Xamarin.Forms.Color,
+                                    ?flyoutBehavior: Xamarin.Forms.FlyoutBehavior,
+                                    ?flyoutHeader: System.Object,
+                                    ?flyoutHeaderBehavior: Xamarin.Forms.FlyoutHeaderBehavior,
+                                    ?flyoutIsPresented: bool,
+                                    ?route: string,
+                                    ?routeHost: string,
+                                    ?routeScheme: string,
+                                    ?navigated: Xamarin.Forms.ShellNavigatedEventArgs -> unit,
+                                    ?navigating: Xamarin.Forms.ShellNavigatingEventArgs -> unit,
+                                    ?goToAsync: Xamarin.Forms.ShellNavigationState * Fabulous.DynamicViews.AnimationKind,
+                                    ?title: string,
+                                    ?backgroundImage: string,
+                                    ?icon: string,
+                                    ?isBusy: bool,
+                                    ?padding: obj,
+                                    ?toolbarItems: ViewElement list,
+                                    ?useSafeArea: bool,
+                                    ?appearing: unit -> unit,
+                                    ?disappearing: unit -> unit,
+                                    ?layoutChanged: unit -> unit,
+                                    ?anchorX: double,
+                                    ?anchorY: double,
+                                    ?backgroundColor: Xamarin.Forms.Color,
+                                    ?heightRequest: double,
+                                    ?inputTransparent: bool,
+                                    ?isEnabled: bool,
+                                    ?isVisible: bool,
+                                    ?minimumHeightRequest: double,
+                                    ?minimumWidthRequest: double,
+                                    ?opacity: double,
+                                    ?rotation: double,
+                                    ?rotationX: double,
+                                    ?rotationY: double,
+                                    ?scale: double,
+                                    ?style: Xamarin.Forms.Style,
+                                    ?styleClass: obj,
+                                    ?translationX: double,
+                                    ?translationY: double,
+                                    ?widthRequest: double,
+                                    ?resources: (string * obj) list,
+                                    ?styles: Xamarin.Forms.Style list,
+                                    ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                    ?isTabStop: bool,
+                                    ?scaleX: double,
+                                    ?scaleY: double,
+                                    ?tabIndex: int,
+                                    ?childrenReordered: System.EventArgs -> unit,
+                                    ?measureInvalidated: System.EventArgs -> unit,
+                                    ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                    ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                                    ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                    ?visual: Xamarin.Forms.IVisual,
+                                    ?classId: string,
+                                    ?styleId: string,
+                                    ?automationId: string,
+                                    ?created: obj -> unit,
+                                    ?ref: ViewRef) = 
+
+        let attribCount = match items with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match menuItems with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match currentItem with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match flyoutBackgroundColor with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match flyoutBehavior with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match flyoutHeader with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match flyoutHeaderBehavior with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match flyoutIsPresented with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match route with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match routeHost with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match routeScheme with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match navigated with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match navigating with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match goToAsync with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = ViewBuilders.BuildPage(attribCount, ?title=title, ?backgroundImage=backgroundImage, ?icon=icon, ?isBusy=isBusy, ?padding=padding, ?toolbarItems=toolbarItems, ?useSafeArea=useSafeArea, ?appearing=appearing, ?disappearing=disappearing, ?layoutChanged=layoutChanged, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        match items with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ItemsAttribKey, (v)) 
+        match menuItems with None -> () | Some v -> attribBuilder.Add(ViewAttributes.MenuItemsAttribKey, (v)) 
+        match currentItem with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CurrentItemAttribKey, (v)) 
+        match flyoutBackgroundColor with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FlyoutBackgroundColorAttribKey, (v)) 
+        match flyoutBehavior with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FlyoutBehaviorAttribKey, (v)) 
+        match flyoutHeader with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FlyoutHeaderAttribKey, (v)) 
+        match flyoutHeaderBehavior with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FlyoutHeaderBehaviorAttribKey, (v)) 
+        match flyoutIsPresented with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FlyoutIsPresentedAttribKey, (v)) 
+        match route with None -> () | Some v -> attribBuilder.Add(ViewAttributes.RouteAttribKey, (v)) 
+        match routeHost with None -> () | Some v -> attribBuilder.Add(ViewAttributes.RouteHostAttribKey, (v)) 
+        match routeScheme with None -> () | Some v -> attribBuilder.Add(ViewAttributes.RouteSchemeAttribKey, (v)) 
+        match navigated with None -> () | Some v -> attribBuilder.Add(ViewAttributes.OnNavigatedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ShellNavigatedEventArgs>(fun _sender args -> f args))(v)) 
+        match navigating with None -> () | Some v -> attribBuilder.Add(ViewAttributes.OnNavigatingAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ShellNavigatingEventArgs>(fun _sender args -> f args))(v)) 
+        match goToAsync with None -> () | Some v -> attribBuilder.Add(ViewAttributes.GoToAsyncAttribKey, (v)) 
+        attribBuilder
+
+    static member val CreateFuncShell : (unit -> Xamarin.Forms.Shell) = (fun () -> ViewBuilders.CreateShell()) with get, set
+
+    static member CreateShell () : Xamarin.Forms.Shell =
+        upcast (new Xamarin.Forms.Shell())
+
+    static member val UpdateFuncShell =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.Shell) -> ViewBuilders.UpdateShell (prevOpt, curr, target)) 
+
+    static member UpdateShell (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.Shell) = 
+        // update the inherited Page element
+        let baseElement = (if ViewProto.ProtoPage.IsNone then ViewProto.ProtoPage <- Some (ViewBuilders.ConstructPage())); ViewProto.ProtoPage.Value
+        baseElement.UpdateInherited (prevOpt, curr, target)
+        let mutable prevItemsOpt = ValueNone
+        let mutable currItemsOpt = ValueNone
+        let mutable prevMenuItemsOpt = ValueNone
+        let mutable currMenuItemsOpt = ValueNone
+        let mutable prevCurrentItemOpt = ValueNone
+        let mutable currCurrentItemOpt = ValueNone
+        let mutable prevFlyoutBackgroundColorOpt = ValueNone
+        let mutable currFlyoutBackgroundColorOpt = ValueNone
+        let mutable prevFlyoutBehaviorOpt = ValueNone
+        let mutable currFlyoutBehaviorOpt = ValueNone
+        let mutable prevFlyoutHeaderOpt = ValueNone
+        let mutable currFlyoutHeaderOpt = ValueNone
+        let mutable prevFlyoutHeaderBehaviorOpt = ValueNone
+        let mutable currFlyoutHeaderBehaviorOpt = ValueNone
+        let mutable prevFlyoutIsPresentedOpt = ValueNone
+        let mutable currFlyoutIsPresentedOpt = ValueNone
+        let mutable prevRouteOpt = ValueNone
+        let mutable currRouteOpt = ValueNone
+        let mutable prevRouteHostOpt = ValueNone
+        let mutable currRouteHostOpt = ValueNone
+        let mutable prevRouteSchemeOpt = ValueNone
+        let mutable currRouteSchemeOpt = ValueNone
+        let mutable prevOnNavigatedOpt = ValueNone
+        let mutable currOnNavigatedOpt = ValueNone
+        let mutable prevOnNavigatingOpt = ValueNone
+        let mutable currOnNavigatingOpt = ValueNone
+        let mutable prevGoToAsyncOpt = ValueNone
+        let mutable currGoToAsyncOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.ItemsAttribKey.KeyValue then 
+                currItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
+            if kvp.Key = ViewAttributes.MenuItemsAttribKey.KeyValue then 
+                currMenuItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
+            if kvp.Key = ViewAttributes.CurrentItemAttribKey.KeyValue then 
+                currCurrentItemOpt <- ValueSome (kvp.Value :?> ViewElement)
+            if kvp.Key = ViewAttributes.FlyoutBackgroundColorAttribKey.KeyValue then 
+                currFlyoutBackgroundColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
+            if kvp.Key = ViewAttributes.FlyoutBehaviorAttribKey.KeyValue then 
+                currFlyoutBehaviorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlyoutBehavior)
+            if kvp.Key = ViewAttributes.FlyoutHeaderAttribKey.KeyValue then 
+                currFlyoutHeaderOpt <- ValueSome (kvp.Value :?> System.Object)
+            if kvp.Key = ViewAttributes.FlyoutHeaderBehaviorAttribKey.KeyValue then 
+                currFlyoutHeaderBehaviorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlyoutHeaderBehavior)
+            if kvp.Key = ViewAttributes.FlyoutIsPresentedAttribKey.KeyValue then 
+                currFlyoutIsPresentedOpt <- ValueSome (kvp.Value :?> bool)
+            if kvp.Key = ViewAttributes.RouteAttribKey.KeyValue then 
+                currRouteOpt <- ValueSome (kvp.Value :?> string)
+            if kvp.Key = ViewAttributes.RouteHostAttribKey.KeyValue then 
+                currRouteHostOpt <- ValueSome (kvp.Value :?> string)
+            if kvp.Key = ViewAttributes.RouteSchemeAttribKey.KeyValue then 
+                currRouteSchemeOpt <- ValueSome (kvp.Value :?> string)
+            if kvp.Key = ViewAttributes.OnNavigatedAttribKey.KeyValue then 
+                currOnNavigatedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.ShellNavigatedEventArgs>)
+            if kvp.Key = ViewAttributes.OnNavigatingAttribKey.KeyValue then 
+                currOnNavigatingOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.ShellNavigatingEventArgs>)
+            if kvp.Key = ViewAttributes.GoToAsyncAttribKey.KeyValue then 
+                currGoToAsyncOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.ShellNavigationState * Fabulous.DynamicViews.AnimationKind)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.ItemsAttribKey.KeyValue then 
+                    prevItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
+                if kvp.Key = ViewAttributes.MenuItemsAttribKey.KeyValue then 
+                    prevMenuItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
+                if kvp.Key = ViewAttributes.CurrentItemAttribKey.KeyValue then 
+                    prevCurrentItemOpt <- ValueSome (kvp.Value :?> ViewElement)
+                if kvp.Key = ViewAttributes.FlyoutBackgroundColorAttribKey.KeyValue then 
+                    prevFlyoutBackgroundColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
+                if kvp.Key = ViewAttributes.FlyoutBehaviorAttribKey.KeyValue then 
+                    prevFlyoutBehaviorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlyoutBehavior)
+                if kvp.Key = ViewAttributes.FlyoutHeaderAttribKey.KeyValue then 
+                    prevFlyoutHeaderOpt <- ValueSome (kvp.Value :?> System.Object)
+                if kvp.Key = ViewAttributes.FlyoutHeaderBehaviorAttribKey.KeyValue then 
+                    prevFlyoutHeaderBehaviorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlyoutHeaderBehavior)
+                if kvp.Key = ViewAttributes.FlyoutIsPresentedAttribKey.KeyValue then 
+                    prevFlyoutIsPresentedOpt <- ValueSome (kvp.Value :?> bool)
+                if kvp.Key = ViewAttributes.RouteAttribKey.KeyValue then 
+                    prevRouteOpt <- ValueSome (kvp.Value :?> string)
+                if kvp.Key = ViewAttributes.RouteHostAttribKey.KeyValue then 
+                    prevRouteHostOpt <- ValueSome (kvp.Value :?> string)
+                if kvp.Key = ViewAttributes.RouteSchemeAttribKey.KeyValue then 
+                    prevRouteSchemeOpt <- ValueSome (kvp.Value :?> string)
+                if kvp.Key = ViewAttributes.OnNavigatedAttribKey.KeyValue then 
+                    prevOnNavigatedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.ShellNavigatedEventArgs>)
+                if kvp.Key = ViewAttributes.OnNavigatingAttribKey.KeyValue then 
+                    prevOnNavigatingOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.ShellNavigatingEventArgs>)
+                if kvp.Key = ViewAttributes.GoToAsyncAttribKey.KeyValue then 
+                    prevGoToAsyncOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.ShellNavigationState * Fabulous.DynamicViews.AnimationKind)
+        updateShellItems prevItemsOpt currItemsOpt target
+        updateMenuItemsShell prevMenuItemsOpt currMenuItemsOpt target
+        match prevCurrentItemOpt, currCurrentItemOpt with
+        // For structured objects, dependsOn on reference equality
+        | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()
+        | ValueSome prevValue, ValueSome newValue when canReuseChild prevValue newValue ->
+            newValue.UpdateIncremental(prevValue, target.CurrentItem)
+        | _, ValueSome newValue ->
+            target.CurrentItem <- (newValue.Create() :?> Xamarin.Forms.ShellItem)
+        | ValueSome _, ValueNone ->
+            target.CurrentItem <- null
+        | ValueNone, ValueNone -> ()
+        match prevFlyoutBackgroundColorOpt, currFlyoutBackgroundColorOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.FlyoutBackgroundColor <-  currValue
+        | ValueSome _, ValueNone -> target.FlyoutBackgroundColor <- Xamarin.Forms.Color.Default
+        | ValueNone, ValueNone -> ()
+        match prevFlyoutBehaviorOpt, currFlyoutBehaviorOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.FlyoutBehavior <-  currValue
+        | ValueSome _, ValueNone -> target.FlyoutBehavior <- Xamarin.Forms.FlyoutBehavior.Flyout
+        | ValueNone, ValueNone -> ()
+        match prevFlyoutHeaderOpt, currFlyoutHeaderOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.FlyoutHeader <-  currValue
+        | ValueSome _, ValueNone -> target.FlyoutHeader <- null
+        | ValueNone, ValueNone -> ()
+        match prevFlyoutHeaderBehaviorOpt, currFlyoutHeaderBehaviorOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.FlyoutHeaderBehavior <-  currValue
+        | ValueSome _, ValueNone -> target.FlyoutHeaderBehavior <- Xamarin.Forms.FlyoutHeaderBehavior.Default
+        | ValueNone, ValueNone -> ()
+        match prevFlyoutIsPresentedOpt, currFlyoutIsPresentedOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.FlyoutIsPresented <-  currValue
+        | ValueSome _, ValueNone -> target.FlyoutIsPresented <- false
+        | ValueNone, ValueNone -> ()
+        match prevRouteOpt, currRouteOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Route <-  currValue
+        | ValueSome _, ValueNone -> target.Route <- null
+        | ValueNone, ValueNone -> ()
+        match prevRouteHostOpt, currRouteHostOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.RouteHost <-  currValue
+        | ValueSome _, ValueNone -> target.RouteHost <- null
+        | ValueNone, ValueNone -> ()
+        match prevRouteSchemeOpt, currRouteSchemeOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.RouteScheme <-  currValue
+        | ValueSome _, ValueNone -> target.RouteScheme <- null
+        | ValueNone, ValueNone -> ()
+        match prevOnNavigatedOpt, currOnNavigatedOpt with
+        | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
+        | ValueSome prevValue, ValueSome currValue -> target.Navigated.RemoveHandler(prevValue); target.Navigated.AddHandler(currValue)
+        | ValueNone, ValueSome currValue -> target.Navigated.AddHandler(currValue)
+        | ValueSome prevValue, ValueNone -> target.Navigated.RemoveHandler(prevValue)
+        | ValueNone, ValueNone -> ()
+        match prevOnNavigatingOpt, currOnNavigatingOpt with
+        | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
+        | ValueSome prevValue, ValueSome currValue -> target.Navigating.RemoveHandler(prevValue); target.Navigating.AddHandler(currValue)
+        | ValueNone, ValueSome currValue -> target.Navigating.AddHandler(currValue)
+        | ValueSome prevValue, ValueNone -> target.Navigating.RemoveHandler(prevValue)
+        | ValueNone, ValueNone -> ()
+        (fun _ curr target -> triggerGoToAsync curr target) prevGoToAsyncOpt currGoToAsyncOpt target
+
+    static member inline ConstructShell(?items: seq<ViewElement>,
+                                        ?menuItems: seq<ViewElement>,
+                                        ?currentItem: ViewElement,
+                                        ?flyoutBackgroundColor: Xamarin.Forms.Color,
+                                        ?flyoutBehavior: Xamarin.Forms.FlyoutBehavior,
+                                        ?flyoutHeader: System.Object,
+                                        ?flyoutHeaderBehavior: Xamarin.Forms.FlyoutHeaderBehavior,
+                                        ?flyoutIsPresented: bool,
+                                        ?route: string,
+                                        ?routeHost: string,
+                                        ?routeScheme: string,
+                                        ?navigated: Xamarin.Forms.ShellNavigatedEventArgs -> unit,
+                                        ?navigating: Xamarin.Forms.ShellNavigatingEventArgs -> unit,
+                                        ?goToAsync: Xamarin.Forms.ShellNavigationState * Fabulous.DynamicViews.AnimationKind,
+                                        ?title: string,
+                                        ?backgroundImage: string,
+                                        ?icon: string,
+                                        ?isBusy: bool,
+                                        ?padding: obj,
+                                        ?toolbarItems: ViewElement list,
+                                        ?useSafeArea: bool,
+                                        ?appearing: unit -> unit,
+                                        ?disappearing: unit -> unit,
+                                        ?layoutChanged: unit -> unit,
+                                        ?anchorX: double,
+                                        ?anchorY: double,
+                                        ?backgroundColor: Xamarin.Forms.Color,
+                                        ?heightRequest: double,
+                                        ?inputTransparent: bool,
+                                        ?isEnabled: bool,
+                                        ?isVisible: bool,
+                                        ?minimumHeightRequest: double,
+                                        ?minimumWidthRequest: double,
+                                        ?opacity: double,
+                                        ?rotation: double,
+                                        ?rotationX: double,
+                                        ?rotationY: double,
+                                        ?scale: double,
+                                        ?style: Xamarin.Forms.Style,
+                                        ?styleClass: obj,
+                                        ?translationX: double,
+                                        ?translationY: double,
+                                        ?widthRequest: double,
+                                        ?resources: (string * obj) list,
+                                        ?styles: Xamarin.Forms.Style list,
+                                        ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                        ?isTabStop: bool,
+                                        ?scaleX: double,
+                                        ?scaleY: double,
+                                        ?tabIndex: int,
+                                        ?childrenReordered: System.EventArgs -> unit,
+                                        ?measureInvalidated: System.EventArgs -> unit,
+                                        ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                                        ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?visual: Xamarin.Forms.IVisual,
+                                        ?classId: string,
+                                        ?styleId: string,
+                                        ?automationId: string,
+                                        ?created: (Xamarin.Forms.Shell -> unit),
+                                        ?ref: ViewRef<Xamarin.Forms.Shell>) = 
+
+        let attribBuilder = ViewBuilders.BuildShell(0,
+                               ?items=items,
+                               ?menuItems=menuItems,
+                               ?currentItem=currentItem,
+                               ?flyoutBackgroundColor=flyoutBackgroundColor,
+                               ?flyoutBehavior=flyoutBehavior,
+                               ?flyoutHeader=flyoutHeader,
+                               ?flyoutHeaderBehavior=flyoutHeaderBehavior,
+                               ?flyoutIsPresented=flyoutIsPresented,
+                               ?route=route,
+                               ?routeHost=routeHost,
+                               ?routeScheme=routeScheme,
+                               ?navigated=navigated,
+                               ?navigating=navigating,
+                               ?goToAsync=goToAsync,
+                               ?title=title,
+                               ?backgroundImage=backgroundImage,
+                               ?icon=icon,
+                               ?isBusy=isBusy,
+                               ?padding=padding,
+                               ?toolbarItems=toolbarItems,
+                               ?useSafeArea=useSafeArea,
+                               ?appearing=appearing,
+                               ?disappearing=disappearing,
+                               ?layoutChanged=layoutChanged,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?isTabStop=isTabStop,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
+                               ?visual=visual,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.Shell> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.Shell>) -> Some ref.Unbox))
+
+        ViewElement.Create<Xamarin.Forms.Shell>(ViewBuilders.CreateFuncShell, ViewBuilders.UpdateFuncShell, attribBuilder)
+
+    /// Builds the attributes for a ShellGroupItem in the view
+    static member inline BuildShellGroupItem(attribCount: int,
+                                             ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions,
+                                             ?classId: string,
+                                             ?styleId: string,
+                                             ?automationId: string,
+                                             ?created: obj -> unit,
+                                             ?ref: ViewRef) = 
+
+        let attribCount = match flyoutDisplayOptions with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = ViewBuilders.BuildElement(attribCount, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        match flyoutDisplayOptions with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FlyoutDisplayOptionsAttribKey, (v)) 
+        attribBuilder
+
+    static member val CreateFuncShellGroupItem : (unit -> Xamarin.Forms.ShellGroupItem) = (fun () -> ViewBuilders.CreateShellGroupItem()) with get, set
+
+    static member CreateShellGroupItem () : Xamarin.Forms.ShellGroupItem =
+        upcast (new Xamarin.Forms.ShellGroupItem())
+
+    static member val UpdateFuncShellGroupItem =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.ShellGroupItem) -> ViewBuilders.UpdateShellGroupItem (prevOpt, curr, target)) 
+
+    static member UpdateShellGroupItem (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.ShellGroupItem) = 
+        // update the inherited Element element
+        let baseElement = (if ViewProto.ProtoElement.IsNone then ViewProto.ProtoElement <- Some (ViewBuilders.ConstructElement())); ViewProto.ProtoElement.Value
+        baseElement.UpdateInherited (prevOpt, curr, target)
+        let mutable prevFlyoutDisplayOptionsOpt = ValueNone
+        let mutable currFlyoutDisplayOptionsOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.FlyoutDisplayOptionsAttribKey.KeyValue then 
+                currFlyoutDisplayOptionsOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlyoutDisplayOptions)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.FlyoutDisplayOptionsAttribKey.KeyValue then 
+                    prevFlyoutDisplayOptionsOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.FlyoutDisplayOptions)
+        match prevFlyoutDisplayOptionsOpt, currFlyoutDisplayOptionsOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.FlyoutDisplayOptions <-  currValue
+        | ValueSome _, ValueNone -> target.FlyoutDisplayOptions <- Xamarin.Forms.FlyoutDisplayOptions.AsSingleItem
+        | ValueNone, ValueNone -> ()
+
+    static member inline ConstructShellGroupItem(?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions,
+                                                 ?classId: string,
+                                                 ?styleId: string,
+                                                 ?automationId: string,
+                                                 ?created: (Xamarin.Forms.ShellGroupItem -> unit),
+                                                 ?ref: ViewRef<Xamarin.Forms.ShellGroupItem>) = 
+
+        let attribBuilder = ViewBuilders.BuildShellGroupItem(0,
+                               ?flyoutDisplayOptions=flyoutDisplayOptions,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ShellGroupItem> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ShellGroupItem>) -> Some ref.Unbox))
+
+        ViewElement.Create<Xamarin.Forms.ShellGroupItem>(ViewBuilders.CreateFuncShellGroupItem, ViewBuilders.UpdateFuncShellGroupItem, attribBuilder)
+
+    /// Builds the attributes for a SelectableItemsView in the view
+    static member inline BuildSelectableItemsView(attribCount: int,
+                                                  ?selectedItem: System.Object,
+                                                  ?selectionChangedCommand: unit -> unit,
+                                                  ?selectionChangedCommandParameter: System.Object,
+                                                  ?selectionMode: Xamarin.Forms.SelectionMode,
+                                                  ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit,
+                                                  ?emptyView: System.Object,
+                                                  ?itemsLayout: Xamarin.Forms.IItemsLayout,
+                                                  ?itemsSource: System.Collections.IEnumerable,
+                                                  ?itemSizingStrategy: Xamarin.Forms.ItemSizingStrategy,
+                                                  ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
+                                                  ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
+                                                  ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                                  ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                                  ?margin: obj,
+                                                  ?gestureRecognizers: ViewElement list,
+                                                  ?anchorX: double,
+                                                  ?anchorY: double,
+                                                  ?backgroundColor: Xamarin.Forms.Color,
+                                                  ?heightRequest: double,
+                                                  ?inputTransparent: bool,
+                                                  ?isEnabled: bool,
+                                                  ?isVisible: bool,
+                                                  ?minimumHeightRequest: double,
+                                                  ?minimumWidthRequest: double,
+                                                  ?opacity: double,
+                                                  ?rotation: double,
+                                                  ?rotationX: double,
+                                                  ?rotationY: double,
+                                                  ?scale: double,
+                                                  ?style: Xamarin.Forms.Style,
+                                                  ?styleClass: obj,
+                                                  ?translationX: double,
+                                                  ?translationY: double,
+                                                  ?widthRequest: double,
+                                                  ?resources: (string * obj) list,
+                                                  ?styles: Xamarin.Forms.Style list,
+                                                  ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                                  ?isTabStop: bool,
+                                                  ?scaleX: double,
+                                                  ?scaleY: double,
+                                                  ?tabIndex: int,
+                                                  ?childrenReordered: System.EventArgs -> unit,
+                                                  ?measureInvalidated: System.EventArgs -> unit,
+                                                  ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                  ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                                                  ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                  ?visual: Xamarin.Forms.IVisual,
+                                                  ?classId: string,
+                                                  ?styleId: string,
+                                                  ?automationId: string,
+                                                  ?created: obj -> unit,
+                                                  ?ref: ViewRef) = 
+
+        let attribCount = match selectedItem with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match selectionChangedCommand with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match selectionChangedCommandParameter with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match selectionMode with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match selectionChanged with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = ViewBuilders.BuildItemsView(attribCount, ?emptyView=emptyView, ?itemsLayout=itemsLayout, ?itemsSource=itemsSource, ?itemSizingStrategy=itemSizingStrategy, ?scrollToRequested=scrollToRequested, ?scrollTo=scrollTo, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        match selectedItem with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SelectedItemAttribKey, (v)) 
+        match selectionChangedCommand with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SelectionChangedCommandAttribKey, makeCommand(v)) 
+        match selectionChangedCommandParameter with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SelectionChangedCommandParameterAttribKey, (v)) 
+        match selectionMode with None -> () | Some v -> attribBuilder.Add(ViewAttributes.selectableItemsModeAttribKey, (v)) 
+        match selectionChanged with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SelectionChangedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.SelectionChangedEventArgs>(fun _sender args -> f args))(v)) 
+        attribBuilder
+
+    static member val CreateFuncSelectableItemsView : (unit -> Xamarin.Forms.SelectableItemsView) = (fun () -> ViewBuilders.CreateSelectableItemsView()) with get, set
+
+    static member CreateSelectableItemsView () : Xamarin.Forms.SelectableItemsView =
+        upcast (new Xamarin.Forms.SelectableItemsView())
+
+    static member val UpdateFuncSelectableItemsView =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.SelectableItemsView) -> ViewBuilders.UpdateSelectableItemsView (prevOpt, curr, target)) 
+
+    static member UpdateSelectableItemsView (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.SelectableItemsView) = 
+        // update the inherited ItemsView element
+        let baseElement = (if ViewProto.ProtoItemsView.IsNone then ViewProto.ProtoItemsView <- Some (ViewBuilders.ConstructItemsView())); ViewProto.ProtoItemsView.Value
+        baseElement.UpdateInherited (prevOpt, curr, target)
+        let mutable prevSelectedItemOpt = ValueNone
+        let mutable currSelectedItemOpt = ValueNone
+        let mutable prevSelectionChangedCommandOpt = ValueNone
+        let mutable currSelectionChangedCommandOpt = ValueNone
+        let mutable prevSelectionChangedCommandParameterOpt = ValueNone
+        let mutable currSelectionChangedCommandParameterOpt = ValueNone
+        let mutable prevselectableItemsModeOpt = ValueNone
+        let mutable currselectableItemsModeOpt = ValueNone
+        let mutable prevSelectionChangedOpt = ValueNone
+        let mutable currSelectionChangedOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.SelectedItemAttribKey.KeyValue then 
+                currSelectedItemOpt <- ValueSome (kvp.Value :?> System.Object)
+            if kvp.Key = ViewAttributes.SelectionChangedCommandAttribKey.KeyValue then 
+                currSelectionChangedCommandOpt <- ValueSome (kvp.Value :?> System.Windows.Input.ICommand)
+            if kvp.Key = ViewAttributes.SelectionChangedCommandParameterAttribKey.KeyValue then 
+                currSelectionChangedCommandParameterOpt <- ValueSome (kvp.Value :?> System.Object)
+            if kvp.Key = ViewAttributes.selectableItemsModeAttribKey.KeyValue then 
+                currselectableItemsModeOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.SelectionMode)
+            if kvp.Key = ViewAttributes.SelectionChangedAttribKey.KeyValue then 
+                currSelectionChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.SelectionChangedEventArgs>)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.SelectedItemAttribKey.KeyValue then 
+                    prevSelectedItemOpt <- ValueSome (kvp.Value :?> System.Object)
+                if kvp.Key = ViewAttributes.SelectionChangedCommandAttribKey.KeyValue then 
+                    prevSelectionChangedCommandOpt <- ValueSome (kvp.Value :?> System.Windows.Input.ICommand)
+                if kvp.Key = ViewAttributes.SelectionChangedCommandParameterAttribKey.KeyValue then 
+                    prevSelectionChangedCommandParameterOpt <- ValueSome (kvp.Value :?> System.Object)
+                if kvp.Key = ViewAttributes.selectableItemsModeAttribKey.KeyValue then 
+                    prevselectableItemsModeOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.SelectionMode)
+                if kvp.Key = ViewAttributes.SelectionChangedAttribKey.KeyValue then 
+                    prevSelectionChangedOpt <- ValueSome (kvp.Value :?> System.EventHandler<Xamarin.Forms.SelectionChangedEventArgs>)
+        match prevSelectedItemOpt, currSelectedItemOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.SelectedItem <-  currValue
+        | ValueSome _, ValueNone -> target.SelectedItem <- null
+        | ValueNone, ValueNone -> ()
+        match prevSelectionChangedCommandOpt, currSelectionChangedCommandOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.SelectionChangedCommand <-  currValue
+        | ValueSome _, ValueNone -> target.SelectionChangedCommand <- null
+        | ValueNone, ValueNone -> ()
+        match prevSelectionChangedCommandParameterOpt, currSelectionChangedCommandParameterOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.SelectionChangedCommandParameter <-  currValue
+        | ValueSome _, ValueNone -> target.SelectionChangedCommandParameter <- null
+        | ValueNone, ValueNone -> ()
+        match prevselectableItemsModeOpt, currselectableItemsModeOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.SelectionMode <-  currValue
+        | ValueSome _, ValueNone -> target.SelectionMode <- Xamarin.Forms.SelectionMode.None
+        | ValueNone, ValueNone -> ()
+        match prevSelectionChangedOpt, currSelectionChangedOpt with
+        | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
+        | ValueSome prevValue, ValueSome currValue -> target.SelectionChanged.RemoveHandler(prevValue); target.SelectionChanged.AddHandler(currValue)
+        | ValueNone, ValueSome currValue -> target.SelectionChanged.AddHandler(currValue)
+        | ValueSome prevValue, ValueNone -> target.SelectionChanged.RemoveHandler(prevValue)
+        | ValueNone, ValueNone -> ()
+
+    static member inline ConstructSelectableItemsView(?selectedItem: System.Object,
+                                                      ?selectionChangedCommand: unit -> unit,
+                                                      ?selectionChangedCommandParameter: System.Object,
+                                                      ?selectionMode: Xamarin.Forms.SelectionMode,
+                                                      ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit,
+                                                      ?emptyView: System.Object,
+                                                      ?itemsLayout: Xamarin.Forms.IItemsLayout,
+                                                      ?itemsSource: System.Collections.IEnumerable,
+                                                      ?itemSizingStrategy: Xamarin.Forms.ItemSizingStrategy,
+                                                      ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
+                                                      ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
+                                                      ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                                      ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                                      ?margin: obj,
+                                                      ?gestureRecognizers: ViewElement list,
+                                                      ?anchorX: double,
+                                                      ?anchorY: double,
+                                                      ?backgroundColor: Xamarin.Forms.Color,
+                                                      ?heightRequest: double,
+                                                      ?inputTransparent: bool,
+                                                      ?isEnabled: bool,
+                                                      ?isVisible: bool,
+                                                      ?minimumHeightRequest: double,
+                                                      ?minimumWidthRequest: double,
+                                                      ?opacity: double,
+                                                      ?rotation: double,
+                                                      ?rotationX: double,
+                                                      ?rotationY: double,
+                                                      ?scale: double,
+                                                      ?style: Xamarin.Forms.Style,
+                                                      ?styleClass: obj,
+                                                      ?translationX: double,
+                                                      ?translationY: double,
+                                                      ?widthRequest: double,
+                                                      ?resources: (string * obj) list,
+                                                      ?styles: Xamarin.Forms.Style list,
+                                                      ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                                      ?isTabStop: bool,
+                                                      ?scaleX: double,
+                                                      ?scaleY: double,
+                                                      ?tabIndex: int,
+                                                      ?childrenReordered: System.EventArgs -> unit,
+                                                      ?measureInvalidated: System.EventArgs -> unit,
+                                                      ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                      ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                                                      ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                      ?visual: Xamarin.Forms.IVisual,
+                                                      ?classId: string,
+                                                      ?styleId: string,
+                                                      ?automationId: string,
+                                                      ?created: (Xamarin.Forms.SelectableItemsView -> unit),
+                                                      ?ref: ViewRef<Xamarin.Forms.SelectableItemsView>) = 
+
+        let attribBuilder = ViewBuilders.BuildSelectableItemsView(0,
+                               ?selectedItem=selectedItem,
+                               ?selectionChangedCommand=selectionChangedCommand,
+                               ?selectionChangedCommandParameter=selectionChangedCommandParameter,
+                               ?selectionMode=selectionMode,
+                               ?selectionChanged=selectionChanged,
+                               ?emptyView=emptyView,
+                               ?itemsLayout=itemsLayout,
+                               ?itemsSource=itemsSource,
+                               ?itemSizingStrategy=itemSizingStrategy,
+                               ?scrollToRequested=scrollToRequested,
+                               ?scrollTo=scrollTo,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?isTabStop=isTabStop,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
+                               ?visual=visual,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.SelectableItemsView> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.SelectableItemsView>) -> Some ref.Unbox))
+
+        ViewElement.Create<Xamarin.Forms.SelectableItemsView>(ViewBuilders.CreateFuncSelectableItemsView, ViewBuilders.UpdateFuncSelectableItemsView, attribBuilder)
+
+    /// Builds the attributes for a ShellNavigationState in the view
+    static member inline BuildShellNavigationState(attribCount: int,
+                                                   ?location: System.Uri) = 
+
+        let attribCount = match location with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = new AttributesBuilder(attribCount)
+        match location with None -> () | Some v -> attribBuilder.Add(ViewAttributes.LocationAttribKey, makeUri(v)) 
+        attribBuilder
+
+    static member val CreateFuncShellNavigationState : (unit -> Xamarin.Forms.ShellNavigationState) = (fun () -> ViewBuilders.CreateShellNavigationState()) with get, set
+
+    static member CreateShellNavigationState () : Xamarin.Forms.ShellNavigationState =
+        upcast (new Xamarin.Forms.ShellNavigationState())
+
+    static member val UpdateFuncShellNavigationState =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.ShellNavigationState) -> ViewBuilders.UpdateShellNavigationState (prevOpt, curr, target)) 
+
+    static member UpdateShellNavigationState (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.ShellNavigationState) = 
+        let mutable prevLocationOpt = ValueNone
+        let mutable currLocationOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.LocationAttribKey.KeyValue then 
+                currLocationOpt <- ValueSome (kvp.Value :?> System.Uri)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.LocationAttribKey.KeyValue then 
+                    prevLocationOpt <- ValueSome (kvp.Value :?> System.Uri)
+        match prevLocationOpt, currLocationOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Location <-  currValue
+        | ValueSome _, ValueNone -> target.Location <- null
+        | ValueNone, ValueNone -> ()
+
+    static member inline ConstructShellNavigationState(?location: System.Uri) = 
+
+        let attribBuilder = ViewBuilders.BuildShellNavigationState(0,
+                               ?location=location)
+
+        ViewElement.Create<Xamarin.Forms.ShellNavigationState>(ViewBuilders.CreateFuncShellNavigationState, ViewBuilders.UpdateFuncShellNavigationState, attribBuilder)
+
+    /// Builds the attributes for a ShellContent in the view
+    static member inline BuildShellContent(attribCount: int,
+                                           ?content: ViewElement,
+                                           ?menuItems: seq<ViewElement>,
+                                           ?classId: string,
+                                           ?styleId: string,
+                                           ?automationId: string,
+                                           ?created: obj -> unit,
+                                           ?ref: ViewRef) = 
+
+        let attribCount = match content with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match menuItems with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = ViewBuilders.BuildElement(attribCount, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        match content with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ContentAttribKey, (v)) 
+        match menuItems with None -> () | Some v -> attribBuilder.Add(ViewAttributes.MenuItemsAttribKey, (v)) 
+        attribBuilder
+
+    static member val CreateFuncShellContent : (unit -> Xamarin.Forms.ShellContent) = (fun () -> ViewBuilders.CreateShellContent()) with get, set
+
+    static member CreateShellContent () : Xamarin.Forms.ShellContent =
+        upcast (new Xamarin.Forms.ShellContent())
+
+    static member val UpdateFuncShellContent =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.ShellContent) -> ViewBuilders.UpdateShellContent (prevOpt, curr, target)) 
+
+    static member UpdateShellContent (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.ShellContent) = 
+        // update the inherited Element element
+        let baseElement = (if ViewProto.ProtoElement.IsNone then ViewProto.ProtoElement <- Some (ViewBuilders.ConstructElement())); ViewProto.ProtoElement.Value
+        baseElement.UpdateInherited (prevOpt, curr, target)
+        let mutable prevContentOpt = ValueNone
+        let mutable currContentOpt = ValueNone
+        let mutable prevMenuItemsOpt = ValueNone
+        let mutable currMenuItemsOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.ContentAttribKey.KeyValue then 
+                currContentOpt <- ValueSome (kvp.Value :?> System.Object)
+            if kvp.Key = ViewAttributes.MenuItemsAttribKey.KeyValue then 
+                currMenuItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.ContentAttribKey.KeyValue then 
+                    prevContentOpt <- ValueSome (kvp.Value :?> System.Object)
+                if kvp.Key = ViewAttributes.MenuItemsAttribKey.KeyValue then 
+                    prevMenuItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
+        match prevContentOpt, currContentOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Content <-  currValue
+        | ValueSome _, ValueNone -> target.Content <- null
+        | ValueNone, ValueNone -> ()
+        updateMenuItemsShellContent prevMenuItemsOpt currMenuItemsOpt target
+
+    static member inline ConstructShellContent(?content: ViewElement,
+                                               ?menuItems: seq<ViewElement>,
+                                               ?classId: string,
+                                               ?styleId: string,
+                                               ?automationId: string,
+                                               ?created: (Xamarin.Forms.ShellContent -> unit),
+                                               ?ref: ViewRef<Xamarin.Forms.ShellContent>) = 
+
+        let attribBuilder = ViewBuilders.BuildShellContent(0,
+                               ?content=content,
+                               ?menuItems=menuItems,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ShellContent> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ShellContent>) -> Some ref.Unbox))
+
+        ViewElement.Create<Xamarin.Forms.ShellContent>(ViewBuilders.CreateFuncShellContent, ViewBuilders.UpdateFuncShellContent, attribBuilder)
+
+    /// Builds the attributes for a ShellItem in the view
+    static member inline BuildShellItem(attribCount: int,
+                                        ?currentItem: ViewElement,
+                                        ?items: seq<ViewElement>,
+                                        ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions,
+                                        ?classId: string,
+                                        ?styleId: string,
+                                        ?automationId: string,
+                                        ?created: obj -> unit,
+                                        ?ref: ViewRef) = 
+
+        let attribCount = match currentItem with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match items with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = ViewBuilders.BuildShellGroupItem(attribCount, ?flyoutDisplayOptions=flyoutDisplayOptions, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        match currentItem with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CurrentItemAttribKey, (v)) 
+        match items with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ItemsAttribKey, (v)) 
+        attribBuilder
+
+    static member val CreateFuncShellItem : (unit -> Xamarin.Forms.ShellItem) = (fun () -> ViewBuilders.CreateShellItem()) with get, set
+
+    static member CreateShellItem () : Xamarin.Forms.ShellItem =
+        upcast (new Xamarin.Forms.ShellItem())
+
+    static member val UpdateFuncShellItem =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.ShellItem) -> ViewBuilders.UpdateShellItem (prevOpt, curr, target)) 
+
+    static member UpdateShellItem (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.ShellItem) = 
+        // update the inherited ShellGroupItem element
+        let baseElement = (if ViewProto.ProtoShellGroupItem.IsNone then ViewProto.ProtoShellGroupItem <- Some (ViewBuilders.ConstructShellGroupItem())); ViewProto.ProtoShellGroupItem.Value
+        baseElement.UpdateInherited (prevOpt, curr, target)
+        let mutable prevCurrentItemOpt = ValueNone
+        let mutable currCurrentItemOpt = ValueNone
+        let mutable prevItemsOpt = ValueNone
+        let mutable currItemsOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.CurrentItemAttribKey.KeyValue then 
+                currCurrentItemOpt <- ValueSome (kvp.Value :?> ViewElement)
+            if kvp.Key = ViewAttributes.ItemsAttribKey.KeyValue then 
+                currItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.CurrentItemAttribKey.KeyValue then 
+                    prevCurrentItemOpt <- ValueSome (kvp.Value :?> ViewElement)
+                if kvp.Key = ViewAttributes.ItemsAttribKey.KeyValue then 
+                    prevItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
+        match prevCurrentItemOpt, currCurrentItemOpt with
+        // For structured objects, dependsOn on reference equality
+        | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()
+        | ValueSome prevValue, ValueSome newValue when canReuseChild prevValue newValue ->
+            newValue.UpdateIncremental(prevValue, target.CurrentItem)
+        | _, ValueSome newValue ->
+            target.CurrentItem <- (newValue.Create() :?> Xamarin.Forms.ShellSection)
+        | ValueSome _, ValueNone ->
+            target.CurrentItem <- null
+        | ValueNone, ValueNone -> ()
+        updateShellItemItems prevItemsOpt currItemsOpt target
+
+    static member inline ConstructShellItem(?currentItem: ViewElement,
+                                            ?items: seq<ViewElement>,
+                                            ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions,
+                                            ?classId: string,
+                                            ?styleId: string,
+                                            ?automationId: string,
+                                            ?created: (Xamarin.Forms.ShellItem -> unit),
+                                            ?ref: ViewRef<Xamarin.Forms.ShellItem>) = 
+
+        let attribBuilder = ViewBuilders.BuildShellItem(0,
+                               ?currentItem=currentItem,
+                               ?items=items,
+                               ?flyoutDisplayOptions=flyoutDisplayOptions,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ShellItem> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ShellItem>) -> Some ref.Unbox))
+
+        ViewElement.Create<Xamarin.Forms.ShellItem>(ViewBuilders.CreateFuncShellItem, ViewBuilders.UpdateFuncShellItem, attribBuilder)
+
+    /// Builds the attributes for a ShellSection in the view
+    static member inline BuildShellSection(attribCount: int,
+                                           ?currentItem: ViewElement,
+                                           ?goToAsync: string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind,
+                                           ?items: seq<ViewElement>,
+                                           ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions,
+                                           ?classId: string,
+                                           ?styleId: string,
+                                           ?automationId: string,
+                                           ?created: obj -> unit,
+                                           ?ref: ViewRef) = 
+
+        let attribCount = match currentItem with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match goToAsync with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match items with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = ViewBuilders.BuildShellGroupItem(attribCount, ?flyoutDisplayOptions=flyoutDisplayOptions, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        match currentItem with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CurrentItemAttribKey, (v)) 
+        match goToAsync with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ssGoToAsyncAttribKey, (v)) 
+        match items with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ItemsAttribKey, (v)) 
+        attribBuilder
+
+    static member val CreateFuncShellSection : (unit -> Xamarin.Forms.ShellSection) = (fun () -> ViewBuilders.CreateShellSection()) with get, set
+
+    static member CreateShellSection () : Xamarin.Forms.ShellSection =
+        upcast (new Xamarin.Forms.ShellSection())
+
+    static member val UpdateFuncShellSection =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.ShellSection) -> ViewBuilders.UpdateShellSection (prevOpt, curr, target)) 
+
+    static member UpdateShellSection (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.ShellSection) = 
+        // update the inherited ShellGroupItem element
+        let baseElement = (if ViewProto.ProtoShellGroupItem.IsNone then ViewProto.ProtoShellGroupItem <- Some (ViewBuilders.ConstructShellGroupItem())); ViewProto.ProtoShellGroupItem.Value
+        baseElement.UpdateInherited (prevOpt, curr, target)
+        let mutable prevCurrentItemOpt = ValueNone
+        let mutable currCurrentItemOpt = ValueNone
+        let mutable prevssGoToAsyncOpt = ValueNone
+        let mutable currssGoToAsyncOpt = ValueNone
+        let mutable prevItemsOpt = ValueNone
+        let mutable currItemsOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.CurrentItemAttribKey.KeyValue then 
+                currCurrentItemOpt <- ValueSome (kvp.Value :?> ViewElement)
+            if kvp.Key = ViewAttributes.ssGoToAsyncAttribKey.KeyValue then 
+                currssGoToAsyncOpt <- ValueSome (kvp.Value :?> string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind)
+            if kvp.Key = ViewAttributes.ItemsAttribKey.KeyValue then 
+                currItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.CurrentItemAttribKey.KeyValue then 
+                    prevCurrentItemOpt <- ValueSome (kvp.Value :?> ViewElement)
+                if kvp.Key = ViewAttributes.ssGoToAsyncAttribKey.KeyValue then 
+                    prevssGoToAsyncOpt <- ValueSome (kvp.Value :?> string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind)
+                if kvp.Key = ViewAttributes.ItemsAttribKey.KeyValue then 
+                    prevItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
+        match prevCurrentItemOpt, currCurrentItemOpt with
+        // For structured objects, dependsOn on reference equality
+        | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()
+        | ValueSome prevValue, ValueSome newValue when canReuseChild prevValue newValue ->
+            newValue.UpdateIncremental(prevValue, target.CurrentItem)
+        | _, ValueSome newValue ->
+            target.CurrentItem <- (newValue.Create() :?> Xamarin.Forms.ShellContent)
+        | ValueSome _, ValueNone ->
+            target.CurrentItem <- null
+        | ValueNone, ValueNone -> ()
+        (fun _ curr target -> triggerSSGoToAsync curr target) prevssGoToAsyncOpt currssGoToAsyncOpt target
+        updateShellSectionItems prevItemsOpt currItemsOpt target
+
+    static member inline ConstructShellSection(?currentItem: ViewElement,
+                                               ?goToAsync: string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind,
+                                               ?items: seq<ViewElement>,
+                                               ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions,
+                                               ?classId: string,
+                                               ?styleId: string,
+                                               ?automationId: string,
+                                               ?created: (Xamarin.Forms.ShellSection -> unit),
+                                               ?ref: ViewRef<Xamarin.Forms.ShellSection>) = 
+
+        let attribBuilder = ViewBuilders.BuildShellSection(0,
+                               ?currentItem=currentItem,
+                               ?goToAsync=goToAsync,
+                               ?items=items,
+                               ?flyoutDisplayOptions=flyoutDisplayOptions,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.ShellSection> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.ShellSection>) -> Some ref.Unbox))
+
+        ViewElement.Create<Xamarin.Forms.ShellSection>(ViewBuilders.CreateFuncShellSection, ViewBuilders.UpdateFuncShellSection, attribBuilder)
+
+    /// Builds the attributes for a CarouselView in the view
+    static member inline BuildCarouselView(attribCount: int,
+                                           ?items: seq<ViewElement>,
+                                           ?emptyView: System.Object,
+                                           ?itemsLayout: Xamarin.Forms.IItemsLayout,
+                                           ?itemsSource: System.Collections.IEnumerable,
+                                           ?itemSizingStrategy: Xamarin.Forms.ItemSizingStrategy,
+                                           ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
+                                           ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
+                                           ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                           ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                           ?margin: obj,
+                                           ?gestureRecognizers: ViewElement list,
+                                           ?anchorX: double,
+                                           ?anchorY: double,
+                                           ?backgroundColor: Xamarin.Forms.Color,
+                                           ?heightRequest: double,
+                                           ?inputTransparent: bool,
+                                           ?isEnabled: bool,
+                                           ?isVisible: bool,
+                                           ?minimumHeightRequest: double,
+                                           ?minimumWidthRequest: double,
+                                           ?opacity: double,
+                                           ?rotation: double,
+                                           ?rotationX: double,
+                                           ?rotationY: double,
+                                           ?scale: double,
+                                           ?style: Xamarin.Forms.Style,
+                                           ?styleClass: obj,
+                                           ?translationX: double,
+                                           ?translationY: double,
+                                           ?widthRequest: double,
+                                           ?resources: (string * obj) list,
+                                           ?styles: Xamarin.Forms.Style list,
+                                           ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                           ?isTabStop: bool,
+                                           ?scaleX: double,
+                                           ?scaleY: double,
+                                           ?tabIndex: int,
+                                           ?childrenReordered: System.EventArgs -> unit,
+                                           ?measureInvalidated: System.EventArgs -> unit,
+                                           ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                           ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                                           ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                           ?visual: Xamarin.Forms.IVisual,
+                                           ?classId: string,
+                                           ?styleId: string,
+                                           ?automationId: string,
+                                           ?created: obj -> unit,
+                                           ?ref: ViewRef) = 
+
+        let attribCount = match items with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = ViewBuilders.BuildItemsView(attribCount, ?emptyView=emptyView, ?itemsLayout=itemsLayout, ?itemsSource=itemsSource, ?itemSizingStrategy=itemSizingStrategy, ?scrollToRequested=scrollToRequested, ?scrollTo=scrollTo, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        match items with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CarouselViewItemsAttribKey, (v)) 
+        attribBuilder
+
+    static member val CreateFuncCarouselView : (unit -> Xamarin.Forms.CarouselView) = (fun () -> ViewBuilders.CreateCarouselView()) with get, set
+
+    static member CreateCarouselView () : Xamarin.Forms.CarouselView =
+        upcast (new Fabulous.DynamicViews.CustomCarouselView())
+
+    static member val UpdateFuncCarouselView =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.CarouselView) -> ViewBuilders.UpdateCarouselView (prevOpt, curr, target)) 
+
+    static member UpdateCarouselView (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.CarouselView) = 
+        // update the inherited ItemsView element
+        let baseElement = (if ViewProto.ProtoItemsView.IsNone then ViewProto.ProtoItemsView <- Some (ViewBuilders.ConstructItemsView())); ViewProto.ProtoItemsView.Value
+        baseElement.UpdateInherited (prevOpt, curr, target)
+        let mutable prevCarouselViewItemsOpt = ValueNone
+        let mutable currCarouselViewItemsOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.CarouselViewItemsAttribKey.KeyValue then 
+                currCarouselViewItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.CarouselViewItemsAttribKey.KeyValue then 
+                    prevCarouselViewItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
+        updateCarouselViewItems prevCarouselViewItemsOpt currCarouselViewItemsOpt target
+
+    static member inline ConstructCarouselView(?items: seq<ViewElement>,
+                                               ?emptyView: System.Object,
+                                               ?itemsLayout: Xamarin.Forms.IItemsLayout,
+                                               ?itemsSource: System.Collections.IEnumerable,
+                                               ?itemSizingStrategy: Xamarin.Forms.ItemSizingStrategy,
+                                               ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
+                                               ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
+                                               ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                               ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                               ?margin: obj,
+                                               ?gestureRecognizers: ViewElement list,
+                                               ?anchorX: double,
+                                               ?anchorY: double,
+                                               ?backgroundColor: Xamarin.Forms.Color,
+                                               ?heightRequest: double,
+                                               ?inputTransparent: bool,
+                                               ?isEnabled: bool,
+                                               ?isVisible: bool,
+                                               ?minimumHeightRequest: double,
+                                               ?minimumWidthRequest: double,
+                                               ?opacity: double,
+                                               ?rotation: double,
+                                               ?rotationX: double,
+                                               ?rotationY: double,
+                                               ?scale: double,
+                                               ?style: Xamarin.Forms.Style,
+                                               ?styleClass: obj,
+                                               ?translationX: double,
+                                               ?translationY: double,
+                                               ?widthRequest: double,
+                                               ?resources: (string * obj) list,
+                                               ?styles: Xamarin.Forms.Style list,
+                                               ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                               ?isTabStop: bool,
+                                               ?scaleX: double,
+                                               ?scaleY: double,
+                                               ?tabIndex: int,
+                                               ?childrenReordered: System.EventArgs -> unit,
+                                               ?measureInvalidated: System.EventArgs -> unit,
+                                               ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                               ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                                               ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                               ?visual: Xamarin.Forms.IVisual,
+                                               ?classId: string,
+                                               ?styleId: string,
+                                               ?automationId: string,
+                                               ?created: (Xamarin.Forms.CarouselView -> unit),
+                                               ?ref: ViewRef<Xamarin.Forms.CarouselView>) = 
+
+        let attribBuilder = ViewBuilders.BuildCarouselView(0,
+                               ?items=items,
+                               ?emptyView=emptyView,
+                               ?itemsLayout=itemsLayout,
+                               ?itemsSource=itemsSource,
+                               ?itemSizingStrategy=itemSizingStrategy,
+                               ?scrollToRequested=scrollToRequested,
+                               ?scrollTo=scrollTo,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?isTabStop=isTabStop,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
+                               ?visual=visual,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.CarouselView> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.CarouselView>) -> Some ref.Unbox))
+
+        ViewElement.Create<Xamarin.Forms.CarouselView>(ViewBuilders.CreateFuncCarouselView, ViewBuilders.UpdateFuncCarouselView, attribBuilder)
+
+    /// Builds the attributes for a CollectionView in the view
+    static member inline BuildCollectionView(attribCount: int,
+                                             ?items: seq<ViewElement>,
+                                             ?selectedItem: System.Object,
+                                             ?selectionChangedCommand: unit -> unit,
+                                             ?selectionChangedCommandParameter: System.Object,
+                                             ?selectionMode: Xamarin.Forms.SelectionMode,
+                                             ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit,
+                                             ?emptyView: System.Object,
+                                             ?itemsLayout: Xamarin.Forms.IItemsLayout,
+                                             ?itemsSource: System.Collections.IEnumerable,
+                                             ?itemSizingStrategy: Xamarin.Forms.ItemSizingStrategy,
+                                             ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
+                                             ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
+                                             ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                             ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                             ?margin: obj,
+                                             ?gestureRecognizers: ViewElement list,
+                                             ?anchorX: double,
+                                             ?anchorY: double,
+                                             ?backgroundColor: Xamarin.Forms.Color,
+                                             ?heightRequest: double,
+                                             ?inputTransparent: bool,
+                                             ?isEnabled: bool,
+                                             ?isVisible: bool,
+                                             ?minimumHeightRequest: double,
+                                             ?minimumWidthRequest: double,
+                                             ?opacity: double,
+                                             ?rotation: double,
+                                             ?rotationX: double,
+                                             ?rotationY: double,
+                                             ?scale: double,
+                                             ?style: Xamarin.Forms.Style,
+                                             ?styleClass: obj,
+                                             ?translationX: double,
+                                             ?translationY: double,
+                                             ?widthRequest: double,
+                                             ?resources: (string * obj) list,
+                                             ?styles: Xamarin.Forms.Style list,
+                                             ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                             ?isTabStop: bool,
+                                             ?scaleX: double,
+                                             ?scaleY: double,
+                                             ?tabIndex: int,
+                                             ?childrenReordered: System.EventArgs -> unit,
+                                             ?measureInvalidated: System.EventArgs -> unit,
+                                             ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                             ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                                             ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                             ?visual: Xamarin.Forms.IVisual,
+                                             ?classId: string,
+                                             ?styleId: string,
+                                             ?automationId: string,
+                                             ?created: obj -> unit,
+                                             ?ref: ViewRef) = 
+
+        let attribCount = match items with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = ViewBuilders.BuildSelectableItemsView(attribCount, ?selectedItem=selectedItem, ?selectionChangedCommand=selectionChangedCommand, ?selectionChangedCommandParameter=selectionChangedCommandParameter, ?selectionMode=selectionMode, ?selectionChanged=selectionChanged, ?emptyView=emptyView, ?itemsLayout=itemsLayout, ?itemsSource=itemsSource, ?itemSizingStrategy=itemSizingStrategy, ?scrollToRequested=scrollToRequested, ?scrollTo=scrollTo, ?horizontalOptions=horizontalOptions, ?verticalOptions=verticalOptions, ?margin=margin, ?gestureRecognizers=gestureRecognizers, ?anchorX=anchorX, ?anchorY=anchorY, ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest, ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, ?styleClass=styleClass, ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?isTabStop=isTabStop, ?scaleX=scaleX, ?scaleY=scaleY, ?tabIndex=tabIndex, ?childrenReordered=childrenReordered, ?measureInvalidated=measureInvalidated, ?focused=focused, ?sizeChanged=sizeChanged, ?unfocused=unfocused, ?visual=visual, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        match items with None -> () | Some v -> attribBuilder.Add(ViewAttributes.CollectionViewItemsAttribKey, (v)) 
+        attribBuilder
+
+    static member val CreateFuncCollectionView : (unit -> Xamarin.Forms.CollectionView) = (fun () -> ViewBuilders.CreateCollectionView()) with get, set
+
+    static member CreateCollectionView () : Xamarin.Forms.CollectionView =
+        upcast (new Fabulous.DynamicViews.CustomCollectionListView())
+
+    static member val UpdateFuncCollectionView =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.CollectionView) -> ViewBuilders.UpdateCollectionView (prevOpt, curr, target)) 
+
+    static member UpdateCollectionView (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.CollectionView) = 
+        // update the inherited SelectableItemsView element
+        let baseElement = (if ViewProto.ProtoSelectableItemsView.IsNone then ViewProto.ProtoSelectableItemsView <- Some (ViewBuilders.ConstructSelectableItemsView())); ViewProto.ProtoSelectableItemsView.Value
+        baseElement.UpdateInherited (prevOpt, curr, target)
+        let mutable prevCollectionViewItemsOpt = ValueNone
+        let mutable currCollectionViewItemsOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.CollectionViewItemsAttribKey.KeyValue then 
+                currCollectionViewItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.CollectionViewItemsAttribKey.KeyValue then 
+                    prevCollectionViewItemsOpt <- ValueSome (kvp.Value :?> seq<ViewElement>)
+        updateCollectionViewItems prevCollectionViewItemsOpt currCollectionViewItemsOpt target
+
+    static member inline ConstructCollectionView(?items: seq<ViewElement>,
+                                                 ?selectedItem: System.Object,
+                                                 ?selectionChangedCommand: unit -> unit,
+                                                 ?selectionChangedCommandParameter: System.Object,
+                                                 ?selectionMode: Xamarin.Forms.SelectionMode,
+                                                 ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit,
+                                                 ?emptyView: System.Object,
+                                                 ?itemsLayout: Xamarin.Forms.IItemsLayout,
+                                                 ?itemsSource: System.Collections.IEnumerable,
+                                                 ?itemSizingStrategy: Xamarin.Forms.ItemSizingStrategy,
+                                                 ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
+                                                 ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
+                                                 ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                                 ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                                 ?margin: obj,
+                                                 ?gestureRecognizers: ViewElement list,
+                                                 ?anchorX: double,
+                                                 ?anchorY: double,
+                                                 ?backgroundColor: Xamarin.Forms.Color,
+                                                 ?heightRequest: double,
+                                                 ?inputTransparent: bool,
+                                                 ?isEnabled: bool,
+                                                 ?isVisible: bool,
+                                                 ?minimumHeightRequest: double,
+                                                 ?minimumWidthRequest: double,
+                                                 ?opacity: double,
+                                                 ?rotation: double,
+                                                 ?rotationX: double,
+                                                 ?rotationY: double,
+                                                 ?scale: double,
+                                                 ?style: Xamarin.Forms.Style,
+                                                 ?styleClass: obj,
+                                                 ?translationX: double,
+                                                 ?translationY: double,
+                                                 ?widthRequest: double,
+                                                 ?resources: (string * obj) list,
+                                                 ?styles: Xamarin.Forms.Style list,
+                                                 ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                                 ?isTabStop: bool,
+                                                 ?scaleX: double,
+                                                 ?scaleY: double,
+                                                 ?tabIndex: int,
+                                                 ?childrenReordered: System.EventArgs -> unit,
+                                                 ?measureInvalidated: System.EventArgs -> unit,
+                                                 ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                 ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                                                 ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                                 ?visual: Xamarin.Forms.IVisual,
+                                                 ?classId: string,
+                                                 ?styleId: string,
+                                                 ?automationId: string,
+                                                 ?created: (Xamarin.Forms.CollectionView -> unit),
+                                                 ?ref: ViewRef<Xamarin.Forms.CollectionView>) = 
+
+        let attribBuilder = ViewBuilders.BuildCollectionView(0,
+                               ?items=items,
+                               ?selectedItem=selectedItem,
+                               ?selectionChangedCommand=selectionChangedCommand,
+                               ?selectionChangedCommandParameter=selectionChangedCommandParameter,
+                               ?selectionMode=selectionMode,
+                               ?selectionChanged=selectionChanged,
+                               ?emptyView=emptyView,
+                               ?itemsLayout=itemsLayout,
+                               ?itemsSource=itemsSource,
+                               ?itemSizingStrategy=itemSizingStrategy,
+                               ?scrollToRequested=scrollToRequested,
+                               ?scrollTo=scrollTo,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?isTabStop=isTabStop,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
+                               ?visual=visual,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.CollectionView> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.CollectionView>) -> Some ref.Unbox))
+
+        ViewElement.Create<Xamarin.Forms.CollectionView>(ViewBuilders.CreateFuncCollectionView, ViewBuilders.UpdateFuncCollectionView, attribBuilder)
+
+    /// Builds the attributes for a FontImageSource in the view
+    static member inline BuildFontImageSource(attribCount: int,
+                                              ?color: Xamarin.Forms.Color,
+                                              ?fontFamily: string,
+                                              ?glyph: string,
+                                              ?size: float,
+                                              ?classId: string,
+                                              ?styleId: string,
+                                              ?automationId: string,
+                                              ?created: obj -> unit,
+                                              ?ref: ViewRef) = 
+
+        let attribCount = match color with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match fontFamily with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match glyph with Some _ -> attribCount + 1 | None -> attribCount
+        let attribCount = match size with Some _ -> attribCount + 1 | None -> attribCount
+
+        let attribBuilder = ViewBuilders.BuildElement(attribCount, ?classId=classId, ?styleId=styleId, ?automationId=automationId, ?created=created, ?ref=ref)
+        match color with None -> () | Some v -> attribBuilder.Add(ViewAttributes.ColorAttribKey, (v)) 
+        match fontFamily with None -> () | Some v -> attribBuilder.Add(ViewAttributes.FontFamilyAttribKey, (v)) 
+        match glyph with None -> () | Some v -> attribBuilder.Add(ViewAttributes.GlyphAttribKey, (v)) 
+        match size with None -> () | Some v -> attribBuilder.Add(ViewAttributes.SizeAttribKey, (v)) 
+        attribBuilder
+
+    static member val CreateFuncFontImageSource : (unit -> Xamarin.Forms.FontImageSource) = (fun () -> ViewBuilders.CreateFontImageSource()) with get, set
+
+    static member CreateFontImageSource () : Xamarin.Forms.FontImageSource =
+        upcast (new Xamarin.Forms.FontImageSource())
+
+    static member val UpdateFuncFontImageSource =
+        (fun (prevOpt: ViewElement voption) (curr: ViewElement) (target: Xamarin.Forms.FontImageSource) -> ViewBuilders.UpdateFontImageSource (prevOpt, curr, target)) 
+
+    static member UpdateFontImageSource (prevOpt: ViewElement voption, curr: ViewElement, target: Xamarin.Forms.FontImageSource) = 
+        // update the inherited Element element
+        let baseElement = (if ViewProto.ProtoElement.IsNone then ViewProto.ProtoElement <- Some (ViewBuilders.ConstructElement())); ViewProto.ProtoElement.Value
+        baseElement.UpdateInherited (prevOpt, curr, target)
+        let mutable prevColorOpt = ValueNone
+        let mutable currColorOpt = ValueNone
+        let mutable prevFontFamilyOpt = ValueNone
+        let mutable currFontFamilyOpt = ValueNone
+        let mutable prevGlyphOpt = ValueNone
+        let mutable currGlyphOpt = ValueNone
+        let mutable prevSizeOpt = ValueNone
+        let mutable currSizeOpt = ValueNone
+        for kvp in curr.AttributesKeyed do
+            if kvp.Key = ViewAttributes.ColorAttribKey.KeyValue then 
+                currColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
+            if kvp.Key = ViewAttributes.FontFamilyAttribKey.KeyValue then 
+                currFontFamilyOpt <- ValueSome (kvp.Value :?> string)
+            if kvp.Key = ViewAttributes.GlyphAttribKey.KeyValue then 
+                currGlyphOpt <- ValueSome (kvp.Value :?> string)
+            if kvp.Key = ViewAttributes.SizeAttribKey.KeyValue then 
+                currSizeOpt <- ValueSome (kvp.Value :?> float)
+        match prevOpt with
+        | ValueNone -> ()
+        | ValueSome prev ->
+            for kvp in prev.AttributesKeyed do
+                if kvp.Key = ViewAttributes.ColorAttribKey.KeyValue then 
+                    prevColorOpt <- ValueSome (kvp.Value :?> Xamarin.Forms.Color)
+                if kvp.Key = ViewAttributes.FontFamilyAttribKey.KeyValue then 
+                    prevFontFamilyOpt <- ValueSome (kvp.Value :?> string)
+                if kvp.Key = ViewAttributes.GlyphAttribKey.KeyValue then 
+                    prevGlyphOpt <- ValueSome (kvp.Value :?> string)
+                if kvp.Key = ViewAttributes.SizeAttribKey.KeyValue then 
+                    prevSizeOpt <- ValueSome (kvp.Value :?> float)
+        match prevColorOpt, currColorOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Color <-  currValue
+        | ValueSome _, ValueNone -> target.Color <- Xamarin.Forms.Color.Default
+        | ValueNone, ValueNone -> ()
+        match prevFontFamilyOpt, currFontFamilyOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.FontFamily <-  currValue
+        | ValueSome _, ValueNone -> target.FontFamily <- null
+        | ValueNone, ValueNone -> ()
+        match prevGlyphOpt, currGlyphOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Glyph <-  currValue
+        | ValueSome _, ValueNone -> target.Glyph <- null
+        | ValueNone, ValueNone -> ()
+        match prevSizeOpt, currSizeOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | _, ValueSome currValue -> target.Size <-  currValue
+        | ValueSome _, ValueNone -> target.Size <- 30.
+        | ValueNone, ValueNone -> ()
+
+    static member inline ConstructFontImageSource(?color: Xamarin.Forms.Color,
+                                                  ?fontFamily: string,
+                                                  ?glyph: string,
+                                                  ?size: float,
+                                                  ?classId: string,
+                                                  ?styleId: string,
+                                                  ?automationId: string,
+                                                  ?created: (Xamarin.Forms.FontImageSource -> unit),
+                                                  ?ref: ViewRef<Xamarin.Forms.FontImageSource>) = 
+
+        let attribBuilder = ViewBuilders.BuildFontImageSource(0,
+                               ?color=color,
+                               ?fontFamily=fontFamily,
+                               ?glyph=glyph,
+                               ?size=size,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=(match created with None -> None | Some createdFunc -> Some (fun (target: obj) ->  createdFunc (unbox<Xamarin.Forms.FontImageSource> target))),
+                               ?ref=(match ref with None -> None | Some (ref: ViewRef<Xamarin.Forms.FontImageSource>) -> Some ref.Unbox))
+
+        ViewElement.Create<Xamarin.Forms.FontImageSource>(ViewBuilders.CreateFuncFontImageSource, ViewBuilders.UpdateFuncFontImageSource, attribBuilder)
 
 /// Viewer that allows to read the properties of a ViewElement representing a Element
 type ElementViewer(element: ViewElement) =
@@ -12224,6 +14792,8 @@ type VisualElementViewer(element: ViewElement) =
     member this.SizeChanged = element.GetAttributeKeyed(ViewAttributes.SizeChangedAttribKey)
     /// Get the value of the Unfocused property
     member this.Unfocused = element.GetAttributeKeyed(ViewAttributes.UnfocusedAttribKey)
+    /// Get the value of the Visual property
+    member this.Visual = element.GetAttributeKeyed(ViewAttributes.VisualAttribKey)
 
 /// Viewer that allows to read the properties of a ViewElement representing a View
 type ViewViewer(element: ViewElement) =
@@ -12343,35 +14913,8 @@ type ScrollViewViewer(element: ViewElement) =
     member this.ScrollTo = element.GetAttributeKeyed(ViewAttributes.ScrollToAttribKey)
     /// Get the value of the Scrolled property
     member this.Scrolled = element.GetAttributeKeyed(ViewAttributes.ScrolledAttribKey)
-
-/// Viewer that allows to read the properties of a ViewElement representing a SearchBar
-type SearchBarViewer(element: ViewElement) =
-    inherit ViewViewer(element)
-    do if not ((typeof<Xamarin.Forms.SearchBar>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.SearchBar' is expected, but '%s' was provided." element.TargetType.FullName
-    /// Get the value of the CancelButtonColor property
-    member this.CancelButtonColor = element.GetAttributeKeyed(ViewAttributes.CancelButtonColorAttribKey)
-    /// Get the value of the FontFamily property
-    member this.FontFamily = element.GetAttributeKeyed(ViewAttributes.FontFamilyAttribKey)
-    /// Get the value of the FontAttributes property
-    member this.FontAttributes = element.GetAttributeKeyed(ViewAttributes.FontAttributesAttribKey)
-    /// Get the value of the FontSize property
-    member this.FontSize = element.GetAttributeKeyed(ViewAttributes.FontSizeAttribKey)
-    /// Get the value of the HorizontalTextAlignment property
-    member this.HorizontalTextAlignment = element.GetAttributeKeyed(ViewAttributes.HorizontalTextAlignmentAttribKey)
-    /// Get the value of the Placeholder property
-    member this.Placeholder = element.GetAttributeKeyed(ViewAttributes.PlaceholderAttribKey)
-    /// Get the value of the PlaceholderColor property
-    member this.PlaceholderColor = element.GetAttributeKeyed(ViewAttributes.PlaceholderColorAttribKey)
-    /// Get the value of the SearchCommand property
-    member this.SearchCommand = element.GetAttributeKeyed(ViewAttributes.SearchBarCommandAttribKey)
-    /// Get the value of the CanExecute property
-    member this.CanExecute = element.GetAttributeKeyed(ViewAttributes.SearchBarCanExecuteAttribKey)
-    /// Get the value of the Text property
-    member this.Text = element.GetAttributeKeyed(ViewAttributes.TextAttribKey)
-    /// Get the value of the TextColor property
-    member this.TextColor = element.GetAttributeKeyed(ViewAttributes.TextColorAttribKey)
-    /// Get the value of the TextChanged property
-    member this.TextChanged = element.GetAttributeKeyed(ViewAttributes.SearchBarTextChangedAttribKey)
+    /// Get the value of the LayoutAreaOverride property
+    member this.LayoutAreaOverride = element.GetAttributeKeyed(ViewAttributes.LayoutAreaOverrideAttribKey)
 
 /// Viewer that allows to read the properties of a ViewElement representing a Button
 type ButtonViewer(element: ViewElement) =
@@ -12387,8 +14930,6 @@ type ButtonViewer(element: ViewElement) =
     member this.BorderColor = element.GetAttributeKeyed(ViewAttributes.BorderColorAttribKey)
     /// Get the value of the BorderWidth property
     member this.BorderWidth = element.GetAttributeKeyed(ViewAttributes.BorderWidthAttribKey)
-    /// Get the value of the CommandParameter property
-    member this.CommandParameter = element.GetAttributeKeyed(ViewAttributes.CommandParameterAttribKey)
     /// Get the value of the ContentLayout property
     member this.ContentLayout = element.GetAttributeKeyed(ViewAttributes.ContentLayoutAttribKey)
     /// Get the value of the CornerRadius property
@@ -12416,6 +14957,10 @@ type SliderViewer(element: ViewElement) =
     member this.Value = element.GetAttributeKeyed(ViewAttributes.ValueAttribKey)
     /// Get the value of the ValueChanged property
     member this.ValueChanged = element.GetAttributeKeyed(ViewAttributes.ValueChangedAttribKey)
+    /// Get the value of the DragCompleted property
+    member this.DragCompleted = element.GetAttributeKeyed(ViewAttributes.DragCompletedAttribKey)
+    /// Get the value of the DragStarted property
+    member this.DragStarted = element.GetAttributeKeyed(ViewAttributes.DragStartedAttribKey)
 
 /// Viewer that allows to read the properties of a ViewElement representing a Stepper
 type StepperViewer(element: ViewElement) =
@@ -12460,6 +15005,8 @@ type SwitchCellViewer(element: ViewElement) =
     member this.Text = element.GetAttributeKeyed(ViewAttributes.TextAttribKey)
     /// Get the value of the OnChanged property
     member this.OnChanged = element.GetAttributeKeyed(ViewAttributes.OnChangedAttribKey)
+    /// Get the value of the OnColor property
+    member this.OnColor = element.GetAttributeKeyed(ViewAttributes.OnColorAttribKey)
 
 /// Viewer that allows to read the properties of a ViewElement representing a TableView
 type TableViewViewer(element: ViewElement) =
@@ -12571,6 +15118,8 @@ type PickerViewer(element: ViewElement) =
     member this.SelectedIndex = element.GetAttributeKeyed(ViewAttributes.SelectedIndexAttribKey)
     /// Get the value of the Title property
     member this.Title = element.GetAttributeKeyed(ViewAttributes.TitleAttribKey)
+    /// Get the value of the TitleColor property
+    member this.TitleColor = element.GetAttributeKeyed(ViewAttributes.TitleColorAttribKey)
     /// Get the value of the TextColor property
     member this.TextColor = element.GetAttributeKeyed(ViewAttributes.TextColorAttribKey)
     /// Get the value of the SelectedIndexChanged property
@@ -12631,6 +15180,37 @@ type InputViewViewer(element: ViewElement) =
     do if not ((typeof<Xamarin.Forms.InputView>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.InputView' is expected, but '%s' was provided." element.TargetType.FullName
     /// Get the value of the Keyboard property
     member this.Keyboard = element.GetAttributeKeyed(ViewAttributes.KeyboardAttribKey)
+    /// Get the value of the IsReadOnly property
+    member this.IsReadOnly = element.GetAttributeKeyed(ViewAttributes.IsReadOnlyAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a SearchBar
+type SearchBarViewer(element: ViewElement) =
+    inherit InputViewViewer(element)
+    do if not ((typeof<Xamarin.Forms.SearchBar>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.SearchBar' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the CancelButtonColor property
+    member this.CancelButtonColor = element.GetAttributeKeyed(ViewAttributes.CancelButtonColorAttribKey)
+    /// Get the value of the FontFamily property
+    member this.FontFamily = element.GetAttributeKeyed(ViewAttributes.FontFamilyAttribKey)
+    /// Get the value of the FontAttributes property
+    member this.FontAttributes = element.GetAttributeKeyed(ViewAttributes.FontAttributesAttribKey)
+    /// Get the value of the FontSize property
+    member this.FontSize = element.GetAttributeKeyed(ViewAttributes.FontSizeAttribKey)
+    /// Get the value of the HorizontalTextAlignment property
+    member this.HorizontalTextAlignment = element.GetAttributeKeyed(ViewAttributes.HorizontalTextAlignmentAttribKey)
+    /// Get the value of the Placeholder property
+    member this.Placeholder = element.GetAttributeKeyed(ViewAttributes.PlaceholderAttribKey)
+    /// Get the value of the PlaceholderColor property
+    member this.PlaceholderColor = element.GetAttributeKeyed(ViewAttributes.PlaceholderColorAttribKey)
+    /// Get the value of the SearchCommand property
+    member this.SearchCommand = element.GetAttributeKeyed(ViewAttributes.SearchBarCommandAttribKey)
+    /// Get the value of the CanExecute property
+    member this.CanExecute = element.GetAttributeKeyed(ViewAttributes.SearchBarCanExecuteAttribKey)
+    /// Get the value of the Text property
+    member this.Text = element.GetAttributeKeyed(ViewAttributes.TextAttribKey)
+    /// Get the value of the TextColor property
+    member this.TextColor = element.GetAttributeKeyed(ViewAttributes.TextColorAttribKey)
+    /// Get the value of the TextChanged property
+    member this.TextChanged = element.GetAttributeKeyed(ViewAttributes.SearchBarTextChangedAttribKey)
 
 /// Viewer that allows to read the properties of a ViewElement representing a Editor
 type EditorViewer(element: ViewElement) =
@@ -12656,6 +15236,8 @@ type EditorViewer(element: ViewElement) =
     member this.Placeholder = element.GetAttributeKeyed(ViewAttributes.PlaceholderAttribKey)
     /// Get the value of the PlaceholderColor property
     member this.PlaceholderColor = element.GetAttributeKeyed(ViewAttributes.PlaceholderColorAttribKey)
+    /// Get the value of the IsTextPredictionEnabled property
+    member this.IsTextPredictionEnabled = element.GetAttributeKeyed(ViewAttributes.IsTextPredictionEnabledAttribKey)
 
 /// Viewer that allows to read the properties of a ViewElement representing a Entry
 type EntryViewer(element: ViewElement) =
@@ -12911,8 +15493,6 @@ type MenuItemViewer(element: ViewElement) =
     member this.Text = element.GetAttributeKeyed(ViewAttributes.TextAttribKey)
     /// Get the value of the Command property
     member this.Command = element.GetAttributeKeyed(ViewAttributes.CommandAttribKey)
-    /// Get the value of the CommandParameter property
-    member this.CommandParameter = element.GetAttributeKeyed(ViewAttributes.CommandParameterAttribKey)
     /// Get the value of the Icon property
     member this.Icon = element.GetAttributeKeyed(ViewAttributes.IconAttribKey)
     /// Get the value of the Accelerator property
@@ -12943,8 +15523,6 @@ type TextCellViewer(element: ViewElement) =
     member this.Command = element.GetAttributeKeyed(ViewAttributes.TextCellCommandAttribKey)
     /// Get the value of the CanExecute property
     member this.CanExecute = element.GetAttributeKeyed(ViewAttributes.TextCellCanExecuteAttribKey)
-    /// Get the value of the CommandParameter property
-    member this.CommandParameter = element.GetAttributeKeyed(ViewAttributes.CommandParameterAttribKey)
 
 /// Viewer that allows to read the properties of a ViewElement representing a ToolbarItem
 type ToolbarItemViewer(element: ViewElement) =
@@ -13011,6 +15589,12 @@ type ListViewViewer(element: ViewElement) =
     member this.Refreshing = element.GetAttributeKeyed(ViewAttributes.ListView_RefreshingAttribKey)
     /// Get the value of the SelectionMode property
     member this.SelectionMode = element.GetAttributeKeyed(ViewAttributes.SelectionModeAttribKey)
+    /// Get the value of the HorizontalScrollBarVisibility property
+    member this.HorizontalScrollBarVisibility = element.GetAttributeKeyed(ViewAttributes.HorizontalScrollBarVisibilityAttribKey)
+    /// Get the value of the VerticalScrollBarVisibility property
+    member this.VerticalScrollBarVisibility = element.GetAttributeKeyed(ViewAttributes.VerticalScrollBarVisibilityAttribKey)
+    /// Get the value of the RefreshControlColor property
+    member this.RefreshControlColor = element.GetAttributeKeyed(ViewAttributes.RefreshControlColorAttribKey)
 
 /// Viewer that allows to read the properties of a ViewElement representing a ListViewGrouped
 type ListViewGroupedViewer(element: ViewElement) =
@@ -13052,6 +15636,206 @@ type ListViewGroupedViewer(element: ViewElement) =
     member this.Refreshing = element.GetAttributeKeyed(ViewAttributes.RefreshingAttribKey)
     /// Get the value of the SelectionMode property
     member this.SelectionMode = element.GetAttributeKeyed(ViewAttributes.SelectionModeAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a BackButtonBehavior
+type BackButtonBehaviorViewer(element: ViewElement) =
+    do if not ((typeof<Xamarin.Forms.BackButtonBehavior>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.BackButtonBehavior' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the TextOverride property
+    member this.TextOverride = element.GetAttributeKeyed(ViewAttributes.TextOverrideAttribKey)
+    /// Get the value of the Command property
+    member this.Command = element.GetAttributeKeyed(ViewAttributes.CommandAttribKey)
+    /// Get the value of the CommandParameter property
+    member this.CommandParameter = element.GetAttributeKeyed(ViewAttributes.CommandParameterAttribKey)
+    /// Get the value of the IconOverride property
+    member this.IconOverride = element.GetAttributeKeyed(ViewAttributes.IconOverrideAttribKey)
+    /// Get the value of the IsEnabled property
+    member this.IsEnabled = element.GetAttributeKeyed(ViewAttributes.IsEnabledAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a GridItemsLayout
+type GridItemsLayoutViewer(element: ViewElement) =
+    do if not ((typeof<Xamarin.Forms.GridItemsLayout>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.GridItemsLayout' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the Span property
+    member this.Span = element.GetAttributeKeyed(ViewAttributes.SpanAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a ItemsView
+type ItemsViewViewer(element: ViewElement) =
+    inherit ViewViewer(element)
+    do if not ((typeof<Xamarin.Forms.ItemsView>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.ItemsView' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the EmptyView property
+    member this.EmptyView = element.GetAttributeKeyed(ViewAttributes.EmptyViewAttribKey)
+    /// Get the value of the ItemsLayout property
+    member this.ItemsLayout = element.GetAttributeKeyed(ViewAttributes.ItemsLayoutAttribKey)
+    /// Get the value of the ItemsSource property
+    member this.ItemsSource = element.GetAttributeKeyed(ViewAttributes.ItemsSourceAttribKey)
+    /// Get the value of the ItemSizingStrategy property
+    member this.ItemSizingStrategy = element.GetAttributeKeyed(ViewAttributes.ItemSizingStrategyAttribKey)
+    /// Get the value of the ScrollToRequested property
+    member this.ScrollToRequested = element.GetAttributeKeyed(ViewAttributes.ScrollToRequestedAttribKey)
+    /// Get the value of the ScrollTo property
+    member this.ScrollTo = element.GetAttributeKeyed(ViewAttributes.iScrollToAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a SearchHandler
+type SearchHandlerViewer(element: ViewElement) =
+    do if not ((typeof<Xamarin.Forms.SearchHandler>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.SearchHandler' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the ClearIcon property
+    member this.ClearIcon = element.GetAttributeKeyed(ViewAttributes.ClearIconAttribKey)
+    /// Get the value of the ClearIconHelpText property
+    member this.ClearIconHelpText = element.GetAttributeKeyed(ViewAttributes.ClearIconHelpTextAttribKey)
+    /// Get the value of the ClearIconName property
+    member this.ClearIconName = element.GetAttributeKeyed(ViewAttributes.ClearIconNameAttribKey)
+    /// Get the value of the ClearPlaceholderCommand property
+    member this.ClearPlaceholderCommand = element.GetAttributeKeyed(ViewAttributes.ClearPlaceholderCommandAttribKey)
+    /// Get the value of the ClearPlaceholderCommandParameter property
+    member this.ClearPlaceholderCommandParameter = element.GetAttributeKeyed(ViewAttributes.ClearPlaceholderCommandParameterAttribKey)
+    /// Get the value of the ClearPlaceholderEnabled property
+    member this.ClearPlaceholderEnabled = element.GetAttributeKeyed(ViewAttributes.ClearPlaceholderEnabledAttribKey)
+    /// Get the value of the ClearPlaceholderHelpText property
+    member this.ClearPlaceholderHelpText = element.GetAttributeKeyed(ViewAttributes.ClearPlaceholderHelpTextAttribKey)
+    /// Get the value of the ClearPlaceholderIcon property
+    member this.ClearPlaceholderIcon = element.GetAttributeKeyed(ViewAttributes.ClearPlaceholderIconAttribKey)
+    /// Get the value of the ClearPlaceholderName property
+    member this.ClearPlaceholderName = element.GetAttributeKeyed(ViewAttributes.ClearPlaceholderNameAttribKey)
+    /// Get the value of the Command property
+    member this.Command = element.GetAttributeKeyed(ViewAttributes.CommandAttribKey)
+    /// Get the value of the CommandParameter property
+    member this.CommandParameter = element.GetAttributeKeyed(ViewAttributes.CommandParameterAttribKey)
+    /// Get the value of the DisplayMemberName property
+    member this.DisplayMemberName = element.GetAttributeKeyed(ViewAttributes.DisplayMemberNameAttribKey)
+    /// Get the value of the IsSearchEnabled property
+    member this.IsSearchEnabled = element.GetAttributeKeyed(ViewAttributes.IsSearchEnabledAttribKey)
+    /// Get the value of the Placeholder property
+    member this.Placeholder = element.GetAttributeKeyed(ViewAttributes.PlaceholderAttribKey)
+    /// Get the value of the Query property
+    member this.Query = element.GetAttributeKeyed(ViewAttributes.QueryAttribKey)
+    /// Get the value of the QueryIcon property
+    member this.QueryIcon = element.GetAttributeKeyed(ViewAttributes.QueryIconAttribKey)
+    /// Get the value of the QueryIconHelpText property
+    member this.QueryIconHelpText = element.GetAttributeKeyed(ViewAttributes.QueryIconHelpTextAttribKey)
+    /// Get the value of the QueryIconName property
+    member this.QueryIconName = element.GetAttributeKeyed(ViewAttributes.QueryIconNameAttribKey)
+    /// Get the value of the SearchBoxVisibility property
+    member this.SearchBoxVisibility = element.GetAttributeKeyed(ViewAttributes.SearchBoxVisibilityAttribKey)
+    /// Get the value of the ShowsResults property
+    member this.ShowsResults = element.GetAttributeKeyed(ViewAttributes.ShowsResultsAttribKey)
+    /// Get the value of the ItemsSource property
+    member this.ItemsSource = element.GetAttributeKeyed(ViewAttributes.ItemsSourceAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a Shell
+type ShellViewer(element: ViewElement) =
+    inherit PageViewer(element)
+    do if not ((typeof<Xamarin.Forms.Shell>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.Shell' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the Items property
+    member this.Items = element.GetAttributeKeyed(ViewAttributes.ItemsAttribKey)
+    /// Get the value of the MenuItems property
+    member this.MenuItems = element.GetAttributeKeyed(ViewAttributes.MenuItemsAttribKey)
+    /// Get the value of the CurrentItem property
+    member this.CurrentItem = element.GetAttributeKeyed(ViewAttributes.CurrentItemAttribKey)
+    /// Get the value of the FlyoutBackgroundColor property
+    member this.FlyoutBackgroundColor = element.GetAttributeKeyed(ViewAttributes.FlyoutBackgroundColorAttribKey)
+    /// Get the value of the FlyoutBehavior property
+    member this.FlyoutBehavior = element.GetAttributeKeyed(ViewAttributes.FlyoutBehaviorAttribKey)
+    /// Get the value of the FlyoutHeader property
+    member this.FlyoutHeader = element.GetAttributeKeyed(ViewAttributes.FlyoutHeaderAttribKey)
+    /// Get the value of the FlyoutHeaderBehavior property
+    member this.FlyoutHeaderBehavior = element.GetAttributeKeyed(ViewAttributes.FlyoutHeaderBehaviorAttribKey)
+    /// Get the value of the FlyoutIsPresented property
+    member this.FlyoutIsPresented = element.GetAttributeKeyed(ViewAttributes.FlyoutIsPresentedAttribKey)
+    /// Get the value of the Route property
+    member this.Route = element.GetAttributeKeyed(ViewAttributes.RouteAttribKey)
+    /// Get the value of the RouteHost property
+    member this.RouteHost = element.GetAttributeKeyed(ViewAttributes.RouteHostAttribKey)
+    /// Get the value of the RouteScheme property
+    member this.RouteScheme = element.GetAttributeKeyed(ViewAttributes.RouteSchemeAttribKey)
+    /// Get the value of the Navigated property
+    member this.Navigated = element.GetAttributeKeyed(ViewAttributes.OnNavigatedAttribKey)
+    /// Get the value of the Navigating property
+    member this.Navigating = element.GetAttributeKeyed(ViewAttributes.OnNavigatingAttribKey)
+    /// Get the value of the GoToAsync property
+    member this.GoToAsync = element.GetAttributeKeyed(ViewAttributes.GoToAsyncAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a ShellGroupItem
+type ShellGroupItemViewer(element: ViewElement) =
+    inherit ElementViewer(element)
+    do if not ((typeof<Xamarin.Forms.ShellGroupItem>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.ShellGroupItem' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the FlyoutDisplayOptions property
+    member this.FlyoutDisplayOptions = element.GetAttributeKeyed(ViewAttributes.FlyoutDisplayOptionsAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a SelectableItemsView
+type SelectableItemsViewViewer(element: ViewElement) =
+    inherit ItemsViewViewer(element)
+    do if not ((typeof<Xamarin.Forms.SelectableItemsView>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.SelectableItemsView' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the SelectedItem property
+    member this.SelectedItem = element.GetAttributeKeyed(ViewAttributes.SelectedItemAttribKey)
+    /// Get the value of the SelectionChangedCommand property
+    member this.SelectionChangedCommand = element.GetAttributeKeyed(ViewAttributes.SelectionChangedCommandAttribKey)
+    /// Get the value of the SelectionChangedCommandParameter property
+    member this.SelectionChangedCommandParameter = element.GetAttributeKeyed(ViewAttributes.SelectionChangedCommandParameterAttribKey)
+    /// Get the value of the SelectionMode property
+    member this.SelectionMode = element.GetAttributeKeyed(ViewAttributes.selectableItemsModeAttribKey)
+    /// Get the value of the SelectionChanged property
+    member this.SelectionChanged = element.GetAttributeKeyed(ViewAttributes.SelectionChangedAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a ShellNavigationState
+type ShellNavigationStateViewer(element: ViewElement) =
+    do if not ((typeof<Xamarin.Forms.ShellNavigationState>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.ShellNavigationState' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the Location property
+    member this.Location = element.GetAttributeKeyed(ViewAttributes.LocationAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a ShellContent
+type ShellContentViewer(element: ViewElement) =
+    inherit ElementViewer(element)
+    do if not ((typeof<Xamarin.Forms.ShellContent>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.ShellContent' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the Content property
+    member this.Content = element.GetAttributeKeyed(ViewAttributes.ContentAttribKey)
+    /// Get the value of the MenuItems property
+    member this.MenuItems = element.GetAttributeKeyed(ViewAttributes.MenuItemsAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a ShellItem
+type ShellItemViewer(element: ViewElement) =
+    inherit ShellGroupItemViewer(element)
+    do if not ((typeof<Xamarin.Forms.ShellItem>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.ShellItem' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the CurrentItem property
+    member this.CurrentItem = element.GetAttributeKeyed(ViewAttributes.CurrentItemAttribKey)
+    /// Get the value of the Items property
+    member this.Items = element.GetAttributeKeyed(ViewAttributes.ItemsAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a ShellSection
+type ShellSectionViewer(element: ViewElement) =
+    inherit ShellGroupItemViewer(element)
+    do if not ((typeof<Xamarin.Forms.ShellSection>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.ShellSection' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the CurrentItem property
+    member this.CurrentItem = element.GetAttributeKeyed(ViewAttributes.CurrentItemAttribKey)
+    /// Get the value of the GoToAsync property
+    member this.GoToAsync = element.GetAttributeKeyed(ViewAttributes.ssGoToAsyncAttribKey)
+    /// Get the value of the Items property
+    member this.Items = element.GetAttributeKeyed(ViewAttributes.ItemsAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a CarouselView
+type CarouselViewViewer(element: ViewElement) =
+    inherit ItemsViewViewer(element)
+    do if not ((typeof<Xamarin.Forms.CarouselView>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.CarouselView' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the ItemsSource property
+    member this.ItemsSource = element.GetAttributeKeyed(ViewAttributes.CarouselViewItemsAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a CollectionView
+type CollectionViewViewer(element: ViewElement) =
+    inherit SelectableItemsViewViewer(element)
+    do if not ((typeof<Xamarin.Forms.CollectionView>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.CollectionView' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the ItemsSource property
+    member this.ItemsSource = element.GetAttributeKeyed(ViewAttributes.CollectionViewItemsAttribKey)
+
+/// Viewer that allows to read the properties of a ViewElement representing a FontImageSource
+type FontImageSourceViewer(element: ViewElement) =
+    inherit ElementViewer(element)
+    do if not ((typeof<Xamarin.Forms.FontImageSource>).IsAssignableFrom(element.TargetType)) then failwithf "A ViewElement assignable to type 'Xamarin.Forms.FontImageSource' is expected, but '%s' was provided." element.TargetType.FullName
+    /// Get the value of the Color property
+    member this.Color = element.GetAttributeKeyed(ViewAttributes.ColorAttribKey)
+    /// Get the value of the FontFamily property
+    member this.FontFamily = element.GetAttributeKeyed(ViewAttributes.FontFamilyAttribKey)
+    /// Get the value of the Glyph property
+    member this.Glyph = element.GetAttributeKeyed(ViewAttributes.GlyphAttribKey)
+    /// Get the value of the Size property
+    member this.Size = element.GetAttributeKeyed(ViewAttributes.SizeAttribKey)
 
 type View() =
     /// Describes a Element in the view
@@ -13097,8 +15881,9 @@ type View() =
                                        ?childrenReordered: System.EventArgs -> unit,
                                        ?measureInvalidated: System.EventArgs -> unit,
                                        ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                       ?sizeChanged: System.EventArgs -> unit,
+                                       ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                        ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                       ?visual: Xamarin.Forms.IVisual,
                                        ?classId: string,
                                        ?styleId: string,
                                        ?automationId: string,
@@ -13136,6 +15921,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -13176,8 +15962,9 @@ type View() =
                               ?childrenReordered: System.EventArgs -> unit,
                               ?measureInvalidated: System.EventArgs -> unit,
                               ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                              ?sizeChanged: System.EventArgs -> unit,
+                              ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                               ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                              ?visual: Xamarin.Forms.IVisual,
                               ?classId: string,
                               ?styleId: string,
                               ?automationId: string,
@@ -13219,6 +16006,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -13357,8 +16145,9 @@ type View() =
                                            ?childrenReordered: System.EventArgs -> unit,
                                            ?measureInvalidated: System.EventArgs -> unit,
                                            ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                           ?sizeChanged: System.EventArgs -> unit,
+                                           ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                            ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                           ?visual: Xamarin.Forms.IVisual,
                                            ?classId: string,
                                            ?styleId: string,
                                            ?automationId: string,
@@ -13402,6 +16191,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -13444,8 +16234,9 @@ type View() =
                                  ?childrenReordered: System.EventArgs -> unit,
                                  ?measureInvalidated: System.EventArgs -> unit,
                                  ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                 ?sizeChanged: System.EventArgs -> unit,
+                                 ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                  ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                 ?visual: Xamarin.Forms.IVisual,
                                  ?classId: string,
                                  ?styleId: string,
                                  ?automationId: string,
@@ -13489,6 +16280,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -13530,8 +16322,9 @@ type View() =
                                      ?childrenReordered: System.EventArgs -> unit,
                                      ?measureInvalidated: System.EventArgs -> unit,
                                      ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                     ?sizeChanged: System.EventArgs -> unit,
+                                     ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                      ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                     ?visual: Xamarin.Forms.IVisual,
                                      ?classId: string,
                                      ?styleId: string,
                                      ?automationId: string,
@@ -13574,6 +16367,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -13616,8 +16410,9 @@ type View() =
                                 ?childrenReordered: System.EventArgs -> unit,
                                 ?measureInvalidated: System.EventArgs -> unit,
                                 ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                ?sizeChanged: System.EventArgs -> unit,
+                                ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                 ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                ?visual: Xamarin.Forms.IVisual,
                                 ?classId: string,
                                 ?styleId: string,
                                 ?automationId: string,
@@ -13661,6 +16456,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -13674,6 +16470,7 @@ type View() =
                                     ?verticalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility,
                                     ?scrollTo: float * float * Fabulous.DynamicViews.AnimationKind,
                                     ?scrolled: Xamarin.Forms.ScrolledEventArgs -> unit,
+                                    ?layoutAreaOverride: Xamarin.Forms.Rectangle,
                                     ?isClippedToBounds: bool,
                                     ?padding: obj,
                                     ?horizontalOptions: Xamarin.Forms.LayoutOptions,
@@ -13709,8 +16506,9 @@ type View() =
                                     ?childrenReordered: System.EventArgs -> unit,
                                     ?measureInvalidated: System.EventArgs -> unit,
                                     ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                    ?sizeChanged: System.EventArgs -> unit,
+                                    ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                     ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                    ?visual: Xamarin.Forms.IVisual,
                                     ?classId: string,
                                     ?styleId: string,
                                     ?automationId: string,
@@ -13723,6 +16521,7 @@ type View() =
                                ?verticalScrollBarVisibility=verticalScrollBarVisibility,
                                ?scrollTo=scrollTo,
                                ?scrolled=scrolled,
+                               ?layoutAreaOverride=layoutAreaOverride,
                                ?isClippedToBounds=isClippedToBounds,
                                ?padding=padding,
                                ?horizontalOptions=horizontalOptions,
@@ -13760,113 +16559,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
-                               ?classId=classId,
-                               ?styleId=styleId,
-                               ?automationId=automationId,
-                               ?created=created,
-                               ?ref=ref)
-
-    /// Describes a SearchBar in the view
-    static member inline SearchBar(?cancelButtonColor: Xamarin.Forms.Color,
-                                   ?fontFamily: string,
-                                   ?fontAttributes: Xamarin.Forms.FontAttributes,
-                                   ?fontSize: obj,
-                                   ?horizontalTextAlignment: Xamarin.Forms.TextAlignment,
-                                   ?placeholder: string,
-                                   ?placeholderColor: Xamarin.Forms.Color,
-                                   ?searchCommand: string -> unit,
-                                   ?canExecute: bool,
-                                   ?text: string,
-                                   ?textColor: Xamarin.Forms.Color,
-                                   ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit,
-                                   ?horizontalOptions: Xamarin.Forms.LayoutOptions,
-                                   ?verticalOptions: Xamarin.Forms.LayoutOptions,
-                                   ?margin: obj,
-                                   ?gestureRecognizers: ViewElement list,
-                                   ?anchorX: double,
-                                   ?anchorY: double,
-                                   ?backgroundColor: Xamarin.Forms.Color,
-                                   ?heightRequest: double,
-                                   ?inputTransparent: bool,
-                                   ?isEnabled: bool,
-                                   ?isVisible: bool,
-                                   ?minimumHeightRequest: double,
-                                   ?minimumWidthRequest: double,
-                                   ?opacity: double,
-                                   ?rotation: double,
-                                   ?rotationX: double,
-                                   ?rotationY: double,
-                                   ?scale: double,
-                                   ?style: Xamarin.Forms.Style,
-                                   ?styleClass: obj,
-                                   ?translationX: double,
-                                   ?translationY: double,
-                                   ?widthRequest: double,
-                                   ?resources: (string * obj) list,
-                                   ?styles: Xamarin.Forms.Style list,
-                                   ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
-                                   ?isTabStop: bool,
-                                   ?scaleX: double,
-                                   ?scaleY: double,
-                                   ?tabIndex: int,
-                                   ?childrenReordered: System.EventArgs -> unit,
-                                   ?measureInvalidated: System.EventArgs -> unit,
-                                   ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                   ?sizeChanged: System.EventArgs -> unit,
-                                   ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
-                                   ?classId: string,
-                                   ?styleId: string,
-                                   ?automationId: string,
-                                   ?created: (Xamarin.Forms.SearchBar -> unit),
-                                   ?ref: ViewRef<Xamarin.Forms.SearchBar>) =
-
-        ViewBuilders.ConstructSearchBar(?cancelButtonColor=cancelButtonColor,
-                               ?fontFamily=fontFamily,
-                               ?fontAttributes=fontAttributes,
-                               ?fontSize=fontSize,
-                               ?horizontalTextAlignment=horizontalTextAlignment,
-                               ?placeholder=placeholder,
-                               ?placeholderColor=placeholderColor,
-                               ?searchCommand=searchCommand,
-                               ?canExecute=canExecute,
-                               ?text=text,
-                               ?textColor=textColor,
-                               ?textChanged=textChanged,
-                               ?horizontalOptions=horizontalOptions,
-                               ?verticalOptions=verticalOptions,
-                               ?margin=margin,
-                               ?gestureRecognizers=gestureRecognizers,
-                               ?anchorX=anchorX,
-                               ?anchorY=anchorY,
-                               ?backgroundColor=backgroundColor,
-                               ?heightRequest=heightRequest,
-                               ?inputTransparent=inputTransparent,
-                               ?isEnabled=isEnabled,
-                               ?isVisible=isVisible,
-                               ?minimumHeightRequest=minimumHeightRequest,
-                               ?minimumWidthRequest=minimumWidthRequest,
-                               ?opacity=opacity,
-                               ?rotation=rotation,
-                               ?rotationX=rotationX,
-                               ?rotationY=rotationY,
-                               ?scale=scale,
-                               ?style=style,
-                               ?styleClass=styleClass,
-                               ?translationX=translationX,
-                               ?translationY=translationY,
-                               ?widthRequest=widthRequest,
-                               ?resources=resources,
-                               ?styles=styles,
-                               ?styleSheets=styleSheets,
-                               ?isTabStop=isTabStop,
-                               ?scaleX=scaleX,
-                               ?scaleY=scaleY,
-                               ?tabIndex=tabIndex,
-                               ?childrenReordered=childrenReordered,
-                               ?measureInvalidated=measureInvalidated,
-                               ?focused=focused,
-                               ?sizeChanged=sizeChanged,
-                               ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -13879,7 +16572,6 @@ type View() =
                                 ?canExecute: bool,
                                 ?borderColor: Xamarin.Forms.Color,
                                 ?borderWidth: double,
-                                ?commandParameter: System.Object,
                                 ?contentLayout: Xamarin.Forms.Button.ButtonContentLayout,
                                 ?cornerRadius: int,
                                 ?fontFamily: string,
@@ -13921,8 +16613,9 @@ type View() =
                                 ?childrenReordered: System.EventArgs -> unit,
                                 ?measureInvalidated: System.EventArgs -> unit,
                                 ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                ?sizeChanged: System.EventArgs -> unit,
+                                ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                 ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                ?visual: Xamarin.Forms.IVisual,
                                 ?classId: string,
                                 ?styleId: string,
                                 ?automationId: string,
@@ -13934,7 +16627,6 @@ type View() =
                                ?canExecute=canExecute,
                                ?borderColor=borderColor,
                                ?borderWidth=borderWidth,
-                               ?commandParameter=commandParameter,
                                ?contentLayout=contentLayout,
                                ?cornerRadius=cornerRadius,
                                ?fontFamily=fontFamily,
@@ -13978,6 +16670,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -13988,6 +16681,8 @@ type View() =
     static member inline Slider(?minimumMaximum: float * float,
                                 ?value: double,
                                 ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit,
+                                ?dragCompleted: unit -> unit,
+                                ?dragStarted: unit -> unit,
                                 ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                 ?verticalOptions: Xamarin.Forms.LayoutOptions,
                                 ?margin: obj,
@@ -14021,8 +16716,9 @@ type View() =
                                 ?childrenReordered: System.EventArgs -> unit,
                                 ?measureInvalidated: System.EventArgs -> unit,
                                 ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                ?sizeChanged: System.EventArgs -> unit,
+                                ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                 ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                ?visual: Xamarin.Forms.IVisual,
                                 ?classId: string,
                                 ?styleId: string,
                                 ?automationId: string,
@@ -14032,6 +16728,8 @@ type View() =
         ViewBuilders.ConstructSlider(?minimumMaximum=minimumMaximum,
                                ?value=value,
                                ?valueChanged=valueChanged,
+                               ?dragCompleted=dragCompleted,
+                               ?dragStarted=dragStarted,
                                ?horizontalOptions=horizontalOptions,
                                ?verticalOptions=verticalOptions,
                                ?margin=margin,
@@ -14067,6 +16765,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -14111,8 +16810,9 @@ type View() =
                                  ?childrenReordered: System.EventArgs -> unit,
                                  ?measureInvalidated: System.EventArgs -> unit,
                                  ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                 ?sizeChanged: System.EventArgs -> unit,
+                                 ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                  ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                 ?visual: Xamarin.Forms.IVisual,
                                  ?classId: string,
                                  ?styleId: string,
                                  ?automationId: string,
@@ -14158,6 +16858,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -14201,8 +16902,9 @@ type View() =
                                 ?childrenReordered: System.EventArgs -> unit,
                                 ?measureInvalidated: System.EventArgs -> unit,
                                 ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                ?sizeChanged: System.EventArgs -> unit,
+                                ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                 ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                ?visual: Xamarin.Forms.IVisual,
                                 ?classId: string,
                                 ?styleId: string,
                                 ?automationId: string,
@@ -14247,6 +16949,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -14274,6 +16977,7 @@ type View() =
     static member inline SwitchCell(?on: bool,
                                     ?text: string,
                                     ?onChanged: Xamarin.Forms.ToggledEventArgs -> unit,
+                                    ?onColor: Xamarin.Forms.Color,
                                     ?height: double,
                                     ?isEnabled: bool,
                                     ?classId: string,
@@ -14285,6 +16989,7 @@ type View() =
         ViewBuilders.ConstructSwitchCell(?on=on,
                                ?text=text,
                                ?onChanged=onChanged,
+                               ?onColor=onColor,
                                ?height=height,
                                ?isEnabled=isEnabled,
                                ?classId=classId,
@@ -14331,8 +17036,9 @@ type View() =
                                    ?childrenReordered: System.EventArgs -> unit,
                                    ?measureInvalidated: System.EventArgs -> unit,
                                    ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                   ?sizeChanged: System.EventArgs -> unit,
+                                   ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                    ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                   ?visual: Xamarin.Forms.IVisual,
                                    ?classId: string,
                                    ?styleId: string,
                                    ?automationId: string,
@@ -14378,6 +17084,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -14435,8 +17142,9 @@ type View() =
                               ?childrenReordered: System.EventArgs -> unit,
                               ?measureInvalidated: System.EventArgs -> unit,
                               ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                              ?sizeChanged: System.EventArgs -> unit,
+                              ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                               ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                              ?visual: Xamarin.Forms.IVisual,
                               ?classId: string,
                               ?styleId: string,
                               ?automationId: string,
@@ -14485,6 +17193,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -14528,8 +17237,9 @@ type View() =
                                         ?childrenReordered: System.EventArgs -> unit,
                                         ?measureInvalidated: System.EventArgs -> unit,
                                         ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                        ?sizeChanged: System.EventArgs -> unit,
+                                        ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                         ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?visual: Xamarin.Forms.IVisual,
                                         ?classId: string,
                                         ?styleId: string,
                                         ?automationId: string,
@@ -14574,6 +17284,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -14617,8 +17328,9 @@ type View() =
                                         ?childrenReordered: System.EventArgs -> unit,
                                         ?measureInvalidated: System.EventArgs -> unit,
                                         ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                        ?sizeChanged: System.EventArgs -> unit,
+                                        ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                         ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?visual: Xamarin.Forms.IVisual,
                                         ?classId: string,
                                         ?styleId: string,
                                         ?automationId: string,
@@ -14663,6 +17375,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -14712,8 +17425,9 @@ type View() =
                                     ?childrenReordered: System.EventArgs -> unit,
                                     ?measureInvalidated: System.EventArgs -> unit,
                                     ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                    ?sizeChanged: System.EventArgs -> unit,
+                                    ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                     ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                    ?visual: Xamarin.Forms.IVisual,
                                     ?classId: string,
                                     ?styleId: string,
                                     ?automationId: string,
@@ -14764,6 +17478,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -14806,8 +17521,9 @@ type View() =
                                        ?childrenReordered: System.EventArgs -> unit,
                                        ?measureInvalidated: System.EventArgs -> unit,
                                        ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                       ?sizeChanged: System.EventArgs -> unit,
+                                       ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                        ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                       ?visual: Xamarin.Forms.IVisual,
                                        ?classId: string,
                                        ?styleId: string,
                                        ?automationId: string,
@@ -14851,6 +17567,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -14894,8 +17611,9 @@ type View() =
                                      ?childrenReordered: System.EventArgs -> unit,
                                      ?measureInvalidated: System.EventArgs -> unit,
                                      ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                     ?sizeChanged: System.EventArgs -> unit,
+                                     ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                      ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                     ?visual: Xamarin.Forms.IVisual,
                                      ?classId: string,
                                      ?styleId: string,
                                      ?automationId: string,
@@ -14940,6 +17658,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -14985,8 +17704,9 @@ type View() =
                                     ?childrenReordered: System.EventArgs -> unit,
                                     ?measureInvalidated: System.EventArgs -> unit,
                                     ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                    ?sizeChanged: System.EventArgs -> unit,
+                                    ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                     ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                    ?visual: Xamarin.Forms.IVisual,
                                     ?classId: string,
                                     ?styleId: string,
                                     ?automationId: string,
@@ -15033,6 +17753,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -15043,6 +17764,7 @@ type View() =
     static member inline Picker(?itemsSource: seq<'T>,
                                 ?selectedIndex: int,
                                 ?title: string,
+                                ?titleColor: Xamarin.Forms.Color,
                                 ?textColor: Xamarin.Forms.Color,
                                 ?selectedIndexChanged: (int * 'T option) -> unit,
                                 ?horizontalOptions: Xamarin.Forms.LayoutOptions,
@@ -15078,8 +17800,9 @@ type View() =
                                 ?childrenReordered: System.EventArgs -> unit,
                                 ?measureInvalidated: System.EventArgs -> unit,
                                 ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                ?sizeChanged: System.EventArgs -> unit,
+                                ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                 ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                ?visual: Xamarin.Forms.IVisual,
                                 ?classId: string,
                                 ?styleId: string,
                                 ?automationId: string,
@@ -15089,6 +17812,7 @@ type View() =
         ViewBuilders.ConstructPicker(?itemsSource=itemsSource,
                                ?selectedIndex=selectedIndex,
                                ?title=title,
+                               ?titleColor=titleColor,
                                ?textColor=textColor,
                                ?selectedIndexChanged=selectedIndexChanged,
                                ?horizontalOptions=horizontalOptions,
@@ -15126,6 +17850,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -15172,8 +17897,9 @@ type View() =
                                ?childrenReordered: System.EventArgs -> unit,
                                ?measureInvalidated: System.EventArgs -> unit,
                                ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                               ?sizeChanged: System.EventArgs -> unit,
+                               ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                               ?visual: Xamarin.Forms.IVisual,
                                ?classId: string,
                                ?styleId: string,
                                ?automationId: string,
@@ -15221,6 +17947,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -15264,8 +17991,9 @@ type View() =
                                ?childrenReordered: System.EventArgs -> unit,
                                ?measureInvalidated: System.EventArgs -> unit,
                                ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                               ?sizeChanged: System.EventArgs -> unit,
+                               ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                               ?visual: Xamarin.Forms.IVisual,
                                ?classId: string,
                                ?styleId: string,
                                ?automationId: string,
@@ -15310,6 +18038,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -15361,8 +18090,9 @@ type View() =
                                      ?childrenReordered: System.EventArgs -> unit,
                                      ?measureInvalidated: System.EventArgs -> unit,
                                      ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                     ?sizeChanged: System.EventArgs -> unit,
+                                     ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                      ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                     ?visual: Xamarin.Forms.IVisual,
                                      ?classId: string,
                                      ?styleId: string,
                                      ?automationId: string,
@@ -15415,6 +18145,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -15423,6 +18154,7 @@ type View() =
 
     /// Describes a InputView in the view
     static member inline InputView(?keyboard: Xamarin.Forms.Keyboard,
+                                   ?isReadOnly: bool,
                                    ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                    ?verticalOptions: Xamarin.Forms.LayoutOptions,
                                    ?margin: obj,
@@ -15456,8 +18188,9 @@ type View() =
                                    ?childrenReordered: System.EventArgs -> unit,
                                    ?measureInvalidated: System.EventArgs -> unit,
                                    ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                   ?sizeChanged: System.EventArgs -> unit,
+                                   ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                    ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                   ?visual: Xamarin.Forms.IVisual,
                                    ?classId: string,
                                    ?styleId: string,
                                    ?automationId: string,
@@ -15465,6 +18198,7 @@ type View() =
                                    ?ref: ViewRef<Xamarin.Forms.InputView>) =
 
         ViewBuilders.ConstructInputView(?keyboard=keyboard,
+                               ?isReadOnly=isReadOnly,
                                ?horizontalOptions=horizontalOptions,
                                ?verticalOptions=verticalOptions,
                                ?margin=margin,
@@ -15500,6 +18234,120 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=created,
+                               ?ref=ref)
+
+    /// Describes a SearchBar in the view
+    static member inline SearchBar(?cancelButtonColor: Xamarin.Forms.Color,
+                                   ?fontFamily: string,
+                                   ?fontAttributes: Xamarin.Forms.FontAttributes,
+                                   ?fontSize: obj,
+                                   ?horizontalTextAlignment: Xamarin.Forms.TextAlignment,
+                                   ?placeholder: string,
+                                   ?placeholderColor: Xamarin.Forms.Color,
+                                   ?searchCommand: string -> unit,
+                                   ?canExecute: bool,
+                                   ?text: string,
+                                   ?textColor: Xamarin.Forms.Color,
+                                   ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit,
+                                   ?keyboard: Xamarin.Forms.Keyboard,
+                                   ?isReadOnly: bool,
+                                   ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                   ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                   ?margin: obj,
+                                   ?gestureRecognizers: ViewElement list,
+                                   ?anchorX: double,
+                                   ?anchorY: double,
+                                   ?backgroundColor: Xamarin.Forms.Color,
+                                   ?heightRequest: double,
+                                   ?inputTransparent: bool,
+                                   ?isEnabled: bool,
+                                   ?isVisible: bool,
+                                   ?minimumHeightRequest: double,
+                                   ?minimumWidthRequest: double,
+                                   ?opacity: double,
+                                   ?rotation: double,
+                                   ?rotationX: double,
+                                   ?rotationY: double,
+                                   ?scale: double,
+                                   ?style: Xamarin.Forms.Style,
+                                   ?styleClass: obj,
+                                   ?translationX: double,
+                                   ?translationY: double,
+                                   ?widthRequest: double,
+                                   ?resources: (string * obj) list,
+                                   ?styles: Xamarin.Forms.Style list,
+                                   ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                   ?isTabStop: bool,
+                                   ?scaleX: double,
+                                   ?scaleY: double,
+                                   ?tabIndex: int,
+                                   ?childrenReordered: System.EventArgs -> unit,
+                                   ?measureInvalidated: System.EventArgs -> unit,
+                                   ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                   ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                                   ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                   ?visual: Xamarin.Forms.IVisual,
+                                   ?classId: string,
+                                   ?styleId: string,
+                                   ?automationId: string,
+                                   ?created: (Xamarin.Forms.SearchBar -> unit),
+                                   ?ref: ViewRef<Xamarin.Forms.SearchBar>) =
+
+        ViewBuilders.ConstructSearchBar(?cancelButtonColor=cancelButtonColor,
+                               ?fontFamily=fontFamily,
+                               ?fontAttributes=fontAttributes,
+                               ?fontSize=fontSize,
+                               ?horizontalTextAlignment=horizontalTextAlignment,
+                               ?placeholder=placeholder,
+                               ?placeholderColor=placeholderColor,
+                               ?searchCommand=searchCommand,
+                               ?canExecute=canExecute,
+                               ?text=text,
+                               ?textColor=textColor,
+                               ?textChanged=textChanged,
+                               ?keyboard=keyboard,
+                               ?isReadOnly=isReadOnly,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?isTabStop=isTabStop,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -15517,7 +18365,9 @@ type View() =
                                 ?autoSize: Xamarin.Forms.EditorAutoSizeOption,
                                 ?placeholder: string,
                                 ?placeholderColor: Xamarin.Forms.Color,
+                                ?isTextPredictionEnabled: bool,
                                 ?keyboard: Xamarin.Forms.Keyboard,
+                                ?isReadOnly: bool,
                                 ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                 ?verticalOptions: Xamarin.Forms.LayoutOptions,
                                 ?margin: obj,
@@ -15551,8 +18401,9 @@ type View() =
                                 ?childrenReordered: System.EventArgs -> unit,
                                 ?measureInvalidated: System.EventArgs -> unit,
                                 ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                ?sizeChanged: System.EventArgs -> unit,
+                                ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                 ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                ?visual: Xamarin.Forms.IVisual,
                                 ?classId: string,
                                 ?styleId: string,
                                 ?automationId: string,
@@ -15569,7 +18420,9 @@ type View() =
                                ?autoSize=autoSize,
                                ?placeholder=placeholder,
                                ?placeholderColor=placeholderColor,
+                               ?isTextPredictionEnabled=isTextPredictionEnabled,
                                ?keyboard=keyboard,
+                               ?isReadOnly=isReadOnly,
                                ?horizontalOptions=horizontalOptions,
                                ?verticalOptions=verticalOptions,
                                ?margin=margin,
@@ -15605,6 +18458,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -15629,6 +18483,7 @@ type View() =
                                ?cursorPosition: int,
                                ?selectionLength: int,
                                ?keyboard: Xamarin.Forms.Keyboard,
+                               ?isReadOnly: bool,
                                ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                ?verticalOptions: Xamarin.Forms.LayoutOptions,
                                ?margin: obj,
@@ -15662,8 +18517,9 @@ type View() =
                                ?childrenReordered: System.EventArgs -> unit,
                                ?measureInvalidated: System.EventArgs -> unit,
                                ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                               ?sizeChanged: System.EventArgs -> unit,
+                               ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                               ?visual: Xamarin.Forms.IVisual,
                                ?classId: string,
                                ?styleId: string,
                                ?automationId: string,
@@ -15687,6 +18543,7 @@ type View() =
                                ?cursorPosition=cursorPosition,
                                ?selectionLength=selectionLength,
                                ?keyboard=keyboard,
+                               ?isReadOnly=isReadOnly,
                                ?horizontalOptions=horizontalOptions,
                                ?verticalOptions=verticalOptions,
                                ?margin=margin,
@@ -15722,6 +18579,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -15805,8 +18663,9 @@ type View() =
                                ?childrenReordered: System.EventArgs -> unit,
                                ?measureInvalidated: System.EventArgs -> unit,
                                ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                               ?sizeChanged: System.EventArgs -> unit,
+                               ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                               ?visual: Xamarin.Forms.IVisual,
                                ?classId: string,
                                ?styleId: string,
                                ?automationId: string,
@@ -15860,6 +18719,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -15905,8 +18765,9 @@ type View() =
                                      ?childrenReordered: System.EventArgs -> unit,
                                      ?measureInvalidated: System.EventArgs -> unit,
                                      ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                     ?sizeChanged: System.EventArgs -> unit,
+                                     ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                      ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                     ?visual: Xamarin.Forms.IVisual,
                                      ?classId: string,
                                      ?styleId: string,
                                      ?automationId: string,
@@ -15953,6 +18814,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -16042,8 +18904,9 @@ type View() =
                                     ?childrenReordered: System.EventArgs -> unit,
                                     ?measureInvalidated: System.EventArgs -> unit,
                                     ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                    ?sizeChanged: System.EventArgs -> unit,
+                                    ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                     ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                    ?visual: Xamarin.Forms.IVisual,
                                     ?classId: string,
                                     ?styleId: string,
                                     ?automationId: string,
@@ -16088,6 +18951,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -16133,8 +18997,9 @@ type View() =
                                  ?childrenReordered: System.EventArgs -> unit,
                                  ?measureInvalidated: System.EventArgs -> unit,
                                  ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                 ?sizeChanged: System.EventArgs -> unit,
+                                 ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                  ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                 ?visual: Xamarin.Forms.IVisual,
                                  ?classId: string,
                                  ?styleId: string,
                                  ?automationId: string,
@@ -16181,6 +19046,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -16227,8 +19093,9 @@ type View() =
                               ?childrenReordered: System.EventArgs -> unit,
                               ?measureInvalidated: System.EventArgs -> unit,
                               ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                              ?sizeChanged: System.EventArgs -> unit,
+                              ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                               ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                              ?visual: Xamarin.Forms.IVisual,
                               ?classId: string,
                               ?styleId: string,
                               ?automationId: string,
@@ -16276,6 +19143,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -16325,8 +19193,9 @@ type View() =
                                       ?childrenReordered: System.EventArgs -> unit,
                                       ?measureInvalidated: System.EventArgs -> unit,
                                       ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                      ?sizeChanged: System.EventArgs -> unit,
+                                      ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                       ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                      ?visual: Xamarin.Forms.IVisual,
                                       ?classId: string,
                                       ?styleId: string,
                                       ?automationId: string,
@@ -16377,6 +19246,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -16429,8 +19299,9 @@ type View() =
                                         ?childrenReordered: System.EventArgs -> unit,
                                         ?measureInvalidated: System.EventArgs -> unit,
                                         ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                        ?sizeChanged: System.EventArgs -> unit,
+                                        ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                         ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?visual: Xamarin.Forms.IVisual,
                                         ?classId: string,
                                         ?styleId: string,
                                         ?automationId: string,
@@ -16484,6 +19355,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -16535,8 +19407,9 @@ type View() =
                                     ?childrenReordered: System.EventArgs -> unit,
                                     ?measureInvalidated: System.EventArgs -> unit,
                                     ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                    ?sizeChanged: System.EventArgs -> unit,
+                                    ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                     ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                    ?visual: Xamarin.Forms.IVisual,
                                     ?classId: string,
                                     ?styleId: string,
                                     ?automationId: string,
@@ -16589,6 +19462,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -16637,8 +19511,9 @@ type View() =
                                      ?childrenReordered: System.EventArgs -> unit,
                                      ?measureInvalidated: System.EventArgs -> unit,
                                      ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                     ?sizeChanged: System.EventArgs -> unit,
+                                     ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                      ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                     ?visual: Xamarin.Forms.IVisual,
                                      ?classId: string,
                                      ?styleId: string,
                                      ?automationId: string,
@@ -16688,6 +19563,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -16740,8 +19616,9 @@ type View() =
                                           ?childrenReordered: System.EventArgs -> unit,
                                           ?measureInvalidated: System.EventArgs -> unit,
                                           ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                          ?sizeChanged: System.EventArgs -> unit,
+                                          ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                           ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                          ?visual: Xamarin.Forms.IVisual,
                                           ?classId: string,
                                           ?styleId: string,
                                           ?automationId: string,
@@ -16795,6 +19672,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -16804,7 +19682,6 @@ type View() =
     /// Describes a MenuItem in the view
     static member inline MenuItem(?text: string,
                                   ?command: unit -> unit,
-                                  ?commandParameter: System.Object,
                                   ?icon: string,
                                   ?accelerator: string,
                                   ?classId: string,
@@ -16815,7 +19692,6 @@ type View() =
 
         ViewBuilders.ConstructMenuItem(?text=text,
                                ?command=command,
-                               ?commandParameter=commandParameter,
                                ?icon=icon,
                                ?accelerator=accelerator,
                                ?classId=classId,
@@ -16848,7 +19724,6 @@ type View() =
                                   ?detailColor: Xamarin.Forms.Color,
                                   ?command: unit -> unit,
                                   ?canExecute: bool,
-                                  ?commandParameter: System.Object,
                                   ?height: double,
                                   ?isEnabled: bool,
                                   ?classId: string,
@@ -16863,7 +19738,6 @@ type View() =
                                ?detailColor=detailColor,
                                ?command=command,
                                ?canExecute=canExecute,
-                               ?commandParameter=commandParameter,
                                ?height=height,
                                ?isEnabled=isEnabled,
                                ?classId=classId,
@@ -16877,7 +19751,6 @@ type View() =
                                      ?priority: int,
                                      ?text: string,
                                      ?command: unit -> unit,
-                                     ?commandParameter: System.Object,
                                      ?icon: string,
                                      ?accelerator: string,
                                      ?classId: string,
@@ -16890,7 +19763,6 @@ type View() =
                                ?priority=priority,
                                ?text=text,
                                ?command=command,
-                               ?commandParameter=commandParameter,
                                ?icon=icon,
                                ?accelerator=accelerator,
                                ?classId=classId,
@@ -16907,7 +19779,6 @@ type View() =
                                    ?detailColor: Xamarin.Forms.Color,
                                    ?command: unit -> unit,
                                    ?canExecute: bool,
-                                   ?commandParameter: System.Object,
                                    ?height: double,
                                    ?isEnabled: bool,
                                    ?classId: string,
@@ -16923,7 +19794,6 @@ type View() =
                                ?detailColor=detailColor,
                                ?command=command,
                                ?canExecute=canExecute,
-                               ?commandParameter=commandParameter,
                                ?height=height,
                                ?isEnabled=isEnabled,
                                ?classId=classId,
@@ -16971,6 +19841,9 @@ type View() =
                                   ?itemTapped: int -> unit,
                                   ?refreshing: unit -> unit,
                                   ?selectionMode: Xamarin.Forms.ListViewSelectionMode,
+                                  ?horizontalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility,
+                                  ?verticalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility,
+                                  ?refreshControlColor: Xamarin.Forms.Color,
                                   ?horizontalOptions: Xamarin.Forms.LayoutOptions,
                                   ?verticalOptions: Xamarin.Forms.LayoutOptions,
                                   ?margin: obj,
@@ -17004,8 +19877,9 @@ type View() =
                                   ?childrenReordered: System.EventArgs -> unit,
                                   ?measureInvalidated: System.EventArgs -> unit,
                                   ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                  ?sizeChanged: System.EventArgs -> unit,
+                                  ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                   ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                  ?visual: Xamarin.Forms.IVisual,
                                   ?classId: string,
                                   ?styleId: string,
                                   ?automationId: string,
@@ -17031,6 +19905,9 @@ type View() =
                                ?itemTapped=itemTapped,
                                ?refreshing=refreshing,
                                ?selectionMode=selectionMode,
+                               ?horizontalScrollBarVisibility=horizontalScrollBarVisibility,
+                               ?verticalScrollBarVisibility=verticalScrollBarVisibility,
+                               ?refreshControlColor=refreshControlColor,
                                ?horizontalOptions=horizontalOptions,
                                ?verticalOptions=verticalOptions,
                                ?margin=margin,
@@ -17066,6 +19943,7 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -17124,8 +20002,9 @@ type View() =
                                          ?childrenReordered: System.EventArgs -> unit,
                                          ?measureInvalidated: System.EventArgs -> unit,
                                          ?focused: Xamarin.Forms.FocusEventArgs -> unit,
-                                         ?sizeChanged: System.EventArgs -> unit,
+                                         ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
                                          ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                         ?visual: Xamarin.Forms.IVisual,
                                          ?classId: string,
                                          ?styleId: string,
                                          ?automationId: string,
@@ -17185,6 +20064,705 @@ type View() =
                                ?focused=focused,
                                ?sizeChanged=sizeChanged,
                                ?unfocused=unfocused,
+                               ?visual=visual,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=created,
+                               ?ref=ref)
+
+    /// Describes a BackButtonBehavior in the view
+    static member inline BackButtonBehavior(?textOverride: string,
+                                            ?command: unit -> unit,
+                                            ?commandParameter: System.Object,
+                                            ?iconOverride: string,
+                                            ?isEnabled: bool) =
+
+        ViewBuilders.ConstructBackButtonBehavior(?textOverride=textOverride,
+                               ?command=command,
+                               ?commandParameter=commandParameter,
+                               ?iconOverride=iconOverride,
+                               ?isEnabled=isEnabled)
+
+    /// Describes a GridItemsLayout in the view
+    static member inline GridItemsLayout(?span: int) =
+
+        ViewBuilders.ConstructGridItemsLayout(?span=span)
+
+    /// Describes a ItemsView in the view
+    static member inline ItemsView(?emptyView: System.Object,
+                                   ?itemsLayout: Xamarin.Forms.IItemsLayout,
+                                   ?itemsSource: System.Collections.IEnumerable,
+                                   ?itemSizingStrategy: Xamarin.Forms.ItemSizingStrategy,
+                                   ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
+                                   ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
+                                   ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                   ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                   ?margin: obj,
+                                   ?gestureRecognizers: ViewElement list,
+                                   ?anchorX: double,
+                                   ?anchorY: double,
+                                   ?backgroundColor: Xamarin.Forms.Color,
+                                   ?heightRequest: double,
+                                   ?inputTransparent: bool,
+                                   ?isEnabled: bool,
+                                   ?isVisible: bool,
+                                   ?minimumHeightRequest: double,
+                                   ?minimumWidthRequest: double,
+                                   ?opacity: double,
+                                   ?rotation: double,
+                                   ?rotationX: double,
+                                   ?rotationY: double,
+                                   ?scale: double,
+                                   ?style: Xamarin.Forms.Style,
+                                   ?styleClass: obj,
+                                   ?translationX: double,
+                                   ?translationY: double,
+                                   ?widthRequest: double,
+                                   ?resources: (string * obj) list,
+                                   ?styles: Xamarin.Forms.Style list,
+                                   ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                   ?isTabStop: bool,
+                                   ?scaleX: double,
+                                   ?scaleY: double,
+                                   ?tabIndex: int,
+                                   ?childrenReordered: System.EventArgs -> unit,
+                                   ?measureInvalidated: System.EventArgs -> unit,
+                                   ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                   ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                                   ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                   ?visual: Xamarin.Forms.IVisual,
+                                   ?classId: string,
+                                   ?styleId: string,
+                                   ?automationId: string,
+                                   ?created: (Xamarin.Forms.ItemsView -> unit),
+                                   ?ref: ViewRef<Xamarin.Forms.ItemsView>) =
+
+        ViewBuilders.ConstructItemsView(?emptyView=emptyView,
+                               ?itemsLayout=itemsLayout,
+                               ?itemsSource=itemsSource,
+                               ?itemSizingStrategy=itemSizingStrategy,
+                               ?scrollToRequested=scrollToRequested,
+                               ?scrollTo=scrollTo,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?isTabStop=isTabStop,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
+                               ?visual=visual,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=created,
+                               ?ref=ref)
+
+    /// Describes a SearchHandler in the view
+    static member inline SearchHandler(?clearIcon: string,
+                                       ?clearIconHelpText: string,
+                                       ?clearIconName: string,
+                                       ?clearPlaceholderCommand: unit -> unit,
+                                       ?clearPlaceholderCommandParameter: System.Object,
+                                       ?clearPlaceholderEnabled: bool,
+                                       ?clearPlaceholderHelpText: string,
+                                       ?clearPlaceholderIcon: string,
+                                       ?clearPlaceholderName: string,
+                                       ?command: unit -> unit,
+                                       ?commandParameter: System.Object,
+                                       ?displayMemberName: string,
+                                       ?isSearchEnabled: bool,
+                                       ?placeholder: string,
+                                       ?query: string,
+                                       ?queryIcon: string,
+                                       ?queryIconHelpText: string,
+                                       ?queryIconName: string,
+                                       ?searchBoxVisibility: Xamarin.Forms.SearchBoxVisiblity,
+                                       ?showsResults: bool,
+                                       ?itemsSource: System.Collections.IEnumerable) =
+
+        ViewBuilders.ConstructSearchHandler(?clearIcon=clearIcon,
+                               ?clearIconHelpText=clearIconHelpText,
+                               ?clearIconName=clearIconName,
+                               ?clearPlaceholderCommand=clearPlaceholderCommand,
+                               ?clearPlaceholderCommandParameter=clearPlaceholderCommandParameter,
+                               ?clearPlaceholderEnabled=clearPlaceholderEnabled,
+                               ?clearPlaceholderHelpText=clearPlaceholderHelpText,
+                               ?clearPlaceholderIcon=clearPlaceholderIcon,
+                               ?clearPlaceholderName=clearPlaceholderName,
+                               ?command=command,
+                               ?commandParameter=commandParameter,
+                               ?displayMemberName=displayMemberName,
+                               ?isSearchEnabled=isSearchEnabled,
+                               ?placeholder=placeholder,
+                               ?query=query,
+                               ?queryIcon=queryIcon,
+                               ?queryIconHelpText=queryIconHelpText,
+                               ?queryIconName=queryIconName,
+                               ?searchBoxVisibility=searchBoxVisibility,
+                               ?showsResults=showsResults,
+                               ?itemsSource=itemsSource)
+
+    /// Describes a Shell in the view
+    static member inline Shell(?items: seq<ViewElement>,
+                               ?menuItems: seq<ViewElement>,
+                               ?currentItem: ViewElement,
+                               ?flyoutBackgroundColor: Xamarin.Forms.Color,
+                               ?flyoutBehavior: Xamarin.Forms.FlyoutBehavior,
+                               ?flyoutHeader: System.Object,
+                               ?flyoutHeaderBehavior: Xamarin.Forms.FlyoutHeaderBehavior,
+                               ?flyoutIsPresented: bool,
+                               ?route: string,
+                               ?routeHost: string,
+                               ?routeScheme: string,
+                               ?navigated: Xamarin.Forms.ShellNavigatedEventArgs -> unit,
+                               ?navigating: Xamarin.Forms.ShellNavigatingEventArgs -> unit,
+                               ?goToAsync: Xamarin.Forms.ShellNavigationState * Fabulous.DynamicViews.AnimationKind,
+                               ?title: string,
+                               ?backgroundImage: string,
+                               ?icon: string,
+                               ?isBusy: bool,
+                               ?padding: obj,
+                               ?toolbarItems: ViewElement list,
+                               ?useSafeArea: bool,
+                               ?appearing: unit -> unit,
+                               ?disappearing: unit -> unit,
+                               ?layoutChanged: unit -> unit,
+                               ?anchorX: double,
+                               ?anchorY: double,
+                               ?backgroundColor: Xamarin.Forms.Color,
+                               ?heightRequest: double,
+                               ?inputTransparent: bool,
+                               ?isEnabled: bool,
+                               ?isVisible: bool,
+                               ?minimumHeightRequest: double,
+                               ?minimumWidthRequest: double,
+                               ?opacity: double,
+                               ?rotation: double,
+                               ?rotationX: double,
+                               ?rotationY: double,
+                               ?scale: double,
+                               ?style: Xamarin.Forms.Style,
+                               ?styleClass: obj,
+                               ?translationX: double,
+                               ?translationY: double,
+                               ?widthRequest: double,
+                               ?resources: (string * obj) list,
+                               ?styles: Xamarin.Forms.Style list,
+                               ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                               ?isTabStop: bool,
+                               ?scaleX: double,
+                               ?scaleY: double,
+                               ?tabIndex: int,
+                               ?childrenReordered: System.EventArgs -> unit,
+                               ?measureInvalidated: System.EventArgs -> unit,
+                               ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                               ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                               ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                               ?visual: Xamarin.Forms.IVisual,
+                               ?classId: string,
+                               ?styleId: string,
+                               ?automationId: string,
+                               ?created: (Xamarin.Forms.Shell -> unit),
+                               ?ref: ViewRef<Xamarin.Forms.Shell>) =
+
+        ViewBuilders.ConstructShell(?items=items,
+                               ?menuItems=menuItems,
+                               ?currentItem=currentItem,
+                               ?flyoutBackgroundColor=flyoutBackgroundColor,
+                               ?flyoutBehavior=flyoutBehavior,
+                               ?flyoutHeader=flyoutHeader,
+                               ?flyoutHeaderBehavior=flyoutHeaderBehavior,
+                               ?flyoutIsPresented=flyoutIsPresented,
+                               ?route=route,
+                               ?routeHost=routeHost,
+                               ?routeScheme=routeScheme,
+                               ?navigated=navigated,
+                               ?navigating=navigating,
+                               ?goToAsync=goToAsync,
+                               ?title=title,
+                               ?backgroundImage=backgroundImage,
+                               ?icon=icon,
+                               ?isBusy=isBusy,
+                               ?padding=padding,
+                               ?toolbarItems=toolbarItems,
+                               ?useSafeArea=useSafeArea,
+                               ?appearing=appearing,
+                               ?disappearing=disappearing,
+                               ?layoutChanged=layoutChanged,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?isTabStop=isTabStop,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
+                               ?visual=visual,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=created,
+                               ?ref=ref)
+
+    /// Describes a ShellGroupItem in the view
+    static member inline ShellGroupItem(?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions,
+                                        ?classId: string,
+                                        ?styleId: string,
+                                        ?automationId: string,
+                                        ?created: (Xamarin.Forms.ShellGroupItem -> unit),
+                                        ?ref: ViewRef<Xamarin.Forms.ShellGroupItem>) =
+
+        ViewBuilders.ConstructShellGroupItem(?flyoutDisplayOptions=flyoutDisplayOptions,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=created,
+                               ?ref=ref)
+
+    /// Describes a SelectableItemsView in the view
+    static member inline SelectableItemsView(?selectedItem: System.Object,
+                                             ?selectionChangedCommand: unit -> unit,
+                                             ?selectionChangedCommandParameter: System.Object,
+                                             ?selectionMode: Xamarin.Forms.SelectionMode,
+                                             ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit,
+                                             ?emptyView: System.Object,
+                                             ?itemsLayout: Xamarin.Forms.IItemsLayout,
+                                             ?itemsSource: System.Collections.IEnumerable,
+                                             ?itemSizingStrategy: Xamarin.Forms.ItemSizingStrategy,
+                                             ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
+                                             ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
+                                             ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                             ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                             ?margin: obj,
+                                             ?gestureRecognizers: ViewElement list,
+                                             ?anchorX: double,
+                                             ?anchorY: double,
+                                             ?backgroundColor: Xamarin.Forms.Color,
+                                             ?heightRequest: double,
+                                             ?inputTransparent: bool,
+                                             ?isEnabled: bool,
+                                             ?isVisible: bool,
+                                             ?minimumHeightRequest: double,
+                                             ?minimumWidthRequest: double,
+                                             ?opacity: double,
+                                             ?rotation: double,
+                                             ?rotationX: double,
+                                             ?rotationY: double,
+                                             ?scale: double,
+                                             ?style: Xamarin.Forms.Style,
+                                             ?styleClass: obj,
+                                             ?translationX: double,
+                                             ?translationY: double,
+                                             ?widthRequest: double,
+                                             ?resources: (string * obj) list,
+                                             ?styles: Xamarin.Forms.Style list,
+                                             ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                             ?isTabStop: bool,
+                                             ?scaleX: double,
+                                             ?scaleY: double,
+                                             ?tabIndex: int,
+                                             ?childrenReordered: System.EventArgs -> unit,
+                                             ?measureInvalidated: System.EventArgs -> unit,
+                                             ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                             ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                                             ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                             ?visual: Xamarin.Forms.IVisual,
+                                             ?classId: string,
+                                             ?styleId: string,
+                                             ?automationId: string,
+                                             ?created: (Xamarin.Forms.SelectableItemsView -> unit),
+                                             ?ref: ViewRef<Xamarin.Forms.SelectableItemsView>) =
+
+        ViewBuilders.ConstructSelectableItemsView(?selectedItem=selectedItem,
+                               ?selectionChangedCommand=selectionChangedCommand,
+                               ?selectionChangedCommandParameter=selectionChangedCommandParameter,
+                               ?selectionMode=selectionMode,
+                               ?selectionChanged=selectionChanged,
+                               ?emptyView=emptyView,
+                               ?itemsLayout=itemsLayout,
+                               ?itemsSource=itemsSource,
+                               ?itemSizingStrategy=itemSizingStrategy,
+                               ?scrollToRequested=scrollToRequested,
+                               ?scrollTo=scrollTo,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?isTabStop=isTabStop,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
+                               ?visual=visual,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=created,
+                               ?ref=ref)
+
+    /// Describes a ShellNavigationState in the view
+    static member inline ShellNavigationState(?location: System.Uri) =
+
+        ViewBuilders.ConstructShellNavigationState(?location=location)
+
+    /// Describes a ShellContent in the view
+    static member inline ShellContent(?content: ViewElement,
+                                      ?menuItems: seq<ViewElement>,
+                                      ?classId: string,
+                                      ?styleId: string,
+                                      ?automationId: string,
+                                      ?created: (Xamarin.Forms.ShellContent -> unit),
+                                      ?ref: ViewRef<Xamarin.Forms.ShellContent>) =
+
+        ViewBuilders.ConstructShellContent(?content=content,
+                               ?menuItems=menuItems,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=created,
+                               ?ref=ref)
+
+    /// Describes a ShellItem in the view
+    static member inline ShellItem(?currentItem: ViewElement,
+                                   ?items: seq<ViewElement>,
+                                   ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions,
+                                   ?classId: string,
+                                   ?styleId: string,
+                                   ?automationId: string,
+                                   ?created: (Xamarin.Forms.ShellItem -> unit),
+                                   ?ref: ViewRef<Xamarin.Forms.ShellItem>) =
+
+        ViewBuilders.ConstructShellItem(?currentItem=currentItem,
+                               ?items=items,
+                               ?flyoutDisplayOptions=flyoutDisplayOptions,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=created,
+                               ?ref=ref)
+
+    /// Describes a ShellSection in the view
+    static member inline ShellSection(?currentItem: ViewElement,
+                                      ?goToAsync: string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind,
+                                      ?items: seq<ViewElement>,
+                                      ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions,
+                                      ?classId: string,
+                                      ?styleId: string,
+                                      ?automationId: string,
+                                      ?created: (Xamarin.Forms.ShellSection -> unit),
+                                      ?ref: ViewRef<Xamarin.Forms.ShellSection>) =
+
+        ViewBuilders.ConstructShellSection(?currentItem=currentItem,
+                               ?goToAsync=goToAsync,
+                               ?items=items,
+                               ?flyoutDisplayOptions=flyoutDisplayOptions,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=created,
+                               ?ref=ref)
+
+    /// Describes a CarouselView in the view
+    static member inline CarouselView(?items: seq<ViewElement>,
+                                      ?emptyView: System.Object,
+                                      ?itemsLayout: Xamarin.Forms.IItemsLayout,
+                                      ?itemsSource: System.Collections.IEnumerable,
+                                      ?itemSizingStrategy: Xamarin.Forms.ItemSizingStrategy,
+                                      ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
+                                      ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
+                                      ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                      ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                      ?margin: obj,
+                                      ?gestureRecognizers: ViewElement list,
+                                      ?anchorX: double,
+                                      ?anchorY: double,
+                                      ?backgroundColor: Xamarin.Forms.Color,
+                                      ?heightRequest: double,
+                                      ?inputTransparent: bool,
+                                      ?isEnabled: bool,
+                                      ?isVisible: bool,
+                                      ?minimumHeightRequest: double,
+                                      ?minimumWidthRequest: double,
+                                      ?opacity: double,
+                                      ?rotation: double,
+                                      ?rotationX: double,
+                                      ?rotationY: double,
+                                      ?scale: double,
+                                      ?style: Xamarin.Forms.Style,
+                                      ?styleClass: obj,
+                                      ?translationX: double,
+                                      ?translationY: double,
+                                      ?widthRequest: double,
+                                      ?resources: (string * obj) list,
+                                      ?styles: Xamarin.Forms.Style list,
+                                      ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                      ?isTabStop: bool,
+                                      ?scaleX: double,
+                                      ?scaleY: double,
+                                      ?tabIndex: int,
+                                      ?childrenReordered: System.EventArgs -> unit,
+                                      ?measureInvalidated: System.EventArgs -> unit,
+                                      ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                      ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                                      ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                      ?visual: Xamarin.Forms.IVisual,
+                                      ?classId: string,
+                                      ?styleId: string,
+                                      ?automationId: string,
+                                      ?created: (Xamarin.Forms.CarouselView -> unit),
+                                      ?ref: ViewRef<Xamarin.Forms.CarouselView>) =
+
+        ViewBuilders.ConstructCarouselView(?items=items,
+                               ?emptyView=emptyView,
+                               ?itemsLayout=itemsLayout,
+                               ?itemsSource=itemsSource,
+                               ?itemSizingStrategy=itemSizingStrategy,
+                               ?scrollToRequested=scrollToRequested,
+                               ?scrollTo=scrollTo,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?isTabStop=isTabStop,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
+                               ?visual=visual,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=created,
+                               ?ref=ref)
+
+    /// Describes a CollectionView in the view
+    static member inline CollectionView(?items: seq<ViewElement>,
+                                        ?selectedItem: System.Object,
+                                        ?selectionChangedCommand: unit -> unit,
+                                        ?selectionChangedCommandParameter: System.Object,
+                                        ?selectionMode: Xamarin.Forms.SelectionMode,
+                                        ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit,
+                                        ?emptyView: System.Object,
+                                        ?itemsLayout: Xamarin.Forms.IItemsLayout,
+                                        ?itemsSource: System.Collections.IEnumerable,
+                                        ?itemSizingStrategy: Xamarin.Forms.ItemSizingStrategy,
+                                        ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit,
+                                        ?scrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind,
+                                        ?horizontalOptions: Xamarin.Forms.LayoutOptions,
+                                        ?verticalOptions: Xamarin.Forms.LayoutOptions,
+                                        ?margin: obj,
+                                        ?gestureRecognizers: ViewElement list,
+                                        ?anchorX: double,
+                                        ?anchorY: double,
+                                        ?backgroundColor: Xamarin.Forms.Color,
+                                        ?heightRequest: double,
+                                        ?inputTransparent: bool,
+                                        ?isEnabled: bool,
+                                        ?isVisible: bool,
+                                        ?minimumHeightRequest: double,
+                                        ?minimumWidthRequest: double,
+                                        ?opacity: double,
+                                        ?rotation: double,
+                                        ?rotationX: double,
+                                        ?rotationY: double,
+                                        ?scale: double,
+                                        ?style: Xamarin.Forms.Style,
+                                        ?styleClass: obj,
+                                        ?translationX: double,
+                                        ?translationY: double,
+                                        ?widthRequest: double,
+                                        ?resources: (string * obj) list,
+                                        ?styles: Xamarin.Forms.Style list,
+                                        ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list,
+                                        ?isTabStop: bool,
+                                        ?scaleX: double,
+                                        ?scaleY: double,
+                                        ?tabIndex: int,
+                                        ?childrenReordered: System.EventArgs -> unit,
+                                        ?measureInvalidated: System.EventArgs -> unit,
+                                        ?focused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit,
+                                        ?unfocused: Xamarin.Forms.FocusEventArgs -> unit,
+                                        ?visual: Xamarin.Forms.IVisual,
+                                        ?classId: string,
+                                        ?styleId: string,
+                                        ?automationId: string,
+                                        ?created: (Xamarin.Forms.CollectionView -> unit),
+                                        ?ref: ViewRef<Xamarin.Forms.CollectionView>) =
+
+        ViewBuilders.ConstructCollectionView(?items=items,
+                               ?selectedItem=selectedItem,
+                               ?selectionChangedCommand=selectionChangedCommand,
+                               ?selectionChangedCommandParameter=selectionChangedCommandParameter,
+                               ?selectionMode=selectionMode,
+                               ?selectionChanged=selectionChanged,
+                               ?emptyView=emptyView,
+                               ?itemsLayout=itemsLayout,
+                               ?itemsSource=itemsSource,
+                               ?itemSizingStrategy=itemSizingStrategy,
+                               ?scrollToRequested=scrollToRequested,
+                               ?scrollTo=scrollTo,
+                               ?horizontalOptions=horizontalOptions,
+                               ?verticalOptions=verticalOptions,
+                               ?margin=margin,
+                               ?gestureRecognizers=gestureRecognizers,
+                               ?anchorX=anchorX,
+                               ?anchorY=anchorY,
+                               ?backgroundColor=backgroundColor,
+                               ?heightRequest=heightRequest,
+                               ?inputTransparent=inputTransparent,
+                               ?isEnabled=isEnabled,
+                               ?isVisible=isVisible,
+                               ?minimumHeightRequest=minimumHeightRequest,
+                               ?minimumWidthRequest=minimumWidthRequest,
+                               ?opacity=opacity,
+                               ?rotation=rotation,
+                               ?rotationX=rotationX,
+                               ?rotationY=rotationY,
+                               ?scale=scale,
+                               ?style=style,
+                               ?styleClass=styleClass,
+                               ?translationX=translationX,
+                               ?translationY=translationY,
+                               ?widthRequest=widthRequest,
+                               ?resources=resources,
+                               ?styles=styles,
+                               ?styleSheets=styleSheets,
+                               ?isTabStop=isTabStop,
+                               ?scaleX=scaleX,
+                               ?scaleY=scaleY,
+                               ?tabIndex=tabIndex,
+                               ?childrenReordered=childrenReordered,
+                               ?measureInvalidated=measureInvalidated,
+                               ?focused=focused,
+                               ?sizeChanged=sizeChanged,
+                               ?unfocused=unfocused,
+                               ?visual=visual,
+                               ?classId=classId,
+                               ?styleId=styleId,
+                               ?automationId=automationId,
+                               ?created=created,
+                               ?ref=ref)
+
+    /// Describes a FontImageSource in the view
+    static member inline FontImageSource(?color: Xamarin.Forms.Color,
+                                         ?fontFamily: string,
+                                         ?glyph: string,
+                                         ?size: float,
+                                         ?classId: string,
+                                         ?styleId: string,
+                                         ?automationId: string,
+                                         ?created: (Xamarin.Forms.FontImageSource -> unit),
+                                         ?ref: ViewRef<Xamarin.Forms.FontImageSource>) =
+
+        ViewBuilders.ConstructFontImageSource(?color=color,
+                               ?fontFamily=fontFamily,
+                               ?glyph=glyph,
+                               ?size=size,
                                ?classId=classId,
                                ?styleId=styleId,
                                ?automationId=automationId,
@@ -17294,10 +20872,13 @@ module ViewElementExtensions =
         member x.Focused(value: Xamarin.Forms.FocusEventArgs -> unit) = x.WithAttribute(ViewAttributes.FocusedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.FocusEventArgs>(fun _sender args -> f args))(value))
 
         /// Adjusts the SizeChanged property in the visual element
-        member x.SizeChanged(value: System.EventArgs -> unit) = x.WithAttribute(ViewAttributes.SizeChangedAttribKey, (fun f -> System.EventHandler(fun _sender args -> f args))(value))
+        member x.SizeChanged(value: Fabulous.CustomControls.SizeChangedEventArgs -> unit) = x.WithAttribute(ViewAttributes.SizeChangedAttribKey, (fun f -> System.EventHandler(fun sender _args -> let visualElement = sender :?> Xamarin.Forms.VisualElement in f (Fabulous.CustomControls.SizeChangedEventArgs(visualElement.Width, visualElement.Height))))(value))
 
         /// Adjusts the Unfocused property in the visual element
         member x.Unfocused(value: Xamarin.Forms.FocusEventArgs -> unit) = x.WithAttribute(ViewAttributes.UnfocusedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.FocusEventArgs>(fun _sender args -> f args))(value))
+
+        /// Adjusts the Visual property in the visual element
+        member x.Visual(value: Xamarin.Forms.IVisual) = x.WithAttribute(ViewAttributes.VisualAttribKey, (value))
 
         /// Adjusts the HorizontalOptions property in the visual element
         member x.HorizontalOptions(value: Xamarin.Forms.LayoutOptions) = x.WithAttribute(ViewAttributes.HorizontalOptionsAttribKey, (value))
@@ -17380,41 +20961,11 @@ module ViewElementExtensions =
         /// Adjusts the Scrolled property in the visual element
         member x.Scrolled(value: Xamarin.Forms.ScrolledEventArgs -> unit) = x.WithAttribute(ViewAttributes.ScrolledAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ScrolledEventArgs>(fun _sender args -> f args))(value))
 
-        /// Adjusts the CancelButtonColor property in the visual element
-        member x.CancelButtonColor(value: Xamarin.Forms.Color) = x.WithAttribute(ViewAttributes.CancelButtonColorAttribKey, (value))
-
-        /// Adjusts the FontFamily property in the visual element
-        member x.FontFamily(value: string) = x.WithAttribute(ViewAttributes.FontFamilyAttribKey, (value))
-
-        /// Adjusts the FontAttributes property in the visual element
-        member x.FontAttributes(value: Xamarin.Forms.FontAttributes) = x.WithAttribute(ViewAttributes.FontAttributesAttribKey, (value))
-
-        /// Adjusts the FontSize property in the visual element
-        member x.FontSize(value: obj) = x.WithAttribute(ViewAttributes.FontSizeAttribKey, makeFontSize(value))
-
-        /// Adjusts the HorizontalTextAlignment property in the visual element
-        member x.HorizontalTextAlignment(value: Xamarin.Forms.TextAlignment) = x.WithAttribute(ViewAttributes.HorizontalTextAlignmentAttribKey, (value))
-
-        /// Adjusts the Placeholder property in the visual element
-        member x.Placeholder(value: string) = x.WithAttribute(ViewAttributes.PlaceholderAttribKey, (value))
-
-        /// Adjusts the PlaceholderColor property in the visual element
-        member x.PlaceholderColor(value: Xamarin.Forms.Color) = x.WithAttribute(ViewAttributes.PlaceholderColorAttribKey, (value))
-
-        /// Adjusts the SearchBarCommand property in the visual element
-        member x.SearchBarCommand(value: string -> unit) = x.WithAttribute(ViewAttributes.SearchBarCommandAttribKey, (value))
-
-        /// Adjusts the SearchBarCanExecute property in the visual element
-        member x.SearchBarCanExecute(value: bool) = x.WithAttribute(ViewAttributes.SearchBarCanExecuteAttribKey, (value))
+        /// Adjusts the LayoutAreaOverride property in the visual element
+        member x.LayoutAreaOverride(value: Xamarin.Forms.Rectangle) = x.WithAttribute(ViewAttributes.LayoutAreaOverrideAttribKey, (value))
 
         /// Adjusts the Text property in the visual element
         member x.Text(value: string) = x.WithAttribute(ViewAttributes.TextAttribKey, (value))
-
-        /// Adjusts the TextColor property in the visual element
-        member x.TextColor(value: Xamarin.Forms.Color) = x.WithAttribute(ViewAttributes.TextColorAttribKey, (value))
-
-        /// Adjusts the SearchBarTextChanged property in the visual element
-        member x.SearchBarTextChanged(value: Xamarin.Forms.TextChangedEventArgs -> unit) = x.WithAttribute(ViewAttributes.SearchBarTextChangedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))(value))
 
         /// Adjusts the ButtonCommand property in the visual element
         member x.ButtonCommand(value: unit -> unit) = x.WithAttribute(ViewAttributes.ButtonCommandAttribKey, (value))
@@ -17428,17 +20979,26 @@ module ViewElementExtensions =
         /// Adjusts the BorderWidth property in the visual element
         member x.BorderWidth(value: double) = x.WithAttribute(ViewAttributes.BorderWidthAttribKey, (value))
 
-        /// Adjusts the CommandParameter property in the visual element
-        member x.CommandParameter(value: System.Object) = x.WithAttribute(ViewAttributes.CommandParameterAttribKey, (value))
-
         /// Adjusts the ContentLayout property in the visual element
         member x.ContentLayout(value: Xamarin.Forms.Button.ButtonContentLayout) = x.WithAttribute(ViewAttributes.ContentLayoutAttribKey, (value))
 
         /// Adjusts the ButtonCornerRadius property in the visual element
         member x.ButtonCornerRadius(value: int) = x.WithAttribute(ViewAttributes.ButtonCornerRadiusAttribKey, (value))
 
+        /// Adjusts the FontFamily property in the visual element
+        member x.FontFamily(value: string) = x.WithAttribute(ViewAttributes.FontFamilyAttribKey, (value))
+
+        /// Adjusts the FontAttributes property in the visual element
+        member x.FontAttributes(value: Xamarin.Forms.FontAttributes) = x.WithAttribute(ViewAttributes.FontAttributesAttribKey, (value))
+
+        /// Adjusts the FontSize property in the visual element
+        member x.FontSize(value: obj) = x.WithAttribute(ViewAttributes.FontSizeAttribKey, makeFontSize(value))
+
         /// Adjusts the ButtonImageSource property in the visual element
         member x.ButtonImageSource(value: string) = x.WithAttribute(ViewAttributes.ButtonImageSourceAttribKey, (value))
+
+        /// Adjusts the TextColor property in the visual element
+        member x.TextColor(value: Xamarin.Forms.Color) = x.WithAttribute(ViewAttributes.TextColorAttribKey, (value))
 
         /// Adjusts the MinimumMaximum property in the visual element
         member x.MinimumMaximum(value: float * float) = x.WithAttribute(ViewAttributes.MinimumMaximumAttribKey, (value))
@@ -17448,6 +21008,12 @@ module ViewElementExtensions =
 
         /// Adjusts the ValueChanged property in the visual element
         member x.ValueChanged(value: Xamarin.Forms.ValueChangedEventArgs -> unit) = x.WithAttribute(ViewAttributes.ValueChangedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>(fun _sender args -> f args))(value))
+
+        /// Adjusts the DragCompleted property in the visual element
+        member x.DragCompleted(value: unit -> unit) = x.WithAttribute(ViewAttributes.DragCompletedAttribKey, makeCommand(value))
+
+        /// Adjusts the DragStarted property in the visual element
+        member x.DragStarted(value: unit -> unit) = x.WithAttribute(ViewAttributes.DragStartedAttribKey, makeCommand(value))
 
         /// Adjusts the Increment property in the visual element
         member x.Increment(value: double) = x.WithAttribute(ViewAttributes.IncrementAttribKey, (value))
@@ -17593,6 +21159,9 @@ module ViewElementExtensions =
         /// Adjusts the Title property in the visual element
         member x.Title(value: string) = x.WithAttribute(ViewAttributes.TitleAttribKey, (value))
 
+        /// Adjusts the TitleColor property in the visual element
+        member x.TitleColor(value: Xamarin.Forms.Color) = x.WithAttribute(ViewAttributes.TitleColorAttribKey, (value))
+
         /// Adjusts the SelectedIndexChanged property in the visual element
         member x.SelectedIndexChanged(value: (int * 'T option) -> unit) = x.WithAttribute(ViewAttributes.SelectedIndexChangedAttribKey, (fun f -> System.EventHandler(fun sender args -> let picker = (sender :?> Xamarin.Forms.Picker) in f (picker.SelectedIndex, (picker.SelectedItem |> Option.ofObj |> Option.map unbox<'T>))))(value))
 
@@ -17612,7 +21181,7 @@ module ViewElementExtensions =
         member x.IsOpaque(value: bool) = x.WithAttribute(ViewAttributes.IsOpaqueAttribKey, (value))
 
         /// Adjusts the ImageButtonCommand property in the visual element
-        member x.ImageButtonCommand(value: unit -> unit) = x.WithAttribute(ViewAttributes.ImageButtonCommandAttribKey, (value))
+        member x.ImageButtonCommand(value: unit -> unit) = x.WithAttribute(ViewAttributes.ImageButtonCommandAttribKey, makeCommand(value))
 
         /// Adjusts the ImageButtonCornerRadius property in the visual element
         member x.ImageButtonCornerRadius(value: int) = x.WithAttribute(ViewAttributes.ImageButtonCornerRadiusAttribKey, (value))
@@ -17629,6 +21198,30 @@ module ViewElementExtensions =
         /// Adjusts the Keyboard property in the visual element
         member x.Keyboard(value: Xamarin.Forms.Keyboard) = x.WithAttribute(ViewAttributes.KeyboardAttribKey, (value))
 
+        /// Adjusts the IsReadOnly property in the visual element
+        member x.IsReadOnly(value: bool) = x.WithAttribute(ViewAttributes.IsReadOnlyAttribKey, (value))
+
+        /// Adjusts the CancelButtonColor property in the visual element
+        member x.CancelButtonColor(value: Xamarin.Forms.Color) = x.WithAttribute(ViewAttributes.CancelButtonColorAttribKey, (value))
+
+        /// Adjusts the HorizontalTextAlignment property in the visual element
+        member x.HorizontalTextAlignment(value: Xamarin.Forms.TextAlignment) = x.WithAttribute(ViewAttributes.HorizontalTextAlignmentAttribKey, (value))
+
+        /// Adjusts the Placeholder property in the visual element
+        member x.Placeholder(value: string) = x.WithAttribute(ViewAttributes.PlaceholderAttribKey, (value))
+
+        /// Adjusts the PlaceholderColor property in the visual element
+        member x.PlaceholderColor(value: Xamarin.Forms.Color) = x.WithAttribute(ViewAttributes.PlaceholderColorAttribKey, (value))
+
+        /// Adjusts the SearchBarCommand property in the visual element
+        member x.SearchBarCommand(value: string -> unit) = x.WithAttribute(ViewAttributes.SearchBarCommandAttribKey, (value))
+
+        /// Adjusts the SearchBarCanExecute property in the visual element
+        member x.SearchBarCanExecute(value: bool) = x.WithAttribute(ViewAttributes.SearchBarCanExecuteAttribKey, (value))
+
+        /// Adjusts the SearchBarTextChanged property in the visual element
+        member x.SearchBarTextChanged(value: Xamarin.Forms.TextChangedEventArgs -> unit) = x.WithAttribute(ViewAttributes.SearchBarTextChangedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))(value))
+
         /// Adjusts the EditorCompleted property in the visual element
         member x.EditorCompleted(value: string -> unit) = x.WithAttribute(ViewAttributes.EditorCompletedAttribKey, (fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.Editor).Text))(value))
 
@@ -17638,14 +21231,14 @@ module ViewElementExtensions =
         /// Adjusts the AutoSize property in the visual element
         member x.AutoSize(value: Xamarin.Forms.EditorAutoSizeOption) = x.WithAttribute(ViewAttributes.AutoSizeAttribKey, (value))
 
+        /// Adjusts the IsTextPredictionEnabled property in the visual element
+        member x.IsTextPredictionEnabled(value: bool) = x.WithAttribute(ViewAttributes.IsTextPredictionEnabledAttribKey, (value))
+
         /// Adjusts the IsPassword property in the visual element
         member x.IsPassword(value: bool) = x.WithAttribute(ViewAttributes.IsPasswordAttribKey, (value))
 
         /// Adjusts the EntryCompleted property in the visual element
         member x.EntryCompleted(value: string -> unit) = x.WithAttribute(ViewAttributes.EntryCompletedAttribKey, (fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.Entry).Text))(value))
-
-        /// Adjusts the IsTextPredictionEnabled property in the visual element
-        member x.IsTextPredictionEnabled(value: bool) = x.WithAttribute(ViewAttributes.IsTextPredictionEnabledAttribKey, (value))
 
         /// Adjusts the ReturnType property in the visual element
         member x.ReturnType(value: Xamarin.Forms.ReturnType) = x.WithAttribute(ViewAttributes.ReturnTypeAttribKey, (value))
@@ -17884,6 +21477,9 @@ module ViewElementExtensions =
         /// Adjusts the SelectionMode property in the visual element
         member x.SelectionMode(value: Xamarin.Forms.ListViewSelectionMode) = x.WithAttribute(ViewAttributes.SelectionModeAttribKey, (value))
 
+        /// Adjusts the RefreshControlColor property in the visual element
+        member x.RefreshControlColor(value: Xamarin.Forms.Color) = x.WithAttribute(ViewAttributes.RefreshControlColorAttribKey, (value))
+
         /// Adjusts the ListViewGrouped_ItemsSource property in the visual element
         member x.ListViewGrouped_ItemsSource(value: (string * ViewElement * ViewElement list) list) = x.WithAttribute(ViewAttributes.ListViewGrouped_ItemsSourceAttribKey, (fun es -> es |> Array.ofList |> Array.map (fun (g, e, l) -> (g, e, Array.ofList l)))(value))
 
@@ -17914,36 +21510,193 @@ module ViewElementExtensions =
         /// Adjusts the Refreshing property in the visual element
         member x.Refreshing(value: unit -> unit) = x.WithAttribute(ViewAttributes.RefreshingAttribKey, (fun f -> System.EventHandler(fun sender args -> f ()))(value))
 
+        /// Adjusts the TextOverride property in the visual element
+        member x.TextOverride(value: string) = x.WithAttribute(ViewAttributes.TextOverrideAttribKey, (value))
+
+        /// Adjusts the CommandParameter property in the visual element
+        member x.CommandParameter(value: System.Object) = x.WithAttribute(ViewAttributes.CommandParameterAttribKey, (value))
+
+        /// Adjusts the IconOverride property in the visual element
+        member x.IconOverride(value: string) = x.WithAttribute(ViewAttributes.IconOverrideAttribKey, (value))
+
+        /// Adjusts the Span property in the visual element
+        member x.Span(value: int) = x.WithAttribute(ViewAttributes.SpanAttribKey, (value))
+
+        /// Adjusts the EmptyView property in the visual element
+        member x.EmptyView(value: System.Object) = x.WithAttribute(ViewAttributes.EmptyViewAttribKey, (value))
+
+        /// Adjusts the ItemsLayout property in the visual element
+        member x.ItemsLayout(value: Xamarin.Forms.IItemsLayout) = x.WithAttribute(ViewAttributes.ItemsLayoutAttribKey, (value))
+
+        /// Adjusts the ItemsSource property in the visual element
+        member x.ItemsSource(value: System.Collections.IEnumerable) = x.WithAttribute(ViewAttributes.ItemsSourceAttribKey, (value))
+
+        /// Adjusts the ItemSizingStrategy property in the visual element
+        member x.ItemSizingStrategy(value: Xamarin.Forms.ItemSizingStrategy) = x.WithAttribute(ViewAttributes.ItemSizingStrategyAttribKey, (value))
+
+        /// Adjusts the ScrollToRequested property in the visual element
+        member x.ScrollToRequested(value: Xamarin.Forms.ScrollToRequestEventArgs -> unit) = x.WithAttribute(ViewAttributes.ScrollToRequestedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ScrollToRequestEventArgs>(fun _sender args -> f args))(value))
+
+        /// Adjusts the iScrollTo property in the visual element
+        member x.iScrollTo(value: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind) = x.WithAttribute(ViewAttributes.iScrollToAttribKey, (value))
+
+        /// Adjusts the ClearIcon property in the visual element
+        member x.ClearIcon(value: string) = x.WithAttribute(ViewAttributes.ClearIconAttribKey, (value))
+
+        /// Adjusts the ClearIconHelpText property in the visual element
+        member x.ClearIconHelpText(value: string) = x.WithAttribute(ViewAttributes.ClearIconHelpTextAttribKey, (value))
+
+        /// Adjusts the ClearIconName property in the visual element
+        member x.ClearIconName(value: string) = x.WithAttribute(ViewAttributes.ClearIconNameAttribKey, (value))
+
+        /// Adjusts the ClearPlaceholderCommand property in the visual element
+        member x.ClearPlaceholderCommand(value: unit -> unit) = x.WithAttribute(ViewAttributes.ClearPlaceholderCommandAttribKey, makeCommand(value))
+
+        /// Adjusts the ClearPlaceholderCommandParameter property in the visual element
+        member x.ClearPlaceholderCommandParameter(value: System.Object) = x.WithAttribute(ViewAttributes.ClearPlaceholderCommandParameterAttribKey, (value))
+
+        /// Adjusts the ClearPlaceholderEnabled property in the visual element
+        member x.ClearPlaceholderEnabled(value: bool) = x.WithAttribute(ViewAttributes.ClearPlaceholderEnabledAttribKey, (value))
+
+        /// Adjusts the ClearPlaceholderHelpText property in the visual element
+        member x.ClearPlaceholderHelpText(value: string) = x.WithAttribute(ViewAttributes.ClearPlaceholderHelpTextAttribKey, (value))
+
+        /// Adjusts the ClearPlaceholderIcon property in the visual element
+        member x.ClearPlaceholderIcon(value: string) = x.WithAttribute(ViewAttributes.ClearPlaceholderIconAttribKey, (value))
+
+        /// Adjusts the ClearPlaceholderName property in the visual element
+        member x.ClearPlaceholderName(value: string) = x.WithAttribute(ViewAttributes.ClearPlaceholderNameAttribKey, (value))
+
+        /// Adjusts the DisplayMemberName property in the visual element
+        member x.DisplayMemberName(value: string) = x.WithAttribute(ViewAttributes.DisplayMemberNameAttribKey, (value))
+
+        /// Adjusts the IsSearchEnabled property in the visual element
+        member x.IsSearchEnabled(value: bool) = x.WithAttribute(ViewAttributes.IsSearchEnabledAttribKey, (value))
+
+        /// Adjusts the Query property in the visual element
+        member x.Query(value: string) = x.WithAttribute(ViewAttributes.QueryAttribKey, (value))
+
+        /// Adjusts the QueryIcon property in the visual element
+        member x.QueryIcon(value: string) = x.WithAttribute(ViewAttributes.QueryIconAttribKey, (value))
+
+        /// Adjusts the QueryIconHelpText property in the visual element
+        member x.QueryIconHelpText(value: string) = x.WithAttribute(ViewAttributes.QueryIconHelpTextAttribKey, (value))
+
+        /// Adjusts the QueryIconName property in the visual element
+        member x.QueryIconName(value: string) = x.WithAttribute(ViewAttributes.QueryIconNameAttribKey, (value))
+
+        /// Adjusts the SearchBoxVisibility property in the visual element
+        member x.SearchBoxVisibility(value: Xamarin.Forms.SearchBoxVisiblity) = x.WithAttribute(ViewAttributes.SearchBoxVisibilityAttribKey, (value))
+
+        /// Adjusts the ShowsResults property in the visual element
+        member x.ShowsResults(value: bool) = x.WithAttribute(ViewAttributes.ShowsResultsAttribKey, (value))
+
+        /// Adjusts the Items property in the visual element
+        member x.Items(value: seq<ViewElement>) = x.WithAttribute(ViewAttributes.ItemsAttribKey, (value))
+
+        /// Adjusts the CurrentItem property in the visual element
+        member x.CurrentItem(value: ViewElement) = x.WithAttribute(ViewAttributes.CurrentItemAttribKey, (value))
+
+        /// Adjusts the FlyoutBackgroundColor property in the visual element
+        member x.FlyoutBackgroundColor(value: Xamarin.Forms.Color) = x.WithAttribute(ViewAttributes.FlyoutBackgroundColorAttribKey, (value))
+
+        /// Adjusts the FlyoutBehavior property in the visual element
+        member x.FlyoutBehavior(value: Xamarin.Forms.FlyoutBehavior) = x.WithAttribute(ViewAttributes.FlyoutBehaviorAttribKey, (value))
+
+        /// Adjusts the FlyoutHeader property in the visual element
+        member x.FlyoutHeader(value: System.Object) = x.WithAttribute(ViewAttributes.FlyoutHeaderAttribKey, (value))
+
+        /// Adjusts the FlyoutHeaderBehavior property in the visual element
+        member x.FlyoutHeaderBehavior(value: Xamarin.Forms.FlyoutHeaderBehavior) = x.WithAttribute(ViewAttributes.FlyoutHeaderBehaviorAttribKey, (value))
+
+        /// Adjusts the FlyoutIsPresented property in the visual element
+        member x.FlyoutIsPresented(value: bool) = x.WithAttribute(ViewAttributes.FlyoutIsPresentedAttribKey, (value))
+
+        /// Adjusts the Route property in the visual element
+        member x.Route(value: string) = x.WithAttribute(ViewAttributes.RouteAttribKey, (value))
+
+        /// Adjusts the RouteHost property in the visual element
+        member x.RouteHost(value: string) = x.WithAttribute(ViewAttributes.RouteHostAttribKey, (value))
+
+        /// Adjusts the RouteScheme property in the visual element
+        member x.RouteScheme(value: string) = x.WithAttribute(ViewAttributes.RouteSchemeAttribKey, (value))
+
+        /// Adjusts the OnNavigated property in the visual element
+        member x.OnNavigated(value: Xamarin.Forms.ShellNavigatedEventArgs -> unit) = x.WithAttribute(ViewAttributes.OnNavigatedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ShellNavigatedEventArgs>(fun _sender args -> f args))(value))
+
+        /// Adjusts the OnNavigating property in the visual element
+        member x.OnNavigating(value: Xamarin.Forms.ShellNavigatingEventArgs -> unit) = x.WithAttribute(ViewAttributes.OnNavigatingAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.ShellNavigatingEventArgs>(fun _sender args -> f args))(value))
+
+        /// Adjusts the GoToAsync property in the visual element
+        member x.GoToAsync(value: Xamarin.Forms.ShellNavigationState * Fabulous.DynamicViews.AnimationKind) = x.WithAttribute(ViewAttributes.GoToAsyncAttribKey, (value))
+
+        /// Adjusts the FlyoutDisplayOptions property in the visual element
+        member x.FlyoutDisplayOptions(value: Xamarin.Forms.FlyoutDisplayOptions) = x.WithAttribute(ViewAttributes.FlyoutDisplayOptionsAttribKey, (value))
+
+        /// Adjusts the SelectedItem property in the visual element
+        member x.SelectedItem(value: System.Object) = x.WithAttribute(ViewAttributes.SelectedItemAttribKey, (value))
+
+        /// Adjusts the SelectionChangedCommand property in the visual element
+        member x.SelectionChangedCommand(value: unit -> unit) = x.WithAttribute(ViewAttributes.SelectionChangedCommandAttribKey, makeCommand(value))
+
+        /// Adjusts the SelectionChangedCommandParameter property in the visual element
+        member x.SelectionChangedCommandParameter(value: System.Object) = x.WithAttribute(ViewAttributes.SelectionChangedCommandParameterAttribKey, (value))
+
+        /// Adjusts the selectableItemsMode property in the visual element
+        member x.selectableItemsMode(value: Xamarin.Forms.SelectionMode) = x.WithAttribute(ViewAttributes.selectableItemsModeAttribKey, (value))
+
+        /// Adjusts the SelectionChanged property in the visual element
+        member x.SelectionChanged(value: Xamarin.Forms.SelectionChangedEventArgs -> unit) = x.WithAttribute(ViewAttributes.SelectionChangedAttribKey, (fun f -> System.EventHandler<Xamarin.Forms.SelectionChangedEventArgs>(fun _sender args -> f args))(value))
+
+        /// Adjusts the Location property in the visual element
+        member x.Location(value: System.Uri) = x.WithAttribute(ViewAttributes.LocationAttribKey, makeUri(value))
+
+        /// Adjusts the ssGoToAsync property in the visual element
+        member x.ssGoToAsync(value: string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind) = x.WithAttribute(ViewAttributes.ssGoToAsyncAttribKey, (value))
+
+        /// Adjusts the CarouselViewItems property in the visual element
+        member x.CarouselViewItems(value: seq<ViewElement>) = x.WithAttribute(ViewAttributes.CarouselViewItemsAttribKey, (value))
+
+        /// Adjusts the CollectionViewItems property in the visual element
+        member x.CollectionViewItems(value: seq<ViewElement>) = x.WithAttribute(ViewAttributes.CollectionViewItemsAttribKey, (value))
+
+        /// Adjusts the Glyph property in the visual element
+        member x.Glyph(value: string) = x.WithAttribute(ViewAttributes.GlyphAttribKey, (value))
+
+        /// Adjusts the Size property in the visual element
+        member x.Size(value: float) = x.WithAttribute(ViewAttributes.SizeAttribKey, (value))
+
         member x.With(?classId: string, ?styleId: string, ?automationId: string, ?anchorX: double, ?anchorY: double, 
                       ?backgroundColor: Xamarin.Forms.Color, ?heightRequest: double, ?inputTransparent: bool, ?isEnabled: bool, ?isVisible: bool, 
                       ?minimumHeightRequest: double, ?minimumWidthRequest: double, ?opacity: double, ?rotation: double, ?rotationX: double, 
                       ?rotationY: double, ?scale: double, ?style: Xamarin.Forms.Style, ?styleClass: obj, ?translationX: double, 
                       ?translationY: double, ?widthRequest: double, ?resources: (string * obj) list, ?styles: Xamarin.Forms.Style list, ?styleSheets: Xamarin.Forms.StyleSheets.StyleSheet list, 
                       ?isTabStop: bool, ?scaleX: double, ?scaleY: double, ?tabIndex: int, ?childrenReordered: System.EventArgs -> unit, 
-                      ?measureInvalidated: System.EventArgs -> unit, ?focused: Xamarin.Forms.FocusEventArgs -> unit, ?sizeChanged: System.EventArgs -> unit, ?unfocused: Xamarin.Forms.FocusEventArgs -> unit, ?horizontalOptions: Xamarin.Forms.LayoutOptions, 
-                      ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?touchPoints: int, ?panUpdated: Xamarin.Forms.PanUpdatedEventArgs -> unit, 
-                      ?command: unit -> unit, ?numberOfTapsRequired: int, ?numberOfClicksRequired: int, ?buttons: Xamarin.Forms.ButtonsMask, ?isPinching: bool, 
-                      ?pinchUpdated: Xamarin.Forms.PinchGestureUpdatedEventArgs -> unit, ?swipeGestureRecognizerDirection: Xamarin.Forms.SwipeDirection, ?threshold: System.UInt32, ?swiped: Xamarin.Forms.SwipedEventArgs -> unit, ?color: Xamarin.Forms.Color, 
-                      ?isRunning: bool, ?boxViewCornerRadius: Xamarin.Forms.CornerRadius, ?progress: double, ?isClippedToBounds: bool, ?padding: obj, 
-                      ?content: ViewElement, ?scrollOrientation: Xamarin.Forms.ScrollOrientation, ?horizontalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility, ?verticalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility, ?scrollTo: float * float * Fabulous.DynamicViews.AnimationKind, 
-                      ?scrolled: Xamarin.Forms.ScrolledEventArgs -> unit, ?cancelButtonColor: Xamarin.Forms.Color, ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, 
-                      ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?placeholder: string, ?placeholderColor: Xamarin.Forms.Color, ?searchBarCommand: string -> unit, ?searchBarCanExecute: bool, 
-                      ?text: string, ?textColor: Xamarin.Forms.Color, ?searchBarTextChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?buttonCommand: unit -> unit, ?buttonCanExecute: bool, 
-                      ?borderColor: Xamarin.Forms.Color, ?borderWidth: double, ?commandParameter: System.Object, ?contentLayout: Xamarin.Forms.Button.ButtonContentLayout, ?buttonCornerRadius: int, 
-                      ?buttonImageSource: string, ?minimumMaximum: float * float, ?value: double, ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit, ?increment: double, 
-                      ?isToggled: bool, ?toggled: Xamarin.Forms.ToggledEventArgs -> unit, ?onColor: Xamarin.Forms.Color, ?height: double, ?on: bool, 
-                      ?onChanged: Xamarin.Forms.ToggledEventArgs -> unit, ?intent: Xamarin.Forms.TableIntent, ?hasUnevenRows: bool, ?rowHeight: int, ?tableRoot: (string * ViewElement list) list, 
-                      ?rowDefinitionHeight: obj, ?columnDefinitionWidth: obj, ?gridRowDefinitions: obj list, ?gridColumnDefinitions: obj list, ?rowSpacing: double, 
-                      ?columnSpacing: double, ?children: ViewElement list, ?gridRow: int, ?gridRowSpan: int, ?gridColumn: int, 
-                      ?gridColumnSpan: int, ?layoutBounds: Xamarin.Forms.Rectangle, ?layoutFlags: Xamarin.Forms.AbsoluteLayoutFlags, ?boundsConstraint: Xamarin.Forms.BoundsConstraint, ?heightConstraint: Xamarin.Forms.Constraint, 
-                      ?widthConstraint: Xamarin.Forms.Constraint, ?xConstraint: Xamarin.Forms.Constraint, ?yConstraint: Xamarin.Forms.Constraint, ?alignContent: Xamarin.Forms.FlexAlignContent, ?alignItems: Xamarin.Forms.FlexAlignItems, 
-                      ?flexLayoutDirection: Xamarin.Forms.FlexDirection, ?position: Xamarin.Forms.FlexPosition, ?wrap: Xamarin.Forms.FlexWrap, ?justifyContent: Xamarin.Forms.FlexJustify, ?flexAlignSelf: Xamarin.Forms.FlexAlignSelf, 
-                      ?flexOrder: int, ?flexBasis: Xamarin.Forms.FlexBasis, ?flexGrow: double, ?flexShrink: double, ?date: System.DateTime, 
-                      ?format: string, ?minimumDate: System.DateTime, ?maximumDate: System.DateTime, ?dateSelected: Xamarin.Forms.DateChangedEventArgs -> unit, ?pickerItemsSource: seq<'T>, 
-                      ?selectedIndex: int, ?title: string, ?selectedIndexChanged: (int * 'T option) -> unit, ?frameCornerRadius: double, ?hasShadow: bool, 
-                      ?imageSource: obj, ?aspect: Xamarin.Forms.Aspect, ?isOpaque: bool, ?imageButtonCommand: unit -> unit, ?imageButtonCornerRadius: int, 
-                      ?clicked: System.EventArgs -> unit, ?pressed: System.EventArgs -> unit, ?released: System.EventArgs -> unit, ?keyboard: Xamarin.Forms.Keyboard, ?editorCompleted: string -> unit, 
-                      ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?autoSize: Xamarin.Forms.EditorAutoSizeOption, ?isPassword: bool, ?entryCompleted: string -> unit, ?isTextPredictionEnabled: bool, 
+                      ?measureInvalidated: System.EventArgs -> unit, ?focused: Xamarin.Forms.FocusEventArgs -> unit, ?sizeChanged: Fabulous.CustomControls.SizeChangedEventArgs -> unit, ?unfocused: Xamarin.Forms.FocusEventArgs -> unit, ?visual: Xamarin.Forms.IVisual, 
+                      ?horizontalOptions: Xamarin.Forms.LayoutOptions, ?verticalOptions: Xamarin.Forms.LayoutOptions, ?margin: obj, ?gestureRecognizers: ViewElement list, ?touchPoints: int, 
+                      ?panUpdated: Xamarin.Forms.PanUpdatedEventArgs -> unit, ?command: unit -> unit, ?numberOfTapsRequired: int, ?numberOfClicksRequired: int, ?buttons: Xamarin.Forms.ButtonsMask, 
+                      ?isPinching: bool, ?pinchUpdated: Xamarin.Forms.PinchGestureUpdatedEventArgs -> unit, ?swipeGestureRecognizerDirection: Xamarin.Forms.SwipeDirection, ?threshold: System.UInt32, ?swiped: Xamarin.Forms.SwipedEventArgs -> unit, 
+                      ?color: Xamarin.Forms.Color, ?isRunning: bool, ?boxViewCornerRadius: Xamarin.Forms.CornerRadius, ?progress: double, ?isClippedToBounds: bool, 
+                      ?padding: obj, ?content: ViewElement, ?scrollOrientation: Xamarin.Forms.ScrollOrientation, ?horizontalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility, ?verticalScrollBarVisibility: Xamarin.Forms.ScrollBarVisibility, 
+                      ?scrollTo: float * float * Fabulous.DynamicViews.AnimationKind, ?scrolled: Xamarin.Forms.ScrolledEventArgs -> unit, ?layoutAreaOverride: Xamarin.Forms.Rectangle, ?text: string, ?buttonCommand: unit -> unit, 
+                      ?buttonCanExecute: bool, ?borderColor: Xamarin.Forms.Color, ?borderWidth: double, ?contentLayout: Xamarin.Forms.Button.ButtonContentLayout, ?buttonCornerRadius: int, 
+                      ?fontFamily: string, ?fontAttributes: Xamarin.Forms.FontAttributes, ?fontSize: obj, ?buttonImageSource: string, ?textColor: Xamarin.Forms.Color, 
+                      ?minimumMaximum: float * float, ?value: double, ?valueChanged: Xamarin.Forms.ValueChangedEventArgs -> unit, ?dragCompleted: unit -> unit, ?dragStarted: unit -> unit, 
+                      ?increment: double, ?isToggled: bool, ?toggled: Xamarin.Forms.ToggledEventArgs -> unit, ?onColor: Xamarin.Forms.Color, ?height: double, 
+                      ?on: bool, ?onChanged: Xamarin.Forms.ToggledEventArgs -> unit, ?intent: Xamarin.Forms.TableIntent, ?hasUnevenRows: bool, ?rowHeight: int, 
+                      ?tableRoot: (string * ViewElement list) list, ?rowDefinitionHeight: obj, ?columnDefinitionWidth: obj, ?gridRowDefinitions: obj list, ?gridColumnDefinitions: obj list, 
+                      ?rowSpacing: double, ?columnSpacing: double, ?children: ViewElement list, ?gridRow: int, ?gridRowSpan: int, 
+                      ?gridColumn: int, ?gridColumnSpan: int, ?layoutBounds: Xamarin.Forms.Rectangle, ?layoutFlags: Xamarin.Forms.AbsoluteLayoutFlags, ?boundsConstraint: Xamarin.Forms.BoundsConstraint, 
+                      ?heightConstraint: Xamarin.Forms.Constraint, ?widthConstraint: Xamarin.Forms.Constraint, ?xConstraint: Xamarin.Forms.Constraint, ?yConstraint: Xamarin.Forms.Constraint, ?alignContent: Xamarin.Forms.FlexAlignContent, 
+                      ?alignItems: Xamarin.Forms.FlexAlignItems, ?flexLayoutDirection: Xamarin.Forms.FlexDirection, ?position: Xamarin.Forms.FlexPosition, ?wrap: Xamarin.Forms.FlexWrap, ?justifyContent: Xamarin.Forms.FlexJustify, 
+                      ?flexAlignSelf: Xamarin.Forms.FlexAlignSelf, ?flexOrder: int, ?flexBasis: Xamarin.Forms.FlexBasis, ?flexGrow: double, ?flexShrink: double, 
+                      ?date: System.DateTime, ?format: string, ?minimumDate: System.DateTime, ?maximumDate: System.DateTime, ?dateSelected: Xamarin.Forms.DateChangedEventArgs -> unit, 
+                      ?pickerItemsSource: seq<'T>, ?selectedIndex: int, ?title: string, ?titleColor: Xamarin.Forms.Color, ?selectedIndexChanged: (int * 'T option) -> unit, 
+                      ?frameCornerRadius: double, ?hasShadow: bool, ?imageSource: obj, ?aspect: Xamarin.Forms.Aspect, ?isOpaque: bool, 
+                      ?imageButtonCommand: unit -> unit, ?imageButtonCornerRadius: int, ?clicked: System.EventArgs -> unit, ?pressed: System.EventArgs -> unit, ?released: System.EventArgs -> unit, 
+                      ?keyboard: Xamarin.Forms.Keyboard, ?isReadOnly: bool, ?cancelButtonColor: Xamarin.Forms.Color, ?horizontalTextAlignment: Xamarin.Forms.TextAlignment, ?placeholder: string, 
+                      ?placeholderColor: Xamarin.Forms.Color, ?searchBarCommand: string -> unit, ?searchBarCanExecute: bool, ?searchBarTextChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?editorCompleted: string -> unit, 
+                      ?textChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?autoSize: Xamarin.Forms.EditorAutoSizeOption, ?isTextPredictionEnabled: bool, ?isPassword: bool, ?entryCompleted: string -> unit, 
                       ?returnType: Xamarin.Forms.ReturnType, ?returnCommand: unit -> unit, ?cursorPosition: int, ?selectionLength: int, ?label: string, 
                       ?entryCellTextChanged: Xamarin.Forms.TextChangedEventArgs -> unit, ?verticalTextAlignment: Xamarin.Forms.TextAlignment, ?formattedText: ViewElement, ?lineBreakMode: Xamarin.Forms.LineBreakMode, ?lineHeight: double, 
                       ?maxLines: int, ?textDecorations: Xamarin.Forms.TextDecorations, ?stackOrientation: Xamarin.Forms.StackOrientation, ?spacing: double, ?foregroundColor: Xamarin.Forms.Color, 
@@ -17959,9 +21712,20 @@ module ViewElementExtensions =
                       ?priority: int, ?view: ViewElement, ?listViewItems: seq<ViewElement>, ?footer: System.Object, ?header: System.Object, 
                       ?headerTemplate: Xamarin.Forms.DataTemplate, ?isGroupingEnabled: bool, ?isPullToRefreshEnabled: bool, ?isRefreshing: bool, ?refreshCommand: unit -> unit, 
                       ?listView_SelectedItem: int option, ?listView_SeparatorVisibility: Xamarin.Forms.SeparatorVisibility, ?listView_SeparatorColor: Xamarin.Forms.Color, ?listView_ItemAppearing: int -> unit, ?listView_ItemDisappearing: int -> unit, 
-                      ?listView_ItemSelected: int option -> unit, ?listView_ItemTapped: int -> unit, ?listView_Refreshing: unit -> unit, ?selectionMode: Xamarin.Forms.ListViewSelectionMode, ?listViewGrouped_ItemsSource: (string * ViewElement * ViewElement list) list, 
-                      ?listViewGrouped_ShowJumpList: bool, ?listViewGrouped_SelectedItem: (int * int) option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, ?listViewGrouped_ItemAppearing: int * int option -> unit, 
-                      ?listViewGrouped_ItemDisappearing: int * int option -> unit, ?listViewGrouped_ItemSelected: (int * int) option -> unit, ?listViewGrouped_ItemTapped: int * int -> unit, ?refreshing: unit -> unit) =
+                      ?listView_ItemSelected: int option -> unit, ?listView_ItemTapped: int -> unit, ?listView_Refreshing: unit -> unit, ?selectionMode: Xamarin.Forms.ListViewSelectionMode, ?refreshControlColor: Xamarin.Forms.Color, 
+                      ?listViewGrouped_ItemsSource: (string * ViewElement * ViewElement list) list, ?listViewGrouped_ShowJumpList: bool, ?listViewGrouped_SelectedItem: (int * int) option, ?separatorVisibility: Xamarin.Forms.SeparatorVisibility, ?separatorColor: Xamarin.Forms.Color, 
+                      ?listViewGrouped_ItemAppearing: int * int option -> unit, ?listViewGrouped_ItemDisappearing: int * int option -> unit, ?listViewGrouped_ItemSelected: (int * int) option -> unit, ?listViewGrouped_ItemTapped: int * int -> unit, ?refreshing: unit -> unit, 
+                      ?textOverride: string, ?commandParameter: System.Object, ?iconOverride: string, ?span: int, ?emptyView: System.Object, 
+                      ?itemsLayout: Xamarin.Forms.IItemsLayout, ?itemsSource: System.Collections.IEnumerable, ?itemSizingStrategy: Xamarin.Forms.ItemSizingStrategy, ?scrollToRequested: Xamarin.Forms.ScrollToRequestEventArgs -> unit, ?iScrollTo: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind, 
+                      ?clearIcon: string, ?clearIconHelpText: string, ?clearIconName: string, ?clearPlaceholderCommand: unit -> unit, ?clearPlaceholderCommandParameter: System.Object, 
+                      ?clearPlaceholderEnabled: bool, ?clearPlaceholderHelpText: string, ?clearPlaceholderIcon: string, ?clearPlaceholderName: string, ?displayMemberName: string, 
+                      ?isSearchEnabled: bool, ?query: string, ?queryIcon: string, ?queryIconHelpText: string, ?queryIconName: string, 
+                      ?searchBoxVisibility: Xamarin.Forms.SearchBoxVisiblity, ?showsResults: bool, ?items: seq<ViewElement>, ?currentItem: ViewElement, ?flyoutBackgroundColor: Xamarin.Forms.Color, 
+                      ?flyoutBehavior: Xamarin.Forms.FlyoutBehavior, ?flyoutHeader: System.Object, ?flyoutHeaderBehavior: Xamarin.Forms.FlyoutHeaderBehavior, ?flyoutIsPresented: bool, ?route: string, 
+                      ?routeHost: string, ?routeScheme: string, ?onNavigated: Xamarin.Forms.ShellNavigatedEventArgs -> unit, ?onNavigating: Xamarin.Forms.ShellNavigatingEventArgs -> unit, ?goToAsync: Xamarin.Forms.ShellNavigationState * Fabulous.DynamicViews.AnimationKind, 
+                      ?flyoutDisplayOptions: Xamarin.Forms.FlyoutDisplayOptions, ?selectedItem: System.Object, ?selectionChangedCommand: unit -> unit, ?selectionChangedCommandParameter: System.Object, ?selectableItemsMode: Xamarin.Forms.SelectionMode, 
+                      ?selectionChanged: Xamarin.Forms.SelectionChangedEventArgs -> unit, ?location: System.Uri, ?ssGoToAsync: string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind, ?carouselViewItems: seq<ViewElement>, ?collectionViewItems: seq<ViewElement>, 
+                      ?glyph: string, ?size: float) =
             let x = match classId with None -> x | Some opt -> x.ClassId(opt)
             let x = match styleId with None -> x | Some opt -> x.StyleId(opt)
             let x = match automationId with None -> x | Some opt -> x.AutomationId(opt)
@@ -17996,6 +21760,7 @@ module ViewElementExtensions =
             let x = match focused with None -> x | Some opt -> x.Focused(opt)
             let x = match sizeChanged with None -> x | Some opt -> x.SizeChanged(opt)
             let x = match unfocused with None -> x | Some opt -> x.Unfocused(opt)
+            let x = match visual with None -> x | Some opt -> x.Visual(opt)
             let x = match horizontalOptions with None -> x | Some opt -> x.HorizontalOptions(opt)
             let x = match verticalOptions with None -> x | Some opt -> x.VerticalOptions(opt)
             let x = match margin with None -> x | Some opt -> x.Margin(opt)
@@ -18023,29 +21788,24 @@ module ViewElementExtensions =
             let x = match verticalScrollBarVisibility with None -> x | Some opt -> x.VerticalScrollBarVisibility(opt)
             let x = match scrollTo with None -> x | Some opt -> x.ScrollTo(opt)
             let x = match scrolled with None -> x | Some opt -> x.Scrolled(opt)
-            let x = match cancelButtonColor with None -> x | Some opt -> x.CancelButtonColor(opt)
-            let x = match fontFamily with None -> x | Some opt -> x.FontFamily(opt)
-            let x = match fontAttributes with None -> x | Some opt -> x.FontAttributes(opt)
-            let x = match fontSize with None -> x | Some opt -> x.FontSize(opt)
-            let x = match horizontalTextAlignment with None -> x | Some opt -> x.HorizontalTextAlignment(opt)
-            let x = match placeholder with None -> x | Some opt -> x.Placeholder(opt)
-            let x = match placeholderColor with None -> x | Some opt -> x.PlaceholderColor(opt)
-            let x = match searchBarCommand with None -> x | Some opt -> x.SearchBarCommand(opt)
-            let x = match searchBarCanExecute with None -> x | Some opt -> x.SearchBarCanExecute(opt)
+            let x = match layoutAreaOverride with None -> x | Some opt -> x.LayoutAreaOverride(opt)
             let x = match text with None -> x | Some opt -> x.Text(opt)
-            let x = match textColor with None -> x | Some opt -> x.TextColor(opt)
-            let x = match searchBarTextChanged with None -> x | Some opt -> x.SearchBarTextChanged(opt)
             let x = match buttonCommand with None -> x | Some opt -> x.ButtonCommand(opt)
             let x = match buttonCanExecute with None -> x | Some opt -> x.ButtonCanExecute(opt)
             let x = match borderColor with None -> x | Some opt -> x.BorderColor(opt)
             let x = match borderWidth with None -> x | Some opt -> x.BorderWidth(opt)
-            let x = match commandParameter with None -> x | Some opt -> x.CommandParameter(opt)
             let x = match contentLayout with None -> x | Some opt -> x.ContentLayout(opt)
             let x = match buttonCornerRadius with None -> x | Some opt -> x.ButtonCornerRadius(opt)
+            let x = match fontFamily with None -> x | Some opt -> x.FontFamily(opt)
+            let x = match fontAttributes with None -> x | Some opt -> x.FontAttributes(opt)
+            let x = match fontSize with None -> x | Some opt -> x.FontSize(opt)
             let x = match buttonImageSource with None -> x | Some opt -> x.ButtonImageSource(opt)
+            let x = match textColor with None -> x | Some opt -> x.TextColor(opt)
             let x = match minimumMaximum with None -> x | Some opt -> x.MinimumMaximum(opt)
             let x = match value with None -> x | Some opt -> x.Value(opt)
             let x = match valueChanged with None -> x | Some opt -> x.ValueChanged(opt)
+            let x = match dragCompleted with None -> x | Some opt -> x.DragCompleted(opt)
+            let x = match dragStarted with None -> x | Some opt -> x.DragStarted(opt)
             let x = match increment with None -> x | Some opt -> x.Increment(opt)
             let x = match isToggled with None -> x | Some opt -> x.IsToggled(opt)
             let x = match toggled with None -> x | Some opt -> x.Toggled(opt)
@@ -18094,6 +21854,7 @@ module ViewElementExtensions =
             let x = match pickerItemsSource with None -> x | Some opt -> x.PickerItemsSource(opt)
             let x = match selectedIndex with None -> x | Some opt -> x.SelectedIndex(opt)
             let x = match title with None -> x | Some opt -> x.Title(opt)
+            let x = match titleColor with None -> x | Some opt -> x.TitleColor(opt)
             let x = match selectedIndexChanged with None -> x | Some opt -> x.SelectedIndexChanged(opt)
             let x = match frameCornerRadius with None -> x | Some opt -> x.FrameCornerRadius(opt)
             let x = match hasShadow with None -> x | Some opt -> x.HasShadow(opt)
@@ -18106,12 +21867,20 @@ module ViewElementExtensions =
             let x = match pressed with None -> x | Some opt -> x.Pressed(opt)
             let x = match released with None -> x | Some opt -> x.Released(opt)
             let x = match keyboard with None -> x | Some opt -> x.Keyboard(opt)
+            let x = match isReadOnly with None -> x | Some opt -> x.IsReadOnly(opt)
+            let x = match cancelButtonColor with None -> x | Some opt -> x.CancelButtonColor(opt)
+            let x = match horizontalTextAlignment with None -> x | Some opt -> x.HorizontalTextAlignment(opt)
+            let x = match placeholder with None -> x | Some opt -> x.Placeholder(opt)
+            let x = match placeholderColor with None -> x | Some opt -> x.PlaceholderColor(opt)
+            let x = match searchBarCommand with None -> x | Some opt -> x.SearchBarCommand(opt)
+            let x = match searchBarCanExecute with None -> x | Some opt -> x.SearchBarCanExecute(opt)
+            let x = match searchBarTextChanged with None -> x | Some opt -> x.SearchBarTextChanged(opt)
             let x = match editorCompleted with None -> x | Some opt -> x.EditorCompleted(opt)
             let x = match textChanged with None -> x | Some opt -> x.TextChanged(opt)
             let x = match autoSize with None -> x | Some opt -> x.AutoSize(opt)
+            let x = match isTextPredictionEnabled with None -> x | Some opt -> x.IsTextPredictionEnabled(opt)
             let x = match isPassword with None -> x | Some opt -> x.IsPassword(opt)
             let x = match entryCompleted with None -> x | Some opt -> x.EntryCompleted(opt)
-            let x = match isTextPredictionEnabled with None -> x | Some opt -> x.IsTextPredictionEnabled(opt)
             let x = match returnType with None -> x | Some opt -> x.ReturnType(opt)
             let x = match returnCommand with None -> x | Some opt -> x.ReturnCommand(opt)
             let x = match cursorPosition with None -> x | Some opt -> x.CursorPosition(opt)
@@ -18191,6 +21960,7 @@ module ViewElementExtensions =
             let x = match listView_ItemTapped with None -> x | Some opt -> x.ListView_ItemTapped(opt)
             let x = match listView_Refreshing with None -> x | Some opt -> x.ListView_Refreshing(opt)
             let x = match selectionMode with None -> x | Some opt -> x.SelectionMode(opt)
+            let x = match refreshControlColor with None -> x | Some opt -> x.RefreshControlColor(opt)
             let x = match listViewGrouped_ItemsSource with None -> x | Some opt -> x.ListViewGrouped_ItemsSource(opt)
             let x = match listViewGrouped_ShowJumpList with None -> x | Some opt -> x.ListViewGrouped_ShowJumpList(opt)
             let x = match listViewGrouped_SelectedItem with None -> x | Some opt -> x.ListViewGrouped_SelectedItem(opt)
@@ -18201,6 +21971,58 @@ module ViewElementExtensions =
             let x = match listViewGrouped_ItemSelected with None -> x | Some opt -> x.ListViewGrouped_ItemSelected(opt)
             let x = match listViewGrouped_ItemTapped with None -> x | Some opt -> x.ListViewGrouped_ItemTapped(opt)
             let x = match refreshing with None -> x | Some opt -> x.Refreshing(opt)
+            let x = match textOverride with None -> x | Some opt -> x.TextOverride(opt)
+            let x = match commandParameter with None -> x | Some opt -> x.CommandParameter(opt)
+            let x = match iconOverride with None -> x | Some opt -> x.IconOverride(opt)
+            let x = match span with None -> x | Some opt -> x.Span(opt)
+            let x = match emptyView with None -> x | Some opt -> x.EmptyView(opt)
+            let x = match itemsLayout with None -> x | Some opt -> x.ItemsLayout(opt)
+            let x = match itemsSource with None -> x | Some opt -> x.ItemsSource(opt)
+            let x = match itemSizingStrategy with None -> x | Some opt -> x.ItemSizingStrategy(opt)
+            let x = match scrollToRequested with None -> x | Some opt -> x.ScrollToRequested(opt)
+            let x = match iScrollTo with None -> x | Some opt -> x.iScrollTo(opt)
+            let x = match clearIcon with None -> x | Some opt -> x.ClearIcon(opt)
+            let x = match clearIconHelpText with None -> x | Some opt -> x.ClearIconHelpText(opt)
+            let x = match clearIconName with None -> x | Some opt -> x.ClearIconName(opt)
+            let x = match clearPlaceholderCommand with None -> x | Some opt -> x.ClearPlaceholderCommand(opt)
+            let x = match clearPlaceholderCommandParameter with None -> x | Some opt -> x.ClearPlaceholderCommandParameter(opt)
+            let x = match clearPlaceholderEnabled with None -> x | Some opt -> x.ClearPlaceholderEnabled(opt)
+            let x = match clearPlaceholderHelpText with None -> x | Some opt -> x.ClearPlaceholderHelpText(opt)
+            let x = match clearPlaceholderIcon with None -> x | Some opt -> x.ClearPlaceholderIcon(opt)
+            let x = match clearPlaceholderName with None -> x | Some opt -> x.ClearPlaceholderName(opt)
+            let x = match displayMemberName with None -> x | Some opt -> x.DisplayMemberName(opt)
+            let x = match isSearchEnabled with None -> x | Some opt -> x.IsSearchEnabled(opt)
+            let x = match query with None -> x | Some opt -> x.Query(opt)
+            let x = match queryIcon with None -> x | Some opt -> x.QueryIcon(opt)
+            let x = match queryIconHelpText with None -> x | Some opt -> x.QueryIconHelpText(opt)
+            let x = match queryIconName with None -> x | Some opt -> x.QueryIconName(opt)
+            let x = match searchBoxVisibility with None -> x | Some opt -> x.SearchBoxVisibility(opt)
+            let x = match showsResults with None -> x | Some opt -> x.ShowsResults(opt)
+            let x = match items with None -> x | Some opt -> x.Items(opt)
+            let x = match currentItem with None -> x | Some opt -> x.CurrentItem(opt)
+            let x = match flyoutBackgroundColor with None -> x | Some opt -> x.FlyoutBackgroundColor(opt)
+            let x = match flyoutBehavior with None -> x | Some opt -> x.FlyoutBehavior(opt)
+            let x = match flyoutHeader with None -> x | Some opt -> x.FlyoutHeader(opt)
+            let x = match flyoutHeaderBehavior with None -> x | Some opt -> x.FlyoutHeaderBehavior(opt)
+            let x = match flyoutIsPresented with None -> x | Some opt -> x.FlyoutIsPresented(opt)
+            let x = match route with None -> x | Some opt -> x.Route(opt)
+            let x = match routeHost with None -> x | Some opt -> x.RouteHost(opt)
+            let x = match routeScheme with None -> x | Some opt -> x.RouteScheme(opt)
+            let x = match onNavigated with None -> x | Some opt -> x.OnNavigated(opt)
+            let x = match onNavigating with None -> x | Some opt -> x.OnNavigating(opt)
+            let x = match goToAsync with None -> x | Some opt -> x.GoToAsync(opt)
+            let x = match flyoutDisplayOptions with None -> x | Some opt -> x.FlyoutDisplayOptions(opt)
+            let x = match selectedItem with None -> x | Some opt -> x.SelectedItem(opt)
+            let x = match selectionChangedCommand with None -> x | Some opt -> x.SelectionChangedCommand(opt)
+            let x = match selectionChangedCommandParameter with None -> x | Some opt -> x.SelectionChangedCommandParameter(opt)
+            let x = match selectableItemsMode with None -> x | Some opt -> x.selectableItemsMode(opt)
+            let x = match selectionChanged with None -> x | Some opt -> x.SelectionChanged(opt)
+            let x = match location with None -> x | Some opt -> x.Location(opt)
+            let x = match ssGoToAsync with None -> x | Some opt -> x.ssGoToAsync(opt)
+            let x = match carouselViewItems with None -> x | Some opt -> x.CarouselViewItems(opt)
+            let x = match collectionViewItems with None -> x | Some opt -> x.CollectionViewItems(opt)
+            let x = match glyph with None -> x | Some opt -> x.Glyph(opt)
+            let x = match size with None -> x | Some opt -> x.Size(opt)
             x
 
     /// Adjusts the ClassId property in the visual element
@@ -18268,9 +22090,11 @@ module ViewElementExtensions =
     /// Adjusts the Focused property in the visual element
     let focused (value: Xamarin.Forms.FocusEventArgs -> unit) (x: ViewElement) = x.Focused(value)
     /// Adjusts the SizeChanged property in the visual element
-    let sizeChanged (value: System.EventArgs -> unit) (x: ViewElement) = x.SizeChanged(value)
+    let sizeChanged (value: Fabulous.CustomControls.SizeChangedEventArgs -> unit) (x: ViewElement) = x.SizeChanged(value)
     /// Adjusts the Unfocused property in the visual element
     let unfocused (value: Xamarin.Forms.FocusEventArgs -> unit) (x: ViewElement) = x.Unfocused(value)
+    /// Adjusts the Visual property in the visual element
+    let visual (value: Xamarin.Forms.IVisual) (x: ViewElement) = x.Visual(value)
     /// Adjusts the HorizontalOptions property in the visual element
     let horizontalOptions (value: Xamarin.Forms.LayoutOptions) (x: ViewElement) = x.HorizontalOptions(value)
     /// Adjusts the VerticalOptions property in the visual element
@@ -18325,30 +22149,10 @@ module ViewElementExtensions =
     let scrollTo (value: float * float * Fabulous.DynamicViews.AnimationKind) (x: ViewElement) = x.ScrollTo(value)
     /// Adjusts the Scrolled property in the visual element
     let scrolled (value: Xamarin.Forms.ScrolledEventArgs -> unit) (x: ViewElement) = x.Scrolled(value)
-    /// Adjusts the CancelButtonColor property in the visual element
-    let cancelButtonColor (value: Xamarin.Forms.Color) (x: ViewElement) = x.CancelButtonColor(value)
-    /// Adjusts the FontFamily property in the visual element
-    let fontFamily (value: string) (x: ViewElement) = x.FontFamily(value)
-    /// Adjusts the FontAttributes property in the visual element
-    let fontAttributes (value: Xamarin.Forms.FontAttributes) (x: ViewElement) = x.FontAttributes(value)
-    /// Adjusts the FontSize property in the visual element
-    let fontSize (value: obj) (x: ViewElement) = x.FontSize(value)
-    /// Adjusts the HorizontalTextAlignment property in the visual element
-    let horizontalTextAlignment (value: Xamarin.Forms.TextAlignment) (x: ViewElement) = x.HorizontalTextAlignment(value)
-    /// Adjusts the Placeholder property in the visual element
-    let placeholder (value: string) (x: ViewElement) = x.Placeholder(value)
-    /// Adjusts the PlaceholderColor property in the visual element
-    let placeholderColor (value: Xamarin.Forms.Color) (x: ViewElement) = x.PlaceholderColor(value)
-    /// Adjusts the SearchBarCommand property in the visual element
-    let searchBarCommand (value: string -> unit) (x: ViewElement) = x.SearchBarCommand(value)
-    /// Adjusts the SearchBarCanExecute property in the visual element
-    let searchBarCanExecute (value: bool) (x: ViewElement) = x.SearchBarCanExecute(value)
+    /// Adjusts the LayoutAreaOverride property in the visual element
+    let layoutAreaOverride (value: Xamarin.Forms.Rectangle) (x: ViewElement) = x.LayoutAreaOverride(value)
     /// Adjusts the Text property in the visual element
     let text (value: string) (x: ViewElement) = x.Text(value)
-    /// Adjusts the TextColor property in the visual element
-    let textColor (value: Xamarin.Forms.Color) (x: ViewElement) = x.TextColor(value)
-    /// Adjusts the SearchBarTextChanged property in the visual element
-    let searchBarTextChanged (value: Xamarin.Forms.TextChangedEventArgs -> unit) (x: ViewElement) = x.SearchBarTextChanged(value)
     /// Adjusts the ButtonCommand property in the visual element
     let buttonCommand (value: unit -> unit) (x: ViewElement) = x.ButtonCommand(value)
     /// Adjusts the ButtonCanExecute property in the visual element
@@ -18357,20 +22161,30 @@ module ViewElementExtensions =
     let borderColor (value: Xamarin.Forms.Color) (x: ViewElement) = x.BorderColor(value)
     /// Adjusts the BorderWidth property in the visual element
     let borderWidth (value: double) (x: ViewElement) = x.BorderWidth(value)
-    /// Adjusts the CommandParameter property in the visual element
-    let commandParameter (value: System.Object) (x: ViewElement) = x.CommandParameter(value)
     /// Adjusts the ContentLayout property in the visual element
     let contentLayout (value: Xamarin.Forms.Button.ButtonContentLayout) (x: ViewElement) = x.ContentLayout(value)
     /// Adjusts the ButtonCornerRadius property in the visual element
     let buttonCornerRadius (value: int) (x: ViewElement) = x.ButtonCornerRadius(value)
+    /// Adjusts the FontFamily property in the visual element
+    let fontFamily (value: string) (x: ViewElement) = x.FontFamily(value)
+    /// Adjusts the FontAttributes property in the visual element
+    let fontAttributes (value: Xamarin.Forms.FontAttributes) (x: ViewElement) = x.FontAttributes(value)
+    /// Adjusts the FontSize property in the visual element
+    let fontSize (value: obj) (x: ViewElement) = x.FontSize(value)
     /// Adjusts the ButtonImageSource property in the visual element
     let buttonImageSource (value: string) (x: ViewElement) = x.ButtonImageSource(value)
+    /// Adjusts the TextColor property in the visual element
+    let textColor (value: Xamarin.Forms.Color) (x: ViewElement) = x.TextColor(value)
     /// Adjusts the MinimumMaximum property in the visual element
     let minimumMaximum (value: float * float) (x: ViewElement) = x.MinimumMaximum(value)
     /// Adjusts the Value property in the visual element
     let value (value: double) (x: ViewElement) = x.Value(value)
     /// Adjusts the ValueChanged property in the visual element
     let valueChanged (value: Xamarin.Forms.ValueChangedEventArgs -> unit) (x: ViewElement) = x.ValueChanged(value)
+    /// Adjusts the DragCompleted property in the visual element
+    let dragCompleted (value: unit -> unit) (x: ViewElement) = x.DragCompleted(value)
+    /// Adjusts the DragStarted property in the visual element
+    let dragStarted (value: unit -> unit) (x: ViewElement) = x.DragStarted(value)
     /// Adjusts the Increment property in the visual element
     let increment (value: double) (x: ViewElement) = x.Increment(value)
     /// Adjusts the IsToggled property in the visual element
@@ -18467,6 +22281,8 @@ module ViewElementExtensions =
     let selectedIndex (value: int) (x: ViewElement) = x.SelectedIndex(value)
     /// Adjusts the Title property in the visual element
     let title (value: string) (x: ViewElement) = x.Title(value)
+    /// Adjusts the TitleColor property in the visual element
+    let titleColor (value: Xamarin.Forms.Color) (x: ViewElement) = x.TitleColor(value)
     /// Adjusts the SelectedIndexChanged property in the visual element
     let selectedIndexChanged (value: (int * 'T option) -> unit) (x: ViewElement) = x.SelectedIndexChanged(value)
     /// Adjusts the FrameCornerRadius property in the visual element
@@ -18491,18 +22307,34 @@ module ViewElementExtensions =
     let released (value: System.EventArgs -> unit) (x: ViewElement) = x.Released(value)
     /// Adjusts the Keyboard property in the visual element
     let keyboard (value: Xamarin.Forms.Keyboard) (x: ViewElement) = x.Keyboard(value)
+    /// Adjusts the IsReadOnly property in the visual element
+    let isReadOnly (value: bool) (x: ViewElement) = x.IsReadOnly(value)
+    /// Adjusts the CancelButtonColor property in the visual element
+    let cancelButtonColor (value: Xamarin.Forms.Color) (x: ViewElement) = x.CancelButtonColor(value)
+    /// Adjusts the HorizontalTextAlignment property in the visual element
+    let horizontalTextAlignment (value: Xamarin.Forms.TextAlignment) (x: ViewElement) = x.HorizontalTextAlignment(value)
+    /// Adjusts the Placeholder property in the visual element
+    let placeholder (value: string) (x: ViewElement) = x.Placeholder(value)
+    /// Adjusts the PlaceholderColor property in the visual element
+    let placeholderColor (value: Xamarin.Forms.Color) (x: ViewElement) = x.PlaceholderColor(value)
+    /// Adjusts the SearchBarCommand property in the visual element
+    let searchBarCommand (value: string -> unit) (x: ViewElement) = x.SearchBarCommand(value)
+    /// Adjusts the SearchBarCanExecute property in the visual element
+    let searchBarCanExecute (value: bool) (x: ViewElement) = x.SearchBarCanExecute(value)
+    /// Adjusts the SearchBarTextChanged property in the visual element
+    let searchBarTextChanged (value: Xamarin.Forms.TextChangedEventArgs -> unit) (x: ViewElement) = x.SearchBarTextChanged(value)
     /// Adjusts the EditorCompleted property in the visual element
     let editorCompleted (value: string -> unit) (x: ViewElement) = x.EditorCompleted(value)
     /// Adjusts the TextChanged property in the visual element
     let textChanged (value: Xamarin.Forms.TextChangedEventArgs -> unit) (x: ViewElement) = x.TextChanged(value)
     /// Adjusts the AutoSize property in the visual element
     let autoSize (value: Xamarin.Forms.EditorAutoSizeOption) (x: ViewElement) = x.AutoSize(value)
+    /// Adjusts the IsTextPredictionEnabled property in the visual element
+    let isTextPredictionEnabled (value: bool) (x: ViewElement) = x.IsTextPredictionEnabled(value)
     /// Adjusts the IsPassword property in the visual element
     let isPassword (value: bool) (x: ViewElement) = x.IsPassword(value)
     /// Adjusts the EntryCompleted property in the visual element
     let entryCompleted (value: string -> unit) (x: ViewElement) = x.EntryCompleted(value)
-    /// Adjusts the IsTextPredictionEnabled property in the visual element
-    let isTextPredictionEnabled (value: bool) (x: ViewElement) = x.IsTextPredictionEnabled(value)
     /// Adjusts the ReturnType property in the visual element
     let returnType (value: Xamarin.Forms.ReturnType) (x: ViewElement) = x.ReturnType(value)
     /// Adjusts the ReturnCommand property in the visual element
@@ -18661,6 +22493,8 @@ module ViewElementExtensions =
     let listView_Refreshing (value: unit -> unit) (x: ViewElement) = x.ListView_Refreshing(value)
     /// Adjusts the SelectionMode property in the visual element
     let selectionMode (value: Xamarin.Forms.ListViewSelectionMode) (x: ViewElement) = x.SelectionMode(value)
+    /// Adjusts the RefreshControlColor property in the visual element
+    let refreshControlColor (value: Xamarin.Forms.Color) (x: ViewElement) = x.RefreshControlColor(value)
     /// Adjusts the ListViewGrouped_ItemsSource property in the visual element
     let listViewGrouped_ItemsSource (value: (string * ViewElement * ViewElement list) list) (x: ViewElement) = x.ListViewGrouped_ItemsSource(value)
     /// Adjusts the ListViewGrouped_ShowJumpList property in the visual element
@@ -18681,3 +22515,107 @@ module ViewElementExtensions =
     let listViewGrouped_ItemTapped (value: int * int -> unit) (x: ViewElement) = x.ListViewGrouped_ItemTapped(value)
     /// Adjusts the Refreshing property in the visual element
     let refreshing (value: unit -> unit) (x: ViewElement) = x.Refreshing(value)
+    /// Adjusts the TextOverride property in the visual element
+    let textOverride (value: string) (x: ViewElement) = x.TextOverride(value)
+    /// Adjusts the CommandParameter property in the visual element
+    let commandParameter (value: System.Object) (x: ViewElement) = x.CommandParameter(value)
+    /// Adjusts the IconOverride property in the visual element
+    let iconOverride (value: string) (x: ViewElement) = x.IconOverride(value)
+    /// Adjusts the Span property in the visual element
+    let span (value: int) (x: ViewElement) = x.Span(value)
+    /// Adjusts the EmptyView property in the visual element
+    let emptyView (value: System.Object) (x: ViewElement) = x.EmptyView(value)
+    /// Adjusts the ItemsLayout property in the visual element
+    let itemsLayout (value: Xamarin.Forms.IItemsLayout) (x: ViewElement) = x.ItemsLayout(value)
+    /// Adjusts the ItemsSource property in the visual element
+    let itemsSource (value: System.Collections.IEnumerable) (x: ViewElement) = x.ItemsSource(value)
+    /// Adjusts the ItemSizingStrategy property in the visual element
+    let itemSizingStrategy (value: Xamarin.Forms.ItemSizingStrategy) (x: ViewElement) = x.ItemSizingStrategy(value)
+    /// Adjusts the ScrollToRequested property in the visual element
+    let scrollToRequested (value: Xamarin.Forms.ScrollToRequestEventArgs -> unit) (x: ViewElement) = x.ScrollToRequested(value)
+    /// Adjusts the iScrollTo property in the visual element
+    let iScrollTo (value: obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind) (x: ViewElement) = x.iScrollTo(value)
+    /// Adjusts the ClearIcon property in the visual element
+    let clearIcon (value: string) (x: ViewElement) = x.ClearIcon(value)
+    /// Adjusts the ClearIconHelpText property in the visual element
+    let clearIconHelpText (value: string) (x: ViewElement) = x.ClearIconHelpText(value)
+    /// Adjusts the ClearIconName property in the visual element
+    let clearIconName (value: string) (x: ViewElement) = x.ClearIconName(value)
+    /// Adjusts the ClearPlaceholderCommand property in the visual element
+    let clearPlaceholderCommand (value: unit -> unit) (x: ViewElement) = x.ClearPlaceholderCommand(value)
+    /// Adjusts the ClearPlaceholderCommandParameter property in the visual element
+    let clearPlaceholderCommandParameter (value: System.Object) (x: ViewElement) = x.ClearPlaceholderCommandParameter(value)
+    /// Adjusts the ClearPlaceholderEnabled property in the visual element
+    let clearPlaceholderEnabled (value: bool) (x: ViewElement) = x.ClearPlaceholderEnabled(value)
+    /// Adjusts the ClearPlaceholderHelpText property in the visual element
+    let clearPlaceholderHelpText (value: string) (x: ViewElement) = x.ClearPlaceholderHelpText(value)
+    /// Adjusts the ClearPlaceholderIcon property in the visual element
+    let clearPlaceholderIcon (value: string) (x: ViewElement) = x.ClearPlaceholderIcon(value)
+    /// Adjusts the ClearPlaceholderName property in the visual element
+    let clearPlaceholderName (value: string) (x: ViewElement) = x.ClearPlaceholderName(value)
+    /// Adjusts the DisplayMemberName property in the visual element
+    let displayMemberName (value: string) (x: ViewElement) = x.DisplayMemberName(value)
+    /// Adjusts the IsSearchEnabled property in the visual element
+    let isSearchEnabled (value: bool) (x: ViewElement) = x.IsSearchEnabled(value)
+    /// Adjusts the Query property in the visual element
+    let query (value: string) (x: ViewElement) = x.Query(value)
+    /// Adjusts the QueryIcon property in the visual element
+    let queryIcon (value: string) (x: ViewElement) = x.QueryIcon(value)
+    /// Adjusts the QueryIconHelpText property in the visual element
+    let queryIconHelpText (value: string) (x: ViewElement) = x.QueryIconHelpText(value)
+    /// Adjusts the QueryIconName property in the visual element
+    let queryIconName (value: string) (x: ViewElement) = x.QueryIconName(value)
+    /// Adjusts the SearchBoxVisibility property in the visual element
+    let searchBoxVisibility (value: Xamarin.Forms.SearchBoxVisiblity) (x: ViewElement) = x.SearchBoxVisibility(value)
+    /// Adjusts the ShowsResults property in the visual element
+    let showsResults (value: bool) (x: ViewElement) = x.ShowsResults(value)
+    /// Adjusts the Items property in the visual element
+    let items (value: seq<ViewElement>) (x: ViewElement) = x.Items(value)
+    /// Adjusts the CurrentItem property in the visual element
+    let currentItem (value: ViewElement) (x: ViewElement) = x.CurrentItem(value)
+    /// Adjusts the FlyoutBackgroundColor property in the visual element
+    let flyoutBackgroundColor (value: Xamarin.Forms.Color) (x: ViewElement) = x.FlyoutBackgroundColor(value)
+    /// Adjusts the FlyoutBehavior property in the visual element
+    let flyoutBehavior (value: Xamarin.Forms.FlyoutBehavior) (x: ViewElement) = x.FlyoutBehavior(value)
+    /// Adjusts the FlyoutHeader property in the visual element
+    let flyoutHeader (value: System.Object) (x: ViewElement) = x.FlyoutHeader(value)
+    /// Adjusts the FlyoutHeaderBehavior property in the visual element
+    let flyoutHeaderBehavior (value: Xamarin.Forms.FlyoutHeaderBehavior) (x: ViewElement) = x.FlyoutHeaderBehavior(value)
+    /// Adjusts the FlyoutIsPresented property in the visual element
+    let flyoutIsPresented (value: bool) (x: ViewElement) = x.FlyoutIsPresented(value)
+    /// Adjusts the Route property in the visual element
+    let route (value: string) (x: ViewElement) = x.Route(value)
+    /// Adjusts the RouteHost property in the visual element
+    let routeHost (value: string) (x: ViewElement) = x.RouteHost(value)
+    /// Adjusts the RouteScheme property in the visual element
+    let routeScheme (value: string) (x: ViewElement) = x.RouteScheme(value)
+    /// Adjusts the OnNavigated property in the visual element
+    let onNavigated (value: Xamarin.Forms.ShellNavigatedEventArgs -> unit) (x: ViewElement) = x.OnNavigated(value)
+    /// Adjusts the OnNavigating property in the visual element
+    let onNavigating (value: Xamarin.Forms.ShellNavigatingEventArgs -> unit) (x: ViewElement) = x.OnNavigating(value)
+    /// Adjusts the GoToAsync property in the visual element
+    let goToAsync (value: Xamarin.Forms.ShellNavigationState * Fabulous.DynamicViews.AnimationKind) (x: ViewElement) = x.GoToAsync(value)
+    /// Adjusts the FlyoutDisplayOptions property in the visual element
+    let flyoutDisplayOptions (value: Xamarin.Forms.FlyoutDisplayOptions) (x: ViewElement) = x.FlyoutDisplayOptions(value)
+    /// Adjusts the SelectedItem property in the visual element
+    let selectedItem (value: System.Object) (x: ViewElement) = x.SelectedItem(value)
+    /// Adjusts the SelectionChangedCommand property in the visual element
+    let selectionChangedCommand (value: unit -> unit) (x: ViewElement) = x.SelectionChangedCommand(value)
+    /// Adjusts the SelectionChangedCommandParameter property in the visual element
+    let selectionChangedCommandParameter (value: System.Object) (x: ViewElement) = x.SelectionChangedCommandParameter(value)
+    /// Adjusts the selectableItemsMode property in the visual element
+    let selectableItemsMode (value: Xamarin.Forms.SelectionMode) (x: ViewElement) = x.selectableItemsMode(value)
+    /// Adjusts the SelectionChanged property in the visual element
+    let selectionChanged (value: Xamarin.Forms.SelectionChangedEventArgs -> unit) (x: ViewElement) = x.SelectionChanged(value)
+    /// Adjusts the Location property in the visual element
+    let location (value: System.Uri) (x: ViewElement) = x.Location(value)
+    /// Adjusts the ssGoToAsync property in the visual element
+    let ssGoToAsync (value: string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind) (x: ViewElement) = x.ssGoToAsync(value)
+    /// Adjusts the CarouselViewItems property in the visual element
+    let carouselViewItems (value: seq<ViewElement>) (x: ViewElement) = x.CarouselViewItems(value)
+    /// Adjusts the CollectionViewItems property in the visual element
+    let collectionViewItems (value: seq<ViewElement>) (x: ViewElement) = x.CollectionViewItems(value)
+    /// Adjusts the Glyph property in the visual element
+    let glyph (value: string) (x: ViewElement) = x.Glyph(value)
+    /// Adjusts the Size property in the visual element
+    let size (value: float) (x: ViewElement) = x.Size(value)

@@ -1,8 +1,26 @@
+version 5.198.0
+
+# dependencies used for retrieving FAKE and its modules
+group fakebuild
+  source https://api.nuget.org/v3/index.json
+  framework: netstandard2.0
+  storage: none
+
+  clitool dotnet-fake
+  nuget Fake.Core.ReleaseNotes
+  nuget Fake.Core.Target
+  nuget Fake.Core.Xml
+  nuget Fake.DotNet.Cli
+  nuget Fake.DotNet.MSBuild
+  nuget Fake.Dotnet.NuGet
+  nuget Fake.DotNet.Paket
+  nuget Fake.IO.FileSystem
+  nuget Newtonsoft.Json
+
 # dependencies used when compiling and running the library and neutral parts of samples
 group neutral
   framework: netstandard2.0
   source https://api.nuget.org/v3/index.json
-  source https://www.myget.org/F/oxyplot
   github fsprojects/FSharp.Compiler.PortaCode:master src/ProjectCracker.fs
   github fsprojects/FSharp.Compiler.PortaCode:master src/CodeModel.fs
   github fsprojects/FSharp.Compiler.PortaCode:master src/Interpreter.fs
@@ -11,12 +29,11 @@ group neutral
   github fsprojects/FSharp.Compiler.PortaCode:master tests/PortaCodeTests.fs
 
   nuget FSharp.Core 4.5.2
-  nuget Xamarin.Forms 3.4.0.1009999
-  nuget Xamarin.Forms.Maps 3.4.0.1009999
+  nuget Xamarin.Forms 3.6.0.344457
+  nuget Xamarin.Forms.Maps 3.6.0.344457
   nuget SkiaSharp
   nuget SkiaSharp.Views.Forms
-  nuget OxyPlot.Core 2.0.0-unstable0956 # version matching last updated version of OxyPlot.Xamarin.Forms
-  nuget OxyPlot.Xamarin.Forms 1.1.0-unstable0013 # last version seen on myget
+  nuget OxyPlot.Xamarin.Forms 1.0.0
   nuget Newtonsoft.Json 11.0.2
 
 # Dependencies used when compiling and running Android samples. We can normally use the latest FSharp.Core and 
@@ -25,7 +42,7 @@ group androidapp
   framework: monoandroid71
   source https://api.nuget.org/v3/index.json
   nuget FSharp.Core 4.5.2
-  nuget Xamarin.Forms 3.4.0.1009999
+  nuget Xamarin.Forms 3.6.0.344457
   nuget Xamarin.Android.FSharp.ResourceProvider 1.0.0.25
   nuget Xamarin.Android.Arch.Core.Common 1.0.0.1
   nuget Xamarin.Android.Arch.Core.Runtime 1.0.0.1
@@ -56,7 +73,7 @@ group iosapp
   framework: monotouch
   source https://api.nuget.org/v3/index.json
   nuget FSharp.Core 4.5.2
-  nuget Xamarin.Forms 3.4.0.1009999
+  nuget Xamarin.Forms 3.6.0.344457
   nuget Newtonsoft.Json 11.0.2
   nuget FSharp.Data 3.0.0
 
@@ -64,7 +81,7 @@ group macosapp
   framework: xamarinmac20
   source https://api.nuget.org/v3/index.json
   nuget FSharp.Core 4.5.2
-  nuget Xamarin.Forms 3.4.0.1009999
+  nuget Xamarin.Forms 3.6.0.344457
   nuget Newtonsoft.Json 11.0.2
   nuget FSharp.Data 3.0.0
 
@@ -72,16 +89,16 @@ group wpfapp
   framework: net472
   source https://api.nuget.org/v3/index.json
   nuget FSharp.Core 4.5.2
-  nuget Xamarin.Forms 3.4.0.1009999 
+  nuget Xamarin.Forms 3.6.0.344457 
   nuget Newtonsoft.Json 11.0.2
-  nuget Xamarin.Forms.Platform.WPF 3.4.0.1009999 
+  nuget Xamarin.Forms.Platform.WPF 3.6.0.344457 
   nuget FSharp.Data 3.0.0
 
 group gtkapp
   framework: net471
   source https://api.nuget.org/v3/index.json
   nuget FSharp.Core 4.5.2
-  nuget Xamarin.Forms 3.4.0.1009999 
+  nuget Xamarin.Forms 3.6.0.344457 
   nuget Newtonsoft.Json 11.0.2
-  nuget Xamarin.Forms.Platform.GTK 3.4.0.1009999 
+  nuget Xamarin.Forms.Platform.GTK 3.6.0.344457 
   nuget FSharp.Data 3.0.0

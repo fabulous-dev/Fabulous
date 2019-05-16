@@ -149,13 +149,13 @@
       "type": "parameter",
       "dataType": "string",
       "replaces": "XamarinFormsSdk",
-      "defaultValue": "3.4.0.1009999"
+      "defaultValue": "3.6.0.344457"
     },
     "FabulousPkgsVersion": {
       "type": "parameter",
       "dataType": "string",
       "replaces": "FabulousPkgsVersion",
-      "defaultValue": "0.31.0"
+      "defaultValue": "0.33.2"
     },
     "NewtonsoftJsonPkg": {
       "type": "parameter",

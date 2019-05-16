@@ -12,7 +12,7 @@ Contributing is easy:
 
 ## Dev Notes - Prerequisites
 
-- Visual Studio 2017 / Visual Studio for Mac 7
+- Visual Studio 2017 / Visual Studio for Mac 7 or newer
 - Xamarin SDK (workload Mobile Development on Visual Studio)
 - .NET Core SDK 2.1.300 or newer
 
@@ -24,16 +24,10 @@ https://github.com/dotnet/sourcelink#prerequisites
 
 ## Dev Notes - Building
 
-Fabulous is built with FAKE 5.  
-Make sure you have it installed as a global tool before attempting to build  
-https://fake.build/fake-gettingstarted.html
+Fabulous is built with FAKE 5.
 
-```
-dotnet tool install fake-cli -g
-```
-
-Once done, you can build Fabulous with a single command.  
-It will take care of every steps: clean, restore, build and pack.
+Fabulous can be built with a single command.  
+It will take care of every steps: install FAKE, clean, restore, build and pack.
 
 On OSX:
 
@@ -47,9 +41,8 @@ On Windows:
 .\build
 ```
 
-It is recommended to run this command at least once before working on Fabulous.
-
-Alternatively, you can run `.paket/paket.exe restore` and `dotnet restore` to ensure that you have all the dependencies before opening Visual Studio.
+It is recommended to run this command at least once before working on Fabulous, as some of the code will be generated.
+At minimum, you need to run `.\build RunGenerator` to ensure that you have all the dependencies before opening Visual Studio.
 
 ## Dev Notes - Running the generator
 
@@ -81,6 +74,21 @@ On Windows:
 ```
 .\build Test
 ```
+
+## Dev Notes - Testing LiveUpdate
+
+Use the CounterApp to test.  To run the equivalent of the `fabulous` CLI tool use this:
+
+    cd Samples\CounterApp\CounterApp
+    adb -d forward  tcp:9867 tcp:9867
+    dotnet run --project ..\..\..\src\Fabulous.Cli\Fabulous.Cli.fsproj -- --watch --send 
+
+If you want to update your (global!) install of the `fabulous-cli` tool, first bump the version number to avoid clashes, then:
+
+    dotnet pack src\Fabulous.Cli
+    dotnet tool uninstall --global fabulous-cli  
+    dotnet tool install --global --add-source C:\GitHub\dsyme\Fabulous\src\Fabulous.Cli\bin\Debug\ fabulous-cli
+    fabulous --watch --send
 
 ## Dev Notes - Releasing
 
