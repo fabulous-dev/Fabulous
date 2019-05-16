@@ -155,7 +155,7 @@
       "type": "parameter",
       "dataType": "string",
       "replaces": "FabulousPkgsVersion",
-      "defaultValue": "0.33.2"
+      "defaultValue": "0.34.0"
     },
     "NewtonsoftJsonPkg": {
       "type": "parameter",
