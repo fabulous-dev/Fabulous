@@ -185,6 +185,10 @@
           "defaultValue": "null",
           "inputType": "Xamarin.Forms.FocusEventArgs -> unit",
           "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.FocusEventArgs>(fun _sender args -> f args))"
+        },
+        {
+          "name": "Visual",
+          "defaultValue": "Xamarin.Forms.VisualMarker.MatchParent"
         }
       ]
     },
@@ -400,70 +404,6 @@
       ]
     },
     {
-      "name": "Xamarin.Forms.SearchBar",
-      "members": [
-        {
-          "name": "CancelButtonColor",
-          "defaultValue": "Xamarin.Forms.Color.Default"
-        },
-        {
-          "name": "FontFamily",
-          "defaultValue": "null"
-        },
-        {
-          "name": "FontAttributes",
-          "defaultValue": "Xamarin.Forms.FontAttributes.None"
-        },
-        {
-          "name": "FontSize",
-          "defaultValue": "-1.0",
-          "inputType": "obj",
-          "convToModel": "makeFontSize"
-        },
-        {
-          "name": "HorizontalTextAlignment",
-          "defaultValue": "Xamarin.Forms.TextAlignment.Start"
-        },
-        {
-          "name": "Placeholder",
-          "defaultValue": "null"
-        },
-        {
-          "name": "PlaceholderColor",
-          "defaultValue": "Xamarin.Forms.Color.Default"
-        },
-        {
-          "name": "SearchCommand",
-          "uniqueName": "SearchBarCommand",
-          "inputType": "string -> unit",
-          "modelType": "string -> unit",
-          "updateCode": "(fun _ _ _ -> ())"
-        },
-        {
-          "name": "CanExecute",
-          "uniqueName": "SearchBarCanExecute",
-          "inputType": "bool",
-          "modelType": "bool",
-          "updateCode": "updateCommand prevSearchBarCommandOpt currSearchBarCommandOpt (fun (target: Xamarin.Forms.SearchBar) -> target.Text) (fun (target: Xamarin.Forms.SearchBar) cmd -> target.SearchCommand <- cmd)"
-        },
-        {
-          "name": "Text",
-          "defaultValue": "null"
-        },
-        {
-          "name": "TextColor",
-          "defaultValue": "Xamarin.Forms.Color.Default"
-        },
-        {
-          "name": "TextChanged",
-          "uniqueName": "SearchBarTextChanged",
-          "defaultValue": "null",
-          "inputType": "Xamarin.Forms.TextChangedEventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))"
-        }
-      ]
-    },
-    {
       "name": "Xamarin.Forms.Button",
       "members": [
         {
@@ -552,6 +492,18 @@
           "defaultValue": "null",
           "inputType": "Xamarin.Forms.ValueChangedEventArgs -> unit",
           "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>(fun _sender args -> f args))"
+        },
+        {
+          "name": "DragCompleted",
+          "defaultValue": "null",
+          "inputType": "unit -> unit",
+          "convToModel": "makeCommand"
+        },
+        {
+          "name": "DragStarted",
+          "defaultValue": "null",
+          "inputType": "unit -> unit",
+          "convToModel": "makeCommand"
         }
       ]
     },
@@ -965,6 +917,10 @@
           "defaultValue": "null"
         },
         {
+          "name": "TitleColor",
+          "defaultValue": "Xamarin.Forms.Color.Default"
+        },
+        {
           "name": "TextColor",
           "defaultValue": "Xamarin.Forms.Color.Default"
         },
@@ -1087,6 +1043,76 @@
         {
           "name": "Keyboard",
           "defaultValue": "Xamarin.Forms.Keyboard.Default"
+        },
+        {
+          "name": "IsReadOnly",
+          "defaultValue": "false",
+          "inputType": "bool",
+          "modelType": "bool"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.SearchBar",
+      "members": [
+        {
+          "name": "CancelButtonColor",
+          "defaultValue": "Xamarin.Forms.Color.Default"
+        },
+        {
+          "name": "FontFamily",
+          "defaultValue": "null"
+        },
+        {
+          "name": "FontAttributes",
+          "defaultValue": "Xamarin.Forms.FontAttributes.None"
+        },
+        {
+          "name": "FontSize",
+          "defaultValue": "-1.0",
+          "inputType": "obj",
+          "convToModel": "makeFontSize"
+        },
+        {
+          "name": "HorizontalTextAlignment",
+          "defaultValue": "Xamarin.Forms.TextAlignment.Start"
+        },
+        {
+          "name": "Placeholder",
+          "defaultValue": "null"
+        },
+        {
+          "name": "PlaceholderColor",
+          "defaultValue": "Xamarin.Forms.Color.Default"
+        },
+        {
+          "name": "SearchCommand",
+          "uniqueName": "SearchBarCommand",
+          "inputType": "string -> unit",
+          "modelType": "string -> unit",
+          "updateCode": "(fun _ _ _ -> ())"
+        },
+        {
+          "name": "CanExecute",
+          "uniqueName": "SearchBarCanExecute",
+          "inputType": "bool",
+          "modelType": "bool",
+          "updateCode": "updateCommand prevSearchBarCommandOpt currSearchBarCommandOpt (fun (target: Xamarin.Forms.SearchBar) -> target.Text) (fun (target: Xamarin.Forms.SearchBar) cmd -> target.SearchCommand <- cmd)"
+        },
+        {
+          "name": "Text",
+          "defaultValue": "null"
+        },
+        {
+          "name": "TextColor",
+          "defaultValue": "Xamarin.Forms.Color.Default"
+        },
+        {
+          "name": "TextChanged",
+          "uniqueName": "SearchBarTextChanged",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.TextChangedEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))"
         }
       ]
     },
@@ -2088,6 +2114,10 @@
           "defaultValue": "null"
         },
         {
+          "name": "ItemSizingStrategy",
+          "defaultValue": "Xamarin.Forms.ItemSizingStrategy.MeasureAllItems"
+        },
+        {
           "name": "ScrollToRequested",
           "defaultValue": "null",
           "inputType": "Xamarin.Forms.ScrollToRequestEventArgs -> unit",
@@ -2436,6 +2466,33 @@
           "inputType": "seq<ViewElement>",
           "modelType": "seq<ViewElement>",
           "updateCode": "updateCollectionViewItems"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.FontImageSource",
+      "members": [
+        {
+          "name": "Color",
+          "defaultValue": "Xamarin.Forms.Color.Default"
+        },
+        {
+          "name": "FontFamily",
+          "inputType": "string",
+          "modelType": "string",
+          "defaultValue": "null"
+        },
+        {
+          "name": "Glyph",
+          "inputType": "string",
+          "modelType": "string",
+          "defaultValue": "null"
+        },
+        {
+          "name": "Size",
+          "inputType": "float",
+          "modelType": "float",
+          "defaultValue": "30."
         }
       ]
     }
