@@ -492,6 +492,18 @@
           "defaultValue": "null",
           "inputType": "Xamarin.Forms.ValueChangedEventArgs -> unit",
           "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>(fun _sender args -> f args))"
+        },
+        {
+          "name": "DragCompleted",
+          "defaultValue": "null",
+          "inputType": "unit -> unit",
+          "convToModel": "makeCommand"
+        },
+        {
+          "name": "DragStarted",
+          "defaultValue": "null",
+          "inputType": "unit -> unit",
+          "convToModel": "makeCommand"
         }
       ]
     },
