@@ -185,6 +185,10 @@
           "defaultValue": "null",
           "inputType": "Xamarin.Forms.FocusEventArgs -> unit",
           "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.FocusEventArgs>(fun _sender args -> f args))"
+        },
+        {
+          "name": "Visual",
+          "defaultValue": "Xamarin.Forms.VisualMarker.MatchParent"
         }
       ]
     },
