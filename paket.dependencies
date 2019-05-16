@@ -29,8 +29,8 @@ group neutral
   github fsprojects/FSharp.Compiler.PortaCode:master tests/PortaCodeTests.fs
 
   nuget FSharp.Core 4.5.2
-  nuget Xamarin.Forms 3.4.0.1009999
-  nuget Xamarin.Forms.Maps 3.4.0.1009999
+  nuget Xamarin.Forms 3.5.0.129452
+  nuget Xamarin.Forms.Maps 3.5.0.129452
   nuget SkiaSharp
   nuget SkiaSharp.Views.Forms
   nuget OxyPlot.Xamarin.Forms 1.0.0
@@ -42,7 +42,7 @@ group androidapp
   framework: monoandroid71
   source https://api.nuget.org/v3/index.json
   nuget FSharp.Core 4.5.2
-  nuget Xamarin.Forms 3.4.0.1009999
+  nuget Xamarin.Forms 3.5.0.129452
   nuget Xamarin.Android.FSharp.ResourceProvider 1.0.0.25
   nuget Xamarin.Android.Arch.Core.Common 1.0.0.1
   nuget Xamarin.Android.Arch.Core.Runtime 1.0.0.1
@@ -73,7 +73,7 @@ group iosapp
   framework: monotouch
   source https://api.nuget.org/v3/index.json
   nuget FSharp.Core 4.5.2
-  nuget Xamarin.Forms 3.4.0.1009999
+  nuget Xamarin.Forms 3.5.0.129452
   nuget Newtonsoft.Json 11.0.2
   nuget FSharp.Data 3.0.0
 
@@ -81,7 +81,7 @@ group macosapp
   framework: xamarinmac20
   source https://api.nuget.org/v3/index.json
   nuget FSharp.Core 4.5.2
-  nuget Xamarin.Forms 3.4.0.1009999
+  nuget Xamarin.Forms 3.5.0.129452
   nuget Newtonsoft.Json 11.0.2
   nuget FSharp.Data 3.0.0
 
@@ -89,16 +89,16 @@ group wpfapp
   framework: net472
   source https://api.nuget.org/v3/index.json
   nuget FSharp.Core 4.5.2
-  nuget Xamarin.Forms 3.4.0.1009999 
+  nuget Xamarin.Forms 3.5.0.129452 
   nuget Newtonsoft.Json 11.0.2
-  nuget Xamarin.Forms.Platform.WPF 3.4.0.1009999 
+  nuget Xamarin.Forms.Platform.WPF 3.5.0.129452 
   nuget FSharp.Data 3.0.0
 
 group gtkapp
   framework: net471
   source https://api.nuget.org/v3/index.json
   nuget FSharp.Core 4.5.2
-  nuget Xamarin.Forms 3.4.0.1009999 
+  nuget Xamarin.Forms 3.5.0.129452 
   nuget Newtonsoft.Json 11.0.2
-  nuget Xamarin.Forms.Platform.GTK 3.4.0.1009999 
+  nuget Xamarin.Forms.Platform.GTK 3.5.0.129452 
   nuget FSharp.Data 3.0.0

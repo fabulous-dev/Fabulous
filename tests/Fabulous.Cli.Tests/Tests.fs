@@ -6,7 +6,7 @@ open FsUnit
 open FSharp.Compiler.PortaCode.Tests.Basic// for TestHelpers
 
 module Versions = 
-    let XamarinForms = "3.4.0.1009999"
+    let XamarinForms = "3.5.0.129452"
     let NewtonsoftJson = "11.0.2"
 
 [<TestClass>]

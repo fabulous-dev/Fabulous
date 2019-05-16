@@ -19,6 +19,9 @@ type RootPageKind =
     | Animations
     | WebCall
     | ScrollView
+    | ShellView
+    | CollectionView
+    | CarouselView
 
 type Model = 
   { RootPageKind: RootPageKind
@@ -115,6 +118,8 @@ type Msg =
     | ScrollFabulous of float * float * AnimationKind
     | ScrollXamarinForms of float * float * AnimationKind
     | Scrolled of float * float
+    // For ShellView page demo
+    //| ShowShell
 
 [<AutoOpen>]
 module MyExtension = 
@@ -342,8 +347,8 @@ module App =
                 [ yield 
                     View.ContentPage(useSafeArea=true,
                         padding = new Thickness (10.0, 20.0, 10.0, 5.0), 
-                        content= View.StackLayout(
-                            children=[ 
+                        content= View.ListView(
+                            items=[ 
                                  View.Button(text = "TabbedPage #1 (various controls)", command=(fun () -> dispatch (SetRootPageKind Tabbed1)))
                                  View.Button(text = "TabbedPage #2 (various controls)", command=(fun () -> dispatch (SetRootPageKind Tabbed2)))
                                  View.Button(text = "TabbedPage #3 (various controls)", command=(fun () -> dispatch (SetRootPageKind Tabbed3)))
@@ -355,11 +360,14 @@ module App =
                                  View.Button(text = "Pop-up", command=(fun () -> dispatch ShowPopup))
                                  View.Button(text = "WebRequest", command=(fun () -> dispatch (SetRootPageKind WebCall)))
                                  View.Button(text = "ScrollView", command=(fun () -> dispatch (SetRootPageKind ScrollView)))
+                                 View.Button(text = "Shell", command=(fun () -> dispatch (SetRootPageKind ShellView)))
+                                 View.Button(text = "CollectionView", command=(fun () -> dispatch (SetRootPageKind CollectionView)))
+                                 View.Button(text = "CarouselView", command=(fun () -> dispatch (SetRootPageKind CarouselView)))
                             ]))
-                     .ToolbarItems([View.ToolbarItem(text="About", command=(fun () -> dispatch (SetRootPageKind (Choice true))))] )
+                     .ToolbarItems([View.ToolbarItem(text="about", command=(fun () -> dispatch (SetRootPageKind (Choice true))))] )
                      .TitleView(View.StackLayout(orientation=StackOrientation.Horizontal, children=[
-                             View.Label(text="Fabulous", verticalOptions=LayoutOptions.Center)
-                             View.Label(text="RootPage", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.CenterAndExpand)
+                             View.Label(text="fabulous", verticalOptions=LayoutOptions.Center)
+                             View.Label(text="rootpage", verticalOptions=LayoutOptions.Center, horizontalOptions=LayoutOptions.CenterAndExpand)
                          ]
                      ))
 
@@ -910,7 +918,74 @@ module App =
                         )
                     ]
                 ) 
-            )        
+            )
+         | ShellView ->
+            
+            match Device.RuntimePlatform with
+                | Device.iOS | Device.Android -> 
+                    
+                    View.Shell( title = "TitleShell",
+                        items = [
+                            View.ShellItem(
+                                items = [
+                                    View.ShellSection(items = [
+                                        View.ShellContent(content=View.ContentPage(content=MainPageButton, title="ContentpageTitle"))         
+                                    ])
+                                ])
+                        ])
+                | _ -> View.ContentPage(content = View.Label(text="Your Platform does not support Shell"))
+
+         | CollectionView ->
+            match Device.RuntimePlatform with
+                | Device.iOS | Device.Android -> 
+                    View.ContentPage(content=View.StackLayout(children = [
+                            MainPageButton
+                            // use Collectionview instead of listview 
+                            View.CollectionView(items= [
+                                View.Label(text="Person 1") 
+                                View.Label(text="Person2")
+                                View.Label(text="Person3")
+                                View.Label(text="Person4")
+                                View.Label(text="Person5")
+                                View.Label(text="Person6")
+                                View.Label(text="Person7")
+                                View.Label(text="Person8")
+                                View.Label(text="Person9")
+                                View.Label(text="Person11")
+                                View.Label(text="Person12")
+                                View.Label(text="Person13")
+                                View.Label(text="Person14")] )
+                        ]
+                    ))
+
+                | _ -> View.ContentPage(content = View.Label(text="Your Platform does not support CollectionView"))
+
+         | CarouselView ->
+            match Device.RuntimePlatform with
+                | Device.iOS | Device.Android -> 
+                    View.ContentPage(content=
+                        View.StackLayout(
+                            children = [
+                                MainPageButton
+                                View.CarouselView(itemsSource = [
+                                    View.Label(text="Person1") 
+                                    View.Label(text="Person2")
+                                    View.Label(text="Person3")
+                                    View.Label(text="Person4")
+                                    View.Label(text="Person5")
+                                    View.Label(text="Person6")
+                                    View.Label(text="Person7")
+                                    View.Label(text="Person8")
+                                    View.Label(text="Person9")
+                                    View.Label(text="Person11")
+                                    View.Label(text="Person12")
+                                    View.Label(text="Person13")
+                                    View.Label(text="Person14")
+                                ], margin=10.)
+                            ]
+                    ))
+
+                | _ -> View.ContentPage(content = View.Label(text="Your Platform does not support CarouselView"))
 
     
 type App () as app = 
