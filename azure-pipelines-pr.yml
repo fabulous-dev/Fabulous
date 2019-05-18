@@ -1,0 +1,17 @@
+trigger:
+- none
+pr:
+- master
+
+jobs:
+- job: Windows
+  pool:
+    vmImage: 'windows-2019'
+  steps:
+  - script: .\build.cmd
+
+- job: macOS
+  pool:
+    vmImage: 'macOS-10.14'
+  steps:
+  - script: ./build.sh Test

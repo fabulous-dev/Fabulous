@@ -1,0 +1,54 @@
+trigger:
+- master
+
+jobs:
+- job: Linux
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - script: |
+      sudo apt-get update
+      sudo apt-get install fsharp
+    displayName: 'Install F#'
+  - script: ./build.sh Test
+  - task: CopyFiles@1
+    inputs:
+      contents: ./build_output/*.nupkg
+      targetFolder: $(Build.ArtifactStagingDirectory)
+      flattenFolders: true
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: $(Build.ArtifactStagingDirectory)
+      artifactName: Linux
+
+- job: macOS
+  pool:
+    vmImage: 'macOS-10.14'
+  steps:
+  - script: ./build.sh Test
+  - task: CopyFiles@1
+    inputs:
+      contents: ./build_output/*.nupkg
+      targetFolder: $(Build.ArtifactStagingDirectory)
+      flattenFolders: true
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: $(Build.ArtifactStagingDirectory)
+      artifactName: macOS
+
+- job: Windows
+  pool:
+    vmImage: 'windows-2019'
+  steps:
+  - script: |
+      choco install gtksharp
+      .\build.cmd Test
+  - task: CopyFiles@2
+    inputs:
+      contents: build_output\*.nupkg
+      targetFolder: $(Build.ArtifactStagingDirectory)
+      flattenFolders: true
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: $(Build.ArtifactStagingDirectory)
+      artifactName: Windows
