@@ -35,7 +35,8 @@ module CodeGeneratorModels =
     type UpdateEvent =
         { Name : string
           UniqueName : string
-          ModelType : string }        
+          ModelType : string
+          RelatedProperties : string [] }        
 
     type UpdateProperty =
         { Name : string

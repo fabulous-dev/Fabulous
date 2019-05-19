@@ -140,11 +140,18 @@ module CodeGenerator =
                 w.printfn "                if kvp.Key = ViewAttributes.%sAttribKey.KeyValue then " m.UniqueName
                 w.printfn "                    prev%sOpt <- ValueSome (kvp.Value :?> %s)" m.UniqueName m.ModelType
 
-            // Unsubscribed previous event handlers
+            // Unsubscribe previous event handlers
             for e in data.ImmediateEvents do
-                w.printfn "        match prev%sOpt with" e.UniqueName
-                w.printfn "        | ValueSome prevValue -> target.%s.RemoveHandler(prevValue)" e.Name
-                w.printfn "        | ValueNone -> ()"
+                let relatedProperties =
+                    e.RelatedProperties
+                    |> Array.map (fun p -> sprintf "(identical prev%sOpt curr%sOpt)" p p)
+                    |> Array.fold (fun a b -> a + " && " + b) ""
+
+                w.printfn "        let shouldUpdate%s = not ((identical prev%sOpt curr%sOpt)%s)" e.UniqueName e.UniqueName e.UniqueName relatedProperties
+                w.printfn "        if shouldUpdate%s then" e.UniqueName
+                w.printfn "            match prev%sOpt with" e.UniqueName
+                w.printfn "            | ValueSome prevValue -> target.%s.RemoveHandler(prevValue)" e.Name
+                w.printfn "            | ValueNone -> ()"
 
             // Update properties
             let members = data.ImmediateProperties |> Array.filter (fun m -> not m.IsParameter)
@@ -224,9 +231,10 @@ module CodeGenerator =
 
             // Subscribe event handlers
             for e in data.ImmediateEvents do
-                w.printfn "        match curr%sOpt with" e.UniqueName
-                w.printfn "        | ValueSome currValue -> target.%s.AddHandler(currValue)" e.Name
-                w.printfn "        | ValueNone -> ()"
+                w.printfn "        if shouldUpdate%s then" e.UniqueName
+                w.printfn "            match curr%sOpt with" e.UniqueName
+                w.printfn "            | ValueSome currValue -> target.%s.AddHandler(currValue)" e.Name
+                w.printfn "            | ValueNone -> ()"
 
         w.printfn ""
         w   

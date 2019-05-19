@@ -19,6 +19,9 @@ module Models =
         /// Converts the input type to the model type
         member val ConvToModel : string = null with get, set
 
+        /// Related properties to check before unsub/resub event handlers
+        member val RelatedProperties : List<string> = null with get, set
+
         member this.BoundUniqueName : string =
             getValueOrDefault this.Name this.UniqueName
 

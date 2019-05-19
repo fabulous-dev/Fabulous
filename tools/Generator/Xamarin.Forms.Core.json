@@ -1258,7 +1258,8 @@
           "name": "TextChanged",
           "defaultValue": "null",
           "inputType": "Xamarin.Forms.TextChangedEventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))"
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))",
+          "relatedProperties": [ "Text" ]
         }
       ],
       "properties": [

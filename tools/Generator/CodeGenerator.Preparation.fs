@@ -16,7 +16,8 @@ module CodeGeneratorPreparation =
           InputType : string
           ModelType : string
           ConvToModel : string
-          IsImmediateMember : bool }
+          IsImmediateMember : bool
+          RelatedProperties : string [] }
 
     type PreparedProperty =
         { Name : string
@@ -51,7 +52,8 @@ module CodeGeneratorPreparation =
           InputType = e.InputType
           ModelType = getEventModelType (e, bindings, resolutions, hierarchy)
           ConvToModel =  getValueOrDefault "" e.ConvToModel
-          IsImmediateMember = isImmediateMember }
+          IsImmediateMember = isImmediateMember
+          RelatedProperties = if e.RelatedProperties <> null then e.RelatedProperties |> Seq.toArray else [||] }
 
     let rec private toPreparedProperty isImmediateMember (bindings, memberResolutions, hierarchy) (m : PropertyBinding) =
         { Name = m.Name
@@ -131,7 +133,8 @@ module CodeGeneratorPreparation =
         let toUpdateEvent (e : PreparedEvent) : UpdateEvent =
             { Name = e.Name
               UniqueName = e.UniqueName
-              ModelType = e.ModelType }
+              ModelType = e.ModelType
+              RelatedProperties = e.RelatedProperties }
 
         let rec toUpdateProperty (m : PreparedProperty) =
             { Name = m.Name
