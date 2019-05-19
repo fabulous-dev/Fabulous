@@ -33,12 +33,12 @@ module Generator =
                 errors |> List.iter System.Console.WriteLine
                 1
             | Ok resolutions ->
-                let (memberResolutions, warnings) = resolveMembers bindings.Types resolutions
+                let (events, properties, warnings) = resolveMembers bindings.Types resolutions
                 match warnings with
                 | [] -> ()
                 | _ -> warnings |> List.iter System.Console.WriteLine
 
-                let code = generateCode (bindings, resolutions, memberResolutions)
+                let code = generateCode (bindings, resolutions, events, properties)
                 File.WriteAllText(outputPath, code)
                 0
         with ex ->

@@ -7,7 +7,8 @@
   "types": [
     {
       "name": "Xamarin.Forms.Element",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "ClassId",
           "defaultValue": "null"
@@ -55,7 +56,39 @@
     },
     {
       "name": "Xamarin.Forms.VisualElement",
-      "members": [
+      "events": [
+        {
+          "name": "ChildrenReordered",
+          "defaultValue": "null",
+          "inputType": "System.EventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun _sender args -> f args))"
+        },
+        {
+          "name": "MeasureInvalidated",
+          "defaultValue": "null",
+          "inputType": "System.EventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun _sender args -> f args))"
+        },
+        {
+          "name": "Focused",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.FocusEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.FocusEventArgs>(fun _sender args -> f args))"
+        },
+        {
+          "name": "SizeChanged",
+          "defaultValue": "null",
+          "inputType": "Fabulous.CustomControls.SizeChangedEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun sender _args -> let visualElement = sender :?> Xamarin.Forms.VisualElement in f (Fabulous.CustomControls.SizeChangedEventArgs(visualElement.Width, visualElement.Height))))"
+        },
+        {
+          "name": "Unfocused",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.FocusEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.FocusEventArgs>(fun _sender args -> f args))"
+        }
+      ],
+      "properties": [
         {
           "name": "AnchorX",
           "defaultValue": "0.0"
@@ -162,36 +195,6 @@
           "defaultValue": "0"
         },
         {
-          "name": "ChildrenReordered",
-          "defaultValue": "null",
-          "inputType": "System.EventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler(fun _sender args -> f args))"
-        },
-        {
-          "name": "MeasureInvalidated",
-          "defaultValue": "null",
-          "inputType": "System.EventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler(fun _sender args -> f args))"
-        },
-        {
-          "name": "Focused",
-          "defaultValue": "null",
-          "inputType": "Xamarin.Forms.FocusEventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.FocusEventArgs>(fun _sender args -> f args))"
-        },
-        {
-          "name": "SizeChanged",
-          "defaultValue": "null",
-          "inputType": "Fabulous.CustomControls.SizeChangedEventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler(fun sender _args -> let visualElement = sender :?> Xamarin.Forms.VisualElement in f (Fabulous.CustomControls.SizeChangedEventArgs(visualElement.Width, visualElement.Height))))"
-        },
-        {
-          "name": "Unfocused",
-          "defaultValue": "null",
-          "inputType": "Xamarin.Forms.FocusEventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.FocusEventArgs>(fun _sender args -> f args))"
-        },
-        {
           "name": "Visual",
           "defaultValue": "Xamarin.Forms.VisualMarker.MatchParent"
         }
@@ -199,7 +202,8 @@
     },
     {
       "name": "Xamarin.Forms.View",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "HorizontalOptions",
           "defaultValue": "Xamarin.Forms.LayoutOptions.Fill"
@@ -226,26 +230,30 @@
     },
     {
       "name": "Xamarin.Forms.IGestureRecognizer",
-      "members": []
+      "events": [],
+      "properties": []
     },
     {
       "name": "Xamarin.Forms.PanGestureRecognizer",
-      "members": [
-        {
-          "name": "TouchPoints",
-          "defaultValue": "1"
-        },
+      "events": [
         {
           "name": "PanUpdated",
           "defaultValue": "null",
           "inputType": "Xamarin.Forms.PanUpdatedEventArgs -> unit",
           "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.PanUpdatedEventArgs>(fun _sender args -> f args))"
         }
+      ],
+      "properties": [
+        {
+          "name": "TouchPoints",
+          "defaultValue": "1"
+        }
       ]
     },
     {
       "name": "Xamarin.Forms.TapGestureRecognizer",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "Command",
           "defaultValue": "null",
@@ -260,7 +268,8 @@
     },
     {
       "name": "Xamarin.Forms.ClickGestureRecognizer",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "Command",
           "defaultValue": "null",
@@ -279,22 +288,32 @@
     },
     {
       "name": "Xamarin.Forms.PinchGestureRecognizer",
-      "members": [
-        {
-          "name": "IsPinching",
-          "defaultValue": "false"
-        },
+      "events": [
         {
           "name": "PinchUpdated",
           "defaultValue": "null",
           "inputType": "Xamarin.Forms.PinchGestureUpdatedEventArgs -> unit",
           "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.PinchGestureUpdatedEventArgs>(fun _sender args -> f args))"
         }
+      ],
+      "properties": [
+        {
+          "name": "IsPinching",
+          "defaultValue": "false"
+        }
       ]
     },
     {
       "name": "Xamarin.Forms.SwipeGestureRecognizer",
-      "members": [
+      "events": [
+        {
+          "name": "Swiped",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.SwipedEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.SwipedEventArgs>(fun _sender args -> f args))"
+        }
+      ],
+      "properties": [
         {
           "name": "Command",
           "defaultValue": "null",
@@ -309,18 +328,13 @@
         {
           "name": "Threshold",
           "defaultValue": "100u"
-        },
-        {
-          "name": "Swiped",
-          "defaultValue": "null",
-          "inputType": "Xamarin.Forms.SwipedEventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.SwipedEventArgs>(fun _sender args -> f args))"
         }
       ]
     },
     {
       "name": "Xamarin.Forms.ActivityIndicator",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "Color",
           "defaultValue": "Xamarin.Forms.Color.Default"
@@ -333,7 +347,8 @@
     },
     {
       "name": "Xamarin.Forms.BoxView",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "Color",
           "defaultValue": "Xamarin.Forms.Color.Default"
@@ -347,7 +362,8 @@
     },
     {
       "name": "Xamarin.Forms.ProgressBar",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "Progress",
           "defaultValue": "0.0"
@@ -356,7 +372,8 @@
     },
     {
       "name": "Xamarin.Forms.Layout",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "IsClippedToBounds",
           "defaultValue": "false"
@@ -372,7 +389,15 @@
     },
     {
       "name": "Xamarin.Forms.ScrollView",
-      "members": [
+      "events": [
+        {
+          "name": "Scrolled",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.ScrolledEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ScrolledEventArgs>(fun _sender args -> f args))"
+        }
+      ],
+      "properties": [
         {
           "name": "Content",
           "defaultValue": "null"
@@ -397,12 +422,6 @@
           "updateCode": "(fun _ curr target -> triggerScrollToAsync curr target)"
         },
         {
-          "name": "Scrolled",
-          "defaultValue": "null",
-          "inputType": "Xamarin.Forms.ScrolledEventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ScrolledEventArgs>(fun _sender args -> f args))"
-        },
-        {
           "name": "LayoutAreaOverride",
           "defaultValue": "Xamarin.Forms.Rectangle.Zero"
         }
@@ -410,7 +429,8 @@
     },
     {
       "name": "Xamarin.Forms.Button",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "Text",
           "defaultValue": "null"
@@ -487,18 +507,7 @@
     },
     {
       "name": "Xamarin.Forms.Slider",
-      "members": [
-        {
-          "name": "MinimumMaximum",
-          "inputType": "float * float",
-          "modelType": "float * float",
-          "defaultValue": "(0.0, 1.0)",
-          "updateCode": "updateSliderMinimumMaximum"
-        },
-        {
-          "name": "Value",
-          "defaultValue": "0.0"
-        },
+      "events": [
         {
           "name": "ValueChanged",
           "defaultValue": "null",
@@ -524,11 +533,32 @@
           "convToValue": "makeImageSource",
           "defaultValue": "null"
         }
+      ],
+      "properties": [
+        {
+          "name": "MinimumMaximum",
+          "inputType": "float * float",
+          "modelType": "float * float",
+          "defaultValue": "(0.0, 1.0)",
+          "updateCode": "updateSliderMinimumMaximum"
+        },
+        {
+          "name": "Value",
+          "defaultValue": "0.0"
+        }
       ]
     },
     {
       "name": "Xamarin.Forms.Stepper",
-      "members": [
+      "events": [
+        {
+          "name": "ValueChanged",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.ValueChangedEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>(fun _sender args -> f args))"
+        }
+      ],
+      "properties": [
         {
           "name": "MinimumMaximum",
           "inputType": "float * float",
@@ -543,27 +573,23 @@
         {
           "name": "Increment",
           "defaultValue": "1.0"
-        },
-        {
-          "name": "ValueChanged",
-          "defaultValue": "null",
-          "inputType": "Xamarin.Forms.ValueChangedEventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ValueChangedEventArgs>(fun _sender args -> f args))"
         }
       ]
     },
     {
       "name": "Xamarin.Forms.Switch",
-      "members": [
-        {
-          "name": "IsToggled",
-          "defaultValue": "false"
-        },
+      "events": [
         {
           "name": "Toggled",
           "defaultValue": "null",
           "inputType": "Xamarin.Forms.ToggledEventArgs -> unit",
           "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ToggledEventArgs>(fun _sender args -> f args))"
+        }
+      ],
+      "properties": [
+        {
+          "name": "IsToggled",
+          "defaultValue": "false"
         },
         {
           "name": "OnColor",
@@ -573,7 +599,8 @@
     },
     {
       "name": "Xamarin.Forms.Cell",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "Height",
           "defaultValue": "-1.0"
@@ -586,7 +613,15 @@
     },
     {
       "name": "Xamarin.Forms.SwitchCell",
-      "members": [
+      "events": [
+        {
+          "name": "OnChanged",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.ToggledEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ToggledEventArgs>(fun _sender args -> f args))"
+        }
+      ],
+      "properties": [
         {
           "name": "On",
           "defaultValue": "false"
@@ -596,12 +631,6 @@
           "defaultValue": "null"
         },
         {
-          "name": "OnChanged",
-          "defaultValue": "null",
-          "inputType": "Xamarin.Forms.ToggledEventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ToggledEventArgs>(fun _sender args -> f args))"
-        },
-        {
           "name": "OnColor",
           "defaultValue": "Xamarin.Forms.Color.Default"
         }
@@ -609,7 +638,8 @@
     },
     {
       "name": "Xamarin.Forms.TableView",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "Intent",
           "defaultValue": "Unchecked.defaultof<Xamarin.Forms.TableIntent>"
@@ -637,7 +667,8 @@
     },
     {
       "name": "Xamarin.Forms.RowDefinition",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "Height",
           "uniqueName": "RowDefinitionHeight",
@@ -649,7 +680,8 @@
     },
     {
       "name": "Xamarin.Forms.ColumnDefinition",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "Width",
           "uniqueName": "ColumnDefinitionWidth",
@@ -661,7 +693,8 @@
     },
     {
       "name": "Xamarin.Forms.Grid",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "RowDefinitions",
           "uniqueName": "GridRowDefinitions",
@@ -729,7 +762,8 @@
     },
     {
       "name": "Xamarin.Forms.AbsoluteLayout",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "Children",
           "defaultValue": "null",
@@ -755,7 +789,8 @@
     },
     {
       "name": "Xamarin.Forms.RelativeLayout",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "Children",
           "defaultValue": "null",
@@ -799,7 +834,8 @@
     },
     {
       "name": "Xamarin.Forms.FlexLayout",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "AlignContent",
           "modelType": "Xamarin.Forms.FlexAlignContent",
@@ -878,11 +914,13 @@
     },
     {
       "name": "Xamarin.Forms.TemplatedView",
-      "members": []
+      "events": [],
+      "properties": []
     },
     {
       "name": "Xamarin.Forms.ContentView",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "Content",
           "defaultValue": "null"
@@ -891,7 +929,15 @@
     },
     {
       "name": "Xamarin.Forms.DatePicker",
-      "members": [
+      "events": [
+        {
+          "name": "DateSelected",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.DateChangedEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.DateChangedEventArgs>(fun _sender args -> f args))"
+        }
+      ],
+      "properties": [
         {
           "name": "Date",
           "defaultValue": "Unchecked.defaultof<System.DateTime>"
@@ -907,18 +953,20 @@
         {
           "name": "MaximumDate",
           "defaultValue": "new System.DateTime(2100, 12, 31)"
-        },
-        {
-          "name": "DateSelected",
-          "defaultValue": "null",
-          "inputType": "Xamarin.Forms.DateChangedEventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.DateChangedEventArgs>(fun _sender args -> f args))"
         }
       ]
     },
     {
       "name": "Xamarin.Forms.Picker",
-      "members": [
+      "events": [
+        {
+          "name": "SelectedIndexChanged",
+          "defaultValue": "null",
+          "inputType": "(int * 'T option) -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun sender args -> let picker = (sender :?> Xamarin.Forms.Picker) in f (picker.SelectedIndex, (picker.SelectedItem |> Option.ofObj |> Option.map unbox<'T>))))"
+        }
+      ],
+      "properties": [
         {
           "name": "ItemsSource",
           "uniqueName": "PickerItemsSource",
@@ -942,18 +990,13 @@
         {
           "name": "TextColor",
           "defaultValue": "Xamarin.Forms.Color.Default"
-        },
-        {
-          "name": "SelectedIndexChanged",
-          "defaultValue": "null",
-          "inputType": "(int * 'T option) -> unit",
-          "convToModel": "(fun f -> System.EventHandler(fun sender args -> let picker = (sender :?> Xamarin.Forms.Picker) in f (picker.SelectedIndex, (picker.SelectedItem |> Option.ofObj |> Option.map unbox<'T>))))"
         }
       ]
     },
     {
       "name": "Xamarin.Forms.Frame",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "BorderColor",
           "defaultValue": "Xamarin.Forms.Color.Default"
@@ -974,7 +1017,8 @@
     },
     {
       "name": "Xamarin.Forms.Image",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "Source",
           "uniqueName": "ImageSource",
@@ -995,7 +1039,27 @@
     },
     {
       "name": "Xamarin.Forms.ImageButton",
-      "members": [
+      "events": [
+        {
+          "name": "Clicked",
+          "defaultValue": "null",
+          "inputType": "System.EventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun _sender args -> f args))"
+        },
+        {
+          "name": "Pressed",
+          "defaultValue": "null",
+          "inputType": "System.EventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun _sender args -> f args))"
+        },
+        {
+          "name": "Released",
+          "defaultValue": "null",
+          "inputType": "System.EventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun _sender args -> f args))"
+        }
+      ],
+      "properties": [
         {
           "name": "Command",
           "uniqueName": "ImageButtonCommand",
@@ -1035,30 +1099,13 @@
         {
           "name": "Padding",
           "defaultValue": "Unchecked.defaultof<Xamarin.Forms.Thickness>"
-        },
-        {
-          "name": "Clicked",
-          "defaultValue": "null",
-          "inputType": "System.EventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler(fun _sender args -> f args))"
-        },
-        {
-          "name": "Pressed",
-          "defaultValue": "null",
-          "inputType": "System.EventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler(fun _sender args -> f args))"
-        },
-        {
-          "name": "Released",
-          "defaultValue": "null",
-          "inputType": "System.EventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler(fun _sender args -> f args))"
         }
       ]
     },
     {
       "name": "Xamarin.Forms.InputView",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "Keyboard",
           "defaultValue": "Xamarin.Forms.Keyboard.Default"
@@ -1073,7 +1120,16 @@
     },
     {
       "name": "Xamarin.Forms.SearchBar",
-      "members": [
+      "events": [
+        {
+          "name": "TextChanged",
+          "uniqueName": "SearchBarTextChanged",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.TextChangedEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))"
+        }
+      ],
+      "properties": [
         {
           "name": "CancelButtonColor",
           "defaultValue": "Xamarin.Forms.Color.Default"
@@ -1125,19 +1181,27 @@
         {
           "name": "TextColor",
           "defaultValue": "Xamarin.Forms.Color.Default"
-        },
-        {
-          "name": "TextChanged",
-          "uniqueName": "SearchBarTextChanged",
-          "defaultValue": "null",
-          "inputType": "Xamarin.Forms.TextChangedEventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))"
         }
       ]
     },
     {
       "name": "Xamarin.Forms.Editor",
-      "members": [
+      "events": [
+        {
+          "name": "Completed",
+          "uniqueName": "EditorCompleted",
+          "defaultValue": "null",
+          "inputType": "string -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.Editor).Text))"
+        },
+        {
+          "name": "TextChanged",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.TextChangedEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))"
+        }
+      ],
+      "properties": [
         {
           "name": "Text",
           "defaultValue": "null"
@@ -1161,19 +1225,6 @@
           "defaultValue": "Xamarin.Forms.Color.Default"
         },
         {
-          "name": "Completed",
-          "uniqueName": "EditorCompleted",
-          "defaultValue": "null",
-          "inputType": "string -> unit",
-          "convToModel": "(fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.Editor).Text))"
-        },
-        {
-          "name": "TextChanged",
-          "defaultValue": "null",
-          "inputType": "Xamarin.Forms.TextChangedEventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))"
-        },
-        {
           "name": "AutoSize",
           "defaultValue": "Xamarin.Forms.EditorAutoSizeOption.Disabled"
         },
@@ -1195,7 +1246,22 @@
     },
     {
       "name": "Xamarin.Forms.Entry",
-      "members": [
+      "events": [
+        {
+          "name": "Completed",
+          "uniqueName": "EntryCompleted",
+          "defaultValue": "null",
+          "inputType": "string -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.Entry).Text))"
+        },
+        {
+          "name": "TextChanged",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.TextChangedEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))"
+        }
+      ],
+      "properties": [
         {
           "name": "Text",
           "defaultValue": "null"
@@ -1235,19 +1301,6 @@
           "defaultValue": "false"
         },
         {
-          "name": "Completed",
-          "uniqueName": "EntryCompleted",
-          "defaultValue": "null",
-          "inputType": "string -> unit",
-          "convToModel": "(fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.Entry).Text))"
-        },
-        {
-          "name": "TextChanged",
-          "defaultValue": "null",
-          "inputType": "Xamarin.Forms.TextChangedEventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))"
-        },
-        {
           "name": "IsTextPredictionEnabled",
           "defaultValue": "true"
         },
@@ -1276,7 +1329,23 @@
     {
       "name": "Fabulous.CustomControls.CustomEntryCell",
       "modelName": "EntryCell",
-      "members": [
+      "events": [
+        {
+          "name": "Completed",
+          "uniqueName": "EntryCompleted",
+          "defaultValue": "null",
+          "inputType": "string -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.EntryCell).Text))"
+        },
+        {
+          "name": "TextChanged",
+          "uniqueName": "EntryCellTextChanged",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.TextChangedEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))"
+        }
+      ],
+      "properties": [
         {
           "name": "Label",
           "defaultValue": "null"
@@ -1296,26 +1365,13 @@
         {
           "name": "HorizontalTextAlignment",
           "defaultValue": "Xamarin.Forms.TextAlignment.Start"
-        },
-        {
-          "name": "Completed",
-          "uniqueName": "EntryCompleted",
-          "defaultValue": "null",
-          "inputType": "string -> unit",
-          "convToModel": "(fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.EntryCell).Text))"
-        },
-        {
-          "name": "TextChanged",
-          "uniqueName": "EntryCellTextChanged",
-          "defaultValue": "null",
-          "inputType": "Xamarin.Forms.TextChangedEventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.TextChangedEventArgs>(fun _sender args -> f args))"
         }
       ]
     },
     {
       "name": "Xamarin.Forms.Label",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "Text",
           "defaultValue": "null"
@@ -1370,7 +1426,8 @@
     },
     {
       "name": "Xamarin.Forms.StackLayout",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "Children",
           "defaultValue": "null",
@@ -1391,7 +1448,15 @@
     },
     {
       "name": "Xamarin.Forms.Span",
-      "members": [
+      "events": [
+        {
+          "name": "PropertyChanged",
+          "defaultValue": "null",
+          "inputType": "System.ComponentModel.PropertyChangedEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<System.ComponentModel.PropertyChangedEventArgs>(fun _sender args -> f args))"
+        }
+      ],
+      "properties": [
         {
           "name": "FontFamily",
           "defaultValue": "null"
@@ -1419,12 +1484,6 @@
           "defaultValue": "null"
         },
         {
-          "name": "PropertyChanged",
-          "defaultValue": "null",
-          "inputType": "System.ComponentModel.PropertyChangedEventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler<System.ComponentModel.PropertyChangedEventArgs>(fun _sender args -> f args))"
-        },
-        {
           "name": "LineHeight",
           "defaultValue": "-1.0"
         },
@@ -1436,7 +1495,8 @@
     },
     {
       "name": "Xamarin.Forms.FormattedString",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "Spans",
           "defaultValue": "null",
@@ -1447,7 +1507,8 @@
     },
     {
       "name": "Xamarin.Forms.TimePicker",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "Time",
           "defaultValue": "new System.TimeSpan()"
@@ -1464,19 +1525,7 @@
     },
     {
       "name": "Xamarin.Forms.WebView",
-      "members": [
-        {
-          "name": "Source",
-          "uniqueName": "WebSource",
-          "defaultValue": "null"
-        },
-        {
-          "name": "Reload",
-          "defaultValue": "None",
-          "inputType": "bool",
-          "modelType": "bool",
-          "updateCode": "(fun _ curr (target: Xamarin.Forms.WebView) -> if curr = ValueSome true then target.Reload())"
-        },
+      "events": [
         {
           "name": "Navigated",
           "defaultValue": "null",
@@ -1495,11 +1544,48 @@
           "inputType": "System.EventArgs -> unit",
           "convToModel": "(fun f -> System.EventHandler(fun _sender args -> f args))"
         }
+      ],
+      "properties": [
+        {
+          "name": "Source",
+          "uniqueName": "WebSource",
+          "defaultValue": "null"
+        },
+        {
+          "name": "Reload",
+          "defaultValue": "None",
+          "inputType": "bool",
+          "modelType": "bool",
+          "updateCode": "(fun _ curr (target: Xamarin.Forms.WebView) -> if curr = ValueSome true then target.Reload())"
+        }
       ]
     },
     {
       "name": "Xamarin.Forms.Page",
-      "members": [
+      "events": [
+        {
+          "name": "Appearing",
+          "uniqueName": "Page_Appearing",
+          "defaultValue": "null",
+          "inputType": "unit -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun _sender _args -> f ()))"
+        },
+        {
+          "name": "Disappearing",
+          "uniqueName": "Page_Disappearing",
+          "defaultValue": "null",
+          "inputType": "unit -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun _sender _args -> f ()))"
+        },
+        {
+          "name": "LayoutChanged",
+          "uniqueName": "Page_LayoutChanged",
+          "defaultValue": "null",
+          "inputType": "unit -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun _sender _args -> f ()))"
+        }
+      ],
+      "properties": [
         {
           "name": "Title",
           "defaultValue": "\"\""
@@ -1581,7 +1667,16 @@
     },
     {
       "name": "Xamarin.Forms.CarouselPage",
-      "members": [
+      "events": [
+        {
+          "name": "CurrentPageChanged",
+          "uniqueName": "CarouselPage_CurrentPageChanged",
+          "defaultValue": "null",
+          "inputType": "int option -> unit",
+          "convToModel": "makeCurrentPageChanged<Xamarin.Forms.ContentPage>"
+        }
+      ],
+      "properties": [
         {
           "name": "Children",
           "defaultValue": "null",
@@ -1596,19 +1691,32 @@
           "inputType": "int",
           "modelType": "int",
           "updateCode": "updateCurrentPage<Xamarin.Forms.ContentPage>"
-        },
-        {
-          "name": "CurrentPageChanged",
-          "uniqueName": "CarouselPage_CurrentPageChanged",
-          "defaultValue": "null",
-          "inputType": "int option -> unit",
-          "convToModel": "makeCurrentPageChanged<Xamarin.Forms.ContentPage>"
         }
       ]
     },
     {
       "name": "Xamarin.Forms.NavigationPage",
-      "members": [
+      "events": [
+        {
+          "name": "Popped",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.NavigationEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))"
+        },
+        {
+          "name": "PoppedToRoot",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.NavigationEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))"
+        },
+        {
+          "name": "Pushed",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.NavigationEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))"
+        }
+      ],
+      "properties": [
         {
           "name": "Pages",
           "inputType": "ViewElement list",
@@ -1662,30 +1770,21 @@
         {
           "name": "BarTextColor",
           "defaultValue": "Xamarin.Forms.Color.Default"
-        },
-        {
-          "name": "Popped",
-          "defaultValue": "null",
-          "inputType": "Xamarin.Forms.NavigationEventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))"
-        },
-        {
-          "name": "PoppedToRoot",
-          "defaultValue": "null",
-          "inputType": "Xamarin.Forms.NavigationEventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))"
-        },
-        {
-          "name": "Pushed",
-          "defaultValue": "null",
-          "inputType": "Xamarin.Forms.NavigationEventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.NavigationEventArgs>(fun sender args -> f args))"
         }
       ]
     },
     {
       "name": "Xamarin.Forms.TabbedPage",
-      "members": [
+      "events": [
+        {
+          "name": "CurrentPageChanged",
+          "uniqueName": "TabbedPage_CurrentPageChanged",
+          "defaultValue": "null",
+          "inputType": "int option -> unit",
+          "convToModel": "makeCurrentPageChanged<Xamarin.Forms.Page>"
+        }
+      ],
+      "properties": [
         {
           "name": "Children",
           "defaultValue": "null",
@@ -1729,7 +1828,8 @@
     {
       "name": "Xamarin.Forms.ContentPage",
       "customType": "Fabulous.DynamicViews.CustomContentPage",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "Content",
           "defaultValue": "null"
@@ -1746,7 +1846,15 @@
     },
     {
       "name": "Xamarin.Forms.MasterDetailPage",
-      "members": [
+      "events": [
+        {
+          "name": "IsPresentedChanged",
+          "defaultValue": "null",
+          "inputType": "bool -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.MasterDetailPage).IsPresented))"
+        }
+      ],
+      "properties": [
         {
           "name": "Master",
           "defaultValue": "null"
@@ -1766,18 +1874,13 @@
         {
           "name": "MasterBehavior",
           "defaultValue": "Xamarin.Forms.MasterBehavior.Default"
-        },
-        {
-          "name": "IsPresentedChanged",
-          "defaultValue": "null",
-          "inputType": "bool -> unit",
-          "convToModel": "(fun f -> System.EventHandler(fun sender args -> f (sender :?> Xamarin.Forms.MasterDetailPage).IsPresented))"
         }
       ]
     },
     {
       "name": "Xamarin.Forms.MenuItem",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "Text",
           "defaultValue": "null"
@@ -1814,7 +1917,8 @@
     },
     {
       "name": "Xamarin.Forms.TextCell",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "Text",
           "defaultValue": "null"
@@ -1851,7 +1955,8 @@
     },
     {
       "name": "Xamarin.Forms.ToolbarItem",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "Order",
           "defaultValue": "Xamarin.Forms.ToolbarItemOrder.Default"
@@ -1864,7 +1969,8 @@
     },
     {
       "name": "Xamarin.Forms.ImageCell",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "ImageSource",
           "inputType": "obj",
@@ -1876,7 +1982,8 @@
     },
     {
       "name": "Xamarin.Forms.ViewCell",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "View",
           "defaultValue": "null"
@@ -1886,7 +1993,44 @@
     {
       "name": "Xamarin.Forms.ListView",
       "customType": "Fabulous.DynamicViews.CustomListView",
-      "members": [
+      "events": [
+        {
+          "name": "ItemAppearing",
+          "uniqueName": "ListView_ItemAppearing",
+          "defaultValue": "null",
+          "inputType": "int -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))"
+        },
+        {
+          "name": "ItemDisappearing",
+          "uniqueName": "ListView_ItemDisappearing",
+          "defaultValue": "null",
+          "inputType": "int -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))"
+        },
+        {
+          "name": "ItemSelected",
+          "uniqueName": "ListView_ItemSelected",
+          "defaultValue": "null",
+          "inputType": "int option -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (tryFindListViewItem sender args.SelectedItem)))"
+        },
+        {
+          "name": "ItemTapped",
+          "uniqueName": "ListView_ItemTapped",
+          "defaultValue": "null",
+          "inputType": "int -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))"
+        },
+        {
+          "name": "Refreshing",
+          "uniqueName": "ListView_Refreshing",
+          "defaultValue": "null",
+          "inputType": "unit -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun sender args -> f ()))"
+        }
+      ],
+      "properties": [
         {
           "name": "ItemsSource",
           "uniqueName": "ListViewItems",
@@ -1955,41 +2099,6 @@
           "defaultValue": "Xamarin.Forms.Color.Default"
         },
         {
-          "name": "ItemAppearing",
-          "uniqueName": "ListView_ItemAppearing",
-          "defaultValue": "null",
-          "inputType": "int -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))"
-        },
-        {
-          "name": "ItemDisappearing",
-          "uniqueName": "ListView_ItemDisappearing",
-          "defaultValue": "null",
-          "inputType": "int -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))"
-        },
-        {
-          "name": "ItemSelected",
-          "uniqueName": "ListView_ItemSelected",
-          "defaultValue": "null",
-          "inputType": "int option -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (tryFindListViewItem sender args.SelectedItem)))"
-        },
-        {
-          "name": "ItemTapped",
-          "uniqueName": "ListView_ItemTapped",
-          "defaultValue": "null",
-          "inputType": "int -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun sender args -> f (tryFindListViewItem sender args.Item).Value))"
-        },
-        {
-          "name": "Refreshing",
-          "uniqueName": "ListView_Refreshing",
-          "defaultValue": "null",
-          "inputType": "unit -> unit",
-          "convToModel": "(fun f -> System.EventHandler(fun sender args -> f ()))"
-        },
-        {
           "name": "SelectionMode",
           "defaultValue": "Xamarin.Forms.ListViewSelectionMode.Single"
         },
@@ -2011,7 +2120,43 @@
       "name": "Xamarin.Forms.ListView",
       "modelName": "ListViewGrouped",
       "customType": "Fabulous.DynamicViews.CustomGroupListView",
-      "members": [
+      "events": [
+        {
+          "name": "ItemAppearing",
+          "uniqueName": "ListViewGrouped_ItemAppearing",
+          "defaultValue": "null",
+          "inputType": "int * int option -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItemOrGroupItem sender args.Item).Value))"
+        },
+        {
+          "name": "ItemDisappearing",
+          "uniqueName": "ListViewGrouped_ItemDisappearing",
+          "defaultValue": "null",
+          "inputType": "int * int option -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItemOrGroupItem sender args.Item).Value))"
+        },
+        {
+          "name": "ItemSelected",
+          "uniqueName": "ListViewGrouped_ItemSelected",
+          "defaultValue": "null",
+          "inputType": "(int * int) option -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.SelectedItem)))"
+        },
+        {
+          "name": "ItemTapped",
+          "uniqueName": "ListViewGrouped_ItemTapped",
+          "defaultValue": "null",
+          "inputType": "int * int -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.Item).Value))"
+        },
+        {
+          "name": "Refreshing",
+          "defaultValue": "null",
+          "inputType": "unit -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun sender args -> f ()))"
+        }
+      ],
+      "properties": [
         {
           "name": "ItemsSource",
           "uniqueName": "ListViewGrouped_ItemsSource",
@@ -2079,40 +2224,6 @@
           "defaultValue": "Xamarin.Forms.Color.Default"
         },
         {
-          "name": "ItemAppearing",
-          "uniqueName": "ListViewGrouped_ItemAppearing",
-          "defaultValue": "null",
-          "inputType": "int * int option -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItemOrGroupItem sender args.Item).Value))"
-        },
-        {
-          "name": "ItemDisappearing",
-          "uniqueName": "ListViewGrouped_ItemDisappearing",
-          "defaultValue": "null",
-          "inputType": "int * int option -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemVisibilityEventArgs>(fun sender args -> f (tryFindGroupedListViewItemOrGroupItem sender args.Item).Value))"
-        },
-        {
-          "name": "ItemSelected",
-          "uniqueName": "ListViewGrouped_ItemSelected",
-          "defaultValue": "null",
-          "inputType": "(int * int) option -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.SelectedItemChangedEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.SelectedItem)))"
-        },
-        {
-          "name": "ItemTapped",
-          "uniqueName": "ListViewGrouped_ItemTapped",
-          "defaultValue": "null",
-          "inputType": "int * int -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ItemTappedEventArgs>(fun sender args -> f (tryFindGroupedListViewItem sender args.Item).Value))"
-        },
-        {
-          "name": "Refreshing",
-          "defaultValue": "null",
-          "inputType": "unit -> unit",
-          "convToModel": "(fun f -> System.EventHandler(fun sender args -> f ()))"
-        },
-        {
           "name": "SelectionMode",
           "defaultValue": "Xamarin.Forms.ListViewSelectionMode.Single"
         }
@@ -2120,7 +2231,8 @@
     },
     {
       "name": "Xamarin.Forms.BackButtonBehavior",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "TextOverride",
           "defaultValue": "null"
@@ -2152,7 +2264,8 @@
     },
     {
       "name": "Xamarin.Forms.GridItemsLayout",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "Span",
           "defaultValue": "0",
@@ -2163,7 +2276,15 @@
     },
     {
       "name": "Xamarin.Forms.ItemsView",
-      "members": [
+      "events": [
+        {
+          "name": "ScrollToRequested",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.ScrollToRequestEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ScrollToRequestEventArgs>(fun _sender args -> f args))"
+        }
+      ],
+      "properties": [
         {
           "name": "EmptyView",
           "defaultValue": "null"
@@ -2181,12 +2302,6 @@
           "defaultValue": "Xamarin.Forms.ItemSizingStrategy.MeasureAllItems"
         },
         {
-          "name": "ScrollToRequested",
-          "defaultValue": "null",
-          "inputType": "Xamarin.Forms.ScrollToRequestEventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ScrollToRequestEventArgs>(fun _sender args -> f args))"
-        },
-        {
           "name": "ScrollTo",
           "uniqueName": "iScrollTo",
           "inputType": "obj * obj * Xamarin.Forms.ScrollToPosition * Fabulous.DynamicViews.AnimationKind",
@@ -2197,7 +2312,8 @@
     },
     {
       "name": "Xamarin.Forms.SearchHandler",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "ClearIcon",
           "inputType": "string",
@@ -2440,7 +2556,23 @@
     },
     {
       "name": "Xamarin.Forms.Shell",
-      "members": [
+      "events": [
+        {
+          "name": "Navigated",
+          "uniqueName": "OnNavigated",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.ShellNavigatedEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ShellNavigatedEventArgs>(fun _sender args -> f args))"
+        },
+        {
+          "name": "Navigating",
+          "uniqueName": "OnNavigating",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.ShellNavigatingEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ShellNavigatingEventArgs>(fun _sender args -> f args))"
+        }
+      ],
+      "properties": [
         {
           "name": "Items",
           "defaultValue": "null",
@@ -2503,7 +2635,8 @@
     },
     {
       "name": "Xamarin.Forms.ShellGroupItem",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "FlyoutDisplayOptions",
           "defaultValue": "Xamarin.Forms.FlyoutDisplayOptions.AsSingleItem"
@@ -2512,7 +2645,15 @@
     },
     {
       "name": "Xamarin.Forms.SelectableItemsView",
-      "members": [
+      "events": [
+        {
+          "name": "SelectionChanged",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.SelectionChangedEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.SelectionChangedEventArgs>(fun _sender args -> f args))"
+        }
+      ],
+      "properties": [
         {
           "name": "SelectedItem",
           "defaultValue": "null"
@@ -2540,18 +2681,13 @@
           "defaultValue": "Xamarin.Forms.SelectionMode.None",
           "inputType": "Xamarin.Forms.SelectionMode",
           "modelType": "Xamarin.Forms.SelectionMode"
-        },
-        {
-          "name": "SelectionChanged",
-          "defaultValue": "null",
-          "inputType": "Xamarin.Forms.SelectionChangedEventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.SelectionChangedEventArgs>(fun _sender args -> f args))"
         }
       ]
     },
     {
       "name": "Xamarin.Forms.ShellContent",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "Content",
           "defaultValue": "null",
@@ -2568,7 +2704,8 @@
     },
     {
       "name": "Xamarin.Forms.ShellItem",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "CurrentItem",
           "defaultValue": "null",
@@ -2586,7 +2723,8 @@
     },
     {
       "name": "Xamarin.Forms.ShellSection",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "CurrentItem",
           "defaultValue": "null"
@@ -2603,7 +2741,8 @@
     {
       "name": "Xamarin.Forms.CarouselView",
       "customType": "Fabulous.DynamicViews.CustomCarouselView",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "ItemsSource",
           "uniqueName": "CarouselViewItems",
@@ -2617,7 +2756,8 @@
     {
       "name": "Xamarin.Forms.CollectionView",
       "customType": "Fabulous.DynamicViews.CustomCollectionListView",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "ItemsSource",
           "uniqueName": "CollectionViewItems",
@@ -2630,7 +2770,8 @@
     },
     {
       "name": "Xamarin.Forms.FontImageSource",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "Color",
           "defaultValue": "Xamarin.Forms.Color.Default"

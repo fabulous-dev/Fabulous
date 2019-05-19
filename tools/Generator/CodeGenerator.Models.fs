@@ -32,7 +32,12 @@ module CodeGeneratorModels =
           TypeToInstantiate : string
           Parameters : string [] }
 
-    type UpdateMember =
+    type UpdateEvent =
+        { Name : string
+          UniqueName : string
+          ModelType : string }        
+
+    type UpdateProperty =
         { Name : string
           UniqueName : string
           ModelType : string
@@ -42,13 +47,14 @@ module CodeGeneratorModels =
           ElementTypeFullName : string option
           IsParameter : bool
           BoundType : BoundType option
-          Attached : UpdateMember [] }
+          Attached : UpdateProperty [] }
 
     type UpdateData =
         { Name : string
           FullName : string
           BaseName : string option
-          ImmediateMembers : UpdateMember []
+          ImmediateEvents : UpdateEvent []
+          ImmediateProperties : UpdateProperty []
           KnownTypes : string [] }
 
     type ConstructData =

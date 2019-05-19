@@ -9,7 +9,16 @@ open System.Linq
 open Mono.Cecil
 
 module CodeGeneratorPreparation =
-    type PreparedMember =
+    type PreparedEvent =
+        { Name : string
+          UniqueName : string
+          LowerShortName : string
+          InputType : string
+          ModelType : string
+          ConvToModel : string
+          IsImmediateMember : bool }
+
+    type PreparedProperty =
         { Name : string
           UniqueName : string
           LowerShortName : string
@@ -24,7 +33,7 @@ module CodeGeneratorPreparation =
           BoundType : BoundType option
           IsParameter : bool
           IsImmediateMember : bool
-          AttachedMembers : PreparedMember [] }
+          AttachedMembers : PreparedProperty [] }
 
     type PreparedType =
         { Name : string
@@ -32,22 +41,32 @@ module CodeGeneratorPreparation =
           BaseName : string option
           CustomTypeFullName : string
           HasCustomConstructor : bool
-          Members : PreparedMember [] }
+          Events : PreparedEvent []
+          Properties : PreparedProperty [] }
 
-    let rec toPreparedMember isImmediateMember (bindings, memberResolutions, hierarchy) (m : MemberBinding) =
+    let private toPreparedEvent isImmediateMember (bindings, resolutions, hierarchy) (e : EventBinding) =
+        { Name = e.Name
+          UniqueName = e.BoundUniqueName
+          LowerShortName = e.BoundLowerShortName
+          InputType = e.InputType
+          ModelType = getEventModelType (e, bindings, resolutions, hierarchy)
+          ConvToModel =  getValueOrDefault "" e.ConvToModel
+          IsImmediateMember = isImmediateMember }
+
+    let rec private toPreparedProperty isImmediateMember (bindings, memberResolutions, hierarchy) (m : PropertyBinding) =
         { Name = m.Name
           UniqueName = m.BoundUniqueName
           LowerShortName = m.LowerBoundShortName
           LowerUniqueName = m.LowerBoundUniqueName
           InputType = getInputType (m, bindings, memberResolutions, hierarchy)
-          ModelType = getModelType (m, bindings, memberResolutions, hierarchy)
+          ModelType = getPropertyModelType (m, bindings, memberResolutions, hierarchy)
           ConvToModel = getValueOrDefault "" m.ConvToModel
           DefaultValue = m.DefaultValue
           ConvToValue = m.ConvToValue
           UpdateCode = m.UpdateCode
           ElementTypeFullName = getElementTypeFullName (m, memberResolutions, hierarchy)
           BoundType =
-              tryGetBoundType memberResolutions m
+              tryGetPropertyBoundType memberResolutions m
               |> Option.map (fun tref ->
                      { Name = tref.Name
                        FullName = tref.FullName })
@@ -56,45 +75,65 @@ module CodeGeneratorPreparation =
           AttachedMembers =
               if m.Attached <> null && m.Attached.Count > 0 then
                   m.Attached
-                  |> Seq.map (toPreparedMember false (bindings, memberResolutions, hierarchy))
+                  |> Seq.map (toPreparedProperty false (bindings, memberResolutions, hierarchy))
                   |> Seq.toArray
               else [||] }
 
-    let extractAttributes (types : PreparedType []) =
+    let private extractAttributes (types : PreparedType []) =
         [| for typ in types do
-               for m in typ.Members do
-                   yield m.UniqueName
-                   if (m.AttachedMembers.Length > 0) then
-                       for ap in m.AttachedMembers do
-                           yield ap.UniqueName |]
+            // Extract property names and their attached properties
+            for m in typ.Properties do
+                yield m.UniqueName
+                if (m.AttachedMembers.Length > 0) then
+                    for ap in m.AttachedMembers do
+                        yield ap.UniqueName
+            // Extract event names
+            for e in typ.Events do
+                yield e.UniqueName |]
         |> Seq.distinctBy id
         |> Seq.toArray
 
-    let toProtoData (typ : PreparedType) = typ.Name
+    let private toProtoData (typ : PreparedType) = typ.Name
 
-    let toBuildData (typ : PreparedType) =
-        let toBuildMember (m : PreparedMember) =
-            { Name = m.LowerShortName
-              UniqueName = m.UniqueName
-              InputType = m.InputType
-              ConvToModel = m.ConvToModel
-              IsInherited = not m.IsImmediateMember }
+    let private toBuildData (typ : PreparedType) =
+        let properties =
+            typ.Properties
+            |> Array.map (fun p ->
+                { Name = p.LowerShortName
+                  UniqueName = p.UniqueName
+                  InputType = p.InputType
+                  ConvToModel = p.ConvToModel
+                  IsInherited = not p.IsImmediateMember })
+        let events =
+            typ.Events
+            |> Array.map (fun e ->
+                { Name = e.LowerShortName
+                  UniqueName = e.UniqueName
+                  InputType = e.InputType
+                  ConvToModel = e.ConvToModel
+                  IsInherited = not e.IsImmediateMember })
+
         { Name = typ.Name
           BaseName = typ.BaseName
-          Members = typ.Members |> Array.map toBuildMember }
+          Members = Array.append properties events }
 
-    let toCreateData (typ : PreparedType) =
+    let private toCreateData (typ : PreparedType) =
         { Name = typ.Name
           FullName = typ.FullName
           HasCustomConstructor = typ.HasCustomConstructor
           TypeToInstantiate = typ.CustomTypeFullName
           Parameters =
-              typ.Members
+              typ.Properties
               |> Array.filter (fun m -> m.IsParameter)
               |> Array.map (fun m -> m.LowerShortName) }
 
-    let toUpdateData knownTypes (typ : PreparedType) =
-        let rec toUpdateMember (m : PreparedMember) =
+    let private toUpdateData knownTypes (typ : PreparedType) =
+        let toUpdateEvent (e : PreparedEvent) : UpdateEvent =
+            { Name = e.Name
+              UniqueName = e.UniqueName
+              ModelType = e.ModelType }
+
+        let rec toUpdateProperty (m : PreparedProperty) =
             { Name = m.Name
               UniqueName = m.UniqueName
               ModelType = m.ModelType
@@ -104,68 +143,123 @@ module CodeGeneratorPreparation =
               ElementTypeFullName = m.ElementTypeFullName
               IsParameter = m.IsParameter
               BoundType = m.BoundType
-              Attached = m.AttachedMembers |> Array.map toUpdateMember }
+              Attached = m.AttachedMembers |> Array.map toUpdateProperty }
+
         { Name = typ.Name
           FullName = typ.FullName
           BaseName = typ.BaseName
           KnownTypes = knownTypes
-          ImmediateMembers =
-              typ.Members
-              |> Array.filter (fun t -> t.IsImmediateMember)
-              |> Array.map toUpdateMember }
+          ImmediateEvents =
+            typ.Events
+            |> Array.filter (fun e -> e.IsImmediateMember)
+            |> Array.map toUpdateEvent
+          ImmediateProperties =
+            typ.Properties
+            |> Array.filter (fun t -> t.IsImmediateMember)
+            |> Array.map toUpdateProperty }
 
-    let toConstructData (typ : PreparedType) : ConstructData =
-        let toConstructMember (m : PreparedMember) : ConstructType =
-            { LowerShortName = m.LowerShortName
-              InputType = m.InputType }
+    let private toConstructData (typ : PreparedType) : ConstructData =
+        let properties =
+            typ.Properties
+            |> Array.map (fun p -> { LowerShortName = p.LowerShortName; InputType = p.InputType } : ConstructType)
+        let events =
+            typ.Events
+            |> Array.map (fun e -> { LowerShortName = e.LowerShortName; InputType = e.InputType } : ConstructType)
+
         { Name = typ.Name
           FullName = typ.FullName
-          Members = typ.Members |> Array.map toConstructMember }
+          Members = Array.append properties events }
 
-    let toBuilderData (knownTypes : string []) (typ : PreparedType) =
+    let private toBuilderData (knownTypes : string []) (typ : PreparedType) =
         { Build = typ |> toBuildData
           Create = typ |> toCreateData
           Update = typ |> (toUpdateData knownTypes)
           Construct = typ |> toConstructData }
 
-    let toViewerData (typ : PreparedType) : ViewerData =
-        let toViewerMember (m : PreparedMember) =
-            { Name = m.Name
-              UniqueName = m.UniqueName }
+    let private toViewerData (typ : PreparedType) : ViewerData =
+        let properties =
+            typ.Properties
+            |> Array.filter (fun p -> p.IsImmediateMember)
+            |> Array.map (fun p -> { Name = p.Name; UniqueName = p.UniqueName })
+        let events =
+            typ.Events
+            |> Array.filter (fun e -> e.IsImmediateMember)
+            |> Array.map (fun e -> { Name = e.Name; UniqueName = e.UniqueName })
+
         { Name = typ.Name
           FullName = typ.FullName
           BaseName = typ.BaseName
-          Members = typ.Members |> Array.filter (fun m -> m.IsImmediateMember) |> Array.map toViewerMember }
+          Members = Array.append properties events }
 
-    let toConstructorData (typ : PreparedType) =
-        let toConstructorMember (m : PreparedMember) =
-            { LowerShortName = m.LowerShortName
-              InputType = m.InputType }
+    let private toConstructorData (typ : PreparedType) =
+        let properties =
+            typ.Properties
+            |> Array.map (fun p -> { LowerShortName = p.LowerShortName; InputType = p.InputType })
+        let events =
+            typ.Events
+            |> Array.map (fun e -> { LowerShortName = e.LowerShortName; InputType = e.InputType })
+
         { Name = typ.Name
           FullName = typ.FullName
-          Members = typ.Members |> Array.map toConstructorMember }
+          Members = Array.append properties events }
 
-    let getViewExtensionsData (types : PreparedType []) =
-        let toViewExtensionsMember (m : PreparedMember) =
-            { LowerShortName = m.LowerShortName
-              LowerUniqueName = m.LowerUniqueName
-              UniqueName = m.UniqueName
-              InputType = m.InputType
-              ConvToModel = m.ConvToModel }
+    let private getViewExtensionsData (types : PreparedType []) =
+        let toViewExtensionsMember (p : PreparedProperty) =
+            { LowerShortName = p.LowerShortName
+              LowerUniqueName = p.LowerUniqueName
+              UniqueName = p.UniqueName
+              InputType = p.InputType
+              ConvToModel = p.ConvToModel }
         [| for typ in types do
-               if (typ.Members.Length > 0) then
-                   for y in typ.Members do
-                       yield y
-                       if (y.AttachedMembers.Length > 0) then
-                           for ap in y.AttachedMembers do
-                               yield ap |]
+            if (typ.Properties.Length > 0) then
+                for p in typ.Properties do
+                    yield p
+                    if (p.AttachedMembers.Length > 0) then
+                        for ap in p.AttachedMembers do
+                            yield ap |]
         |> Array.groupBy (fun y -> y.UniqueName)
         |> Array.map (fun (_, members) -> members |> Array.head)
         |> Array.map toViewExtensionsMember
 
-    let getTypes (bindings : Bindings,
-                  resolutions : IDictionary<TypeBinding, TypeDefinition>,
-                  memberResolutions : IDictionary<MemberBinding, MemberReference>) =
+    /// Extract all events of a control
+    let private getPreparedEvents bindings hierarchy events (boundHierarchy: TypeBinding []) (typ: TypeBinding) =
+        let inputs = (bindings, events, hierarchy)
+        
+        let allBaseEvents =
+            boundHierarchy
+            |> Seq.skip (1)
+            |> Seq.collect (fun x -> x.Events)
+            |> Seq.toArray
+            |> Array.map (toPreparedEvent false inputs)
+
+        let allImmediateEvents =
+            typ.Events.ToArray()
+            |> Array.map (toPreparedEvent true inputs)
+
+        Array.append allImmediateEvents allBaseEvents
+
+    /// Extract all properties of a control
+    let private getPreparedProperties bindings hierarchy properties (boundHierarchy: TypeBinding []) (typ: TypeBinding) =
+        let inputs = (bindings, properties, hierarchy)
+
+        let allBaseProperties =
+            boundHierarchy
+            |> Seq.skip (1)
+            |> Seq.collect (fun x -> x.Properties)
+            |> Seq.toArray
+            |> Array.map (toPreparedProperty false inputs)
+
+        let allImmediateProperties =
+            typ.Properties.ToArray()
+            |> Array.map (toPreparedProperty true inputs)
+
+        Array.append allImmediateProperties allBaseProperties
+
+    /// Extract all declared controls in a PreparedType list
+    let private getTypes (bindings : Bindings,
+                          resolutions : IDictionary<TypeBinding, TypeDefinition>,
+                          events : IDictionary<EventBinding, EventDefinition>,
+                          properties : IDictionary<PropertyBinding, PropertyDefinition>) =
         [| for typ in bindings.Types do
             let tdef = resolutions.[typ]
             let nameOfCreator = getValueOrDefault tdef.Name typ.ModelName
@@ -199,33 +293,21 @@ module CodeGeneratorPreparation =
             let hasCustomConstructor =
                 (tdef.IsAbstract || ctor = null || ctor.Parameters.Count > 0)
 
-            let inputs = (bindings, memberResolutions, hierarchy)
-
-            let allBaseMembers =
-                boundHierarchy
-                |> Seq.skip (1)
-                |> Seq.collect (fun x -> x.Members)
-                |> Seq.toArray
-                |> Array.map (toPreparedMember false inputs)
-
-            let allImmediateMembers =
-                typ.Members.ToArray()
-                |> Array.map (toPreparedMember true inputs)
-
-            let allMembers = Array.append allImmediateMembers allBaseMembers
-            
             yield { Name = nameOfCreator
                     FullName = tdef.FullName
                     BaseName = nameOfBaseCreatorOpt
                     CustomTypeFullName = typeToInstantiate
                     HasCustomConstructor = hasCustomConstructor
-                    Members = allMembers } |]
+                    Events = getPreparedEvents bindings hierarchy events boundHierarchy typ
+                    Properties = getPreparedProperties bindings hierarchy properties boundHierarchy typ } |]
 
+    /// Prepare all data to be ready to be consumed by the Code Generator
     let prepareData (bindings : Bindings,
                      resolutions : IDictionary<TypeBinding, TypeDefinition>,
-                     memberResolutions : IDictionary<MemberBinding, MemberReference>) =
+                     events : IDictionary<EventBinding, EventDefinition>,
+                     properties : IDictionary<PropertyBinding, PropertyDefinition>) =
         
-        let types = getTypes (bindings, resolutions, memberResolutions)
+        let types = getTypes (bindings, resolutions, events, properties)
         let knownTypes = types |> Array.map (fun t -> t.FullName)
 
         { Namespace = bindings.OutputNamespace

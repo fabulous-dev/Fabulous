@@ -96,6 +96,10 @@ module CodeGenerator =
                 w.printfn "        | _ -> upcast (new %s())" data.TypeToInstantiate
         w.printfn ""
         w
+
+    type Temp =
+        { UniqueName: string
+          ModelType: string }
         
     let generateUpdateFunction (data: UpdateData) (w: StringWriter) =
         w.printfn "    static member val UpdateFunc%s =" data.Name 
@@ -110,27 +114,40 @@ module CodeGenerator =
             w.printfn "        let baseElement = (if ViewProto.Proto%s.IsNone then ViewProto.Proto%s <- Some (ViewBuilders.Construct%s())); ViewProto.Proto%s.Value" nameOfBaseCreator nameOfBaseCreator nameOfBaseCreator nameOfBaseCreator
             w.printfn "        baseElement.UpdateInherited (prevOpt, curr, target)"
 
-        if (data.ImmediateMembers.Length = 0) then
+        let immediateMembers =
+            Array.append
+                (data.ImmediateEvents |> Array.map (fun e -> { UniqueName = e.UniqueName; ModelType = e.ModelType }))
+                (data.ImmediateProperties |> Array.map (fun p -> { UniqueName = p.UniqueName; ModelType = p.ModelType }))
+
+        if (immediateMembers.Length = 0) then
             w.printfn "        ignore prevOpt"
             w.printfn "        ignore curr"
             w.printfn "        ignore target"
         else
-            for m in data.ImmediateMembers do
+
+            for m in immediateMembers do
                 w.printfn "        let mutable prev%sOpt = ValueNone" m.UniqueName
                 w.printfn "        let mutable curr%sOpt = ValueNone" m.UniqueName
             w.printfn "        for kvp in curr.AttributesKeyed do"
-            for m in data.ImmediateMembers do
+            for m in immediateMembers do
                 w.printfn "            if kvp.Key = ViewAttributes.%sAttribKey.KeyValue then " m.UniqueName
                 w.printfn "                curr%sOpt <- ValueSome (kvp.Value :?> %s)" m.UniqueName m.ModelType
             w.printfn "        match prevOpt with"
             w.printfn "        | ValueNone -> ()"
             w.printfn "        | ValueSome prev ->"
             w.printfn "            for kvp in prev.AttributesKeyed do"
-            for m in data.ImmediateMembers do
+            for m in immediateMembers do
                 w.printfn "                if kvp.Key = ViewAttributes.%sAttribKey.KeyValue then " m.UniqueName
                 w.printfn "                    prev%sOpt <- ValueSome (kvp.Value :?> %s)" m.UniqueName m.ModelType
 
-            let members = data.ImmediateMembers |> Array.filter (fun m -> not m.IsParameter)
+            // Unsubscribed previous event handlers
+            for e in data.ImmediateEvents do
+                w.printfn "        match prev%sOpt with" e.UniqueName
+                w.printfn "        | ValueSome prevValue -> target.%s.RemoveHandler(prevValue)" e.Name
+                w.printfn "        | ValueNone -> ()"
+
+            // Update properties
+            let members = data.ImmediateProperties |> Array.filter (fun m -> not m.IsParameter)
             for m in members do
                 let hasApply = not (System.String.IsNullOrWhiteSpace(m.ConvToValue)) || not (System.String.IsNullOrWhiteSpace(m.UpdateCode))
 
@@ -176,15 +193,6 @@ module CodeGenerator =
                         w.printfn "            target.%s <- null"  m.Name
                         w.printfn "        | ValueNone, ValueNone -> ()"
 
-                    // Default for delegate-typed things
-                    | Some boundType when (boundType.Name.EndsWith("Handler") || boundType.Name.EndsWith("Handler`1") || boundType.Name.EndsWith("Handler`2")) && not hasApply ->
-                        w.printfn "        match prev%sOpt, curr%sOpt with" m.UniqueName m.UniqueName
-                        w.printfn "        | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()"
-                        w.printfn "        | ValueSome prevValue, ValueSome currValue -> target.%s.RemoveHandler(prevValue); target.%s.AddHandler(currValue)" m.Name m.Name
-                        w.printfn "        | ValueNone, ValueSome currValue -> target.%s.AddHandler(currValue)" m.Name
-                        w.printfn "        | ValueSome prevValue, ValueNone -> target.%s.RemoveHandler(prevValue)" m.Name
-                        w.printfn "        | ValueNone, ValueNone -> ()"
-
                     // Explicit update code
                     | _ when not (System.String.IsNullOrWhiteSpace(m.UpdateCode))  -> 
                         w.printfn "        %s prev%sOpt curr%sOpt target" m.UpdateCode m.UniqueName m.UniqueName
@@ -213,6 +221,13 @@ module CodeGenerator =
                         w.printfn "        | _, ValueSome currValue -> target.%s <- %s currValue" m.Name update
                         w.printfn "        | ValueSome _, ValueNone -> target.%s <- %s"  m.Name m.DefaultValue
                         w.printfn "        | ValueNone, ValueNone -> ()"
+
+            // Subscribe event handlers
+            for e in data.ImmediateEvents do
+                w.printfn "        match curr%sOpt with" e.UniqueName
+                w.printfn "        | ValueSome currValue -> target.%s.AddHandler(currValue)" e.Name
+                w.printfn "        | ValueNone -> ()"
+
         w.printfn ""
         w   
 
@@ -305,7 +320,7 @@ module CodeGenerator =
         w
     
     let generateViewExtensions (data: ViewExtensionsData []) (w: StringWriter) : StringWriter =
-        let newLine = "\n                      "
+        let newLine = "\n                             "
 
         w.printfn "[<AutoOpen>]"
         w.printfn "module ViewElementExtensions = "
@@ -328,7 +343,7 @@ module CodeGenerator =
             |> Array.fold (+) ""
 
         w.printfn ""
-        w.printfn "        member x.With(%s) =" members
+        w.printfn "        member inline x.With(%s) =" members
         for m in data do
             match m.LowerShortName with
             | "created" | "ref" -> ()
@@ -344,10 +359,10 @@ module CodeGenerator =
                 w.printfn "    let %s (value: %s) (x: ViewElement) = x.%s(value)" m.LowerUniqueName m.InputType m.UniqueName
         w
 
-    let generateCode (bindings, resolutions, memberResolutions) =
+    let generateCode (bindings, resolutions, events, properties) =
         let toString (w: StringWriter) = w.ToString()
 
-        let data = prepareData (bindings, resolutions, memberResolutions)
+        let data = prepareData (bindings, resolutions, events, properties)
         use writer = new StringWriter()
         writer
         |> generateNamespace data.Namespace

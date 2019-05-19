@@ -18,8 +18,7 @@ module Resolvers =
                 yield (r, d)
         }
 
-    let tryResolveType (assemblyDefinitions : AssemblyDefinition list)
-        (name : string) =
+    let tryResolveType (assemblyDefinitions : AssemblyDefinition list) (name : string) =
         seq {
             for a in assemblyDefinitions do
                 for m in a.Modules do
@@ -61,26 +60,20 @@ module Resolvers =
             |> Ok
         | errors -> errors |> Error
 
-    let resolveMembers (types : List<TypeBinding>) (resolutions : IDictionary<TypeBinding, TypeDefinition>) : IDictionary<MemberBinding, MemberReference> * string list =
+    let resolveEvents (types : List<TypeBinding>) (resolutions : IDictionary<TypeBinding, TypeDefinition>) =
         let results =
             [ for x in types do
-                  for m in x.Members do
-                      match tryFindProperty resolutions.[x] m.Name with
-                      | Some p -> yield (Some(m, (p :> MemberReference)), None)
+                  for m in x.Events do
+                      match tryFindEvent resolutions.[x] m.Name with
+                      | Some e ->
+                          yield (Some(m, e), None)
                       | None ->
-                          match tryFindEvent resolutions.[x] m.Name with
-                          | Some e ->
-                              yield (Some(m, (e :> MemberReference)), None)
-                          | None ->
-                              match System.String.IsNullOrWhiteSpace (m.UpdateCode) with
-                              | true ->
-                                  yield (None, Some
-                                                 (sprintf
-                                                      "Could not find member '%s' on '%s'"
-                                                      m.Name x.Name))
-                              | false -> () ]
+                          yield (None, Some
+                                         (sprintf
+                                              "Could not find event '%s' on '%s'"
+                                              m.Name x.Name)) ]
 
-        let memberResolutions =
+        let resolutions =
             results
             |> List.map fst
             |> List.filter Option.isSome
@@ -93,16 +86,54 @@ module Resolvers =
             |> List.filter Option.isSome
             |> List.map Option.get
 
-        (memberResolutions, warnings)
+        (resolutions, warnings)
+        
+    let resolveProperties (types : List<TypeBinding>) (resolutions : IDictionary<TypeBinding, TypeDefinition>) =
+        let results =
+            [ for x in types do
+                  for m in x.Properties do
+                      match tryFindProperty resolutions.[x] m.Name with
+                      | Some p -> yield (Some(m, p), None)
+                      | None ->
+                          match System.String.IsNullOrWhiteSpace (m.UpdateCode) with
+                          | true ->
+                              yield (None, Some
+                                             (sprintf
+                                                  "Could not find property '%s' on '%s'"
+                                                  m.Name x.Name))
+                          | false -> () ]                         
 
-    let tryGetBoundType (memberResolutions : IDictionary<MemberBinding, MemberReference>)
-        (memberBinding : MemberBinding) : TypeReference option =
-        if memberResolutions.ContainsKey(memberBinding) then
-            match memberResolutions.[memberBinding] with
-            | :? PropertyDefinition as p -> Some p.PropertyType
-            | :? EventDefinition as e -> Some e.EventType
-            | _ -> None
-        else None
+        let resolutions =
+            results
+            |> List.map fst
+            |> List.filter Option.isSome
+            |> List.map Option.get
+            |> dict
+
+        let warnings =
+            results
+            |> List.map snd
+            |> List.filter Option.isSome
+            |> List.map Option.get
+
+        (resolutions, warnings)
+
+    let resolveMembers (types : List<TypeBinding>) (resolutions : IDictionary<TypeBinding, TypeDefinition>) : IDictionary<EventBinding, EventDefinition> * IDictionary<PropertyBinding, PropertyDefinition> * string list =
+        let eventsResolutions, eventsWarnings = resolveEvents types resolutions
+        let propertiesResolutions, propertiesWarnings = resolveProperties types resolutions
+        let warnings = List.append eventsWarnings propertiesWarnings
+
+        (eventsResolutions, propertiesResolutions, warnings)
+
+    let tryGetEventBoundType (resolutions : IDictionary<EventBinding, EventDefinition>) binding =
+        match resolutions.ContainsKey(binding) with
+        | true -> Some resolutions.[binding].EventType
+        | false -> None
+
+    let tryGetPropertyBoundType (resolutions : IDictionary<PropertyBinding, PropertyDefinition>) binding =
+        match resolutions.ContainsKey(binding) with
+        | true -> Some resolutions.[binding].PropertyType
+        | false -> None
 
     let rec resolveGenericParameter(tref : TypeReference,
                                     hierarchy : seq<TypeReference * TypeDefinition>) : TypeReference option =
@@ -125,14 +156,15 @@ module Resolvers =
             }
             |> Seq.tryHead
 
-    let rec getModelTypeInner (this : MemberBinding, bindings : Bindings,
+
+    let rec getModelTypeInner (bindings : Bindings,
                                tref : TypeReference,
                                hierarchy : seq<TypeReference * TypeDefinition>) =
         match tref with
         | _ when tref.IsGenericParameter ->
             if hierarchy <> null then
                 match resolveGenericParameter(tref, hierarchy) with
-                | Some r -> getModelTypeInner (this, bindings, r, hierarchy)
+                | Some r -> getModelTypeInner (bindings, r, hierarchy)
                 | None -> "ViewElement"
             else "ViewElement"
         | _ when tref.IsGenericInstance ->
@@ -150,7 +182,7 @@ module Resolvers =
                 System.String.Join (", ",
                      (tref :?> GenericInstanceType)
                          .GenericArguments.Select(fun s ->
-                         getModelTypeInner (this, bindings, s, hierarchy)))
+                         getModelTypeInner (bindings, s, hierarchy)))
             sprintf "%s.%s<%s>" ns n args
         | _ ->
             match tref.FullName with
@@ -165,21 +197,27 @@ module Resolvers =
                 | None -> tref.FullName.Replace('/', '.')
                 | Some tb -> "ViewElement"
 
-    let getModelType (this : MemberBinding, bindings : Bindings, memberResolutions, hierarchy : seq<TypeReference * TypeDefinition>) =
-        match this.ModelType with
+    let getModelType boundName boundModelType tryGetBoundTypeFunc (bindings : Bindings, hierarchy : seq<TypeReference * TypeDefinition>) =
+        match boundModelType with
         | NotNullOrWhitespace s -> s
         | _ ->
-            match tryGetBoundType memberResolutions this with
-            | None -> failwithf "no type for %s" this.Name
+            match tryGetBoundTypeFunc() with
+            | None -> failwithf "no type for %s" boundName
             | Some boundType ->
-                getModelTypeInner (this, bindings, boundType, hierarchy)
+                getModelTypeInner (bindings, boundType, hierarchy)
 
-    let getInputType (this : MemberBinding, bindings : Bindings, memberResolutions, hierarchy : seq<TypeReference * TypeDefinition>) =
+    let getEventModelType (this : EventBinding, bindings : Bindings, resolutions, hierarchy : seq<TypeReference * TypeDefinition>) =
+        getModelType this.Name "" (fun () -> tryGetEventBoundType resolutions this) (bindings, hierarchy)
+
+    let getPropertyModelType (this : PropertyBinding, bindings : Bindings, resolutions, hierarchy : seq<TypeReference * TypeDefinition>) =
+        getModelType this.Name this.ModelType (fun () -> tryGetPropertyBoundType resolutions this) (bindings, hierarchy)
+
+    let getInputType (this : PropertyBinding, bindings : Bindings, memberResolutions, hierarchy : seq<TypeReference * TypeDefinition>) =
         match this.InputType with
         | NotNullOrWhitespace s -> s
-        | _ -> getModelType (this, bindings, memberResolutions, hierarchy)
+        | _ -> getPropertyModelType (this, bindings, memberResolutions, hierarchy)
 
-    let rec getElementTypeInner (this : MemberBinding, tref : TypeReference, hierarchy : seq<TypeReference * TypeDefinition>) =
+    let rec getElementTypeInner (this : PropertyBinding, tref : TypeReference, hierarchy : seq<TypeReference * TypeDefinition>) =
         match resolveGenericParameter(tref, hierarchy) with
         | None -> None
         | Some r ->
@@ -196,11 +234,11 @@ module Resolvers =
                        (fun b ->
                        getElementTypeInner (this, b.InterfaceType, hierarchy))
 
-    let getElementTypeFullName (this : MemberBinding, memberResolutions, hierarchy : seq<TypeReference * TypeDefinition>) =
+    let getElementTypeFullName (this : PropertyBinding, memberResolutions, hierarchy : seq<TypeReference * TypeDefinition>) =
         match this.ElementType with
         | NotNullOrWhitespace s -> Some s
         | _ ->
-            match tryGetBoundType memberResolutions this with
+            match tryGetPropertyBoundType memberResolutions this with
             | None -> None
             | Some boundType ->
                 match getElementTypeInner (this, boundType, hierarchy) with

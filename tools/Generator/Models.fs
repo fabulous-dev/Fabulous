@@ -5,7 +5,27 @@ open System.Collections.Generic
 open Helpers
 
 module Models =
-    type MemberBinding() =
+    type EventBinding() =
+
+        /// The name of the event in the target
+        member val Name : string = null with get, set
+
+        /// A unique name of the event in the model
+        member val UniqueName : string = null with get, set
+
+        /// The input type of the event as seen in the API
+        member val InputType : string = null with get, set
+
+        /// Converts the input type to the model type
+        member val ConvToModel : string = null with get, set
+
+        member this.BoundUniqueName : string =
+            getValueOrDefault this.Name this.UniqueName
+
+        member this.BoundLowerShortName : string =
+            toLowerPascalCase this.Name
+
+    type PropertyBinding() =
 
         /// The name of the property in the target
         member val Name : string = null with get, set
@@ -19,7 +39,7 @@ module Models =
         /// The lowercase name used as a parameter in the API
         member val ShortName : string = null with get, set
 
-        /// The input type type of the property as seen in the API
+        /// The input type of the property as seen in the API
         member val InputType : string = null with get, set
 
         /// The default value when applying to the target
@@ -41,7 +61,7 @@ module Models =
         member val ElementType : string = null with get, set
 
         /// The attached properties for items in the collection property
-        member val Attached : List<MemberBinding> = null with get, set
+        member val Attached : List<PropertyBinding> = null with get, set
 
         member this.BoundUniqueName : string =
             getValueOrDefault this.Name this.UniqueName
@@ -56,7 +76,8 @@ module Models =
         member val Name : string = null with get, set
         member val ModelName : string = null with get, set
         member val CustomType : string = null with get, set
-        member val Members : List<MemberBinding> = null with get, set
+        member val Events : List<EventBinding> = null with get, set
+        member val Properties : List<PropertyBinding> = null with get, set
 
     type Bindings() =
         member val Assemblies : List<string> = null with get, set
