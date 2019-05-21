@@ -775,16 +775,7 @@ module Converters =
         let prevArray = ValueOption.map seqToArray prevCollOpt
         let currArray = ValueOption.map seqToArray collOpt
         updateCollectionGeneric prevArray currArray target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
-
-    /// Update the menu items of a Shell, given previous and current view elements
-    let internal updateMenuItemsShell (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.Shell) =
-        let create (desc: ViewElement) =
-            desc.Create() :?> Xamarin.Forms.MenuItem
-
-        let prevArray = ValueOption.map seqToArray prevCollOpt
-        let currArray = ValueOption.map seqToArray collOpt
-        updateCollectionGeneric prevArray currArray target.MenuItems create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
-
+        
     /// Update the menu items of a ShellContent, given previous and current view elements
     let internal updateMenuItemsShellContent (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.ShellContent) =
         let create (desc: ViewElement) =
@@ -811,7 +802,23 @@ module Converters =
         let prevArray = ValueOption.map seqToArray prevCollOpt
         let currArray = ValueOption.map seqToArray collOpt
         updateCollectionGeneric prevArray currArray target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
-    
+
+    /// Update the IsFocusedProperty of a SearchHandler, given previous and current IsFocused
+    let internal updateIsFocusesd prevValue currValue (target: Xamarin.Forms.SearchHandler) =
+        match prevValue, currValue with
+        | ValueNone, ValueNone -> ()
+        | ValueSome prevVal, ValueSome newVal when prevVal = newVal -> ()
+        | _, ValueNone -> target.SetIsFocused(false)
+        | _, ValueSome newVal -> target.SetIsFocused(newVal)
+
+    /// Update the selectedItems of a SeletableItemsView, given previous and current view elements
+    let internal updateSelectedItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.SelectableItemsView) =
+        let create (desc: ViewElement) = desc.Create() :?> obj
+
+        let prevArray = ValueOption.map seqToArray prevCollOpt
+        let currArray = ValueOption.map seqToArray collOpt
+        updateCollectionGeneric prevArray currArray target.SelectedItems create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
+
     /// Trigger ScrollView.ScrollToAsync if needed, given the current values
     let internal triggerScrollToAsync (currValue: (float * float * AnimationKind) voption) (target: Xamarin.Forms.ScrollView) =
         match currValue with
@@ -843,19 +850,6 @@ module Converters =
                 | Animated -> true
                 | NotAnimated -> false
             target.GoToAsync(navigationState, animated) |> ignore
-        | _ -> ()
-
-    /// Trigger ShellSection.GoToAsync if needed, given the current values
-    let internal triggerSSGoToAsync (currValue: (string list * Map<string, string> * AnimationKind) voption) (target: Xamarin.Forms.ShellSection) =
-        match currValue with
-        | ValueSome (routes, queryData, animationKind) ->
-            let animated =
-                match animationKind with
-                | Animated -> true
-                | NotAnimated -> false
-            let lst = ResizeArray<string>()
-            lst.AddRange(routes)
-            target.GoToAsync(lst, queryData, animated) |> ignore
         | _ -> ()
         
     /// Check if two LayoutOptions are equal
