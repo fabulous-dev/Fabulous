@@ -2337,6 +2337,24 @@
         {
           "name": "TextColor",
           "defaultValue": "Xamarin.Forms.Color.Default"
+        },
+        {
+          "name": "Unfocused",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.FocusEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.FocusEventArgs>(fun _sender args -> f args))"
+        },
+        {
+          "name": "Focused",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.FocusEventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.FocusEventArgs>(fun _sender args -> f args))"
+        },
+        {
+          "name": "FocusChangeRequested",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.VisualElement.FocusRequestArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.VisualElement.FocusRequestArgs>(fun _sender args -> f args))"
         }
       ]
     },
