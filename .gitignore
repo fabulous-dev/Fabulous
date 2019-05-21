@@ -15,3 +15,4 @@ tests/Fabulous.Cli\.Tests/data/
 samples/CounterApp/CounterApp/CounterApp\.args\.txt
 
 samples/TicTacToe/TicTacToe/TicTacToe\.args\.txt
+src/Fabulous.Core/Xamarin.Forms.Core.fs

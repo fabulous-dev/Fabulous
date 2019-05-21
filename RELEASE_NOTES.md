@@ -1,3 +1,29 @@
+#### 0.34.0
+
+* [DynamicViews] Added support for Xamarin.Forms 3.6. Partial support for CollectionView, CarouselView and Shell (https://github.com/fsprojects/Fabulous/pull/350 and https://github.com/fsprojects/Fabulous/pull/406)
+* [DynamicViews] Added support for ViewElement in Header and Footer of ListView/ListViewGrouped (https://github.com/fsprojects/Fabulous/pull/408)
+* [DynamicViews] Removed useless CommandParameter properties (https://github.com/fsprojects/Fabulous/pull/386)
+* [DynamicViews] Fixed an issue where an exception was raised when Fabulous tried to reuse a control with a different AutomationId (https://github.com/fsprojects/Fabulous/pull/404)
+* [DynamicViews] Fixed debounce not being thread-safe (https://github.com/fsprojects/Fabulous/pull/394)
+* [DynamicViews] Fixed ImageButton.Command not working as expected (https://github.com/fsprojects/Fabulous/pull/389)
+* [Extensions] Downgraded to Oxyplot 1.0.0 to avoid needing a preview package from a non official nuget feed (https://github.com/fsprojects/Fabulous/pull/387)
+
+#### 0.33.2
+
+* [DynamicViews] Fixed an issue in TableView where the items weren't recycled (https://github.com/fsprojects/Fabulous/pull/364)
+
+#### 0.33.1
+
+* [LiveUpdate] Fixed a bug where any changes throw a NullReferenceException (https://github.com/fsprojects/Fabulous/pull/355)
+
+#### 0.33.0
+
+* [DynamicViews] Added SizeChangedEventArgs to give access to the new size when SizeChanged is raised (https://github.com/fsprojects/Fabulous/pull/336)
+* [DynamicViews] Added an extension point to give a new default implementation for a control (https://github.com/fsprojects/Fabulous/pull/342)
+* [LiveUpdate] Updated Interpreter to fix some bugs. Plus changed the watcher with a new and easier command line syntax (https://github.com/fsprojects/Fabulous/pull/338)
+* [Fabulous.Core] Fixed a bug (possibly from Mono) that made Fabulous act weird on some Android devices (https://github.com/fsprojects/Fabulous/pull/347)
+* [Templates] Fixed the consistency of the namespace between the files in the WPF template (https://github.com/fsprojects/Fabulous/pull/349)
+
 #### 0.32.0
 
 * [Fabulous.Core] Added better type annotation to make the functions init and update easier to read (https://github.com/fsprojects/Fabulous/pull/313)
