@@ -22,8 +22,8 @@ module OxyPlotExtension =
              // inherited attributes common to all views
              ?horizontalOptions, ?verticalOptions, ?margin, ?gestureRecognizers, ?anchorX, ?anchorY, ?backgroundColor, ?heightRequest,
              ?inputTransparent, ?isEnabled, ?isVisible, ?minimumHeightRequest, ?minimumWidthRequest, ?opacity,
-             ?rotation, ?rotationX, ?rotationY, ?scale, ?style, ?translationX, ?translationY, ?widthRequest,
-             ?resources, ?styles, ?styleSheets, ?classId, ?styleId, ?automationId, ?created, ?styleClass) =
+             ?rotation, ?rotationX, ?rotationY, ?scale, ?translationX, ?translationY, ?widthRequest,
+             ?resources, ?styles, ?styleSheets, ?classId, ?styleId, ?automationId, ?created) =
 
             // Count the number of additional attributes
             let attribCount = 1
@@ -36,10 +36,10 @@ module OxyPlotExtension =
                                        ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent,
                                        ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest,
                                        ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation,
-                                       ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style,
+                                       ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale,
                                        ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest,
                                        ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId,
-                                       ?automationId=automationId, ?created=created, ?styleClass=styleClass)
+                                       ?automationId=automationId, ?created=created)
 
             // Add our own attributes.
             attribs.Add(ModelAttribKey, model) 

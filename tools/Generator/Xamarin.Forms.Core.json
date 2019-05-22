@@ -1628,6 +1628,13 @@
               "modelType": "ViewElement",
               "updateCode": "updatePageTitleView",
               "defaultValue": "null"
+            },
+            {
+              "name": "TitleIconImageSource",
+              "inputType": "obj",
+              "modelType": "obj",
+              "convToValue": "makeImageSource",
+              "defaultValue": "null"
             }
           ]
         },
@@ -2324,7 +2331,7 @@
           "defaultValue": "false",
           "modelType": "bool",
           "inputType": "bool",
-          "updateCode": "updateIsFocusesd"
+          "updateCode": "updateIsFocused"
         },
         {
           "name": "Keyboard",
@@ -2355,6 +2362,13 @@
           "defaultValue": "null",
           "inputType": "Xamarin.Forms.VisualElement.FocusRequestArgs -> unit",
           "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.VisualElement.FocusRequestArgs>(fun _sender args -> f args))"
+        },
+        {
+          "name": "SelectedItem",
+          "defaultValue": "null",
+          "inputType": "obj",
+          "modelType": "obj",
+          "updateCode": "updateSelectedItem"
         }
       ]
     },

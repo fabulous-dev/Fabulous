@@ -804,16 +804,24 @@ module Converters =
         updateCollectionGeneric prevArray currArray target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
 
     /// Update the IsFocusedProperty of a SearchHandler, given previous and current IsFocused
-    let internal updateIsFocusesd prevValue currValue (target: Xamarin.Forms.SearchHandler) =
+    let internal updateIsFocused prevValue currValue (target: Xamarin.Forms.SearchHandler) =
         match prevValue, currValue with
         | ValueNone, ValueNone -> ()
         | ValueSome prevVal, ValueSome newVal when prevVal = newVal -> ()
         | _, ValueNone -> target.SetIsFocused(false)
         | _, ValueSome newVal -> target.SetIsFocused(newVal)
 
+    /// Update the SelectedItemProperty of a SearchHandler, given previous and current SelectedItem
+    let internal updateSelectedItem prevValue currValue (target: Xamarin.Forms.SearchHandler) =
+        match prevValue, currValue with
+        | ValueNone, ValueNone -> ()
+        | ValueSome prevVal, ValueSome newVal when prevVal = newVal -> ()
+        | _, ValueNone -> target.ClearValue(Xamarin.Forms.SearchHandler.SelectedItemProperty)
+        | _, ValueSome newVal -> target.SetValue(Xamarin.Forms.SearchHandler.SelectedItemProperty, newVal)
+
     /// Update the selectedItems of a SeletableItemsView, given previous and current view elements
     let internal updateSelectedItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.SelectableItemsView) =
-        let create (desc: ViewElement) = desc.Create() :?> obj
+        let create (desc: ViewElement) = desc.Create()
 
         let prevArray = ValueOption.map seqToArray prevCollOpt
         let currArray = ValueOption.map seqToArray collOpt
