@@ -283,13 +283,6 @@ module Converters =
             f index
         )
 
-    /// Converts a string or uri to a Xamarin.Forms ShellNavigation
-    let makeUri (v: obj) =
-        match v with
-        | :? string as path -> ShellNavigationState.op_Implicit path
-        | :? Uri as uri -> ShellNavigationState.op_Implicit uri
-        | _ -> failwithf "makeUri: invalid argument %O" v
-
     /// Converts a datatemplate to a Xamarin.Forms TemplatedPage
     let makeTemplate (v: obj) =
         match v with
