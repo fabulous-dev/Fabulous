@@ -92,39 +92,32 @@ module SimplerHelpers =
                 false // Do not let the timer trigger a second time
             ))
 
-    /// Looks for an view element with the given Automation ID in the view hierarchy.
+    /// Looks for a view element with the given Automation ID in the view hierarchy.
     /// This function is not optimized for efficiency and may execute slowly.
-    /// Which shouldn't be noticeable in pure test scenarios.
     let rec tryFindViewElement automationId (element:ViewElement) =
         let elementAutomationId = element.TryGetAttribute<string>("AutomationId")
         match elementAutomationId with
         | ValueSome automationIdValue when automationIdValue = automationId -> Some element
         | _ ->
-            let childElements = ResizeArray<ViewElement>()
-
-            let contentOpt = element.TryGetAttribute<ViewElement>("Content")
-            match contentOpt with
-            | ValueSome content -> childElements.Add content
-            | ValueNone ->      
-                let pagesOpt = element.TryGetAttribute<ViewElement[]>("Pages")
-                match pagesOpt with
-                | ValueSome pages -> childElements.AddRange pages
+            let childElements =
+                match element.TryGetAttribute<ViewElement>("Content") with
+                | ValueSome content -> [| content |]
                 | ValueNone ->
-                    let childrenOpt = element.TryGetAttribute<ViewElement[]>("Children")
-                    match childrenOpt with
-                    | ValueNone -> ()
-                    | ValueSome children -> childElements.AddRange children
+                    match element.TryGetAttribute<ViewElement[]>("Pages") with
+                    | ValueSome pages -> pages
+                    | ValueNone ->
+                        match element.TryGetAttribute<ViewElement[]>("Children") with
+                        | ValueNone -> [||]
+                        | ValueSome children -> children
 
-            let childElementResult =
-                childElements
-                |> Seq.map (fun e -> e |> tryFindViewElement automationId)
-                |> Seq.filter (fun e -> e.IsSome)
-                |> Seq.tryHead
-
-            match childElementResult with
-            | Some result -> result
-            | None -> None
-
+            childElements
+            |> Seq.map (fun e -> e |> tryFindViewElement automationId)
+            |> Seq.filter (fun e -> e.IsSome)
+            |> Seq.map (fun e -> e.Value)
+            |> Seq.tryHead
+     
+    /// Looks for a view element with the given Automation ID in the view hierarchy
+    /// Throws an exception if no element is found
     let findViewElement automationId element =
         match tryFindViewElement automationId element with
         | None -> failwithf "No element with automation id '%s' found" automationId
