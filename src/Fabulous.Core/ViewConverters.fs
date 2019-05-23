@@ -618,7 +618,7 @@ module Converters =
                         | Some _ -> ()
 
     /// Update the style class of a control, given previous and current view elements 
-    let internal updateStyleClass (prevCollOpt: IList<string> voption) (collOpt: IList<string> voption) (target: Xamarin.Forms.VisualElement) =
+    let internal updateStyleClass (prevCollOpt: IList<string> voption) (collOpt: IList<string> voption) (target: Xamarin.Forms.NavigableElement) =
         match prevCollOpt, collOpt with 
         | ValueNone, ValueNone -> ()
         | ValueSome prevColl, ValueSome newColl when prevColl = newColl -> ()

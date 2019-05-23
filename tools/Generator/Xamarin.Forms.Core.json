@@ -37,6 +37,23 @@
       ]
     },
     {
+      "name": "Xamarin.Forms.NavigableElement",
+      "members": [
+        {
+          "name": "Style",
+          "defaultValue": "null"
+        },
+        {
+          "name": "StyleClass",
+          "defaultValue": "null",
+          "inputType": "obj",
+          "modelType": "System.Collections.Generic.IList<string>",
+          "convToModel": "makeStyleClass",
+          "updateCode": "updateStyleClass"
+        }
+      ]
+    },
+    {
       "name": "Xamarin.Forms.VisualElement",
       "members": [
         {
