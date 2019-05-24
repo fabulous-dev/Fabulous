@@ -173,6 +173,11 @@ module Program =
     let mkSimple (init : unit -> 'model) (update : 'msg -> 'model -> 'model) (view : 'view) = 
         mkProgram (fun arg -> init arg, Cmd.none) (fun msg model -> update msg model, Cmd.none) view
 
+    /// Typical program, new commands are produced discriminated unions returned by `init` and `update` along with the new state.
+    let mkProgramWithCmdMsg (init: unit -> 'model * 'cmdMsg list) (update: 'msg -> 'model -> 'model * 'cmdMsg list) (view: 'view) (mapToCmd: 'cmdMsg -> Cmd<'msg>) =
+        let convert = fun (model, cmdMsgs) -> model, (cmdMsgs |> List.map mapToCmd |> Cmd.batch)
+        mkProgram (fun arg -> init arg |> convert) (fun msg model -> update msg model |> convert) view
+
     /// Subscribe to external source of events.
     /// The subscription is called once - with the initial (or resumed) model, but can dispatch new messages at any time.
     let withSubscription (subscribe : 'model -> Cmd<'msg>) (program: Program<'model, 'msg, 'view>) =
