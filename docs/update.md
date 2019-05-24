@@ -119,7 +119,7 @@ But behind the scenes, `Cmd<'msg>` is really only an array of functions. This ma
 
 In the case you want to unit test your code, even if you're using `Cmd<'msg>` inside `init` and `update`, the best way is to use of the `CmdMsg` pattern. 
 
-This is a general pattern applicable when using Elm-like programming model.  
+This is a general pattern, applicable when using an Elm-like programming model.  
 It is not linked to Fabulous specifically.  
 
 Fabulous only provides some helpers to help you achieve this with less code.  
@@ -182,8 +182,8 @@ type App() =
 ```
 
 Note that `Program.mkProgramWithCmdMsg` doesn't do anything magic.  
-It only applies `mapCommands` to any `CmdMsg`s returned by `init` and `update`.  
-You could achieve the exact same behavior by converting them yourself and use `Program.mkProgram`.
+It only applies `mapCommands` to any `CmdMsg` returned by `init` and `update`.  
+You could achieve the exact same behavior by converting them yourself and using `Program.mkProgram`.
 
 Threading and Long-running Operations
 ------
