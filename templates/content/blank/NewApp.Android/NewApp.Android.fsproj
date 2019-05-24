@@ -187,7 +187,7 @@
       <HintPath>..\packages/Newtonsoft.Json.NewtonsoftJsonPkg/lib/netstandard2.0/Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Essentials">
-      <HintPath>..\packages/Xamarin.Essentials.0.6.0-preview/lib/monoandroid71/Xamarin.Essentials.dll</HintPath>
+      <HintPath>..\packages/Xamarin.Essentials.XamarinEssentialsSdk/lib/monoandroid71/Xamarin.Essentials.dll</HintPath>
     </Reference>
     <ProjectReference Include="..\NewApp\NewApp.fsproj">
       <Project>{99E19497-29A6-4B77-B773-BEC55F9B55DC}</Project>
