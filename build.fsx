@@ -30,15 +30,21 @@ let release = ReleaseNotes.load "RELEASE_NOTES.md"
 let buildDir = Path.getFullName "./build_output"
 
 let removeIncompatiblePlatformProjects pattern = 
-    if not Environment.isWindows then
+    if Environment.isMacOS then
         pattern
         -- "samples/**/*.WPF.fsproj"
-        -- "samples/**/*.UWP.fsproj"
-    elif not Environment.isMacOS then
+        -- "samples/**/*.UWP.fsproj"        
+    elif Environment.isWindows then
         pattern
-        -- "samples/**/*.MacOS.fsproj"
+        -- "samples/**/*.macOS.fsproj"
+        -- "samples/**/*.iOS.fsproj"
     else    
         pattern
+        -- "samples/**/*.macOS.fsproj"
+        -- "samples/**/*.iOS.fsproj"
+        -- "samples/**/*.WPF.fsproj"
+        -- "samples/**/*.UWP.fsproj"
+        -- "samples/**/*.Droid.fsproj"
 
 let projects = [
     { Name = "Src";         Path = !! "src/**/*.fsproj";        Action = DotNetPack;         OutputPath = buildDir }
@@ -182,6 +188,7 @@ Target.create "TestTemplatesNuGet" (fun _ ->
     let extraArgs =
         if Environment.isWindows then " --WPF --UWP"
         elif Environment.isMacOS then " --macOS"
+        elif Environment.isLinux then " --Android=false --iOS=false"
         else ""
         
     DotNet.exec id "new fabulous-app" (sprintf "-n %s -lang F# --GTK%s" testAppName extraArgs) |> ignore
@@ -196,12 +203,11 @@ Target.create "TestTemplatesNuGet" (fun _ ->
         restorePackageDotnetCli testAppName (testAppName + ".UWP") "csproj" pkgs
 
     // Build for all combinations
-    let slash = if Environment.isUnix then "\\" else ""
     for c in ["Debug"; "Release"] do 
         for p in ["Any CPU"; "iPhoneSimulator"] do
-            let args = (sprintf "%s/%s.sln /p:Platform=\"%s\" /p:Configuration=%s /p:PackageSources=%s\"https://api.nuget.org/v3/index.json;%s%s\"" testAppName testAppName p c slash pkgs slash)
-            let code = Shell.Exec("msbuild", args) 
-            if code <> 0 then failwithf "%s %s failed, error code %d" "msbuild" args code
+            let sln = sprintf "%s/%s.sln" testAppName testAppName
+            let properties = [("RestorePackages", "True"); ("Platform", p); ("Configuration", c); ("PackageSources", sprintf "https://api.nuget.org/v3/index.json;%s" pkgs)]
+            MSBuild.run id "" "Build" properties [sln] |> Trace.logItems ("Build-Output: ")
 )
 
 Target.create "Build" ignore
