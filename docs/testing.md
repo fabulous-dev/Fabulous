@@ -81,32 +81,12 @@ let ``Given the message Reset, Update should reset the state``() =
     App.update Reset initialModel |> should equal expectedModel
 ```
 
-### Testing `init` and `update` when using `Cmd`
+### Testing `init` and `update` when using commands
 
-You might have noticed the previous examples weren't using `Cmd`.  
-This is because `Cmd` can be complex to unit test and needs some further documentation on its own.
+Testing `Cmd<'msg>` can be hard, because there's no way of knowing what the functions inside `Cmd` really are before executing them.
 
-#### Testing `Cmd.none`
-
-`Cmd.none` is an exception. It doesn't require anything special.  
-We can just compare it to itself
-
-```fsharp
-let update msg model =
-    match msg with
-    | Increment -> { model with model.Count + 1 }, Cmd.none
-
-
-[<Test>]
-let ``Given the message Increment, Update should increment Count by 1``() =
-    let initialModel = { Count = 5 }
-    let expectedState = { Count = 6 }, Cmd.none // The expected state is a tuple of the model and a Cmd
-    App.update Increment initialModel |> should equal expectedState
-```
-
-#### Testing `Cmd`s
-
-TBA. See issues [#309](https://github.com/fsprojects/Fabulous/pull/309) and [#320](https://github.com/fsprojects/Fabulous/pull/320)
+The recommended way is to apply the `CmdMsg` pattern.  
+See [Replacing commands with command messages for better testability](https://fsprojects.github.io/Fabulous/update.html#replacing-commands-with-command-messages-for-better-testability)
 
 ### Testing view
 

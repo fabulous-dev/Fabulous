@@ -117,9 +117,14 @@ Commands are a great way for executing a set of tasks (asynchronous or not) afte
 
 But behind the scenes, `Cmd<'msg>` is really only an array of functions. This makes testing `Cmd<'msg>` really difficult (no way to know what the functions are) and the functions `init` and `update` as well.
 
-In the case you want to unit test your code, even if you're using `Cmd<'msg>` inside `init` and `update`, the best way is to use of the `CmdMsg` pattern. Fabulous has some helpers to help you achieve this.
+In the case you want to unit test your code, even if you're using `Cmd<'msg>` inside `init` and `update`, the best way is to use of the `CmdMsg` pattern. 
 
-The principle of this pattern is to replace any direct usage of `Cmd<'msg>` from `init` and `update`, and instead use a discriminated union called `CmdMsg`.
+This is a general pattern applicable when using Elm-like programming model.  
+It is not linked to Fabulous specifically.  
+
+Fabulous only provides some helpers to help you achieve this with less code.  
+
+The principle is to replace any direct usage of `Cmd<'msg>` from `init` and `update`, and instead use a discriminated union called `CmdMsg`.
 
 ```fsharp
 type Model = 
@@ -176,9 +181,9 @@ type App() =
         |> Program.run...
 ```
 
-
-
-
+Note that `Program.mkProgramWithCmdMsg` doesn't do anything magic.  
+It only applies `mapCommands` to any `CmdMsg`s returned by `init` and `update`.  
+You could achieve the exact same behavior by converting them yourself and use `Program.mkProgram`.
 
 Threading and Long-running Operations
 ------
