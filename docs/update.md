@@ -110,6 +110,76 @@ let runner =
 
 Everything that wants access to `dispatch` must be mentioned in the composition of the overall app, or as part of a command produced as a result of processing a message, or in the view.
 
+Replacing commands with command messages for better testability
+------
+
+Commands are a great way for executing a set of tasks (asynchronous or not) after receiving a message.
+
+But behind the scenes, `Cmd<'msg>` is really only an array of functions. This makes testing `Cmd<'msg>` really difficult (no way to know what the functions are) and the functions `init` and `update` as well.
+
+In the case you want to unit test your code, even if you're using `Cmd<'msg>` inside `init` and `update`, the best way is to use of the `CmdMsg` pattern. Fabulous has some helpers to help you achieve this.
+
+The principle of this pattern is to replace any direct usage of `Cmd<'msg>` from `init` and `update`, and instead use a discriminated union called `CmdMsg`.
+
+```fsharp
+type Model = 
+    { TimerOn: bool
+      Count: int
+      Step: int }
+        
+type Msg = 
+    | TimedTick
+    | TimerToggled of bool
+
+type CmdMsg =
+    | TickTimer
+
+let init () =
+    { TimerOn = false; Count = 0; Step = 1 }, [] // An empty list means no action
+    
+let update msg model =
+    match msg with
+    | TimerToggled on ->
+       { model with TimerOn = on }, [ if on then yield TimerTick ]
+    | TimedTick ->
+       if model.TimerOn then
+          { model with Count = model.Count + model.Step }, [ TimerTick ]
+       else
+          model, []
+```
+
+Doing this transforms the output of both `init` and `update` to pure data output, which can then be easily unit tested
+
+```fsharp
+[<Test>]
+let togglingOnShouldTriggerTimerTick () =
+    let initialModel = { TimerOn = false; Count = 0; Step = 1 }
+    let expectedReturn = { TimerOn = true; Count = 0; Step = 1 }, [ TimerTick ]
+    App.update (TimerToggled true) initialModel |> should equal expectedReturn
+```
+
+The actual commands are still executed as `Cmd<'msg>` though.  
+So in order to make this work with Fabulous, you need a function that will convert a `CmdMsg` to a `Cmd<'msg>`
+
+Fabulous then helps you boot your application using `Program.mkProgramWithCmdMsg`
+
+```fsharp
+let mapCommands cmdMsg =
+    match cmdMsg with
+    | TimerTick -> timerCmd()
+
+type App() =
+    inherit Application()
+
+    let runner =
+        Program.mkProgramWithCmdMsg init update view mapCommands
+        |> Program.run...
+```
+
+
+
+
+
 Threading and Long-running Operations
 ------
 
