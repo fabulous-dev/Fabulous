@@ -37,6 +37,23 @@
       ]
     },
     {
+      "name": "Xamarin.Forms.NavigableElement",
+      "members": [
+        {
+          "name": "Style",
+          "defaultValue": "null"
+        },
+        {
+          "name": "StyleClass",
+          "defaultValue": "null",
+          "inputType": "obj",
+          "modelType": "System.Collections.Generic.IList<string>",
+          "convToModel": "makeStyleClass",
+          "updateCode": "updateStyleClass"
+        }
+      ]
+    },
+    {
       "name": "Xamarin.Forms.VisualElement",
       "members": [
         {
@@ -94,18 +111,6 @@
         {
           "name": "Scale",
           "defaultValue": "1.0"
-        },
-        {
-          "name": "Style",
-          "defaultValue": "null"
-        },
-        {
-          "name": "StyleClass",
-          "defaultValue": "null",
-          "inputType": "obj",
-          "modelType": "System.Collections.Generic.IList<string>",
-          "convToModel": "makeStyleClass",
-          "updateCode": "updateStyleClass"
         },
         {
           "name": "TranslationX",
@@ -464,6 +469,13 @@
           "defaultValue": "null"
         },
         {
+          "name": "ImageSource",
+          "inputType": "obj",
+          "modelType": "obj",
+          "convToValue": "makeImageSource",
+          "defaultValue": "null"
+        },
+        {
           "name": "TextColor",
           "defaultValue": "Xamarin.Forms.Color.Default"
         },
@@ -504,6 +516,13 @@
           "defaultValue": "null",
           "inputType": "unit -> unit",
           "convToModel": "makeCommand"
+        },
+        {
+          "name": "ThumbImageSource",
+          "inputType": "obj",
+          "modelType": "obj",
+          "convToValue": "makeImageSource",
+          "defaultValue": "null"
         }
       ]
     },
@@ -1543,6 +1562,20 @@
           "defaultValue": "null",
           "inputType": "unit -> unit",
           "convToModel": "(fun f -> System.EventHandler(fun _sender _args -> f ()))"
+        },
+        {
+          "name": "BackgroundImageSource",
+          "inputType": "obj",
+          "modelType": "obj",
+          "convToValue": "makeImageSource",
+          "defaultValue": "null"
+        },
+        {
+          "name": "IconImageSource",
+          "inputType": "obj",
+          "modelType": "obj",
+          "convToValue": "makeImageSource",
+          "defaultValue": "null"
         }
       ]
     },
@@ -1612,6 +1645,13 @@
               "modelType": "ViewElement",
               "updateCode": "updatePageTitleView",
               "defaultValue": "null"
+            },
+            {
+              "name": "TitleIconImageSource",
+              "inputType": "obj",
+              "modelType": "obj",
+              "convToValue": "makeImageSource",
+              "defaultValue": "null"
             }
           ]
         },
@@ -1675,6 +1715,14 @@
           "defaultValue": "null",
           "inputType": "int option -> unit",
           "convToModel": "makeCurrentPageChanged<Xamarin.Forms.Page>"
+        },
+        {
+          "name": "SelectedTabColor",
+          "defaultValue": "Xamarin.Forms.Color.Default"
+        },
+        {
+          "name": "UnselectedTabColor",
+          "defaultValue": "Xamarin.Forms.Color.Default"
         }
       ]
     },
@@ -1754,6 +1802,13 @@
           "convToValue": "makeAccelerator",
           "defaultValue": "null",
           "updateCode": "updateAccelerator"
+        },
+        {
+          "name": "IconImageSource",
+          "inputType": "obj",
+          "modelType": "obj",
+          "convToValue": "makeImageSource",
+          "defaultValue": "null"
         }
       ]
     },
@@ -2250,7 +2305,7 @@
         },
         {
           "name": "SearchBoxVisibility",
-          "defaultValue": "Xamarin.Forms.SearchBoxVisiblity.Hidden"
+          "defaultValue": "Xamarin.Forms.SearchBoxVisibility.Expanded"
         },
         {
           "name": "ShowsResults",
@@ -2261,6 +2316,125 @@
         {
           "name": "ItemsSource",
           "defaultValue": "null"
+        },
+        {
+          "name": "BackgroundColor",
+          "defaultValue": "Xamarin.Forms.Color.Default"
+        },
+        {
+          "name": "CancelButtonColor",
+          "defaultValue": "Xamarin.Forms.Color.Default"
+        },
+        {
+          "name": "FontAttributes",
+          "defaultValue": "Xamarin.Forms.FontAttributes.None"
+        },
+        {
+          "name": "FontFamily",
+          "defaultValue": "null"
+        },
+        {
+          "name": "FontSize",
+          "defaultValue": "-1.0",
+          "inputType": "obj",
+          "convToModel": "makeFontSize"
+        },
+        {
+          "name": "HorizontalTextAlignment",
+          "defaultValue": "Xamarin.Forms.TextAlignment.Start"
+        },
+        {
+          "name": "IsFocused",
+          "defaultValue": "false",
+          "modelType": "bool",
+          "inputType": "bool",
+          "updateCode": "updateIsFocused"
+        },
+        {
+          "name": "Keyboard",
+          "defaultValue": "Xamarin.Forms.Keyboard.Default"
+        },
+        {
+          "name": "PlaceholderColor",
+          "defaultValue": "Xamarin.Forms.Color.Default"
+        },
+        {
+          "name": "TextColor",
+          "defaultValue": "Xamarin.Forms.Color.Default"
+        },
+        {
+          "name": "Unfocused",
+          "uniqueName": "SearchHandlerUnfocused",
+          "defaultValue": "null",
+          "inputType": "unit -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun _sender _args -> f()))"
+        },
+        {
+          "name": "Focused",
+          "uniqueName": "SearchHandlerFocused",
+          "defaultValue": "null",
+          "inputType": "unit -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun _sender _args -> f()))"
+        },
+        {
+          "name": "FocusChangeRequested",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.VisualElement.FocusRequestArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.VisualElement.FocusRequestArgs>(fun _sender args -> f args))"
+        },
+        {
+          "name": "SelectedItem",
+          "defaultValue": "null",
+          "inputType": "obj",
+          "modelType": "obj",
+          "updateCode": "updateSelectedItem"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.BaseShellItem",
+      "members": [
+        {
+          "name": "FlyoutIcon",
+          "inputType": "obj",
+          "modelType": "obj",
+          "convToValue": "makeImageSource",
+          "defaultValue": "null"
+        },
+        {
+          "name": "Icon",
+          "uniqueName": "BaseShellItemIcon",
+          "inputType": "obj",
+          "modelType": "obj",
+          "convToValue": "makeImageSource",
+          "defaultValue": "null"
+        },
+        {
+          "name": "IsEnabled",
+          "defaultValue": "true"
+        },
+        {
+          "name": "IsTabStop",
+          "defaultValue": "true"
+        },
+        {
+          "name": "Route",
+          "defaultValue": "null"
+        },
+        {
+          "name": "TabIndex",
+          "defaultValue": "0"
+        },
+        {
+          "name": "Title",
+          "defaultValue": "null"
+        },
+        {
+          "name": "IsChecked",
+          "defaultValue": "null",
+          "inputType": "bool",
+          "modelType": "bool",
+          "updateCode": "updateIsCecked"
         }
       ]
     },
@@ -2273,13 +2447,6 @@
           "inputType": "seq<ViewElement>",
           "modelType": "seq<ViewElement>",
           "updateCode": "updateShellItems"
-        },
-        {
-          "name": "MenuItems",
-          "defaultValue": "null",
-          "inputType": "seq<ViewElement>",
-          "modelType": "seq<ViewElement>",
-          "updateCode": "updateMenuItemsShell"
         },
         {
           "name": "CurrentItem",
@@ -2302,20 +2469,15 @@
           "defaultValue": "Xamarin.Forms.FlyoutHeaderBehavior.Default"
         },
         {
+          "name": "FlyoutIcon",
+          "inputType": "obj",
+          "modelType": "obj",
+          "convToValue": "makeImageSource",
+          "defaultValue": "null"
+        },
+        {
           "name": "FlyoutIsPresented",
           "defaultValue": "false"
-        },
-        {
-          "name": "Route",
-          "defaultValue": "null"
-        },
-        {
-          "name": "RouteHost",
-          "defaultValue": "null"
-        },
-        {
-          "name": "RouteScheme",
-          "defaultValue": "null"
         },
         {
           "name": "Navigated",
@@ -2356,6 +2518,13 @@
           "defaultValue": "null"
         },
         {
+          "name": "SelectedItems",
+          "defaultValue": "null",
+          "inputType": "seq<ViewElement>",
+          "modelType": "seq<ViewElement>",
+          "updateCode": "updateSelectedItems"
+        },
+        {
           "name": "SelectionChangedCommand",
           "defaultValue": "null",
           "inputType": "unit -> unit",
@@ -2377,17 +2546,6 @@
           "defaultValue": "null",
           "inputType": "Xamarin.Forms.SelectionChangedEventArgs -> unit",
           "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.SelectionChangedEventArgs>(fun _sender args -> f args))"
-        }
-      ]
-    },
-    {
-      "name": "Xamarin.Forms.ShellNavigationState",
-      "members": [
-        {
-          "name": "Location",
-          "defaultValue": "null",
-          "inputType": "System.Uri",
-          "convToModel": "makeUri"
         }
       ]
     },
@@ -2432,13 +2590,6 @@
         {
           "name": "CurrentItem",
           "defaultValue": "null"
-        },
-        {
-          "name": "GoToAsync",
-          "uniqueName": "ssGoToAsync",
-          "inputType": "string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind",
-          "modelType": "string list * Map<string, string> * Fabulous.DynamicViews.AnimationKind",
-          "updateCode": "(fun _ curr target -> triggerSSGoToAsync curr target)"
         },
         {
           "name": "Items",
@@ -2503,6 +2654,18 @@
           "defaultValue": "30."
         }
       ]
+    },
+    {
+      "name": "Xamarin.Forms.FlyoutItem",
+      "members": []
+    },
+    {
+      "name": "Xamarin.Forms.Tab",
+      "members": []
+    },
+    {
+      "name": "Xamarin.Forms.TabBar",
+      "members": []
     }
   ]
 }

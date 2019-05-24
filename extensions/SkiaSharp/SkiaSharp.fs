@@ -39,7 +39,7 @@ module SkiaSharpExtension =
                                        ?backgroundColor=backgroundColor, ?heightRequest=heightRequest, ?inputTransparent=inputTransparent, 
                                        ?isEnabled=isEnabled, ?isVisible=isVisible, ?minimumHeightRequest=minimumHeightRequest,
                                        ?minimumWidthRequest=minimumWidthRequest, ?opacity=opacity, ?rotation=rotation, 
-                                       ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale, ?style=style, 
+                                       ?rotationX=rotationX, ?rotationY=rotationY, ?scale=scale,?style=style, 
                                        ?translationX=translationX, ?translationY=translationY, ?widthRequest=widthRequest, 
                                        ?resources=resources, ?styles=styles, ?styleSheets=styleSheets, ?classId=classId, ?styleId=styleId,
                                        ?automationId=automationId, ?created=created, ?styleClass=styleClass)
