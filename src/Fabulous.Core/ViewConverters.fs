@@ -812,6 +812,14 @@ module Converters =
         | _, ValueNone -> target.ClearValue(Xamarin.Forms.SearchHandler.SelectedItemProperty)
         | _, ValueSome newVal -> target.SetValue(Xamarin.Forms.SearchHandler.SelectedItemProperty, newVal)
 
+    /// Update the IsCheckedProperty of a BaseShellItem, given previous and current IsChecked
+    let internal updateIsCecked prevValue currValue (target: Xamarin.Forms.BaseShellItem) =
+        match prevValue, currValue with
+        | ValueNone, ValueNone -> ()
+        | ValueSome prevVal, ValueSome newVal when prevVal = newVal -> ()
+        | _, ValueNone -> target.SetValue(Xamarin.Forms.BaseShellItem.IsCheckedProperty, null)
+        | _, ValueSome newVal -> target.SetValue(Xamarin.Forms.BaseShellItem.IsCheckedProperty, newVal)
+
     /// Update the selectedItems of a SeletableItemsView, given previous and current view elements
     let internal updateSelectedItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.SelectableItemsView) =
         let create (desc: ViewElement) = desc.Create()

@@ -2365,14 +2365,14 @@
         {
           "name": "Unfocused",
           "defaultValue": "null",
-          "inputType": "Xamarin.Forms.FocusEventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.FocusEventArgs>(fun _sender args -> f args))"
+          "inputType": "System.EventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<System.EventArgs>(fun _sender args -> f args))"
         },
         {
           "name": "Focused",
           "defaultValue": "null",
-          "inputType": "Xamarin.Forms.FocusEventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.FocusEventArgs>(fun _sender args -> f args))"
+          "inputType": "System.EventArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<System.EventArgs>(fun _sender args -> f args))"
         },
         {
           "name": "FocusChangeRequested",
@@ -2386,6 +2386,52 @@
           "inputType": "obj",
           "modelType": "obj",
           "updateCode": "updateSelectedItem"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.BaseShellItem",
+      "members": [
+        {
+          "name": "FlyoutIcon",
+          "inputType": "obj",
+          "modelType": "obj",
+          "convToValue": "makeImageSource",
+          "defaultValue": "null"
+        },
+        {
+          "name": "Icon",
+          "inputType": "obj",
+          "modelType": "obj",
+          "convToValue": "makeImageSource",
+          "defaultValue": "null"
+        },
+        {
+          "name": "IsEnabled",
+          "defaultValue": "true"
+        },
+        {
+          "name": "IsTabStop",
+          "defaultValue": "true"
+        },
+        {
+          "name": "Route",
+          "defaultValue": "null"
+        },
+        {
+          "name": "TabIndex",
+          "defaultValue": "0"
+        },
+        {
+          "name": "Title",
+          "defaultValue": "null"
+        },
+        {
+          "name": "IsChecked",
+          "defaultValue": "null",
+          "inputType": "bool",
+          "modelType": "bool",
+          "updateCode": "updateIsCecked"
         }
       ]
     },
