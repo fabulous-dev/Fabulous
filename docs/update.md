@@ -137,7 +137,7 @@ type Msg =
     | TimerToggled of bool
 
 type CmdMsg =
-    | TickTimer
+    | TimerTick
 
 let init () =
     { TimerOn = false; Count = 0; Step = 1 }, [] // An empty list means no action
