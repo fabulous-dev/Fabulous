@@ -1,3 +1,9 @@
+#### 0.35.0
+
+* [DynamicViews] Added support for Xamarin.Forms 4.0 (https://github.com/fsprojects/Fabulous/pull/416)
+* [Fabulous.Core] Added helpers to support the CmdMsg pattern (https://github.com/fsprojects/Fabulous/pull/418)
+* [Templates] Updated to Xamarin.Essentials 1.0.0 (https://github.com/fsprojects/Fabulous/pull/420)
+
 #### 0.34.0
 
 * [DynamicViews] Added support for Xamarin.Forms 3.6. Partial support for CollectionView, CarouselView and Shell (https://github.com/fsprojects/Fabulous/pull/350 and https://github.com/fsprojects/Fabulous/pull/406)
