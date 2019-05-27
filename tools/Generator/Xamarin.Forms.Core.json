@@ -39,7 +39,8 @@
     },
     {
       "name": "Xamarin.Forms.NavigableElement",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "Style",
           "defaultValue": "null"
@@ -1630,27 +1631,6 @@
           "updateCode": "(fun _ _ target -> Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea((target : Xamarin.Forms.Page).On<Xamarin.Forms.PlatformConfiguration.iOS>(), true) |> ignore)"
         },
         {
-          "name": "Appearing",
-          "uniqueName": "Page_Appearing",
-          "defaultValue": "null",
-          "inputType": "unit -> unit",
-          "convToModel": "(fun f -> System.EventHandler(fun _sender _args -> f ()))"
-        },
-        {
-          "name": "Disappearing",
-          "uniqueName": "Page_Disappearing",
-          "defaultValue": "null",
-          "inputType": "unit -> unit",
-          "convToModel": "(fun f -> System.EventHandler(fun _sender _args -> f ()))"
-        },
-        {
-          "name": "LayoutChanged",
-          "uniqueName": "Page_LayoutChanged",
-          "defaultValue": "null",
-          "inputType": "unit -> unit",
-          "convToModel": "(fun f -> System.EventHandler(fun _sender _args -> f ()))"
-        },
-        {
           "name": "BackgroundImageSource",
           "inputType": "obj",
           "modelType": "obj",
@@ -2313,7 +2293,28 @@
     },
     {
       "name": "Xamarin.Forms.SearchHandler",
-      "events": [],
+      "events": [
+        {
+          "name": "Unfocused",
+          "uniqueName": "SearchHandlerUnfocused",
+          "defaultValue": "null",
+          "inputType": "unit -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun _sender _args -> f()))"
+        },
+        {
+          "name": "Focused",
+          "uniqueName": "SearchHandlerFocused",
+          "defaultValue": "null",
+          "inputType": "unit -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun _sender _args -> f()))"
+        },
+        {
+          "name": "FocusChangeRequested",
+          "defaultValue": "null",
+          "inputType": "Xamarin.Forms.VisualElement.FocusRequestArgs -> unit",
+          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.VisualElement.FocusRequestArgs>(fun _sender args -> f args))"
+        }
+      ],
       "properties": [
         {
           "name": "ClearIcon",
@@ -2480,26 +2481,6 @@
           "defaultValue": "Xamarin.Forms.Color.Default"
         },
         {
-          "name": "Unfocused",
-          "uniqueName": "SearchHandlerUnfocused",
-          "defaultValue": "null",
-          "inputType": "unit -> unit",
-          "convToModel": "(fun f -> System.EventHandler(fun _sender _args -> f()))"
-        },
-        {
-          "name": "Focused",
-          "uniqueName": "SearchHandlerFocused",
-          "defaultValue": "null",
-          "inputType": "unit -> unit",
-          "convToModel": "(fun f -> System.EventHandler(fun _sender _args -> f()))"
-        },
-        {
-          "name": "FocusChangeRequested",
-          "defaultValue": "null",
-          "inputType": "Xamarin.Forms.VisualElement.FocusRequestArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.VisualElement.FocusRequestArgs>(fun _sender args -> f args))"
-        },
-        {
           "name": "SelectedItem",
           "defaultValue": "null",
           "inputType": "obj",
@@ -2510,7 +2491,8 @@
     },
     {
       "name": "Xamarin.Forms.BaseShellItem",
-      "members": [
+      "events": [],
+      "properties": [
         {
           "name": "FlyoutIcon",
           "inputType": "obj",
@@ -2611,20 +2593,6 @@
         {
           "name": "FlyoutIsPresented",
           "defaultValue": "false"
-        },
-        {
-          "name": "Navigated",
-          "uniqueName": "OnNavigated",
-          "defaultValue": "null",
-          "inputType": "Xamarin.Forms.ShellNavigatedEventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ShellNavigatedEventArgs>(fun _sender args -> f args))"
-        },
-        {
-          "name": "Navigating",
-          "uniqueName": "OnNavigating",
-          "defaultValue": "null",
-          "inputType": "Xamarin.Forms.ShellNavigatingEventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.ShellNavigatingEventArgs>(fun _sender args -> f args))"
         },
         {
           "name": "GoToAsync",
@@ -2799,15 +2767,18 @@
     },
     {
       "name": "Xamarin.Forms.FlyoutItem",
-      "members": []
+      "events": [],
+      "properties": []
     },
     {
       "name": "Xamarin.Forms.Tab",
-      "members": []
+      "events": [],
+      "properties": []
     },
     {
       "name": "Xamarin.Forms.TabBar",
-      "members": []
+      "events": [],
+      "properties": []
     }
   ]
 }
