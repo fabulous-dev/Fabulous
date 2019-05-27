@@ -111,9 +111,7 @@ module SimplerHelpers =
                         | ValueSome children -> children
 
             childElements
-            |> Seq.map (fun e -> e |> tryFindViewElement automationId)
-            |> Seq.filter (fun e -> e.IsSome)
-            |> Seq.map (fun e -> e.Value)
+            |> Seq.choose (tryFindViewElement automationId)
             |> Seq.tryHead
      
     /// Looks for a view element with the given Automation ID in the view hierarchy
