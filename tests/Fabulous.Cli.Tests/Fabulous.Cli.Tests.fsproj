@@ -14,6 +14,7 @@
         <Compile Include="..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\tests\PortaCodeTests.fs" />
         <Compile Include="..\..\src\Fabulous.Cli\fscd.fs" Link="fscd.fs" />
         <Compile Include="Tests.fs" />
+        <Compile Include="Program.fs" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Dotnet.ProjInfo" />

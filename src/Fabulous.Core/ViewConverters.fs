@@ -761,40 +761,32 @@ module Converters =
         | _, ValueSome newVal -> Xamarin.Forms.MenuItem.SetAccelerator(target, makeAccelerator newVal)
 
     /// Update the items of a Shell, given previous and current view elements
-    let internal updateShellItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.Shell) =
+    let internal updateShellItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.Shell) =
         let create (desc: ViewElement) =
             desc.Create() :?> Xamarin.Forms.ShellItem
 
-        let prevArray = ValueOption.map seqToArray prevCollOpt
-        let currArray = ValueOption.map seqToArray collOpt
-        updateCollectionGeneric prevArray currArray target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
+        updateCollectionGeneric prevCollOpt collOpt target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
         
     /// Update the menu items of a ShellContent, given previous and current view elements
-    let internal updateMenuItemsShellContent (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.ShellContent) =
+    let internal updateMenuItemsShellContent (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.ShellContent) =
         let create (desc: ViewElement) =
             desc.Create() :?> Xamarin.Forms.MenuItem
 
-        let prevArray = ValueOption.map seqToArray prevCollOpt
-        let currArray = ValueOption.map seqToArray collOpt
-        updateCollectionGeneric prevArray currArray target.MenuItems create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
+        updateCollectionGeneric prevCollOpt collOpt target.MenuItems create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
 
     /// Update the items of a ShellItem, given previous and current view elements
-    let internal updateShellItemItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.ShellItem) =
+    let internal updateShellItemItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.ShellItem) =
         let create (desc: ViewElement) =
             desc.Create() :?> Xamarin.Forms.ShellSection
 
-        let prevArray = ValueOption.map seqToArray prevCollOpt
-        let currArray = ValueOption.map seqToArray collOpt
-        updateCollectionGeneric prevArray currArray target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
+        updateCollectionGeneric prevCollOpt collOpt target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
 
     /// Update the items of a ShellSection, given previous and current view elements
-    let internal updateShellSectionItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.ShellSection) =
+    let internal updateShellSectionItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.ShellSection) =
         let create (desc: ViewElement) =
             desc.Create() :?> Xamarin.Forms.ShellContent
 
-        let prevArray = ValueOption.map seqToArray prevCollOpt
-        let currArray = ValueOption.map seqToArray collOpt
-        updateCollectionGeneric prevArray currArray target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
+        updateCollectionGeneric prevCollOpt collOpt target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
 
     /// Update the IsFocusedProperty of a SearchHandler, given previous and current IsFocused
     let internal updateIsFocused prevValue currValue (target: Xamarin.Forms.SearchHandler) =
