@@ -2451,6 +2451,10 @@
           "updateCode": "updateShellItems"
         },
         {
+          "name": "CurrentItem",
+          "defaultValue": "null"
+        },
+        {
           "name": "FlyoutBackgroundColor",
           "defaultValue": "Xamarin.Forms.Color.Default"
         },
