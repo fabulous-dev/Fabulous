@@ -169,7 +169,7 @@ Target.create "RunTests" (fun _ ->
 Target.create "RunSamplesTests" (fun _ ->
     let testProjects = !! "samples/**/*Tests.fsproj"
     for testProject in testProjects do
-        DotNet.test id testProject
+        DotNet.test (fun opt -> { opt with Logger = Some "trx"; ResultsDirectory = Some (buildDir + "/testresults") }) testProject
 )
 
 Target.create "TestTemplatesNuGet" (fun _ ->
