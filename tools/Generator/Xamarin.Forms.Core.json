@@ -1393,6 +1393,10 @@
       "name": "Xamarin.Forms.Span",
       "members": [
         {
+          "name": "Text",
+          "defaultValue": "null"
+        },
+        {
           "name": "FontFamily",
           "defaultValue": "null"
         },
@@ -1415,8 +1419,8 @@
           "defaultValue": "Xamarin.Forms.Color.Default"
         },
         {
-          "name": "Text",
-          "defaultValue": "null"
+          "name": "TextColor",
+          "defaultValue": "Xamarin.Forms.Color.Default"
         },
         {
           "name": "PropertyChanged",
@@ -1440,8 +1444,9 @@
         {
           "name": "Spans",
           "defaultValue": "null",
-          "inputType": "ViewElement[]",
-          "modelType": "ViewElement[]"
+          "inputType": "ViewElement list",
+          "modelType": "ViewElement array",
+          "convToModel": "Array.ofList"
         }
       ]
     },
