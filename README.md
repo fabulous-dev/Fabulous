@@ -1,7 +1,7 @@
 F# Functional App Development, using Elmish and Xamarin.Forms 
 =======
 
-[![NuGet version](https://badge.fury.io/nu/Fabulous.Core.svg)](https://badge.fury.io/nu/Fabulous.Core) [![Build status (Windows)](https://ci.appveyor.com/api/projects/status/4qajefd4c6sbjfrt/branch/master?svg=true)](https://ci.appveyor.com/project/dsyme/elmish-xamarinforms/branch/master)  [![Build status (OSX)](https://travis-ci.org/fsprojects/Fabulous.svg?branch=master)](https://travis-ci.org/fsprojects/Fabulous) [![Build Status](https://dev.azure.com/timothelariviere/Fabulous/_apis/build/status/Full%20Build?branchName=master)](https://dev.azure.com/timothelariviere/Fabulous/_build/latest?definitionId=7&branchName=master) [![Join the chat at https://gitter.im/fsprojects/Fabulous](https://badges.gitter.im/fsprojects/Fabulous.svg)](https://gitter.im/fsprojects/Fabulous?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![NuGet version](https://badge.fury.io/nu/Fabulous.Core.svg)](https://badge.fury.io/nu/Fabulous.Core) [![Build Status](https://dev.azure.com/timothelariviere/Fabulous/_apis/build/status/Full%20Build?branchName=master)](https://dev.azure.com/timothelariviere/Fabulous/_build/latest?definitionId=7&branchName=master) [![Join the chat at https://gitter.im/fsprojects/Fabulous](https://badges.gitter.im/fsprojects/Fabulous.svg)](https://gitter.im/fsprojects/Fabulous?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Never write a ViewModel class again! Conquer the world with clean dynamic UIs!
 
