@@ -13,6 +13,7 @@ jobs:
     inputs:
       testResultsFormat: 'VSTest'
       testResultsFiles: '**/testresults/*.trx'
+      testRunTitle: '$(Agent.JobName)'
 
 - job: macOS
   pool:
@@ -23,3 +24,4 @@ jobs:
     inputs:
       testResultsFormat: 'VSTest'
       testResultsFiles: '**/testresults/*.trx'
+      testRunTitle: '$(Agent.JobName)'
