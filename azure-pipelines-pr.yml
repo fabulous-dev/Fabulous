@@ -9,9 +9,19 @@ jobs:
     vmImage: 'windows-2019'
   steps:
   - script: .\build.cmd
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'VSTest'
+      testResultsFiles: '**/testresults/*.trx'
+      testRunTitle: '$(Agent.JobName)'
 
 - job: macOS
   pool:
     vmImage: 'macOS-10.14'
   steps:
   - script: ./build.sh Test
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'VSTest'
+      testResultsFiles: '**/testresults/*.trx'
+      testRunTitle: '$(Agent.JobName)'

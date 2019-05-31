@@ -20,6 +20,11 @@ jobs:
     inputs:
       pathtoPublish: $(Build.ArtifactStagingDirectory)
       artifactName: Linux
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'VSTest'
+      testResultsFiles: '**/testresults/*.trx'
+      testRunTitle: '$(Agent.JobName)'
 
 - job: macOS
   pool:
@@ -35,6 +40,11 @@ jobs:
     inputs:
       pathtoPublish: $(Build.ArtifactStagingDirectory)
       artifactName: macOS
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'VSTest'
+      testResultsFiles: '**/testresults/*.trx'
+      testRunTitle: '$(Agent.JobName)'
 
 - job: Windows
   pool:
@@ -52,3 +62,8 @@ jobs:
     inputs:
       pathtoPublish: $(Build.ArtifactStagingDirectory)
       artifactName: Windows
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'VSTest'
+      testResultsFiles: '**/testresults/*.trx'
+      testRunTitle: '$(Agent.JobName)'
