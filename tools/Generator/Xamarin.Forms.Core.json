@@ -2443,9 +2443,11 @@
       "members": [
         {
           "name": "Items",
+          "uniqueName": "ShellItems",
           "defaultValue": "null",
           "inputType": "ViewElement list",
           "modelType": "ViewElement array",
+          "convToModel": "Array.ofList",
           "updateCode": "updateShellItems"
         },
         {

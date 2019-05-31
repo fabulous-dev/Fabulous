@@ -763,7 +763,13 @@ module Converters =
     /// Update the items of a Shell, given previous and current view elements
     let internal updateShellItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.Shell) =
         let create (desc: ViewElement) =
-            desc.Create() :?> Xamarin.Forms.ShellItem
+            match desc.Create() with
+            | :? ShellContent as shellContent -> ShellItem.op_Implicit shellContent
+            | :? TemplatedPage as templatedPage -> ShellItem.op_Implicit templatedPage
+            | :? ShellSection as shellSection -> ShellItem.op_Implicit shellSection
+            | :? MenuItem as menuItem -> ShellItem.op_Implicit menuItem
+            | :? ShellItem as shellItem -> shellItem
+            | child -> failwithf "%s is not compatible with the type ShellItem" (child.GetType().Name)
 
         updateCollectionGeneric prevCollOpt collOpt target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
         
@@ -777,7 +783,11 @@ module Converters =
     /// Update the items of a ShellItem, given previous and current view elements
     let internal updateShellItemItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.ShellItem) =
         let create (desc: ViewElement) =
-            desc.Create() :?> Xamarin.Forms.ShellSection
+            match desc.Create() with
+            | :? ShellContent as shellContent -> ShellSection.op_Implicit shellContent
+            | :? TemplatedPage as templatedPage -> ShellSection.op_Implicit templatedPage
+            | :? ShellSection as shellSection -> shellSection
+            | child -> failwithf "%s is not compatible with the type ShellSection" (child.GetType().Name)
 
         updateCollectionGeneric prevCollOpt collOpt target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
 
