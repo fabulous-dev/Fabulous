@@ -622,9 +622,9 @@ module App =
                            items = [ 
                                for i in 0 .. 10 do 
                                    yield View.Label "Ionide"
-                                   yield View.Label(formattedText=View.FormattedString([|View.Span(text="Visual ", backgroundColor=Color.Green); View.Span(text="Studio ", fontSize = 10)|]))
+                                   yield View.Label(formattedText=View.FormattedString([View.Span(text="Visual ", backgroundColor=Color.Green); View.Span(text="Studio ", fontSize = 10)]))
                                    yield View.Label "Emacs"
-                                   yield View.Label(formattedText=View.FormattedString([|View.Span(text="Visual ", fontAttributes=FontAttributes.Bold); View.Span(text="Studio ", fontAttributes=FontAttributes.Italic); View.Span(text="Code", foregroundColor = Color.Blue)|]))
+                                   yield View.Label(formattedText=View.FormattedString([View.Span(text="Visual ", fontAttributes=FontAttributes.Bold); View.Span(text="Studio ", fontAttributes=FontAttributes.Italic); View.Span(text="Code", foregroundColor = Color.Blue)]))
                                    yield View.Label "Rider"], 
                            horizontalOptions=LayoutOptions.CenterAndExpand, 
                            itemSelected=(fun idx -> dispatch (ListViewSelectedItemChanged idx)))
