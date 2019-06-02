@@ -78,7 +78,6 @@
     <Folder Include="Resources\drawable-xhdpi\" />
     <Folder Include="Resources\drawable-xxhdpi\" />
     <Folder Include="Resources\drawable-xxxhdpi\" />
-    <None Include="PackageReferences.config" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -89,7 +88,6 @@
     <Reference Include="System.Numerics.Vectors" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
-
     <ProjectReference Include="..\NewApp\NewApp.fsproj">
       <Project>{99E19497-29A6-4B77-B773-BEC55F9B55DC}</Project>
       <Name>NewApp</Name>
@@ -105,7 +103,7 @@
     <PackageReference Include="Xamarin.Android.Support.Core.Utils" Version="XamarinAndroidSdkVersion" />
     <PackageReference Include="Xamarin.Android.Support.CustomTabs" Version="XamarinAndroidSdkVersion" />
     <PackageReference Include="Xamarin.Essentials" Version="XamarinEssentialsSdk" />
-    <PackageReference Include="Xamarin.Android.FSharp.ResourceProvider" Version="XamarinAndroidFSharpResourceProviderPkg">
+    <PackageReference Include="Xamarin.Android.FSharp.ResourceProvider" Version="XamarinAndroidFSharpResourceProviderPkg"/>
     <PackageReference Include="FSharp.Core" Version="FSharpCorePkgVersion" />
     <PackageReference Include="Fabulous.Core" Version="FabulousPkgsVersion" />
     <PackageReference Include="Fabulous.LiveUpdate" Version="FabulousPkgsVersion" />
