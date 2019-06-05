@@ -11,6 +11,8 @@
         <PackageReference Update="OxyPlot.Xamarin.Forms" Version="1.0.0" />
         <PackageReference Update="SkiaSharp" Version="1.60.3" />
         <PackageReference Update="SkiaSharp.Views.Forms" Version="1.60.3" />
+        <PackageReference Update="Plugin.MediaManager" Version="0.6.2" />
+        <PackageReference Update="Plugin.MediaManager.Forms" Version="0.6.2" />
         <PackageReference Update="Mono.Cecil" Version="0.10.0" />
         <PackageReference Update="Microsoft.NET.Test.Sdk" Version="15.7.0" />
         <PackageReference Update="Microsoft.SourceLink.Github" Version="1.0.0-beta-63127-02" PrivateAssets="All" />

@@ -15,8 +15,8 @@
     <ItemGroup>
         <PackageReference Include="FSharp.Core" />
         <PackageReference Include="Xamarin.Forms" />
-        <PackageReference Include="Plugin.MediaManager" Version="0.6.2" />
-        <PackageReference Include="Plugin.MediaManager.Forms" Version="0.6.2" />
+        <PackageReference Include="Plugin.MediaManager" />
+        <PackageReference Include="Plugin.MediaManager.Forms" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\src\Fabulous.Core\Fabulous.Core.fsproj" />
