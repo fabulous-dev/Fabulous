@@ -18,7 +18,7 @@
         <PackageReference Include="SkiaSharp.Views.Forms" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\..\src\Fabulous.Core\Fabulous.Core.fsproj" />
+        <ProjectReference Include="..\..\src\Fabulous.DynamicViews\Fabulous.DynamicViews.fsproj" />
     </ItemGroup>
     <Import Project="..\..\Packages.targets" />
 </Project>

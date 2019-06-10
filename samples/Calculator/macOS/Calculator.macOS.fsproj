@@ -102,10 +102,6 @@
       <Project>{B459AFAD-BB5B-43C3-BD86-609E8DB3E3FD}</Project>
       <Name>Fabulous.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\src\Fabulous.CustomControls\Fabulous.CustomControls.fsproj">
-      <Project>{7FF328BB-9318-4C11-8A9A-37DD98EAB35B}</Project>
-      <Name>Fabulous.CustomControls</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Calculator\Calculator.fsproj">
       <Project>{58C3A94E-459E-4CF5-AE67-B7C278578045}</Project>
       <Name>Calculator</Name>

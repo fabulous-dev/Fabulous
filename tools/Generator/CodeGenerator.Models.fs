@@ -36,6 +36,7 @@ module CodeGeneratorModels =
         { Name : string
           UniqueName : string
           ModelType : string
+          OriginalModelType : string
           DefaultValue : string
           ConvToValue : string
           UpdateCode : string

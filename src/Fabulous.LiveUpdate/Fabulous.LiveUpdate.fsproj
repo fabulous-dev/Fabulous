@@ -19,7 +19,7 @@
         <PackageReference Include="Newtonsoft.Json" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\Fabulous.Core\Fabulous.Core.fsproj" />
+        <ProjectReference Include="..\Fabulous.DynamicViews.Core\Fabulous.DynamicViews.Core.fsproj" />
     </ItemGroup>
     <Import Project="..\..\Packages.targets" />
 </Project>

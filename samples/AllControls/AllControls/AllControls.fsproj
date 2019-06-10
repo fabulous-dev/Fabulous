@@ -10,7 +10,6 @@
       <PackageReference Include="FSharp.Core" />
       <PackageReference Include="FSharp.Data" />
       <PackageReference Include="Xamarin.Forms" />
-      <ProjectReference Include="..\..\..\src\Fabulous.CustomControls\Fabulous.CustomControls.fsproj" />
       <ProjectReference Include="..\..\..\src\Fabulous.Core\Fabulous.Core.fsproj" />
     </ItemGroup>
     <Import Project="..\..\..\Packages.targets" />

@@ -34,7 +34,6 @@
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\..\src\Fabulous.Core\Fabulous.Core.fsproj" />
-      <ProjectReference Include="..\..\src\Fabulous.CustomControls\Fabulous.CustomControls.fsproj" />
       <ProjectReference Include="..\..\src\Fabulous.LiveUpdate\Fabulous.LiveUpdate.fsproj" />
     </ItemGroup>
     <Import Project="..\..\Packages.targets" />

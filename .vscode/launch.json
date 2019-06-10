@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Generator",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/tools/Generator/bin/Debug/netcoreapp2.1/Generator.dll",
+            "args": [ "tools/Generator/Xamarin.Forms.Core.json", "src/Fabulous.DynamicViews/Xamarin.Forms.Core.fs" ],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+        }
+
+    ]
+}

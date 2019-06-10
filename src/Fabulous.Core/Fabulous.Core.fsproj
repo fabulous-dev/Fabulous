@@ -8,23 +8,11 @@
         <Description>F# Functional App Dev Framework</Description>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="ViewElement.fs" />
-        <Compile Include="ViewConverters.fs" />
-        <Compile Include="ViewHelpers.fs" />
-        <Compile Include="Xamarin.Forms.Core.fs" />
         <Compile Include="ElmishCmd.fs" />
         <Compile Include="ElmishProgram.fs" />
-        <Compile Include="StaticViewBinding.fs" />
-        <Compile Include="StaticViewModel.fs" />
-        <Compile Include="StaticViewNav.fs" />
-        <Compile Include="StaticViewProgram.fs" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="FSharp.Core" />
-        <PackageReference Include="Xamarin.Forms" />
-    </ItemGroup>
-    <ItemGroup>
-      <ProjectReference Include="..\Fabulous.CustomControls\Fabulous.CustomControls.fsproj" />
     </ItemGroup>
     <Import Project="..\..\Packages.targets" />
 </Project>

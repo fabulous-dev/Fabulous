@@ -17,7 +17,7 @@
         <PackageReference Include="Xamarin.Forms.Maps" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\..\src\Fabulous.Core\Fabulous.Core.fsproj" />
+      <ProjectReference Include="..\..\src\Fabulous.DynamicViews\Fabulous.DynamicViews.fsproj" />
     </ItemGroup>
     <Import Project="..\..\Packages.targets" />
 </Project>

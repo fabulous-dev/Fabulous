@@ -167,7 +167,10 @@ module Resolvers =
 
     let getModelType (this : MemberBinding, bindings : Bindings, memberResolutions, hierarchy : seq<TypeReference * TypeDefinition>) =
         match this.ModelType with
-        | NotNullOrWhitespace s -> s
+        | NotNullOrWhitespace s ->
+            match (bindings.Types |> Seq.tryFind (fun x -> x.Name = s)) with
+                | None -> s
+                | Some _ -> "ViewElement"
         | _ ->
             match tryGetBoundType memberResolutions this with
             | None -> failwithf "no type for %s" this.Name

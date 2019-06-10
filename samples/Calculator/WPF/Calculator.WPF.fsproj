@@ -28,7 +28,6 @@
     <ItemGroup>
         <ProjectReference Include="..\Calculator\Calculator.fsproj" />
         <ProjectReference Include="..\..\..\src\Fabulous.Core\Fabulous.Core.fsproj" />
-        <ProjectReference Include="..\..\..\src\Fabulous.CustomControls\Fabulous.CustomControls.fsproj" />
     </ItemGroup>
     <Import Project="..\..\..\Packages.targets" />
 </Project>

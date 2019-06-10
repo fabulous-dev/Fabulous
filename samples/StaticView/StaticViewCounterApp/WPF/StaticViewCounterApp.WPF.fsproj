@@ -28,7 +28,6 @@
     <ItemGroup>
         <ProjectReference Include="..\StaticViewCounterApp\StaticViewCounterApp.fsproj" />
         <ProjectReference Include="..\..\..\..\src\Fabulous.Core\Fabulous.Core.fsproj" />
-        <ProjectReference Include="..\..\..\..\src\Fabulous.CustomControls\Fabulous.CustomControls.fsproj" />
     </ItemGroup>
     <Import Project="..\..\..\..\Packages.targets" />
 </Project>

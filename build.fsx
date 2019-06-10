@@ -135,25 +135,38 @@ Target.create "UpdateVersion" (fun _ ->
         |> File.writeString false template
 )
 
-Target.create "BuildControls" (fun _ ->
-    controls |> buildProject
-)
+let dotnetBuildv2 outputFolder (pattern: IGlobbingPattern) =
+    for project in pattern do
+        let projectName = System.IO.Path.GetFileNameWithoutExtension(project)
+        project |> DotNet.build (fun opt ->
+            { opt with
+                Configuration = DotNet.BuildConfiguration.Release
+                OutputPath = Some (sprintf "%s/%s/%s" buildDir outputFolder projectName) })
 
 Target.create "BuildTools" (fun _ ->
-    tools |> buildProject
+    dotnetBuildv2 "tools" !!"tools/**/*.fsproj"
+)
+
+Target.create "BuildFabulousStart" (fun _ ->
+    !!"src/**/*.fsproj"
+    -- "src/Fabulous.DynamicViews/*.fsproj"
+    |> dotnetBuildv2 "src"
 )
 
 Target.create "RunGenerator" (fun _ ->
-    DotNet.exec id (tools.OutputPath + "/Generator/Generator.dll") "tools/Generator/Xamarin.Forms.Core.json src/Fabulous.Core/Xamarin.Forms.Core.fs"
+    DotNet.exec id (tools.OutputPath + "/Generator/Generator.dll") "tools/Generator/Xamarin.Forms.Core.json src/Fabulous.DynamicViews/Xamarin.Forms.Core.fs"
     |> (fun x ->
-        match x.OK with
-        | true -> ()
-        | false -> failwith "The generator stopped due to an exception"
+        if not x.OK then
+            failwith "The generator stopped due to an exception"
     )
 )
 
-Target.create "BuildFabulous" (fun _ -> 
-    projects |> List.iter buildProject
+Target.create "BuildFabulousEnd" (fun _ -> 
+    !!"src/Fabulous.DynamicViews/*.fsproj"
+    |> dotnetBuildv2 "src"
+
+    !!"extensions/**/*.fsproj"
+    |> dotnetBuildv2 "extensions"
 )
 
 Target.create "BuildSamples" (fun _ ->
@@ -215,21 +228,31 @@ Target.create "Test" ignore
 
 open Fake.Core.TargetOperators
 
+// "Clean"
+//   ==> "Restore"
+//   ==> "FormatBindings"
+//   ==> "UpdateVersion"
+//   ==> "BuildTools"
+//   ==> "BuildControls"
+//   ==> "RunGenerator"
+//   ==> "BuildFabulous"
+//   ==> "RunTests"
+//   ==> "Build"
+
+// "Build"
+//   ==> "TestTemplatesNuGet"
+//   ==> "BuildSamples"
+//   ==> "RunSamplesTests"
+//   ==> "Test"
+
+
 "Clean"
   ==> "Restore"
   ==> "FormatBindings"
   ==> "UpdateVersion"
   ==> "BuildTools"
-  ==> "BuildControls"
+  ==> "BuildFabulousStart"
   ==> "RunGenerator"
-  ==> "BuildFabulous"
-  ==> "RunTests"
-  ==> "Build"
-
-"Build"
-  ==> "TestTemplatesNuGet"
-  ==> "BuildSamples"
-  ==> "RunSamplesTests"
-  ==> "Test"
+  ==> "BuildFabulousEnd"
 
 Target.runOrDefault "Build"

@@ -23,6 +23,8 @@ module CodeGenerator =
             match m with
             | "ElementCreated" ->
                 w.printfn "    let ElementCreatedAttribKey : AttributeKey<(obj -> unit)> = AttributeKey<(obj -> unit)>(\"ElementCreated\")"
+            | "SearchHandlerItemSelected" ->
+                w.printfn "    let SearchHandlerItemSelectedAttribKey : AttributeKey<(obj -> unit)> = AttributeKey<(obj -> unit)>(\"SearchHandlerItemSelected\")"
             | _ ->
                 w.printfn "    let %sAttribKey : AttributeKey<_> = AttributeKey<_>(\"%s\")" m m
         w.printfn ""
@@ -164,7 +166,7 @@ module CodeGenerator =
                     match m.BoundType with 
 
                     // Check if the type of the member is in the model, if so issue recursive calls to "Create" and "UpdateIncremental"
-                    | Some boundType when (tryFindType data.KnownTypes boundType.FullName).IsSome && not hasApply ->
+                    | Some boundType when ((tryFindType data.KnownTypes boundType.FullName).IsSome || m.ModelType = "ViewElement") && not hasApply ->
                         w.printfn "        match prev%sOpt, curr%sOpt with" m.UniqueName m.UniqueName
                         w.printfn "        // For structured objects, dependsOn on reference equality"
                         w.printfn "        | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()"
@@ -185,6 +187,15 @@ module CodeGenerator =
                         w.printfn "        | ValueSome prevValue, ValueNone -> target.%s.RemoveHandler(prevValue)" m.Name
                         w.printfn "        | ValueNone, ValueNone -> ()"
 
+                    // Default for function-typed things
+                    | Some boundType when boundType.Name.StartsWith("FSharpFunc") && not hasApply ->
+                        let update = getValueOrDefault "" m.ConvToValue
+                        w.printfn "        match prev%sOpt, curr%sOpt with" m.UniqueName m.UniqueName
+                        w.printfn "        | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()"
+                        w.printfn "        | _, ValueSome currValue -> target.%s <- %s currValue" m.Name update
+                        w.printfn "        | ValueSome _, ValueNone -> target.%s <- %s"  m.Name m.DefaultValue
+                        w.printfn "        | ValueNone, ValueNone -> ()"
+
                     // Explicit update code
                     | _ when not (System.String.IsNullOrWhiteSpace(m.UpdateCode))  -> 
                         w.printfn "        %s prev%sOpt curr%sOpt target" m.UpdateCode m.UniqueName m.UniqueName
@@ -199,7 +210,11 @@ module CodeGenerator =
                                     let apApply = getValueOrDefault "" (ap.ConvToValue + " ")
                                     w.printfn "                match prevChildValueOpt, childValueOpt with"
                                     w.printfn "                | ValueSome prevChildValue, ValueSome currValue when prevChildValue = currValue -> ()"
-                                    w.printfn "                | _, ValueSome currValue -> %s.Set%s(targetChild, %scurrValue)" data.FullName ap.Name apApply
+
+                                    match ap.ModelType with
+                                    | "ViewElement" -> w.printfn "                | _, ValueSome currValue -> %s.Set%s(targetChild, (currValue.Create() :?> %s))" data.FullName ap.Name ap.OriginalModelType
+                                    | _ ->             w.printfn "                | _, ValueSome currValue -> %s.Set%s(targetChild, %scurrValue)" data.FullName ap.Name apApply
+                                    
                                     w.printfn "                | ValueSome _, ValueNone -> %s.Set%s(targetChild, %s) // TODO: not always perfect, should set back to original default?" data.FullName ap.Name ap.DefaultValue
                                     w.printfn "                | _ -> ()"
                                 else

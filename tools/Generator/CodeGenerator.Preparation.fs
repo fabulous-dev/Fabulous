@@ -16,6 +16,7 @@ module CodeGeneratorPreparation =
           LowerUniqueName : string
           InputType : string
           ModelType : string
+          OriginalModelType : string
           ConvToModel : string
           DefaultValue : string
           ConvToValue : string
@@ -41,6 +42,7 @@ module CodeGeneratorPreparation =
           LowerUniqueName = m.LowerBoundUniqueName
           InputType = getInputType (m, bindings, memberResolutions, hierarchy)
           ModelType = getModelType (m, bindings, memberResolutions, hierarchy)
+          OriginalModelType = m.ModelType
           ConvToModel = getValueOrDefault "" m.ConvToModel
           DefaultValue = m.DefaultValue
           ConvToValue = m.ConvToValue
@@ -98,6 +100,7 @@ module CodeGeneratorPreparation =
             { Name = m.Name
               UniqueName = m.UniqueName
               ModelType = m.ModelType
+              OriginalModelType = m.OriginalModelType
               DefaultValue = m.DefaultValue
               ConvToValue = m.ConvToValue
               UpdateCode = m.UpdateCode

@@ -53,15 +53,4 @@ module Cmd =
             match msg with
             | None -> ()
             | Some msg -> dispatch msg } |> Async.StartImmediate ]
- 
-    //let ofAsyncMsgs p : Cmd<_> =
-    //    [ fun dispatch -> p |> AsyncSeq.iter dispatch |> Async.StartImmediate ]
- 
-    //type CmdBuilder() = 
-    //    inherit AsyncSeq.AsyncSeqBuilder()
-    //    member x.Run(p: AsyncSeq<_>) = ofAsyncMsgs p
- 
-//[<AutoOpen>]
-//module CommandBuilder = 
-//    let cmd = Cmd.CmdBuilder()
 
