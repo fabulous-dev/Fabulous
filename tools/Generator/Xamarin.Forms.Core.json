@@ -928,6 +928,20 @@
           "defaultValue": "null"
         },
         {
+          "name": "FontFamily",
+          "defaultValue": "null"
+        },
+        {
+          "name": "FontAttributes",
+          "defaultValue": "Xamarin.Forms.FontAttributes.None"
+        },
+        {
+          "name": "FontSize",
+          "defaultValue": "-1.0",
+          "inputType": "obj",
+          "convToModel": "makeFontSize"
+        },
+        {
           "name": "SelectedIndex",
           "defaultValue": "0"
         },
