@@ -131,7 +131,7 @@ type ViewElementCell() =
                 modelOpt <- None
             | None -> ()
 
-type ItemViewElementCell() = 
+type ContentViewElement() = 
     inherit ContentView()
 
     let mutable listElementOpt : IItemListElement option = None
@@ -179,10 +179,10 @@ type CustomListView() =
     inherit ListView(ItemTemplate=DataTemplate(typeof<ViewElementCell>))
 
 type CustomCollectionListView() = 
-    inherit CollectionView(ItemTemplate=DataTemplate(typeof<ItemViewElementCell>))
+    inherit CollectionView(ItemTemplate=DataTemplate(typeof<ContentViewElement>))
 
 type CustomCarouselView() = 
-    inherit CarouselView(ItemTemplate=DataTemplate(typeof<ItemViewElementCell>))
+    inherit CarouselView(ItemTemplate=DataTemplate(typeof<ContentViewElement>))
 
 /// A custom control for the ListViewGrouped view element
 type CustomGroupListView() = 
@@ -199,6 +199,18 @@ type CustomContentPage() as self =
     override __.OnSizeAllocated(width, height) =
         base.OnSizeAllocated(width, height)
         sizeAllocated.Trigger(width, height)
+
+/// A custom SearchHandler which exposes the overridable methods OnQueryChanged, OnQueryConfirmed and OnItemSelected as events
+type CustomSearchHandler() =
+    inherit SearchHandler(ItemTemplate=DataTemplate(typeof<ContentViewElement>))
+
+    member val QueryChanged = ignore with get, set
+    member val QueryConfirmed = ignore with get, set
+    member val ItemSelected: obj -> unit = ignore with get, set
+
+    override this.OnQueryChanged(oldValue, newValue) = this.QueryChanged (oldValue, newValue)
+    override this.OnQueryConfirmed() = this.QueryConfirmed ()
+    override this.OnItemSelected(item) = this.ItemSelected item
 
 [<AutoOpen>]
 module Converters =
@@ -451,6 +463,12 @@ module Converters =
                 target.ItemsSource <- oc
                 oc
         updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetColl ListElementData (fun _ _ _ -> ()) canReuseChild (fun _ curr target -> target.Key <- curr) 
+
+    /// Update the items in a SearchHandler control, given previous and current view elements
+    let updateSearchHandlerItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.SearchHandler) = 
+        let targetColl = List<ItemListElementData>()
+        updateCollectionGeneric (ValueOption.map seqToArray prevCollOpt) (ValueOption.map seqToArray collOpt) targetColl ItemListElementData (fun _ _ _ -> ()) canReuseChild (fun _ curr target -> target.Key <- curr) 
+        target.ItemsSource <- targetColl
 
     /// Update the items in a CollectionView control, given previous and current view elements
     let internal updateCollectionViewItems (prevCollOpt: seq<'T> voption) (collOpt: seq<'T> voption) (target: Xamarin.Forms.CollectionView) = 
@@ -771,7 +789,17 @@ module Converters =
             | :? ShellItem as shellItem -> shellItem
             | child -> failwithf "%s is not compatible with the type ShellItem" (child.GetType().Name)
 
-        updateCollectionGeneric prevCollOpt collOpt target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
+        let update prevViewElement (currViewElement: ViewElement) (target: ShellItem) =
+            let realTarget =
+                match currViewElement.TargetType with
+                | t when t = typeof<ShellContent> -> target.Items.[0].Items.[0] :> Element
+                | t when t = typeof<TemplatedPage> -> target.Items.[0].Items.[0] :> Element
+                | t when t = typeof<ShellSection> -> target.Items.[0] :> Element
+                | t when t = typeof<MenuItem> -> target.GetType().GetProperty("MenuItem").GetValue(target) :?> Element // MenuShellItem is marked as internal
+                | _ -> target :> Element
+            updateChild prevViewElement currViewElement realTarget
+
+        updateCollectionGeneric prevCollOpt collOpt target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) update
         
     /// Update the menu items of a ShellContent, given previous and current view elements
     let internal updateMenuItemsShellContent (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.ShellContent) =
@@ -789,7 +817,15 @@ module Converters =
             | :? ShellSection as shellSection -> shellSection
             | child -> failwithf "%s is not compatible with the type ShellSection" (child.GetType().Name)
 
-        updateCollectionGeneric prevCollOpt collOpt target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) updateChild
+        let update prevViewElement (currViewElement: ViewElement) (target: ShellSection) =
+            let realTarget =
+                match currViewElement.TargetType with
+                | t when t = typeof<ShellContent> -> target.Items.[0] :> BaseShellItem
+                | t when t = typeof<TemplatedPage> -> target.Items.[0] :> BaseShellItem
+                | _ -> target :> BaseShellItem
+            updateChild prevViewElement currViewElement realTarget
+
+        updateCollectionGeneric prevCollOpt collOpt target.Items create (fun _ _ _ -> ()) (fun _ _ -> true) update
 
     /// Update the items of a ShellSection, given previous and current view elements
     let internal updateShellSectionItems (prevCollOpt: ViewElement array voption) (collOpt: ViewElement array voption) (target: Xamarin.Forms.ShellSection) =
@@ -815,7 +851,7 @@ module Converters =
         | _, ValueSome newVal -> target.SetValue(Xamarin.Forms.SearchHandler.SelectedItemProperty, newVal)
 
     /// Update the IsCheckedProperty of a BaseShellItem, given previous and current IsChecked
-    let internal updateIsCecked prevValue currValue (target: Xamarin.Forms.BaseShellItem) =
+    let internal updateIsChecked prevValue currValue (target: Xamarin.Forms.BaseShellItem) =
         match prevValue, currValue with
         | ValueNone, ValueNone -> ()
         | ValueSome prevVal, ValueSome newVal when prevVal = newVal -> ()
@@ -917,3 +953,90 @@ module Converters =
             let items = (sender :?> Xamarin.Forms.ListView).ItemsSource :?> System.Collections.Generic.IList<ListGroupData> 
             tryFindGroupedListViewItemIndex items item
         | _ -> None
+
+    let internal updateShellSearchHandler prevValueOpt (currValueOpt: ViewElement voption) target =
+        match prevValueOpt, currValueOpt with
+        | ValueNone, ValueNone -> ()
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | ValueSome prevValue, ValueSome currValue ->
+            let searchHandler = Shell.GetSearchHandler(target)
+            currValue.UpdateIncremental(prevValue, searchHandler)
+        | ValueNone, ValueSome currValue -> Shell.SetSearchHandler(target, currValue.Create() :?> Xamarin.Forms.SearchHandler)
+        | ValueSome _, ValueNone -> Shell.SetSearchHandler(target, null)
+
+    let internal updateShellBackgroundColor prevValueOpt currValueOpt target =
+        match prevValueOpt, currValueOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | ValueNone, ValueNone -> ()
+        | _, ValueSome currValue -> Shell.SetBackgroundColor(target, currValue)
+        | ValueSome _, ValueNone -> Shell.SetBackgroundColor(target, Color.Default)
+
+    let internal updateShellForegroundColor prevValueOpt currValueOpt target =
+        match prevValueOpt, currValueOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | ValueNone, ValueNone -> ()
+        | _, ValueSome currValue -> Shell.SetForegroundColor(target, currValue)
+        | ValueSome _, ValueNone -> Shell.SetForegroundColor(target, Color.Default)
+
+    let internal updateShellTitleColor prevValueOpt currValueOpt target =
+        match prevValueOpt, currValueOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | ValueNone, ValueNone -> ()
+        | _, ValueSome currValue -> Shell.SetTitleColor(target, currValue)
+        | ValueSome _, ValueNone -> Shell.SetTitleColor(target, Color.Default)
+
+    let internal updateShellDisabledColor prevValueOpt currValueOpt target =
+        match prevValueOpt, currValueOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | ValueNone, ValueNone -> ()
+        | _, ValueSome currValue -> Shell.SetDisabledColor(target, currValue)
+        | ValueSome _, ValueNone -> Shell.SetDisabledColor(target, Color.Default)
+
+    let internal updateShellUnselectedColor prevValueOpt currValueOpt target =
+        match prevValueOpt, currValueOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | ValueNone, ValueNone -> ()
+        | _, ValueSome currValue -> Shell.SetUnselectedColor(target, currValue)
+        | ValueSome _, ValueNone -> Shell.SetUnselectedColor(target, Color.Default)
+
+    let internal updateShellTabBarBackgroundColor prevValueOpt currValueOpt target =
+        match prevValueOpt, currValueOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | ValueNone, ValueNone -> ()
+        | _, ValueSome currValue -> Shell.SetTabBarBackgroundColor(target, currValue)
+        | ValueSome _, ValueNone -> Shell.SetTabBarBackgroundColor(target, Color.Default)
+
+    let internal updateShellTabBarForegroundColor prevValueOpt currValueOpt target =
+        match prevValueOpt, currValueOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | ValueNone, ValueNone -> ()
+        | _, ValueSome currValue -> Shell.SetTabBarForegroundColor(target, currValue)
+        | ValueSome _, ValueNone -> Shell.SetTabBarForegroundColor(target, Color.Default)
+
+    let internal updateShellBackButtonBehavior prevValueOpt (currValueOpt: ViewElement voption) target =
+        match prevValueOpt, currValueOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | ValueNone, ValueNone -> ()
+        | _, ValueSome currValue -> Shell.SetBackButtonBehavior(target, currValue.Create() :?> BackButtonBehavior)
+        | ValueSome _, ValueNone -> Shell.SetBackButtonBehavior(target, null)
+
+    let internal updateShellTitleView prevValueOpt (currValueOpt: ViewElement voption) target =
+        match prevValueOpt, currValueOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | ValueNone, ValueNone -> ()
+        | _, ValueSome currValue -> Shell.SetTitleView(target, currValue.Create() :?> View)
+        | ValueSome _, ValueNone -> Shell.SetTitleView(target, null)
+
+    let internal updateShellFlyoutBehavior prevValueOpt currValueOpt target =
+        match prevValueOpt, currValueOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | ValueNone, ValueNone -> ()
+        | _, ValueSome currValue -> Shell.SetFlyoutBehavior(target, currValue)
+        | ValueSome _, ValueNone -> Shell.SetFlyoutBehavior(target, FlyoutBehavior.Flyout)
+
+    let internal updateShellTabBarIsVisible prevValueOpt currValueOpt target =
+        match prevValueOpt, currValueOpt with
+        | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
+        | ValueNone, ValueNone -> ()
+        | _, ValueSome currValue -> Shell.SetTabBarIsVisible(target, currValue)
+        | ValueSome _, ValueNone -> Shell.SetTabBarIsVisible(target, true) 

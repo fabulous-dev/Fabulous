@@ -23,6 +23,8 @@ module CodeGenerator =
             match m with
             | "ElementCreated" ->
                 w.printfn "    let ElementCreatedAttribKey : AttributeKey<(obj -> unit)> = AttributeKey<(obj -> unit)>(\"ElementCreated\")"
+            | "SearchHandlerItemSelected" -> // AttributeKey<_> incorrectly generalizes obj to 'a
+                w.printfn "    let SearchHandlerItemSelectedAttribKey : AttributeKey<(obj -> unit)> = AttributeKey<(obj -> unit)>(\"SearchHandlerItemSelected\")"
             | _ ->
                 w.printfn "    let %sAttribKey : AttributeKey<_> = AttributeKey<_>(\"%s\")" m m
         w.printfn ""
@@ -164,7 +166,8 @@ module CodeGenerator =
                     match m.BoundType with 
 
                     // Check if the type of the member is in the model, if so issue recursive calls to "Create" and "UpdateIncremental"
-                    | Some boundType when (tryFindType data.KnownTypes boundType.FullName).IsSome && not hasApply ->
+                    // ModelType = "ViewElement" is also accepted because some properties (like FlyoutHeader) are typed object by default (thus disabling control reuse in the generator)
+                    | Some boundType when ((tryFindType data.KnownTypes boundType.FullName).IsSome || m.ModelType = "ViewElement") && not hasApply ->
                         w.printfn "        match prev%sOpt, curr%sOpt with" m.UniqueName m.UniqueName
                         w.printfn "        // For structured objects, dependsOn on reference equality"
                         w.printfn "        | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()"
