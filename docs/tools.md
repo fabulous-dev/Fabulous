@@ -3,6 +3,28 @@ Fabulous - Guide
 
 {% include_relative contents.md %}
 
+
+fabulous-cli
+-----
+
+With the `fabulous-cli` you can run LiveUpdate. 
+
+Install `fabulous-cli`: 
+
+        // install latest
+        dotnet tool install -g fabulous-cli 
+        // install explicit version
+        dotnet tool install -g fabulous-cli --version {versionnumber}
+		
+Update `fabulous-cli`:
+
+        dotnet tool update -g fabulous-cli
+		
+Uninstall `fabulous-cli`:
+
+        dotnet tool uninstall -g fabulous-cli
+
+
 Live Update
 ------
 
