@@ -876,33 +876,33 @@
         {
           "name": "AlignContent",
           "modelType": "Xamarin.Forms.FlexAlignContent",
-          "defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexAlignContent>"
+          "defaultValue": "Xamarin.Forms.FlexAlignContent.Stretch"
         },
         {
           "name": "AlignItems",
           "modelType": "Xamarin.Forms.FlexAlignItems",
-          "defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexAlignItems>"
+          "defaultValue": "Xamarin.Forms.FlexAlignItems.Stretch"
         },
         {
           "name": "Direction",
           "uniqueName": "FlexLayoutDirection",
           "modelType": "Xamarin.Forms.FlexDirection",
-          "defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexDirection>"
+          "defaultValue": "Xamarin.Forms.FlexDirection.Row"
         },
         {
           "name": "Position",
           "modelType": "Xamarin.Forms.FlexPosition",
-          "defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexPosition>"
+          "defaultValue": "Xamarin.Forms.FlexPosition.Relative"
         },
         {
           "name": "Wrap",
           "modelType": "Xamarin.Forms.FlexWrap",
-          "defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexWrap>"
+          "defaultValue": "Xamarin.Forms.FlexWrap.NoWrap"
         },
         {
           "name": "JustifyContent",
           "modelType": "Xamarin.Forms.FlexJustify",
-          "defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexJustify>"
+          "defaultValue": "Xamarin.Forms.FlexJustify.Start"
         },
         {
           "name": "Children",
@@ -915,7 +915,7 @@
               "name": "AlignSelf",
               "uniqueName": "FlexAlignSelf",
               "modelType": "Xamarin.Forms.FlexAlignSelf",
-              "defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexAlignSelf>"
+              "defaultValue": "Xamarin.Forms.FlexAlignSelf.Auto"
             },
             {
               "name": "Order",
@@ -927,7 +927,7 @@
               "name": "Basis",
               "uniqueName": "FlexBasis",
               "modelType": "Xamarin.Forms.FlexBasis",
-              "defaultValue": "Unchecked.defaultof<Xamarin.Forms.FlexBasis>"
+              "defaultValue": "Xamarin.Forms.FlexBasis.Auto"
             },
             {
               "name": "Grow",

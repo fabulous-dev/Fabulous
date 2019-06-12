@@ -63,15 +63,14 @@ module App =
             let route = ShellNavigationState.op_Implicit (sprintf "%Adetails?name=%s" animal.Type animal.Name)
 
             async {
-
                 // Selecting an item in SearchHandler and immediately asking for navigation doesn't work on iOS.
                 // This is a bug in Xamarin.Forms (https://github.com/xamarin/Xamarin.Forms/issues/5713)
                 // The workaround is to wait for the fade out animation of SearchHandler to finish
                 if Device.RuntimePlatform = Device.iOS then
                     do! Async.Sleep 1000 
-                
-                do! shell.GoToAsync route |> Async.AwaitTask
+
                 shell.FlyoutIsPresented <- false
+                do! shell.GoToAsync route |> Async.AwaitTask
             } |> Async.StartImmediate
 
         Cmd.none
