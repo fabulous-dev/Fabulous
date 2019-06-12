@@ -1,4 +1,5 @@
-﻿namespace Fabimals.Views
+﻿// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
+namespace Fabimals.Views
 
 open Fabimals.Data
 open Fabimals.Components

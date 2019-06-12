@@ -1,3 +1,4 @@
+// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Fabimals.Routes
 
 open Fabulous.DynamicViews
@@ -5,6 +6,10 @@ open Xamarin.Forms
 open Fabimals.Models
 open Fabimals.Data
 open Fabimals.Views
+
+// Xamarin.Forms doesn't currently expose the Routing mecanism in a way for Fabulous to plug into it seamlessly
+// For now, we need to follow the convention of inheriting from ContentPage so that we can later register with
+// Routing.RegisterRoute("SomePath", typeof<MyPage>)
 
 [<QueryProperty("Name", "name")>]
 type RoutingPage(animals, view: Animal -> ViewElement) =

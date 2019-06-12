@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
+﻿// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Fabimals
 
 open Fabulous.Core
@@ -64,7 +64,13 @@ module App =
             let route = ShellNavigationState.op_Implicit (sprintf "%Adetails?name=%s" animal.Type animal.Name)
 
             async {
-                do! Async.Sleep 1000 // Workaround for Xamarin.Forms bug. Selecting an item in SearchHandler doesn't navigate if SearchHandler fade out animation is not over 
+
+                // Selecting an item in SearchHandler and immediately asking for navigation doesn't work on iOS.
+                // This is a bug in Xamarin.Forms (https://github.com/xamarin/Xamarin.Forms/issues/5713)
+                // The workaround is to wait for the fade out animation of SearchHandler to finish
+                if Device.RuntimePlatform = Device.iOS then
+                    do! Async.Sleep 1000 
+                
                 do! shell.GoToAsync route |> Async.AwaitTask
                 shell.FlyoutIsPresented <- false
             } |> Async.StartImmediate
