@@ -149,15 +149,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms">
-      <Version>3.4.0.1009999</Version>
-    </PackageReference>
-    <PackageReference Include="FSharp.Core">
-      <Version>4.5.2</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.1.9</Version>
-    </PackageReference>
+    <PackageReference Include="Xamarin.Forms" />
+    <PackageReference Include="FSharp.Core" />
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Fabulous.Core\Fabulous.Core.fsproj">

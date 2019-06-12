@@ -25,8 +25,9 @@
       <PackageReference Include="FSharp.Core" />
       <PackageReference Include="Xamarin.Forms" />
       <PackageReference Include="Newtonsoft.Json" />
+      <ProjectReference Include="..\..\..\..\src\Fabulous.Core\Fabulous.Core.fsproj" />
+      <ProjectReference Include="..\..\..\..\src\Fabulous.CustomControls\Fabulous.CustomControls.fsproj" />
       <ProjectReference Include="..\..\..\..\src\Fabulous.LiveUpdate\Fabulous.LiveUpdate.fsproj" />
-      <ProjectReference Include="..\..\..\..\src\Fabulous.DynamicViews\Fabulous.DynamicViews.fsproj" />
     </ItemGroup>
     <Import Project="..\..\..\..\Packages.targets" />
 </Project>

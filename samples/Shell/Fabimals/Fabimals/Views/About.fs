@@ -29,7 +29,7 @@ module About =
         match msg with
         | ShowFabulous -> [GoToUrl "https://fsprojects.github.io/Fabulous"]
         | ShowXamarinForms -> [GoToUrl "https://docs.microsoft.com/en-us/xamarin/xamarin-forms"]
-        | ShowOriginalFabimalsSample -> [GoToUrl "https://github.com/xamarin/xamarin-forms-samples/blob/master/UserInterface/Fabimals"]
+        | ShowOriginalFabimalsSample -> [GoToUrl "https://github.com/xamarin/xamarin-forms-samples/blob/master/UserInterface/Xaminals"]
 
     let view dispatch =
         dependsOn () (fun _ () ->
@@ -103,7 +103,7 @@ module About =
                                             formattedText=View.FormattedString([
                                                 View.Span "It is a port of the "
                                                 View.Span(
-                                                    text="existing sample Fabimals",
+                                                    text="existing sample Xaminals",
                                                     fontAttributes=FontAttributes.Bold,
                                                     textColor=Color.Blue,
                                                     textDecorations=TextDecorations.Underline
