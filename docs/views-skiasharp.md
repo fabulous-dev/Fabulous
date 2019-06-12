@@ -39,6 +39,8 @@ View.SKCanvasView(enableTouchEvents = true,
 )
 ```
 
+By default, the view will not be redrawn when the model changes. You should call `View.SKCanvasView(..., invalidate = true)` if you want the drawn content to depend on model changes.
+
 See also:
 
 * [Core Elements](views-elements.md).
