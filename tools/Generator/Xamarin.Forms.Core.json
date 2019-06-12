@@ -33,6 +33,67 @@
           "inputType": "ViewRef",
           "modelType": "ViewRef",
           "updateCode": "(fun _ _ _ -> ())"
+        },
+        {
+          "name": "Tag",
+          "modelType": "obj",
+          "defaultValue": "null",
+          "updateCode": "(fun _ _ _ -> ())"
+        },
+        {
+          "name": "ShellBackgroundColor",
+          "modelType": "Xamarin.Forms.Color",
+          "updateCode": "updateShellBackgroundColor"
+        },
+        {
+          "name": "ShellForegroundColor",
+          "modelType": "Xamarin.Forms.Color",
+          "updateCode": "updateShellForegroundColor"
+        },
+        {
+          "name": "ShellDisabledColor",
+          "modelType": "Xamarin.Forms.Color",
+          "updateCode": "updateShellDisabledColor"
+        },
+        {
+          "name": "ShellTabBarBackgroundColor",
+          "modelType": "Xamarin.Forms.Color",
+          "updateCode": "updateShellTabBarBackgroundColor"
+        },
+        {
+          "name": "ShellTabBarForegroundColor",
+          "modelType": "Xamarin.Forms.Color",
+          "updateCode": "updateShellTabBarForegroundColor"
+        },
+        {
+          "name": "ShellTitleColor",
+          "modelType": "Xamarin.Forms.Color",
+          "updateCode": "updateShellTitleColor"
+        },
+        {
+          "name": "ShellUnselectedColor",
+          "modelType": "Xamarin.Forms.Color",
+          "updateCode": "updateShellUnselectedColor"
+        },
+        {
+          "name": "ShellBackButtonBehavior",
+          "modelType": "Xamarin.Forms.BackButtonBehavior",
+          "updateCode": "updateShellBackButtonBehavior"
+        },
+        {
+          "name": "ShellFlyoutBehavior",
+          "modelType": "Xamarin.Forms.FlyoutBehavior",
+          "updateCode": "updateShellFlyoutBehavior"
+        },
+        {
+          "name": "ShellTabBarIsVisible",
+          "modelType": "bool",
+          "updateCode": "updateShellTabBarIsVisible"
+        },
+        {
+          "name": "ShellTitleView",
+          "modelType": "Xamarin.Forms.View",
+          "updateCode": "updateShellTitleView"
         }
       ]
     },
@@ -215,6 +276,18 @@
           "convToModel": "makeThickness",
           "defaultValue": "Unchecked.defaultof<Xamarin.Forms.Thickness>"
         },
+        {
+          "name": "GestureRecognizers",
+          "defaultValue": "null",
+          "inputType": "ViewElement list",
+          "modelType": "ViewElement[]",
+          "convToModel": "Array.ofList"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.GestureElement",
+      "members": [
         {
           "name": "GestureRecognizers",
           "defaultValue": "null",
@@ -1595,6 +1668,11 @@
           "modelType": "obj",
           "convToValue": "makeImageSource",
           "defaultValue": "null"
+        },
+        {
+          "name": "ShellSearchHandler",
+          "modelType": "Xamarin.Forms.SearchHandler",
+          "updateCode": "updateShellSearchHandler"
         }
       ]
     },
@@ -2216,6 +2294,7 @@
     },
     {
       "name": "Xamarin.Forms.SearchHandler",
+      "customType": "Fabulous.DynamicViews.CustomSearchHandler",
       "members": [
         {
           "name": "ClearIcon",
@@ -2334,7 +2413,12 @@
         },
         {
           "name": "ItemsSource",
-          "defaultValue": "null"
+          "uniqueName": "SearchHandlerItemsSource",
+          "shortName": "items",
+          "defaultValue": "null",
+          "inputType": "seq<ViewElement>",
+          "modelType": "seq<ViewElement>",
+          "updateCode": "updateSearchHandlerItems"
         },
         {
           "name": "BackgroundColor",
@@ -2407,6 +2491,25 @@
           "inputType": "obj",
           "modelType": "obj",
           "updateCode": "updateSelectedItem"
+        },
+        {
+          "name": "QueryChanged",
+          "defaultValue": "ignore",
+          "modelType": "string * string -> unit",
+          "updateCode": "(fun _ curr (target: Xamarin.Forms.SearchHandler) -> match curr with ValueSome fn -> (target :?> Fabulous.DynamicViews.CustomSearchHandler).QueryChanged <- fn | ValueNone -> ())"
+        },
+        {
+          "name": "QueryConfirmed",
+          "defaultValue": "ignore",
+          "modelType": "unit -> unit",
+          "updateCode": "(fun _ curr (target: Xamarin.Forms.SearchHandler) -> match curr with ValueSome fn -> (target :?> Fabulous.DynamicViews.CustomSearchHandler).QueryConfirmed <- fn | ValueNone -> ())"
+        },
+        {
+          "name": "ItemSelected",
+          "uniqueName": "SearchHandlerItemSelected",
+          "defaultValue": "ignore",
+          "modelType": "obj -> unit",
+          "updateCode": "(fun _ curr (target: Xamarin.Forms.SearchHandler) -> match curr with ValueSome fn -> (target :?> Fabulous.DynamicViews.CustomSearchHandler).ItemSelected <- fn | ValueNone -> ())"
         }
       ]
     },
@@ -2453,7 +2556,7 @@
           "defaultValue": "null",
           "inputType": "bool",
           "modelType": "bool",
-          "updateCode": "updateIsCecked"
+          "updateCode": "updateIsChecked"
         }
       ]
     },
@@ -2483,7 +2586,8 @@
         },
         {
           "name": "FlyoutHeader",
-          "defaultValue": "null"
+          "defaultValue": "null",
+          "modelType": "ViewElement"
         },
         {
           "name": "FlyoutHeaderBehavior",
@@ -2552,15 +2656,9 @@
           "convToModel": "makeCommand"
         },
         {
-          "name": "SelectionChangedCommandParameter",
-          "defaultValue": "null"
-        },
-        {
           "name": "SelectionMode",
-          "uniqueName": "selectableItemsMode",
-          "defaultValue": "Xamarin.Forms.SelectionMode.None",
-          "inputType": "Xamarin.Forms.SelectionMode",
-          "modelType": "Xamarin.Forms.SelectionMode"
+          "uniqueName": "SelectableItemsViewSelectionMode",
+          "defaultValue": "Xamarin.Forms.SelectionMode.None"
         },
         {
           "name": "SelectionChanged",
@@ -2575,11 +2673,8 @@
       "members": [
         {
           "name": "Content",
-          "uniqueName": "ShellContent",
           "defaultValue": "null",
-          "inputType": "ViewElement",
-          "modelType": "ViewElement",
-          "updateCode": "(fun prev (curr: ViewElement voption) (target: Xamarin.Forms.ShellContent) -> target.Content <- match curr with ValueSome c -> c.Create() | ValueNone -> null)"
+          "modelType": "ViewElement"
         },
         {
           "name": "MenuItems",
