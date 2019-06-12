@@ -149,13 +149,13 @@
       "type": "parameter",
       "dataType": "string",
       "replaces": "XamarinEssentialsSdk",
-      "defaultValue": "1.0.0"
+      "defaultValue": "1.1.0"
     },
     "XamarinFormsSdk": {
       "type": "parameter",
       "dataType": "string",
       "replaces": "XamarinFormsSdk",
-      "defaultValue": "4.0.0.425677"
+      "defaultValue": "4.0.0.482894"
     },
     "FabulousPkgsVersion": {
       "type": "parameter",
@@ -167,19 +167,19 @@
       "type": "parameter",
       "dataType": "string",
       "replaces": "NewtonsoftJsonPkg",
-      "defaultValue": "11.0.2"
+      "defaultValue": "12.0.2"
     },
     "XamarinAndroidFSharpResourceProviderPkg": {
       "type": "parameter",
       "dataType": "string",
       "replaces": "XamarinAndroidFSharpResourceProviderPkg",
-      "defaultValue": "1.0.0.25"
+      "defaultValue": "1.0.0.28"
     },
     "FSharpCorePkgVersion": {
       "type": "parameter",
       "dataType": "string",
       "replaces": "FSharpCorePkgVersion",
-      "defaultValue": "4.5.2"
+      "defaultValue": "4.6.2"
     },
     "ProjectID": {
       "type": "generated",

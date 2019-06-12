@@ -91,7 +91,7 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
     <Reference Include="Xamarin.Android.FSharp.ResourceProvider.Runtime">
-      <HintPath>..\packages/Xamarin.Android.FSharp.ResourceProvider.XamarinAndroidFSharpResourceProviderPkg/lib/Xamarin.Android.FSharp.ResourceProvider.Runtime.dll</HintPath>
+      <HintPath>..\packages/Xamarin.Android.FSharp.ResourceProvider.XamarinAndroidFSharpResourceProviderPkg/lib/monoandroid81/Xamarin.Android.FSharp.ResourceProvider.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Arch.Core.Common">
       <HintPath>..\packages/Xamarin.Android.Arch.Core.Common.XamarinAndroidArchVersion/lib/MonoAndroid90/Xamarin.Android.Arch.Core.Common.dll</HintPath>
