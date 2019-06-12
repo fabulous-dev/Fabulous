@@ -17,7 +17,6 @@ module AppStyles =
                .ShellForegroundColor(Color.White)
                .ShellTitleColor(Color.White)
                .ShellDisabledColor(Color.FromHex("#B4FFFFFF"))
-               .ShellTitleColor(Color.FromHex("#B4FFFFFF"))
                .ShellUnselectedColor(Color.FromHex("#95FFFFFF"))
 
     let applyDomesticItemStyle element = (applyDefaultShellItemStyle element).ShellBackgroundColor(Color.FromHex("#039BE6"))

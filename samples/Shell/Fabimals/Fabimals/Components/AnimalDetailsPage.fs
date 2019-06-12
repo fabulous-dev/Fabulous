@@ -11,21 +11,13 @@ module AnimalDetails =
     type ExternalMsg = NoOp
     
     type Model =
-        { Type: AnimalType
-          Name: string
-          Location: string
-          ImageUrl: string
-          Details: string }
-    
-    let init (animal: Animal)=
-        { Type = animal.Type
-          Name = animal.Name
-          Location = animal.Location
-          ImageUrl = animal.ImageUrl
-          Details = animal.Details }
+        { Animal: Animal }
+
+    let init (animal: Animal) =
+        { Animal = animal }
     
     let view model =
-        dependsOn (model.Name, model.Location, model.ImageUrl, model.Details) (fun model (name, location, imageUrl, details) ->
+        dependsOn model.Animal (fun model animal ->
             // Currently Fabulous needs to handle its own ContentPage to support Routing inside Shell
             // This is a limitation of Xamarin.Forms. Might change in the future (https://github.com/xamarin/Xamarin.Forms/issues/5166)
             // So for now, we only declare the content of the page
@@ -35,23 +27,23 @@ module AnimalDetails =
                     margin=Thickness(20.),
                     children=[
                         View.Label(
-                            text=name,
+                            text=animal.Name,
                             horizontalOptions=LayoutOptions.Center,
                             style=Device.Styles.TitleStyle
                         )
                         View.Label(
-                            text=location,
+                            text=animal.Location,
                             fontAttributes=FontAttributes.Italic,
                             horizontalOptions=LayoutOptions.Center
                         )
                         View.Image(
-                            source=imageUrl,
+                            source=animal.ImageUrl,
                             widthRequest=200.,
                             heightRequest=200.,
                             horizontalOptions=LayoutOptions.CenterAndExpand
                         )
                         View.Label(
-                            text=details,
+                            text=animal.Details,
                             style=Device.Styles.BodyStyle
                         )
                     ]

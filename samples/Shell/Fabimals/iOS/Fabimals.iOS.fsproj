@@ -202,7 +202,7 @@
       <Name>Fabulous.LiveUpdate</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fabimals\Fabimals.fsproj">
-      <Project>{7EED82A9-1CF0-4B20-8208-7A5B85E05C7E}</Project>
+      <Project>{A85D491C-2E1C-48EF-9692-88C461E24398}</Project>
       <Name>Fabimals</Name>
     </ProjectReference>
   </ItemGroup>
