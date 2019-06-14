@@ -101,7 +101,7 @@ module About =
                                                     command=(fun() -> dispatch ShowOriginalFabimalsSample)
                                                 )
                                             ])
-                                            View.Span ", written C#/XAML with "
+                                            View.Span ", written in C#/XAML with "
                                             View.Span(
                                                 text="Xamarin.Forms",
                                                 fontAttributes=FontAttributes.Bold,
