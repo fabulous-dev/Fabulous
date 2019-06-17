@@ -27,6 +27,8 @@ type AppDelegate() =
         // Insert code here to tear down your application
         ()
 
+    override __.ApplicationShouldTerminateAfterLastWindowClosed(_) = true
+
 module EntryClass = 
     [<EntryPoint>]
     let Main(args: string[]) =
