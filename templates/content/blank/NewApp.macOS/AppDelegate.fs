@@ -26,6 +26,8 @@ type AppDelegate() =
     override __.WillTerminate(notification: NSNotification) =
         // Insert code here to tear down your application
         ()
+        
+    override __.ApplicationShouldTerminateAfterLastWindowClosed(_) = true        
 
 module EntryClass = 
     [<EntryPoint>]
