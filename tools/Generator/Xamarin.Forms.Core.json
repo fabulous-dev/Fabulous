@@ -2672,9 +2672,12 @@
       "name": "Xamarin.Forms.ShellContent",
       "members": [
         {
-          "name": "Content",
+          "name": "ContentTemplate",
+          "shortName": "content",
           "defaultValue": "null",
-          "modelType": "ViewElement"
+          "inputType": "ViewElement",
+          "modelType": "ViewElement",
+          "updateCode": "updateShellContentTemplate"
         },
         {
           "name": "MenuItems",
