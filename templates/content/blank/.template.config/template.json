@@ -119,37 +119,43 @@
       "type": "parameter",
       "datatype": "string",
       "replaces": "AndroidSDKVersion",
-      "defaultValue": "v8.1"
+      "defaultValue": "v9.0"
     },
     "TargetAndroidAPI": {
       "type": "parameter",
       "datatype": "string",
       "replaces": "TargetAndroidAPI",
-      "defaultValue": "27"
+      "defaultValue": "28"
     },
     "MinAndroidAPI": {
       "type": "parameter",
       "datatype": "int",
       "replaces": "MinAndroidAPI",
-      "defaultValue": "19"
+      "defaultValue": "21"
     },
     "XamarinAndroidSdkVersion": {
       "type": "parameter",
       "datatype": "string",
       "replaces": "XamarinAndroidSdkVersion",
-      "defaultValue": "27.0.2.1"
+      "defaultValue": "28.0.0.1"
+    },
+    "XamarinAndroidArchVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "replaces": "XamarinAndroidArchVersion",
+      "defaultValue": "1.1.1.1"
     },
     "XamarinEssentialsSdk": {
       "type": "parameter",
       "dataType": "string",
       "replaces": "XamarinEssentialsSdk",
-      "defaultValue": "1.0.0"
+      "defaultValue": "1.1.0"
     },
     "XamarinFormsSdk": {
       "type": "parameter",
       "dataType": "string",
       "replaces": "XamarinFormsSdk",
-      "defaultValue": "4.0.0.425677"
+      "defaultValue": "4.0.0.497661"
     },
     "FabulousPkgsVersion": {
       "type": "parameter",
@@ -161,19 +167,19 @@
       "type": "parameter",
       "dataType": "string",
       "replaces": "NewtonsoftJsonPkg",
-      "defaultValue": "11.0.2"
+      "defaultValue": "12.0.2"
     },
     "XamarinAndroidFSharpResourceProviderPkg": {
       "type": "parameter",
       "dataType": "string",
       "replaces": "XamarinAndroidFSharpResourceProviderPkg",
-      "defaultValue": "1.0.0.25"
+      "defaultValue": "1.0.0.28"
     },
     "FSharpCorePkgVersion": {
       "type": "parameter",
       "dataType": "string",
       "replaces": "FSharpCorePkgVersion",
-      "defaultValue": "4.5.2"
+      "defaultValue": "4.6.2"
     },
     "ProjectID": {
       "type": "generated",
