@@ -201,9 +201,8 @@ type CustomContentPage() as self =
         sizeAllocated.Trigger(width, height)
 
 /// DataTemplate that can inflate a View from a ViewElement instead of a Type
-type ViewElementDataTemplate(viewElement: ViewElement) as self =
-    inherit DataTemplate()    
-    do (self :> Xamarin.Forms.Internals.IDataTemplate).LoadTemplate <- Func<obj>(viewElement.Create)
+type ViewElementDataTemplate(viewElement: ViewElement) =
+    inherit DataTemplate(Func<obj>(viewElement.Create))
 
 /// A custom SearchHandler which exposes the overridable methods OnQueryChanged, OnQueryConfirmed and OnItemSelected as events
 type CustomSearchHandler() =
