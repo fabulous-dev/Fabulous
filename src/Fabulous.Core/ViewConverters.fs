@@ -200,6 +200,10 @@ type CustomContentPage() as self =
         base.OnSizeAllocated(width, height)
         sizeAllocated.Trigger(width, height)
 
+/// DataTemplate that can inflate a View from a ViewElement instead of a Type
+type ViewElementDataTemplate(viewElement: ViewElement) =
+    inherit DataTemplate(Func<obj>(viewElement.Create))
+
 /// A custom SearchHandler which exposes the overridable methods OnQueryChanged, OnQueryConfirmed and OnItemSelected as events
 type CustomSearchHandler() =
     inherit SearchHandler(ItemTemplate=DataTemplate(typeof<ContentViewElement>))
@@ -1039,4 +1043,16 @@ module Converters =
         | ValueSome prevValue, ValueSome currValue when prevValue = currValue -> ()
         | ValueNone, ValueNone -> ()
         | _, ValueSome currValue -> Shell.SetTabBarIsVisible(target, currValue)
-        | ValueSome _, ValueNone -> Shell.SetTabBarIsVisible(target, true) 
+        | ValueSome _, ValueNone -> Shell.SetTabBarIsVisible(target, true)
+        
+    let internal updateShellContentTemplate (prevValueOpt : ViewElement voption) (currValueOpt : ViewElement voption) (target : Xamarin.Forms.ShellContent) =
+        match prevValueOpt, currValueOpt with
+        | ValueSome prevValue, ValueSome currValue when identical prevValue currValue -> ()
+        | ValueNone, ValueNone -> ()
+        | ValueNone, ValueSome currValue ->
+            target.ContentTemplate <- ViewElementDataTemplate(currValue)
+        | ValueSome prevValue, ValueSome currValue ->
+            target.ContentTemplate <- ViewElementDataTemplate(currValue)
+            let realTarget = (target :> Xamarin.Forms.IShellContentController).Page
+            if realTarget <> null then currValue.UpdateIncremental(prevValue, realTarget)            
+        | ValueSome _, ValueNone -> target.ContentTemplate <- null
