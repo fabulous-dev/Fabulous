@@ -225,17 +225,26 @@ Target.create "Release" (fun _ ->
         | s when not (System.String.IsNullOrWhiteSpace s) -> s
         | _ -> failwith "Please set the nuget_apikey environment variable to a NuGet API key with write access to the Fabulous packages."
 
-    GitHub.createClientWithToken token
-    |> GitHub.draftNewRelease repositoryOwner repositoryName release.AssemblyVersion false (release.Notes |> List.map (sprintf "- %s"))
-    |> GitHub.uploadFiles !!(buildDir + "/*.nupkg")
-    |> GitHub.publishDraft
-    |> Async.RunSynchronously
+    // GitHub.createClientWithToken token
+    // |> GitHub.draftNewRelease repositoryOwner repositoryName release.AssemblyVersion false (release.Notes |> List.map (sprintf "- %s"))
+    // |> GitHub.uploadFiles !!(buildDir + "/*.nupkg")
+    // |> GitHub.publishDraft
+    // |> Async.RunSynchronously
 
-    NuGet.NuGetPublish (fun p ->
-        { p with AccessKey = nugetApiKey
-                 PublishUrl = "https://www.nuget.org"
-                 OutputPath = buildDir }
-    )
+    for nupkg in !! (buildDir + "/*.nupkg") do
+        let fileName = System.IO.Path.GetFileNameWithoutExtension(nupkg)
+        let projectName = fileName.Remove(fileName.LastIndexOf('.'))
+        let projectName = projectName.Remove(projectName.LastIndexOf('.'))
+        let projectName = projectName.Remove(projectName.LastIndexOf('.'))
+
+        NuGet.NuGetPublish (fun p ->
+            { p with AccessKey = nugetApiKey
+                     PublishUrl = "https://www.nuget.org"
+                     Project = projectName
+                     Version = release.NugetVersion
+                     WorkingDir = buildDir
+                     OutputPath = buildDir }
+        )
 )
 
 Target.create "Build" ignore
@@ -260,7 +269,7 @@ open Fake.Core.TargetOperators
   ==> "RunSamplesTests"
   ==> "Test"
 
-"Test"
-  ==> "Release"
+//"Build"
+//  ==> "Release"
 
 Target.runOrDefault "Build"
