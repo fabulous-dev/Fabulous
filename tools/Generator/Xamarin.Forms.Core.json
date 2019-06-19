@@ -130,6 +130,10 @@
           "defaultValue": "Xamarin.Forms.Color.Default"
         },
         {
+          "name": "FlowDirection",
+          "defaultValue": "Xamarin.Forms.FlowDirection.MatchParent"
+        },
+        {
           "name": "HeightRequest",
           "defaultValue": "-1.0"
         },
@@ -139,6 +143,10 @@
         },
         {
           "name": "IsEnabled",
+          "defaultValue": "true"
+        },
+        {
+          "name": "IsTabStop",
           "defaultValue": "true"
         },
         {
@@ -158,6 +166,13 @@
           "defaultValue": "1.0"
         },
         {
+          "name": "Resources",
+          "defaultValue": "null",
+          "inputType": "(string * obj) list",
+          "modelType": "(string * obj) list",
+          "updateCode": "updateResources"
+        },
+        {
           "name": "Rotation",
           "defaultValue": "0.0"
         },
@@ -174,6 +189,18 @@
           "defaultValue": "1.0"
         },
         {
+          "name": "ScaleX",
+          "defaultValue": "1.0"
+        },
+        {
+          "name": "ScaleY",
+          "defaultValue": "1.0"
+        },
+        {
+          "name": "TabIndex",
+          "defaultValue": "0"
+        },
+        {
           "name": "TranslationX",
           "defaultValue": "0.0"
         },
@@ -182,15 +209,12 @@
           "defaultValue": "0.0"
         },
         {
-          "name": "WidthRequest",
-          "defaultValue": "-1.0"
+          "name": "Visual",
+          "defaultValue": "Xamarin.Forms.VisualMarker.MatchParent"
         },
         {
-          "name": "Resources",
-          "defaultValue": "null",
-          "inputType": "(string * obj) list",
-          "modelType": "(string * obj) list",
-          "updateCode": "updateResources"
+          "name": "WidthRequest",
+          "defaultValue": "-1.0"
         },
         {
           "name": "Styles",
@@ -207,54 +231,16 @@
           "updateCode": "updateStyleSheets"
         },
         {
-          "name": "IsTabStop",
-          "defaultValue": "true"
-        },
-        {
-          "name": "ScaleX",
-          "defaultValue": "0.0"
-        },
-        {
-          "name": "ScaleY",
-          "defaultValue": "0.0"
-        },
-        {
-          "name": "TabIndex",
-          "defaultValue": "0"
-        },
-        {
-          "name": "ChildrenReordered",
-          "defaultValue": "null",
-          "inputType": "System.EventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler(fun _sender args -> f args))"
-        },
-        {
-          "name": "MeasureInvalidated",
-          "defaultValue": "null",
-          "inputType": "System.EventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler(fun _sender args -> f args))"
-        },
-        {
           "name": "Focused",
           "defaultValue": "null",
           "inputType": "Xamarin.Forms.FocusEventArgs -> unit",
           "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.FocusEventArgs>(fun _sender args -> f args))"
         },
         {
-          "name": "SizeChanged",
-          "defaultValue": "null",
-          "inputType": "Fabulous.CustomControls.SizeChangedEventArgs -> unit",
-          "convToModel": "(fun f -> System.EventHandler(fun sender _args -> let visualElement = sender :?> Xamarin.Forms.VisualElement in f (Fabulous.CustomControls.SizeChangedEventArgs(visualElement.Width, visualElement.Height))))"
-        },
-        {
           "name": "Unfocused",
           "defaultValue": "null",
           "inputType": "Xamarin.Forms.FocusEventArgs -> unit",
           "convToModel": "(fun f -> System.EventHandler<Xamarin.Forms.FocusEventArgs>(fun _sender args -> f args))"
-        },
-        {
-          "name": "Visual",
-          "defaultValue": "Xamarin.Forms.VisualMarker.MatchParent"
         }
       ]
     },
@@ -274,7 +260,7 @@
           "inputType": "obj",
           "modelType": "Xamarin.Forms.Thickness",
           "convToModel": "makeThickness",
-          "defaultValue": "Unchecked.defaultof<Xamarin.Forms.Thickness>"
+          "defaultValue": "Xamarin.Forms.Thickness(0.0)"
         },
         {
           "name": "GestureRecognizers",
@@ -520,6 +506,10 @@
           "defaultValue": "0"
         },
         {
+          "name": "Font",
+          "defaultValue": "Xamarin.Forms.Font.Default"
+        },
+        {
           "name": "FontFamily",
           "defaultValue": "null"
         },
@@ -554,7 +544,7 @@
         },
         {
           "name": "Padding",
-          "defaultValue": "Unchecked.defaultof<Xamarin.Forms.Thickness>"
+          "defaultValue": "Xamarin.Forms.Thickness(0.0)"
         }
       ]
     },
@@ -1152,9 +1142,15 @@
         },
         {
           "name": "IsReadOnly",
-          "defaultValue": "false",
-          "inputType": "bool",
-          "modelType": "bool"
+          "defaultValue": "false"
+        },
+        {
+          "name": "IsSpellCheckEnabled",
+          "defaultValue": "true"
+        },
+        {
+          "name": "MaxLength",
+          "defaultValue": "System.Int32.MaxValue"
         }
       ]
     },
