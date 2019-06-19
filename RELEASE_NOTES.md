@@ -1,3 +1,12 @@
+#### 0.36.0
+
+* [DynamicViews] Various fixes to improve support of Shell (https://github.com/fsprojects/Fabulous/pull/428, https://github.com/fsprojects/Fabulous/pull/430, https://github.com/fsprojects/Fabulous/pull/447, https://github.com/fsprojects/Fabulous/pull/450)
+* [DynamicViews] Fixes to FormattedString and Span (https://github.com/fsprojects/Fabulous/pull/431)
+* [DynamicViews] Added missing Font properties for Picker (https://github.com/fsprojects/Fabulous/pull/444)
+* [DynamicViews] Added various missing properties and removed meaningless events (for Fabulous) (https://github.com/fsprojects/Fabulous/pull/461)
+* [Templates] Updated Android template to Android Pie 9.0 (https://github.com/fsprojects/Fabulous/pull/453)
+* [Templates] Changed the macOS template to automatically close by default after the last window is closed (https://github.com/fsprojects/Fabulous/pull/460)
+
 #### 0.35.0
 
 * [DynamicViews] Added support for Xamarin.Forms 4.0 (https://github.com/fsprojects/Fabulous/pull/416)
