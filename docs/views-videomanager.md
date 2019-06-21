@@ -12,7 +12,7 @@ MediaManager has been created by Martijn van Dijk and its original project can b
 
 The nuget [`Fabulous.VideoManager`](https://www.nuget.org/packages/Fabulous.VideoManager) implements a view component for the type [VideoView](https://github.com/martijn00/XamarinMediaManager).
 
-[![VideoView example from Microsoft](https://devblogs.microsoft.com/wp-content/uploads/sites/44/2019/03/VideoPlayer.png)]
+[VideoView example from Microsoft](https://devblogs.microsoft.com/wp-content/uploads/sites/44/2019/03/VideoPlayer.png)
 
 To use `Fabulous.VideoView`, you must
 
