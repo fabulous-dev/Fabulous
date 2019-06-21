@@ -991,6 +991,20 @@
           "defaultValue": "null"
         },
         {
+          "name": "SelectedIndex",
+          "defaultValue": "0"
+        },
+        {
+          "name": "SelectedIndexChanged",
+          "defaultValue": "null",
+          "inputType": "(int * 'T option) -> unit",
+          "convToModel": "(fun f -> System.EventHandler(fun sender args -> let picker = (sender :?> Xamarin.Forms.Picker) in f (picker.SelectedIndex, (picker.SelectedItem |> Option.ofObj |> Option.map unbox<'T>))))"
+        },
+        {
+          "name": "TextColor",
+          "defaultValue": "Xamarin.Forms.Color.Default"
+        },,
+        {
           "name": "FontFamily",
           "defaultValue": "null"
         },
@@ -1003,11 +1017,7 @@
           "defaultValue": "-1.0",
           "inputType": "obj",
           "convToModel": "makeFontSize"
-        },
-        {
-          "name": "SelectedIndex",
-          "defaultValue": "0"
-        },
+        }
         {
           "name": "Title",
           "defaultValue": "null"
@@ -1015,16 +1025,6 @@
         {
           "name": "TitleColor",
           "defaultValue": "Xamarin.Forms.Color.Default"
-        },
-        {
-          "name": "TextColor",
-          "defaultValue": "Xamarin.Forms.Color.Default"
-        },
-        {
-          "name": "SelectedIndexChanged",
-          "defaultValue": "null",
-          "inputType": "(int * 'T option) -> unit",
-          "convToModel": "(fun f -> System.EventHandler(fun sender args -> let picker = (sender :?> Xamarin.Forms.Picker) in f (picker.SelectedIndex, (picker.SelectedItem |> Option.ofObj |> Option.map unbox<'T>))))"
         }
       ]
     },
