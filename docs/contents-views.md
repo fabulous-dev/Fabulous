@@ -16,6 +16,7 @@
   * [Extensions: Maps](views-maps.html)
   * [Extensions: SkiaSharp (drawing)](views-skiasharp.html)
   * [Extensions: OxyPlot (charting)](views-oxyplot.html)
+  * [Extensions: VideoManager](views-videomanager.html)
 * [Models](models.html)
 * [Update and Messages](update.html)
 * [Tools](tools.html)
