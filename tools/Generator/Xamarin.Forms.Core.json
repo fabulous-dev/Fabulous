@@ -1003,7 +1003,7 @@
         {
           "name": "TextColor",
           "defaultValue": "Xamarin.Forms.Color.Default"
-        },,
+        },
         {
           "name": "FontFamily",
           "defaultValue": "null"
@@ -1017,7 +1017,7 @@
           "defaultValue": "-1.0",
           "inputType": "obj",
           "convToModel": "makeFontSize"
-        }
+        },
         {
           "name": "Title",
           "defaultValue": "null"
