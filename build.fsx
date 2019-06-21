@@ -225,11 +225,11 @@ Target.create "Release" (fun _ ->
         | s when not (System.String.IsNullOrWhiteSpace s) -> s
         | _ -> failwith "Please set the nuget_apikey environment variable to a NuGet API key with write access to the Fabulous packages."
 
-    // GitHub.createClientWithToken token
-    // |> GitHub.draftNewRelease repositoryOwner repositoryName release.AssemblyVersion false (release.Notes |> List.map (sprintf "- %s"))
-    // |> GitHub.uploadFiles !!(buildDir + "/*.nupkg")
-    // |> GitHub.publishDraft
-    // |> Async.RunSynchronously
+    GitHub.createClientWithToken token
+    |> GitHub.draftNewRelease repositoryOwner repositoryName release.AssemblyVersion false (release.Notes |> List.map (sprintf "- %s"))
+    |> GitHub.uploadFiles !!(buildDir + "/*.nupkg")
+    |> GitHub.publishDraft
+    |> Async.RunSynchronously
 
     for nupkg in !! (buildDir + "/*.nupkg") do
         let fileName = System.IO.Path.GetFileNameWithoutExtension(nupkg)
@@ -269,7 +269,7 @@ open Fake.Core.TargetOperators
   ==> "RunSamplesTests"
   ==> "Test"
 
-//"Build"
-//  ==> "Release"
+"Test"
+  ==> "Release"
 
 Target.runOrDefault "Build"
