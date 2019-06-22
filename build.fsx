@@ -62,9 +62,16 @@ let getOutputDir basePath proj =
     let folderName = Path.GetFileNameWithoutExtension(proj)
     sprintf "%s/%s/" basePath folderName
 
+// JavaSdkDirectory is a temporary fix for the Windows 2019 build agent
+// It's currently failing to build Xamarin.Android : https://github.com/Microsoft/azure-pipelines-image-generation/blob/master/images/win/Vs2019-Server2019-Readme.md
+let addJDK properties =
+    match Environment.environVarOrDefault "JAVA_HOME_8_X64" "" with
+    | javaHome when not (System.String.IsNullOrWhiteSpace javaHome && Environment.isWindows) -> ("JavaSdkDirectory", javaHome) :: properties
+    | _ -> properties
+
 let msbuild (buildType: BuildType) (definition: ProjectDefinition) =
     let configuration = match buildType with Debug -> "Debug" | Release -> "Release"
-    let properties = [ ("Configuration", configuration) ] 
+    let properties = [ ("Configuration", configuration) ] |> addJDK
 
     for project in definition.Path do
         let outputDir = getOutputDir definition.OutputPath project
@@ -206,7 +213,7 @@ Target.create "TestTemplatesNuGet" (fun _ ->
     for c in ["Debug"; "Release"] do 
         for p in ["Any CPU"; "iPhoneSimulator"] do
             let sln = sprintf "%s/%s.sln" testAppName testAppName
-            let properties = [("RestorePackages", "True"); ("Platform", p); ("Configuration", c); ("PackageSources", sprintf "https://api.nuget.org/v3/index.json;%s" pkgs)]
+            let properties = [("RestorePackages", "True"); ("Platform", p); ("Configuration", c); ("PackageSources", sprintf "https://api.nuget.org/v3/index.json;%s" pkgs)] |> addJDK
             MSBuild.run id "" "Build" properties [sln] |> Trace.logItems ("Build-Output: ")
 )
 
