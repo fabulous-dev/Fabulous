@@ -206,7 +206,9 @@ Target.create "TestTemplatesNuGet" (fun _ ->
     for c in ["Debug"; "Release"] do 
         for p in ["Any CPU"; "iPhoneSimulator"] do
             let sln = sprintf "%s/%s.sln" testAppName testAppName
-            let properties = [("RestorePackages", "True"); ("Platform", p); ("Configuration", c); ("PackageSources", sprintf "https://api.nuget.org/v3/index.json;%s" pkgs)]
+            // JavaSdkDirectory is a temporary fix for the Windows 2019 build agent
+            // It's currently failing to build Xamarin.Android : https://github.com/Microsoft/azure-pipelines-image-generation/blob/master/images/win/Vs2019-Server2019-Readme.md
+            let properties = [("RestorePackages", "True"); ("Platform", p); ("Configuration", c); ("PackageSources", sprintf "https://api.nuget.org/v3/index.json;%s" pkgs); ("JavaSdkDirectory", "$(JAVA_HOME_8_X64)")]
             MSBuild.run id "" "Build" properties [sln] |> Trace.logItems ("Build-Output: ")
 )
 
