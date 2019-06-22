@@ -202,13 +202,18 @@ Target.create "TestTemplatesNuGet" (fun _ ->
         restorePackageDotnetCli testAppName (testAppName + ".WPF") "fsproj" pkgs
         restorePackageDotnetCli testAppName (testAppName + ".UWP") "csproj" pkgs
 
+    // JavaSdkDirectory is a temporary fix for the Windows 2019 build agent
+    // It's currently failing to build Xamarin.Android : https://github.com/Microsoft/azure-pipelines-image-generation/blob/master/images/win/Vs2019-Server2019-Readme.md
+    let addJDK properties =
+        match Environment.environVarOrDefault "JAVA_HOME_8_X64" "" with
+        | javaHome when not (System.String.IsNullOrWhiteSpace javaHome && Environment.isWindows) -> ("JavaSdkDirectory", javaHome) :: properties
+        | _ -> properties
+
     // Build for all combinations
     for c in ["Debug"; "Release"] do 
         for p in ["Any CPU"; "iPhoneSimulator"] do
             let sln = sprintf "%s/%s.sln" testAppName testAppName
-            // JavaSdkDirectory is a temporary fix for the Windows 2019 build agent
-            // It's currently failing to build Xamarin.Android : https://github.com/Microsoft/azure-pipelines-image-generation/blob/master/images/win/Vs2019-Server2019-Readme.md
-            let properties = [("RestorePackages", "True"); ("Platform", p); ("Configuration", c); ("PackageSources", sprintf "https://api.nuget.org/v3/index.json;%s" pkgs); ("JavaSdkDirectory", "$(JAVA_HOME_8_X64)")]
+            let properties = [("RestorePackages", "True"); ("Platform", p); ("Configuration", c); ("PackageSources", sprintf "https://api.nuget.org/v3/index.json;%s" pkgs)] |> addJDK
             MSBuild.run id "" "Build" properties [sln] |> Trace.logItems ("Build-Output: ")
 )
 
