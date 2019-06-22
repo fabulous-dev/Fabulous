@@ -54,11 +54,11 @@ jobs:
 
   # Run Build with Test target when not merging a release branch into master
   - script: .\build.cmd Test
-    conditions: and(succeeded(), not(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'))) 
+    condition: and(succeeded(), not(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'))) 
 
   # Run Build with Release target when merging a release branch into master
   - script: .\build.cmd Release
-    conditions: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'))
+    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'))
 
   - task: CopyFiles@2
     inputs:
@@ -74,3 +74,4 @@ jobs:
       testResultsFormat: 'VSTest'
       testResultsFiles: '**/testresults/*.trx'
       testRunTitle: '$(Agent.JobName)'
+
