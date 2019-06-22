@@ -7,6 +7,7 @@ group fakebuild
   storage: none
 
   clitool dotnet-fake
+  nuget Fake.Api.GitHub
   nuget Fake.Core.ReleaseNotes
   nuget Fake.Core.Target
   nuget Fake.Core.Xml

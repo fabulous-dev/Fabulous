@@ -1,6 +1,7 @@
 #r "paket: groupref fakebuild //"
 #load "./.fake/build.fsx/intellisense.fsx"
 
+open Fake.Api
 open Fake.Core
 open Fake.DotNet
 open Fake.DotNet.NuGet
@@ -25,6 +26,9 @@ type ProjectDefinition =
       Path: IGlobbingPattern
       Action: BuildAction
       OutputPath: string }
+
+let repositoryOwner = "fsprojects"
+let repositoryName = "Fabulous"
 
 let release = ReleaseNotes.load "RELEASE_NOTES.md"
 let buildDir = Path.getFullName "./build_output"
@@ -217,6 +221,39 @@ Target.create "TestTemplatesNuGet" (fun _ ->
             MSBuild.run id "" "Build" properties [sln] |> Trace.logItems ("Build-Output: ")
 )
 
+Target.create "Release" (fun _ ->
+    let token =
+        match Environment.environVarOrDefault "github_token" "" with
+        | s when not (System.String.IsNullOrWhiteSpace s) -> s
+        | _ -> failwith "Please set the github_token environment variable to a github personal access token with repo access."
+
+    let nugetApiKey =
+        match Environment.environVarOrDefault "nuget_apikey" "" with
+        | s when not (System.String.IsNullOrWhiteSpace s) -> s
+        | _ -> failwith "Please set the nuget_apikey environment variable to a NuGet API key with write access to the Fabulous packages."
+
+    GitHub.createClientWithToken token
+    |> GitHub.draftNewRelease repositoryOwner repositoryName release.AssemblyVersion false (release.Notes |> List.map (sprintf "- %s"))
+    |> GitHub.uploadFiles !!(buildDir + "/*.nupkg")
+    |> GitHub.publishDraft
+    |> Async.RunSynchronously
+
+    for nupkg in !! (buildDir + "/*.nupkg") do
+        let fileName = System.IO.Path.GetFileNameWithoutExtension(nupkg)
+        let projectName = fileName.Remove(fileName.LastIndexOf('.'))
+        let projectName = projectName.Remove(projectName.LastIndexOf('.'))
+        let projectName = projectName.Remove(projectName.LastIndexOf('.'))
+
+        NuGet.NuGetPublish (fun p ->
+            { p with AccessKey = nugetApiKey
+                     PublishUrl = "https://www.nuget.org"
+                     Project = projectName
+                     Version = release.NugetVersion
+                     WorkingDir = buildDir
+                     OutputPath = buildDir }
+        )
+)
+
 Target.create "Build" ignore
 Target.create "Test" ignore
 
@@ -238,5 +275,8 @@ open Fake.Core.TargetOperators
   ==> "BuildSamples"
   ==> "RunSamplesTests"
   ==> "Test"
+
+"Test"
+  ==> "Release"
 
 Target.runOrDefault "Build"
