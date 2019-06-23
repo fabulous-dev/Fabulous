@@ -18,15 +18,20 @@ type XamarinFormsHost(app: Application) =
             | :? Page as page -> app.MainPage <- page
             | _ -> failwithf "Incorrect model type: expected a page but got a %O" (rootView.GetType())
 
-module Program =
+/// Program module - functions to manipulate program instances
+[<RequireQualifiedAccess>]
+[<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
+module XamarinFormsProgram =    
     let private syncDispatch (dispatch: 'msg -> unit) =
         fun msg ->
             Device.BeginInvokeOnMainThread(fun () -> dispatch msg)
 
-    let runWithXamarinForms app (program: Program<unit, 'model, 'msg, ViewElement>) =
+    let runWith app arg program =
         let host = XamarinFormsHost(app)
 
         program
-        |> Program.withFabulous host ViewHelpers.canReuseView
         |> Program.withSyncDispatch syncDispatch
-        |> Program.run
+        |> FabulousProgram.runWith host ViewHelpers.canReuseView arg
+        
+    let run app program =
+        runWith app () program

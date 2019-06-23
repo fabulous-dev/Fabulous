@@ -1000,6 +1000,6 @@ type App () as app =
     let runner = 
         Program.mkProgram App.init App.update App.view
         |> Program.withConsoleTrace
-        |> Program.runWithXamarinForms app
+        |> XamarinFormsProgram.run app
 
     member __.Program = runner
