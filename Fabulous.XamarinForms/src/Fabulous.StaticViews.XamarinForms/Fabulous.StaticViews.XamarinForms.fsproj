@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\..\SourceLink.props" />
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="ElmishCmd.fs" />
+    <Compile Include="ElmishProgram.fs" />
+    <Compile Include="StaticViewBinding.fs" />
+    <Compile Include="StaticViewModel.fs" />
+    <Compile Include="StaticViewNav.fs" />
+    <Compile Include="StaticViewProgram.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" />
+    <PackageReference Include="FSharp.Core" />
+  </ItemGroup>
+  <Import Project="..\..\..\Packages.targets" />
+</Project>

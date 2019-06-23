@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\..\SourceLink.props" />
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Xamarin.Forms.Core.fs" />
+    <None Include="Xamarin.Forms.Core.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj" />
+  </ItemGroup>
+  <Import Project="..\..\..\Packages.targets" />
+</Project>

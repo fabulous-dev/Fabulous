@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+    </PropertyGroup>
+    <ItemGroup>
+      <Compile Include="Models\Animal.fs" />
+      <Compile Include="Data\BearData.fs" />
+      <Compile Include="Data\CatData.fs" />
+      <Compile Include="Data\DogData.fs" />
+      <Compile Include="Data\ElephantData.fs" />
+      <Compile Include="Data\MonkeyData.fs" />
+      <Compile Include="Components\SearchHandlers.fs" />
+      <Compile Include="Components\Templates.fs" />
+      <Compile Include="Components\AnimalListPage.fs" />
+      <Compile Include="Components\AnimalDetailsPage.fs" />
+      <Compile Include="Views\About.fs" />
+      <Compile Include="Views\Bears.fs" />
+      <Compile Include="Views\Cats.fs" />
+      <Compile Include="Views\Dogs.fs" />
+      <Compile Include="Views\Elephants.fs" />
+      <Compile Include="Views\Monkeys.fs" />
+      <Compile Include="Routes.fs" />
+      <Compile Include="App.fs" />
+      <PackageReference Include="FSharp.Core" />
+      <PackageReference Include="Xamarin.Forms" />
+      <PackageReference Include="Newtonsoft.Json" />
+    </ItemGroup>
+    <Import Project="..\..\..\..\Packages.targets" />
+</Project>

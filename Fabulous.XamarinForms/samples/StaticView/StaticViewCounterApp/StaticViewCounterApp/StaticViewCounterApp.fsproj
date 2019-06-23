@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+    </PropertyGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="CounterPage.xaml">
+            <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+        </EmbeddedResource>
+        <Compile Include="CounterPage.xaml.fs">
+            <DependentUpon>CounterPage.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="StaticViewCounterApp.fs" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="FSharp.Core" />
+        <PackageReference Include="Xamarin.Forms" />
+    </ItemGroup>
+    <Import Project="..\..\..\..\Packages.targets" />
+</Project>

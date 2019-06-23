@@ -7,11 +7,10 @@ open System.Net.Sockets
 open System.Net.NetworkInformation
 open System.IO
 open System.Text
-open Fabulous.Core
-open Fabulous.DynamicViews
+open Elmish
+open Fabulous
 open FSharp.Compiler.PortaCode.CodeModel
 open FSharp.Compiler.PortaCode.Interpreter
-open Xamarin.Forms
 
 module Ports = 
     let DefaultPort = 9867
@@ -35,7 +34,7 @@ type BroadcastInfo =
       Addresses : BroadcasterAddress[] 
       DeviceModel : string }
 
-    static member Start(?httpPort) = 
+    static member Start(printAddressesFn, ?httpPort) = 
         //let broadcastEndpoint = new IPEndPoint(IPAddress.Broadcast, Ports.BroadcasterReceiverPort)
 
         let httpPort = defaultArg httpPort Ports.DefaultPort
@@ -63,33 +62,7 @@ type BroadcastInfo =
                             printfn "----------"
                             printfn "  LiveUpdate: Ready for connection. Will show this message %d more times." (3 - i)
                             printfn "  "
-
-                            if Device.RuntimePlatform = Device.iOS then
-                                printfn "  LiveUpdate: Connect using:"
-                                for iip in iips do
-                                    printfn "      fabulous --watch --webhook:http://%s:%d/update" iip.Address httpPort
-                            elif Device.RuntimePlatform = Device.Android then
-                                printfn "  LiveUpdate: On USB connect using:"
-                                printfn "      adb -d forward  tcp:%d tcp:%d" httpPort httpPort
-                                if httpPort = Ports.DefaultPort then
-                                    printfn "      fabulous --watch --send"
-                                else
-                                    printfn "      fabulous --watch --webhook:http://localhost:%d/update" httpPort
-                                printfn "  "
-                                printfn "  LiveUpdate: On Emulator connect using:"
-                                printfn "      adb -e forward  tcp:%d tcp:%d" httpPort httpPort
-                                if httpPort = Ports.DefaultPort then
-                                    printfn "      fabulous --watch --send"
-                                else
-                                    printfn "      fabulous --watch --webhook:http://localhost:%d/update" httpPort
-                            else
-                                printfn "  LiveUpdate: %s is not officially supported" Device.RuntimePlatform 
-                                printfn "  LiveUpdate: You can still try to connect using:" 
-                                if httpPort = Ports.DefaultPort then
-                                    printfn "      fabulous --watch --send"
-                                else
-                                    printfn "      fabulous --watch --webhook:http://localhost:%d/update" httpPort
-
+                            printAddressesFn iips httpPort
                             printfn "  "
                             printfn "  See https://fsprojects.github.io/Fabulous/tools.html for more details"
                             printfn "----------"
@@ -105,9 +78,9 @@ type BroadcastInfo =
                     do! Async.Sleep 10000 } |> Async.Start
 
 
-type HttpServer(?port) = 
+type HttpServer(printAddressFn, ?port) = 
     let port = defaultArg port Ports.DefaultPort
-    do BroadcastInfo.Start()
+    do BroadcastInfo.Start(printAddressFn)
     member x.Run (switchD) =
 
         let _syncCtxt = System.Threading.SynchronizationContext.Current
@@ -204,97 +177,95 @@ module Extensions =
             | DDeclMember (membDef, body, _range) -> if membDef.Name = name then Some (membDef, body) else None
             | _ -> None)
 
-    /// Trace all the updates to the console
-    type ProgramRunner<'model,'msg> with
+    let enableLiveUpdate (printAddressesFn, runner: ProgramRunner<'model,'msg>) =
+        let interp = EvalContext(System.Reflection.Assembly.Load)
 
-        member runner.EnableLiveUpdate() = 
+        let switchD (files: (string * DFile)[]) =
+          lock interp (fun () -> 
+            let res = 
+                try 
+                    for (_, file) in files do
+                        printfn "LiveUpdate: adding declarations...."
+                        interp.AddDecls file.Code
 
-            let interp = EvalContext(System.Reflection.Assembly.Load)
+                    for (_, file) in files do
+                        printfn "LiveUpdate: evaluating decls in code package for side effects...."
+                        interp.EvalDecls (envEmpty, file.Code)
+                    Result.Ok ()
+                with exn -> 
+                    Result.Error exn
 
-            let switchD (files: (string * DFile)[]) =
-              lock interp (fun () -> 
-                let res = 
-                    try 
-                        for (_, file) in files do
-                            printfn "LiveUpdate: adding declarations...."
-                            interp.AddDecls file.Code
+            match res with 
+            | Result.Error exn -> 
+                printfn "*** LiveUpdate failure:"
+                printfn "***   [x] got code package"
+                printfn "***   FAIL: the evaluation of the declarations in the code package failed: %A" exn
+                { Quacked = sprintf "couldn't quack! the evaluation of the declarations in the code package failed: %A" exn }
 
-                        for (_, file) in files do
-                            printfn "LiveUpdate: evaluating decls in code package for side effects...."
-                            interp.EvalDecls (envEmpty, file.Code)
-                        Result.Ok ()
-                    with exn -> 
-                        Result.Error exn
+            | Result.Ok () -> 
 
-                match res with 
-                | Result.Error exn -> 
-                    printfn "*** LiveUpdate failure:"
-                    printfn "***   [x] got code package"
-                    printfn "***   FAIL: the evaluation of the declarations in the code package failed: %A" exn
-                    { Quacked = sprintf "couldn't quack! the evaluation of the declarations in the code package failed: %A" exn }
+            match files.Length with 
+            | 0 -> { Quacked = "couldn't quack! Files were empty!" }
+            | _ -> 
+            let result = 
+                files |> Array.tryPick (fun (_, file) -> 
 
-                | Result.Ok () -> 
-
-                match files.Length with 
-                | 0 -> { Quacked = "couldn't quack! Files were empty!" }
-                | _ -> 
-                let result = 
-                    files |> Array.tryPick (fun (_, file) -> 
-
-                        let programOptD = 
-                            match tryFindMemberByName "programLiveUpdate" file.Code with
-                            | Some d -> Some d
-                            | None -> 
-                            match tryFindMemberByName "program" file.Code with
-                            | None -> None
-                            | Some d -> Some d
-
-                        match programOptD with 
+                    let programOptD = 
+                        match tryFindMemberByName "programLiveUpdate" file.Code with
+                        | Some d -> Some d
+                        | None -> 
+                        match tryFindMemberByName "program" file.Code with
                         | None -> None
+                        | Some d -> Some d
 
-                        | Some (membDef, _) -> 
-                            if membDef.Parameters.Length > 0 then 
+                    match programOptD with 
+                    | None -> None
+
+                    | Some (membDef, _) -> 
+                        if membDef.Parameters.Length > 0 then 
+                            printfn "*** LiveUpdate failure:"
+                            printfn "***   [x] got code package"
+                            printfn "***   [x] found declaration called 'programLiveUpdate' or 'program'"
+                            printfn "***   FAIL: the declaration has parameters, it must be a single top-level value"
+                            Some { Quacked = "couldn't quack! Found declaration called 'program' or 'programLiveUpdate' but the declaration has parameters!" }
+
+                        else 
+
+                            printfn "LiveUpdate: evaluating 'program'...."
+                            let entity = interp.ResolveEntity(membDef.EnclosingEntity)
+                            let (_, programObj) = interp.GetExprDeclResult(entity, membDef.Name) 
+                            match getVal programObj with 
+
+                            | :? Program<unit, obj, obj, ViewElement> as programErased -> 
+
+                                // Stop the running program 
+                                printfn "changing running program...."
+                                runner.ChangeProgram(programErased)
+                                printfn "*** LiveUpdate success:"
+                                printfn "***   [x] got code package"
+                                printfn "***   [x] found declaration called 'programLiveUpdate' or 'program'"
+                                printfn "***   [x] it had no parameters (good!)"
+                                printfn "***   [x] the declaration had the right type"
+                                printfn "***   [x] changed the running program"
+                                Some { Quacked = "LiveUpdate quacked!" }
+                    
+                            | p -> 
                                 printfn "*** LiveUpdate failure:"
                                 printfn "***   [x] got code package"
                                 printfn "***   [x] found declaration called 'programLiveUpdate' or 'program'"
-                                printfn "***   FAIL: the declaration has parameters, it must be a single top-level value"
-                                Some { Quacked = "couldn't quack! Found declaration called 'program' or 'programLiveUpdate' but the declaration has parameters!" }
+                                printfn "***   [x] it had no parameters (good!)"
+                                printfn "***   FAIL: the declaration had the wrong type '%A', expected 'Program<Model, Msg, Model -> (Msg-> unit) -> ViewElement>'" (p.GetType())
+                                Some { Quacked = "LiveUpdate couldn't quack! types mismatch!" })
+            match result with
+            | None -> 
+                printfn "*** LiveUpdate failure:"
+                printfn "***   [x] got code package"
+                printfn "***   FAIL: couldn't find declaration called 'program' or 'programLiveUpdate'"
+                { Quacked = "couldn't quack! No declaration called 'program' or 'programLiveUpdate'!" }
+            | Some res -> res
+          )
 
-                            else 
+        let server = HttpServer(printAddressesFn)
+        server.Run(switchD)
 
-                                printfn "LiveUpdate: evaluating 'program'...."
-                                let entity = interp.ResolveEntity(membDef.EnclosingEntity)
-                                let (_, programObj) = interp.GetExprDeclResult(entity, membDef.Name) 
-                                match getVal programObj with 
-                    
-                                | :? Program<obj, obj, obj -> (obj -> unit) -> ViewElement> as programErased -> 
-
-                                    // Stop the running program 
-                                    printfn "changing running program...."
-                                    runner.ChangeProgram(programErased)
-                                    printfn "*** LiveUpdate success:"
-                                    printfn "***   [x] got code package"
-                                    printfn "***   [x] found declaration called 'programLiveUpdate' or 'program'"
-                                    printfn "***   [x] it had no parameters (good!)"
-                                    printfn "***   [x] the declaration had the right type"
-                                    printfn "***   [x] changed the running program"
-                                    Some { Quacked = "LiveUpdate quacked!" }
-                        
-                                | p -> 
-                                    printfn "*** LiveUpdate failure:"
-                                    printfn "***   [x] got code package"
-                                    printfn "***   [x] found declaration called 'programLiveUpdate' or 'program'"
-                                    printfn "***   [x] it had no parameters (good!)"
-                                    printfn "***   FAIL: the declaration had the wrong type '%A', expected 'Program<Model, Msg, Model -> (Msg-> unit) -> ViewElement>'" (p.GetType())
-                                    Some { Quacked = "LiveUpdate couldn't quack! types mismatch!" })
-                match result with
-                | None -> 
-                    printfn "*** LiveUpdate failure:"
-                    printfn "***   [x] got code package"
-                    printfn "***   FAIL: couldn't find declaration called 'program' or 'programLiveUpdate'"
-                    { Quacked = "couldn't quack! No declaration called 'program' or 'programLiveUpdate'!" }
-                | Some res -> res
-              )
-
-            let server = HttpServer()
-            server.Run(switchD)
+            

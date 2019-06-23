@@ -11,7 +11,6 @@
         <Compile Include="CodeGenerator.Models.fs" />
         <Compile Include="CodeGenerator.Preparation.fs" />
         <Compile Include="CodeGenerator.fs" />
-        <None Include="Xamarin.Forms.Core.json" />
         <Compile Include="AssemblyResolver.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>

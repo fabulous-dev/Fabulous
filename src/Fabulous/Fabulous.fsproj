@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\SourceLink.props" />
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Cmd.fs" />
+    <Compile Include="ViewElement.fs" />
+    <Compile Include="Program.fs" />
+    <Compile Include="ViewHelpers.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Elmish" />
+  </ItemGroup>
+  <Import Project="..\..\Packages.targets" />
+</Project>
