@@ -2,6 +2,7 @@
   <Import Project="..\..\..\SourceLink.props" />
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Fabulous.StaticViews.XamarinForms</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ElmishCmd.fs" />

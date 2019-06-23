@@ -13,8 +13,7 @@
         <Compile Include="StaticViewCounterApp.fs" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="FSharp.Core" />
-        <PackageReference Include="Xamarin.Forms" />
+      <ProjectReference Include="..\..\..\..\src\Fabulous.StaticView.XamarinForms\Fabulous.StaticView.XamarinForms.fsproj" />
     </ItemGroup>
-    <Import Project="..\..\..\..\Packages.targets" />
+    <Import Project="..\..\..\..\..\Packages.targets" />
 </Project>

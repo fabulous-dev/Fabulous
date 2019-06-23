@@ -1,9 +1,10 @@
-// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
-
+// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace TicTacToe
 
-open Fabulous.Core
-open Fabulous.DynamicViews
+open Elmish
+open Fabulous
+open Fabulous.XamarinForms
+open Fabulous.LiveUpdate.XamarinForms
 open Xamarin.Forms
 
 /// Represents a player and a player's move
@@ -227,7 +228,7 @@ type App() as app =
 
     let runner = 
         App.program
-        |> Program.runWithDynamicView app
+        |> XamarinFormsProgram.run app
         
 #if DEBUG && !TESTEVAL
     do runner.EnableLiveUpdate ()

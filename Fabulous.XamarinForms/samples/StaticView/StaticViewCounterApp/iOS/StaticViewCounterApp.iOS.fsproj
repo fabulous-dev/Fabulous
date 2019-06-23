@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -94,30 +94,34 @@
     <Compile Include="AppDelegate.fs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\src\Fabulous.StaticView.XamarinForms\Fabulous.StaticView.XamarinForms.fsproj">
+      <Project>{f8a9317b-c13f-4161-84c0-e39fac2dfb37}</Project>
+      <Name>Fabulous.StaticView.XamarinForms</Name>
+    </ProjectReference>
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Numerics" />
     <Reference Include="Xamarin.iOS" />
     <Reference Include="Xamarin.Forms.Core">
-      <HintPath>../../../../packages/iosapp/Xamarin.Forms/lib/Xamarin.iOS10/Xamarin.Forms.Core.dll</HintPath>
+      <HintPath>..\..\..\..\..\packages\iosapp\Xamarin.Forms\lib\Xamarin.iOS10\Xamarin.Forms.Core.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Platform">
-      <HintPath>../../../../packages/iosapp/Xamarin.Forms/lib/Xamarin.iOS10/Xamarin.Forms.Platform.dll</HintPath>
+      <HintPath>..\..\..\..\..\packages\iosapp\Xamarin.Forms\lib\Xamarin.iOS10\Xamarin.Forms.Platform.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Platform.iOS">
-      <HintPath>../../../../packages/iosapp/Xamarin.Forms/lib/Xamarin.iOS10/Xamarin.Forms.Platform.iOS.dll</HintPath>
+      <HintPath>..\..\..\..\..\packages\iosapp\Xamarin.Forms\lib\Xamarin.iOS10\Xamarin.Forms.Platform.iOS.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml">
-      <HintPath>../../../../packages/iosapp/Xamarin.Forms/lib/Xamarin.iOS10/Xamarin.Forms.Xaml.dll</HintPath>
+      <HintPath>..\..\..\..\..\packages\iosapp\Xamarin.Forms\lib\Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
+    </Reference>
+    <Reference Include="FSharp.Core">
+      <HintPath>..\..\..\..\..\packages\iosapp\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll</HintPath>
     </Reference>
     <ProjectReference Include="..\StaticViewCounterApp\StaticViewCounterApp.fsproj">
       <Project>{4282E90F-2519-46D0-B593-D57CFCA36A2D}</Project>
       <Name>StaticViewCounterApp</Name>
     </ProjectReference>
-    <Reference Include="FSharp.Core">
-      <HintPath>..\..\..\..\packages\iosapp\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets" Condition="Exists('$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.FSharp.targets')" />
-  <Import Project="..\..\..\..\packages\iosapp\Xamarin.Forms\build\netstandard1.0\Xamarin.Forms.targets" Condition="Exists('..\..\..\..\packages\iosapp\Xamarin.Forms\build\netstandard1.0\Xamarin.Forms.targets')" />
+  <Import Project="..\..\..\..\..\packages\iosapp\Xamarin.Forms\build\Xamarin.Forms.targets" Condition="Exists('..\..\..\..\..\packages\iosapp\Xamarin.Forms\build\Xamarin.Forms.targets')" />
 </Project>

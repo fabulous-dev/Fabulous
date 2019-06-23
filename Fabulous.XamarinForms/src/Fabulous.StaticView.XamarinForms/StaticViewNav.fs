@@ -1,5 +1,5 @@
 ﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
-namespace Fabulous.StaticViews
+namespace Fabulous.StaticView
 
 open Fabulous.Core
 open Xamarin.Forms

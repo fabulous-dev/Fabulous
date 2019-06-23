@@ -1,8 +1,10 @@
 ﻿// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Fabimals
 
-open Fabulous.Core
-open Fabulous.DynamicViews
+open Elmish
+open Fabulous
+open Fabulous.XamarinForms
+open Fabulous.LiveUpdate.XamarinForms
 open Xamarin.Forms
 open System
 open Fabimals.Views
@@ -228,7 +230,7 @@ type FabimalsApp () as app =
     let runner =
         App.program
         |> Program.withConsoleTrace
-        |> Program.runWithDynamicView app
+        |> XamarinFormsProgram.run app
 
 #if DEBUG
     // Run LiveUpdate using: 

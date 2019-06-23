@@ -25,7 +25,7 @@ type private ProgramAccessor<'model, 'msg>(program: Program<unit, 'model, 'msg, 
             
         dispatch msg
         
-    member __.OnError(message) =
+    member __.OnError(message, ex) =
         let onError =
             Option.defaultWith (fun () ->
                     let mutable value = ignore
@@ -34,7 +34,7 @@ type private ProgramAccessor<'model, 'msg>(program: Program<unit, 'model, 'msg, 
                     value
                 ) onErrorOpt
             
-        onError message
+        onError (message, ex)
 
 /// Starts the Elmish dispatch loop for the page with the given Elmish program
 type ProgramRunner<'model, 'msg>(host: IHost, canReuseView: ViewElement -> ViewElement -> bool, program: Program<unit, 'model, 'msg, ViewElement>) =
@@ -51,6 +51,8 @@ type ProgramRunner<'model, 'msg>(host: IHost, canReuseView: ViewElement -> ViewE
         | Some lastModel -> lastModel
         
     member __.Dispatch(msg) = programAccessor.Dispatch(msg)
+    
+    member __.OnError (message, ex) = programAccessor.OnError(message, ex)
 
     member __.UpdateView (updatedModel, dispatch) =
         lastModelOpt <- Some updatedModel
@@ -81,6 +83,17 @@ type ProgramRunner<'model, 'msg>(host: IHost, canReuseView: ViewElement -> ViewE
     member runner.ChangeProgram (newProgram: Program<unit, obj, obj, ViewElement>) =
         let alternativeRunner = ProgramRunner(host, canReuseView, newProgram)
         alternativeRunnerOpt <- Some alternativeRunner
+        
+    /// Set the current model, e.g. on resume
+    member runner.SetCurrentModel(model, cmd: Cmd<_>) =
+        match alternativeRunnerOpt with 
+        | Some _ -> 
+            // TODO: transmogrify the resurrected model
+            printfn "SetCurrentModel: ignoring (can't the model after ChangeProgram has been called)"
+        | None -> 
+            printfn "updating the view after setting the model"
+            Program.setState program model runner.Dispatch
+            // TODO: execute Cmds
 
 /// Program module - functions to manipulate program instances
 [<RequireQualifiedAccess>]
@@ -100,3 +113,12 @@ module FabulousProgram =
         
     let runFabulous host canReuseView program =
         runWith host canReuseView () program
+        
+/// Program module - functions to manipulate program instances
+[<RequireQualifiedAccess>]
+[<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
+module Program =
+    /// Typical program, new commands are produced discriminated unions returned by `init` and `update` along with the new state.
+    let mkProgramWithCmdMsg (init: unit -> 'model * 'cmdMsg list) (update: 'msg -> 'model -> 'model * 'cmdMsg list) (view: 'model -> ('msg -> unit) -> ViewElement) (mapToCmd: 'cmdMsg -> Cmd<'msg>) =
+        let convert = fun (model, cmdMsgs) -> model, (cmdMsgs |> List.map mapToCmd |> Cmd.batch)
+        Program.mkProgram (fun arg -> init arg |> convert) (fun msg model -> update msg model |> convert) view

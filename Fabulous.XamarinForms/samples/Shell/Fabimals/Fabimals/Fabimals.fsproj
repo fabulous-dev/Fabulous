@@ -22,9 +22,10 @@
       <Compile Include="Views\Monkeys.fs" />
       <Compile Include="Routes.fs" />
       <Compile Include="App.fs" />
-      <PackageReference Include="FSharp.Core" />
-      <PackageReference Include="Xamarin.Forms" />
-      <PackageReference Include="Newtonsoft.Json" />
     </ItemGroup>
-    <Import Project="..\..\..\..\Packages.targets" />
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\..\src\Fabulous.LiveUpdate.XamarinForms\Fabulous.LiveUpdate.XamarinForms.fsproj" />
+      <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms.Controls\Fabulous.XamarinForms.Controls.fsproj" />
+    </ItemGroup>
+    <Import Project="..\..\..\..\..\Packages.targets" />
 </Project>

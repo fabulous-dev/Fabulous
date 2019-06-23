@@ -7,11 +7,6 @@
         <Compile Include="Calculator.fs" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="FSharp.Core" />
-        <PackageReference Include="Xamarin.Forms" />
-        <PackageReference Include="Newtonsoft.Json" />
-    </ItemGroup>
-    <ItemGroup>
       <ProjectReference Include="..\..\..\src\Fabulous.LiveUpdate.XamarinForms\Fabulous.LiveUpdate.XamarinForms.fsproj" />
       <ProjectReference Include="..\..\..\src\Fabulous.XamarinForms.Controls\Fabulous.XamarinForms.Controls.fsproj" />
     </ItemGroup>

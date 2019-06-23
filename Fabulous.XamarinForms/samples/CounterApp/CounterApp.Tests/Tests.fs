@@ -5,8 +5,7 @@ open NUnit.Framework
 open FsUnit
 open CounterApp
 open CounterApp.App
-open Fabulous.Core
-open Fabulous.DynamicViews
+open Fabulous.XamarinForms
 
 module ``Init tests`` =
     [<Test>]

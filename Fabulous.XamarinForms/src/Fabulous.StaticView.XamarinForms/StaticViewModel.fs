@@ -1,12 +1,10 @@
 ﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
-namespace Fabulous.StaticViews
+namespace Fabulous.StaticView
 
 open System
 open System.Collections.Generic
 open System.ComponentModel
 open System.Diagnostics
-open Xamarin.Forms
-open Fabulous.Core
 
 /// The internal representation of a binding in the ViewModel for static Xaml
 type internal PropertyBinding<'model, 'msg> =

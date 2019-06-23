@@ -1,7 +1,7 @@
 // Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Fabimals.Routes
 
-open Fabulous.DynamicViews
+open Fabulous
 open Xamarin.Forms
 open Fabimals.Models
 open Fabimals.Data

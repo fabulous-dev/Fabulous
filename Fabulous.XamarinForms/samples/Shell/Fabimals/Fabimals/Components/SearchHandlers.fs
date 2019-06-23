@@ -1,7 +1,7 @@
 ﻿// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Fabimals.Components
 
-open Fabulous.DynamicViews
+open Fabulous.XamarinForms
 open Xamarin.Forms
 open Fabimals.Models
 

@@ -2,7 +2,7 @@
 namespace StaticViewCounterApp
 
 open Fabulous.Core
-open Fabulous.StaticViews
+open Fabulous.StaticView
 open Xamarin.Forms
 
 type Model = 

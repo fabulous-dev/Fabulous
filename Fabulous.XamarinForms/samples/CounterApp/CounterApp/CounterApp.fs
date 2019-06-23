@@ -1,9 +1,12 @@
-﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
+﻿// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace CounterApp
 
-open Fabulous.Core
-open Fabulous.DynamicViews
+open Elmish
+open Fabulous
+open Fabulous.XamarinForms
 open Xamarin.Forms
+open Fabulous.LiveUpdate.XamarinForms
+open System.Diagnostics
 
 module App = 
     type Model = 
@@ -22,10 +25,10 @@ module App =
     type CmdMsg =
         | TickTimer
 
-    let timerCmd () = 
+    let timerCmd () =
         async { do! Async.Sleep 200
                 return TimedTick }
-        |> Cmd.ofAsyncMsg
+        |> Cmd.OfAsync.result
 
     let mapCmdMsgToCmd cmdMsg =
         match cmdMsg with
@@ -68,7 +71,7 @@ type CounterApp () as app =
     let runner =
         App.program
         |> Program.withConsoleTrace
-        |> Program.runWithDynamicView app
+        |> XamarinFormsProgram.run app
 
 #if DEBUG
     // Run LiveUpdate using: 
@@ -99,8 +102,8 @@ type CounterApp () as app =
                 runner.SetCurrentModel (model, Cmd.none)
 
             | _ -> ()
-        with ex -> 
-            App.program.onError("Error while restoring model found in app.Properties", ex)
+        with ex ->
+            runner.OnError ("Error while restoring model found in app.Properties", ex)
 
     override this.OnStart() = 
         Debug.WriteLine "OnStart: using same logic as OnResume()"
