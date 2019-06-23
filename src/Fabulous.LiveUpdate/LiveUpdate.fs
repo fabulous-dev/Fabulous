@@ -1,5 +1,5 @@
-// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
-namespace Fabulous.Core
+// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
+namespace Fabulous.LiveUpdate
 
 open System
 open System.Net
@@ -177,7 +177,7 @@ module Extensions =
             | DDeclMember (membDef, body, _range) -> if membDef.Name = name then Some (membDef, body) else None
             | _ -> None)
 
-    let enableLiveUpdate (printAddressesFn, runner: ProgramRunner<'model,'msg>) =
+    let enableLiveUpdate printAddressesFn (runner: ProgramRunner<'model,'msg>) =
         let interp = EvalContext(System.Reflection.Assembly.Load)
 
         let switchD (files: (string * DFile)[]) =

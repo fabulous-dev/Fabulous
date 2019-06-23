@@ -1,7 +1,6 @@
-﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
+﻿// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace iOS
 
-open System
 open UIKit
 open Foundation
 open Xamarin.Forms

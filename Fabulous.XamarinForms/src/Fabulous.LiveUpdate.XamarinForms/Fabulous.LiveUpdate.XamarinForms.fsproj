@@ -4,7 +4,10 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Library.fs" />
+    <Compile Include="LiveUpdate.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Fabulous.LiveUpdate\Fabulous.LiveUpdate.fsproj" />

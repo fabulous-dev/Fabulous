@@ -1,14 +1,10 @@
-﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
+﻿// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Droid
 
 open System
 
 open Android.App
-open Android.Content
 open Android.Content.PM
-open Android.Runtime
-open Android.Views
-open Android.Widget
 open Android.OS
 open Xamarin.Forms.Platform.Android
 
@@ -16,8 +12,6 @@ open Xamarin.Forms.Platform.Android
 type MainActivity() =
     inherit FormsApplicationActivity()
     override this.OnCreate (bundle: Bundle) =
-        //FormsAppCompatActivity.TabLayoutResource <- Resources.Layout.Tabbar
-        //FormsAppCompatActivity.ToolbarResource <- Resources.Layout.Toolbar
         base.OnCreate (bundle)
 
         Xamarin.Forms.Forms.Init (this, bundle)

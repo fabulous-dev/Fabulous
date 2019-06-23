@@ -1,10 +1,10 @@
 ﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
 namespace Calculator
 
-open System.Diagnostics
-open Fabulous.Core
-open Fabulous.DynamicViews
+open Elmish
+open Fabulous.XamarinForms
 open Xamarin.Forms
+open Fabulous.LiveUpdate.XamarinForms
 
 module App =
     type Operator = Add | Subtract | Multiply | Divide 
@@ -119,7 +119,7 @@ module App =
 type CalculatorApp () as app = 
     inherit Application ()
 
-    let runner = App.program |> Program.runWithDynamicView app
+    let runner = App.program |> XamarinFormsProgram.run app
 
 #if DEBUG
     do runner.EnableLiveUpdate ()

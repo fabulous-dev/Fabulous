@@ -68,6 +68,7 @@ group macosapp
   nuget Xamarin.Forms 4.0.0.425677
   nuget Newtonsoft.Json 11.0.2
   nuget FSharp.Data 3.0.0
+  nuget Elmish 3.0.3
 
 group wpfapp
   framework: net472
