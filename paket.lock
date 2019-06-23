@@ -4,7 +4,9 @@ GROUP androidapp
 RESTRICTION: == monoandroid9.0
 NUGET
   remote: https://api.nuget.org/v3/index.json
-    FSharp.Core (4.5.2)
+    Elmish (3.0.3)
+      FSharp.Core (>= 4.6.2)
+    FSharp.Core (4.6.2)
     FSharp.Data (3.0)
       FSharp.Core (>= 4.3.4)
     Newtonsoft.Json (11.0.2)
@@ -896,7 +898,9 @@ GROUP gtkapp
 RESTRICTION: == net471
 NUGET
   remote: https://api.nuget.org/v3/index.json
-    FSharp.Core (4.5.2)
+    Elmish (3.0.3)
+      FSharp.Core (>= 4.6.2)
+    FSharp.Core (4.6.2)
     FSharp.Data (3.0)
       FSharp.Core (>= 4.0.0.1)
     Newtonsoft.Json (11.0.2)
@@ -910,7 +914,10 @@ GROUP iosapp
 RESTRICTION: == monotouch
 NUGET
   remote: https://api.nuget.org/v3/index.json
-    FSharp.Core (4.5.2)
+    Elmish (3.0.3)
+      FSharp.Core (>= 4.6.2)
+      NETStandard.Library (>= 1.6.1)
+    FSharp.Core (4.6.2)
       System.Collections (>= 4.0.11)
       System.Console (>= 4.0)
       System.Diagnostics.Debug (>= 4.0.11)
@@ -1047,7 +1054,7 @@ GROUP macosapp
 RESTRICTION: == xamarinmac
 NUGET
   remote: https://api.nuget.org/v3/index.json
-    FSharp.Core (4.5.2)
+    FSharp.Core (4.6.2)
     FSharp.Data (3.0)
       FSharp.Core (>= 4.3.4)
     Newtonsoft.Json (11.0.2)
@@ -1057,7 +1064,9 @@ GROUP neutral
 RESTRICTION: == netstandard2.0
 NUGET
   remote: https://api.nuget.org/v3/index.json
-    FSharp.Core (4.5.2)
+    Elmish (3.0.3)
+      FSharp.Core (>= 4.6.2)
+    FSharp.Core (4.6.2)
     Newtonsoft.Json (11.0.2)
     OxyPlot.Core (1.0)
     OxyPlot.Xamarin.Forms (1.0)
@@ -1082,7 +1091,9 @@ GROUP wpfapp
 RESTRICTION: == net472
 NUGET
   remote: https://api.nuget.org/v3/index.json
-    FSharp.Core (4.5.2)
+    Elmish (3.0.3)
+      FSharp.Core (>= 4.6.2)
+    FSharp.Core (4.6.2)
     FSharp.Data (3.0)
       FSharp.Core (>= 4.0.0.1)
     Newtonsoft.Json (11.0.2)
