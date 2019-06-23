@@ -70,7 +70,7 @@
       <HintPath>..\..\..\..\packages\gtkapp\FSharp.Data\lib\netstandard2.0\FSharp.Data.dll</HintPath>
     </Reference>
     <Reference Include="OpenTK">
-      <HintPath>..\..\..\..\packages\gtkapp\Xamarin.Forms.Platform.GTK\lib\net45\OpenTK.dll</HintPath>
+      <HintPath>..\..\..\..\packages\gtkapp\OpenTK\lib\net20\OpenTK.dll</HintPath>
     </Reference>
     <Reference Include="webkit-sharp">
       <HintPath>..\..\..\..\packages\gtkapp\Xamarin.Forms.Platform.GTK\lib\net45\webkit-sharp.dll</HintPath>

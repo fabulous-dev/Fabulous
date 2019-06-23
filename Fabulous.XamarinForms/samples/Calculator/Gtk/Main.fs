@@ -1,6 +1,6 @@
+// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Calculator.Gtk
 
-open System
 open Xamarin.Forms
 open Xamarin.Forms.Platform.GTK
 

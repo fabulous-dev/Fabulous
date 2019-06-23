@@ -149,20 +149,19 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" />
     <PackageReference Include="FSharp.Core" />
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Fabulous.Core\Fabulous.Core.fsproj">
+    <ProjectReference Include="..\..\..\..\src\Fabulous.Core\Fabulous.Core.fsproj">
       <Project>{b459afad-bb5b-43c3-bd86-609e8db3e3fd}</Project>
       <Name>Fabulous.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\src\Fabulous.CustomControls\Fabulous.CustomControls.fsproj">
+    <ProjectReference Include="..\..\..\..\src\Fabulous.CustomControls\Fabulous.CustomControls.fsproj">
       <Project>{7ff328bb-9318-4c11-8a9a-37dd98eab35b}</Project>
       <Name>Fabulous.CustomControls</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\src\Fabulous.LiveUpdate\Fabulous.LiveUpdate.fsproj">
+    <ProjectReference Include="..\..\..\..\src\Fabulous.LiveUpdate\Fabulous.LiveUpdate.fsproj">
       <Project>{b459afad-bb5b-43c3-bd86-609e8db3e3f1}</Project>
       <Name>Fabulous.LiveUpdate</Name>
     </ProjectReference>
@@ -182,5 +181,5 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Import Project="..\..\..\Packages.targets" />
+  <Import Project="..\..\..\..\Packages.targets" />
 </Project>

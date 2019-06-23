@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\..\packages\macosapp\Xamarin.Forms\build\netstandard2.0\Xamarin.Forms.props" Condition="Exists('..\..\..\packages\macosapp\Xamarin.Forms\build\netstandard2.0\Xamarin.Forms.props')" />
+  <Import Project="..\..\..\..\packages\macosapp\Xamarin.Forms\build\netstandard2.0\Xamarin.Forms.props" Condition="Exists('..\..\..\..\packages\macosapp\Xamarin.Forms\build\netstandard2.0\Xamarin.Forms.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -33,15 +33,19 @@
     <UseSGen>true</UseSGen>
     <UseRefCounting>true</UseRefCounting>
     <Profiling>true</Profiling>
-    <HttpClientHandler></HttpClientHandler>
-    <LinkMode></LinkMode>
-    <XamMacArch></XamMacArch>
+    <HttpClientHandler>
+    </HttpClientHandler>
+    <LinkMode>
+    </LinkMode>
+    <XamMacArch>
+    </XamMacArch>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <EnableCodeSigning>false</EnableCodeSigning>
@@ -51,8 +55,10 @@
     <UseSGen>true</UseSGen>
     <UseRefCounting>true</UseRefCounting>
     <LinkMode>SdkOnly</LinkMode>
-    <HttpClientHandler></HttpClientHandler>
-    <XamMacArch></XamMacArch>
+    <HttpClientHandler>
+    </HttpClientHandler>
+    <XamMacArch>
+    </XamMacArch>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -63,22 +69,25 @@
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.Mac" />
     <Reference Include="Xamarin.Forms.Core">
-      <HintPath>..\..\..\packages\macosapp\Xamarin.Forms\lib\Xamarin.Mac\Xamarin.Forms.Core.dll</HintPath>
+      <HintPath>..\..\..\..\packages\macosapp\Xamarin.Forms\lib\Xamarin.Mac\Xamarin.Forms.Core.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Platform">
-      <HintPath>..\..\..\packages\macosapp\Xamarin.Forms\lib\Xamarin.Mac\Xamarin.Forms.Platform.dll</HintPath>
+      <HintPath>..\..\..\..\packages\macosapp\Xamarin.Forms\lib\Xamarin.Mac\Xamarin.Forms.Platform.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Forms.Platform.Android">
-      <HintPath>..\..\..\packages\macosapp\Xamarin.Forms\lib\Xamarin.Mac\Xamarin.Forms.Platform.macOS.dll</HintPath>
+    <Reference Include="Xamarin.Forms.Platform.macOS">
+      <HintPath>..\..\..\..\packages\macosapp\Xamarin.Forms\lib\Xamarin.Mac\Xamarin.Forms.Platform.macOS.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml">
-      <HintPath>..\..\..\packages\macosapp\Xamarin.Forms\lib\Xamarin.Mac\Xamarin.Forms.Xaml.dll</HintPath>
+      <HintPath>..\..\..\..\packages\macosapp\Xamarin.Forms\lib\Xamarin.Mac\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Core">
-      <HintPath>..\..\..\packages\macosapp\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll</HintPath>
+      <HintPath>..\..\..\..\packages\macosapp\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\packages\macosapp\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\..\packages\macosapp\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Elmish">
+      <HintPath>..\..\..\..\packages\macosapp\Elmish\lib\netstandard2.0\Elmish.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.FSharp.targets" Condition="Exists('$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.FSharp.targets')" />
@@ -98,10 +107,30 @@
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
     <Compile Include="AppDelegate.fs" />
+    <ProjectReference Include="..\..\..\..\src\Fabulous.LiveUpdate\Fabulous.LiveUpdate.fsproj">
+      <Project>{cf47f218-12c5-4026-b1f1-bd534d0a3fa6}</Project>
+      <Name>Fabulous.LiveUpdate</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\src\Fabulous\Fabulous.fsproj">
+      <Project>{07bd345b-2964-46be-87eb-1c009f5fd316}</Project>
+      <Name>Fabulous</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\src\Fabulous.LiveUpdate.XamarinForms\Fabulous.LiveUpdate.XamarinForms.fsproj">
+      <Project>{74083fca-7678-4c90-a257-59e2eebf415d}</Project>
+      <Name>Fabulous.LiveUpdate.XamarinForms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\src\Fabulous.XamarinForms.Controls\Fabulous.XamarinForms.Controls.fsproj">
+      <Project>{a867660f-d11c-4574-bff7-bb60504d875e}</Project>
+      <Name>Fabulous.XamarinForms.Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj">
+      <Project>{e8353f5f-71ec-4982-8865-f95991d5a0f6}</Project>
+      <Name>Fabulous.XamarinForms</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Calculator\Calculator.fsproj">
       <Project>{58C3A94E-459E-4CF5-AE67-B7C278578045}</Project>
       <Name>Calculator</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\..\..\packages\macosapp\Xamarin.Forms\build\netstandard2.0\Xamarin.Forms.targets" Condition="Exists('..\..\..\packages\macosapp\Xamarin.Forms\build\netstandard2.0\Xamarin.Forms.targets')" />
+  <Import Project="..\..\..\..\packages\macosapp\Xamarin.Forms\build\netstandard2.0\Xamarin.Forms.targets" Condition="Exists('..\..\..\..\packages\macosapp\Xamarin.Forms\build\netstandard2.0\Xamarin.Forms.targets')" />
 </Project>
