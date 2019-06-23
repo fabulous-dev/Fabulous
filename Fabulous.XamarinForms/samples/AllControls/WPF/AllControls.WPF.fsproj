@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <Import Project="..\..\..\netfx.props" />
+    <Import Project="..\..\..\..\netfx.props" />
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
         <TargetFramework>net472</TargetFramework>
@@ -23,11 +23,10 @@
     <ItemGroup>
         <PackageReference Include="FSharp.Core" />
         <PackageReference Include="FSharp.Data" />
-        <PackageReference Include="Xamarin.Forms" />
         <PackageReference Include="Xamarin.Forms.Platform.WPF" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\AllControls\AllControls.fsproj" />
     </ItemGroup>
-    <Import Project="..\..\..\Packages.targets" />
+    <Import Project="..\..\..\..\Packages.targets" />
 </Project>
