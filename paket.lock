@@ -1054,6 +1054,8 @@ GROUP macosapp
 RESTRICTION: == xamarinmac
 NUGET
   remote: https://api.nuget.org/v3/index.json
+    Elmish (3.0.3)
+      FSharp.Core (>= 4.6.2)
     FSharp.Core (4.6.2)
     FSharp.Data (3.0)
       FSharp.Core (>= 4.3.4)
