@@ -1,7 +1,7 @@
 {
   "assemblies": [
     "packages/neutral/Xamarin.Forms/lib/netstandard2.0/Xamarin.Forms.Core.dll",
-    "build_output/xamarin.forms/Fabulous.XamarinForms/Fabulous.XamarinForms.dll"
+    "build_output/Fabulous.XamarinForms/Fabulous.XamarinForms/Fabulous.XamarinForms.dll"
   ],
   "outputNamespace": "Fabulous.XamarinForms",
   "types": [

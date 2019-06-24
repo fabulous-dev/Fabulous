@@ -343,12 +343,12 @@ type ViewProto() =
         updateCollectionGeneric prevListViewCollectionOpt currListViewCollectionOpt target.Collection
             (fun (x:ViewElement) -> x.Create() :?> bool)
             (fun _ _ _ -> ())
-            canReuseChild
+            canReuseView
             updateChild
         match prevListViewContentOpt, currListViewContentOpt with
         // For structured objects, dependsOn on reference equality
         | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()
-        | ValueSome prevValue, ValueSome newValue when canReuseChild prevValue newValue ->
+        | ValueSome prevValue, ValueSome newValue when canReuseView prevValue newValue ->
             newValue.UpdateIncremental(prevValue, target.Content)
         | _, ValueSome newValue ->
             target.Content <- (newValue.Create() :?> Xamarin.Forms.View)
