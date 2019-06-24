@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\..\..\packages\gtkapp\Xamarin.Forms\build\netstandard2.0\Xamarin.Forms.props" Condition="Exists('..\..\..\..\packages\gtkapp\Xamarin.Forms\build\netstandard2.0\Xamarin.Forms.props')" />
+  <Import Project="..\..\..\..\packages\gtkapp\Xamarin.Forms\build\Xamarin.Forms.props" Condition="Exists('..\..\..\..\packages\gtkapp\Xamarin.Forms\build\Xamarin.Forms.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -91,7 +91,7 @@
       <HintPath>..\..\..\..\packages\gtkapp\Xamarin.Forms\lib\netstandard2.0\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\..\packages\gtkapp\Newtonsoft.Json\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\..\packages\gtkapp\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Elmish">
       <HintPath>..\..\..\..\packages\gtkapp\Elmish\lib\netstandard2.0\Elmish.dll</HintPath>
@@ -122,5 +122,5 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(FSharpTargetsPath)" Condition="Exists($(FSharpTargetsPath))" />
-  <Import Project="..\..\..\..\packages\gtkapp\Xamarin.Forms\build\netstandard2.0\Xamarin.Forms.targets" Condition="Exists('..\..\..\..\packages\gtkapp\Xamarin.Forms\build\netstandard2.0\Xamarin.Forms.targets')" />
+  <Import Project="..\..\..\..\packages\gtkapp\Xamarin.Forms\build\Xamarin.Forms.targets" Condition="Exists('..\..\..\..\packages\gtkapp\Xamarin.Forms\build\Xamarin.Forms.targets')" />
 </Project>

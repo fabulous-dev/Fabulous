@@ -181,6 +181,12 @@
       "replaces": "FSharpCorePkgVersion",
       "defaultValue": "4.6.2"
     },
+    "OpenTKPkgVersion": {
+      "type": "parameter",
+      "dataType": "string",
+      "replaces": "OpenTKPkgVersion",
+      "defaultValue": "3.0.1"
+    },
     "ProjectID": {
       "type": "generated",
       "generator": "guid",

@@ -61,7 +61,7 @@
   <Import Project="..\..\..\..\packages\androidapp\Xamarin.Android.Support.v7.AppCompat\build\MonoAndroid70\Xamarin.Android.Support.v7.AppCompat.targets" Condition="Exists('..\..\..\..\packages\androidapp\Xamarin.Android.Support.v7.AppCompat\build\MonoAndroid70\Xamarin.Android.Support.v7.AppCompat.targets')" />
   <Import Project="..\..\..\..\packages\androidapp\Xamarin.Android.Support.Design\build\MonoAndroid70\Xamarin.Android.Support.Design.targets" Condition="Exists('..\..\..\..\packages\androidapp\Xamarin.Android.Support.Design\build\MonoAndroid70\Xamarin.Android.Support.Design.targets')" />
   <Import Project="..\..\..\..\packages\androidapp\Xamarin.Android.Support.v7.MediaRouter\build\MonoAndroid70\Xamarin.Android.Support.v7.MediaRouter.targets" Condition="Exists('..\..\..\..\packages\androidapp\Xamarin.Android.Support.v7.MediaRouter\build\MonoAndroid70\Xamarin.Android.Support.v7.MediaRouter.targets')" />
-  <Import Project="..\..\..\..\packages\androidapp\Xamarin.Forms\build\netstandard1.0\Xamarin.Forms.targets" Condition="Exists('..\..\..\..\packages\androidapp\Xamarin.Forms\build\netstandard1.0\Xamarin.Forms.targets')" />
+  <Import Project="..\..\..\..\packages\androidapp\Xamarin.Forms\build\Xamarin.Forms.targets" Condition="Exists('..\..\..\..\packages\androidapp\Xamarin.Forms\build\Xamarin.Forms.targets')" />
   <ItemGroup>
     <Compile Include="MainActivity.fs" />
     <None Include="Resources\AboutResources.txt" />
