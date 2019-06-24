@@ -1,10 +1,9 @@
-﻿namespace Fabulous.LiveUpdate.XamarinForms
+﻿namespace Fabulous.XamarinForms
 
  open Fabulous
  open Fabulous.LiveUpdate
  open Xamarin.Forms
 
- [<AutoOpen>]
  module LiveUpdate =
      /// Trace all the updates to the console
      type ProgramRunner<'model,'msg> with

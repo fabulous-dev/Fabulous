@@ -7,8 +7,8 @@
         <Compile Include="CounterApp.fs" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\..\..\src\Fabulous.LiveUpdate.XamarinForms\Fabulous.LiveUpdate.XamarinForms.fsproj" />
       <ProjectReference Include="..\..\..\src\Fabulous.XamarinForms.Controls\Fabulous.XamarinForms.Controls.fsproj" />
+      <ProjectReference Include="..\..\..\src\Fabulous.XamarinForms.LiveUpdate\Fabulous.XamarinForms.LiveUpdate.fsproj" />
     </ItemGroup>
     <Import Project="..\..\..\..\Packages.targets" />
 </Project>

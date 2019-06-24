@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\..\..\packages\macosapp\Xamarin.Forms\build\netstandard2.0\Xamarin.Forms.props" Condition="Exists('..\..\..\..\packages\macosapp\Xamarin.Forms\build\netstandard2.0\Xamarin.Forms.props')" />
+  <Import Project="..\..\..\..\packages\macosapp\Xamarin.Forms\build\Xamarin.Forms.props" Condition="Exists('..\..\..\..\packages\macosapp\Xamarin.Forms\build\Xamarin.Forms.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -33,15 +33,19 @@
     <UseSGen>true</UseSGen>
     <UseRefCounting>true</UseRefCounting>
     <Profiling>true</Profiling>
-    <HttpClientHandler></HttpClientHandler>
-    <LinkMode></LinkMode>
-    <XamMacArch></XamMacArch>
+    <HttpClientHandler>
+    </HttpClientHandler>
+    <LinkMode>
+    </LinkMode>
+    <XamMacArch>
+    </XamMacArch>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <EnableCodeSigning>false</EnableCodeSigning>
@@ -51,8 +55,10 @@
     <UseSGen>true</UseSGen>
     <UseRefCounting>true</UseRefCounting>
     <LinkMode>SdkOnly</LinkMode>
-    <HttpClientHandler></HttpClientHandler>
-    <XamMacArch></XamMacArch>
+    <HttpClientHandler>
+    </HttpClientHandler>
+    <XamMacArch>
+    </XamMacArch>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -98,10 +104,14 @@
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
     <Compile Include="AppDelegate.fs" />
+    <ProjectReference Include="..\..\..\src\Fabulous.StaticView.XamarinForms\Fabulous.StaticView.XamarinForms.fsproj">
+      <Project>{5b23ac3b-e949-4992-93bd-6ce091f4e351}</Project>
+      <Name>Fabulous.StaticView.XamarinForms</Name>
+    </ProjectReference>
     <ProjectReference Include="..\StaticViewCounterApp\StaticViewCounterApp.fsproj">
       <Project>{4282E90F-2519-46D0-B593-D57CFCA36A2D}</Project>
       <Name>StaticViewCounterApp</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\..\..\..\packages\macosapp\Xamarin.Forms\build\netstandard2.0\Xamarin.Forms.targets" Condition="Exists('..\..\..\..\packages\macosapp\Xamarin.Forms\build\netstandard2.0\Xamarin.Forms.targets')" />
+  <Import Project="..\..\..\..\packages\macosapp\Xamarin.Forms\build\Xamarin.Forms.targets" Condition="Exists('..\..\..\..\packages\macosapp\Xamarin.Forms\build\Xamarin.Forms.targets')" />
 </Project>
