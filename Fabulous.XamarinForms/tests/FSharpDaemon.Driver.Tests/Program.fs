@@ -1,5 +1,5 @@
 ﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
-namespace Fabulous.Cli.IntegrationTests
+namespace FSharpDaemon.DriverTests
 
 module Program =
     [<EntryPoint>]

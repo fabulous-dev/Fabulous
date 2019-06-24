@@ -41,7 +41,7 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.XamarinForms.SkiaS
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.XamarinForms.VideoManager", "Fabulous.XamarinForms\extensions\VideoManager\Fabulous.XamarinForms.VideoManager.fsproj", "{84D42952-1296-4BC3-BC42-496EDAF233CA}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.Cli.IntegrationTests", "Fabulous.XamarinForms\tests\Fabulous.Cli.IntegrationTests\Fabulous.Cli.IntegrationTests.fsproj", "{793F9DC7-F71B-46E8-993E-4F2E30F5EFFD}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharpDaemon.Driver.Tests", "Fabulous.XamarinForms\tests\FSharpDaemon.Driver.Tests\FSharpDaemon.Driver.Tests.fsproj", "{793F9DC7-F71B-46E8-993E-4F2E30F5EFFD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{96CE6432-1C99-413D-ABE6-6D47D605E472}"
 EndProject

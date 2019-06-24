@@ -19,3 +19,15 @@ src/Fabulous.Core/Xamarin.Forms.Core.fs
 Fabulous\.sln\.DotSettings\.user
 
 \.ionide/
+
+Fabulous\.XamarinForms/samples/CounterApp/CounterApp/CounterApp\.args\.txt
+
+Fabulous\.XamarinForms/samples/TicTacToe/TicTacToe/TicTacToe\.args\.txt
+
+Fabulous\.XamarinForms/tests/FSharpDaemon\.Driver\.Tests/data/TestCallUnitFunction\.args\.txt
+
+Fabulous\.XamarinForms/tests/FSharpDaemon\.Driver\.Tests/data/ViewRefSmoke\.args\.txt
+
+Fabulous\.XamarinForms/tests/FSharpDaemon\.Driver\.Tests/data/TestCallUnitFunction\.fs
+
+Fabulous\.XamarinForms/tests/FSharpDaemon\.Driver\.Tests/data/ViewRefSmoke\.fs

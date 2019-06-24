@@ -1,9 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>netcoreapp2.1</TargetFramework>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
         <OutputType>Library</OutputType>
         <IsPackable>false</IsPackable>
         <DefineConstants>$(DefineConstants);NETSTANDARD2_0;TEST</DefineConstants>
+        <IsTestProject>true</IsTestProject>
+        <RootNamespace>Fabulous.Cli.IntegrationTests</RootNamespace>
     </PropertyGroup>
     <ItemGroup>
         <Compile Include="..\..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\ProjectCracker.fs" Link="ProjectCracker.fs" />

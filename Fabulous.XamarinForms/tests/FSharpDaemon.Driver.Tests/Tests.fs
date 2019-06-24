@@ -1,4 +1,5 @@
-namespace Fabulous.Cli.IntegrationTests
+// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
+namespace FSharpDaemon.DriverTests
 
 open System
 open NUnit.Framework
@@ -9,7 +10,7 @@ module Versions =
     let XamarinForms = "4.0.0.425677"
     let NewtonsoftJson = "11.0.2"
 
-type TestClass () =
+module TestModule =
 
     // Paths are relative to "__SOURCE_DIRECTORY__/data" where the project files are written to
     let elmishExtraRefs =
@@ -30,27 +31,25 @@ type TestClass () =
         TestHelpers.GeneralTestCase directory name code elmishExtraRefs
 
     [<Test>]
-    member this.TestCanEvaluateCounterApp () =
+    let TestCanEvaluateCounterApp () =
         Environment.CurrentDirectory <- __SOURCE_DIRECTORY__ + "/../../samples/CounterApp/CounterApp"
         TestHelpers.createNetStandardProjectArgs "CounterApp"  elmishExtraRefs
         Assert.AreEqual(0, FSharpDaemon.Driver.main( [| "dummy.exe"; "--eval"; "@CounterApp.args.txt" |]))
 
     [<Test>]
-    member this.TestCanEvaluateTicTacToeApp () =
+    let TestCanEvaluateTicTacToeApp () =
         Environment.CurrentDirectory <- __SOURCE_DIRECTORY__ + "/../../samples/TicTacToe/TicTacToe"
         TestHelpers.createNetStandardProjectArgs "TicTacToe" elmishExtraRefs
         Assert.AreEqual(0, FSharpDaemon.Driver.main( [| "dummy.exe"; "--eval"; "@TicTacToe.args.txt" |]))
 
     [<Test>]
-    member this.ViewRefSmoke() =
+    let ViewRefSmoke() =
         ElmishTestCase "ViewRefSmoke" """
 let theRef = Fabulous.DynamicViews.ViewRef<Xamarin.Forms.Label>()
        """
 
     [<Test>]
-    member this.TestCallUnitFunction() =
+    let TestCallUnitFunction() =
         ElmishTestCase "TestCallUnitFunction" """ 
 let theRef = FSharp.Core.LanguagePrimitives.GenericZeroDynamic<int>()
        """
-
-
