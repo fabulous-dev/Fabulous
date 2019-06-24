@@ -149,15 +149,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" />
-    <PackageReference Include="FSharp.Core" />
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Fabulous.StaticView.XamarinForms\Fabulous.StaticView.XamarinForms.fsproj">
-      <Project>{5b23ac3b-e949-4992-93bd-6ce091f4e351}</Project>
-      <Name>Fabulous.StaticView.XamarinForms</Name>
-    </ProjectReference>
     <ProjectReference Include="..\StaticViewCounterApp\StaticViewCounterApp.fsproj">
       <Project>{4282E90F-2519-46D0-B593-D57CFCA36A2D}</Project>
       <Name>StaticViewCounterApp</Name>

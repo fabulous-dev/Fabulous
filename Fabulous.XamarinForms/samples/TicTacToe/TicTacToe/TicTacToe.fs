@@ -4,7 +4,7 @@ namespace TicTacToe
 open Elmish
 open Fabulous
 open Fabulous.XamarinForms
-open Fabulous.LiveUpdate.XamarinForms
+open Fabulous.XamarinForms.LiveUpdate
 open Xamarin.Forms
 
 /// Represents a player and a player's move

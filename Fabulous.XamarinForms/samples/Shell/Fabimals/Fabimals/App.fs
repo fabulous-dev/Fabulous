@@ -4,7 +4,7 @@ namespace Fabimals
 open Elmish
 open Fabulous
 open Fabulous.XamarinForms
-open Fabulous.LiveUpdate.XamarinForms
+open Fabulous.XamarinForms.LiveUpdate
 open Xamarin.Forms
 open System
 open Fabimals.Views

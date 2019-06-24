@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <Import Project="..\..\..\netfx.props" />
+    <Import Project="..\..\..\..\netfx.props" />
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
         <TargetFramework>net472</TargetFramework>
@@ -30,12 +30,10 @@
         <None Include="app.config" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="FSharp.Core" />
-        <PackageReference Include="Xamarin.Forms" />
         <PackageReference Include="Xamarin.Forms.Platform.WPF" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\TicTacToe\TicTacToe.fsproj" />
     </ItemGroup>
-    <Import Project="..\..\..\Packages.targets" />
+    <Import Project="..\..\..\..\Packages.targets" />
 </Project>

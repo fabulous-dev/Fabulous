@@ -21,12 +21,9 @@
         <None Include="app.config" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="FSharp.Core" />
-        <PackageReference Include="Xamarin.Forms" />
         <PackageReference Include="Xamarin.Forms.Platform.WPF" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\..\..\src\Fabulous.StaticView.XamarinForms\Fabulous.StaticView.XamarinForms.fsproj" />
         <ProjectReference Include="..\StaticViewCounterApp\StaticViewCounterApp.fsproj" />
     </ItemGroup>
     <Import Project="..\..\..\..\Packages.targets" />

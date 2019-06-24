@@ -16,8 +16,6 @@ open Xamarin.Forms.Platform.Android
 type MainActivity() =
     inherit FormsApplicationActivity()
     override this.OnCreate (bundle: Bundle) =
-        //FormsAppCompatActivity.TabLayoutResource <- Resources.Layout.Tabbar
-        //FormsAppCompatActivity.ToolbarResource <- Resources.Layout.Toolbar
         base.OnCreate (bundle)
 
         Xamarin.Forms.Forms.Init (this, bundle)
