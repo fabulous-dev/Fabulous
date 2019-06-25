@@ -10,36 +10,15 @@ type IHost =
     /// Sets a new instance of the root view item (e.g. Xamarin.Forms.Application.MainPage)
     abstract member SetRootView : obj -> unit
     
-type private ProgramAccessor<'model, 'msg>(program: Program<unit, 'model, 'msg, ViewElement>) =
-    let mutable dispatchOpt : ('msg -> unit) option = None
-    let mutable onErrorOpt : (string * exn -> unit) option = None
-    
-    member __.Dispatch(msg) =
-        let dispatch =
-            Option.defaultWith (fun () ->
-                    let mutable value = ignore
-                    Program.withSyncDispatch (fun dispatch -> value <- dispatch; dispatch) program |> ignore
-                    dispatchOpt <- Some value
-                    value
-                ) dispatchOpt
-            
-        dispatch msg
-        
-    member __.OnError(message, ex) =
-        let onError =
-            Option.defaultWith (fun () ->
-                    let mutable value = ignore
-                    Program.mapErrorHandler (fun onError -> value <- onError; onError) program |> ignore
-                    onErrorOpt <- Some value
-                    value
-                ) onErrorOpt
-            
-        onError (message, ex)
+type private ProgramAccessor<'model, 'msg>(program: Program<unit, 'model, 'msg, ViewElement>) =        
+    member __.OnError =
+        let mutable value = ignore
+        Program.mapErrorHandler (fun onError -> value <- onError; onError) program |> ignore
+        value
 
 /// Starts the Elmish dispatch loop for the page with the given Elmish program
 type ProgramRunner<'model, 'msg>(host: IHost, canReuseView: ViewElement -> ViewElement -> bool, program: Program<unit, 'model, 'msg, ViewElement>) =
 
-    let mutable alternativeRunnerOpt = None
     let mutable lastModelOpt = None
     let mutable lastViewDataOpt = None
     
@@ -53,10 +32,6 @@ type ProgramRunner<'model, 'msg>(host: IHost, canReuseView: ViewElement -> ViewE
         match lastModelOpt with
         | None -> failwith "No current model"
         | Some lastModel -> lastModel
-        
-    member __.Dispatch(msg) = programAccessor.Dispatch(msg)
-    
-    member __.OnError (message, ex) = programAccessor.OnError(message, ex)
 
     member __.UpdateView (updatedModel, dispatch) =
         lastModelOpt <- Some updatedModel
@@ -83,21 +58,6 @@ type ProgramRunner<'model, 'msg>(host: IHost, canReuseView: ViewElement -> ViewE
                 host.SetRootView(pageObj)
 
             lastViewDataOpt <- Some newPageElement
-
-    member runner.ChangeProgram (newProgram: Program<unit, obj, obj, ViewElement>) =
-        let alternativeRunner = ProgramRunner(host, canReuseView, newProgram)
-        alternativeRunnerOpt <- Some alternativeRunner
-        
-    /// Set the current model, e.g. on resume
-    member runner.SetCurrentModel(model, cmd: Cmd<_>) =
-        match alternativeRunnerOpt with 
-        | Some _ -> 
-            // TODO: transmogrify the resurrected model
-            printfn "SetCurrentModel: ignoring (can't the model after ChangeProgram has been called)"
-        | None -> 
-            printfn "updating the view after setting the model"
-            Program.setState program model runner.Dispatch
-            // TODO: execute Cmds
 
 /// Program module - functions to manipulate program instances
 [<RequireQualifiedAccess>]
