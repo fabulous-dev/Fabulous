@@ -241,7 +241,7 @@ module Extensions =
                                 // Stop the running program 
                                 printfn "changing running program...."
                                 syncChangeProgram (fun () ->
-                                     FabulousProgram.replaceProgramForRunner runner programErased
+                                     FabulousProgram.replaceCurrent runner programErased
                                 )
                                 printfn "*** LiveUpdate success:"
                                 printfn "***   [x] got code package"

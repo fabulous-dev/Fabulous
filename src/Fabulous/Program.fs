@@ -16,8 +16,10 @@ type private ProgramAccessor<'model, 'msg>(program: Program<unit, 'model, 'msg, 
         Program.mapErrorHandler (fun onError -> value <- onError; onError) program |> ignore
         value
 
+type FabulousProgram<'model, 'msg> = Program<unit, 'model, 'msg, ViewElement>
+
 /// Starts the Elmish dispatch loop for the page with the given Elmish program
-type ProgramRunner<'model, 'msg>(host: IHost, canReuseView: ViewElement -> ViewElement -> bool, program: Program<unit, 'model, 'msg, ViewElement>) =
+type ProgramRunner<'model, 'msg>(host: IHost, canReuseView: ViewElement -> ViewElement -> bool, program: FabulousProgram<'model, 'msg>) =
 
     let mutable lastModelOpt = None
     let mutable lastViewDataOpt = None
@@ -78,7 +80,7 @@ module FabulousProgram =
     let runFabulous host canReuseView program =
         runWith host canReuseView () program
         
-    let replaceProgramForRunner (runner: ProgramRunner<'model, 'msg>) program =
+    let replaceCurrent (runner: ProgramRunner<'model, 'msg>) program =
         // TODO: Need a way to stop the previous loop
         runFabulous runner.Host runner.CanReuseView program |> ignore
         
@@ -87,6 +89,6 @@ module FabulousProgram =
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module Program =
     /// Typical program, new commands are produced discriminated unions returned by `init` and `update` along with the new state.
-    let mkProgramWithCmdMsg (init: unit -> 'model * 'cmdMsg list) (update: 'msg -> 'model -> 'model * 'cmdMsg list) (view: 'model -> ('msg -> unit) -> ViewElement) (mapToCmd: 'cmdMsg -> Cmd<'msg>) =
+    let mkProgramWithCmdMsg (init: unit -> 'model * 'cmdMsg list) (update: 'msg -> 'model -> 'model * 'cmdMsg list) (view: 'model -> ('msg -> unit) -> ViewElement) (mapToCmd: 'cmdMsg -> Cmd<'msg>) : FabulousProgram<'model, 'msg> =
         let convert = fun (model, cmdMsgs) -> model, (cmdMsgs |> List.map mapToCmd |> Cmd.batch)
         Program.mkProgram (fun arg -> init arg |> convert) (fun msg model -> update msg model |> convert) view
