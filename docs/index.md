@@ -30,7 +30,7 @@ Getting started
 
        SqueakyApp/SqueakyApp.sln
 
-5. Before deploying and running, first connect and enable your device, choose between iOS ([Emulator](https://docs.microsoft.com/en-us/xamarin/android/get-started/installation/android-emulator/), [Device](https://docs.microsoft.com/en-us/xamarin/ios/get-started/installation/device-provisioning/)) or Android ([Emulator](https://docs.microsoft.com/en-us/xamarin/android/get-started/installation/android-emulator/), [Device](https://docs.microsoft.com/xamarin/android/get-started/installation/set-up-device-for-development)).
+5. Before deploying and running, first connect and enable your device, choose between iOS ([Emulator](https://docs.microsoft.com/en-us/xamarin/ios/get-started/hello-ios/hello-ios-quickstart), [Device](https://docs.microsoft.com/en-us/xamarin/ios/get-started/installation/device-provisioning/)) or Android ([Emulator](https://docs.microsoft.com/en-us/xamarin/android/get-started/installation/android-emulator/), [Device](https://docs.microsoft.com/xamarin/android/get-started/installation/set-up-device-for-development)).
 
 6. To run, set either your Android or iOS project as the startup project, then use F5.
 
@@ -174,7 +174,7 @@ Presentation: Building mobile apps with F# using Xamarin - Jim Bennett - Xamarin
 **iOS Setup**
 
 * [SDK](https://docs.microsoft.com/en-gb/visualstudio/mac/installation)
-* [Emulator](https://docs.microsoft.com/en-us/xamarin/android/get-started/installation/android-emulator/)
+* [Emulator](https://docs.microsoft.com/en-us/xamarin/ios/get-started/hello-ios/hello-ios-quickstart)
 * [Pair to Mac](https://docs.microsoft.com/en-us/xamarin/ios/get-started/installation/windows/connecting-to-mac/)
 * [Device](https://docs.microsoft.com/en-us/xamarin/ios/get-started/installation/device-provisioning/)
 
