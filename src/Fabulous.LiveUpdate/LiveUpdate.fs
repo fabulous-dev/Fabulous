@@ -177,7 +177,7 @@ module Extensions =
             | DDeclMember (membDef, body, _range) -> if membDef.Name = name then Some (membDef, body) else None
             | _ -> None)
 
-    let enableLiveUpdate printAddressesFn (runner: ProgramRunner<'model,'msg>) =
+    let enableLiveUpdate printAddressesFn syncChangeProgram (runner: ProgramRunner<'model,'msg>) =
         let interp = EvalContext(System.Reflection.Assembly.Load)
 
         let switchD (files: (string * DFile)[]) =
@@ -240,7 +240,9 @@ module Extensions =
 
                                 // Stop the running program 
                                 printfn "changing running program...."
-                                runner.ChangeProgram(programErased)
+                                syncChangeProgram (fun () ->
+                                     FabulousProgram.replaceProgramForRunner runner programErased
+                                )
                                 printfn "*** LiveUpdate success:"
                                 printfn "***   [x] got code package"
                                 printfn "***   [x] found declaration called 'programLiveUpdate' or 'program'"

@@ -1,5 +1,6 @@
 ﻿namespace Fabulous.XamarinForms
 
+ open Elmish
  open Fabulous
  open Fabulous.LiveUpdate
  open Xamarin.Forms
@@ -9,8 +10,13 @@
      type ProgramRunner<'model,'msg> with
 
          member runner.EnableLiveUpdate() =
-             runner
-             |> Fabulous.LiveUpdate.Extensions.enableLiveUpdate (fun iips httpPort ->
+             async {
+                 let syncChangeProgram (changeProgram: unit -> unit) =
+                     Device.BeginInvokeOnMainThread (fun() ->
+                        changeProgram()    
+                     )
+                     
+                 let printAddresses iips httpPort =
                     if Device.RuntimePlatform = Device.iOS then
                         printfn "  LiveUpdate: Connect using:"
                         for iip in iips do
@@ -36,10 +42,8 @@
                             printfn "      fabulous --watch --send"
                         else
                             printfn "      fabulous --watch --webhook:http://localhost:%d/update" httpPort
-                 )
 
-
-
-
-    
-    
+                 Extensions.enableLiveUpdate printAddresses syncChangeProgram runner
+                 
+             } |> Async.Start
+ 

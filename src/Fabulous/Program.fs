@@ -45,6 +45,10 @@ type ProgramRunner<'model, 'msg>(host: IHost, canReuseView: ViewElement -> ViewE
     
     let programAccessor = ProgramAccessor(program)
 
+    member __.Host = host
+    member __.CanReuseView = canReuseView
+    member __.Program = program
+    
     member __.CurrentModel =
         match lastModelOpt with
         | None -> failwith "No current model"
@@ -98,7 +102,7 @@ type ProgramRunner<'model, 'msg>(host: IHost, canReuseView: ViewElement -> ViewE
 /// Program module - functions to manipulate program instances
 [<RequireQualifiedAccess>]
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
-module FabulousProgram =
+module FabulousProgram =    
     let runWith host canReuseView arg program =
         let runner = ProgramRunner(host, canReuseView, program)
 
@@ -113,6 +117,10 @@ module FabulousProgram =
         
     let runFabulous host canReuseView program =
         runWith host canReuseView () program
+        
+    let replaceProgramForRunner (runner: ProgramRunner<'model, 'msg>) program =
+        // TODO: Need a way to stop the previous loop
+        runFabulous runner.Host runner.CanReuseView program |> ignore
         
 /// Program module - functions to manipulate program instances
 [<RequireQualifiedAccess>]
