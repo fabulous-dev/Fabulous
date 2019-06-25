@@ -386,7 +386,7 @@ See also:
 An example `BoxView` is as follows:
 
 ```fsharp
-View.BoxView(Colors.Fuchsia)
+View.BoxView(Color.Fuchsia)
 ```
 
 See also:
