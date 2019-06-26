@@ -146,7 +146,7 @@ Target.create "RunFabulousTests" (fun _ ->
 
 Target.create "BuildFabulousXamarinForms" (fun _ ->
     !! "Fabulous.XamarinForms/src/**/*.fsproj"
-    -- "Fabulous.XamarinForms/Fabulous.XamarinForms.Controls/*.fsproj" // This one needs to run the generator beforehand
+    -- "Fabulous.XamarinForms/src/Fabulous.XamarinForms.Controls/Fabulous.XamarinForms.Controls.fsproj" // This one needs to run the generator beforehand
     |> dotnetBuild "Fabulous.XamarinForms"
 )
 
