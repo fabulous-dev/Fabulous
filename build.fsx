@@ -54,11 +54,12 @@ let dotnetBuild outputSubDir paths =
 
 let dotnetPack paths =
     for projectPath in paths do
+        let outputPath = sprintf "%s/%s" buildDir (Path.GetFileNameWithoutExtension projectPath)
         DotNet.pack (fun opt ->
             { opt with
                 Common = { opt.Common with CustomParams = Some "-p:IncludeSourceLink=True" }
                 Configuration = DotNet.BuildConfiguration.Release
-                OutputPath = Some (buildDir + Path.GetFileNameWithoutExtension projectPath) }) projectPath
+                OutputPath = Some outputPath }) projectPath
 
 let dotnetTest outputSubDir paths =
     for projectPath in paths do
@@ -210,7 +211,7 @@ Target.create "PackFabulousStaticView" (fun _ ->
 Target.create "BuildFabulousXamarinFormsSamples" (fun _ ->
     !! "Fabulous.XamarinForms/samples/**/*.fsproj"
     |> removeIncompatiblePlatformProjects
-    |> msbuild "Fabulous.XamarinForms/samples"
+    |> msbuild "Fabulous.StaticView/samples"
 )
 
 Target.create "RunFabulousXamarinFormsSamplesTests" (fun _ ->
