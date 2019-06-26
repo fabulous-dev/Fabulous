@@ -282,7 +282,7 @@ Target.create "PublishNuGetPackages" (fun _ ->
         | _ -> failwith "Please set the nuget_apikey environment variable to a NuGet API key with write access to the Fabulous packages."
 
     for nupkg in !! (buildDir + "/*.nupkg") do
-        let fileName = System.IO.Path.GetFileNameWithoutExtension(nupkg)
+        let fileName = Path.GetFileNameWithoutExtension(nupkg)
         let projectName = fileName.Remove(fileName.LastIndexOf('.'))
         let projectName = projectName.Remove(projectName.LastIndexOf('.'))
         let projectName = projectName.Remove(projectName.LastIndexOf('.'))
