@@ -84,6 +84,21 @@ let nugetPack paths =
                 Version = release.NugetVersion
                 ReleaseNotes = (String.toLines release.Notes) }) nuspecPath
 
+/// Replaces the value of attribute in an xml node in the XML document specified by a XPath expression.
+let replaceXPathAttributeNS xpath (attribute:string) value (namespaces : #seq<string * string>) (doc : System.Xml.XmlDocument) =
+    let nsmgr = System.Xml.XmlNamespaceManager(doc.NameTable)
+    namespaces |> Seq.iter nsmgr.AddNamespace
+    let node = doc.SelectSingleNode(xpath, nsmgr)
+    if isNull node then 
+        failwithf "XML node '%s' not found" xpath
+    else
+        let attributeValue = node.Attributes.[attribute]
+        if isNull attributeValue then
+            failwithf "XML node '%s' does not have attribute '%s'" xpath attribute
+        else
+            attributeValue.Value <- value
+    doc
+
 
 Target.create "Clean" (fun _ ->
     Shell.cleanDir buildDir
@@ -126,6 +141,12 @@ Target.create "UpdateVersion" (fun _ ->
         )
         |> (fun o -> JsonConvert.SerializeObject(o, Formatting.Indented))
         |> File.writeString false template
+
+    // Updates Fabulous.XamarinForms.nuspec
+    let nuspec = "Fabulous.XamarinForms/src/Fabulous.XamarinForms.nuspec"
+    Xml.loadDoc nuspec
+    |> replaceXPathAttributeNS "//x:package/x:metadata/x:dependencies/x:dependency[@id=\"Fabulous\"]" "version" release.NugetVersion [ "x", "http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd" ]
+    |> Xml.saveDoc nuspec
 )
 
 Target.create "BuildTools" (fun _ ->
