@@ -5,7 +5,7 @@
   * [Layouts](views-elements.html#layouts)
   * [Lists and Tables](views-elements.html#lists-and-tables)
   * [Other Core Elements](views-elements.html#other-core-elements)
-  * [Gestures](views-elements.html#gestures)
+  * [Gestures](views-gestures.html)
   * [Pop-ups](views-elements.html#pop-ups)
   * [ViewRefs](views-animations.html#viewrefs)
   * [Animations](views-animations.html#animations)
