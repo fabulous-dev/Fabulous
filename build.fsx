@@ -323,6 +323,10 @@ open Fake.Core.TargetOperators
     ==> "RunFabulousTests"
     ==> "Fabulous"
 
+"Prepare"
+    ==> "BuildFabulousStaticView"
+    ==> "Fabulous.StaticView"
+
 "Fabulous"
     ==> "BuildFabulousXamarinForms"
     ==> "RunGeneratorForFabulousXamarinForms"
@@ -333,10 +337,6 @@ open Fake.Core.TargetOperators
 "Fabulous.XamarinForms"
     ==> "BuildFabulousXamarinFormsExtensions"
     ==> "Fabulous.XamarinForms.Extensions"
-
-"Fabulous"
-    ==> "BuildFabulousStaticView"
-    ==> "Fabulous.StaticView"
 
 "Build"
     <== [ "Fabulous"; "Fabulous.XamarinForms"; "Fabulous.XamarinForms.Extensions"; "Fabulous.StaticView"]
