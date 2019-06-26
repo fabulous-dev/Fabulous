@@ -28,8 +28,8 @@ type MainActivity() =
         this.LoadApplication(app)
         _app <- Some app
 
-    override this.OnTrimMemory(level) =
-        match _app with
-        | Some app -> app.Program.Dispatch(AllControls.Msg.ReceivedLowMemoryWarning)
-        | None -> ()
+    // override this.OnTrimMemory(level) =
+    //     match _app with
+    //     | Some app -> app.Program.Dispatch(AllControls.Msg.ReceivedLowMemoryWarning)
+    //     | None -> ()
 

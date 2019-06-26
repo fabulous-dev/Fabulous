@@ -166,17 +166,18 @@ type HttpServer(printAddressFn, ?port) =
 module Extensions =
 
 
-    let rec tryFindEntityByName name (decls: DDecl[]) = 
+    let rec internal tryFindEntityByName name (decls: DDecl[]) = 
         decls |> Array.tryPick (function 
             | DDeclEntity (entityDef, subDecls) -> if entityDef.Name = name then Some (entityDef, subDecls) else tryFindEntityByName name subDecls 
             | _ -> None)
 
-    let rec tryFindMemberByName name (decls: DDecl[]) = 
+    let rec internal tryFindMemberByName name (decls: DDecl[]) = 
         decls |> Array.tryPick (function 
             | DDeclEntity (_, ds) -> tryFindMemberByName name ds 
             | DDeclMember (membDef, body, _range) -> if membDef.Name = name then Some (membDef, body) else None
             | _ -> None)
 
+    /// Starts the HttpServer listening for changes
     let enableLiveUpdate printAddressesFn syncChangeProgram (runner: ProgramRunner<'model,'msg>) =
         let interp = EvalContext(System.Reflection.Assembly.Load)
 
