@@ -46,6 +46,8 @@ View.StackLayout(
 )
 ```
 
+<img src="https://user-images.githubusercontent.com/52166903/60177364-9d737900-9810-11e9-8090-c3de01be59b0.png" width="400">
+
 See also:
 
 * [Xamarin guide to StackLayout](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/stack-layout/)
@@ -72,6 +74,8 @@ View.AbsoluteLayout(
     ]
 )
 ```
+
+<img src="https://user-images.githubusercontent.com/52166903/60177353-9c424c00-9810-11e9-80ab-f5725c970143.png" width="400">
 
 See also:
 
@@ -124,6 +128,8 @@ View.FlexLayout(
 )
 ```
 
+<img src="https://user-images.githubusercontent.com/52166903/60180202-5dfc5b00-9817-11e9-974d-091a32fbda3f.png" width="400">
+
 See also:
 
 * [Xamarin guide to FlexLayout](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/flex-layout/)
@@ -152,6 +158,8 @@ Notes:
 
 * Row and column definitions can use `"*"`, `N*` where `N` is a number, `"auto"` or a thickness
 * Fluent methods `.GridRow(..)` and `.GridColumn(..)` are used to place the items in locations on the grid.
+
+<img src="https://user-images.githubusercontent.com/52166903/60177360-9cdae280-9810-11e9-98fd-fda569cd8836.png" width="400">
 
 See also:
 
@@ -200,6 +208,8 @@ let scrollToCoordinates x y animated =
     } |> Cmd.ofAsyncMsgOption
 ```
 
+<img src="https://user-images.githubusercontent.com/52166903/60177362-9d737900-9810-11e9-9529-81640e681186.png" width="400">
+
 See also:
 
 * [Xamarin guide to ScrollView](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/layouts/scroll-view)
@@ -227,6 +237,8 @@ Currently the `itemSelected` callback uses integers indexes for keys to identify
 
 There is also a `ListViewGrouped` for grouped items of data.  This uses the same Xamarin control under the hood but in a different mode of use.
 
+<img src="https://user-images.githubusercontent.com/52166903/60180201-5dfc5b00-9817-11e9-9508-a0daa7b7a81d.png" width="400">
+
 See also:
 
 * [`Xamarin.Forms.Core.ListView`](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/listview/)
@@ -245,6 +257,8 @@ View.TableView(
         ("Contact", [ View.EntryCell(label="Email", placeholder="foo@bar.com", completed=(fun args -> ()) )
                       View.EntryCell(label="Phone", placeholder="+44 87654321", completed=(fun args -> ()) )] )])
 ```
+
+<img src="https://user-images.githubusercontent.com/52166903/60177365-9d737900-9810-11e9-92d5-88487316bbf6.png" width="400">
 
 See also:
 
@@ -316,6 +330,8 @@ Buttons are created using `View.Button`. The `command` of a button will normally
 View.Button(text = "Deposit", command = (fun () -> dispatch (Add 10.0)))
 ```
 
+<img src="https://user-images.githubusercontent.com/52166903/60180200-5dfc5b00-9817-11e9-87d1-e3d254b1cf2b.png" width="400">
+
 See also:
 
 * [Xamarin guide to Button](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/button)
@@ -334,6 +350,8 @@ View.Slider(
 )
 ```
 
+<img src="https://user-images.githubusercontent.com/52166903/60177363-9d737900-9810-11e9-8842-aeb904e7d739.png" width="400">
+
 See also:
 
 * [Xamarin guide to Slider](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/slider)
@@ -346,6 +364,8 @@ A simple `ActivityIndicator` is as follows:
 ```fsharp
 View.ActivityIndicator(isRunning = (count > 0))
 ```
+
+<img src="https://user-images.githubusercontent.com/52166903/60177355-9c424c00-9810-11e9-8275-bd8c2ebcf3c8.png" width="400">
 
 See also:
 
@@ -362,6 +382,8 @@ View.DatePicker(minimumDate = DateTime.Today,
     dateSelected=(fun args -> dispatch (StartDateSelected args.NewDate)))
 ```
 
+<img src="https://user-images.githubusercontent.com/52166903/60177357-9cdae280-9810-11e9-9979-1e91cf8c5ea6.png" width="400">
+
 See also:
 
 * [Xamarin guide to DatePicker](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/datepicker)
@@ -377,6 +399,8 @@ View.Editor(text = editorText,
     completed = (fun text -> dispatch (EditorEditCompleted text)))
 ```
 
+<img src="https://user-images.githubusercontent.com/52166903/60175558-d2c99800-980b-11e9-9755-860cc9a60dcf.png" width="400">
+
 See also:
 
 * [`Xamarin.Forms.Core.Editor`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Editor)
@@ -386,8 +410,10 @@ See also:
 An example `BoxView` is as follows:
 
 ```fsharp
-View.BoxView(Colors.Fuchsia)
+View.BoxView(Color.Fuchsia)
 ```
+
+<img src="https://user-images.githubusercontent.com/52166903/60177356-9cdae280-9810-11e9-9478-165b9da84745.png" width="400">
 
 See also:
 
@@ -426,6 +452,8 @@ View.Entry(
 )
 ```
 
+<img src="https://user-images.githubusercontent.com/52166903/60177359-9cdae280-9810-11e9-9d80-059a9a885b72.png" width="400">
+
 See also:
 
 * [`Xamarin.Forms.Core.Entry`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Entry)
@@ -437,6 +465,8 @@ A frame contains other content. A simple `Frame` is as follows:
 ```fsharp
 View.Frame(hasShadow = true, backgroundColor = Colors.Fuchsia)
 ```
+
+<img src="https://user-images.githubusercontent.com/52166903/60180199-5d63c480-9817-11e9-9a64-f306924eb25d.png" width="400">
 
 See also:
 
@@ -451,6 +481,8 @@ let monkey = "http://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Papio_anu
 
 View.Image(source = monkey)
 ```
+
+<img src="https://user-images.githubusercontent.com/52166903/60180198-5d63c480-9817-11e9-9458-379a848ccca4.png" width="400">
 
 See also:
 
@@ -481,6 +513,8 @@ View.Picker(
 )
 ```
 
+<img src="https://user-images.githubusercontent.com/52166903/60177361-9d737900-9810-11e9-87a2-ade4880f7222.png" width="400">
+
 See also:
 
 * [`Xamarin.Forms.Core.Picker`](https://docs.microsoft.com/en-us/dotnet/api/Xamarin.Forms.Picker)
@@ -495,6 +529,8 @@ View.SearchBar(
     searchCommand = (fun searchBarText -> dispatch  (ExecuteSearch searchBarText)),
     canExecute=true)
 ```
+
+<img src="https://user-images.githubusercontent.com/52166903/60180196-5d63c480-9817-11e9-9c21-e8b19dee8474.png" width="400">
 
 See also:
 
@@ -659,6 +695,8 @@ let update (msg : Msg) (model : Model) =
 
     | AlertResult alertResult -> ... // Do something with the result
 ```
+
+<img src="https://user-images.githubusercontent.com/52166903/60180195-5d63c480-9817-11e9-9c12-bab34b7fbb77.png" width="400">
 
 _Why don't we add a Fabulous wrapper for those?_
 Doing so would only end up duplicating the existing methods and compel us to maintain these in sync with Xamarin.Forms.

@@ -16,19 +16,23 @@ to build Xamarin.Forms applications for iOS, Android, Mac and more.  The approac
 Getting started
 ------
 
-1. Install Visual Studio or Visual Studio for Mac and enable both Xamarin and .NET Core support.
+1. Install Visual Studio or Visual Studio for Mac and enable both Xamarin and .NET Core support, these are listed as 'Mobile development with .NET' and '.NET Core Cross-platform development' respectively.
 
-2. Install the template pack:
+2. Open a command prompt window and install the template pack by entering:
 
        dotnet new -i Fabulous.Templates
 
-3. Create a blank F# Functional Xamarin Forms app:
+3. Navigate to a folder in the command prompt window where your new app can be created and enter:
 
        dotnet new fabulous-app -n SqueakyApp
 
-4. Open, edit, build and deploy in Visual Studio, Visual Studio for Mac and/or "msbuild" command line
+4. Open, edit and build in Visual Studio or Visual Studio for Mac
 
        SqueakyApp/SqueakyApp.sln
+
+5. Before deploying and running, first connect and enable your device, choose between iOS ([Emulator](https://docs.microsoft.com/en-us/xamarin/ios/get-started/hello-ios/hello-ios-quickstart), [Device](https://docs.microsoft.com/en-us/xamarin/ios/get-started/installation/device-provisioning/)) or Android ([Emulator](https://docs.microsoft.com/en-us/xamarin/android/get-started/installation/android-emulator/), [Device](https://docs.microsoft.com/xamarin/android/get-started/installation/set-up-device-for-development)).
+
+6. To run, set either your Android or iOS project as the startup project, then use F5.
 
 By default iOS and Android projects are created. But you can also target WPF with `--WPF`, UWP with `--UWP`, macOS with `--macOS` and/or GTK with `--GTK`. Here some common examples, but feel free to change the targets to the ones you require:
 
@@ -170,7 +174,7 @@ Presentation: Building mobile apps with F# using Xamarin - Jim Bennett - Xamarin
 **iOS Setup**
 
 * [SDK](https://docs.microsoft.com/en-gb/visualstudio/mac/installation)
-* [Emulator](https://docs.microsoft.com/en-us/xamarin/android/get-started/installation/android-emulator/)
+* [Emulator](https://docs.microsoft.com/en-us/xamarin/ios/get-started/hello-ios/hello-ios-quickstart)
 * [Pair to Mac](https://docs.microsoft.com/en-us/xamarin/ios/get-started/installation/windows/connecting-to-mac/)
 * [Device](https://docs.microsoft.com/en-us/xamarin/ios/get-started/installation/device-provisioning/)
 
