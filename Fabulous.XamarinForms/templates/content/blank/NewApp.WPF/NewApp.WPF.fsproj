@@ -20,13 +20,7 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <PackageReference Include="Xamarin.Forms" Version="XamarinFormsSdk" />
     <PackageReference Include="Xamarin.Forms.Platform.WPF" Version="XamarinFormsSdk" />
-    <PackageReference Include="Fabulous.Core" Version="FabulousPkgsVersion" />
-    <PackageReference Include="Fabulous.LiveUpdate" Version="FabulousPkgsVersion" />
-    <PackageReference Include="FSharp.Core" Version="FSharpCorePkgVersion" />
-    <PackageReference Include="Fabulous.CustomControls" Version="FabulousPkgsVersion" />
-    <PackageReference Update="FSharp.Core" Version="FSharpCorePkgVersion" /> <!-- workaround for VSMac bug https://github.com/mono/monodevelop/pull/5137 --> 
     <ProjectReference Include="../NewApp/NewApp.fsproj" />
   </ItemGroup>
 </Project>

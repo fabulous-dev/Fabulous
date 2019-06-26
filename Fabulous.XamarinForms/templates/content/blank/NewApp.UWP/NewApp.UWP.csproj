@@ -149,11 +149,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="XamarinFormsSdk" />
-    <PackageReference Include="Fabulous.Core" Version="FabulousPkgsVersion" />
-    <PackageReference Include="Fabulous.LiveUpdate" Version="FabulousPkgsVersion" />
     <PackageReference Include="FSharp.Core" Version="FSharpCorePkgVersion" />
-    <PackageReference Include="Fabulous.CustomControls" Version="FabulousPkgsVersion" /> 
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="MicrosoftNETCoreUniversalWindowsPlatformPkgVersion" />
   </ItemGroup>
   <ItemGroup>
