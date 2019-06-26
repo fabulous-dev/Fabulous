@@ -17,7 +17,6 @@ This library allows you to use the ultra-simple Model-View-Update architecture t
 
 * [Release Notes](RELEASE_NOTES.md)
 
-
 ## Contributing
 
 Please contribute to this library through issue reports, pull requests, code reviews and discussion.
