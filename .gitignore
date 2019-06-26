@@ -33,3 +33,5 @@ Fabulous\.XamarinForms/tests/FSharpDaemon\.Driver\.Tests/data/TestCallUnitFuncti
 Fabulous\.XamarinForms/tests/FSharpDaemon\.Driver\.Tests/data/ViewRefSmoke\.fs
 
 \.DS_Store
+
+Fabulous\.XamarinForms/src/Fabulous\.XamarinForms\.Controls/Xamarin\.Forms\.Core\.fs
