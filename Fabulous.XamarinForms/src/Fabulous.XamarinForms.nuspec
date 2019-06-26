@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+    <metadata>
+        <id>Fabulous.XamarinForms</id>
+        <title>Fabulous Xamarin.Forms</title>
+        <version>0.0.1</version>
+        <authors>Fabulous contributors</authors>
+        <description>Replaced with the Release Notes</description>
+        <projectUrl>https://fsprojects.github.io/Fabulous/</projectUrl>
+        <license type="expression">Apache-2.0</license>
+        <iconUrl>http://xamarin.com/content/images/nuget/xamarin.png</iconUrl>
+        <copyright>Copyright 2018</copyright>
+    </metadata>
+    <files>
+        <file src="..\..\build_output\Fabulous.XamarinForms\Fabulous.XamarinForms\*.dll" target="lib" />
+        <file src="..\..\build_output\Fabulous.XamarinForms\Fabulous.XamarinForms\*.pdb" target="lib" />
+        <file src="..\..\build_output\Fabulous.XamarinForms.Controls\Fabulous.XamarinForms.Controls\*.dll" target="lib" />
+        <file src="..\..\build_output\Fabulous.XamarinForms.Controls\Fabulous.XamarinForms.Controls\*.pdb" target="lib" />
+    </files>
+</package>

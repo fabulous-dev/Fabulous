@@ -166,6 +166,15 @@
     <Reference Include="FSharp.Core">
       <HintPath>..\packages\FSharp.Core.FSharpCorePkgVersion\lib\netstandard1.6\FSharp.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.NewtonsoftJsonPkg\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Essentials">
+      <HintPath>..\packages\Xamarin.Essentials.XamarinEssentialsSdk\lib\monoandroid71\Xamarin.Essentials.dll</HintPath>
+    </Reference>
+    <Reference Include="Elmish">
+      <HintPath>..\packages\Elmish.ElmishPkgVersion\lib\netstandard2.0\Elmish.dll</HintPath>
+    </Reference>
     <Reference Include="Fabulous">
       <HintPath>..\packages\Fabulous.FabulousPkgsVersion\lib\netstandard2.0\Fabulous.dll</HintPath>
     </Reference>
@@ -180,15 +189,6 @@
     </Reference>
     <Reference Include="Fabulous.XamarinForms.LiveUpdate">
       <HintPath>..\packages\Fabulous.XamarinForms.LiveUpdate.FabulousPkgsVersion\lib\netstandard2.0\Fabulous.XamarinForms.LiveUpdate.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.NewtonsoftJsonPkg\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Essentials">
-      <HintPath>..\packages\Xamarin.Essentials.XamarinEssentialsSdk\lib\monoandroid71\Xamarin.Essentials.dll</HintPath>
-    </Reference>
-    <Reference Include="Elmish">
-      <HintPath>..\packages\Elmish.ElmishPkgVersion\lib\netstandard2.0\Elmish.dll</HintPath>
     </Reference>
     <!--#if (CreateUITestProject)
     <PackageReference Include="Xamarin.TestCloud.Agent" Version="0.21.4"/>

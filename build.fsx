@@ -54,12 +54,11 @@ let dotnetBuild outputSubDir paths =
 
 let dotnetPack paths =
     for projectPath in paths do
-        let outputPath = sprintf "%s/%s" buildDir (Path.GetFileNameWithoutExtension projectPath)
         DotNet.pack (fun opt ->
             { opt with
                 Common = { opt.Common with CustomParams = Some "-p:IncludeSourceLink=True" }
                 Configuration = DotNet.BuildConfiguration.Release
-                OutputPath = Some outputPath }) projectPath
+                OutputPath = Some buildDir }) projectPath
 
 let dotnetTest outputSubDir paths =
     for projectPath in paths do
@@ -189,8 +188,8 @@ Target.create "PackFabulous" (fun _ ->
 )
 
 Target.create "PackFabulousXamarinForms" (fun _ -> 
-    !! "Fabulous.XamarinForms/src/**/*.fsproj"
-    |> dotnetPack
+    !! "Fabulous.XamarinForms/src/*.nuspec"
+    |> nugetPack
 )
 
 Target.create "PackFabulousXamarinFormsTemplates" (fun _ -> 

@@ -1,9 +1,10 @@
-﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
+﻿// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace NewApp
 
 open System.Diagnostics
-open Fabulous.Core
-open Fabulous.DynamicViews
+open Elmish
+open Fabulous
+open Fabulous.XamarinForms
 open Xamarin.Forms
 
 module App = 
@@ -24,10 +25,10 @@ module App =
 
     let init () = initModel, Cmd.none
 
-    let timerCmd = 
+    let timerCmd () =
         async { do! Async.Sleep 200
                 return TimedTick }
-        |> Cmd.ofAsyncMsg
+        |> Cmd.OfAsync.result
 
     let update msg model =
         match msg with
@@ -69,7 +70,7 @@ type App () as app =
         |> Program.withConsoleTrace
 #endif
 //+:cnd:noEmit
-        |> Program.runWithDynamicView app
+        |> XamarinFormsProgram.run app
 
 //-:cnd:noEmit
 #if DEBUG
