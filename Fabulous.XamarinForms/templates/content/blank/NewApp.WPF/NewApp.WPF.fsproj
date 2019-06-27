@@ -20,6 +20,7 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <PackageReference Include="FSharp.Core" Version="FSharpCorePkgVersion" />
     <PackageReference Include="Xamarin.Forms.Platform.WPF" Version="XamarinFormsSdk" />
     <ProjectReference Include="../NewApp/NewApp.fsproj" />
   </ItemGroup>

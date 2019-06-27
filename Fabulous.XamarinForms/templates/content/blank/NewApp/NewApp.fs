@@ -25,7 +25,7 @@ module App =
 
     let init () = initModel, Cmd.none
 
-    let timerCmd () =
+    let timerCmd =
         async { do! Async.Sleep 200
                 return TimedTick }
         |> Cmd.OfAsync.result
