@@ -4,7 +4,7 @@
   * [Basic Elements](views-basic-elements.html) 
   * [Pages](views-elements.html#pages)
   * [Layouts](views-elements.html#layouts)
-  * [Lists and Tables](views-elements.html#lists-and-tables)
+  * [Lists and Tables](views-lists-tables.html)
   * [Gestures](views-gestures.html)
   * [Pop-ups](views-popups.html)
   * [ViewRefs](views-animations.html#viewrefs)
