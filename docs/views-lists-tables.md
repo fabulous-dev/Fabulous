@@ -104,3 +104,50 @@ There are many other techniques (e.g. save the latest collection of visual eleme
 Thre is also an `itemDisappearing` event for `ListView` that can be used to discard data from the underlying model and restrict the
 range of visual items that need to be generated.
 
+### CollectionView
+
+`CollectionView` is available in preview in Xamarin.Forms 4.0.  
+Please read the Xamarin.Forms documentation to check whether this control is available for the platforms you target.
+
+Fabulous provides an initial but partial support for it.  
+
+As it is experimental, this control requires the flag `CollectionView = CollectionView_Experimental` before it can be used.
+For example:
+
+```fsharp
+
+// iOS
+[<Register ("AppDelegate")>]
+type AppDelegate () =
+    inherit FormsApplicationDelegate ()
+
+    override this.FinishedLaunching (uiApp, options) =
+        Xamarin.Forms.Forms.SetFlags([| "CollectionView_Experimental"|]);
+        (...)
+
+// Android
+[<Activity>]
+type MainActivity() =
+    inherit FormsApplicationActivity()
+
+    override this.OnCreate (bundle: Bundle) =
+        base.OnCreate (bundle)
+        global.Xamarin.Forms.Forms.SetFlags([| "CollectionView_Experimental"|])
+        (...)
+```
+
+Usage:
+```fsharp
+
+View.CollectionView(items=[
+            View.Label(text="Person1") 
+            View.Label(text="Person2")
+            View.Label(text="Person3")
+            View.Label(text="Person4")
+            View.Label(text="Person5")
+        ])
+```
+
+See also:
+* [Xamarin guide to CollectionView](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/collectionview/)
+* [Xamarin.Forms 4.0 Preview](https://devblogs.microsoft.com/xamarin/xamarin-forms-4-0-preview/)
