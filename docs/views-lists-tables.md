@@ -148,6 +148,8 @@ View.CollectionView(items=[
         ])
 ```
 
+<img src="https://user-images.githubusercontent.com/52166903/60262083-4683a780-98d5-11e9-8afc-cde4d594171b.png" width="400">
+
 See also:
 * [Xamarin guide to CollectionView](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/collectionview/)
 * [Xamarin.Forms 4.0 Preview](https://devblogs.microsoft.com/xamarin/xamarin-forms-4-0-preview/)
