@@ -211,6 +211,9 @@ Target.create "PackFabulous" (fun _ ->
 Target.create "PackFabulousXamarinForms" (fun _ -> 
     !! "Fabulous.XamarinForms/src/*.nuspec"
     |> nugetPack
+
+    !! "Fabulous.XamarinForms/src/Fabulous.XamarinForms.LiveUpdate/*.fsproj"
+    |> dotnetPack
 )
 
 Target.create "PackFabulousXamarinFormsTemplates" (fun _ -> 

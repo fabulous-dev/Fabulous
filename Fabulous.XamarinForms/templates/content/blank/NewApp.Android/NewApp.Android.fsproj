@@ -244,7 +244,7 @@
       <HintPath>..\packages\Fabulous.XamarinForms.FabulousPkgsVersion\lib\netstandard2.0\Fabulous.XamarinForms.dll</HintPath>
     </Reference>
     <Reference Include="Fabulous.XamarinForms.Controls">
-      <HintPath>..\packages\Fabulous.XamarinForms.Controls.FabulousPkgsVersion\lib\netstandard2.0\Fabulous.XamarinForms.Controls.dll</HintPath>
+      <HintPath>..\packages\Fabulous.XamarinForms.FabulousPkgsVersion\lib\netstandard2.0\Fabulous.XamarinForms.Controls.dll</HintPath>
     </Reference>
     <Reference Include="Fabulous.XamarinForms.LiveUpdate">
       <HintPath>..\packages\Fabulous.XamarinForms.LiveUpdate.FabulousPkgsVersion\lib\netstandard2.0\Fabulous.XamarinForms.LiveUpdate.dll</HintPath>
