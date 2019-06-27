@@ -1,4 +1,5 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <OutputType>Library</OutputType>
@@ -24,4 +25,5 @@
     <ProjectReference Include="..\..\tools\Generator\Generator.fsproj" />
   </ItemGroup>
   <Import Project="..\..\Packages.targets" />
+  <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>
