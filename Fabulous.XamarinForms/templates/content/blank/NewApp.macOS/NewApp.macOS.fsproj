@@ -99,6 +99,9 @@
     <Reference Include="FSharp.Core">
       <HintPath>..\packages\FSharp.Core.FSharpCorePkgVersion\lib\netstandard1.6\FSharp.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.NewtonsoftJsonPkg\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Elmish">
       <HintPath>..\packages\Elmish.ElmishPkgVersion\lib\netstandard2.0\Elmish.dll</HintPath>
     </Reference>

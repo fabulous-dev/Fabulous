@@ -12,7 +12,7 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testResultsFormat: 'VSTest'
-      testResultsFiles: '**/TestResults/*.trx'
+      testResultsFiles: '**/TestResults/**/*.trx'
       testRunTitle: '$(Agent.JobName)'
 
 - job: macOS
@@ -23,5 +23,5 @@ jobs:
   - task: PublishTestResults@2
     inputs:
       testResultsFormat: 'VSTest'
-      testResultsFiles: '**/TestResults/*.trx'
+      testResultsFiles: '**/TestResults/**/*.trx'
       testRunTitle: '$(Agent.JobName)'
