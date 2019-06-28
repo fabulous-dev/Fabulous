@@ -228,9 +228,6 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\..\packages\androidapp\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Elmish">
-      <HintPath>..\..\..\..\packages\androidapp\Elmish\lib\netstandard2.0\Elmish.dll</HintPath>
-    </Reference>
     <ProjectReference Include="..\Calculator\Calculator.fsproj">
       <Project>{58C3A94E-459E-4CF5-AE67-B7C278578045}</Project>
       <Name>Calculator</Name>

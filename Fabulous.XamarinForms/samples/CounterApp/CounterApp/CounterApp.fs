@@ -1,7 +1,6 @@
 ﻿// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace CounterApp
 
-open Elmish
 open Fabulous
 open Fabulous.XamarinForms
 open Fabulous.XamarinForms.LiveUpdate
@@ -28,7 +27,7 @@ module App =
     let timerCmd () =
         async { do! Async.Sleep 200
                 return TimedTick }
-        |> Cmd.OfAsync.result
+        |> Cmd.ofAsyncMsg
 
     let mapCmdMsgToCmd cmdMsg =
         match cmdMsg with

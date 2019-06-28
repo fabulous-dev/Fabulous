@@ -231,9 +231,6 @@
     <Reference Include="Xamarin.Essentials">
       <HintPath>..\packages\Xamarin.Essentials.XamarinEssentialsSdk\lib\monoandroid90\Xamarin.Essentials.dll</HintPath>
     </Reference>
-    <Reference Include="Elmish">
-      <HintPath>..\packages\Elmish.ElmishPkgVersion\lib\netstandard2.0\Elmish.dll</HintPath>
-    </Reference>
     <Reference Include="Fabulous">
       <HintPath>..\packages\Fabulous.FabulousPkgsVersion\lib\netstandard2.0\Fabulous.dll</HintPath>
     </Reference>

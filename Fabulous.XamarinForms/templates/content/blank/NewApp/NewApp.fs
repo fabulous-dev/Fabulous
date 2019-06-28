@@ -2,7 +2,6 @@
 namespace NewApp
 
 open System.Diagnostics
-open Elmish
 open Fabulous
 open Fabulous.XamarinForms
 open Xamarin.Forms
@@ -28,7 +27,7 @@ module App =
     let timerCmd =
         async { do! Async.Sleep 200
                 return TimedTick }
-        |> Cmd.OfAsync.result
+        |> Cmd.ofAsyncMsg
 
     let update msg model =
         match msg with

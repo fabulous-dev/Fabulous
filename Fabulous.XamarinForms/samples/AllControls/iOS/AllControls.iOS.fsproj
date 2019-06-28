@@ -128,9 +128,6 @@
     <Reference Include="FSharp.Data">
       <HintPath>..\..\..\..\packages\iosapp\FSharp.Data\lib\netstandard2.0\FSharp.Data.dll</HintPath>
     </Reference>
-    <Reference Include="Elmish">
-      <HintPath>..\..\..\..\packages\iosapp\Elmish\lib\netstandard2.0\Elmish.dll</HintPath>
-    </Reference>
     <ProjectReference Include="..\AllControls\AllControls.fsproj">
       <Project>{13F140D6-2D21-41BE-AC90-4B14D8C16A47}</Project>
       <Name>AllControls</Name>

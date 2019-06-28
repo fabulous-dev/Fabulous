@@ -245,9 +245,6 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\..\packages\androidapp\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Elmish">
-      <HintPath>..\..\..\..\packages\androidapp\Elmish\lib\netstandard2.0\Elmish.dll</HintPath>
-    </Reference>
     <ProjectReference Include="..\CounterApp\CounterApp.fsproj">
       <Project>{AC36B11A-383D-45A3-8999-4F6475E9DD13}</Project>
       <Name>CounterApp</Name>

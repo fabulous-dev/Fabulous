@@ -187,12 +187,6 @@
       "replaces": "OpenTKPkgVersion",
       "defaultValue": "3.0.1"
     },
-    "ElmishPkgVersion": {
-      "type": "parameter",
-      "dataType": "string",
-      "replaces": "ElmishPkgVersion",
-      "defaultValue": "3.0.3"
-    },
     "ProjectID": {
       "type": "generated",
       "generator": "guid",

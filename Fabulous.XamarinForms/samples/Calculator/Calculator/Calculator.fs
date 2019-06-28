@@ -1,7 +1,7 @@
 ﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
 namespace Calculator
 
-open Elmish
+open Fabulous
 open Fabulous.XamarinForms
 open Fabulous.XamarinForms.LiveUpdate
 open Xamarin.Forms

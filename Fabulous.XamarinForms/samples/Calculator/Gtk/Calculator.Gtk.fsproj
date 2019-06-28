@@ -87,9 +87,6 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\..\packages\gtkapp\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Elmish">
-      <HintPath>..\..\..\..\packages\gtkapp\Elmish\lib\netstandard2.0\Elmish.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />

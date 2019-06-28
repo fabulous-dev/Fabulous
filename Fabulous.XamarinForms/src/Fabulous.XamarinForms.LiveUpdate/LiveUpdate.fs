@@ -1,13 +1,12 @@
 ﻿namespace Fabulous.XamarinForms
 
- open Elmish
  open Fabulous
  open Fabulous.LiveUpdate
  open Xamarin.Forms
 
  module LiveUpdate =
      /// Trace all the updates to the console
-     type ProgramRunner<'model,'msg> with
+     type ProgramRunner<'arg, 'model,'msg> with
 
          member runner.EnableLiveUpdate() =
              async {

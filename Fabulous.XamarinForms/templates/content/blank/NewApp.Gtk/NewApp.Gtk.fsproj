@@ -87,9 +87,6 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.NewtonsoftJsonPkg\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Elmish">
-      <HintPath>..\packages\Elmish.ElmishPkgVersion\lib\netstandard2.0\Elmish.dll</HintPath>
-    </Reference>
     <Reference Include="Fabulous">
       <HintPath>..\packages\Fabulous.FabulousPkgsVersion\lib\netstandard2.0\Fabulous.dll</HintPath>
     </Reference>

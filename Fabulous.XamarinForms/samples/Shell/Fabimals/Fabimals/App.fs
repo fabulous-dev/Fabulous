@@ -1,7 +1,6 @@
 ﻿// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Fabimals
 
-open Elmish
 open Fabulous
 open Fabulous.XamarinForms
 open Fabulous.XamarinForms.LiveUpdate

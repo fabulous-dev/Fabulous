@@ -118,9 +118,6 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\..\packages\iosapp\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Elmish">
-      <HintPath>..\..\..\..\packages\iosapp\Elmish\lib\netstandard2.0\Elmish.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\src\Fabulous.LiveUpdate\Fabulous.LiveUpdate.fsproj">

@@ -239,9 +239,6 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\..\packages\androidapp\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Elmish">
-      <HintPath>..\..\..\..\packages\androidapp\Elmish\lib\netstandard2.0\Elmish.dll</HintPath>
-    </Reference>
     <ProjectReference Include="..\TicTacToe\TicTacToe.fsproj">
       <Project>{AE045D79-7FF3-45F3-BFD0-305542A1C728}</Project>
       <Name>TicTacToe</Name>

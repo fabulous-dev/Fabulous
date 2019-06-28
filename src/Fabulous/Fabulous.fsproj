@@ -10,7 +10,7 @@
     <Compile Include="ViewHelpers.fs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Elmish" />
+    <PackageReference Include="FSharp.Core" />
   </ItemGroup>
   <Import Project="..\..\Packages.targets" />
 </Project>

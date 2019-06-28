@@ -2,7 +2,6 @@
 namespace AllControls
 
 open System
-open Elmish
 open Fabulous
 open Fabulous.XamarinForms
 open Xamarin.Forms
@@ -200,18 +199,16 @@ module App =
           IsScrolling = false }, Cmd.none
 
     let getWebData =
-        let task () =
-            async {
-                do! Async.SwitchToThreadPool()
-                return! Http.AsyncRequest(url="https://api.myjson.com/bins/1ecasc", httpMethod="GET", silentHttpErrors=true)
-            }
-            
-        let mapSuccess (response: HttpResponse) =
-            match response.StatusCode with
-            | 200 -> Msg.ReceivedDataSuccess (Some (response.Body |> string))
-            | _ -> Msg.ReceivedDataFailure (Some "Failed to get data")
-        
-        Cmd.OfAsync.perform task () mapSuccess
+        async {
+            do! Async.SwitchToThreadPool()
+            let! response = 
+                Http.AsyncRequest(url="https://api.myjson.com/bins/1ecasc", httpMethod="GET", silentHttpErrors=true)
+            let r = 
+                match response.StatusCode with
+                | 200 -> Msg.ReceivedDataSuccess (Some (response.Body |> string))
+                | _ -> Msg.ReceivedDataFailure (Some "Failed to get data")
+            return r
+        } |> Cmd.ofAsyncMsg
 
     let animatedLabelRef = ViewRef<Label>()
     let scrollViewRef = ViewRef<ScrollView>()

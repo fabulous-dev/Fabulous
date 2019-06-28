@@ -2,7 +2,6 @@
 
 namespace Fabulous.XamarinForms
 
-open Elmish
 open Fabulous
 open Xamarin.Forms
 
@@ -25,13 +24,18 @@ module XamarinFormsProgram =
     let private syncDispatch (dispatch: 'msg -> unit) =
         fun msg ->
             Device.BeginInvokeOnMainThread(fun () -> dispatch msg)
+            
+    let private syncAction (fn: unit -> unit) =
+        fun () ->
+            Device.BeginInvokeOnMainThread (fun () -> fn())
 
     let runWith app arg program =
         let host = XamarinFormsHost(app)
 
         program
         |> Program.withSyncDispatch syncDispatch
-        |> FabulousProgram.runWith host ViewHelpers.canReuseView arg
+        |> Program.withSyncAction syncAction
+        |> Program.runWithFabulous host arg
         
     let run app program =
         runWith app () program

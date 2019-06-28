@@ -15,9 +15,11 @@ module TestModule =
     // Paths are relative to "__SOURCE_DIRECTORY__/data" where the project files are written to
     let elmishExtraRefs =
         """
--r:CWD/../../../src/Fabulous.CustomControls/bin/Debug/netstandard2.0/Fabulous.CustomControls.dll
--r:CWD/../../../src/Fabulous.Core/bin/Debug/netstandard2.0/Fabulous.Core.dll
--r:CWD/../../../src/Fabulous.LiveUpdate/bin/Debug/netstandard2.0/Fabulous.LiveUpdate.dll
+-r:CWD/../../../../src/Fabulous/bin/Debug/netstandard2.0/Fabulous.dll
+-r:CWD/../../../../src/Fabulous.LiveUpdate/bin/Debug/netstandard2.0/Fabulous.LiveUpdate.dll
+-r:CWD/../../../../Fabulous.XamarinForms/src/Fabulous.XamarinForms/bin/Debug/netstandard2.0/Fabulous.XamarinForms.dll
+-r:CWD/../../../../Fabulous.XamarinForms/src/Fabulous.XamarinForms.Controls/bin/Debug/netstandard2.0/Fabulous.XamarinForms.Controls.dll
+-r:CWD/../../../../Fabulous.XamarinForms/src/Fabulous.XamarinForms.LiveUpdate/bin/Debug/netstandard2.0/Fabulous.XamarinForms.LiveUpdate.dll
 -r:NUGETFALLBACKFOLDER/newtonsoft.json/NEWTONSOFTJSONVERSION/lib/netstandard2.0/Newtonsoft.Json.dll
 -r:PACKAGEDIR/xamarin.forms/XAMARINFORMSVERSION/lib/netstandard2.0/Xamarin.Forms.Core.dll
 -r:PACKAGEDIR/xamarin.forms/XAMARINFORMSVERSION/lib/netstandard2.0/Xamarin.Forms.Platform.dll

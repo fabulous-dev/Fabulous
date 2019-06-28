@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\..\..\..\packages\androidapp\Xamarin.Forms\build\Xamarin.Forms.props" Condition="Exists('..\..\..\..\packages\androidapp\Xamarin.Forms\build\Xamarin.Forms.props')" />
   <PropertyGroup>
@@ -221,9 +221,6 @@
     </Reference>
     <Reference Include="FSharp.Data">
       <HintPath>..\..\..\..\packages\androidapp\FSharp.Data\lib\netstandard2.0\FSharp.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="Elmish">
-      <HintPath>..\..\..\..\packages\androidapp\Elmish\lib\netstandard2.0\Elmish.dll</HintPath>
     </Reference>
     <ProjectReference Include="..\AllControls\AllControls.fsproj">
       <Project>{13f140d6-2d21-41be-ac90-4b14d8c16a47}</Project>

@@ -7,7 +7,6 @@ open System.Net.Sockets
 open System.Net.NetworkInformation
 open System.IO
 open System.Text
-open Elmish
 open Fabulous
 open FSharp.Compiler.PortaCode.CodeModel
 open FSharp.Compiler.PortaCode.Interpreter
@@ -178,7 +177,7 @@ module Extensions =
             | _ -> None)
 
     /// Starts the HttpServer listening for changes
-    let enableLiveUpdate printAddressesFn syncChangeProgram (runner: ProgramRunner<'model,'msg>) =
+    let enableLiveUpdate printAddressesFn syncChangeProgram (runner: ProgramRunner<'arg, 'model,'msg>) =
         let interp = EvalContext(System.Reflection.Assembly.Load)
 
         let switchD (files: (string * DFile)[]) =
@@ -237,12 +236,12 @@ module Extensions =
                             let (_, programObj) = interp.GetExprDeclResult(entity, membDef.Name) 
                             match getVal programObj with 
 
-                            | :? Program<unit, obj, obj, ViewElement> as programErased -> 
+                            | :? Program<obj, obj, obj> as programErased -> 
 
                                 // Stop the running program 
                                 printfn "changing running program...."
                                 syncChangeProgram (fun () ->
-                                     FabulousProgram.replaceCurrent runner programErased
+                                     runner.ChangeProgram(programErased)
                                 )
                                 printfn "*** LiveUpdate success:"
                                 printfn "***   [x] got code package"

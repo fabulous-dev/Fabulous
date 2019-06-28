@@ -209,9 +209,6 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\..\..\packages\iosapp\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Elmish">
-      <HintPath>..\..\..\..\..\packages\neutral\Elmish\lib\netstandard2.0\Elmish.dll</HintPath>
-    </Reference>
     <ProjectReference Include="..\Fabimals\Fabimals.fsproj">
       <Project>{A85D491C-2E1C-48EF-9692-88C461E24398}</Project>
       <Name>Fabimals</Name>
