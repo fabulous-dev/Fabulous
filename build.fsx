@@ -130,7 +130,7 @@ Target.create "UpdateVersion" (fun _ ->
     |> Xml.saveDoc props
 
     // Updates template.json
-    let templates = !! "templates/**/.template.config/template.json"
+    let templates = !! "**/templates/**/.template.config/template.json"
     for template in templates do
         File.readAsString template
         |> JObject.Parse
@@ -256,7 +256,7 @@ Target.create "TestTemplatesNuGet" (fun _ ->
     let testAppName = "testapp2" + string (abs (hash ticks) % 100)
 
     // Globally install the templates from the template nuget package we just built
-    DotNet.exec id "new" (sprintf "-i %s/Fabulous.Templates.%s.nupkg" buildDir release.NugetVersion) |> ignore
+    DotNet.exec id "new" (sprintf "-i %s/Fabulous.XamarinForms.Templates.%s.nupkg" buildDir release.NugetVersion) |> ignore
 
     // Instantiate the template.
     Shell.cleanDir testAppName
