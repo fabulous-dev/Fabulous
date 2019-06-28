@@ -2,7 +2,11 @@
   <Import Project="..\..\..\SourceLink.props" />
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>Fabulous.StaticViews.XamarinForms</RootNamespace>
+    <RootNamespace>Fabulous.StaticView.XamarinForms</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Description>F# Functional App Dev Framework - Elmish bindings for XAML Xamarin.Forms</Description>
+    <PackageTags>LiveUpdate;Hot reload</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ElmishCmd.fs" />

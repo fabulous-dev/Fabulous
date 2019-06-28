@@ -1,23 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFramework>netcoreapp2.2</TargetFramework>
-        <OutputType>Library</OutputType>
-        <IsPackable>false</IsPackable>
-        <DefineConstants>$(DefineConstants);NETSTANDARD2_0;TEST</DefineConstants>
-        <IsTestProject>true</IsTestProject>
-    </PropertyGroup>
-    <ItemGroup>
-        <Compile Include="ViewHelpersTests.fs" />
-        <Compile Include="Program.fs" />
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="FsUnit" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" />
-        <PackageReference Include="NUnit3TestAdapter" />
-    </ItemGroup>
-    <ItemGroup>
-      <ProjectReference Include="..\..\src\Fabulous.XamarinForms.Controls\Fabulous.XamarinForms.Controls.fsproj" />
-      <ProjectReference Include="..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj" />
-    </ItemGroup>
-    <Import Project="..\..\..\Packages.targets" />
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <OutputType>Library</OutputType>
+    <IsPackable>false</IsPackable>
+    <DefineConstants>$(DefineConstants);NETSTANDARD2_0;TEST</DefineConstants>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="ViewHelpersTests.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FsUnit" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="NUnit3TestAdapter" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Fabulous.XamarinForms.Controls\Fabulous.XamarinForms.Controls.fsproj" />
+    <ProjectReference Include="..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj" />
+  </ItemGroup>
+  <Import Project="..\..\..\Packages.targets" />
 </Project>

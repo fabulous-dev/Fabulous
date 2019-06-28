@@ -3,6 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
+  <PropertyGroup>
+    <Description>F# Functional App Dev Framework</Description>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="Cmd.fs" />
     <Compile Include="ViewElement.fs" />

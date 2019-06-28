@@ -5,13 +5,13 @@
     <title>Fabulous Xamarin.Forms</title>
     <version>0.0.1</version>
     <authors>Fabulous contributors</authors>
-    <description>Replaced with the Release Notes</description>
+    <description>F# bindings for using declarative UI with Fabulous in Xamarin.Forms</description>
     <projectUrl>https://fsprojects.github.io/Fabulous/</projectUrl>
     <repository type="git" url="https://github.com/fsprojects/Fabulous" />
     <license type="expression">Apache-2.0</license>
     <iconUrl>http://xamarin.com/content/images/nuget/xamarin.png</iconUrl>
     <copyright>Copyright 2018</copyright>
-    <tags>Xamarin.Forms;F#;Elmish;Elm</tags>
+    <tags>Xamarin.Forms;Fabulous;F#;Elmish;Elm</tags>
     <dependencies>
       <dependency id="Fabulous" version="0.36.0" />
     </dependencies>

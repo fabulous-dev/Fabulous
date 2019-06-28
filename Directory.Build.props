@@ -13,7 +13,7 @@
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/fsprojects/Fabulous</PackageProjectUrl>
-    <PackageTags>Xamarin.Forms;F#;Elmish;Elm;$(PackageTags)</PackageTags>
+    <PackageTags>F#;Elmish;Elm;$(PackageTags)</PackageTags>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>

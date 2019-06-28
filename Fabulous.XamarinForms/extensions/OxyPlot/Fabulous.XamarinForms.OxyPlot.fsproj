@@ -1,24 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <Import Project="..\..\..\SourceLink.props" />
-    <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
-        <NoWarn>NU1701;NU5104</NoWarn>
-    </PropertyGroup>
-    <PropertyGroup>
-        <PackageId>Fabulous.XamarinForms.OxyPlot</PackageId>
-        <Description>Fabulous extension for OxyPlot</Description>
-        <PackageTags>OxyPlot;Charting;2D</PackageTags>
-    </PropertyGroup>
-    <ItemGroup>
-        <Compile Include="OxyPlot.fs" />
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="FSharp.Core" />
-        <PackageReference Include="OxyPlot.Xamarin.Forms" />
-    </ItemGroup>
-    <ItemGroup>
-      <ProjectReference Include="..\..\..\src\Fabulous\Fabulous.fsproj" />
-      <ProjectReference Include="..\..\src\Fabulous.XamarinForms.Controls\Fabulous.XamarinForms.Controls.fsproj" />
-    </ItemGroup>
-    <Import Project="..\..\..\Packages.targets" />
+  <Import Project="..\..\..\SourceLink.props" />
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <NoWarn>NU1701;NU5104</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PackageId>Fabulous.XamarinForms.OxyPlot</PackageId>
+    <Description>Fabulous extension for OxyPlot</Description>
+    <PackageTags>OxyPlot;Charting;2D</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="OxyPlot.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FSharp.Core" />
+    <PackageReference Include="OxyPlot.Xamarin.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Fabulous\Fabulous.fsproj" />
+    <ProjectReference Include="..\..\src\Fabulous.XamarinForms.Controls\Fabulous.XamarinForms.Controls.fsproj" />
+  </ItemGroup>
+  <Import Project="..\..\..\Packages.targets" />
 </Project>
