@@ -214,20 +214,17 @@ module App =
     let scrollViewRef = ViewRef<ScrollView>()
 
     let scrollWithXFAsync (x: float, y: float, animated: AnimationKind) =
-        let task () =
-            async {
-                match scrollViewRef.TryValue with
-                | None -> return None
-                | Some scrollView ->
-                    let animationEnabled =
-                        match animated with
-                        | Animated -> true
-                        | NotAnimated -> false
-                    do! scrollView.ScrollToAsync(x, y, animationEnabled) |> Async.AwaitTask |> Async.Ignore
-                    return Some (Scrolled (x, y))
-            }
-        
-        Cmd.OfAsync.performBind task () id
+        async {
+            match scrollViewRef.TryValue with
+            | None -> return None
+            | Some scrollView ->
+                let animationEnabled =
+                    match animated with
+                    | Animated -> true
+                    | NotAnimated -> false
+                do! scrollView.ScrollToAsync(x, y, animationEnabled) |> Async.AwaitTask |> Async.Ignore
+                return Some (Scrolled (x, y))
+        } |> Cmd.ofAsyncMsgOption
 
     let update msg model =
         match msg with
