@@ -2,14 +2,15 @@
   "author": "fsprojects",
   "classifications": [
     "Fabulous",
+    "Xamarin.Forms",
     "Mobile",
     "Elmish",
     "Cross-platform"
   ],
-  "name": "Fabulous App",
-  "groupIdentity": "Fabulous.App",
-  "identity": "Fabulous.FSharp",
-  "shortName": "fabulous-app",
+  "name": "Fabulous Xamarin.Forms App v0.36.0",
+  "groupIdentity": "Fabulous.XamarinForms.App",
+  "identity": "Fabulous.XamarinForms.FSharp",
+  "shortName": "fabulous-xf-app",
   "tags": {
     "language": "F#",
     "type": "project"
@@ -64,7 +65,7 @@
       "choices": [
         {
           "choice": "blank",
-          "description": "An empty Fabulous app"
+          "description": "An empty Fabulous Xamarin.Forms app"
         }
       ]
     },
@@ -228,18 +229,6 @@
       "defaultValue": "false"
     }
   },
-  "postActions": [
-    {
-      "condition": "(HostIdentifier != \"dotnetcli\" && HostIdentifier != \"dotnetcli-preview\")",
-      "description": "Opens NewApp.fs in the editor.",
-      "manualInstructions": [],
-      "actionId": "84C0DA21-51C8-4541-9940-6CA19AF04EE6",
-      "args": {
-        "files": "0"
-      },
-      "continueOnError": true
-    }
-  ],
   "sources": [
     {
       "modifiers": [

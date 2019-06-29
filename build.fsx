@@ -134,10 +134,19 @@ Target.create "UpdateVersion" (fun _ ->
     for template in templates do
         File.readAsString template
         |> JObject.Parse
+        |> (fun o ->
+            let prop = o.["name"] :?> JValue
+            let name =
+                let currentValue = prop.Value.ToString()
+                let realName = currentValue.Remove(currentValue.LastIndexOf(" "))
+                sprintf "%s v%s" realName release.NugetVersion
+            prop.Value <- name
+            o
+        )
         |> (fun o -> 
-                let prop = o.["symbols"].["FabulousPkgsVersion"].["defaultValue"] :?> JValue
-                prop.Value <- release.NugetVersion
-                o
+            let prop = o.["symbols"].["FabulousPkgsVersion"].["defaultValue"] :?> JValue
+            prop.Value <- release.NugetVersion
+            o
         )
         |> (fun o -> JsonConvert.SerializeObject(o, Formatting.Indented))
         |> File.writeString false template
