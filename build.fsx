@@ -276,7 +276,7 @@ Target.create "TestTemplatesNuGet" (fun _ ->
         elif Environment.isLinux then " --Android=false --iOS=false"
         else ""
         
-    DotNet.exec id "new fabulous-app" (sprintf "-n %s -lang F# --GTK%s" testAppName extraArgs) |> ignore
+    DotNet.exec id "new fabulous-xf-app" (sprintf "-n %s -lang F# --GTK%s" testAppName extraArgs) |> ignore
 
     // The shared project and WPF need to be restored manually as they're using the new SDK-style format
     // When restoring, using the build_output as a package source to pick up the package we just compiled
