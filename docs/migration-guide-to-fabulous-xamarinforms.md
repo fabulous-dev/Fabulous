@@ -48,6 +48,26 @@ Here is the correspondance:
 - `open Fabulous.DynamicView` => `open Fabulous.XamarinForms`
 - `open Fabulous.LiveUpdate` => `open Fabulous.XamarinForms.LiveUpdate`
 
+### Changing the runner
+
+Last thing to change is the line:
+```
+Program.runWithDynamicView
+```
+
+It now becomes
+```
+XamarinFormsProgram.run
+```
+
+E.g.
+```
+let runner =
+    Program.mkProgram init update view
+    |> Program.withConsoleTrace
+    |> XamarinFormsProgram.run app
+```
+
 Your apps should now correctly build and run.
 
 ### Using the new templates
