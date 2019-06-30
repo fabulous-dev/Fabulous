@@ -4,7 +4,6 @@
   * Move to `seq<_>` as the de-facto model type
   * Add `OpenGLView`
   * Compute the delta between previous and current model in a platform-agnostic way (would allow to support other frameworks like Avalonia or Uno)
-  * Move all Xamarin.Forms specific code in its own project "Fabulous.XamarinForms"
   
 * Support for external libraries
   * Make the code generator work with components libraries (like SyncFusion or Telerik for Xamarin.Forms)
