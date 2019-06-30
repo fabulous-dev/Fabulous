@@ -6,13 +6,15 @@ bin
 packages
 paket-files
 *.dll
+*.user
+\.DS_Store
 
+\.ionide/
 build_output/
 .idea/
 testapp*/
-tests/Fabulous.Cli\.Tests/data/
 
-samples/CounterApp/CounterApp/CounterApp\.args\.txt
-
-samples/TicTacToe/TicTacToe/TicTacToe\.args\.txt
-src/Fabulous.Core/Xamarin.Forms.Core.fs
+Fabulous\.XamarinForms/tests/FSharpDaemon\.Driver\.Tests/data/
+Fabulous\.XamarinForms/samples/CounterApp/CounterApp/CounterApp\.args\.txt
+Fabulous\.XamarinForms/samples/TicTacToe/TicTacToe/TicTacToe\.args\.txt
+Fabulous\.XamarinForms/src/Fabulous\.XamarinForms\.Controls/Xamarin\.Forms\.Core\.fs

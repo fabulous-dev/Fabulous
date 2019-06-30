@@ -11,60 +11,31 @@ open System.IO
 open Newtonsoft.Json
 open Newtonsoft.Json.Linq
 
-type BuildType =
-    | Debug
-    | Release
-
-type BuildAction =
-    | MSBuild of BuildType
-    | DotNetPack
-    | NuGetPack
-
-[<NoComparison>]
-type ProjectDefinition =
-    { Name: string
-      Path: IGlobbingPattern
-      Action: BuildAction
-      OutputPath: string }
-
 let repositoryOwner = "fsprojects"
 let repositoryName = "Fabulous"
-
 let release = ReleaseNotes.load "RELEASE_NOTES.md"
 let buildDir = Path.getFullName "./build_output"
+
+let composeOutputPath subDir projectPath =
+    let projectName = Path.GetFileNameWithoutExtension projectPath
+    sprintf "%s/%s/%s" buildDir subDir projectName
 
 let removeIncompatiblePlatformProjects pattern = 
     if Environment.isMacOS then
         pattern
-        -- "samples/**/*.WPF.fsproj"
-        -- "samples/**/*.UWP.fsproj"        
+        -- "**/*.WPF.fsproj"
+        -- "**/*.UWP.fsproj"        
     elif Environment.isWindows then
         pattern
-        -- "samples/**/*.macOS.fsproj"
-        -- "samples/**/*.iOS.fsproj"
+        -- "**/*.macOS.fsproj"
+        -- "**/*.iOS.fsproj"
     else    
         pattern
-        -- "samples/**/*.macOS.fsproj"
-        -- "samples/**/*.iOS.fsproj"
-        -- "samples/**/*.WPF.fsproj"
-        -- "samples/**/*.UWP.fsproj"
-        -- "samples/**/*.Droid.fsproj"
-
-let projects = [
-    { Name = "Src";         Path = !! "src/**/*.fsproj";        Action = DotNetPack;         OutputPath = buildDir }
-    { Name = "Extensions";  Path = !! "extensions/**/*.fsproj"; Action = DotNetPack;         OutputPath = buildDir }
-    { Name = "Tests";       Path = !! "tests/**/*.fsproj";      Action = MSBuild Release;    OutputPath = buildDir + "/tests" }
-    { Name = "Templates";   Path = !! "templates/**/*.nuspec";  Action = NuGetPack;          OutputPath = buildDir }
-]
-
-let tools = { Name = "Tools"; Path = !! "tools/**/*.fsproj"; Action = MSBuild Release; OutputPath = buildDir + "/tools" }
-let samples = { Name = "Samples"; Path = (!! "samples/**/*.fsproj" |> removeIncompatiblePlatformProjects); Action = MSBuild Debug; OutputPath = buildDir + "/samples" } 
-let controls = { Name = "CustomControls"; Path = !! "src/Fabulous.CustomControls/Fabulous.CustomControls.fsproj"; Action = MSBuild Release; OutputPath = buildDir + "/controls" }
-
-
-let getOutputDir basePath proj =
-    let folderName = Path.GetFileNameWithoutExtension(proj)
-    sprintf "%s/%s/" basePath folderName
+        -- "**/*.macOS.fsproj"
+        -- "**/*.iOS.fsproj"
+        -- "**/*.WPF.fsproj"
+        -- "**/*.UWP.fsproj"
+        -- "**/*.Droid.fsproj"
 
 // JavaSdkDirectory is a temporary fix for the Windows 2019 build agent
 // It's currently failing to build Xamarin.Android : https://github.com/Microsoft/azure-pipelines-image-generation/blob/master/images/win/Vs2019-Server2019-Readme.md
@@ -73,37 +44,60 @@ let addJDK properties =
     | javaHome when not (System.String.IsNullOrWhiteSpace javaHome && Environment.isWindows) -> ("JavaSdkDirectory", javaHome) :: properties
     | _ -> properties
 
-let msbuild (buildType: BuildType) (definition: ProjectDefinition) =
-    let configuration = match buildType with Debug -> "Debug" | Release -> "Release"
-    let properties = [ ("Configuration", configuration) ] |> addJDK
+let dotnetBuild outputSubDir paths =
+    for projectPath in paths do
+        let outputPath = composeOutputPath outputSubDir projectPath
+        DotNet.build (fun opt ->
+            { opt with
+                Configuration = DotNet.BuildConfiguration.Release
+                OutputPath = Some outputPath }) projectPath
 
-    for project in definition.Path do
-        let outputDir = getOutputDir definition.OutputPath project
-        MSBuild.run id outputDir "Restore" properties [project] |> Trace.logItems (definition.Name + "Restore-Output: ")
-        MSBuild.run id outputDir "Build" properties [project] |> Trace.logItems (definition.Name + "Build-Output: ")
-
-let dotnetPack (definition: ProjectDefinition) =
-    for project in definition.Path do
+let dotnetPack paths =
+    for projectPath in paths do
         DotNet.pack (fun opt ->
             { opt with
                 Common = { opt.Common with CustomParams = Some "-p:IncludeSourceLink=True" }
                 Configuration = DotNet.BuildConfiguration.Release
-                OutputPath = Some definition.OutputPath }) project
+                OutputPath = Some buildDir }) projectPath
 
-let nugetPack (definition: ProjectDefinition) =
-    for nuspec in definition.Path do
+let dotnetTest outputSubDir paths =
+    for projectPath in paths do
+        let outputPath = composeOutputPath outputSubDir projectPath
+        DotNet.test (fun opt ->
+            { opt with
+                Logger = Some "trx"
+                ResultsDirectory = Some outputPath }) projectPath
+
+let msbuild outputSubDir paths =
+    for projectPath in paths do
+        let outputPath = composeOutputPath outputSubDir projectPath
+        let projectName = Path.GetFileNameWithoutExtension projectPath
+        let properties = [ ("Configuration", "Release") ] |> addJDK
+        MSBuild.run id outputPath "Build" properties [projectPath] |> Trace.logItems (projectName + "-Build-Output: ")
+
+let nugetPack paths =
+    for nuspecPath in paths do
         NuGet.NuGetPack (fun opt ->
             { opt with
-                WorkingDir = "templates"
-                OutputPath = definition.OutputPath
+                WorkingDir = Path.GetDirectoryName nuspecPath
+                OutputPath = buildDir
                 Version = release.NugetVersion
-                ReleaseNotes = (String.toLines release.Notes) }) nuspec
+                ReleaseNotes = (String.toLines release.Notes) }) nuspecPath
 
-let buildProject (definition: ProjectDefinition) =    
-    match definition.Action with
-    | MSBuild buildType -> msbuild buildType definition
-    | DotNetPack -> dotnetPack definition
-    | NuGetPack -> nugetPack definition
+/// Replaces the value of attribute in an xml node in the XML document specified by a XPath expression.
+let replaceXPathAttributeNS xpath (attribute:string) value (namespaces : #seq<string * string>) (doc : System.Xml.XmlDocument) =
+    let nsmgr = System.Xml.XmlNamespaceManager(doc.NameTable)
+    namespaces |> Seq.iter nsmgr.AddNamespace
+    let node = doc.SelectSingleNode(xpath, nsmgr)
+    if isNull node then 
+        failwithf "XML node '%s' not found" xpath
+    else
+        let attributeValue = node.Attributes.[attribute]
+        if isNull attributeValue then
+            failwithf "XML node '%s' does not have attribute '%s'" xpath attribute
+        else
+            attributeValue.Value <- value
+    doc
 
 
 Target.create "Clean" (fun _ ->
@@ -116,11 +110,14 @@ Target.create "Restore" (fun _ ->
 )
 
 Target.create "FormatBindings" (fun _ ->
-    for binding in !! "tools/Generator/*.json" do
-        File.ReadAllText binding
+    let bindingFiles =
+        !! "Fabulous.XamarinForms/Fabulous.XamarinForms.Controls/Xamarin.Forms.Core.fs"
+
+    for file in bindingFiles do
+        File.ReadAllText file
         |> JToken.Parse
         |> (fun token -> token.ToString(Formatting.Indented))
-        |> (fun json -> File.WriteAllText(binding, json))
+        |> (fun json -> File.WriteAllText(file, json))
 )
 
 Target.create "UpdateVersion" (fun _ ->
@@ -133,29 +130,61 @@ Target.create "UpdateVersion" (fun _ ->
     |> Xml.saveDoc props
 
     // Updates template.json
-    let templates = !! "templates/**/.template.config/template.json"
+    let templates = !! "**/templates/**/.template.config/template.json"
     for template in templates do
         File.readAsString template
         |> JObject.Parse
+        |> (fun o ->
+            let prop = o.["name"] :?> JValue
+            let name =
+                let currentValue = prop.Value.ToString()
+                let realName = currentValue.Remove(currentValue.LastIndexOf(" "))
+                sprintf "%s v%s" realName release.NugetVersion
+            prop.Value <- name
+            o
+        )
         |> (fun o -> 
-                let prop = o.["symbols"].["FabulousPkgsVersion"].["defaultValue"] :?> JValue
-                prop.Value <- release.NugetVersion
-                o
+            let prop = o.["symbols"].["FabulousPkgsVersion"].["defaultValue"] :?> JValue
+            prop.Value <- release.NugetVersion
+            o
         )
         |> (fun o -> JsonConvert.SerializeObject(o, Formatting.Indented))
         |> File.writeString false template
-)
 
-Target.create "BuildControls" (fun _ ->
-    controls |> buildProject
+    // Updates Fabulous.XamarinForms.nuspec
+    let nuspec = "Fabulous.XamarinForms/src/Fabulous.XamarinForms.nuspec"
+    Xml.loadDoc nuspec
+    |> replaceXPathAttributeNS "//x:package/x:metadata/x:dependencies/x:dependency[@id=\"Fabulous\"]" "version" release.NugetVersion [ "x", "http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd" ]
+    |> Xml.saveDoc nuspec
 )
 
 Target.create "BuildTools" (fun _ ->
-    tools |> buildProject
+    !! "tools/**/*.fsproj"
+    |> dotnetBuild "tools"
 )
 
-Target.create "RunGenerator" (fun _ ->
-    DotNet.exec id (tools.OutputPath + "/Generator/Generator.dll") "tools/Generator/Xamarin.Forms.Core.json src/Fabulous.Core/Xamarin.Forms.Core.fs"
+Target.create "BuildFabulous" (fun _ -> 
+    !! "src/**/*.fsproj"
+    |> dotnetBuild "Fabulous"
+)
+
+Target.create "RunFabulousTests" (fun _ ->
+    !! "tests/**/*.fsproj"
+    |> dotnetTest "Fabulous/TestResults"
+)
+
+Target.create "BuildFabulousXamarinForms" (fun _ ->
+    !! "Fabulous.XamarinForms/src/**/*.fsproj"
+    -- "Fabulous.XamarinForms/src/Fabulous.XamarinForms.Controls/Fabulous.XamarinForms.Controls.fsproj" // This one needs to run the generator beforehand
+    |> dotnetBuild "Fabulous.XamarinForms"
+)
+
+Target.create "RunGeneratorForFabulousXamarinForms" (fun _ ->
+    let generatorPath = buildDir + "/tools/Generator/Generator.dll"
+    let bindingsFilePath = "Fabulous.XamarinForms/src/Fabulous.XamarinForms.Controls/Xamarin.Forms.Core.json"
+    let outputFilePath = "Fabulous.XamarinForms/src/Fabulous.XamarinForms.Controls/Xamarin.Forms.Core.fs" 
+
+    DotNet.exec id generatorPath (sprintf "%s %s" bindingsFilePath outputFilePath)
     |> (fun x ->
         match x.OK with
         | true -> ()
@@ -163,24 +192,69 @@ Target.create "RunGenerator" (fun _ ->
     )
 )
 
-Target.create "BuildFabulous" (fun _ -> 
-    projects |> List.iter buildProject
+Target.create "BuildFabulousXamarinFormsControls" (fun _ -> 
+    !! "Fabulous.XamarinForms/src/Fabulous.XamarinForms.Controls/Fabulous.XamarinForms.Controls.fsproj"
+    |> dotnetBuild "Fabulous.XamarinForms"
 )
 
-Target.create "BuildSamples" (fun _ ->
-    samples |> buildProject
+Target.create "RunFabulousXamarinFormsTests" (fun _ ->
+    !! "tests/**/*.fsproj"
+    |> dotnetTest "Fabulous/TestResults"
 )
 
-Target.create "RunTests" (fun _ ->
-    let testProjects = !! "tests/**/*.fsproj"
-    for testProject in testProjects do
-        DotNet.test (fun opt -> { opt with Logger = Some "trx"; ResultsDirectory = Some (buildDir + "/testresults") }) testProject
+Target.create "BuildFabulousXamarinFormsExtensions" (fun _ ->
+    !! "Fabulous.XamarinForms/extensions/**/*.fsproj"
+    |> dotnetBuild "Fabulous.XamarinForms/Extensions"
 )
 
-Target.create "RunSamplesTests" (fun _ ->
-    let testProjects = !! "samples/**/*Tests.fsproj"
-    for testProject in testProjects do
-        DotNet.test (fun opt -> { opt with Logger = Some "trx"; ResultsDirectory = Some (buildDir + "/testresults") }) testProject
+Target.create "BuildFabulousStaticView" (fun _ ->
+    !! "Fabulous.StaticView/src/**/*.fsproj"
+    |> dotnetBuild "Fabulous.StaticView"
+)
+
+Target.create "PackFabulous" (fun _ -> 
+    !! "src/**/*.fsproj"
+    |> dotnetPack
+)
+
+Target.create "PackFabulousXamarinForms" (fun _ -> 
+    !! "Fabulous.XamarinForms/src/*.nuspec"
+    |> nugetPack
+
+    !! "Fabulous.XamarinForms/src/Fabulous.XamarinForms.LiveUpdate/*.fsproj"
+    |> dotnetPack
+)
+
+Target.create "PackFabulousXamarinFormsTemplates" (fun _ -> 
+    !! "Fabulous.XamarinForms/templates/*.nuspec"
+    |> nugetPack
+)
+
+Target.create "PackFabulousXamarinFormsExtensions" (fun _ -> 
+    !! "Fabulous.XamarinForms/extensions/**/*.fsproj"
+    |> dotnetPack
+)
+
+Target.create "PackFabulousStaticView" (fun _ -> 
+    !! "Fabulous.StaticView/src/**/*.fsproj"
+    |> dotnetPack
+)
+
+Target.create "BuildFabulousXamarinFormsSamples" (fun _ ->
+    !! "Fabulous.XamarinForms/samples/**/*.fsproj"
+    |> removeIncompatiblePlatformProjects
+    |> msbuild "Fabulous.StaticView/samples"
+)
+
+Target.create "RunFabulousXamarinFormsSamplesTests" (fun _ ->
+    !! "Fabulous.XamarinForms/samples/**/*.Tests.fsproj"
+    |> dotnetTest "Fabulous.XamarinForms/TestResults"
+)
+
+Target.create "BuildFabulousStaticViewSamples" (fun _ ->
+    !! "Fabulous.StaticView/samples/**/*.fsproj"
+    |> removeIncompatiblePlatformProjects
+    |> msbuild "Fabulous.XamarinForms/samples"
 )
 
 Target.create "TestTemplatesNuGet" (fun _ ->
@@ -191,7 +265,7 @@ Target.create "TestTemplatesNuGet" (fun _ ->
     let testAppName = "testapp2" + string (abs (hash ticks) % 100)
 
     // Globally install the templates from the template nuget package we just built
-    DotNet.exec id "new" (sprintf "-i %s/Fabulous.Templates.%s.nupkg" buildDir release.NugetVersion) |> ignore
+    DotNet.exec id "new" (sprintf "-i %s/Fabulous.XamarinForms.Templates.%s.nupkg" buildDir release.NugetVersion) |> ignore
 
     // Instantiate the template.
     Shell.cleanDir testAppName
@@ -202,7 +276,7 @@ Target.create "TestTemplatesNuGet" (fun _ ->
         elif Environment.isLinux then " --Android=false --iOS=false"
         else ""
         
-    DotNet.exec id "new fabulous-app" (sprintf "-n %s -lang F# --GTK%s" testAppName extraArgs) |> ignore
+    DotNet.exec id "new fabulous-xf-app" (sprintf "-n %s -lang F# --GTK%s" testAppName extraArgs) |> ignore
 
     // The shared project and WPF need to be restored manually as they're using the new SDK-style format
     // When restoring, using the build_output as a package source to pick up the package we just compiled
@@ -221,25 +295,27 @@ Target.create "TestTemplatesNuGet" (fun _ ->
             MSBuild.run id "" "Build" properties [sln] |> Trace.logItems ("Build-Output: ")
 )
 
-Target.create "Release" (fun _ ->
+Target.create "CreateGitHubRelease" (fun _ ->
     let token =
         match Environment.environVarOrDefault "github_token" "" with
         | s when not (System.String.IsNullOrWhiteSpace s) -> s
         | _ -> failwith "Please set the github_token environment variable to a github personal access token with repo access."
-
-    let nugetApiKey =
-        match Environment.environVarOrDefault "nuget_apikey" "" with
-        | s when not (System.String.IsNullOrWhiteSpace s) -> s
-        | _ -> failwith "Please set the nuget_apikey environment variable to a NuGet API key with write access to the Fabulous packages."
 
     GitHub.createClientWithToken token
     |> GitHub.draftNewRelease repositoryOwner repositoryName release.AssemblyVersion false (release.Notes |> List.map (sprintf "- %s"))
     |> GitHub.uploadFiles !!(buildDir + "/*.nupkg")
     |> GitHub.publishDraft
     |> Async.RunSynchronously
+)
+
+Target.create "PublishNuGetPackages" (fun _ ->
+    let nugetApiKey =
+        match Environment.environVarOrDefault "nuget_apikey" "" with
+        | s when not (System.String.IsNullOrWhiteSpace s) -> s
+        | _ -> failwith "Please set the nuget_apikey environment variable to a NuGet API key with write access to the Fabulous packages."
 
     for nupkg in !! (buildDir + "/*.nupkg") do
-        let fileName = System.IO.Path.GetFileNameWithoutExtension(nupkg)
+        let fileName = Path.GetFileNameWithoutExtension(nupkg)
         let projectName = fileName.Remove(fileName.LastIndexOf('.'))
         let projectName = projectName.Remove(projectName.LastIndexOf('.'))
         let projectName = projectName.Remove(projectName.LastIndexOf('.'))
@@ -254,29 +330,72 @@ Target.create "Release" (fun _ ->
         )
 )
 
+Target.create "Prepare" ignore
+Target.create "Fabulous" ignore
+Target.create "Fabulous.XamarinForms" ignore
+Target.create "Fabulous.XamarinForms.Extensions" ignore
+Target.create "Fabulous.StaticView" ignore
 Target.create "Build" ignore
+Target.create "Pack" ignore
+Target.create "TestSamples" ignore
 Target.create "Test" ignore
+Target.create "Release" ignore
 
 open Fake.Core.TargetOperators
 
 "Clean"
-  ==> "Restore"
-  ==> "FormatBindings"
-  ==> "UpdateVersion"
-  ==> "BuildTools"
-  ==> "BuildControls"
-  ==> "RunGenerator"
-  ==> "BuildFabulous"
-  ==> "RunTests"
-  ==> "Build"
+    ==> "Restore"
+    ==> "FormatBindings"
+    ==> "UpdateVersion"
+    ==> "BuildTools"
+    ==> "Prepare"
+
+"Prepare"
+    ==> "BuildFabulous"
+    ==> "RunFabulousTests"
+    ==> "Fabulous"
+
+"Prepare"
+    ==> "BuildFabulousStaticView"
+    ==> "Fabulous.StaticView"
+
+"Fabulous"
+    ==> "BuildFabulousXamarinForms"
+    ==> "RunGeneratorForFabulousXamarinForms"
+    ==> "BuildFabulousXamarinFormsControls"
+    ==> "RunFabulousXamarinFormsTests"
+    ==> "Fabulous.XamarinForms"
+
+"Fabulous.XamarinForms"
+    ==> "BuildFabulousXamarinFormsExtensions"
+    ==> "Fabulous.XamarinForms.Extensions"
 
 "Build"
-  ==> "TestTemplatesNuGet"
-  ==> "BuildSamples"
-  ==> "RunSamplesTests"
-  ==> "Test"
+    <== [ "Fabulous"; "Fabulous.XamarinForms"; "Fabulous.XamarinForms.Extensions"; "Fabulous.StaticView"]
+
+"Build"
+    ==> "PackFabulous"
+    ==> "PackFabulousXamarinForms"
+    ==> "PackFabulousXamarinFormsTemplates"
+    ==> "PackFabulousXamarinFormsExtensions"
+    ==> "PackFabulousStaticView"
+    ==> "Pack"
+
+"Build"
+    ==> "BuildFabulousXamarinFormsSamples"
+    ==> "RunFabulousXamarinFormsSamplesTests"
+    ==> "BuildFabulousStaticViewSamples"
+    ==> "TestSamples"
+
+"Pack"
+    ==> "TestTemplatesNuGet"
 
 "Test"
-  ==> "Release"
+    <== [ "TestSamples"; "TestTemplatesNuGet" ]
+
+"Test"
+    ==> "CreateGitHubRelease"
+    ==> "PublishNuGetPackages"
+    ==> "Release"
 
 Target.runOrDefault "Build"

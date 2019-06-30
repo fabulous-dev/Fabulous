@@ -1,29 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>netcoreapp2.1</TargetFramework>
-        <DefineConstants>$(DefineConstants);NETSTANDARD2_0</DefineConstants>
-        <PackAsTool>True</PackAsTool>
-        <ToolCommandName>fabulous</ToolCommandName>
-    </PropertyGroup>
-    <PropertyGroup>
-        <PackageId>fabulous-cli</PackageId>
-        <Description>.NET Core Global Tool for Fabulous - allows to send files to Fabulous.LiveUpdate</Description>
-        <PackageTags>Tool;CLI;LiveUpdate;Android;iOS</PackageTags>
-    </PropertyGroup>
-    <ItemGroup>
-        <Compile Include="..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\ProjectCracker.fs" />
-        <Compile Include="..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\CodeModel.fs" />
-        <Compile Include="..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\Interpreter.fs" />
-        <Compile Include="..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\FromCompilerService.fs" />
-        <Compile Include="..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\ProcessCommandLine.fs" />
-        <Compile Include="fscd.fs" />
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="FSharp.Core" />
-        <PackageReference Include="Newtonsoft.Json" />
-        <PackageReference Include="FSharp.Compiler.Service" />
-        <PackageReference Include="Dotnet.ProjInfo" />
-    </ItemGroup>
-    <Import Project="..\..\Packages.targets" />
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <DefineConstants>$(DefineConstants);NETSTANDARD2_0</DefineConstants>
+    <PackAsTool>True</PackAsTool>
+    <ToolCommandName>fabulous</ToolCommandName>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PackageId>fabulous-cli</PackageId>
+    <Description>.NET Core Global Tool for Fabulous - allows to send files to Fabulous.LiveUpdate</Description>
+    <PackageTags>Tool;CLI;LiveUpdate</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\ProjectCracker.fs" />
+    <Compile Include="..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\CodeModel.fs" />
+    <Compile Include="..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\Interpreter.fs" />
+    <Compile Include="..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\FromCompilerService.fs" />
+    <Compile Include="..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\ProcessCommandLine.fs" />
+    <Compile Include="fscd.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FSharp.Core" />
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="FSharp.Compiler.Service" />
+    <PackageReference Include="Dotnet.ProjInfo" />
+  </ItemGroup>
+  <Import Project="..\..\Packages.targets" />
 </Project>

@@ -1,0 +1,7 @@
+<Project>
+  <Import Project="../Directory.Build.props" />
+  <!-- NuGet Specs -->
+  <PropertyGroup>
+    <PackageTags>Xamarin.Forms;StaticView;$(PackageTags)</PackageTags>
+  </PropertyGroup>
+</Project>

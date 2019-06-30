@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="NewApp.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="XamarinFormsSdk" />
+    <PackageReference Include="Xamarin.Essentials" Version="XamarinEssentialsSdk" />
+    <PackageReference Include="Fabulous.XamarinForms" Version="FabulousPkgsVersion" />
+    <PackageReference Include="Fabulous.XamarinForms.LiveUpdate" Version="FabulousPkgsVersion" />
+    <PackageReference Include="FSharp.Core" Version="FSharpCorePkgVersion" />
+    <PackageReference Update="FSharp.Core" Version="FSharpCorePkgVersion" /> <!-- workaround for VSMac bug https://github.com/mono/monodevelop/pull/5137 --> 
+    <PackageReference Include="Newtonsoft.Json" Version="NewtonsoftJsonPkg" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\..\SourceLink.props" />
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Fabulous.LiveUpdate.XamarinForms</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Description>LiveUpdate injects updated source code files while running to allow you to quickly view the effects of your changes without restarting the application. Needs fabulous-cli to work.</Description>
+    <PackageTags>Xamarin.Forms;LiveUpdate;Hot reload</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="LiveUpdate.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Fabulous.LiveUpdate\Fabulous.LiveUpdate.fsproj" />
+  </ItemGroup>
+  <Import Project="..\..\..\Packages.targets" />
+</Project>

@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+    </PropertyGroup>
+    <ItemGroup>
+      <Compile Include="AllControls.fs" />
+      <EmbeddedResource Include="Baboon_Serengeti.jpg" />
+      <EmbeddedResource Include="styles.css" />
+    </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="FSharp.Data" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\src\Fabulous.XamarinForms.Controls\Fabulous.XamarinForms.Controls.fsproj" />
+    </ItemGroup>
+    <Import Project="..\..\..\..\Packages.targets" />
+</Project>

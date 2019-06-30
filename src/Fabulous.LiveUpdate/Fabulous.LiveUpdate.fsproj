@@ -1,25 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <Import Project="..\..\SourceLink.props" />
-    <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
-    </PropertyGroup>
-    <PropertyGroup>
-        <PackageId>Fabulous.LiveUpdate</PackageId>
-        <Description>F# Functional App Dev Framework Live Update</Description>
-        <PackageTags>LiveUpdate;Android;iOS</PackageTags>
-    </PropertyGroup>
-    <ItemGroup>
-        <Compile Include="..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\CodeModel.fs" Link="CodeModel.fs" />
-        <Compile Include="..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\Interpreter.fs" Link="Interpreter.fs" />
-        <Compile Include="LiveUpdate.fs" />
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="FSharp.Core" />
-        <PackageReference Include="Xamarin.Forms" />
-        <PackageReference Include="Newtonsoft.Json" />
-    </ItemGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\Fabulous.Core\Fabulous.Core.fsproj" />
-    </ItemGroup>
-    <Import Project="..\..\Packages.targets" />
+  <Import Project="..\..\SourceLink.props" />
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Description>LiveUpdate injects updated source code files while running to allow you to quickly view the effects of your changes without restarting the application. Needs fabulous-cli to work.</Description>
+    <PackageTags>LiveUpdate;Hot reload</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\CodeModel.fs" Link="CodeModel.fs" />
+    <Compile Include="..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\Interpreter.fs" Link="Interpreter.fs" />
+    <Compile Include="LiveUpdate.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FSharp.Core" />
+    <PackageReference Include="Newtonsoft.Json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fabulous\Fabulous.fsproj" />
+  </ItemGroup>
+  <Import Project="..\..\Packages.targets" />
 </Project>

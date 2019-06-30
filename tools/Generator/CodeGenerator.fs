@@ -8,12 +8,14 @@ open System.IO
 
 module CodeGenerator =
     let generateNamespace (namespaceOfGeneratedCode: string) (w: StringWriter) = 
-        w.printfn "// Copyright 2018 Fabulous contributors. See LICENSE.md for license."
+        w.printfn "// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license."
         w.printfn "namespace %s" namespaceOfGeneratedCode
         w.printfn ""
         w.printfn "#nowarn \"59\" // cast always holds"
         w.printfn "#nowarn \"66\" // cast always holds"
         w.printfn "#nowarn \"67\" // cast always holds"
+        w.printfn ""
+        w.printfn "open Fabulous"
         w.printfn ""
         w
 
@@ -159,7 +161,7 @@ module CodeGenerator =
                         w.printfn "                ())"
                     else
                         w.printfn "            (fun _ _ _ -> ())"
-                    w.printfn "            canReuseChild"
+                    w.printfn "            canReuseView"
                     w.printfn "            updateChild"
 
                 | _ -> 
@@ -171,7 +173,7 @@ module CodeGenerator =
                         w.printfn "        match prev%sOpt, curr%sOpt with" m.UniqueName m.UniqueName
                         w.printfn "        // For structured objects, dependsOn on reference equality"
                         w.printfn "        | ValueSome prevValue, ValueSome newValue when identical prevValue newValue -> ()"
-                        w.printfn "        | ValueSome prevValue, ValueSome newValue when canReuseChild prevValue newValue ->"
+                        w.printfn "        | ValueSome prevValue, ValueSome newValue when canReuseView prevValue newValue ->"
                         w.printfn "            newValue.UpdateIncremental(prevValue, target.%s)" m.Name
                         w.printfn "        | _, ValueSome newValue ->"
                         w.printfn "            target.%s <- (newValue.Create() :?> %s)" m.Name boundType.FullName

@@ -6,4 +6,5 @@
 * [Traces and Crashes](logging.html)
 * [Unit testing](testing.html)
 * [Tools](tools.html)
+* [Migration guide to Fabulous.XamarinForms](migration-guide-to-fabulous-xamarinforms.html)
 * [Further Resources](index.html#further-resources)

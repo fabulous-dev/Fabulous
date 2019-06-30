@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <OutputType>Library</OutputType>
+    <IsPackable>false</IsPackable>
+    <DefineConstants>$(DefineConstants);NETSTANDARD2_0;TEST</DefineConstants>
+    <IsTestProject>true</IsTestProject>
+    <RootNamespace>Fabulous.Cli.IntegrationTests</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\ProjectCracker.fs" Link="ProjectCracker.fs" />
+    <Compile Include="..\..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\CodeModel.fs" Link="CodeModel.fs" />
+    <Compile Include="..\..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\Interpreter.fs" Link="Interpreter.fs" />
+    <Compile Include="..\..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\FromCompilerService.fs" Link="FromCompilerService.fs" />
+    <Compile Include="..\..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\src\ProcessCommandLine.fs" Link="ProcessCommandLine.fs" />
+    <Compile Include="..\..\..\paket-files\neutral\fsprojects\FSharp.Compiler.PortaCode\tests\PortaCodeTests.fs" />
+    <Compile Include="..\..\..\src\Fabulous.Cli\fscd.fs" Link="fscd.fs" />
+    <Compile Include="Tests.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Dotnet.ProjInfo" />
+    <PackageReference Include="FSharp.Core" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="FSharp.Compiler.Service" />
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="Xamarin.Forms" />
+    <PackageReference Include="FsUnit" />
+    <PackageReference Include="NUnit3TestAdapter" />
+  
+    <!-- References used indirectly by FCS when compiling tests -->
+    <PackageReference Include="Microsoft.CSharp" />
+    <PackageReference Include="NETStandard.Library" />
+    <PackageReference Include="System.Reflection.Emit.ILGeneration" />
+    <PackageReference Include="System.Reflection.Emit.Lightweight" />
+  </ItemGroup>
+  <Import Project="..\..\..\Packages.targets" />
+</Project>
