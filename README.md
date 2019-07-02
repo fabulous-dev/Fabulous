@@ -5,6 +5,8 @@ Fabulous - F# Functional App Development, using declarative dynamic UI
 
 Never write a ViewModel class again! Conquer the world with clean dynamic UIs!
 
+Package | NuGet
+---|---
 Fabulous | [![Fabulous NuGet version](https://badge.fury.io/nu/Fabulous.svg)](https://badge.fury.io/nu/Fabulous)  
 Fabulous.XamarinForms | [![Fabulous.XamarinForms NuGet version](https://badge.fury.io/nu/Fabulous.XamarinForms.svg)](https://badge.fury.io/nu/Fabulous.XamarinForms)  
 Fabulous.StaticView | [![Fabulous.StaticView NuGet version](https://badge.fury.io/nu/Fabulous.StaticView.svg)](https://badge.fury.io/nu/Fabulous.StaticView)
