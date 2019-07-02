@@ -79,9 +79,9 @@ On Windows:
 
 Use the CounterApp to test.  To run the equivalent of the `fabulous` CLI tool use this:
 
-    cd Samples\CounterApp\CounterApp
+    cd Fabulous.XamarinForms\samples\CounterApp\CounterApp
     adb -d forward  tcp:9867 tcp:9867
-    dotnet run --project ..\..\..\src\Fabulous.Cli\Fabulous.Cli.fsproj -- --watch --send 
+    dotnet run --project ..\..\..\..\src\Fabulous.Cli\Fabulous.Cli.fsproj -- --watch --send 
 
 If you want to update your (global!) install of the `fabulous-cli` tool, first bump the version number to avoid clashes, then:
 
@@ -107,7 +107,7 @@ On Windows:
 .\build UpdateVersion
 ```
 
-FAKE will have updated `Directory.Build.props` and `template.json`. Commit all changes.
+FAKE will have updated `Directory.Build.props`, `Fabulous.XamarinForms.nuspec` and `template.json`. Commit all changes.
 
 Create a branch named `release/X.Y.Z` (where X.Y.Z is the version number you want Fabulous to be)  
 And start a pull request for this branch back to `master`.  
@@ -133,12 +133,12 @@ There is [one known issue with this](https://github.com/fsprojects/Fabulous/issu
 
 App size on Android is checked by
 
-1. build + deploying `Samples\CounterApp` (to device or emulator)
-2. renaming and unziping `Samples\CounterApp\Droid\bin\Release\com.companyname.CounterApp.apk`
+1. build + deploying `Fabulous.XamarinForms\samples\CounterApp` (to device or emulator)
+2. renaming and unziping `Fabulous.XamarinForms\samples\CounterApp\Droid\bin\Release\org.fabulous.CounterApp.apk`
 3. checking sizes and contents of
 
-       Samples\CounterApp\Droid\bin\Release\com.donsyme.AllControls\assemblies\FSharp.Core.dll
-       Samples\CounterApp\Droid\bin\Release\com.donsyme.AllControls\assemblies\Fabulous.Core.dll
+       Fabulous.XamarinForms\samples\CounterApp\Droid\bin\Release\org.fabulous.AllControls\assemblies\FSharp.Core.dll
+       Fabulous.XamarinForms\samples\CounterApp\Droid\bin\Release\org.fabulous.AllControls\assemblies\Fabulous.Core.dll
 
    e.g. see [this comment](https://github.com/fsprojects/Fabulous/issues/94#issuecomment-402157490)
 
