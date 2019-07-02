@@ -30,7 +30,8 @@ A core type on which to build your View DSL for your framework. This type will b
 An external tool that will generate Fabulous-compatible wrappers to enable using existing controls (or components libraries) with a dynamic UI code. This tool is configured with a bindings json file.  
 Fabulous.XamarinForms uses it to generate all of its View DSL.
 
-- LiveUpdate / fabulous-cli
+- LiveUpdate / fabulous-cli  
+*(Still in early development)*
 
 A combo of a dotnet CLI tool and a plugin for Fabulous. They enable your users to write their apps and see live their changes in the running emulator / real device without restarting.  
 It is similar to the Hot Reload module of Flutter.
@@ -42,6 +43,9 @@ This library allows you to use the ultra-simple Model-View-Update architecture t
 ### Fabulous StaticView
 
 This library allows you to write Xamarin.Forms apps using XAML and the Model-View-Update architecture.
+
+It is not actively maintained.  
+If you wish to see more support for Fabulous.StaticView, please consider contributing.
 
 ## Links
 
