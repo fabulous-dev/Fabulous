@@ -42,7 +42,7 @@ On Windows:
 ```
 
 It is recommended to run this command at least once before working on Fabulous, as some of the code will be generated.
-At minimum, you need to run `.\build RunGenerator` to ensure that you have all the dependencies before opening Visual Studio.
+At minimum, you need to run `.\build RunGeneratorForFabulousXamarinForms` to ensure that you have all the dependencies before opening Visual Studio.
 
 ## Dev Notes - Running the generator
 
@@ -52,13 +52,13 @@ If you only want to build the tools and run the generator, use the following com
 On OSX:
 
 ```
-./build.sh RunGenerator
+./build.sh RunGeneratorForFabulousXamarinForms
 ```
 
 On Windows:
 
 ```
-.\build RunGenerator
+.\build RunGeneratorForFabulousXamarinForms
 ```
 
 ## Dev Notes - Testing
