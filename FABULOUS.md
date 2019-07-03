@@ -27,8 +27,6 @@ It is similar to the Hot Reload module of Flutter.
 
 * [Documentation Guide](https://fsprojects.github.io/Fabulous/guide.html)
 
-* [Roadmap](ROADMAP.md)
-
 * [Release Notes](RELEASE_NOTES.md)
 
 ## Roadmap
