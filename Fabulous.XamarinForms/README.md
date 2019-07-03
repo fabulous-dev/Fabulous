@@ -33,9 +33,19 @@ For more information, please take a look at the documentation.
 
 * [Documentation Guide](https://fsprojects.github.io/Fabulous/guide.html)
 
-* [Roadmap](ROADMAP.md)
+* [Release Notes](../RELEASE_NOTES.md)
 
-* [Release Notes](RELEASE_NOTES.md)
+## Roadmap
+
+* Programming model
+  * Prevent events to raise when change is programmatic (e.g. TextChanged)
+
+* Live Update
+  * Use actual newly compiled DLLs on Android instead of F# interperter
+  * Check Live Update on WPF and other same-machine
+
+* App size
+  * Remove F# resources in linker, see https://github.com/fsprojects/Fabulous/issues/94
 
 ## Contributing
 
