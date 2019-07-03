@@ -6,6 +6,7 @@ Fabulous - F# Functional App Development, using declarative dynamic UI
 Never write a ViewModel class again! Conquer the world with clean dynamic UIs!
 
 This repository contains 3 differents libraries:
+
 Package | NuGet
 ---|---
 Fabulous | [![Fabulous NuGet version](https://badge.fury.io/nu/Fabulous.svg)](https://badge.fury.io/nu/Fabulous)  
