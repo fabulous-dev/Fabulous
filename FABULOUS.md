@@ -21,6 +21,8 @@ Fabulous.XamarinForms uses it to generate all of its View API.
 A combo of a dotnet CLI tool and a plugin for Fabulous. They enable your users to write their apps and see live their changes in the running emulator / real device without restarting.  
 It is similar to the Hot Reload module of Flutter.
 
+## Links
+
 * [Getting started](https://fsprojects.github.io/Fabulous/index.html#getting=started)
 
 * [Documentation Guide](https://fsprojects.github.io/Fabulous/guide.html)
