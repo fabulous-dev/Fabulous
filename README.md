@@ -5,14 +5,6 @@ Fabulous - F# Functional App Development, using declarative dynamic UI
 
 Never write a ViewModel class again! Conquer the world with clean dynamic UIs!
 
-This repository contains 3 differents libraries:
-
-Package | NuGet
----|---
-Fabulous | [![Fabulous NuGet version](https://badge.fury.io/nu/Fabulous.svg)](https://badge.fury.io/nu/Fabulous)  
-Fabulous.XamarinForms | [![Fabulous.XamarinForms NuGet version](https://badge.fury.io/nu/Fabulous.XamarinForms.svg)](https://badge.fury.io/nu/Fabulous.XamarinForms)  
-Fabulous.StaticView | [![Fabulous.StaticView NuGet version](https://badge.fury.io/nu/Fabulous.StaticView.svg)](https://badge.fury.io/nu/Fabulous.StaticView)
-
 * [Getting started](https://fsprojects.github.io/Fabulous/index.html#getting=started)
 
 * [Documentation Guide](https://fsprojects.github.io/Fabulous/guide.html)
@@ -20,6 +12,14 @@ Fabulous.StaticView | [![Fabulous.StaticView NuGet version](https://badge.fury.i
 * [Contributor guide](DEVGUIDE.md)
 
 * [Release Notes](RELEASE_NOTES.md)
+
+This repository contains 3 differents libraries:
+
+Package | NuGet
+---|---
+Fabulous | [![Fabulous NuGet version](https://badge.fury.io/nu/Fabulous.svg)](https://badge.fury.io/nu/Fabulous)  
+Fabulous.XamarinForms | [![Fabulous.XamarinForms NuGet version](https://badge.fury.io/nu/Fabulous.XamarinForms.svg)](https://badge.fury.io/nu/Fabulous.XamarinForms)  
+Fabulous.StaticView | [![Fabulous.StaticView NuGet version](https://badge.fury.io/nu/Fabulous.StaticView.svg)](https://badge.fury.io/nu/Fabulous.StaticView)
 
 ## Fabulous
 
