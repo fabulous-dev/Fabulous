@@ -1,9 +1,9 @@
 Fabulous StaticView
 =======
 
-[![Fabulous.StaticView NuGet version](https://badge.fury.io/nu/Fabulous.StaticView.svg)](https://badge.fury.io/nu/Fabulous.StaticView) [![Build Status](https://dev.azure.com/timothelariviere/Fabulous/_apis/build/status/Full%20Build?branchName=master)](https://dev.azure.com/timothelariviere/Fabulous/_build/latest?definitionId=7&branchName=master) [![Join the chat at https://gitter.im/fsprojects/Fabulous](https://badges.gitter.im/fsprojects/Fabulous.svg)](https://gitter.im/fsprojects/Fabulous?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+*Write cross-platform apps with Xamarin.Forms, using MVU architecture and static XAML UI*
 
-### Write cross-platform apps with Xamarin.Forms, using MVU architecture and static XAML UI
+[![Fabulous.StaticView NuGet version](https://badge.fury.io/nu/Fabulous.StaticView.svg)](https://badge.fury.io/nu/Fabulous.StaticView) [![Build Status](https://dev.azure.com/timothelariviere/Fabulous/_apis/build/status/Full%20Build?branchName=master)](https://dev.azure.com/timothelariviere/Fabulous/_build/latest?definitionId=7&branchName=master) [![Join the chat at https://gitter.im/fsprojects/Fabulous](https://badges.gitter.im/fsprojects/Fabulous.svg)](https://gitter.im/fsprojects/Fabulous?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 This library allows you to write Xamarin.Forms apps using XAML and the Model-View-Update architecture.
 
