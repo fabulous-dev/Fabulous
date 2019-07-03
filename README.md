@@ -16,9 +16,9 @@ This repository contains 3 differents libraries:
 - Fabulous for Xamarin.Forms
 - Fabulous StaticView
 
-### Fabulous
+## Fabulous
 
-This library aims to provide all the core abstractions and tools for writing your own app framework based on "[model view update](https://guide.elm-lang.org/architecture/)" programming model and dynamic UI. It is a variation of [elmish](https://elmish.github.io/), an Elm architecture implemented in F#.
+This library aims to provide all the core abstractions and tools for writing your own app framework based on the "[model view update](https://guide.elm-lang.org/architecture/)" programming model and dynamic UI. It is a variation of [elmish](https://elmish.github.io/), an Elm architecture implemented in F#.
 
 **Key elements of Fabulous:**
 - ViewElement
@@ -36,11 +36,35 @@ Fabulous.XamarinForms uses it to generate all of its View DSL.
 A combo of a dotnet CLI tool and a plugin for Fabulous. They enable your users to write their apps and see live their changes in the running emulator / real device without restarting.  
 It is similar to the Hot Reload module of Flutter.
 
-### Fabulous for Xamarin.Forms
+## Fabulous for Xamarin.Forms
 
 This library allows you to use the ultra-simple Model-View-Update architecture to build applications for iOS, Android, Mac, WPF and more using Xamarin.Forms. It is built on Fabulous.
 
-### Fabulous StaticView
+With Fabulous for Xamarin.Forms, you will be able to write complete applications fully in F#, like this:
+```fsharp
+type Model = { Text: string }
+type Msg = ButtonClicked
+
+let init () = { Text = "Hello Fabulous!" }
+
+let update msg model =
+    match msg with
+    | ButtonClicked -> { model with Text = "Thanks for using Fabulous!" }
+
+let view model dispatch =
+    View.ContentPage(
+        View.StackLayout(
+            children=[
+                View.Image(source = "fabulous.png")
+                View.Label(text = model.Text, fontSize = 22.)
+                View.Button(text = "Click me", command = (fun () -> dispatch ButtonClicked))
+            ]
+        )
+    )
+```
+For more information, please take a look at the documentation.
+
+## Fabulous StaticView
 
 This library allows you to write Xamarin.Forms apps using XAML and the Model-View-Update architecture.
 
