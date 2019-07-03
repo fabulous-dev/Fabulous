@@ -1,9 +1,9 @@
 Fabulous
 =======
 
+*F# Functional App Development, using declarative dynamic UI*
+
  [![Build Status](https://dev.azure.com/timothelariviere/Fabulous/_apis/build/status/Full%20Build?branchName=master)](https://dev.azure.com/timothelariviere/Fabulous/_build/latest?definitionId=7&branchName=master) [![Join the chat at https://gitter.im/fsprojects/Fabulous](https://badges.gitter.im/fsprojects/Fabulous.svg)](https://gitter.im/fsprojects/Fabulous?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
- 
-### F# Functional App Development, using declarative dynamic UI
 
 Never write a ViewModel class again! Conquer the world with clean dynamic UIs!
 
