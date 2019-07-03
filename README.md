@@ -13,6 +13,14 @@ Fabulous | [![Fabulous NuGet version](https://badge.fury.io/nu/Fabulous.svg)](ht
 Fabulous.XamarinForms | [![Fabulous.XamarinForms NuGet version](https://badge.fury.io/nu/Fabulous.XamarinForms.svg)](https://badge.fury.io/nu/Fabulous.XamarinForms)  
 Fabulous.StaticView | [![Fabulous.StaticView NuGet version](https://badge.fury.io/nu/Fabulous.StaticView.svg)](https://badge.fury.io/nu/Fabulous.StaticView)
 
+* [Getting started](https://fsprojects.github.io/Fabulous/index.html#getting=started)
+
+* [Documentation Guide](https://fsprojects.github.io/Fabulous/guide.html)
+
+* [Contributor guide](DEVGUIDE.md)
+
+* [Release Notes](RELEASE_NOTES.md)
+
 ## Fabulous
 
 This library aims to provide all the core abstractions and tools for writing your own app framework based on the "[model view update](https://guide.elm-lang.org/architecture/)" programming model and dynamic UI. It is a variation of [elmish](https://elmish.github.io/), an Elm architecture implemented in F#.
@@ -56,16 +64,6 @@ It is not actively maintained.
 If you wish to see more support for Fabulous.StaticView, please consider contributing.
 
 [Learn more about Fabulous StaticView](https://github.com/fsprojects/Fabulous/tree/master/Fabulous.StaticView)
-
-## Links
-
-* [Getting started](https://fsprojects.github.io/Fabulous/index.html#getting=started)
-
-* [Documentation Guide](https://fsprojects.github.io/Fabulous/guide.html)
-
-* [Contributor guide](DEVGUIDE.md)
-
-* [Release Notes](RELEASE_NOTES.md)
 
 ## Contributing
 
