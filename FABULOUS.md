@@ -11,7 +11,7 @@ This library aims to provide all the core abstractions and tools for writing you
 
 * [Release Notes](RELEASE_NOTES.md)
 
-**Key elements**
+## Key elements
 - ViewElement
 
 A core type on which to build your View API (e.g. `View.Button(text = "Hello world")`) for your own framework. This type will be used in the diffing process to only update controls that actually changed between 2 view updates.
