@@ -5,6 +5,12 @@ Fabulous - F# Functional App Development library with declarative dynamic UI sup
 
 This library aims to provide all the core abstractions and tools for writing your own app framework based on the "[model view update](https://guide.elm-lang.org/architecture/)" programming model and dynamic UI. It is a variation of [elmish](https://elmish.github.io/), an Elm architecture implemented in F#.
 
+* [Getting started](https://fsprojects.github.io/Fabulous/index.html#getting=started)
+
+* [Documentation Guide](https://fsprojects.github.io/Fabulous/guide.html)
+
+* [Release Notes](RELEASE_NOTES.md)
+
 **Key elements**
 - ViewElement
 
@@ -20,14 +26,6 @@ Fabulous.XamarinForms uses it to generate all of its View API.
 
 A combo of a dotnet CLI tool and a plugin for Fabulous. They enable your users to write their apps and see live their changes in the running emulator / real device without restarting.  
 It is similar to the Hot Reload module of Flutter.
-
-## Links
-
-* [Getting started](https://fsprojects.github.io/Fabulous/index.html#getting=started)
-
-* [Documentation Guide](https://fsprojects.github.io/Fabulous/guide.html)
-
-* [Release Notes](RELEASE_NOTES.md)
 
 ## Roadmap
 
