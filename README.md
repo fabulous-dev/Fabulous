@@ -63,8 +63,6 @@ If you wish to see more support for Fabulous.StaticView, please consider contrib
 
 * [Documentation Guide](https://fsprojects.github.io/Fabulous/guide.html)
 
-* [Roadmap](https://github.com/fsprojects/Fabulous/blob/master/ROADMAP.md)
-
 * [Contributor guide](DEVGUIDE.md)
 
 * [Release Notes](RELEASE_NOTES.md)
