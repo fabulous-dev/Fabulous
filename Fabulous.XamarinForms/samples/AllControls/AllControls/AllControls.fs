@@ -1,4 +1,4 @@
-// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
+﻿// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace AllControls
 
 open System
@@ -966,7 +966,7 @@ module App =
                     View.ContentPage(content=
                         View.StackLayout(children = [
                             MainPageButton
-                            View.CarouselView(itemsSource = [
+                            View.CarouselView(items = [
                                 View.Label(text="Person1") 
                                 View.Label(text="Person2")
                                 View.Label(text="Person3")
