@@ -243,7 +243,7 @@ Target.create "PackFabulousStaticView" (fun _ ->
 Target.create "BuildFabulousXamarinFormsSamples" (fun _ ->
     !! "Fabulous.XamarinForms/samples/**/*.fsproj"
     |> removeIncompatiblePlatformProjects
-    |> msbuild "Fabulous.StaticView/samples"
+    |> msbuild "Fabulous.XamarinForms/samples"
 )
 
 Target.create "RunFabulousXamarinFormsSamplesTests" (fun _ ->
@@ -254,7 +254,7 @@ Target.create "RunFabulousXamarinFormsSamplesTests" (fun _ ->
 Target.create "BuildFabulousStaticViewSamples" (fun _ ->
     !! "Fabulous.StaticView/samples/**/*.fsproj"
     |> removeIncompatiblePlatformProjects
-    |> msbuild "Fabulous.XamarinForms/samples"
+    |> msbuild "Fabulous.StaticView/samples"
 )
 
 Target.create "TestTemplatesNuGet" (fun _ ->
