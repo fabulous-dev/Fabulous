@@ -958,7 +958,11 @@ module App =
                         ]
                     ))
 
-                | _ -> View.ContentPage(content = View.Label(text="Your Platform does not support CollectionView"))
+                | _ -> View.ContentPage(content = 
+                        View.StackLayout( children = [
+                            MainPageButton
+                            View.Label(text="Your Platform does not support CollectionView")
+                        ]))
 
          | CarouselView ->
             match Device.RuntimePlatform with
@@ -984,7 +988,11 @@ module App =
                         ]
                     ))
 
-                | _ -> View.ContentPage(content = View.Label(text="Your Platform does not support CarouselView"))
+                | _ -> View.ContentPage(content = 
+                        View.StackLayout( children = [
+                            MainPageButton
+                            View.Label(text="Your Platform does not support CarouselView")
+                        ]))
 
     
 type App () as app = 
