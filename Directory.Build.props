@@ -26,7 +26,7 @@
     <!-- Support for arbitrary value in AssemblyInformationalVersionAttribute https://github.com/Microsoft/visualfsharp/issues/4822 -->
     <NoWarn>FS2003</NoWarn>
   </PropertyGroup>
-  <PropertyGroup Condition="$(TargetFramework) == 'netstandard2.0' OR $(TargetFramework) == 'netcoreapp2.0'">
+  <PropertyGroup Condition="$(TargetFramework) == 'netstandard2.0' OR $(TargetFramework) == 'netcoreapp2.2'">
     <OtherFlags>/warnon:1182</OtherFlags>
   </PropertyGroup>
 </Project>
