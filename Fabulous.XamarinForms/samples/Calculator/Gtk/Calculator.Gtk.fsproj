@@ -36,6 +36,8 @@
   <PropertyGroup Condition="'$(VisualStudioVersion)' == '10.0' OR '$(VisualStudioVersion)' == '11.0'">
     <FSharpTargetsPath>$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets</FSharpTargetsPath>
   </PropertyGroup>
+  <Import Project="$(FSharpTargetsPath)" Condition="Exists($(FSharpTargetsPath))" />
+  <Import Project="..\..\..\..\packages\gtkapp\Xamarin.Forms\build\Xamarin.Forms.targets" Condition="Exists('..\..\..\..\packages\gtkapp\Xamarin.Forms\build\Xamarin.Forms.targets')" />
   <ItemGroup>
     <Reference Include="mscorlib" />
     <Reference Include="System" />
@@ -120,6 +122,4 @@
       <Name>Calculator</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="$(FSharpTargetsPath)" Condition="Exists($(FSharpTargetsPath))" />
-  <Import Project="..\..\..\..\packages\gtkapp\Xamarin.Forms\build\Xamarin.Forms.targets" Condition="Exists('..\..\..\..\packages\gtkapp\Xamarin.Forms\build\Xamarin.Forms.targets')" />
 </Project>

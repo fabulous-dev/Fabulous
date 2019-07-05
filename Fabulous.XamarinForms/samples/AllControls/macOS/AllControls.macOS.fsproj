@@ -91,6 +91,7 @@
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.FSharp.targets" Condition="Exists('$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.FSharp.targets')" />
+  <Import Project="..\..\..\..\packages\macosapp\Xamarin.Forms\build\Xamarin.Forms.targets" Condition="Exists('..\..\..\..\packages\macosapp\Xamarin.Forms\build\Xamarin.Forms.targets')" />
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\AppIcon-128.png" />
@@ -124,5 +125,4 @@
       <Name>AllControls</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\..\..\..\packages\macosapp\Xamarin.Forms\build\Xamarin.Forms.targets" Condition="Exists('..\..\..\..\packages\macosapp\Xamarin.Forms\build\Xamarin.Forms.targets')" />
 </Project>

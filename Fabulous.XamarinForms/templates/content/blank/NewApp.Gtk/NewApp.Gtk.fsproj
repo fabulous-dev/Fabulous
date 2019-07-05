@@ -36,6 +36,9 @@
   <PropertyGroup Condition="'$(VisualStudioVersion)' == '10.0' OR '$(VisualStudioVersion)' == '11.0'">
     <FSharpTargetsPath>$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets</FSharpTargetsPath>
   </PropertyGroup>
+  <Import Project="$(FSharpTargetsPath)" Condition="Exists($(FSharpTargetsPath))" />
+  <Import Project="..\packages\Xamarin.Forms.XamarinFormsSdk\build\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.XamarinFormsSdk\build\Xamarin.Forms.targets')" />
+  <Import Project="..\.nuget\NuGet.targets" />
   <ItemGroup>
     <Reference Include="mscorlib" />
     <Reference Include="System" />
@@ -116,7 +119,4 @@
       <Name>NewApp</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="$(FSharpTargetsPath)" Condition="Exists($(FSharpTargetsPath))" />
-  <Import Project="..\packages\Xamarin.Forms.XamarinFormsSdk\build\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.XamarinFormsSdk\build\Xamarin.Forms.targets')" />
-  <Import Project="..\.nuget\NuGet.targets" />
 </Project>

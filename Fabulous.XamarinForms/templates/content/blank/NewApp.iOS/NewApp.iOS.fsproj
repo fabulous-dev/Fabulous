@@ -144,6 +144,8 @@
       <Visible>false</Visible>
     </ImageAsset>
   </ItemGroup>
+  <Import Project="..\packages\Xamarin.Forms.XamarinFormsSdk\build\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.XamarinFormsSdk\build\Xamarin.Forms.targets')" />
+  <Import Project="..\.nuget\NuGet.targets" />
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -198,6 +200,4 @@
       <Name>NewApp</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\packages\Xamarin.Forms.XamarinFormsSdk\build\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.XamarinFormsSdk\build\Xamarin.Forms.targets')" />
-  <Import Project="..\.nuget\NuGet.targets" />
 </Project>
