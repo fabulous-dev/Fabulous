@@ -7,9 +7,7 @@ Fabulous
 
 Never write a ViewModel class again! Conquer the world with clean dynamic UIs!
 
-* [Getting started](https://fsprojects.github.io/Fabulous/index.html#getting=started)
-
-* [Documentation Guide](https://fsprojects.github.io/Fabulous/guide.html)
+* [Documentation](https://fsprojects.github.io/Fabulous/)
 
 * [Contributor guide](DEVGUIDE.md)
 
