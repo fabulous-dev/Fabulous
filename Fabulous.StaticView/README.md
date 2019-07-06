@@ -10,7 +10,7 @@ This library allows you to write Xamarin.Forms apps using XAML and the Model-Vie
 It is not actively maintained.  
 If you wish to see more support for Fabulous.StaticView, please consider contributing.
 
-* [Documentation Guide](https://fsprojects.github.io/Fabulous/half-elmish.html)
+* [Documentation Guide](https://fsprojects.github.io/Fabulous/Fabulous.StaticView)
 
 ## Contributing
 
