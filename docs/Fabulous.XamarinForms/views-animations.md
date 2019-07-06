@@ -1,8 +1,7 @@
-Fabulous - Guide
+Fabulous for Xamarin.Forms - Guide
 =======
 
 {% include_relative contents-views.md %}
-
 
 ViewRefs
 ------
@@ -35,10 +34,9 @@ let mutable label = None
 View.Label(text="hello", created=(fun l ->  label <- Some l))
 ```
 
-> NOTE: A `ViewRef` only holds a weak handle to the underlying control.  The `Value` property may thus fail if
-the underlying control has been collected.  As a result it is often sensible to use the `TryValue` property which
-returns an option.
-
+> NOTE: A `ViewRef` only holds a weak handle to the underlying control.  
+The `Value` property may thus fail if the underlying control has been collected.  
+As a result it is often sensible to use the `TryValue` property which returns an option.
 
 Animations
 ------

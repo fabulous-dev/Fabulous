@@ -1,4 +1,4 @@
-Fabulous - Guide
+Fabulous for Xamarin.Forms - Guide
 =======
 
 {% include_relative contents-views.md %}
@@ -66,9 +66,3 @@ See also:
 * [Views and Performance](views-perf.md).
 * [Styling](views-styling.md).
 * [Multi-page Applications and Navigation](views-navigation.md).
-
-## Static Views and "Half Elmish"
-
-In some circumstances there are advantages to using static Xaml, and static bindings from the model to those views. This is called "Half Elmish" and is the primary technique used by [`Elmish.WPF`](https://github.com/Prolucid/Elmish.WPF) at time of writing. (It was also  the original technique used by this repo and the prototype `Elmish.Forms`).
-
-See [half-elmish.md](half-elmish.md).

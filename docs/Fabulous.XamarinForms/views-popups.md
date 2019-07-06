@@ -1,9 +1,14 @@
+Fabulous for Xamarin.Forms - Guide
+=======
+
+{% include_relative contents-views.md %}
+
 Pop-ups
 -------------------
 
-Pop-ups are a special case in Fabulous: they are part of the view, but don't follow the same lifecycle as the rest of the UI. In Xamarin.Forms pop-ups are exposed through 2 methods of the current page: `DisplayAlert` and `DisplayActionSheet`.
+Pop-ups are a special case in Fabulous for Xamarin.Forms: they are part of the view, but don't follow the same lifecycle as the rest of the UI. In Xamarin.Forms pop-ups are exposed through 2 methods of the current page: `DisplayAlert` and `DisplayActionSheet`.
 
-In Fabulous we only describe what a page should look like and have no access to UI elements. As such, there is no direct implementation of those 2 methods in Fabulous but instead we can use the static property `Application.Current.MainPage` exposed by Xamarin.Forms.
+In Fabulous for Xamarin.Forms we only describe what a page should look like and have no access to UI elements. As such, there is no direct implementation of those 2 methods in Fabulous but instead we can use the static property `Application.Current.MainPage` exposed by Xamarin.Forms.
 
 Here is an example of the use of a confirmation pop-up - note the requirement of `Cmd.AsyncMsg` so as not to block on the UI thread:
 ```fsharp

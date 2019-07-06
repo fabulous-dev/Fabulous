@@ -1,4 +1,4 @@
-Fabulous - Guide
+Fabulous for Xamarin.Forms - Guide
 =======
 
 {% include_relative contents.md %}
@@ -17,7 +17,7 @@ There's a few built-in functions available already:
 | Program.withTrace (trace) | Call custom tracing function everytime Fabulous needs to update the app. <br/>Signature: `trace: 'msg -> 'model -> unit` |
 | Program.withErrorHandler (onError)  | Call custom error handling logic. <br/>Signature: `onError: string * exn -> unit` |
 
-To use them, you will need to add them when declaring the runner, before calling `runWithDynamicView`.  
+To use them, you will need to add them when declaring the runner, before calling `XamarinFormsProgram.run`.  
 You can add multiple trace functions, one after another.
 ```fsharp
 type App () as app = 
@@ -27,7 +27,7 @@ type App () as app =
         Program.mkProgram App.init App.update App.view
         |> Program.withConsoleTrace
         |> Program.withErrorHandling (fun (message, exn) -> writeToDisk exn)
-        |> Program.runWithDynamicView app
+        |> XamarinFormsProgram.run app
 ```
 In this example, logs will be written to the console before the error handler can write the exceptions to the disk.
 
@@ -74,7 +74,7 @@ type App () as app =
     let runner = 
         Program.mkProgram App.init App.update App.view
         |> Program.withSimpleTrace
-        |> Program.runWithDynamicView app
+        |> XamarinFormsProgram.run app
 ```
 
 You're not required to implement all handlers, if you only need to override `update` then just override that one.
@@ -166,5 +166,5 @@ type App () as app =
     let runner = 
         Program.mkProgram App.init App.update App.view
         |> AppCenter.withAppCenterTrace Tracing.rules
-        |> Program.runWithDynamicView app
+        |> XamarinFormsProgram.run app
 ```

@@ -1,4 +1,4 @@
-Fabulous - Guide
+Fabulous for Xamarin.Forms - Guide
 =======
 
 {% include_relative contents-views.md %}
@@ -6,10 +6,9 @@ Fabulous - Guide
 Views and Performance
 ------
 
-The performance of your app may in some cases be dominated by your view function.  This is particularly the case if
-many  message updates are being generated and processed, though not if other operations dominate such as network latency.
-Improving the performance of your view function should be done with respect to your
-overall performance targets and needs.
+The performance of your app may in some cases be dominated by your view function.  
+This is particularly the case if many  message updates are being generated and processed, though not if other operations dominate such as network latency.
+Improving the performance of your view function should be done with respect to your overall performance targets and needs.
 
 On each update to the model, the view function is executed. The resulting view is then compared item by item with the previous view
 and updates are made to the underlying controls.
