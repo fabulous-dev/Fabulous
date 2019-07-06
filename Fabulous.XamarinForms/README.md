@@ -33,9 +33,9 @@ let view model dispatch =
 ```
 For more information, please take a look at the documentation.
 
-* [Getting started](https://fsprojects.github.io/Fabulous/index.html#getting=started)
+* [Getting started](https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/index.html#getting=started)
 
-* [Documentation Guide](https://fsprojects.github.io/Fabulous/guide.html)
+* [Documentation Guide](https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/guide.html)
 
 * [Release Notes](../RELEASE_NOTES.md)
 
