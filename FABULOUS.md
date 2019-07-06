@@ -7,9 +7,7 @@ Fabulous
 
 This library aims to provide all the core abstractions and tools for writing your own app framework based on the "[model view update](https://guide.elm-lang.org/architecture/)" programming model and dynamic UI. It is a variation of [elmish](https://elmish.github.io/), an Elm architecture implemented in F#.
 
-* [Getting started](https://fsprojects.github.io/Fabulous/index.html#getting=started)
-
-* [Documentation Guide](https://fsprojects.github.io/Fabulous/guide.html)
+* [Documentation](https://fsprojects.github.io/Fabulous/Fabulous/)
 
 * [Release Notes](RELEASE_NOTES.md)
 
