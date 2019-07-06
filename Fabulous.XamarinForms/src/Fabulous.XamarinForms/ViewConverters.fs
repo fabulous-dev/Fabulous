@@ -817,3 +817,10 @@ module Converters =
             let realTarget = (target :> Xamarin.Forms.IShellContentController).Page
             if realTarget <> null then currValue.UpdateIncremental(prevValue, realTarget)            
         | ValueSome _, ValueNone -> target.ContentTemplate <- null
+        
+    let updateUseSafeArea _ (currValue: bool voption) (target: Xamarin.Forms.Page) =
+        match currValue with
+        | ValueSome useSafeArea -> Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(
+                                    (target : Xamarin.Forms.Page).On<Xamarin.Forms.PlatformConfiguration.iOS>(),
+                                    useSafeArea) |> ignore
+        | _ -> ()
