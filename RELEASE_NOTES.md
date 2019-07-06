@@ -1,3 +1,14 @@
+#### 0.40.0
+
+BREAKING CHANGES: Fabulous has been restructured and became Fabulous, Fabulous StaticView and Fabulous for Xamarin.Forms!
+If you're making apps with Fabulous, you will need to use Fabulous for Xamarin.Forms now.
+Please read the migration guide to know how to update from Fabulous v0.36.0 to Fabulous for Xamarin.Forms v0.40.0 (https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/migration-guide-to-fabulous-xamarinforms.html)
+For more information on this restructuring, please read https://github.com/fsprojects/Fabulous/pull/481
+
+* [Fabulous.XamarinForms] Reordered Picker properties to put in front the most commonly used ones (https://github.com/fsprojects/Fabulous/pull/466)
+* [Fabulous.XamarinForms] Fixed ContentPage.UseSafeArea not working as expected (https://github.com/fsprojects/Fabulous/pull/500)
+* [Fabulous.XamarinForms] [Templates] The templates have been cleaned and are now more consistent. Also the targets/props files used now match real files (https://github.com/fsprojects/Fabulous/pull/481, https://github.com/fsprojects/Fabulous/pull/481)
+
 #### 0.36.0
 
 * [DynamicViews] Various fixes to improve support of Shell (https://github.com/fsprojects/Fabulous/pull/428, https://github.com/fsprojects/Fabulous/pull/430, https://github.com/fsprojects/Fabulous/pull/447, https://github.com/fsprojects/Fabulous/pull/450)
