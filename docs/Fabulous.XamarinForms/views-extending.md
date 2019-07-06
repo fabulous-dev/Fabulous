@@ -1,4 +1,4 @@
-Fabulous - Guide
+Fabulous for Xamarin.Forms - Guide
 =======
 
 {% include_relative contents-views.md %}
@@ -104,14 +104,14 @@ optional arguments.
 ### Example: Authoring the Xamarin.Forms.Maps Extension
 
 The implementation of an extension for `Xamarin.Forms.Maps` is shown below - this is the same extension as that
-available in `Fabulous.Maps.dll`. The sample implements the extension for the types [Map](https://docs.microsoft.com/dotnet/api/xamarin.forms.maps.map?view=xamarin-forms]) and
+available in `Fabulous.XamarinForms.Maps.dll`. The sample implements the extension for the types [Map](https://docs.microsoft.com/dotnet/api/xamarin.forms.maps.map?view=xamarin-forms]) and
 [Pin](https://docs.microsoft.com/en-gb/dotnet/api/xamarin.forms.maps.pin?view=xamarin-forms).
 
 ```fsharp
 [<AutoOpen>]
 module MapsExtension =
 
-    open Fabulous.DynamicViews
+    open Fabulous.XamarinForms
 
     open Xamarin.Forms
     open Xamarin.Forms.Maps
@@ -128,7 +128,7 @@ module MapsExtension =
     let PinTypeAttribKey = AttributeKey "Pin_PinType"
     let PinAddressAttribKey = AttributeKey "Pin_Address"
 
-    type Fabulous.DynamicViews.View with
+    type Fabulous.XamarinForms.View with
         /// Describes a Map in the view
         static member inline Map(?pins: seq<ViewElement>, ?isShowingUser: bool, ?mapType: MapType,
                                  ?hasScrollEnabled: bool, ?hasZoomEnabled: bool, ?requestedRegion: MapSpan,
@@ -224,7 +224,7 @@ type MasterDetailPageWithoutToolbar() =
     inherit Xamarin.Forms.MasterDetailPage()
     override __.ShouldShowToolbarButton() = false
 
-Fabulous.DynamicViews.ViewBuilders.CreateFuncMasterDetailPage <- fun () ->
+Fabulous.XamarinForms.ViewBuilders.CreateFuncMasterDetailPage <- fun () ->
     upcast(new MasterDetailPageWithoutToolbar())
 
 View.MasterDetailPage() // this now uses MasterDetailPageWithoutToolbar
@@ -235,5 +235,5 @@ See also:
 * [Core Elements](views-elements.md)
 * [Maps](views-maps.md)
 * [SkiaSharp](views-skiasharp.md)
-* [Source for the Maps extension](https://github.com/fsprojects/Fabulous/tree/master/extensions/Maps)
-* [Source for the SkiaSharp extension](https://github.com/fsprojects/Fabulous/tree/master/extensions/SkiaSharp)
+* [Source for the Maps extension](https://github.com/fsprojects/Fabulous/blob/master/Fabulous.XamarinForms/extensions/Maps/Xamarin.Forms.Maps.fs)
+* [Source for the SkiaSharp extension](https://github.com/fsprojects/Fabulous/blob/master/Fabulous.XamarinForms/extensions/SkiaSharp/SkiaSharp.fs)

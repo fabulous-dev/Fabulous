@@ -1,4 +1,4 @@
-Fabulous - Guide
+Fabulous for Xamarin.Forms - Guide
 =======
 
 {% include_relative contents-views.md %}
@@ -6,8 +6,7 @@ Fabulous - Guide
 Basic Elements
 -------------------
 
-The basic controls from `Xamarin.Forms.Core` are available in the programming model.  See the `AllControls` sample if
-the control is not documented here.
+The basic controls from `Xamarin.Forms.Core` are available.
 
 ### Button
 
@@ -97,10 +96,10 @@ See also:
 An example `BoxView` is as follows:
 
 ```fsharp
-View.BoxView(Color.Fuchsia)
+View.BoxView(Color.CornflowerBlue, cornerRadius=10.)
 ```
 
-<img src="https://user-images.githubusercontent.com/52166903/60177356-9cdae280-9810-11e9-9478-165b9da84745.png" width="400">
+<img src="https://user-images.githubusercontent.com/6429007/60753625-c1377b80-9fd5-11e9-91cc-eaef04a372cf.png" width="400">
 
 See also:
 

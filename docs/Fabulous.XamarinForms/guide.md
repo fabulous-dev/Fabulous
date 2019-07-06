@@ -1,4 +1,4 @@
-Fabulous - Guide
+Fabulous for Xamarin.Forms - Guide
 =======
 
 {% include_relative contents.md %}
@@ -18,7 +18,6 @@ Here is the typical structure for the main logic of an app:
 ```fsharp
 type Msg =
     | ...
-    
 
 /// The model from which the view is generated
 type Model = 
@@ -33,13 +32,13 @@ let update (msg:Msg) (model:Model) = ...
 /// The view function giving updated content for the page
 let view (model: Model) dispatch = ...
 
-type App () = 
+type App () as app = 
     inherit Application ()
 
     let runner = 
         Program.mkSimple init update view
         |> Program.withConsoleTrace
-        |> Program.runWithDynamicView
+        |> XamarinFormsProgram.run app
 ```
 
 

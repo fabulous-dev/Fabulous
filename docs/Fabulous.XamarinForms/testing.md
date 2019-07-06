@@ -1,4 +1,4 @@
-Fabulous - Guide
+Fabulous for Xamarin.Forms - Guide
 =======
 
 {% include_relative contents.md %}
@@ -174,4 +174,4 @@ let ``Clicking the button Increment should send the message Increment``() =
 
 
 ### See also
-- [CounterApp.Tests sample](https://github.com/fsprojects/Fabulous/tree/master/samples/CounterApp/CounterApp.Tests)
+- [CounterApp.Tests sample](https://github.com/fsprojects/Fabulous/blob/master/Fabulous.XamarinForms/samples/CounterApp/CounterApp.Tests/Tests.fs)

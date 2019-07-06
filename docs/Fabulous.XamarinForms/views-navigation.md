@@ -1,4 +1,4 @@
-Fabulous - Guide
+Fabulous for Xamarin.Forms - Guide
 =======
 
 {% include_relative contents-views.md %}
@@ -115,4 +115,4 @@ let view model dispatch =
 
 See also
 
-* The `AllControls` sample.
+* [The `AllControls` sample](https://github.com/fsprojects/Fabulous/blob/master/Fabulous.XamarinForms/samples/AllControls/AllControls/AllControls.fs)

@@ -1,4 +1,4 @@
-Fabulous - Guide
+Fabulous for Xamarin.Forms - Guide
 =======
 
 {% include_relative contents.md %}
@@ -37,17 +37,17 @@ At the time of writing this has been trialled with
 * Visual Studio for Mac + iOS (USB Device or Emulator)
 * Visual Studio + WPF
 
-Some manual set-up is required.  The following assumes your app is called `SqueakyApp`:
+Some manual set-up is required.
 
 1. Install or update `fabulous-cli` as a global tool
 
         dotnet tool install -g fabulous-cli
         dotnet tool update -g fabulous-cli
 
-2. Check your projects have a reference to nuget package `Fabulous.LiveUpdate` for all projects in your app.
-   This is the default for apps created with templates 0.13.10 and higher. Do a clean build.
+2. Install or update the NuGet package `Fabulous.XamarinForms.LiveUpdate` for all projects in your app.  
+This is the default for apps created with templates 0.13.10 and higher. Do a clean build.
 
-3. Uncomment or add the code in the `#if` section below in `SqueakyApp\SqueakyApp\SqueayApp.fs`:
+3. Uncomment or add the code in the `#if` section below:
 
        type App () =
            inherit Application()
@@ -70,7 +70,7 @@ Some manual set-up is required.  The following assumes your app is called `Squea
         cd SqueakyApp\SqueakyApp
         fabulous --watch --send 
         
-7. It may be necessary to launch Visual Studio with elevated permissions ("Run as administrator"); otherwise, "runner.EnableLiveUpdate()" may fail to start the HttpListener, which will cause LiveUpdate to fail.
+7. It may be necessary to launch Visual Studio with elevated permissions ("Run as administrator"); otherwise, `runner.EnableLiveUpdate()` may fail to start the HttpListener, which will cause LiveUpdate to fail.
 
 Now, whenever you save a file in your core project directory, the `fabulous` watcher will attempt to recompile your changed file and
 send a representation of its contents to your app via a PUT request to the given webhook.  The app then deserializes this representation and

@@ -7,6 +7,8 @@ Fabulous for Xamarin.Forms
 
 This library allows you to use the ultra-simple Model-View-Update architecture to build applications for iOS, Android, Mac, WPF and more using Xamarin.Forms. It is built on Fabulous.
 
+> The amount of code I'm *not* writing is great!  [@jimbobbennett](https://github.com/jimbobbennett/)
+
 With Fabulous for Xamarin.Forms, you will be able to write complete applications fully in F#, like this:
 ```fsharp
 type Model = { Text: string }

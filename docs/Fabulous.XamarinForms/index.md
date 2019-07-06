@@ -1,4 +1,3 @@
-
 F# Functional App Development, using Xamarin.Forms
 ========
 
@@ -6,8 +5,7 @@ Never write a ViewModel class again!  Conquer the world with clean dynamic UIs!
 
 <img src="https://user-images.githubusercontent.com/7204669/39318922-57c95174-4977-11e8-94a9-cc385101ce5d.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318926-59f844e6-4977-11e8-9834-325a6517ced6.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318929-5b66c776-4977-11e8-8317-ee1c121301d4.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318934-5cbe3c3a-4977-11e8-92aa-c3fdf644b01c.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318936-5e2380bc-4977-11e8-8912-f078744a2bde.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318938-5f6ec4f4-4977-11e8-97a9-779edd3594bc.png" width="100"> <img src="https://user-images.githubusercontent.com/7204669/39318941-60c1b0f0-4977-11e8-8a4a-57e17ef8c6ec.png" width="100">
 
-This library allows you to use a variation of [elmish](https://elmish.github.io/), an Elm architecture implemented in F#,
-to build Xamarin.Forms applications for iOS, Android, Mac and more.  The approach to app development is similar to Redux and Flow but targets Xamarin and Xamarin.Forms.
+This library allows you to use the ultra-simple Model-View-Update architecture to build applications for iOS, Android, Mac, WPF and more using Xamarin.Forms. It is built on Fabulous.
 
 > The amount of code I'm *not* writing is great!  [@jimbobbennett](https://github.com/jimbobbennett/)
 
@@ -20,11 +18,11 @@ Getting started
 
 2. Open a command prompt window and install the template pack by entering:
 
-       dotnet new -i Fabulous.Templates
+       dotnet new -i Fabulous.XamarinForms.Templates
 
 3. Navigate to a folder in the command prompt window where your new app can be created and enter:
 
-       dotnet new fabulous-app -n SqueakyApp
+       dotnet new fabulous-xf-app -n SqueakyApp
 
 4. Open, edit and build in Visual Studio or Visual Studio for Mac
 
@@ -38,33 +36,33 @@ By default iOS and Android projects are created. But you can also target WPF wit
 
 Android only:
 
-    dotnet new fabulous-app -n SqueakyApp --iOS=false
+    dotnet new fabulous-xf-app -n SqueakyApp --iOS=false
    
 iOS only:
 
-    dotnet new fabulous-app -n SqueakyApp --Android=false
+    dotnet new fabulous-xf-app -n SqueakyApp --Android=false
    
 WPF only:
 
-    dotnet new fabulous-app -n SqueakyApp --WPF --Android=false --iOS=false
+    dotnet new fabulous-xf-app -n SqueakyApp --WPF --Android=false --iOS=false
 
 UWP only:
 
-    dotnet new fabulous-app -n SqueakyApp --UWP --Android=false --iOS=false
+    dotnet new fabulous-xf-app -n SqueakyApp --UWP --Android=false --iOS=false
    
 macOS only:
 
-    dotnet new fabulous-app -n SqueakyApp --macOS --Android=false --iOS=false
+    dotnet new fabulous-xf-app -n SqueakyApp --macOS --Android=false --iOS=false
 
 GTK only:
 
-    dotnet new fabulous-app -n SqueakyApp --GTK --Android=false --iOS=false
+    dotnet new fabulous-xf-app -n SqueakyApp --GTK --Android=false --iOS=false
 
 All 6 platforms:
 
-    dotnet new fabulous-app -n SqueakyApp --WPF --UWP --macOS --GTK
+    dotnet new fabulous-xf-app -n SqueakyApp --WPF --UWP --macOS --GTK
 
-5. If you are using Visual Studio for Mac and you want to start with File -> New, make sure you target ".NET Standard" to add the references to Fabulous:
+5. If you are using Visual Studio for Mac and you want to start with `File -> New`, make sure you target ".NET Standard" to add the references to Fabulous:
        
        File -> New Solution
        Multiplatform App -> Blank Forms App (F#)
@@ -78,8 +76,8 @@ A Basic Example
 Here is a full example of an app:
 
 ```fsharp
-open Fabulous.Core
-open Fabulous.DynamicViews
+open Fabulous
+open Fabulous.XamarinForms
 open Xamarin.Forms
 
 /// The messages dispatched by the view
@@ -117,7 +115,7 @@ type App () as app =
     let runner =
         Program.mkSimple init update view
         |> Program.withConsoleTrace
-        |> Program.runWithDynamicView app
+        |> XamarinFormsProgram.run app
 ```
 
 The init function returns your initial state, and each model gets an update function for message processing. The `view` function computes an immutable Xaml-like description. In the above example, the choice between a label and button depends on the `model.Pressed` value.
@@ -131,21 +129,21 @@ Some advantages of using an immutable model are:
 Samples
 ------
 
-The sample [CounterApp](https://github.com/fsprojects/Fabulous/blob/master/samples/CounterApp/CounterApp/CounterApp.fs) contains a slightly larger example of Button/Label/Slider elements.
+The sample [CounterApp](https://github.com/fsprojects/Fabulous/blob/master/Fabulous.XamarinForms/samples/CounterApp/CounterApp/CounterApp.fs) contains a slightly larger example of Button/Label/Slider elements.
 
-The sample [TicTacToe](https://github.com/fsprojects/Fabulous/blob/master/samples/TicTacToe/TicTacToe/TicTacToe.fs) contains examples of the Grid and Image elements.
+The sample [TicTacToe](https://github.com/fsprojects/Fabulous/blob/master/Fabulous.XamarinForms/samples/TicTacToe/TicTacToe/TicTacToe.fs) contains examples of the Grid and Image elements.
 
-The sample [AllControls](https://github.com/fsprojects/Fabulous/blob/master/samples/AllControls/AllControls/AllControls.fs) contains examples of instantiating most elements in `Xamarin.Forms.Core`.
+The sample [AllControls](https://github.com/fsprojects/Fabulous/blob/master/Fabulous.XamarinForms/samples/AllControls/AllControls/AllControls.fs) contains examples of instantiating most elements in `Xamarin.Forms.Core`.
 
-The external sample [Calculator](https://github.com/nosami/Elmish.Calculator/) is a small calculator app. (Note: because this is an external sample it may not be up-to-date with the latest version of his library.)
+The sample [Calculator](https://github.com/fsprojects/Fabulous/blob/master/Fabulous.XamarinForms/samples/Calculator/Calculator/Calculator.fs) ([original external sample](https://github.com/nosami/Elmish.Calculator/)) is a small calculator app.
 
 The external sample [PocketPiggyBank](https://github.com/jimbobbennett/PocketPiggyBank) is a small client-server app with login authentication. (Note: because this is an external sample it may not be up-to-date with the latest version of this library.)
 
-The external sample [ElmishContacts](https://github.com/TimLariviere/ElmishContacts) is a multi-page contacts app featuring maps, group-lists and cross-page messages. (Note: because this is an external sample it may not be up-to-date with the latest version of this library.)
+The external sample [FabulousContacts](https://github.com/TimLariviere/FabulousContacts) is a multi-page contacts app featuring maps, group-lists and cross-page messages. (Note: because this is an external sample it may not be up-to-date with the latest version of this library.)
 
-The external sample [ElmishPlanets](https://github.com/TimLariviere/ElmishPlanets) is a multi-page app featuring facts on the planets in the Solar System. It uses Urho3D and Fabulous (Note: because this is an external sample it may not be up-to-date with the latest version of this library.)
+The external sample [FabulousPlanets](https://github.com/TimLariviere/FabulousPlanets) is a multi-page app featuring facts on the planets in the Solar System. It uses Urho3D and Fabulous (Note: because this is an external sample it may not be up-to-date with the latest version of this library.)
 
-See also the curated list [Awesome Fabulous](http://aka.ms/AwesomeEXF).
+See also the curated list [Awesome Fabulous](https://github.com/jimbobbennett/Awesome-Fabulous).
 
 Further Resources
 --------

@@ -1,4 +1,4 @@
-Fabulous - Guide
+Fabulous for Xamarin.Forms - Guide
 =======
 
 {% include_relative contents.md %}
@@ -173,12 +173,12 @@ let mapCommands cmdMsg =
     match cmdMsg with
     | TimerTick -> timerCmd()
 
-type App() =
+type App() as app =
     inherit Application()
 
     let runner =
         Program.mkProgramWithCmdMsg init update view mapCommands
-        |> Program.run...
+        |> XamarinFormsProgram.run app
 ```
 
 Note that `Program.mkProgramWithCmdMsg` doesn't do anything magic.  
@@ -309,7 +309,7 @@ type App() as app =
 
     let runner =
         Program.mkProgram init update view
-        |> Program.runWithDynamicView app
+        |> XamarinFormsProgram.run app
 
     member __.Program = runner // Add this line
 ```

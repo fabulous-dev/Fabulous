@@ -1,4 +1,4 @@
-Fabulous - Guide
+Fabulous for Xamarin.Forms - Guide
 =======
 
 {% include_relative contents-views.md %}
@@ -109,13 +109,12 @@ range of visual items that need to be generated.
 `CollectionView` is available in preview in Xamarin.Forms 4.0.  
 Please read the Xamarin.Forms documentation to check whether this control is available for the platforms you target.
 
-Fabulous provides an initial but partial support for it.  
+Fabulous for Xamarin.Forms provides an initial but partial support for it.  
 
 As it is experimental, this control requires the flag `CollectionView = CollectionView_Experimental` before it can be used.
 For example:
 
 ```fsharp
-
 // iOS
 [<Register ("AppDelegate")>]
 type AppDelegate () =
@@ -138,7 +137,6 @@ type MainActivity() =
 
 Usage:
 ```fsharp
-
 View.CollectionView(items=[
             View.Label(text="Person1") 
             View.Label(text="Person2")
