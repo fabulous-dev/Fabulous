@@ -1628,7 +1628,8 @@
           "name": "UseSafeArea",
           "inputType": "bool",
           "modelType": "bool",
-          "updateCode": "(fun _ _ target -> Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea((target : Xamarin.Forms.Page).On<Xamarin.Forms.PlatformConfiguration.iOS>(), true) |> ignore)"
+          "defaultValue": "false",
+          "updateCode": "updateUseSafeArea"
         },
         {
           "name": "Appearing",
