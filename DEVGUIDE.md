@@ -107,7 +107,7 @@ On Windows:
 .\build UpdateVersion
 ```
 
-FAKE will have updated `Directory.Build.props`, `Fabulous.XamarinForms.nuspec` and `template.json`. Commit all changes.
+FAKE will have updated `Directory.Build.props`, `Fabulous.XamarinForms.nuspec`, nuspec files of the Fabulous.XamarinForms extensions and `template.json`. Commit all changes.
 
 Create a branch named `release/X.Y.Z` (where X.Y.Z is the version number you want Fabulous to be)  
 And start a pull request for this branch back to `master`.  

@@ -1,3 +1,7 @@
+#### 0.40.1
+
+* [Fabulous.XamarinForms] [Extensions] Fixed an invalid dependency on Fabulous.XamarinForms.Controls instead of Fabulous.XamarinForms (https://github.com/fsprojects/Fabulous/pull/503)
+
 #### 0.40.0
 
 BREAKING CHANGES: Fabulous has been restructured and became Fabulous, Fabulous StaticView and Fabulous for Xamarin.Forms!
