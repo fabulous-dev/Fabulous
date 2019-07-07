@@ -12,7 +12,7 @@
     <copyright>Copyright 2018</copyright>
     <tags>SkiaSharp;Drawing;2D;Xamarin.Forms;Fabulous;F#;Elmish;Elm</tags>
     <dependencies>
-      <dependency id="Fabulous.XamarinForms" version="0.40.3" />
+      <dependency id="Fabulous.XamarinForms" version="0.40.4" />
       <dependency id="SkiaSharp.Views.Forms" version="1.60.3" />
     </dependencies>
   </metadata>

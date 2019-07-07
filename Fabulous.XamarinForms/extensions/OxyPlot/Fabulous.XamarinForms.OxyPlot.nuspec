@@ -12,7 +12,7 @@
     <copyright>Copyright 2018</copyright>
     <tags>OxyPlot;Charting;2D;Xamarin.Forms;Fabulous;F#;Elmish;Elm</tags>
     <dependencies>
-      <dependency id="Fabulous.XamarinForms" version="0.40.3" />
+      <dependency id="Fabulous.XamarinForms" version="0.40.4" />
       <dependency id="OxyPlot.Xamarin.Forms" version="1.0.0" />
     </dependencies>
   </metadata>

@@ -1,10 +1,10 @@
 <Project>
   <!-- NuGet Specs -->
   <PropertyGroup>
-    <Version>0.40.3</Version>
+    <Version>0.40.4</Version>
     <Authors>Fabulous Contributors</Authors>
-    <PackageVersion>0.40.3</PackageVersion>
-    <PackageReleaseNotes>[Fabulous.XamarinForms] [Extensions] Fixed a missing dependencies in the NuGet packages</PackageReleaseNotes>
+    <PackageVersion>0.40.4</PackageVersion>
+    <PackageReleaseNotes>[Fabulous.XamarinForms] Fixed an issue preventing reuse of existing views (https://github.com/fsprojects/Fabulous/pull/507)</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/fsprojects/Fabulous</PackageProjectUrl>
