@@ -85,20 +85,15 @@ let nugetPack paths =
                 ReleaseNotes = (String.toLines release.Notes) }) nuspecPath
 
 /// Replaces the value of attribute in an xml node in the XML document specified by a XPath expression.
-let replaceXPathAttributeNS xpath (attribute:string) value (namespaces : #seq<string * string>) (doc : System.Xml.XmlDocument) =
+let replaceXPathAttributeNSIfExists xpath (attribute:string) value (namespaces : #seq<string * string>) (doc : System.Xml.XmlDocument) =
     let nsmgr = System.Xml.XmlNamespaceManager(doc.NameTable)
     namespaces |> Seq.iter nsmgr.AddNamespace
     let node = doc.SelectSingleNode(xpath, nsmgr)
-    if isNull node then 
-        failwithf "XML node '%s' not found" xpath
-    else
+    if not (isNull node) then
         let attributeValue = node.Attributes.[attribute]
-        if isNull attributeValue then
-            failwithf "XML node '%s' does not have attribute '%s'" xpath attribute
-        else
+        if not (isNull attributeValue) then
             attributeValue.Value <- value
     doc
-
 
 Target.create "Clean" (fun _ ->
     Shell.cleanDir buildDir
@@ -151,11 +146,17 @@ Target.create "UpdateVersion" (fun _ ->
         |> (fun o -> JsonConvert.SerializeObject(o, Formatting.Indented))
         |> File.writeString false template
 
-    // Updates Fabulous.XamarinForms.nuspec
-    let nuspec = "Fabulous.XamarinForms/src/Fabulous.XamarinForms.nuspec"
-    Xml.loadDoc nuspec
-    |> replaceXPathAttributeNS "//x:package/x:metadata/x:dependencies/x:dependency[@id=\"Fabulous\"]" "version" release.NugetVersion [ "x", "http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd" ]
-    |> Xml.saveDoc nuspec
+    // Updates nuspec files
+    let updateVersionInNuSpecs files =
+        for nuspec in files do
+            Xml.loadDoc nuspec
+            |> replaceXPathAttributeNSIfExists "//x:package/x:metadata/x:dependencies/x:dependency[@id=\"Fabulous\"]" "version" release.NugetVersion [ "x", "http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd" ]
+            |> replaceXPathAttributeNSIfExists "//x:package/x:metadata/x:dependencies/x:dependency[@id=\"Fabulous.XamarinForms\"]" "version" release.NugetVersion [ "x", "http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd" ]
+            |> Xml.saveDoc nuspec
+
+    !! "Fabulous.XamarinForms/src/Fabulous.XamarinForms.nuspec" 
+    ++ "Fabulous.XamarinForms/extensions/**/*.nuspec"
+    |> updateVersionInNuSpecs
 )
 
 Target.create "BuildTools" (fun _ ->
@@ -231,8 +232,8 @@ Target.create "PackFabulousXamarinFormsTemplates" (fun _ ->
 )
 
 Target.create "PackFabulousXamarinFormsExtensions" (fun _ -> 
-    !! "Fabulous.XamarinForms/extensions/**/*.fsproj"
-    |> dotnetPack
+    !! "Fabulous.XamarinForms/extensions/**/*.nuspec"
+    |> nugetPack
 )
 
 Target.create "PackFabulousStaticView" (fun _ -> 
