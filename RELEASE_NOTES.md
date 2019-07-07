@@ -7,7 +7,7 @@ For more information on this restructuring, please read https://github.com/fspro
 
 * [Fabulous.XamarinForms] Reordered Picker properties to put in front the most commonly used ones (https://github.com/fsprojects/Fabulous/pull/466)
 * [Fabulous.XamarinForms] Fixed ContentPage.UseSafeArea not working as expected (https://github.com/fsprojects/Fabulous/pull/500)
-* [Fabulous.XamarinForms] [Templates] The templates have been cleaned and are now more consistent. Also the targets/props files used now match real files (https://github.com/fsprojects/Fabulous/pull/481, https://github.com/fsprojects/Fabulous/pull/481)
+* [Fabulous.XamarinForms] [Templates] The templates have been cleaned and are now more consistent. Also the targets/props files used now match real files (https://github.com/fsprojects/Fabulous/pull/481, https://github.com/fsprojects/Fabulous/pull/494)
 
 #### 0.36.0
 
