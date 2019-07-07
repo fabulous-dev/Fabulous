@@ -164,6 +164,12 @@ Target.create "BuildTools" (fun _ ->
 )
 
 Target.create "BuildFabulous" (fun _ -> 
+    printfn "#######################"
+    printfn "MONOVERSION: %A" Fake.Core.Environment.monoVersion
+    printfn "MONOPATH: %A" Fake.Core.Environment.monoPath
+    printfn "------------------------"
+    printfn "MONOVERSION: %A" Fake.Core.Process.monoVersion
+    printfn "#######################"
     !! "src/**/*.fsproj"
     |> dotnetBuild "Fabulous"
 )
