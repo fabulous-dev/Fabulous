@@ -1,3 +1,7 @@
+#### 0.40.2
+
+* [Fabulous.XamarinForms] Fixed a missing dependency on Xamarin.Forms in the NuGet package Fabulous.XamarinForms
+
 #### 0.40.1
 
 * [Fabulous.XamarinForms] [Extensions] Fixed an invalid dependency on Fabulous.XamarinForms.Controls instead of Fabulous.XamarinForms (https://github.com/fsprojects/Fabulous/pull/503)
