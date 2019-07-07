@@ -1,5 +1,9 @@
 #### 0.40.3
 
+* [Fabulous.XamarinForms] Fixed an issue preventing reuse of existing views (https://github.com/fsprojects/Fabulous/pull/507)
+
+#### 0.40.3
+
 * [Fabulous.XamarinForms] [Extensions] Fixed a missing dependencies in the NuGet packages
 
 #### 0.40.2
