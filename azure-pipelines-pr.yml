@@ -4,7 +4,8 @@ pr:
 - master
 
 variables:
- MONO_VERSION: 5_18_1
+- name: MONO_VERSION
+  value: 5_18_1
 
 jobs:
 - job: Windows
