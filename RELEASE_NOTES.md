@@ -1,3 +1,7 @@
+#### 0.40.3
+
+* [Fabulous.XamarinForms] [Extensions] Fixed a missing dependencies in the NuGet packages
+
 #### 0.40.2
 
 * [Fabulous.XamarinForms] Fixed a missing dependency on Xamarin.Forms in the NuGet package Fabulous.XamarinForms
