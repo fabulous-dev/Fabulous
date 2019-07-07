@@ -19,7 +19,7 @@ Package | NuGet
 ---|---
 Fabulous | [![Fabulous NuGet version](https://badge.fury.io/nu/Fabulous.svg)](https://badge.fury.io/nu/Fabulous)  
 Fabulous.XamarinForms | [![Fabulous.XamarinForms NuGet version](https://badge.fury.io/nu/Fabulous.XamarinForms.svg)](https://badge.fury.io/nu/Fabulous.XamarinForms)  
-Fabulous.StaticView | [![Fabulous.StaticView NuGet version](https://badge.fury.io/nu/Fabulous.StaticView.svg)](https://badge.fury.io/nu/Fabulous.StaticView)
+Fabulous.StaticView.XamarinForms | [![Fabulous.StaticView.XamarinForms NuGet version](https://badge.fury.io/nu/Fabulous.StaticView.XamarinForms.svg)](https://badge.fury.io/nu/Fabulous.StaticView.XamarinForms)
 
 ## Fabulous
 
