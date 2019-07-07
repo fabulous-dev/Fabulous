@@ -1,16 +1,10 @@
 <Project>
   <!-- NuGet Specs -->
   <PropertyGroup>
-    <Version>0.40.0</Version>
+    <Version>0.40.1</Version>
     <Authors>Fabulous Contributors</Authors>
-    <PackageVersion>0.40.0</PackageVersion>
-    <PackageReleaseNotes>BREAKING CHANGES: Fabulous has been restructured and became Fabulous, Fabulous StaticView and Fabulous for Xamarin.Forms!
-If you're making apps with Fabulous, you will need to use Fabulous for Xamarin.Forms now.
-Please read the migration guide to know how to update from Fabulous v0.36.0 to Fabulous for Xamarin.Forms v0.40.0 (https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/migration-guide-to-fabulous-xamarinforms.html)
-For more information on this restructuring, please read https://github.com/fsprojects/Fabulous/pull/481
-[Fabulous.XamarinForms] Reordered Picker properties to put in front the most commonly used ones (https://github.com/fsprojects/Fabulous/pull/466)
-[Fabulous.XamarinForms] Fixed ContentPage.UseSafeArea not working as expected (https://github.com/fsprojects/Fabulous/pull/500)
-[Fabulous.XamarinForms] [Templates] The templates have been cleaned and are now more consistent. Also the targets/props files used now match real files (https://github.com/fsprojects/Fabulous/pull/481, https://github.com/fsprojects/Fabulous/pull/494)</PackageReleaseNotes>
+    <PackageVersion>0.40.1</PackageVersion>
+    <PackageReleaseNotes>[Fabulous.XamarinForms] [Extensions] Fixed an invalid dependency on Fabulous.XamarinForms.Controls instead of Fabulous.XamarinForms (https://github.com/fsprojects/Fabulous/pull/503)</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/fsprojects/Fabulous</PackageProjectUrl>
