@@ -19,7 +19,7 @@ jobs:
   pool:
     vmImage: 'macOS-10.14'
   steps:
-    - bash: sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh 5_18_1
+  - bash: sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh 5_18_1
     displayName: Switch to the latest Xamarin SDK
   - bash: echo '##vso[task.setvariable variable=MD_APPLE_SDK_ROOT;]'/Applications/Xcode_10.2.app;sudo xcode-select --switch /Applications/Xcode_10.2.app/Contents/Developer
     displayName: Switch to the latest Xcode
