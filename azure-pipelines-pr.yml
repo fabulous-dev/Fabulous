@@ -3,6 +3,12 @@ trigger:
 pr:
 - master
 
+variables:
+- name: MONO_VERSION
+  value: 5_18_1
+- name: XCODE_VERSION
+  value: 10.2
+
 jobs:
 - job: Windows
   pool:
@@ -19,17 +25,15 @@ jobs:
   pool:
     vmImage: 'macOS-10.14'
   steps:
-  - bash: sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh 5_18_1
+  - bash: sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh $(MONO_VERSION)
     displayName: Switch to the latest Xamarin SDK
-  - bash: echo '##vso[task.setvariable variable=MD_APPLE_SDK_ROOT;]'/Applications/Xcode_10.2.app;sudo xcode-select --switch /Applications/Xcode_10.2.app/Contents/Developer
+  - bash: echo '##vso[task.setvariable variable=MD_APPLE_SDK_ROOT;]'/Applications/Xcode_$(XCODE_VERSION).app;sudo xcode-select --switch /Applications/Xcode_$(XCODE_VERSION).app/Contents/Developer
     displayName: Switch to the latest Xcode
   - bash: |
-          SYMLINK=5_18_1
-          MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/$SYMLINK
+          MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/$(MONO_VERSION)
           echo "##vso[task.setvariable variable=DYLD_FALLBACK_LIBRARY_PATH;]$MONOPREFIX/lib:/lib:/usr/lib:$DYLD_LIBRARY_FALLBACK_PATH"
           echo "##vso[task.setvariable variable=PKG_CONFIG_PATH;]$MONOPREFIX/lib/pkgconfig:$MONOPREFIX/share/pkgconfig:$PKG_CONFIG_PATH"
-          export $PATH=/Library/Frameworks/Mono.framework/Versions/5.18.1/Commands/bin:/usr/local/lib/ruby/gems/2.6.0/bin:/usr/local/opt/ruby/bin:/usr/local/opt/curl/bin:/usr/local/bin:/usr/local/sbin:/Users/vsts/bin:/Users/vsts/.yarn/bin:/usr/local/go/bin:/Users/vsts/Library/Android/sdk/tools:/Users/vsts/Library/Android/sdk/platform-tools:/Users/vsts/Library/Android/sdk/ndk-bundle:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/usr/bin:/bin:/usr/sbin:/sbin:/Users/vsts/.azcopy
-          echo "##vso[task.setvariable variable=PATH;]$MONOPREFIX/bin:$PATH"
+          echo "##vso[task.setvariable variable=PATH;]$MONOPREFIX/Commands/bin:$PATH"
     displayName: Set Mono 
   - bash: 'mono --version'
     displayName: 'Mono version'
