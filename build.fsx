@@ -42,7 +42,7 @@ let removeIncompatiblePlatformProjects pattern =
 let addJDK properties =
     match Environment.environVarOrDefault "JAVA_HOME_8_X64" "" with
     | javaHome when not (System.String.IsNullOrWhiteSpace javaHome && Environment.isWindows) -> ("JavaSdkDirectory", javaHome) :: properties
-    | _ -> properties
+    | _ ->  properties
 
 let dotnetBuild outputSubDir paths =
     for projectPath in paths do
@@ -164,12 +164,6 @@ Target.create "BuildTools" (fun _ ->
 )
 
 Target.create "BuildFabulous" (fun _ -> 
-    printfn "#######################"
-    printfn "MONOVERSION: %A" Fake.Core.Environment.monoVersion
-    printfn "MONOPATH: %A" Fake.Core.Environment.monoPath
-    printfn "------------------------"
-    printfn "MONOVERSION: %A" Fake.Core.Process.monoVersion
-    printfn "#######################"
     !! "src/**/*.fsproj"
     |> dotnetBuild "Fabulous"
 )
