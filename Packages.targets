@@ -2,9 +2,9 @@
     <ItemGroup>
         <PackageReference Update="FSharp.Core" Version="4.6.2" />
         <PackageReference Update="FSharp.Data" Version="3.0.0" />
-        <PackageReference Update="Xamarin.Forms" Version="4.0.0.425677" />
-        <PackageReference Update="Xamarin.Forms.Platform.WPF" Version="4.0.0.425677" />
-        <PackageReference Update="Xamarin.Forms.Maps" Version="4.0.0.425677" />
+        <PackageReference Update="Xamarin.Forms" Version="4.1.0.555618" />
+        <PackageReference Update="Xamarin.Forms.Platform.WPF" Version="4.1.0.555618" />
+        <PackageReference Update="Xamarin.Forms.Maps" Version="4.1.0.555618" />
         <PackageReference Update="Newtonsoft.Json" Version="11.0.2" />
         <PackageReference Update="FSharp.Compiler.Service" Version="25.0.1" />
         <PackageReference Update="Dotnet.ProjInfo" Version="0.9.0" />
