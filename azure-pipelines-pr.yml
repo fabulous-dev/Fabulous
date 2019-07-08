@@ -20,15 +20,14 @@ jobs:
     vmImage: 'macOS-10.14'
   steps:
   - bash: |
-          MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/Current/Commands
+          SYMLINK=5_18_1
+          MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/$SYMLINK
           echo "##vso[task.setvariable variable=DYLD_FALLBACK_LIBRARY_PATH;]$MONOPREFIX/lib:/lib:/usr/lib:$DYLD_LIBRARY_FALLBACK_PATH"
           echo "##vso[task.setvariable variable=PKG_CONFIG_PATH;]$MONOPREFIX/lib/pkgconfig:$MONOPREFIX/share/pkgconfig:$PKG_CONFIG_PATH"
-          echo "##vso[task.setvariable variable=PATH;]$MONOPREFIX/bin:$PATH"
+          echo "##vso[task.setvariable variable=PATH;]$PATH:$MONOPREFIX/bin"
     displayName: Set Mono 
   - bash: 'mono --version'
     displayName: 'Mono version'
-  - bash: 'echo $PATH'
-    displayName: 'Showing Pathvarialbe'
   - script: ./build.sh Test
   - task: PublishTestResults@2
     inputs:
