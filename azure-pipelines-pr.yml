@@ -28,6 +28,8 @@ jobs:
     displayName: Set Mono 
   - bash: 'mono --version'
     displayName: 'Mono version'
+  - bash: '$PATH'
+    displayName: 'Show Path variable'
   - script: ./build.sh Test
   - task: PublishTestResults@2
     inputs:
