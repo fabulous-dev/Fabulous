@@ -3,12 +3,6 @@ trigger:
 pr:
 - master
 
-variables:
-- name: MONO_VERSION
-  value: 5_18_1
-- name: XCODE_VERSION
-  value: 10.2
-
 jobs:
 - job: Windows
   pool:

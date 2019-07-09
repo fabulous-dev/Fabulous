@@ -1,12 +1,6 @@
 trigger:
 - master
 
-variables:
-- name: MONO_VERSION
-  value: 5_18_1
-- name: XCODE_VERSION
-  value: 10.2
-
 jobs:
 - job: Linux
   pool:
@@ -36,7 +30,7 @@ jobs:
   pool:
     vmImage: 'macOS-10.14'
   steps:
-  - template: default-osx-template
+  - template: default-osx-template.yml
   - script: ./build.sh Test
   - task: CopyFiles@1
     inputs:
