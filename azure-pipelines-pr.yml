@@ -25,7 +25,7 @@ jobs:
   pool:
     vmImage: 'macOS-10.14'
   steps:
-  - template: default-osx-template
+  - template: default-osx-template.yml
   - script: ./build.sh Test
   - task: PublishTestResults@2
     inputs:
