@@ -30,7 +30,7 @@ jobs:
   pool:
     vmImage: 'macOS-10.14'
   steps:
-  - template: default-osx-template.yml
+  - script: ./azure-pipeline-osx-setup.sh
   - script: ./build.sh Test
   - task: CopyFiles@1
     inputs:
