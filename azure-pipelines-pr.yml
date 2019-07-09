@@ -25,16 +25,7 @@ jobs:
   pool:
     vmImage: 'macOS-10.14'
   steps:
-  - bash: sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh $(MONO_VERSION)
-    displayName: Switch to the latest Xamarin SDK
-  - bash: echo '##vso[task.setvariable variable=MD_APPLE_SDK_ROOT;]'/Applications/Xcode_$(XCODE_VERSION).app;sudo xcode-select --switch /Applications/Xcode_$(XCODE_VERSION).app/Contents/Developer
-    displayName: Switch to the latest Xcode
-  - bash: |
-          MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/$(MONO_VERSION)
-          echo "##vso[task.setvariable variable=DYLD_FALLBACK_LIBRARY_PATH;]$MONOPREFIX/lib:/lib:/usr/lib:$DYLD_LIBRARY_FALLBACK_PATH"
-          echo "##vso[task.setvariable variable=PKG_CONFIG_PATH;]$MONOPREFIX/lib/pkgconfig:$MONOPREFIX/share/pkgconfig:$PKG_CONFIG_PATH"
-          echo "##vso[task.setvariable variable=PATH;]$MONOPREFIX/Commands/bin:$PATH"
-    displayName: Set Mono
+  - template: default-osx-template
   - script: ./build.sh Test
   - task: PublishTestResults@2
     inputs:
