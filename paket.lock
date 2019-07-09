@@ -168,7 +168,7 @@ NUGET
       Xamarin.Android.Support.Annotations (28.0.0.1)
       Xamarin.Android.Support.Compat (28.0.0.1)
       Xamarin.Android.Support.CustomView (28.0.0.1)
-    Xamarin.Forms (4.0.0.425677)
+    Xamarin.Forms (4.1.0.555618)
       Xamarin.Android.Support.CustomTabs (>= 28.0.0.1)
       Xamarin.Android.Support.Design (>= 28.0.0.1)
       Xamarin.Android.Support.v4 (>= 28.0.0.1)
@@ -901,10 +901,10 @@ NUGET
       FSharp.Core (>= 4.0.0.1)
     Newtonsoft.Json (11.0.2)
     OpenTK (3.0.1)
-    Xamarin.Forms (4.0.0.425677)
-    Xamarin.Forms.Platform.GTK (4.0.0.425677)
+    Xamarin.Forms (4.1.0.555618)
+    Xamarin.Forms.Platform.GTK (4.1.0.555618)
       OpenTK (>= 3.0.1)
-      Xamarin.Forms (>= 4.0.0.425677)
+      Xamarin.Forms (>= 4.1.0.555618)
 
 GROUP iosapp
 RESTRICTION: == monotouch
@@ -1041,7 +1041,7 @@ NUGET
     System.Xml.ReaderWriter (4.3.1)
     System.Xml.XDocument (4.3)
     System.Xml.XmlDocument (4.3)
-    Xamarin.Forms (4.0.0.425677)
+    Xamarin.Forms (4.1.0.555618)
 
 GROUP macosapp
 RESTRICTION: == xamarinmac
@@ -1051,7 +1051,7 @@ NUGET
     FSharp.Data (3.0)
       FSharp.Core (>= 4.3.4)
     Newtonsoft.Json (11.0.2)
-    Xamarin.Forms (4.0.0.425677)
+    Xamarin.Forms (4.1.0.555618)
 
 GROUP neutral
 RESTRICTION: == netstandard2.0
@@ -1067,9 +1067,9 @@ NUGET
     SkiaSharp.Views.Forms (1.68)
       SkiaSharp (>= 1.68)
       Xamarin.Forms (>= 3.3.0.912540)
-    Xamarin.Forms (4.0.0.425677)
-    Xamarin.Forms.Maps (4.0.0.425677)
-      Xamarin.Forms (>= 4.0.0.425677)
+    Xamarin.Forms (4.1.0.555618)
+    Xamarin.Forms.Maps (4.1.0.555618)
+      Xamarin.Forms (>= 4.1.0.555618)
 GITHUB
   remote: fsprojects/FSharp.Compiler.PortaCode
     src/CodeModel.fs (7bc5e17b32d848024e4635553eda3fc0afbb5156)
@@ -1089,8 +1089,8 @@ NUGET
     OpenTK (3.0.1)
     OpenTK.GLControl (3.0.1)
       OpenTK (>= 3.0.1)
-    Xamarin.Forms (4.0.0.425677)
-    Xamarin.Forms.Platform.WPF (4.0.0.425677)
+    Xamarin.Forms (4.1.0.555618)
+    Xamarin.Forms.Platform.WPF (4.1.0.555618)
       OpenTK (>= 3.0.1)
       OpenTK.GLControl (>= 3.0.1)
-      Xamarin.Forms (>= 4.0.0.425677)
+      Xamarin.Forms (>= 4.1.0.555618)

@@ -1,4 +1,4 @@
-// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
+﻿// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace AllControls
 
 open System
@@ -958,7 +958,10 @@ module App =
                         ]
                     ))
 
-                | _ -> View.ContentPage(content = View.Label(text="Your Platform does not support CollectionView"))
+                | _ -> View.ContentPage(content = View.StackLayout( children = [
+                                            MainPageButton
+                                            View.Label(text="Your Platform does not support CollectionView")
+                                        ]))
 
          | CarouselView ->
             match Device.RuntimePlatform with
@@ -966,7 +969,7 @@ module App =
                     View.ContentPage(content=
                         View.StackLayout(children = [
                             MainPageButton
-                            View.CarouselView(itemsSource = [
+                            View.CarouselView(items = [
                                 View.Label(text="Person1") 
                                 View.Label(text="Person2")
                                 View.Label(text="Person3")
@@ -984,7 +987,10 @@ module App =
                         ]
                     ))
 
-                | _ -> View.ContentPage(content = View.Label(text="Your Platform does not support CarouselView"))
+                | _ -> View.ContentPage(content = View.StackLayout( children = [
+                                            MainPageButton
+                                            View.Label(text="Your Platform does not support CarouselView")
+                                        ]))
 
     
 type App () as app = 

@@ -19,6 +19,7 @@ jobs:
   pool:
     vmImage: 'macOS-10.14'
   steps:
+  - script: ./azure-pipeline-osx-setup.sh
   - script: ./build.sh Test
   - task: PublishTestResults@2
     inputs:
