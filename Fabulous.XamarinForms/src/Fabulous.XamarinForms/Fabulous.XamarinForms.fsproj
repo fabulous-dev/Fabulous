@@ -3,17 +3,16 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
+  <PropertyGroup>
+    <Description>F# bindings for using declarative UI with Fabulous in Xamarin.Forms</Description>
+  </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ViewHelpers.fs" />
-    <Compile Include="Program.fs" />
-    <Compile Include="CustomControls.fs" />
-    <Compile Include="ViewConverters.fs" />
+    <Compile Include="..\Fabulous.XamarinForms.Core\*.fs" />
+    <Compile Include="Xamarin.Forms.Core.fs" />
+    <None Include="Xamarin.Forms.Core.json" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Fabulous\Fabulous.fsproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" />
+    <ProjectReference Include="..\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj" />
   </ItemGroup>
   <Import Project="..\..\..\Packages.targets" />
 </Project>

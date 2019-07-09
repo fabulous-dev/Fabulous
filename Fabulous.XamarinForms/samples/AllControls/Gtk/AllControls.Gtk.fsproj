@@ -107,10 +107,6 @@
       <Project>{07bd345b-2964-46be-87eb-1c009f5fd316}</Project>
       <Name>Fabulous</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\src\Fabulous.XamarinForms.Controls\Fabulous.XamarinForms.Controls.fsproj">
-      <Project>{a867660f-d11c-4574-bff7-bb60504d875e}</Project>
-      <Name>Fabulous.XamarinForms.Controls</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj">
       <Project>{e8353f5f-71ec-4982-8865-f95991d5a0f6}</Project>
       <Name>Fabulous.XamarinForms</Name>

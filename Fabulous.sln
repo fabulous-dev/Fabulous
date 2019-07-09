@@ -23,7 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Fabulous.XamarinForms", "Fa
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.XamarinForms", "Fabulous.XamarinForms\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj", "{E8353F5F-71EC-4982-8865-F95991D5A0F6}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.XamarinForms.Controls", "Fabulous.XamarinForms\src\Fabulous.XamarinForms.Controls\Fabulous.XamarinForms.Controls.fsproj", "{A867660F-D11C-4574-BFF7-BB60504D875E}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.XamarinForms.Core", "Fabulous.XamarinForms\src\Fabulous.XamarinForms.Core\Fabulous.XamarinForms.Core.fsproj", "{A867660F-D11C-4574-BFF7-BB60504D875E}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fabulous.XamarinForms.LiveUpdate", "Fabulous.XamarinForms\src\Fabulous.XamarinForms.LiveUpdate\Fabulous.XamarinForms.LiveUpdate.fsproj", "{74083FCA-7678-4C90-A257-59E2EEBF415D}"
 EndProject
