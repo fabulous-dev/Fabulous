@@ -7,12 +7,16 @@
     <Description>F# bindings for using declarative UI with Fabulous in Xamarin.Forms</Description>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\Fabulous.XamarinForms.Core\*.fs" />
+    <Compile Include="..\Fabulous.XamarinForms.Core\ViewHelpers.fs" />
+    <Compile Include="..\Fabulous.XamarinForms.Core\Program.fs" />
+    <Compile Include="..\Fabulous.XamarinForms.Core\CustomControls.fs" />
+    <Compile Include="..\Fabulous.XamarinForms.Core\ViewConverters.fs" />
     <Compile Include="Xamarin.Forms.Core.fs" />
     <None Include="Xamarin.Forms.Core.json" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj" />
+    <PackageReference Include="Xamarin.Forms" />
+    <ProjectReference Include="..\..\..\src\Fabulous\Fabulous.fsproj" />
   </ItemGroup>
   <Import Project="..\..\..\Packages.targets" />
 </Project>

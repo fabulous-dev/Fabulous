@@ -254,6 +254,7 @@ Target.create "TestTemplatesNuGet" (fun _ ->
     let testAppName = "testapp2" + string (abs (hash ticks) % 100)
 
     // Globally install the templates from the template nuget package we just built
+    DotNet.exec id "new" "-u Fabulous.XamarinForms.Templates" |> ignore
     DotNet.exec id "new" (sprintf "-i %s/Fabulous.XamarinForms.Templates.%s.nupkg" buildDir release.NugetVersion) |> ignore
 
     // Instantiate the template.
