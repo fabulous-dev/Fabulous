@@ -2,7 +2,7 @@
   <Import Project="..\..\..\SourceLink.props" />
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <IsPackable>F# bindings for using declarative UI with Fabulous in Xamarin.Forms</IsPackable>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ViewHelpers.fs" />
