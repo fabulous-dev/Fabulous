@@ -16,7 +16,6 @@
     <PackageReference Include="NUnit3TestAdapter" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Fabulous.XamarinForms.Controls\Fabulous.XamarinForms.Controls.fsproj" />
     <ProjectReference Include="..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj" />
   </ItemGroup>
   <Import Project="..\..\..\Packages.targets" />

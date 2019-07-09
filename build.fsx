@@ -145,18 +145,6 @@ Target.create "UpdateVersion" (fun _ ->
         )
         |> (fun o -> JsonConvert.SerializeObject(o, Formatting.Indented))
         |> File.writeString false template
-
-    // Updates nuspec files
-    let updateVersionInNuSpecs files =
-        for nuspec in files do
-            Xml.loadDoc nuspec
-            |> replaceXPathAttributeNSIfExists "//x:package/x:metadata/x:dependencies/x:dependency[@id=\"Fabulous\"]" "version" release.NugetVersion [ "x", "http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd" ]
-            |> replaceXPathAttributeNSIfExists "//x:package/x:metadata/x:dependencies/x:dependency[@id=\"Fabulous.XamarinForms\"]" "version" release.NugetVersion [ "x", "http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd" ]
-            |> Xml.saveDoc nuspec
-
-    !! "Fabulous.XamarinForms/src/Fabulous.XamarinForms.nuspec" 
-    ++ "Fabulous.XamarinForms/extensions/**/*.nuspec"
-    |> updateVersionInNuSpecs
 )
 
 Target.create "BuildTools" (fun _ ->
@@ -174,16 +162,16 @@ Target.create "RunFabulousTests" (fun _ ->
     |> dotnetTest "Fabulous/TestResults"
 )
 
-Target.create "BuildFabulousXamarinForms" (fun _ ->
+Target.create "BuildFabulousXamarinFormsDependencies" (fun _ ->
     !! "Fabulous.XamarinForms/src/**/*.fsproj"
-    -- "Fabulous.XamarinForms/src/Fabulous.XamarinForms.Controls/Fabulous.XamarinForms.Controls.fsproj" // This one needs to run the generator beforehand
+    -- "Fabulous.XamarinForms/src/Fabulous.XamarinForms/Fabulous.XamarinForms.fsproj" // This one needs to run the generator beforehand
     |> dotnetBuild "Fabulous.XamarinForms"
 )
 
 Target.create "RunGeneratorForFabulousXamarinForms" (fun _ ->
     let generatorPath = buildDir + "/tools/Generator/Generator.dll"
-    let bindingsFilePath = "Fabulous.XamarinForms/src/Fabulous.XamarinForms.Controls/Xamarin.Forms.Core.json"
-    let outputFilePath = "Fabulous.XamarinForms/src/Fabulous.XamarinForms.Controls/Xamarin.Forms.Core.fs" 
+    let bindingsFilePath = "Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.json"
+    let outputFilePath = "Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Forms.Core.fs" 
 
     DotNet.exec id generatorPath (sprintf "%s %s" bindingsFilePath outputFilePath)
     |> (fun x ->
@@ -193,8 +181,8 @@ Target.create "RunGeneratorForFabulousXamarinForms" (fun _ ->
     )
 )
 
-Target.create "BuildFabulousXamarinFormsControls" (fun _ -> 
-    !! "Fabulous.XamarinForms/src/Fabulous.XamarinForms.Controls/Fabulous.XamarinForms.Controls.fsproj"
+Target.create "BuildFabulousXamarinForms" (fun _ -> 
+    !! "Fabulous.XamarinForms/src/Fabulous.XamarinForms/Fabulous.XamarinForms.fsproj"
     |> dotnetBuild "Fabulous.XamarinForms"
 )
 
@@ -219,8 +207,8 @@ Target.create "PackFabulous" (fun _ ->
 )
 
 Target.create "PackFabulousXamarinForms" (fun _ -> 
-    !! "Fabulous.XamarinForms/src/*.nuspec"
-    |> nugetPack
+    !! "Fabulous.XamarinForms/src/Fabulous.XamarinForms/*.fsproj"
+    |> dotnetPack
 
     !! "Fabulous.XamarinForms/src/Fabulous.XamarinForms.LiveUpdate/*.fsproj"
     |> dotnetPack
@@ -232,8 +220,8 @@ Target.create "PackFabulousXamarinFormsTemplates" (fun _ ->
 )
 
 Target.create "PackFabulousXamarinFormsExtensions" (fun _ -> 
-    !! "Fabulous.XamarinForms/extensions/**/*.nuspec"
-    |> nugetPack
+    !! "Fabulous.XamarinForms/extensions/**/*.fsproj"
+    |> dotnetPack
 )
 
 Target.create "PackFabulousStaticView" (fun _ -> 
@@ -266,6 +254,7 @@ Target.create "TestTemplatesNuGet" (fun _ ->
     let testAppName = "testapp2" + string (abs (hash ticks) % 100)
 
     // Globally install the templates from the template nuget package we just built
+    DotNet.exec id "new" "-u Fabulous.XamarinForms.Templates" |> ignore
     DotNet.exec id "new" (sprintf "-i %s/Fabulous.XamarinForms.Templates.%s.nupkg" buildDir release.NugetVersion) |> ignore
 
     // Instantiate the template.
@@ -361,9 +350,9 @@ open Fake.Core.TargetOperators
     ==> "Fabulous.StaticView"
 
 "Fabulous"
-    ==> "BuildFabulousXamarinForms"
+    ==> "BuildFabulousXamarinFormsDependencies"
     ==> "RunGeneratorForFabulousXamarinForms"
-    ==> "BuildFabulousXamarinFormsControls"
+    ==> "BuildFabulousXamarinForms"
     ==> "RunFabulousXamarinFormsTests"
     ==> "Fabulous.XamarinForms"
 

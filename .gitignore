@@ -17,4 +17,4 @@ testapp*/
 Fabulous\.XamarinForms/tests/FSharpDaemon\.Driver\.Tests/data/
 Fabulous\.XamarinForms/samples/CounterApp/CounterApp/CounterApp\.args\.txt
 Fabulous\.XamarinForms/samples/TicTacToe/TicTacToe/TicTacToe\.args\.txt
-Fabulous\.XamarinForms/src/Fabulous\.XamarinForms\.Controls/Xamarin\.Forms\.Core\.fs
+Fabulous\.XamarinForms/src/Fabulous\.XamarinForms\/Xamarin\.Forms\.Core\.fs

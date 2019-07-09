@@ -12,7 +12,7 @@
       <PackageReference Include="FSharp.Data" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\..\..\src\Fabulous.XamarinForms.Controls\Fabulous.XamarinForms.Controls.fsproj" />
+      <ProjectReference Include="..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj" />
     </ItemGroup>
     <Import Project="..\..\..\..\Packages.targets" />
 </Project>

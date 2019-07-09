@@ -24,7 +24,7 @@
       <Compile Include="App.fs" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms.Controls\Fabulous.XamarinForms.Controls.fsproj" />
+      <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms\Fabulous.XamarinForms.fsproj" />
       <ProjectReference Include="..\..\..\..\src\Fabulous.XamarinForms.LiveUpdate\Fabulous.XamarinForms.LiveUpdate.fsproj" />
     </ItemGroup>
     <Import Project="..\..\..\..\..\Packages.targets" />

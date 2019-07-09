@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\..\SourceLink.props" />
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="ViewHelpers.fs" />
+    <Compile Include="Program.fs" />
+    <Compile Include="CustomControls.fs" />
+    <Compile Include="ViewConverters.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Fabulous\Fabulous.fsproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" />
+  </ItemGroup>
+  <Import Project="..\..\..\Packages.targets" />
+</Project>
