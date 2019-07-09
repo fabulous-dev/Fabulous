@@ -14,7 +14,7 @@
     <tags>Xamarin.Forms;Fabulous;F#;Elmish;Elm</tags>
     <dependencies>
       <dependency id="Fabulous" version="0.40.4" />
-      <dependency id="Xamarin.Forms" version="4.0.0.425677" />
+      <dependency id="Xamarin.Forms" version="4.1.0.555618" />
     </dependencies>
   </metadata>
   <files>
