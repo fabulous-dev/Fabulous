@@ -1,4 +1,4 @@
-// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
+﻿// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.LiveUpdate
 
 open System
@@ -176,6 +176,31 @@ module Extensions =
             | DDeclMember (membDef, body, _range) -> if membDef.Name = name then Some (membDef, body) else None
             | _ -> None)
 
+    let internal castToProgramObj (program: Program<unit, obj, obj>) : Program<obj, obj, obj> =
+        { init = (fun x -> program.init ())
+          update = program.update
+          subscribe = program.subscribe
+          view = program.view
+          canReuseView = program.canReuseView
+          syncDispatch = program.syncDispatch
+          syncAction = program.syncAction
+          debug = program.debug
+          onError = program.onError }
+
+    let internal changeProgram (runner: ProgramRunner<'arg, 'model,'msg>) syncChangeProgram programErased =
+        // Stop the running program 
+        printfn "changing running program...."
+        syncChangeProgram (fun () ->
+             runner.ChangeProgram(programErased)
+        )
+        printfn "*** LiveUpdate success:"
+        printfn "***   [x] got code package"
+        printfn "***   [x] found declaration called 'programLiveUpdate' or 'program'"
+        printfn "***   [x] it had no parameters (good!)"
+        printfn "***   [x] the declaration had the right type"
+        printfn "***   [x] changed the running program"
+        Some { Quacked = "LiveUpdate quacked!" }
+
     /// Starts the HttpServer listening for changes
     let enableLiveUpdate printAddressesFn syncChangeProgram (runner: ProgramRunner<'arg, 'model,'msg>) =
         let interp = EvalContext(System.Reflection.Assembly.Load)
@@ -234,29 +259,25 @@ module Extensions =
                             printfn "LiveUpdate: evaluating 'program'...."
                             let entity = interp.ResolveEntity(membDef.EnclosingEntity)
                             let (_, programObj) = interp.GetExprDeclResult(entity, membDef.Name) 
-                            match getVal programObj with 
+                            match getVal programObj with
+
+                            | :? Program<unit, obj, obj> as programErased ->
+
+                                programErased
+                                |> castToProgramObj
+                                |> changeProgram runner syncChangeProgram
 
                             | :? Program<obj, obj, obj> as programErased -> 
 
-                                // Stop the running program 
-                                printfn "changing running program...."
-                                syncChangeProgram (fun () ->
-                                     runner.ChangeProgram(programErased)
-                                )
-                                printfn "*** LiveUpdate success:"
-                                printfn "***   [x] got code package"
-                                printfn "***   [x] found declaration called 'programLiveUpdate' or 'program'"
-                                printfn "***   [x] it had no parameters (good!)"
-                                printfn "***   [x] the declaration had the right type"
-                                printfn "***   [x] changed the running program"
-                                Some { Quacked = "LiveUpdate quacked!" }
+                                programErased
+                                |> changeProgram runner syncChangeProgram
                     
                             | p -> 
                                 printfn "*** LiveUpdate failure:"
                                 printfn "***   [x] got code package"
                                 printfn "***   [x] found declaration called 'programLiveUpdate' or 'program'"
                                 printfn "***   [x] it had no parameters (good!)"
-                                printfn "***   FAIL: the declaration had the wrong type '%A', expected 'Program<Model, Msg, Model -> (Msg-> unit) -> ViewElement>'" (p.GetType())
+                                printfn "***   FAIL: the declaration had the wrong type '%A', expected 'Program<Arg, Model, Msg>'" (p.GetType())
                                 Some { Quacked = "LiveUpdate couldn't quack! types mismatch!" })
             match result with
             | None -> 
