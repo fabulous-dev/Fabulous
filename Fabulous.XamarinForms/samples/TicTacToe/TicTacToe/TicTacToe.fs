@@ -1,4 +1,4 @@
-// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
+﻿// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace TicTacToe
 
 open Fabulous
@@ -147,8 +147,14 @@ module App =
     /// of the Xaml resource for the image for a player
     let imageForPos cell =
         match cell with
-        | Full X -> "Cross.png"
-        | Full O -> "Nought.png"
+        | Full X -> 
+            match Device.RuntimePlatform with
+            | Device.macOS -> "Cross"
+            | _ -> "Cross.png"
+        | Full O -> 
+            match Device.RuntimePlatform with
+            | Device.macOS -> "Nought"
+            | _ -> "Nought.png"
         | Empty -> ""
 
     /// A helper to get the suffix used in the Xaml for a position on the board.
@@ -178,7 +184,9 @@ module App =
                                 if canPlay model model.Board.[pos] then 
                                     View.Button(command=(fun () -> dispatch (Play pos)), backgroundColor=Color.LightBlue)
                                 else
-                                    View.Image(source=imageForPos model.Board.[pos], margin=10.0, horizontalOptions=LayoutOptions.Center, verticalOptions=LayoutOptions.Center)
+                                    View.Image(source=imageForPos model.Board.[pos],
+                                     margin=10.0, horizontalOptions=LayoutOptions.Center,
+                                     verticalOptions=LayoutOptions.Center)
                             item.GridRow(row*2).GridColumn(col*2) ],
 
                     rowSpacing=0.0,
