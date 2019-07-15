@@ -18,8 +18,7 @@ module Resolvers =
                 yield (r, d)
         }
 
-    let tryResolveType (assemblyDefinitions : AssemblyDefinition list)
-        (name : string) =
+    let tryResolveType (assemblyDefinitions : AssemblyDefinition list) name =
         seq {
             for a in assemblyDefinitions do
                 for m in a.Modules do
