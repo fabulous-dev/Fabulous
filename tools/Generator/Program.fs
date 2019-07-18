@@ -1,77 +1,48 @@
-// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.Generator
 
-open System
 open System.IO
-open Newtonsoft.Json
-open Fabulous.Generator.Models
-open Fabulous.Generator.AssemblyResolver
-open Fabulous.Generator.Resolvers
-open Fabulous.Generator.CodeGenerator
+open CommandLine
+open Resolver
+open Extraction
+open Models
 
-module Generator =
-    let rec filterTypesDerivingFromBaseType (allTypes: Mono.Cecil.TypeDefinition list) baseTypeName =
-        allTypes |> List.filter (fun tdef -> tdef.BaseType <> null && tdef.BaseType.FullName = baseTypeName)
-        
-    and findAllDerivingTypes (allTypes: Mono.Cecil.TypeDefinition list) (typesToCheck: Mono.Cecil.TypeDefinition list) (matchingTypes: Mono.Cecil.TypeDefinition list) =
-        match typesToCheck with
-        | [] -> matchingTypes
-        | tdef::remainingTypesToCheck ->
-            let derivingTypes = getAllTypesDerivingFrom allTypes tdef.FullName
-            let newMatchingTypes = List.concat [ derivingTypes; (tdef::matchingTypes) ]
-            findAllDerivingTypes allTypes remainingTypesToCheck newMatchingTypes 
+module Entry =
     
-    and getAllTypesDerivingFrom (allTypes: Mono.Cecil.TypeDefinition list) baseTypeName =
-        let typesToCheck = filterTypesDerivingFromBaseType allTypes baseTypeName
-        findAllDerivingTypes allTypes typesToCheck []
+    type Options = {
+        [<Option('a', "assembly", Required = true, HelpText = "Assemblies to read")>] Assemblies: seq<string>
+        [<Option('b', "baseType", Required = true, HelpText = "Base type that all controls inherit from")>] BaseTypeName: string
+        [<Option('p', "propertyBaseType", Required = true, HelpText = "Base type for all properties")>] PropertyBaseType: string
+    }
     
-    let test () =
-        let getAssemblyDefinition = loadAssembly (new RegistrableResolver())
-        let assemblies = [ "packages/neutral/Xamarin.Forms/lib/netstandard2.0/Xamarin.Forms.Core.dll"; "build_output/Fabulous.XamarinForms/Fabulous.XamarinForms.Core/Fabulous.XamarinForms.Core.dll" ]
-        let allTypes =
-            [ for assembly in assemblies do
-                let loadedAssembly = getAssemblyDefinition assembly
-                for ``module`` in loadedAssembly.Modules do
-                    for ``type`` in ``module``.Types do
-                        yield ``type`` ]
-            
-        let derivingTypes = getAllTypesDerivingFrom allTypes "Xamarin.Forms.Element"
-        printfn "%A" derivingTypes
-        ()
+    let tryReadOptions args =
+        let options = CommandLine.Parser.Default.ParseArguments<Options>(args)
+        match options with
+        | :? Parsed<Options> as parsedOptions -> Some (parsedOptions.Value)
+        | _ -> None
     
     [<EntryPoint>]
-    let Main(args : string []) =
-        test ()
-        0
-        (*try
-            if (args.Length < 2) then
-                Console.Error.WriteLine ("usage: generator <bindingsPath> <outputPath>")
-                Environment.Exit(1)
+    let main args =
+        match tryReadOptions args with
+        | None -> 1 // Exit because no argument
+        | Some options ->
+            let cecilAssemblies = AssemblyResolver.loadAllAssemblies options.Assemblies
+            let assemblies = Reflection.loadAllAssemblies options.Assemblies
+            
+            let allTypes = getAllTypesFromAssemblies cecilAssemblies
+            let allTypesDerivingFromBaseType = getAllTypesDerivingFromBaseType allTypes options.BaseTypeName
+            
+            let bindings =
+                allTypesDerivingFromBaseType
+                |> Array.map (fun tdef ->
+                    { Name = tdef.FullName
+                      Events = readEventsFromType tdef
+                      AttachedProperties = readAttachedPropertiesFromType assemblies options.PropertyBaseType tdef
+                      Properties = readPropertiesFromType assemblies options.PropertyBaseType tdef }
+                )
 
-            let bindingsPath = args.[0]
-            let outputPath = args.[1]
-            let bindings = JsonConvert.DeserializeObject<Bindings> (File.ReadAllText(bindingsPath))
-            let getAssemblyDefinition = loadAssembly (new RegistrableResolver())
-
-            let assemblyDefinitions =
-                bindings.Assemblies
-                |> Seq.map getAssemblyDefinition
-                |> Seq.toList
-
-            match resolveTypes assemblyDefinitions bindings.Types with
-            | Error errors ->
-                errors |> List.iter System.Console.WriteLine
-                1
-            | Ok resolutions ->
-                let (memberResolutions, warnings) = resolveMembers bindings.Types resolutions
-                match warnings with
-                | [] -> ()
-                | _ -> warnings |> List.iter System.Console.WriteLine
-
-                let code = generateCode (bindings, resolutions, memberResolutions)
-                File.WriteAllText(outputPath, code)
-                0
-        with ex ->
-            System.Console.WriteLine(ex)
-            1
-*)
+            let json = Newtonsoft.Json.JsonConvert.SerializeObject(bindings)
+            File.WriteAllText ("bindings.json", json)
+            
+            0
+            
+            

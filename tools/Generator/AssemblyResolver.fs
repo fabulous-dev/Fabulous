@@ -1,4 +1,4 @@
-// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
+// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.Generator
 
 open Mono.Cecil
@@ -33,3 +33,8 @@ module AssemblyResolver =
         let assembly = AssemblyDefinition.ReadAssembly(path, readerParameters)
         resolver.RegisterAssembly assembly
         assembly
+
+    let loadAllAssemblies (paths: seq<string>) =
+        use resolver = new RegistrableResolver()
+        let loadAssembly = loadAssembly resolver
+        paths |> Seq.toArray |> Array.map loadAssembly

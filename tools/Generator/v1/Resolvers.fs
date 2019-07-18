@@ -1,8 +1,8 @@
 // Copyright 2018 Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.Generator
 
-open Fabulous.Generator.Models
-open Fabulous.Generator.Helpers
+open Fabulous.Generator.Modelsv1
+open Fabulous.Generator.Helpersv1
 open Mono.Cecil
 open System.Collections.Generic
 open System.Linq

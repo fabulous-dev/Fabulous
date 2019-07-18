@@ -1,7 +1,7 @@
 namespace Fabulous.Generator
 
-open Fabulous.Generator.Models
-open Fabulous.Generator.Helpers
+open Fabulous.Generator.Modelsv1
+open Fabulous.Generator.Helpersv1
 open Fabulous.Generator.Resolvers
 open Fabulous.Generator.CodeGeneratorModels
 open System.Collections.Generic
