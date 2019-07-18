@@ -76,5 +76,5 @@ module Resolver =
             [||]
         else
             ``type``.Events
-            |> Seq.filter (fun edef -> edef.AddMethod.IsPublic && edef.RemoveMethod.IsPublic)
+            |> Seq.filter (fun edef -> edef.AddMethod.IsPublic && edef.RemoveMethod.IsPublic && edef.AddMethod.HasOverrides)
             |> Seq.toArray

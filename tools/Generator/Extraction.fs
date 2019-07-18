@@ -22,6 +22,9 @@ module Extraction =
         match defaultValue with
         | "[Color: A=-1, R=-1, G=-1, B=-1, Hue=-1, Saturation=-1, Luminosity=-1]"
         | "[Color: A=0, R=0, G=0, B=0, Hue=0, Saturation=0, Luminosity=0]" -> "Xamarin.Forms.Colors.Default"
+        | "00:00:00" -> "System.TimeSpan.Zero"
+        | "True" -> "true"
+        | "False" -> "false"
         | _ -> defaultValue
     
     let readEventsFromType (``type``: TypeDefinition) =
@@ -35,7 +38,7 @@ module Extraction =
               EventArgsType =
                   match edef.EventType with
                   | :? GenericInstanceType as git -> git.GenericArguments.[0].FullName
-                  | _ -> "unit" }    
+                  | _ -> null }    
         )
         
     let readAttachedPropertiesFromType (assemblies: System.Reflection.Assembly array) propertyBaseType (``type``: TypeDefinition) =        
