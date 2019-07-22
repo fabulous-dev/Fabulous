@@ -4,7 +4,7 @@ open System.IO
 open CommandLine
 open Fabulous.CodeGen.AssemblyReader
 open Fabulous.CodeGen.Models
-    
+
 module Entry =
     
     type Options = {
@@ -29,7 +29,7 @@ module Entry =
             let assemblies = Reflection.loadAllAssemblies options.Assemblies
             
             let allTypes = Resolver.getAllTypesFromAssemblies cecilAssemblies
-            let allTypesDerivingFromBaseType = Resolver.getAllTypesDerivingFromBaseType Converters.shouldIgnoreType allTypes baseTypeName
+            let allTypesDerivingFromBaseType = Resolver.getAllTypesDerivingFromBaseType XFConverters.shouldIgnoreType allTypes baseTypeName
             
             let tryGetProperty = Reflection.tryGetProperty assemblies
             
@@ -38,8 +38,8 @@ module Entry =
                 |> Array.map (fun tdef ->
                     { Name = tdef.FullName
                       Events = Extraction.readEventsFromType tdef
-                      AttachedProperties = Extraction.readAttachedPropertiesFromType Converters.convertTypeName Converters.getStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef
-                      Properties = Extraction.readPropertiesFromType Converters.convertTypeName Converters.getStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef }
+                      AttachedProperties = Extraction.readAttachedPropertiesFromType XFConverters.convertTypeName XFConverters.getStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef
+                      Properties = Extraction.readPropertiesFromType XFConverters.convertTypeName XFConverters.getStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef }
                 )
 
             let json = Newtonsoft.Json.JsonConvert.SerializeObject(bindings)

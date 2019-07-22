@@ -31,13 +31,7 @@ module Reflection =
                         Some
                             { Name = propertyType.GetProperty("PropertyName").GetValue(property) :?> string
                               Type = returnType.FullName
-                              DefaultValue =
-                                match propertyType.GetProperty("DefaultValue").GetValue(property) with
-                                | null -> "null"
-                                | value ->
-                                    match returnType.IsEnum with
-                                    | false -> value.ToString()
-                                    | true -> sprintf "%s.%s" returnType.FullName (value.ToString()) }
+                              DefaultValue = propertyType.GetProperty("DefaultValue").GetValue(property) }
                             
     let tryGetProperty (assemblies: System.Reflection.Assembly array) (typeName, propertyName) =
         assemblies

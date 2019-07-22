@@ -29,5 +29,5 @@ module Models =
     type ReflectedAttachedProperty = {
         Name: string
         Type: string
-        DefaultValue: string
+        DefaultValue: obj
     }

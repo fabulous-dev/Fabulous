@@ -8,12 +8,13 @@
     <PackageReference Include="FSharp.Core" />
     <PackageReference Include="Mono.Cecil" />
     <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="Xamarin.Forms" />
     <PackageReference Include="CommandLineParser.FSharp" Version="2.5.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="v1\Program.fs" />
     <Compile Include="Reflection.fs" />
-    <Compile Include="Converters.fs" />
+    <Compile Include="XFConverters.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
