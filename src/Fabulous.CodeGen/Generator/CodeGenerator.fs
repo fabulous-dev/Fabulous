@@ -1,9 +1,9 @@
 // Copyright 2018 Fabulous contributors. See LICENSE.md for license.
-namespace Fabulous.Generator
+namespace Fabulous.CodeGen.Generator
 
-open Fabulous.Generator.Helpersv1
-open Fabulous.Generator.CodeGeneratorModels
-open Fabulous.Generator.CodeGeneratorPreparation
+open Fabulous.CodeGen.Generator.Helpersv1
+open Fabulous.CodeGen.Generator.CodeGeneratorModels
+open Fabulous.CodeGen.Generator.CodeGeneratorPreparation
 open System.IO
 
 module CodeGenerator =

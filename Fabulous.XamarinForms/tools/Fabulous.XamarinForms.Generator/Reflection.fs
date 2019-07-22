@@ -1,16 +1,11 @@
-namespace Fabulous.Generator
+namespace Fabulous.XamarinForms.Generator
 
 open System
 open System.IO
 open System.Runtime.Loader
+open Fabulous.CodeGen.Models
 
-module Reflection =
-    type ReflectedAttachedProperty = {
-        Name: string
-        Type: string
-        DefaultValue: string
-    }
-    
+module Reflection =    
     let loadAllAssemblies (paths: seq<string>) =
         let toFullPath p = Path.Combine(Environment.CurrentDirectory, p)
         
@@ -18,7 +13,7 @@ module Reflection =
         |> Seq.map (toFullPath >> AssemblyLoadContext.Default.LoadFromAssemblyPath)
         |> Seq.toArray
     
-    let tryGetProperty (assembly: System.Reflection.Assembly) typeName propertyName =
+    let tryGetPropertyInAssembly (assembly: System.Reflection.Assembly) (typeName, propertyName) =
         match assembly.GetType(typeName) with
         | null -> None
         | ``type`` ->
@@ -43,3 +38,7 @@ module Reflection =
                                     match returnType.IsEnum with
                                     | false -> value.ToString()
                                     | true -> sprintf "%s.%s" returnType.FullName (value.ToString()) }
+                            
+    let tryGetProperty (assemblies: System.Reflection.Assembly array) (typeName, propertyName) =
+        assemblies
+        |> Array.tryPick (fun asm -> tryGetPropertyInAssembly asm (typeName, propertyName))

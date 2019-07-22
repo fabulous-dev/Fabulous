@@ -1,6 +1,6 @@
-namespace Fabulous.Generator
+namespace Fabulous.CodeGen.AssemblyReader
 
-open Helpers
+open Fabulous.CodeGen.Helpers
 open Mono.Cecil
 
 module Resolver =
@@ -35,18 +35,11 @@ module Resolver =
             let derivingTypes = getAllTypesDerivingFromBaseTypeInner allTypes tdef.FullName
             let newMatchingTypes = List.concat [ derivingTypes; matchingTypes ]
             findAllDerivingTypes allTypes remainingTypesToCheck newMatchingTypes
-
-    let isForbiddenType typeName =
-        match typeName with
-        | "Xamarin.Forms.UriImageSource"
-        | "Xamarin.Forms.ItemsView"
-        | "Xamarin.Forms.ListItemsLayout" -> true
-        | _ -> false
     
     /// Finds all types that derive from a given base type (on all depth levels)
-    let getAllTypesDerivingFromBaseType (allTypes: TypeDefinition list) baseTypeName =
+    let getAllTypesDerivingFromBaseType (shouldIgnoreType: TypeDefinition -> bool) (allTypes: TypeDefinition list) baseTypeName =
         getAllTypesDerivingFromBaseTypeInner allTypes baseTypeName
-        |> List.filter (fun tdef -> not <| isForbiddenType tdef.FullName)
+        |> List.filter (not << shouldIgnoreType)
         |> List.rev
         |> List.toArray
         

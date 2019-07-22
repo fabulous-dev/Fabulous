@@ -1,4 +1,4 @@
-namespace Fabulous.Generator
+namespace Fabulous.CodeGen
 
 module Models =
     type EventBinding = {
@@ -24,4 +24,10 @@ module Models =
         Events: EventBinding array
         AttachedProperties: AttachedPropertyBinding array
         Properties: PropertyBinding array
+    }
+
+    type ReflectedAttachedProperty = {
+        Name: string
+        Type: string
+        DefaultValue: string
     }

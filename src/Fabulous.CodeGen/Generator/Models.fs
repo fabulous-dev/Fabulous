@@ -1,8 +1,8 @@
 // Copyright 2018 Fabulous contributors. See LICENSE.md for license.
-namespace Fabulous.Generator
+namespace Fabulous.CodeGen.Generator
 
 open System.Collections.Generic
-open Helpersv1
+open Fabulous.CodeGen.Generator.Helpersv1
 
 module Modelsv1 =
     type MemberBinding() =

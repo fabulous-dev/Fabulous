@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\SourceLink.props" />
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Description>F# Functional App Dev Framework</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Helpers.fs" />
+    <Compile Include="Models.fs" />
+    <Compile Include="AssemblyReader\Converters.fs" />
+    <Compile Include="AssemblyReader\AssemblyResolver.fs" />
+    <Compile Include="AssemblyReader\Resolver.fs" />
+    <Compile Include="AssemblyReader\Extraction.fs" />
+    <Compile Include="Generator\Helpers.fs" />
+    <Compile Include="Generator\Models.fs" />
+    <Compile Include="Generator\Resolvers.fs" />
+    <Compile Include="Generator\CodeGenerator.Models.fs" />
+    <Compile Include="Generator\CodeGenerator.Preparation.fs" />
+    <Compile Include="Generator\CodeGenerator.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FSharp.Core" />
+    <PackageReference Include="Mono.Cecil" />
+    <PackageReference Include="Newtonsoft.Json" />
+  </ItemGroup>
+  <Import Project="..\..\Packages.targets" />
+</Project>

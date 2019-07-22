@@ -1,4 +1,4 @@
-namespace Fabulous.Generator
+namespace Fabulous.CodeGen.Generator
 
 module CodeGeneratorModels =
     type BoundType =

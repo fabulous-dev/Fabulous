@@ -11,20 +11,13 @@
     <PackageReference Include="CommandLineParser.FSharp" Version="2.5.0" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers.fs" />
-    <Compile Include="AssemblyResolver.fs" />
-    <Compile Include="v1\Helpers.fs" />
-    <Compile Include="v1\Models.fs" />
-    <Compile Include="v1\Resolvers.fs" />
-    <Compile Include="v1\CodeGenerator.Models.fs" />
-    <Compile Include="v1\CodeGenerator.Preparation.fs" />
-    <Compile Include="v1\CodeGenerator.fs" />
     <Compile Include="v1\Program.fs" />
-    <Compile Include="Resolver.fs" />
-    <Compile Include="Models.fs" />
     <Compile Include="Reflection.fs" />
-    <Compile Include="Extraction.fs" />
+    <Compile Include="Converters.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
-  <Import Project="..\..\Packages.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Fabulous.CodeGen\Fabulous.CodeGen.fsproj" />
+  </ItemGroup>
+  <Import Project="..\..\..\Packages.targets" />
 </Project>

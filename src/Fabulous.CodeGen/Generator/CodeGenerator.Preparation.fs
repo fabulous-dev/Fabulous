@@ -1,9 +1,9 @@
-namespace Fabulous.Generator
+namespace Fabulous.CodeGen.Generator
 
-open Fabulous.Generator.Modelsv1
-open Fabulous.Generator.Helpersv1
-open Fabulous.Generator.Resolvers
-open Fabulous.Generator.CodeGeneratorModels
+open Fabulous.CodeGen.Generator.Modelsv1
+open Fabulous.CodeGen.Generator.Helpersv1
+open Fabulous.CodeGen.Generator.Resolvers
+open Fabulous.CodeGen.Generator.CodeGeneratorModels
 open System.Collections.Generic
 open System.Linq
 open Mono.Cecil

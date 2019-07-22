@@ -1,4 +1,4 @@
-namespace Fabulous.Generator
+namespace Fabulous.CodeGen
 
 module Helpers =
     let removeText textToRemove (originalStr: string) =

@@ -1,18 +1,18 @@
-namespace Fabulous.Generator
+namespace Fabulous.XamarinForms.Generator
 
 open System.IO
 open CommandLine
-open Resolver
-open Extraction
-open Models
-
+open Fabulous.CodeGen.AssemblyReader
+open Fabulous.CodeGen.Models
+    
 module Entry =
     
     type Options = {
         [<Option('a', "assembly", Required = true, HelpText = "Assemblies to read")>] Assemblies: seq<string>
-        [<Option('b', "baseType", Required = true, HelpText = "Base type that all controls inherit from")>] BaseTypeName: string
-        [<Option('p', "propertyBaseType", Required = true, HelpText = "Base type for all properties")>] PropertyBaseType: string
     }
+    
+    let baseTypeName = "Xamarin.Forms.Element"
+    let propertyBaseType = "Xamarin.Forms.BindableProperty"
     
     let tryReadOptions args =
         let options = CommandLine.Parser.Default.ParseArguments<Options>(args)
@@ -28,16 +28,18 @@ module Entry =
             let cecilAssemblies = AssemblyResolver.loadAllAssemblies options.Assemblies
             let assemblies = Reflection.loadAllAssemblies options.Assemblies
             
-            let allTypes = getAllTypesFromAssemblies cecilAssemblies
-            let allTypesDerivingFromBaseType = getAllTypesDerivingFromBaseType allTypes options.BaseTypeName
+            let allTypes = Resolver.getAllTypesFromAssemblies cecilAssemblies
+            let allTypesDerivingFromBaseType = Resolver.getAllTypesDerivingFromBaseType Converters.shouldIgnoreType allTypes baseTypeName
+            
+            let tryGetProperty = Reflection.tryGetProperty assemblies
             
             let bindings =
                 allTypesDerivingFromBaseType
                 |> Array.map (fun tdef ->
                     { Name = tdef.FullName
-                      Events = readEventsFromType tdef
-                      AttachedProperties = readAttachedPropertiesFromType assemblies options.PropertyBaseType tdef
-                      Properties = readPropertiesFromType assemblies options.PropertyBaseType tdef }
+                      Events = Extraction.readEventsFromType tdef
+                      AttachedProperties = Extraction.readAttachedPropertiesFromType Converters.convertTypeName Converters.getStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef
+                      Properties = Extraction.readPropertiesFromType Converters.convertTypeName Converters.getStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef }
                 )
 
             let json = Newtonsoft.Json.JsonConvert.SerializeObject(bindings)

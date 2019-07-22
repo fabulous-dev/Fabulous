@@ -2,13 +2,8 @@
 namespace Fabulous.Generator
 
 open System
-open System.IO
 open System.Runtime.Loader
-open Newtonsoft.Json
-open Fabulous.Generator.Modelsv1
-open Fabulous.Generator.AssemblyResolver
-open Fabulous.Generator.Resolvers
-open Fabulous.Generator.CodeGenerator
+open Fabulous.CodeGen.AssemblyReader.AssemblyResolver
 
 module Generator =
     let rec filterTypesDerivingFromBaseType (allTypes: Mono.Cecil.TypeDefinition list) baseTypeName =

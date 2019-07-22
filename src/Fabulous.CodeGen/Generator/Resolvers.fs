@@ -1,8 +1,8 @@
 // Copyright 2018 Fabulous contributors. See LICENSE.md for license.
-namespace Fabulous.Generator
+namespace Fabulous.CodeGen.Generator
 
-open Fabulous.Generator.Modelsv1
-open Fabulous.Generator.Helpersv1
+open Fabulous.CodeGen.Generator.Modelsv1
+open Fabulous.CodeGen.Generator.Helpersv1
 open Mono.Cecil
 open System.Collections.Generic
 open System.Linq
@@ -162,7 +162,7 @@ module Resolvers =
                 match (bindings.Types
                        |> Seq.tryFind (fun x -> x.Name = tref.FullName)) with
                 | None -> tref.FullName.Replace('/', '.')
-                | Some tb -> "ViewElement"
+                | Some _ -> "ViewElement"
 
     let getModelType (this : MemberBinding, bindings : Bindings, memberResolutions, hierarchy : seq<TypeReference * TypeDefinition>) =
         match this.ModelType with

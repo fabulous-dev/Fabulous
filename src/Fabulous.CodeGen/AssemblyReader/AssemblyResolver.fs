@@ -1,5 +1,5 @@
 // Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
-namespace Fabulous.Generator
+namespace Fabulous.CodeGen.AssemblyReader
 
 open Mono.Cecil
 open System.Collections.Generic
