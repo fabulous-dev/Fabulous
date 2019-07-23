@@ -143,6 +143,8 @@ The external sample [FabulousContacts](https://github.com/TimLariviere/FabulousC
 
 The external sample [FabulousPlanets](https://github.com/TimLariviere/FabulousPlanets) is a multi-page app featuring facts on the planets in the Solar System. It uses Urho3D and Fabulous (Note: because this is an external sample it may not be up-to-date with the latest version of this library.)
 
+The external sample [Fabulous + GraphQL Type Provider](https://github.com/fsprojects/FSharp.Data.GraphQL/tree/dev/samples/star-wars-fabulous-client) is a small app that demonstrates how to use the type provider for GraphQL [FSharp.Data.GraphQL](https://github.com/fsprojects/FSharp.Data.GraphQL).
+
 See also the curated list [Awesome Fabulous](https://github.com/jimbobbennett/Awesome-Fabulous).
 
 Further Resources
