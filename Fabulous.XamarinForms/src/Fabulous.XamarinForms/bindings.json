@@ -1,0 +1,213 @@
+{
+  "assemblies": [
+    "packages/neutral/Xamarin.Forms/lib/netstandard2.0/Xamarin.Forms.Core.dll",
+    "build_output/Fabulous.XamarinForms/Fabulous.XamarinForms.Core/Fabulous.XamarinForms.Core.dll"
+  ],
+  "outputNamespace": "Fabulous.XamarinForms",
+  "types": [
+    {
+      "name": "Xamarin.Forms.Element",
+      "properties": [
+        {
+          "source": "AutomationId"
+        },
+        {
+          "source": "ClassId"
+        },
+        {
+          "source": "StyleId"
+        }
+      ],
+      "events": [
+        {
+          "source": null,
+          "name": "Created",
+          "type": "obj",
+          "eventArgsType": "unit"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.NavigableElement",
+      "properties": [
+        {
+          "source": "Style"
+        },
+        {
+          "source": "StyleClass",
+          "inputType": "InputTypes.StyleClass",
+          "modelType": "InputTypes.StyleClass",
+          "convertModelToValue": "ViewConverters.convertStyleClassToStringList"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.VisualElement",
+      "properties": [
+        {
+          "source": "AnchorX"
+        },
+        {
+          "source": "AnchorY"
+        },
+        {
+          "source": "BackgroundColor"
+        },
+        {
+          "source": "FlowDirection"
+        },
+        {
+          "source": "HeightRequest",
+          "name": "Height"
+        },
+        {
+          "source": "InputTransparent"
+        },
+        {
+          "source": "IsEnabled"
+        },
+        {
+          "source": "IsTabStop"
+        },
+        {
+          "source": "IsVisible"
+        },
+        {
+          "source": "MinimumHeightRequest",
+          "name": "MinimumHeight"
+        },
+        {
+          "source": "MinimumWidthRequest",
+          "name": "MinimumWidth"
+        },
+        {
+          "source": "Opacity"
+        },
+        {
+          "source": "Resources",
+          "inputType": "(string * obj) list",
+          "modelType": "(string * obj) array",
+          "updateCode": "ViewUpdaters.updateResources"
+        },
+        {
+          "source": "Rotation"
+        },
+        {
+          "source": "RotationX"
+        },
+        {
+          "source": "RotationY"
+        },
+        {
+          "source": "Scale"
+        },
+        {
+          "source": "ScaleX"
+        },
+        {
+          "source": "ScaleY"
+        },
+        {
+          "source": "TabIndex"
+        },
+        {
+          "source": "TranslationX"
+        },
+        {
+          "source": "TranslationY"
+        },
+        {
+          "source": "Visual"
+        },
+        {
+          "source": "WidthRequest",
+          "name": "Width"
+        }
+      ],
+      "events": [
+        {
+          "source": "Focused"
+        },
+        {
+          "source": "Unfocused"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.View",
+      "properties": [
+        {
+          "source": "HorizontalOptions"
+        },
+        {
+          "source": "VerticalOptions"
+        },
+        {
+          "source": "Margin",
+          "inputType": "InputTypes.Thickness",
+          "modelType": "InputTypes.Thickness",
+          "convertModelToValue": "ViewConverters.convertFabulousThicknessToXamarinFormsThickness"
+        },
+        {
+          "source": "GestureRecognizers"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.ButtonContentLayout",
+      "properties": [
+        {
+          "source": "Position"
+        },
+        {
+          "source": "Spacing"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.Button",
+      "properties": [
+        {
+          "source": "Text"
+        },
+        {
+          "source": "Command"
+        },
+        {
+          "source": "BorderColor"
+        },
+        {
+          "source": "BorderWidth"
+        },
+        {
+          "source": "ContentLayout"
+        },
+        {
+          "source": "CornerRadius"
+        },
+        {
+          "source": "FontFamily"
+        },
+        {
+          "source": "FontAttributes"
+        },
+        {
+          "source": "FontSize"
+        },
+        {
+          "source": "ImageSource",
+          "name": "Image",
+          "inputType": "InputTypes.Image",
+          "modelType": "InputTypes.Image",
+          "convertModelToValue": "ViewConverters.convertFabulousImageToXamarinFormsImageSource"
+        },
+        {
+          "source": "TextColor"
+        },
+        {
+          "source": "Padding"
+        }
+      ]
+    }
+  ]
+}

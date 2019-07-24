@@ -13,9 +13,14 @@
     <Compile Include="AssemblyReader\AssemblyResolver.fs" />
     <Compile Include="AssemblyReader\Resolver.fs" />
     <Compile Include="AssemblyReader\Extraction.fs" />
-    <Compile Include="Generator\Helpers.fs" />
-    <Compile Include="Generator\Models.fs" />
-    <Compile Include="Generator\Resolvers.fs" />
+    <Compile Include="Binder\Binder.fs" />
+    <Compile Include="Generator\v1\Helpers.fs" />
+    <Compile Include="Generator\v1\Models.fs" />
+    <Compile Include="Generator\v1\Resolvers.fs" />
+    <Compile Include="Generator\v1\CodeGenerator.Models.fs" />
+    <Compile Include="Generator\v1\CodeGenerator.Preparation.fs" />
+    <Compile Include="Generator\v1\CodeGenerator.fs" />
+    <Compile Include="Generator\Utils.fs" />
     <Compile Include="Generator\CodeGenerator.Models.fs" />
     <Compile Include="Generator\CodeGenerator.Preparation.fs" />
     <Compile Include="Generator\CodeGenerator.fs" />

@@ -1,3 +1,4 @@
+// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.CodeGen.AssemblyReader
 
 open System
@@ -20,8 +21,8 @@ module Converters =
         | "System.Decimal" -> "decimal"
         | "System.String" -> "string"
         | "System.Object" -> "object"
-        | "System.Collections.Generic.IList`1[[System.Object, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]" -> "ViewElement list"
-        | "System.Collections.IList" -> "ViewElement list"
+        | "System.Collections.Generic.IList`1[[System.Object, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]" -> "obj list"
+        | "System.Collections.IList" -> "obj list"
         | _ -> typeName
         
     let getStringRepresentationOfDefaultValue (defaultValue: obj) =
@@ -47,6 +48,7 @@ module Converters =
         | :? DateTime as dateTime when dateTime = DateTime.MinValue -> "System.DateTime.MinValue"
         | :? DateTime as dateTime when dateTime = DateTime.MaxValue -> "System.DateTime.MaxValue"
         | :? DateTime as dateTime -> sprintf "System.DateTime(%i, %i, %i)" dateTime.Year dateTime.Month dateTime.Day
+        | :? string as string when string = "" -> "System.String.Empty"
         | _ ->
             let typ = defaultValue.GetType()
             match typ.IsEnum with

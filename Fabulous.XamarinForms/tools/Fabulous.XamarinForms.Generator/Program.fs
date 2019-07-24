@@ -4,11 +4,14 @@ open System.IO
 open CommandLine
 open Fabulous.CodeGen.AssemblyReader
 open Fabulous.CodeGen.Models
+open Fabulous.CodeGen.Generator
+open Newtonsoft.Json
 
 module Entry =
     
     type Options = {
-        [<Option('a', "assembly", Required = true, HelpText = "Assemblies to read")>] Assemblies: seq<string>
+        [<Option('b', "Bindings file", Required = true, HelpText = "Bindings file")>] BindingsFile: string
+        [<Option('o', "Output file", Required = true, HelpText = "Output file")>] OutputFile: string
     }
     
     let baseTypeName = "Xamarin.Forms.Element"
@@ -25,15 +28,19 @@ module Entry =
         match tryReadOptions args with
         | None -> 1 // Exit because no argument
         | Some options ->
-            let cecilAssemblies = AssemblyResolver.loadAllAssemblies options.Assemblies
-            let assemblies = Reflection.loadAllAssemblies options.Assemblies
+            let bindings =
+                File.ReadAllText options.BindingsFile
+                |> JsonConvert.DeserializeObject<Bindings>
+            
+            let cecilAssemblies = AssemblyResolver.loadAllAssemblies bindings.Assemblies
+            let assemblies = Reflection.loadAllAssemblies bindings.Assemblies
             
             let allTypes = Resolver.getAllTypesFromAssemblies cecilAssemblies
             let allTypesDerivingFromBaseType = Resolver.getAllTypesDerivingFromBaseType XFConverters.shouldIgnoreType allTypes baseTypeName
             
             let tryGetProperty = Reflection.tryGetProperty assemblies
             
-            let bindings =
+            let data =
                 allTypesDerivingFromBaseType
                 |> Array.map (fun tdef ->
                     { Name = tdef.FullName
@@ -42,9 +49,6 @@ module Entry =
                       Properties = Extraction.readPropertiesFromType XFConverters.convertTypeName XFConverters.getStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef }
                 )
 
-            let json = Newtonsoft.Json.JsonConvert.SerializeObject(bindings)
-            File.WriteAllText ("bindings.json", json)
-            
+            let json = CodeGenerator.generateCode bindings.OutputNamespace
+            File.WriteAllText(options.OutputFile, json)
             0
-            
-            

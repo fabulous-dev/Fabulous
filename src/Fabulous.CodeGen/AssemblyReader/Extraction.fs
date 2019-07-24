@@ -6,6 +6,12 @@ open Fabulous.CodeGen.Helpers
 open Mono.Cecil
 
 module Extraction =
+    type ReflectedAttachedPropertyReaderData = {
+        Name: string
+        Type: string
+        DefaultValue: obj
+    }
+
     let readEventsFromType (``type``: TypeDefinition) =
         getAllEventsForType ``type``
         |> Array.map (fun edef ->
@@ -23,7 +29,7 @@ module Extraction =
     let readAttachedPropertiesFromType
             (convertTypeName: string -> string)
             (getStringRepresentationOfDefaultValue: obj -> string)
-            (tryGetProperty: string * string -> ReflectedAttachedProperty option)
+            (tryGetProperty: string * string -> ReflectedAttachedPropertyReaderData option)
             (propertyBaseType: string)
             (``type``: TypeDefinition) =
        
@@ -35,14 +41,14 @@ module Extraction =
                 Some
                     ({ Name = data.Name
                        Type = convertTypeName data.Type
-                       DefaultValue = getStringRepresentationOfDefaultValue data.DefaultValue } : AttachedPropertyBinding)
+                       DefaultValue = getStringRepresentationOfDefaultValue data.DefaultValue } : AttachedPropertyReaderData)
         )
         |> Array.choose id
 
     let readPropertiesFromType
             (convertTypeName: string -> string)
             (getStringRepresentationOfDefaultValue: obj -> string)
-            (tryGetProperty: string * string -> ReflectedAttachedProperty option)
+            (tryGetProperty: string * string -> ReflectedAttachedPropertyReaderData option)
             (propertyBaseType: string)
             (``type``: TypeDefinition) =
 
@@ -55,6 +61,6 @@ module Extraction =
                 Some
                     ({ Name = data.Name
                        Type = propertyType
-                       DefaultValue = getStringRepresentationOfDefaultValue data.DefaultValue } : PropertyBinding)
+                       DefaultValue = getStringRepresentationOfDefaultValue data.DefaultValue } : PropertyReaderData)
         )
         |> Array.choose id

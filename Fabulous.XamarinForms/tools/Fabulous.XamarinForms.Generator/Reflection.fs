@@ -3,7 +3,7 @@ namespace Fabulous.XamarinForms.Generator
 open System
 open System.IO
 open System.Runtime.Loader
-open Fabulous.CodeGen.Models
+open Fabulous.CodeGen.AssemblyReader.Extraction
 
 module Reflection =    
     let loadAllAssemblies (paths: seq<string>) =

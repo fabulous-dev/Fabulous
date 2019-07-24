@@ -5,6 +5,7 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="InputTypes.fs" />
     <Compile Include="ViewHelpers.fs" />
     <Compile Include="Program.fs" />
     <Compile Include="CustomControls.fs" />
