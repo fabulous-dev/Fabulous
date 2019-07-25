@@ -32,7 +32,14 @@ module Models =
     type AttachedPropertyOverwriteData =
         { Position: int option
           Source: string option
-          TargetType: string }
+          TargetType: string option
+          Name: string option
+          UniqueName: string option
+          DefaultValue: string option
+          InputType: string option
+          ModelType: string option
+          ConvertInputToModel: string option
+          ConvertModelToValue: string option }
         
     type PropertyOverwriteData =
         { Position: int option
@@ -55,33 +62,23 @@ module Models =
           Type: string option
           EventArgsType: string option }
     
-    type TypeOverwriteData() =
-        member val Name: string = "" with get, set
-        member val CustomType: string option = None with get, set
-        member val Events: EventOverwriteData array = [||] with get, set
-        member val Properties: PropertyOverwriteData array = [||] with get, set
-        member val AttachedProperties: AttachedPropertyOverwriteData array = [||] with get, set
+    type TypeOverwriteData =
+        { Name: string
+          CustomType: string option
+          Events: EventOverwriteData array option
+          Properties: PropertyOverwriteData array option
+          AttachedProperties: AttachedPropertyOverwriteData array option }
     
-    type OverwriteData() =
-        member val Assemblies: string array = [||] with get, set
-        member val OutputNamespace: string = "" with get, set
-        member val Types: TypeOverwriteData array = [||] with get, set
+    type OverwriteData =
+        { Assemblies: string array
+          OutputNamespace: string
+          BaseAttachedPropertyTargetType: string
+          Types: TypeOverwriteData array }
         
     /// Binding models    
     type AttachedPropertyBinding = {
+        TargetType: string
         Name: string
-        ShortName: string
-        UniqueName: string
-        DefaultValue: string
-        InputType: string
-        ModelType: string
-        ConvertInputToModel: string
-        ConvertModelToValue: string
-    }
-    
-    type PropertyBinding = {
-        Name: string
-        ShortName: string
         UniqueName: string
         DefaultValue: string
         InputType: string
@@ -98,14 +95,28 @@ module Models =
         EventArgsType: string
     }
     
+    type PropertyBinding = {
+        Name: string
+        ShortName: string
+        UniqueName: string
+        DefaultValue: string
+        InputType: string
+        ModelType: string
+        ConvertInputToModel: string
+        ConvertModelToValue: string
+    }
+    
     type TypeBinding = {
         Name: string
         CustomType: string option
+        AttachedProperties: AttachedPropertyBinding array
+        Events: EventBinding array
         Properties: PropertyBinding array
     }
     
     type Bindings = {
         Assemblies: string array
         OutputNamespace: string
+        BaseAttachedPropertyTargetType: string
         Types: TypeBinding array
     }

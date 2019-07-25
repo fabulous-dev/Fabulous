@@ -4,6 +4,7 @@
     "build_output/Fabulous.XamarinForms/Fabulous.XamarinForms.Core/Fabulous.XamarinForms.Core.dll"
   ],
   "outputNamespace": "Fabulous.XamarinForms",
+  "BaseAttachedPropertyTargetType": "Xamarin.Forms.Element",
   "types": [
     {
       "name": "Xamarin.Forms.Element",
@@ -144,6 +145,7 @@
         },
         {
           "source": "Margin",
+          "defaultValue": "InputTypes.Thickness.Uniform 0.",
           "inputType": "InputTypes.Thickness",
           "modelType": "InputTypes.Thickness",
           "convertModelToValue": "ViewConverters.convertFabulousThicknessToXamarinFormsThickness"
@@ -195,8 +197,9 @@
           "source": "FontSize"
         },
         {
-          "source": "ImageSource",
+          "source": null,
           "name": "Image",
+          "defaultValue": "InputTypes.Image.None",
           "inputType": "InputTypes.Image",
           "modelType": "InputTypes.Image",
           "convertModelToValue": "ViewConverters.convertFabulousImageToXamarinFormsImageSource"

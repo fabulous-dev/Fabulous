@@ -3,6 +3,7 @@ namespace Fabulous.XamarinForms.Generator
 open System.IO
 open CommandLine
 open Fabulous.CodeGen.AssemblyReader
+open Fabulous.CodeGen.Binder
 open Fabulous.CodeGen.Models
 open Fabulous.CodeGen.Generator
 open Newtonsoft.Json
@@ -10,7 +11,7 @@ open Newtonsoft.Json
 module Entry =
     
     type Options = {
-        [<Option('b', "Bindings file", Required = true, HelpText = "Bindings file")>] BindingsFile: string
+        [<Option('m', "Mapping file", Required = true, HelpText = "Mapping file")>] MappingFile: string
         [<Option('o', "Output file", Required = true, HelpText = "Output file")>] OutputFile: string
     }
     
@@ -28,12 +29,15 @@ module Entry =
         match tryReadOptions args with
         | None -> 1 // Exit because no argument
         | Some options ->
-            let bindings =
-                File.ReadAllText options.BindingsFile
-                |> JsonConvert.DeserializeObject<Bindings>
+            let settings = JsonSerializerSettings()
+            settings.Formatting <- Formatting.Indented
+            settings.Converters.Add(Microsoft.FSharpLu.Json.CompactUnionJsonConverter())
             
-            let cecilAssemblies = AssemblyResolver.loadAllAssemblies bindings.Assemblies
-            let assemblies = Reflection.loadAllAssemblies bindings.Assemblies
+            let overwriteDataStr = File.ReadAllText options.MappingFile
+            let overwriteData = JsonConvert.DeserializeObject<OverwriteData>(overwriteDataStr, settings)
+            
+            let cecilAssemblies = AssemblyResolver.loadAllAssemblies overwriteData.Assemblies
+            let assemblies = Reflection.loadAllAssemblies overwriteData.Assemblies
             
             let allTypes = Resolver.getAllTypesFromAssemblies cecilAssemblies
             let allTypesDerivingFromBaseType = Resolver.getAllTypesDerivingFromBaseType XFConverters.shouldIgnoreType allTypes baseTypeName
@@ -48,7 +52,11 @@ module Entry =
                       AttachedProperties = Extraction.readAttachedPropertiesFromType XFConverters.convertTypeName XFConverters.getStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef
                       Properties = Extraction.readPropertiesFromType XFConverters.convertTypeName XFConverters.getStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef }
                 )
+                
+            let bindings = Binder.bind data overwriteData
+            
+            let json = JsonConvert.SerializeObject(bindings, settings)
 
-            let json = CodeGenerator.generateCode bindings.OutputNamespace
+            //let json = CodeGenerator.generateCode overwriteData.OutputNamespace
             File.WriteAllText(options.OutputFile, json)
             0

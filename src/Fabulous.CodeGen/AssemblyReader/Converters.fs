@@ -1,6 +1,7 @@
 // Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.CodeGen.AssemblyReader
 
+open Fabulous.CodeGen
 open System
 
 module Converters =
@@ -23,7 +24,7 @@ module Converters =
         | "System.Object" -> "object"
         | "System.Collections.Generic.IList`1[[System.Object, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]" -> "obj list"
         | "System.Collections.IList" -> "obj list"
-        | _ -> typeName
+        | _ -> typeName.Replace("+", ".")
         
     let getStringRepresentationOfDefaultValue (defaultValue: obj) =
         match defaultValue with
@@ -39,11 +40,11 @@ module Converters =
         | :? int64 as int64 -> sprintf "%iL" int64
         | :? uint64 as uint64 -> sprintf "%iUL" uint64
         | :? bigint as bigint -> sprintf "%AI" bigint
-        | :? float as float -> sprintf "%f" float
-        | :? double as double -> sprintf "%f" double
-        | :? float32 as float32 -> sprintf "%ff" float32
-        | :? single as single -> sprintf "%ff" single
-        | :? decimal as decimal -> sprintf "%fm" decimal
+        | :? float as float -> float.ToString()
+        | :? double as double -> double.ToString()
+        | :? float32 as float32 -> float32.ToString() + "f"
+        | :? single as single -> single.ToString() + "m"
+        | :? decimal as decimal -> decimal.ToString() + "m"
         | :? uint32 as uint32 -> sprintf "%iu" uint32
         | :? DateTime as dateTime when dateTime = DateTime.MinValue -> "System.DateTime.MinValue"
         | :? DateTime as dateTime when dateTime = DateTime.MaxValue -> "System.DateTime.MaxValue"
@@ -57,4 +58,4 @@ module Converters =
                 match valueName with
                 | null -> sprintf "Unchecked.defaultof<%s>" typ.FullName
                 | _ -> sprintf "%s.%s" (typ.FullName.Replace("+", ".")) valueName
-            | false -> defaultValue.ToString()
+            | false -> defaultValue.ToString().Replace("+", ".")

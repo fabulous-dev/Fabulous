@@ -41,7 +41,7 @@ module XFConverters =
             | _ -> "failwith \"Value of LayoutOptions not supported by the generator.\""
         | :? Button.ButtonContentLayout as buttonContentLayout ->
             let positionName = getStringRepresentationOfDefaultValue buttonContentLayout.Position
-            sprintf "Xamarin.Forms.Button.ButtonContentLayout(%s, %f)" positionName buttonContentLayout.Spacing
+            sprintf "Xamarin.Forms.Button.ButtonContentLayout(%s, %s)" positionName (buttonContentLayout.Spacing.ToString())
         | :? Rectangle as rectangle when rectangle = Rectangle.Zero -> "Xamarin.Forms.Rectangle.Zero"
         | :? Rectangle as rectangle -> sprintf "Xamarin.Forms.Rectangle(%0f, %0f, %0f, %0f)" rectangle.X rectangle.Y rectangle.Width rectangle.Height
         | :? Size as size when size.IsZero -> "Xamarin.Forms.Size.Zero"
