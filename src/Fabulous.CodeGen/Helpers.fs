@@ -1,7 +1,7 @@
 // Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.CodeGen
 
-open Microsoft.FSharp.Quotations
+open System.IO
 
 module Helpers =
     let removeText textToRemove (originalStr: string) =
@@ -14,6 +14,10 @@ module Helpers =
         
     let trimNonSignificantZeros (str: string) =
         str.TrimEnd('0')
+        
+    type TextWriter with
+        member this.printf fmt = fprintf this fmt
+        member this.printfn fmt = fprintfn this fmt
 
     type Logger =
         { traceInformation: string -> unit

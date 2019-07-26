@@ -21,7 +21,6 @@
     <Compile Include="Generator\v1\CodeGenerator.Models.fs" />
     <Compile Include="Generator\v1\CodeGenerator.Preparation.fs" />
     <Compile Include="Generator\v1\CodeGenerator.fs" />
-    <Compile Include="Generator\Utils.fs" />
     <Compile Include="Generator\CodeGenerator.Models.fs" />
     <Compile Include="Generator\CodeGenerator.Preparation.fs" />
     <Compile Include="Generator\CodeGenerator.fs" />
