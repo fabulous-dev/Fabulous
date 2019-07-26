@@ -39,6 +39,16 @@
           "ModelType": "string",
           "ConvertInputToModel": "",
           "ConvertModelToValue": ""
+        },
+        {
+          "Name": "StyleId",
+          "ShortName": "styleId",
+          "UniqueName": "ElementStyleId",
+          "DefaultValue": "null",
+          "InputType": "string",
+          "ModelType": "string",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": ""
         }
       ]
     },
@@ -57,6 +67,16 @@
           "ModelType": "Xamarin.Forms.Style",
           "ConvertInputToModel": "",
           "ConvertModelToValue": ""
+        },
+        {
+          "Name": "StyleClass",
+          "ShortName": "styleClass",
+          "UniqueName": "NavigableElementStyleClass",
+          "DefaultValue": "InputTypes.StyleClass.None",
+          "InputType": "InputTypes.StyleClass",
+          "ModelType": "InputTypes.StyleClass",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": "ViewConverters.convertStyleClassToStringList"
         }
       ]
     },
@@ -64,7 +84,22 @@
       "Name": "Xamarin.Forms.VisualElement",
       "CustomType": null,
       "AttachedProperties": [],
-      "Events": [],
+      "Events": [
+        {
+          "Name": "Focused",
+          "ShortName": "focused",
+          "UniqueName": "VisualElementFocused",
+          "Type": "System.EventHandler<Xamarin.Forms.FocusEventArgs>",
+          "EventArgsType": "Xamarin.Forms.FocusEventArgs"
+        },
+        {
+          "Name": "Unfocused",
+          "ShortName": "unfocused",
+          "UniqueName": "VisualElementUnfocused",
+          "Type": "System.EventHandler<Xamarin.Forms.FocusEventArgs>",
+          "EventArgsType": "Xamarin.Forms.FocusEventArgs"
+        }
+      ],
       "Properties": [
         {
           "Name": "AnchorX",
@@ -167,20 +202,20 @@
           "ConvertModelToValue": ""
         },
         {
-          "Name": "Opacity",
-          "ShortName": "opacity",
-          "UniqueName": "VisualElementOpacity",
-          "DefaultValue": "1",
-          "InputType": "float",
-          "ModelType": "float",
+          "Name": "Visual",
+          "ShortName": "visual",
+          "UniqueName": "VisualElementVisual",
+          "DefaultValue": "Xamarin.Forms.VisualMarker.MatchParentVisual",
+          "InputType": "Xamarin.Forms.IVisual",
+          "ModelType": "Xamarin.Forms.IVisual",
           "ConvertInputToModel": "",
           "ConvertModelToValue": ""
         },
         {
-          "Name": "MinimumWidth",
-          "ShortName": "minimumWidth",
-          "UniqueName": "VisualElementMinimumWidth",
-          "DefaultValue": "-1",
+          "Name": "Opacity",
+          "ShortName": "opacity",
+          "UniqueName": "VisualElementOpacity",
+          "DefaultValue": "1",
           "InputType": "float",
           "ModelType": "float",
           "ConvertInputToModel": "",
@@ -277,12 +312,12 @@
           "ConvertModelToValue": ""
         },
         {
-          "Name": "Visual",
-          "ShortName": "visual",
-          "UniqueName": "VisualElementVisual",
-          "DefaultValue": "Xamarin.Forms.VisualMarker.MatchParentVisual",
-          "InputType": "Xamarin.Forms.IVisual",
-          "ModelType": "Xamarin.Forms.IVisual",
+          "Name": "MinimumWidth",
+          "ShortName": "minimumWidth",
+          "UniqueName": "VisualElementMinimumWidth",
+          "DefaultValue": "-1",
+          "InputType": "float",
+          "ModelType": "float",
           "ConvertInputToModel": "",
           "ConvertModelToValue": ""
         },
@@ -333,6 +368,16 @@
           "ModelType": "InputTypes.Thickness",
           "ConvertInputToModel": "",
           "ConvertModelToValue": "ViewConverters.convertFabulousThicknessToXamarinFormsThickness"
+        },
+        {
+          "Name": "GestureRecognizers",
+          "ShortName": "gestureRecognizers",
+          "UniqueName": "ViewGestureRecognizers",
+          "DefaultValue": "[]",
+          "InputType": "ViewElement list",
+          "ModelType": "ViewElement array",
+          "ConvertInputToModel": "Array.ofList",
+          "ConvertModelToValue": ""
         }
       ]
     },

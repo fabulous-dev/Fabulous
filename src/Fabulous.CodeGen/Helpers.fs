@@ -1,6 +1,8 @@
 // Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.CodeGen
 
+open Microsoft.FSharp.Quotations
+
 module Helpers =
     let removeText textToRemove (originalStr: string) =
         originalStr.Replace(textToRemove, "")
@@ -12,15 +14,43 @@ module Helpers =
         
     let trimNonSignificantZeros (str: string) =
         str.TrimEnd('0')
+
+    type Logger =
+        { traceInformation: string -> unit
+          traceWarning: string -> unit
+          traceError: string -> unit }
         
     type MaybeBuilder() =
-        member this.Bind(x, f) = 
+        let mutable _logger: Logger option = None
+        let mutable _containerType: string = ""
+        let mutable _memberKind: string = ""
+        let mutable _memberName: string = ""
+        
+        let log msg =
+            match _logger with
+            | None -> ()
+            | Some logger -> logger.traceError msg
+        
+        [<CustomOperation("use_logger")>]
+        member this.UseLogger (x, logger: Logger, containerType: string, memberKind: string, memberName: string) =
+            _logger <- Some logger
+            _containerType <- containerType
+            _memberKind <- memberKind
+            _memberName <- memberName
+            x
+            
+        member this.Yield(x) =
+            Some x
+            
+        member this.For(x, f) =
+            this.Bind(("", x),f)
+        
+        member this.Bind(x, f) =
             match x with
-            | None -> None
-            | Some a -> f a
+            | (fieldName, None) -> log (sprintf "Missing value for field %s of %s %s on type %s" fieldName _memberKind _memberName _containerType); None
+            | (_, Some a) -> f a
 
         member this.Return(x) = 
             Some x
        
     let maybe = new MaybeBuilder()
-

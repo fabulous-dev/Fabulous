@@ -1,7 +1,6 @@
 // Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.CodeGen.AssemblyReader
 
-open Fabulous.CodeGen
 open System
 
 module Converters =
@@ -52,10 +51,10 @@ module Converters =
         | :? string as string when string = "" -> "System.String.Empty"
         | _ ->
             let typ = defaultValue.GetType()
-            match typ.IsEnum with
-            | true ->
+            if typ.IsEnum then
                 let valueName = Enum.GetName(typ, defaultValue)
                 match valueName with
                 | null -> sprintf "Unchecked.defaultof<%s>" typ.FullName
                 | _ -> sprintf "%s.%s" (typ.FullName.Replace("+", ".")) valueName
-            | false -> defaultValue.ToString().Replace("+", ".")
+            else
+                defaultValue.ToString().Replace("+", ".")

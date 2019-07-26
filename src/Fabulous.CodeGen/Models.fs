@@ -3,30 +3,26 @@ namespace Fabulous.CodeGen
 
 module Models =
     /// Reader models
-    type EventReaderData = {
-        Name: string
-        Type: string
-        EventArgsType: string
-    }
+    type EventReaderData =
+        { Name: string
+          Type: string
+          EventArgsType: string }
     
-    type AttachedPropertyReaderData = {
-        Name: string
-        Type: string
-        DefaultValue: string
-    }
+    type AttachedPropertyReaderData =
+        { Name: string
+          Type: string
+          DefaultValue: string }
     
-    type PropertyReaderData = {
-        Name: string
-        Type: string
-        DefaultValue: string
-    }
+    type PropertyReaderData =
+        { Name: string
+          Type: string
+          DefaultValue: string }
     
-    type TypeReaderData = {
-        Name: string
-        Events: EventReaderData array
-        AttachedProperties: AttachedPropertyReaderData array
-        Properties: PropertyReaderData array
-    }
+    type TypeReaderData =
+        { Name: string
+          Events: EventReaderData array
+          AttachedProperties: AttachedPropertyReaderData array
+          Properties: PropertyReaderData array }
     
     /// Overwrite models
     type AttachedPropertyOverwriteData =
@@ -76,47 +72,42 @@ module Models =
           Types: TypeOverwriteData array }
         
     /// Binding models    
-    type AttachedPropertyBinding = {
-        TargetType: string
-        Name: string
-        UniqueName: string
-        DefaultValue: string
-        InputType: string
-        ModelType: string
-        ConvertInputToModel: string
-        ConvertModelToValue: string
-    }
+    type AttachedPropertyBinding =
+        { TargetType: string
+          Name: string
+          UniqueName: string
+          DefaultValue: string
+          InputType: string
+          ModelType: string
+          ConvertInputToModel: string
+          ConvertModelToValue: string }
     
-    type EventBinding = {
-        Name: string
-        ShortName: string
-        UniqueName: string
-        Type: string
-        EventArgsType: string
-    }
+    type EventBinding =
+        { Name: string
+          ShortName: string
+          UniqueName: string
+          Type: string
+          EventArgsType: string }
     
-    type PropertyBinding = {
-        Name: string
-        ShortName: string
-        UniqueName: string
-        DefaultValue: string
-        InputType: string
-        ModelType: string
-        ConvertInputToModel: string
-        ConvertModelToValue: string
-    }
+    type PropertyBinding =
+        { Name: string
+          ShortName: string
+          UniqueName: string
+          DefaultValue: string
+          InputType: string
+          ModelType: string
+          ConvertInputToModel: string
+          ConvertModelToValue: string }
     
-    type TypeBinding = {
-        Name: string
-        CustomType: string option
-        AttachedProperties: AttachedPropertyBinding array
-        Events: EventBinding array
-        Properties: PropertyBinding array
-    }
+    type TypeBinding =
+        { Name: string
+          CustomType: string option
+          AttachedProperties: AttachedPropertyBinding array
+          Events: EventBinding array
+          Properties: PropertyBinding array }
     
-    type Bindings = {
-        Assemblies: string array
-        OutputNamespace: string
-        BaseAttachedPropertyTargetType: string
-        Types: TypeBinding array
-    }
+    type Bindings =
+        { Assemblies: string array
+          OutputNamespace: string
+          BaseAttachedPropertyTargetType: string
+          Types: TypeBinding array }

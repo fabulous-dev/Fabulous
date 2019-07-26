@@ -6,11 +6,10 @@ open Fabulous.CodeGen.Helpers
 open Mono.Cecil
 
 module Extraction =
-    type ReflectedAttachedPropertyReaderData = {
-        Name: string
-        Type: string
-        DefaultValue: obj
-    }
+    type ReflectedAttachedPropertyReaderData =
+        { Name: string
+          Type: string
+          DefaultValue: obj }
 
     let readEventsFromType (``type``: TypeDefinition) =
         getAllEventsForType ``type``

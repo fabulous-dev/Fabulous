@@ -16,7 +16,11 @@
           "source": "ClassId"
         },
         {
-          "source": "StyleId"
+          "source": null,
+          "name": "StyleId",
+          "defaultValue": "null",
+          "inputType": "string",
+          "modelType": "string"
         }
       ],
       "events": [
@@ -35,7 +39,9 @@
           "source": "Style"
         },
         {
-          "source": "StyleClass",
+          "source": null,
+          "name": "StyleClass",
+          "defaultValue": "InputTypes.StyleClass.None",
           "inputType": "InputTypes.StyleClass",
           "modelType": "InputTypes.StyleClass",
           "convertModelToValue": "ViewConverters.convertStyleClassToStringList"
@@ -83,12 +89,6 @@
         },
         {
           "source": "Opacity"
-        },
-        {
-          "source": "Resources",
-          "inputType": "(string * obj) list",
-          "modelType": "(string * obj) array",
-          "updateCode": "ViewUpdaters.updateResources"
         },
         {
           "source": "Rotation"
@@ -151,18 +151,12 @@
           "convertModelToValue": "ViewConverters.convertFabulousThicknessToXamarinFormsThickness"
         },
         {
-          "source": "GestureRecognizers"
-        }
-      ]
-    },
-    {
-      "name": "Xamarin.Forms.ButtonContentLayout",
-      "properties": [
-        {
-          "source": "Position"
-        },
-        {
-          "source": "Spacing"
+          "source": null,
+          "name": "GestureRecognizers",
+          "defaultValue": "[]",
+          "inputType": "ViewElement list",
+          "modelType": "ViewElement array",
+          "convertInputToModel": "Array.ofList"
         }
       ]
     },
