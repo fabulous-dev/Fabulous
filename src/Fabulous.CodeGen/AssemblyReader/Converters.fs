@@ -30,21 +30,20 @@ module Converters =
         | null -> "null"
         | :? bool as b when b = true -> "true"
         | :? bool as b when b = false -> "false"
-        | :? sbyte as sbyte -> sprintf "%iy" sbyte
-        | :? byte as byte -> sprintf "%iuy" byte
-        | :? int16 as int16 -> sprintf "%is" int16
-        | :? uint16 as uint16 -> sprintf "%ius" uint16
-        | :? int as int -> sprintf "%i" int
-        | :? uint32 as uint32 -> sprintf "%u" uint32
-        | :? int64 as int64 -> sprintf "%iL" int64
-        | :? uint64 as uint64 -> sprintf "%iUL" uint64
-        | :? bigint as bigint -> sprintf "%AI" bigint
+        | :? sbyte as sbyte -> sbyte.ToString() + "y"
+        | :? byte as byte -> byte.ToString() + "uy"
+        | :? int16 as int16 -> int16.ToString() + "s"
+        | :? uint16 as uint16 -> uint16.ToString() + "us"
+        | :? int as int -> int.ToString()
+        | :? uint32 as uint32 -> uint32.ToString() + "u"
+        | :? int64 as int64 -> int64.ToString() + "L"
+        | :? uint64 as uint64 -> uint64.ToString() + "UL"
+        | :? bigint as bigint -> bigint.ToString() + "I"
         | :? float as float -> float.ToString()
         | :? double as double -> double.ToString()
         | :? float32 as float32 -> float32.ToString() + "f"
         | :? single as single -> single.ToString() + "m"
         | :? decimal as decimal -> decimal.ToString() + "m"
-        | :? uint32 as uint32 -> sprintf "%iu" uint32
         | :? DateTime as dateTime when dateTime = DateTime.MinValue -> "System.DateTime.MinValue"
         | :? DateTime as dateTime when dateTime = DateTime.MaxValue -> "System.DateTime.MaxValue"
         | :? DateTime as dateTime -> sprintf "System.DateTime(%i, %i, %i)" dateTime.Year dateTime.Month dateTime.Day

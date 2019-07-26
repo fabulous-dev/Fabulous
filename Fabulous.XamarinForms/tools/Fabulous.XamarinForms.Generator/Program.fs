@@ -83,6 +83,9 @@ module Entry =
             let bindings = Binder.bind logger readerData overwriteData
             bindings |> writeOutputIfDebug options.Debug "bindings.json"
             
+            let optimizedBindings = Optimizer.optimizeKnownTypes bindings
+            optimizedBindings |> writeOutputIfDebug options.Debug "optimized-bindings.json"
+            
             CodeGenerator.generateCode overwriteData.OutputNamespace
             |> File.write options.OutputFile
             

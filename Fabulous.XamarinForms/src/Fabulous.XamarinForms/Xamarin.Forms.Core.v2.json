@@ -21,6 +21,20 @@
           "defaultValue": "null",
           "inputType": "string",
           "modelType": "string"
+        },
+        { 
+          "source": null,
+          "Name": "Ref",
+          "defaultValue": "null",
+          "inputType": "ViewRef",
+          "modelType": "ViewRef"
+        },
+        { 
+          "source": null,
+          "Name": "Tag",
+          "defaultValue": "null",
+          "inputType": "obj",
+          "modelType": "obj"
         }
       ],
       "events": [
@@ -154,9 +168,146 @@
           "source": null,
           "name": "GestureRecognizers",
           "defaultValue": "[]",
-          "inputType": "ViewElement list",
-          "modelType": "ViewElement array",
-          "convertInputToModel": "Array.ofList"
+          "inputType": "ViewElement list"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.GestureElement",
+      "properties": [
+        {
+          "source": null,
+          "name": "GestureRecognizers",
+          "defaultValue": "[]",
+          "inputType": "ViewElement list"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.PanGestureRecognizer",
+      "properties": [
+        {
+          "source": "TouchPoints"
+        }
+      ],
+      "events": [
+        {
+          "source": "PanUpdated"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.ClickGestureRecognizer",
+      "properties": [
+        {
+          "source": "Command"
+        },
+        {
+          "source": "NumberOfClicksRequired"
+        },
+        {
+          "source": "Buttons"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.PinchGestureRecognizer",
+      "properties": [
+        {
+          "source": "IsPinching"
+        }
+      ],
+      "events": [
+        {
+          "source": "PinchUpdated"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.SwipeGestureRecognizer",
+      "properties": [
+        {
+          "source": "Command"
+        },
+        {
+          "source": "Direction"
+        },
+        {
+          "source": "Threshold"
+        }
+      ],
+      "events": [
+        {
+          "source": "Swiped"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.ActivityIndicator",
+      "properties": [
+        {
+          "source": "Color"
+        },
+        {
+          "source": "IsRunning"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.BoxView",
+      "properties": [
+        {
+          "source": "Color"
+        },
+        {
+          "source": "CornerRadius"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.ProgressBar",
+      "properties": [
+        {
+          "source": "Progress"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.Layout",
+      "properties": [
+        {
+          "source": "IsClippedToBounds"
+        },
+        {
+          "source": "Padding"
+        }
+      ]
+    },
+    {
+      "name": "Xamarin.Forms.ScrollView",
+      "properties": [
+        {
+          "source": "Content"
+        },
+        {
+          "source": "Orientation"
+        },
+        {
+          "source": "HorizontalScrollBarVisibility"
+        },
+        {
+          "source": "VerticalScrollBarVisibility"
+        },
+        {
+          "source": "ScrollTo"
+        },
+        {
+          "source": "LayoutAreaOverride"
+        }
+      ],
+      "events": [
+        {
+          "source": "Scrolled"
         }
       ]
     },

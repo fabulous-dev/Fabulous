@@ -555,7 +555,7 @@
       {
         "Name": "Threshold",
         "Type": "uint32",
-        "DefaultValue": "100"
+        "DefaultValue": "100u"
       }
     ]
   },

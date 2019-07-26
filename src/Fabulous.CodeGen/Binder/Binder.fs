@@ -86,7 +86,7 @@ module Binder =
     /// Try to create an attached property binding from the Overwrite data only 
     let tryCreateAttachedProperty logger containerTypeFullName baseTargetTypeFullName (overwriteData: AttachedPropertyOverwriteData) =
         maybe {
-            use_logger logger containerTypeFullName "attached property" (BinderHelpers.getValueOrDefault overwriteData.Source "")
+            use_logger logger containerTypeFullName "attached property" (BinderHelpers.getValueOrDefault overwriteData.Name "")
             
             let! name = "Name", overwriteData.Name
             let! defaultValue = "DefaultValue", overwriteData.DefaultValue
@@ -107,7 +107,7 @@ module Binder =
     /// Try to create an event binding from the Overwrite data only 
     let tryCreateEvent logger containerTypeFullName (overwriteData: EventOverwriteData) =
         maybe {
-            use_logger logger containerTypeFullName "event" (BinderHelpers.getValueOrDefault overwriteData.Source "")
+            use_logger logger containerTypeFullName "event" (BinderHelpers.getValueOrDefault overwriteData.Name "")
             
             let! name = "Name", overwriteData.Name
             let! ``type`` = "Type", overwriteData.Type
@@ -124,7 +124,7 @@ module Binder =
     /// Try to create an event binding from the Overwrite data only 
     let tryCreateProperty logger containerTypeFullName (overwriteData: PropertyOverwriteData) =
         maybe {
-            use_logger logger containerTypeFullName "property" (BinderHelpers.getValueOrDefault overwriteData.Source "")
+            use_logger logger containerTypeFullName "property" (BinderHelpers.getValueOrDefault overwriteData.Name "")
             
             let! name = "Name", overwriteData.Name
             let! defaultValue = "DefaultValue", overwriteData.DefaultValue

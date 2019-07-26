@@ -12,9 +12,6 @@ module Helpers =
         | null -> None
         | _ -> Some value
         
-    let trimNonSignificantZeros (str: string) =
-        str.TrimEnd('0')
-        
     type TextWriter with
         member this.printf fmt = fprintf this fmt
         member this.printfn fmt = fprintfn this fmt
