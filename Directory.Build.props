@@ -25,4 +25,7 @@
   <PropertyGroup Condition="$(TargetFramework) == 'netstandard2.0' OR $(TargetFramework) == 'netcoreapp2.2'">
     <OtherFlags>/warnon:1182</OtherFlags>
   </PropertyGroup>
+  <PropertyGroup Condition="($(IsPackable) == '' OR $(IsPackable) == 'true') AND $(Configuration) == 'Release'">
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
 </Project>
