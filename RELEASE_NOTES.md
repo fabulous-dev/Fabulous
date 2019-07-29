@@ -1,3 +1,7 @@
+#### 0.41.1
+
+* [All] Added XML documentations inside NuGet packages (https://github.com/fsprojects/Fabulous/pull/528)
+
 #### 0.41.0
 
 * [Fabulous.XamarinForms] Added support for Xamarin.Forms 4.1 - You can now use the new CheckBox control :) (https://github.com/fsprojects/Fabulous/pull/511)
