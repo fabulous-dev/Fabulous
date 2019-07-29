@@ -385,9 +385,19 @@
           "UniqueName": "ViewMargin",
           "DefaultValue": "InputTypes.Thickness.Uniform 0.",
           "InputType": "InputTypes.Thickness",
-          "ModelType": "InputTypes.Thickness",
+          "ModelType": "Xamarin.Forms.Thickness",
           "ConvertInputToModel": "",
           "ConvertModelToValue": "ViewConverters.convertFabulousThicknessToXamarinFormsThickness"
+        },
+        {
+          "Name": "GestureRecognizers",
+          "ShortName": "gestureRecognizers",
+          "UniqueName": "ViewGestureRecognizers",
+          "DefaultValue": "[]",
+          "InputType": "ViewElement list",
+          "ModelType": "ViewElement list",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": ""
         }
       ]
     },
@@ -396,7 +406,18 @@
       "CustomType": null,
       "AttachedProperties": [],
       "Events": [],
-      "Properties": []
+      "Properties": [
+        {
+          "Name": "GestureRecognizers",
+          "ShortName": "gestureRecognizers",
+          "UniqueName": "GestureElementGestureRecognizers",
+          "DefaultValue": "[]",
+          "InputType": "ViewElement list",
+          "ModelType": "ViewElement list",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": ""
+        }
+      ]
     },
     {
       "Name": "Xamarin.Forms.PanGestureRecognizer",
@@ -640,6 +661,16 @@
       ],
       "Properties": [
         {
+          "Name": "Content",
+          "ShortName": "content",
+          "UniqueName": "ScrollViewContent",
+          "DefaultValue": "null",
+          "InputType": "ViewElement",
+          "ModelType": "ViewElement",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": ""
+        },
+        {
           "Name": "Orientation",
           "ShortName": "orientation",
           "UniqueName": "ScrollViewOrientation",
@@ -666,6 +697,16 @@
           "DefaultValue": "Xamarin.Forms.ScrollBarVisibility.Default",
           "InputType": "Xamarin.Forms.ScrollBarVisibility",
           "ModelType": "Xamarin.Forms.ScrollBarVisibility",
+          "ConvertInputToModel": "",
+          "ConvertModelToValue": ""
+        },
+        {
+          "Name": "ScrollTo",
+          "ShortName": "scrollTo",
+          "UniqueName": "ScrollViewScrollTo",
+          "DefaultValue": "null",
+          "InputType": "double * double * InputTypes.AnimationKind",
+          "ModelType": "double * double * InputTypes.AnimationKind",
           "ConvertInputToModel": "",
           "ConvertModelToValue": ""
         }

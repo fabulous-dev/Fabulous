@@ -19,22 +19,19 @@
           "source": null,
           "name": "StyleId",
           "defaultValue": "null",
-          "inputType": "string",
-          "modelType": "string"
+          "inputType": "string"
         },
         { 
           "source": null,
           "Name": "Ref",
           "defaultValue": "null",
-          "inputType": "ViewRef",
-          "modelType": "ViewRef"
+          "inputType": "ViewRef"
         },
         { 
           "source": null,
           "Name": "Tag",
           "defaultValue": "null",
-          "inputType": "obj",
-          "modelType": "obj"
+          "inputType": "obj"
         }
       ],
       "events": [
@@ -57,7 +54,6 @@
           "name": "StyleClass",
           "defaultValue": "InputTypes.StyleClass.None",
           "inputType": "InputTypes.StyleClass",
-          "modelType": "InputTypes.StyleClass",
           "convertModelToValue": "ViewConverters.convertStyleClassToStringList"
         }
       ]
@@ -161,7 +157,6 @@
           "source": "Margin",
           "defaultValue": "InputTypes.Thickness.Uniform 0.",
           "inputType": "InputTypes.Thickness",
-          "modelType": "InputTypes.Thickness",
           "convertModelToValue": "ViewConverters.convertFabulousThicknessToXamarinFormsThickness"
         },
         {
@@ -212,11 +207,6 @@
     },
     {
       "name": "Xamarin.Forms.PinchGestureRecognizer",
-      "properties": [
-        {
-          "source": "IsPinching"
-        }
-      ],
       "events": [
         {
           "source": "PinchUpdated"
@@ -287,7 +277,10 @@
       "name": "Xamarin.Forms.ScrollView",
       "properties": [
         {
-          "source": "Content"
+          "source": null,
+          "name": "Content",
+          "defaultValue": "null",
+          "inputType": "ViewElement"
         },
         {
           "source": "Orientation"
@@ -299,10 +292,10 @@
           "source": "VerticalScrollBarVisibility"
         },
         {
-          "source": "ScrollTo"
-        },
-        {
-          "source": "LayoutAreaOverride"
+          "source": null,
+          "name": "ScrollTo",
+          "defaultValue": "null",
+          "inputType": "double * double * InputTypes.AnimationKind"
         }
       ],
       "events": [
@@ -346,7 +339,6 @@
           "name": "Image",
           "defaultValue": "InputTypes.Image.None",
           "inputType": "InputTypes.Image",
-          "modelType": "InputTypes.Image",
           "convertModelToValue": "ViewConverters.convertFabulousImageToXamarinFormsImageSource"
         },
         {

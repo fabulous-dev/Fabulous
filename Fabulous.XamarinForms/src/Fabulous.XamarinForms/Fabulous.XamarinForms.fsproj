@@ -13,13 +13,13 @@
     <Compile Include="..\Fabulous.XamarinForms.Core\ViewConverters.fs" />
     <Compile Include="Xamarin.Forms.Core.fs" />
     <None Include="Xamarin.Forms.Core.json" />
+    <None Include="Xamarin.Forms.Core.v2.json" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" />
     <ProjectReference Include="..\..\..\src\Fabulous\Fabulous.fsproj" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bindings.json" />
   </ItemGroup>
   <Import Project="..\..\..\Packages.targets" />
 </Project>

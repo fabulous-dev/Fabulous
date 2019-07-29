@@ -91,7 +91,6 @@ module Binder =
             let! name = "Name", overwriteData.Name
             let! defaultValue = "DefaultValue", overwriteData.DefaultValue
             let! inputType = "InputType", overwriteData.InputType
-            let! modelType = "ModelType", overwriteData.ModelType
 
             return
                 { TargetType = BinderHelpers.getValueOrDefault overwriteData.TargetType baseTargetTypeFullName
@@ -99,7 +98,7 @@ module Binder =
                   UniqueName = BinderHelpers.getUniqueName containerTypeFullName overwriteData.UniqueName name
                   DefaultValue = defaultValue
                   InputType = inputType
-                  ModelType = modelType
+                  ModelType = BinderHelpers.getValueOrDefault overwriteData.ModelType inputType
                   ConvertInputToModel = BinderHelpers.getValueOrDefault overwriteData.ConvertInputToModel ""
                   ConvertModelToValue = BinderHelpers.getValueOrDefault overwriteData.ConvertModelToValue "" }
         }
@@ -129,7 +128,6 @@ module Binder =
             let! name = "Name", overwriteData.Name
             let! defaultValue = "DefaultValue", overwriteData.DefaultValue
             let! inputType = "InputType", overwriteData.InputType
-            let! modelType = "ModelType", overwriteData.ModelType
 
             return
                 { Name = name
@@ -137,7 +135,7 @@ module Binder =
                   UniqueName = BinderHelpers.getUniqueName containerTypeFullName overwriteData.UniqueName name
                   DefaultValue = defaultValue
                   InputType = inputType
-                  ModelType = modelType
+                  ModelType = BinderHelpers.getValueOrDefault overwriteData.ModelType inputType
                   ConvertInputToModel = BinderHelpers.getValueOrDefault overwriteData.ConvertInputToModel ""
                   ConvertModelToValue = BinderHelpers.getValueOrDefault overwriteData.ConvertModelToValue "" }
         }

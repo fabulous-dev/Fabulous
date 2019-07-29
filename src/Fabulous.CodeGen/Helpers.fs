@@ -55,3 +55,17 @@ module Helpers =
             Some x
        
     let maybe = new MaybeBuilder()
+    
+    type NullableBuilder() =
+        member this.Bind(x, f) =
+            match x with
+            | null -> None
+            | _ -> f x
+            
+        member this.Return(x) =
+            x
+            
+        member this.Zero() =
+            None
+       
+    let nullable = new NullableBuilder()
