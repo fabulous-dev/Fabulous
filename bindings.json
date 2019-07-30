@@ -17,7 +17,8 @@
           "ShortName": "created",
           "UniqueName": "ElementCreated",
           "Type": "obj",
-          "EventArgsType": "unit"
+          "EventArgsType": "unit",
+          "IsInherited": false
         }
       ],
       "Properties": [
@@ -29,7 +30,8 @@
           "InputType": "string",
           "ModelType": "string",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "ClassId",
@@ -39,7 +41,8 @@
           "InputType": "string",
           "ModelType": "string",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "StyleId",
@@ -49,7 +52,8 @@
           "InputType": "string",
           "ModelType": "string",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "Ref",
@@ -59,7 +63,8 @@
           "InputType": "ViewRef",
           "ModelType": "ViewRef",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "Tag",
@@ -69,7 +74,8 @@
           "InputType": "obj",
           "ModelType": "obj",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         }
       ]
     },
@@ -88,7 +94,8 @@
           "InputType": "Xamarin.Forms.Style",
           "ModelType": "Xamarin.Forms.Style",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "StyleClass",
@@ -98,7 +105,8 @@
           "InputType": "InputTypes.StyleClass",
           "ModelType": "InputTypes.StyleClass",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": "ViewConverters.convertStyleClassToStringList"
+          "ConvertModelToValue": "ViewConverters.convertStyleClassToStringList",
+          "IsInherited": false
         }
       ]
     },
@@ -113,14 +121,16 @@
           "ShortName": "focused",
           "UniqueName": "VisualElementFocused",
           "Type": "System.EventHandler<Xamarin.Forms.FocusEventArgs>",
-          "EventArgsType": "Xamarin.Forms.FocusEventArgs"
+          "EventArgsType": "Xamarin.Forms.FocusEventArgs",
+          "IsInherited": false
         },
         {
           "Name": "Unfocused",
           "ShortName": "unfocused",
           "UniqueName": "VisualElementUnfocused",
           "Type": "System.EventHandler<Xamarin.Forms.FocusEventArgs>",
-          "EventArgsType": "Xamarin.Forms.FocusEventArgs"
+          "EventArgsType": "Xamarin.Forms.FocusEventArgs",
+          "IsInherited": false
         }
       ],
       "Properties": [
@@ -132,7 +142,8 @@
           "InputType": "float",
           "ModelType": "float",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "TranslationY",
@@ -142,7 +153,8 @@
           "InputType": "float",
           "ModelType": "float",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "TranslationX",
@@ -152,7 +164,8 @@
           "InputType": "float",
           "ModelType": "float",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "TabIndex",
@@ -162,7 +175,8 @@
           "InputType": "int",
           "ModelType": "int",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "ScaleY",
@@ -172,7 +186,8 @@
           "InputType": "float",
           "ModelType": "float",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "ScaleX",
@@ -182,7 +197,8 @@
           "InputType": "float",
           "ModelType": "float",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "Scale",
@@ -192,7 +208,8 @@
           "InputType": "float",
           "ModelType": "float",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "RotationY",
@@ -202,7 +219,8 @@
           "InputType": "float",
           "ModelType": "float",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "RotationX",
@@ -212,7 +230,8 @@
           "InputType": "float",
           "ModelType": "float",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "Rotation",
@@ -222,7 +241,8 @@
           "InputType": "float",
           "ModelType": "float",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "Visual",
@@ -232,7 +252,8 @@
           "InputType": "Xamarin.Forms.IVisual",
           "ModelType": "Xamarin.Forms.IVisual",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "Opacity",
@@ -242,7 +263,8 @@
           "InputType": "float",
           "ModelType": "float",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "MinimumHeight",
@@ -252,7 +274,8 @@
           "InputType": "float",
           "ModelType": "float",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "IsVisible",
@@ -262,7 +285,8 @@
           "InputType": "bool",
           "ModelType": "bool",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "IsTabStop",
@@ -272,7 +296,8 @@
           "InputType": "bool",
           "ModelType": "bool",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "IsEnabled",
@@ -282,7 +307,8 @@
           "InputType": "bool",
           "ModelType": "bool",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "InputTransparent",
@@ -292,7 +318,8 @@
           "InputType": "bool",
           "ModelType": "bool",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "Height",
@@ -302,7 +329,8 @@
           "InputType": "float",
           "ModelType": "float",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "FlowDirection",
@@ -312,7 +340,8 @@
           "InputType": "Xamarin.Forms.FlowDirection",
           "ModelType": "Xamarin.Forms.FlowDirection",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "BackgroundColor",
@@ -322,7 +351,8 @@
           "InputType": "Xamarin.Forms.Color",
           "ModelType": "Xamarin.Forms.Color",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "AnchorY",
@@ -332,7 +362,8 @@
           "InputType": "float",
           "ModelType": "float",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "MinimumWidth",
@@ -342,7 +373,8 @@
           "InputType": "float",
           "ModelType": "float",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "Width",
@@ -352,7 +384,8 @@
           "InputType": "float",
           "ModelType": "float",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         }
       ]
     },
@@ -371,7 +404,8 @@
           "InputType": "Xamarin.Forms.LayoutOptions",
           "ModelType": "Xamarin.Forms.LayoutOptions",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "VerticalOptions",
@@ -381,7 +415,8 @@
           "InputType": "Xamarin.Forms.LayoutOptions",
           "ModelType": "Xamarin.Forms.LayoutOptions",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "Margin",
@@ -391,7 +426,8 @@
           "InputType": "InputTypes.Thickness",
           "ModelType": "Xamarin.Forms.Thickness",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": "ViewConverters.convertFabulousThicknessToXamarinFormsThickness"
+          "ConvertModelToValue": "ViewConverters.convertFabulousThicknessToXamarinFormsThickness",
+          "IsInherited": false
         },
         {
           "Name": "GestureRecognizers",
@@ -401,7 +437,8 @@
           "InputType": "ViewElement list",
           "ModelType": "ViewElement list",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         }
       ]
     },
@@ -420,7 +457,8 @@
           "InputType": "ViewElement list",
           "ModelType": "ViewElement list",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         }
       ]
     },
@@ -435,7 +473,8 @@
           "ShortName": "panUpdated",
           "UniqueName": "PanGestureRecognizerPanUpdated",
           "Type": "System.EventHandler<Xamarin.Forms.PanUpdatedEventArgs>",
-          "EventArgsType": "Xamarin.Forms.PanUpdatedEventArgs"
+          "EventArgsType": "Xamarin.Forms.PanUpdatedEventArgs",
+          "IsInherited": false
         }
       ],
       "Properties": [
@@ -447,7 +486,8 @@
           "InputType": "int",
           "ModelType": "int",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         }
       ]
     },
@@ -466,7 +506,8 @@
           "InputType": "unit -> unit",
           "ModelType": "unit -> unit",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "NumberOfClicksRequired",
@@ -476,7 +517,8 @@
           "InputType": "int",
           "ModelType": "int",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "Buttons",
@@ -486,7 +528,8 @@
           "InputType": "Xamarin.Forms.ButtonsMask",
           "ModelType": "Xamarin.Forms.ButtonsMask",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         }
       ]
     },
@@ -501,7 +544,8 @@
           "ShortName": "pinchUpdated",
           "UniqueName": "PinchGestureRecognizerPinchUpdated",
           "Type": "System.EventHandler<Xamarin.Forms.PinchGestureUpdatedEventArgs>",
-          "EventArgsType": "Xamarin.Forms.PinchGestureUpdatedEventArgs"
+          "EventArgsType": "Xamarin.Forms.PinchGestureUpdatedEventArgs",
+          "IsInherited": false
         }
       ],
       "Properties": []
@@ -517,7 +561,8 @@
           "ShortName": "swiped",
           "UniqueName": "SwipeGestureRecognizerSwiped",
           "Type": "System.EventHandler<Xamarin.Forms.SwipedEventArgs>",
-          "EventArgsType": "Xamarin.Forms.SwipedEventArgs"
+          "EventArgsType": "Xamarin.Forms.SwipedEventArgs",
+          "IsInherited": false
         }
       ],
       "Properties": [
@@ -529,7 +574,8 @@
           "InputType": "unit -> unit",
           "ModelType": "unit -> unit",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "Direction",
@@ -539,7 +585,8 @@
           "InputType": "Xamarin.Forms.SwipeDirection",
           "ModelType": "Xamarin.Forms.SwipeDirection",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "Threshold",
@@ -549,7 +596,8 @@
           "InputType": "uint32",
           "ModelType": "uint32",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         }
       ]
     },
@@ -568,7 +616,8 @@
           "InputType": "Xamarin.Forms.Color",
           "ModelType": "Xamarin.Forms.Color",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "IsRunning",
@@ -578,7 +627,8 @@
           "InputType": "bool",
           "ModelType": "bool",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         }
       ]
     },
@@ -597,7 +647,8 @@
           "InputType": "Xamarin.Forms.Color",
           "ModelType": "Xamarin.Forms.Color",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "CornerRadius",
@@ -607,7 +658,8 @@
           "InputType": "Xamarin.Forms.CornerRadius",
           "ModelType": "Xamarin.Forms.CornerRadius",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         }
       ]
     },
@@ -626,7 +678,8 @@
           "InputType": "float",
           "ModelType": "float",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         }
       ]
     },
@@ -645,7 +698,8 @@
           "InputType": "bool",
           "ModelType": "bool",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "Padding",
@@ -655,7 +709,8 @@
           "InputType": "Xamarin.Forms.Thickness",
           "ModelType": "Xamarin.Forms.Thickness",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         }
       ]
     },
@@ -670,7 +725,8 @@
           "ShortName": "scrolled",
           "UniqueName": "ScrollViewScrolled",
           "Type": "System.EventHandler<Xamarin.Forms.ScrolledEventArgs>",
-          "EventArgsType": "Xamarin.Forms.ScrolledEventArgs"
+          "EventArgsType": "Xamarin.Forms.ScrolledEventArgs",
+          "IsInherited": false
         }
       ],
       "Properties": [
@@ -682,7 +738,8 @@
           "InputType": "ViewElement",
           "ModelType": "ViewElement",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "Orientation",
@@ -692,7 +749,8 @@
           "InputType": "Xamarin.Forms.ScrollOrientation",
           "ModelType": "Xamarin.Forms.ScrollOrientation",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "HorizontalScrollBarVisibility",
@@ -702,7 +760,8 @@
           "InputType": "Xamarin.Forms.ScrollBarVisibility",
           "ModelType": "Xamarin.Forms.ScrollBarVisibility",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "VerticalScrollBarVisibility",
@@ -712,7 +771,8 @@
           "InputType": "Xamarin.Forms.ScrollBarVisibility",
           "ModelType": "Xamarin.Forms.ScrollBarVisibility",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "ScrollTo",
@@ -722,7 +782,8 @@
           "InputType": "double * double * InputTypes.AnimationKind",
           "ModelType": "double * double * InputTypes.AnimationKind",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         }
       ]
     },
@@ -741,7 +802,8 @@
           "InputType": "string",
           "ModelType": "string",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "Command",
@@ -751,7 +813,8 @@
           "InputType": "unit -> unit",
           "ModelType": "unit -> unit",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "BorderColor",
@@ -761,7 +824,8 @@
           "InputType": "Xamarin.Forms.Color",
           "ModelType": "Xamarin.Forms.Color",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "BorderWidth",
@@ -771,7 +835,8 @@
           "InputType": "float",
           "ModelType": "float",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "ContentLayout",
@@ -781,7 +846,8 @@
           "InputType": "Xamarin.Forms.Button.ButtonContentLayout",
           "ModelType": "Xamarin.Forms.Button.ButtonContentLayout",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "CornerRadius",
@@ -791,7 +857,8 @@
           "InputType": "int",
           "ModelType": "int",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "FontFamily",
@@ -801,7 +868,8 @@
           "InputType": "string",
           "ModelType": "string",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "FontAttributes",
@@ -811,7 +879,8 @@
           "InputType": "Xamarin.Forms.FontAttributes",
           "ModelType": "Xamarin.Forms.FontAttributes",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "FontSize",
@@ -821,7 +890,8 @@
           "InputType": "float",
           "ModelType": "float",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "Image",
@@ -831,7 +901,8 @@
           "InputType": "InputTypes.Image",
           "ModelType": "InputTypes.Image",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": "ViewConverters.convertFabulousImageToXamarinFormsImageSource"
+          "ConvertModelToValue": "ViewConverters.convertFabulousImageToXamarinFormsImageSource",
+          "IsInherited": false
         },
         {
           "Name": "TextColor",
@@ -841,7 +912,8 @@
           "InputType": "Xamarin.Forms.Color",
           "ModelType": "Xamarin.Forms.Color",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         },
         {
           "Name": "Padding",
@@ -851,7 +923,8 @@
           "InputType": "Xamarin.Forms.Thickness",
           "ModelType": "Xamarin.Forms.Thickness",
           "ConvertInputToModel": "",
-          "ConvertModelToValue": ""
+          "ConvertModelToValue": "",
+          "IsInherited": false
         }
       ]
     }
