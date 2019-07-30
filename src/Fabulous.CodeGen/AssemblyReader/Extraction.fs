@@ -32,7 +32,7 @@ module Extraction =
             (propertyBaseType: string)
             (``type``: TypeDefinition) =
        
-        getAllAttachedPropertiesForType propertyBaseType``type``
+        getAllAttachedPropertiesForType propertyBaseType ``type``
         |> Array.map (fun fdef ->
             match tryGetProperty (``type``.FullName, fdef.Name) with
             | None -> None
@@ -56,10 +56,9 @@ module Extraction =
             match tryGetProperty (``type``.FullName, fdef.Name) with
             | None -> None
             | Some data ->
-                let propertyType = convertTypeName data.Type
                 Some
                     ({ Name = data.Name
-                       Type = propertyType
+                       Type = convertTypeName data.Type
                        DefaultValue = getStringRepresentationOfDefaultValue data.DefaultValue } : PropertyReaderData)
         )
         |> Array.choose id

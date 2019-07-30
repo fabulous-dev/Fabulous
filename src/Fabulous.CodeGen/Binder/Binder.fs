@@ -19,15 +19,14 @@ module BinderHelpers =
         | x -> string (System.Char.ToLowerInvariant(x.[0])) + x.Substring(1)
         
     let makeUniqueName (typeFullName: string) memberName =
-        let typeName = typeFullName.Substring(typeFullName.LastIndexOf(".") + 1)
+        let typeName = typeFullName.Replace('.', ' ')
         typeName + memberName
         
     let getShortName value defaultName =
         getValueOrDefault value (toLowerPascalCase defaultName)
         
     let getUniqueName (typeFullName: string) value defaultName =
-        let typeName = typeFullName.Substring(typeFullName.LastIndexOf(".") + 1)
-        let defaultUniqueName = typeName + defaultName
+        let defaultUniqueName = makeUniqueName typeFullName defaultName
         getValueOrDefault value defaultUniqueName
         
     let tryBind data source getNameFunc logNotFound bindFunc =

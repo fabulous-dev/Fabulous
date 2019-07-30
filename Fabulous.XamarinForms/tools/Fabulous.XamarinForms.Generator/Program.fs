@@ -86,7 +86,7 @@ module Entry =
             let optimizedBindings = Optimizer.optimizeKnownTypes bindings
             optimizedBindings |> writeOutputIfDebug options.Debug "optimized-bindings.json"
             
-            CodeGenerator.generateCode overwriteData.OutputNamespace
+            CodeGenerator.generateCode optimizedBindings
             |> File.write options.OutputFile
             
             0
