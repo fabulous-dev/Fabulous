@@ -1,18 +1,12 @@
 namespace Fabulous.CodeGen.AssemblyReader
 
-open Fabulous.CodeGen.AssemblyReader.Resolver
-open Fabulous.CodeGen.Models
+open Fabulous.CodeGen.AssemblyReader.Models
 open Fabulous.CodeGen.Helpers
 open Mono.Cecil
 
-module Extraction =
-    type ReflectedAttachedPropertyReaderData =
-        { Name: string
-          Type: string
-          DefaultValue: obj }
-
+module Extractor =
     let readEventsFromType (``type``: TypeDefinition) =
-        getAllEventsForType ``type``
+        Resolver.getAllEventsForType ``type``
         |> Array.map (fun edef ->
             { Name = edef.Name
               Type =
@@ -32,7 +26,7 @@ module Extraction =
             (propertyBaseType: string)
             (``type``: TypeDefinition) =
        
-        getAllAttachedPropertiesForType propertyBaseType ``type``
+        Resolver.getAllAttachedPropertiesForType propertyBaseType ``type``
         |> Array.map (fun fdef ->
             match tryGetProperty (``type``.FullName, fdef.Name) with
             | None -> None
@@ -51,7 +45,7 @@ module Extraction =
             (propertyBaseType: string)
             (``type``: TypeDefinition) =
 
-        getAllPropertiesForType propertyBaseType ``type``
+        Resolver.getAllPropertiesForType propertyBaseType ``type``
         |> Array.map (fun fdef ->
             match tryGetProperty (``type``.FullName, fdef.Name) with
             | None -> None
@@ -62,3 +56,16 @@ module Extraction =
                        DefaultValue = getStringRepresentationOfDefaultValue data.DefaultValue } : PropertyReaderData)
         )
         |> Array.choose id
+
+    let readType
+            (convertTypeName: string -> string)
+            (getStringRepresentationOfDefaultValue: obj -> string)
+            (tryGetProperty: string * string -> ReflectedAttachedPropertyReaderData option)
+            (propertyBaseType: string)
+            (baseTypeName: string)
+            (tdef: TypeDefinition) =
+        { Name = tdef.FullName
+          InheritanceHierarchy = Resolver.getHierarchyForType baseTypeName tdef 
+          Events = readEventsFromType tdef
+          AttachedProperties = readAttachedPropertiesFromType convertTypeName getStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef
+          Properties = readPropertiesFromType convertTypeName getStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef }

@@ -1,8 +1,11 @@
 // Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
 namespace Fabulous.CodeGen.Generator
 
-module CodeGeneratorModels =
+module Models =    
+    // Prepared types
+    
+    // CodeGenerator types
     type GeneratorData =
         { Namespace : string
-          Attributes: string [] }
-
+          Attributes: string[]
+          Proto: string[] }

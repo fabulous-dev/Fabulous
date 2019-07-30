@@ -4,10 +4,10 @@
     "build_output/Fabulous.XamarinForms/Fabulous.XamarinForms.Core/Fabulous.XamarinForms.Core.dll"
   ],
   "outputNamespace": "Fabulous.XamarinForms",
-  "BaseAttachedPropertyTargetType": "Xamarin.Forms.Element",
+  "baseAttachedPropertyTargetType": "Xamarin.Forms.Element",
   "types": [
     {
-      "name": "Xamarin.Forms.Element",
+      "type": "Xamarin.Forms.Element",
       "properties": [
         {
           "source": "AutomationId"
@@ -44,7 +44,7 @@
       ]
     },
     {
-      "name": "Xamarin.Forms.NavigableElement",
+      "type": "Xamarin.Forms.NavigableElement",
       "properties": [
         {
           "source": "Style"
@@ -59,7 +59,7 @@
       ]
     },
     {
-      "name": "Xamarin.Forms.VisualElement",
+      "type": "Xamarin.Forms.VisualElement",
       "properties": [
         {
           "source": "AnchorX"
@@ -145,7 +145,7 @@
       ]
     },
     {
-      "name": "Xamarin.Forms.View",
+      "type": "Xamarin.Forms.View",
       "properties": [
         {
           "source": "HorizontalOptions"
@@ -168,7 +168,7 @@
       ]
     },
     {
-      "name": "Xamarin.Forms.GestureElement",
+      "type": "Xamarin.Forms.GestureElement",
       "properties": [
         {
           "source": null,
@@ -179,7 +179,7 @@
       ]
     },
     {
-      "name": "Xamarin.Forms.PanGestureRecognizer",
+      "type": "Xamarin.Forms.PanGestureRecognizer",
       "properties": [
         {
           "source": "TouchPoints"
@@ -192,7 +192,7 @@
       ]
     },
     {
-      "name": "Xamarin.Forms.ClickGestureRecognizer",
+      "type": "Xamarin.Forms.ClickGestureRecognizer",
       "properties": [
         {
           "source": "Command"
@@ -206,7 +206,7 @@
       ]
     },
     {
-      "name": "Xamarin.Forms.PinchGestureRecognizer",
+      "type": "Xamarin.Forms.PinchGestureRecognizer",
       "events": [
         {
           "source": "PinchUpdated"
@@ -214,7 +214,7 @@
       ]
     },
     {
-      "name": "Xamarin.Forms.SwipeGestureRecognizer",
+      "type": "Xamarin.Forms.SwipeGestureRecognizer",
       "properties": [
         {
           "source": "Command"
@@ -233,7 +233,7 @@
       ]
     },
     {
-      "name": "Xamarin.Forms.ActivityIndicator",
+      "type": "Xamarin.Forms.ActivityIndicator",
       "properties": [
         {
           "source": "Color"
@@ -244,7 +244,7 @@
       ]
     },
     {
-      "name": "Xamarin.Forms.BoxView",
+      "type": "Xamarin.Forms.BoxView",
       "properties": [
         {
           "source": "Color"
@@ -255,7 +255,7 @@
       ]
     },
     {
-      "name": "Xamarin.Forms.ProgressBar",
+      "type": "Xamarin.Forms.ProgressBar",
       "properties": [
         {
           "source": "Progress"
@@ -263,7 +263,7 @@
       ]
     },
     {
-      "name": "Xamarin.Forms.Layout",
+      "type": "Xamarin.Forms.Layout",
       "properties": [
         {
           "source": "IsClippedToBounds"
@@ -274,7 +274,7 @@
       ]
     },
     {
-      "name": "Xamarin.Forms.ScrollView",
+      "type": "Xamarin.Forms.ScrollView",
       "properties": [
         {
           "source": null,
@@ -305,7 +305,7 @@
       ]
     },
     {
-      "name": "Xamarin.Forms.Button",
+      "type": "Xamarin.Forms.Button",
       "properties": [
         {
           "source": "Text"

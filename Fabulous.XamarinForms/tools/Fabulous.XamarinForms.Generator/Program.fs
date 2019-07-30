@@ -51,12 +51,7 @@ module Entry =
         let tryGetProperty = Reflection.tryGetProperty assemblies
         
         allTypesDerivingFromBaseType
-        |> Array.map (fun tdef ->
-            { Name = tdef.FullName
-              Events = Extraction.readEventsFromType tdef
-              AttachedProperties = Extraction.readAttachedPropertiesFromType XFConverters.convertTypeName XFConverters.getStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef
-              Properties = Extraction.readPropertiesFromType XFConverters.convertTypeName XFConverters.getStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef }
-        )
+        |> Array.map (Extractor.readType XFConverters.convertTypeName XFConverters.getStringRepresentationOfDefaultValue tryGetProperty propertyBaseType baseTypeName)
         
     let writeOutputIfDebug debug path data =
         if debug then Json.serialize data |> File.write path
@@ -86,7 +81,10 @@ module Entry =
             let optimizedBindings = Optimizer.optimizeKnownTypes bindings
             optimizedBindings |> writeOutputIfDebug options.Debug "optimized-bindings.json"
             
-            CodeGenerator.generateCode optimizedBindings
+            let expandedBindings = Expander.expand readerData optimizedBindings
+            expandedBindings |> writeOutputIfDebug options.Debug "expanded-bindings.json"
+            
+            CodeGenerator.generateCode expandedBindings
             |> File.write options.OutputFile
             
             0

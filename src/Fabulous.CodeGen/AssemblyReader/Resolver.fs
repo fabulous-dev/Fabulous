@@ -71,3 +71,24 @@ module Resolver =
             ``type``.Events
             |> Seq.filter (fun edef -> edef.AddMethod.IsPublic && edef.RemoveMethod.IsPublic)
             |> Seq.toArray
+            
+    let rec private getHierarchyForTypeInner stopAtType (``type``: TypeDefinition) (state: string list) =
+        match ``type``.BaseType with
+        | null -> state
+        | baseType ->
+            let baseTypeDefinition = baseType.Resolve()
+            let newState = baseTypeDefinition.FullName :: state
+            
+            if baseTypeDefinition.FullName = stopAtType then
+                newState
+            else
+                getHierarchyForTypeInner stopAtType baseTypeDefinition newState
+            
+    /// Resolves all the inheritance hierarchy for a given type (Button -> View -> Element -> VisualElement)
+    let getHierarchyForType stopAtType (``type``: TypeDefinition) =
+        if ``type``.FullName = stopAtType then
+            [||]
+        else
+            getHierarchyForTypeInner stopAtType ``type`` []
+            |> List.rev
+            |> List.toArray

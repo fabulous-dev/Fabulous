@@ -2,8 +2,7 @@
 namespace Fabulous.CodeGen.Generator
 
 open Fabulous.CodeGen.Helpers
-open Fabulous.CodeGen.Generator.CodeGeneratorModels
-open Fabulous.CodeGen.Generator.CodeGeneratorPreparation
+open Fabulous.CodeGen.Generator.Models
 open System.IO
 
 module CodeGenerator =
@@ -26,12 +25,20 @@ module CodeGenerator =
         w.printfn ""
         w
 
-    let generateCode outputNamespace =
+    let generateProto (types: string []) (w: StringWriter) =
+        w.printfn "type ViewProto() ="
+        for name in types do
+            w.printfn "    static member val Proto%s : ViewElement option = None with get, set" name
+        w.printfn ""
+        w
+
+    let generateCode bindings =
         let toString (w: StringWriter) = w.ToString()
 
-        let data = prepareData outputNamespace
+        let data = Preparator.prepareData bindings
         use writer = new StringWriter()
         writer
         |> generateNamespace data.Namespace
         |> generateAttributes data.Attributes
+        |> generateProto data.Proto
         |> toString

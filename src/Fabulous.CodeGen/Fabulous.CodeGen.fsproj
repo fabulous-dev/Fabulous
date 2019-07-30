@@ -9,20 +9,23 @@
   <ItemGroup>
     <Compile Include="Helpers.fs" />
     <Compile Include="Models.fs" />
+    <Compile Include="AssemblyReader\Models.fs" />
     <Compile Include="AssemblyReader\Converters.fs" />
     <Compile Include="AssemblyReader\AssemblyResolver.fs" />
     <Compile Include="AssemblyReader\Resolver.fs" />
-    <Compile Include="AssemblyReader\Extraction.fs" />
+    <Compile Include="AssemblyReader\Extractor.fs" />
+    <Compile Include="Binder\Models.fs" />
     <Compile Include="Binder\Binder.fs" />
     <Compile Include="Binder\Optimizer.fs" />
+    <Compile Include="Binder\Expander.fs" />
     <Compile Include="Generator\v1\Helpers.fs" />
     <Compile Include="Generator\v1\Models.fs" />
     <Compile Include="Generator\v1\Resolvers.fs" />
     <Compile Include="Generator\v1\CodeGenerator.Models.fs" />
     <Compile Include="Generator\v1\CodeGenerator.Preparation.fs" />
     <Compile Include="Generator\v1\CodeGenerator.fs" />
-    <Compile Include="Generator\CodeGenerator.Models.fs" />
-    <Compile Include="Generator\CodeGenerator.Preparation.fs" />
+    <Compile Include="Generator\Models.fs" />
+    <Compile Include="Generator\Preparator.fs" />
     <Compile Include="Generator\CodeGenerator.fs" />
   </ItemGroup>
   <ItemGroup>

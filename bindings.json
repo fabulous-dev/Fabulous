@@ -7,8 +7,9 @@
   "BaseAttachedPropertyTargetType": "Xamarin.Forms.Element",
   "Types": [
     {
-      "Name": "Xamarin.Forms.Element",
+      "Type": "Xamarin.Forms.Element",
       "CustomType": null,
+      "Name": "Element",
       "AttachedProperties": [],
       "Events": [
         {
@@ -73,8 +74,9 @@
       ]
     },
     {
-      "Name": "Xamarin.Forms.NavigableElement",
+      "Type": "Xamarin.Forms.NavigableElement",
       "CustomType": null,
+      "Name": "NavigableElement",
       "AttachedProperties": [],
       "Events": [],
       "Properties": [
@@ -101,8 +103,9 @@
       ]
     },
     {
-      "Name": "Xamarin.Forms.VisualElement",
+      "Type": "Xamarin.Forms.VisualElement",
       "CustomType": null,
+      "Name": "VisualElement",
       "AttachedProperties": [],
       "Events": [
         {
@@ -354,8 +357,9 @@
       ]
     },
     {
-      "Name": "Xamarin.Forms.View",
+      "Type": "Xamarin.Forms.View",
       "CustomType": null,
+      "Name": "View",
       "AttachedProperties": [],
       "Events": [],
       "Properties": [
@@ -402,8 +406,9 @@
       ]
     },
     {
-      "Name": "Xamarin.Forms.GestureElement",
+      "Type": "Xamarin.Forms.GestureElement",
       "CustomType": null,
+      "Name": "GestureElement",
       "AttachedProperties": [],
       "Events": [],
       "Properties": [
@@ -420,8 +425,9 @@
       ]
     },
     {
-      "Name": "Xamarin.Forms.PanGestureRecognizer",
+      "Type": "Xamarin.Forms.PanGestureRecognizer",
       "CustomType": null,
+      "Name": "PanGestureRecognizer",
       "AttachedProperties": [],
       "Events": [
         {
@@ -446,8 +452,9 @@
       ]
     },
     {
-      "Name": "Xamarin.Forms.ClickGestureRecognizer",
+      "Type": "Xamarin.Forms.ClickGestureRecognizer",
       "CustomType": null,
+      "Name": "ClickGestureRecognizer",
       "AttachedProperties": [],
       "Events": [],
       "Properties": [
@@ -484,8 +491,9 @@
       ]
     },
     {
-      "Name": "Xamarin.Forms.PinchGestureRecognizer",
+      "Type": "Xamarin.Forms.PinchGestureRecognizer",
       "CustomType": null,
+      "Name": "PinchGestureRecognizer",
       "AttachedProperties": [],
       "Events": [
         {
@@ -499,8 +507,9 @@
       "Properties": []
     },
     {
-      "Name": "Xamarin.Forms.SwipeGestureRecognizer",
+      "Type": "Xamarin.Forms.SwipeGestureRecognizer",
       "CustomType": null,
+      "Name": "SwipeGestureRecognizer",
       "AttachedProperties": [],
       "Events": [
         {
@@ -545,8 +554,9 @@
       ]
     },
     {
-      "Name": "Xamarin.Forms.ActivityIndicator",
+      "Type": "Xamarin.Forms.ActivityIndicator",
       "CustomType": null,
+      "Name": "ActivityIndicator",
       "AttachedProperties": [],
       "Events": [],
       "Properties": [
@@ -573,8 +583,9 @@
       ]
     },
     {
-      "Name": "Xamarin.Forms.BoxView",
+      "Type": "Xamarin.Forms.BoxView",
       "CustomType": null,
+      "Name": "BoxView",
       "AttachedProperties": [],
       "Events": [],
       "Properties": [
@@ -601,8 +612,9 @@
       ]
     },
     {
-      "Name": "Xamarin.Forms.ProgressBar",
+      "Type": "Xamarin.Forms.ProgressBar",
       "CustomType": null,
+      "Name": "ProgressBar",
       "AttachedProperties": [],
       "Events": [],
       "Properties": [
@@ -619,8 +631,9 @@
       ]
     },
     {
-      "Name": "Xamarin.Forms.Layout",
+      "Type": "Xamarin.Forms.Layout",
       "CustomType": null,
+      "Name": "Layout",
       "AttachedProperties": [],
       "Events": [],
       "Properties": [
@@ -647,8 +660,9 @@
       ]
     },
     {
-      "Name": "Xamarin.Forms.ScrollView",
+      "Type": "Xamarin.Forms.ScrollView",
       "CustomType": null,
+      "Name": "ScrollView",
       "AttachedProperties": [],
       "Events": [
         {
@@ -713,8 +727,9 @@
       ]
     },
     {
-      "Name": "Xamarin.Forms.Button",
+      "Type": "Xamarin.Forms.Button",
       "CustomType": null,
+      "Name": "Button",
       "AttachedProperties": [],
       "Events": [],
       "Properties": [

@@ -4,7 +4,7 @@ open System
 open System.IO
 open System.Runtime.Loader
 open Fabulous.CodeGen.Helpers
-open Fabulous.CodeGen.AssemblyReader.Extraction
+open Fabulous.CodeGen.AssemblyReader.Models
 
 module Reflection =    
     let loadAllAssemblies (paths: seq<string>) =
@@ -18,8 +18,8 @@ module Reflection =
         nullable {
             let! ``type`` = assembly.GetType(typeName)
             match ``type``.ContainsGenericParameters with
-            | false -> return None
-            | true ->
+            | true -> return None // Generic types are not supported
+            | false ->
                 let! propertyInfo = ``type``.GetField(propertyName)
                 let! property = propertyInfo.GetValue(null)
                 let propertyType = property.GetType()

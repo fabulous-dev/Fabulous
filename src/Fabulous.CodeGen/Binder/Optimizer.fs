@@ -1,6 +1,6 @@
 namespace Fabulous.CodeGen.Binder
 
-open Fabulous.CodeGen.Models
+open Fabulous.CodeGen.Binder.Models
 
 module Optimizer =
     let private optimizeKnownTypesForTypeBinding (knownTypes: string array) (typeBinding: TypeBinding) =

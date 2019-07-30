@@ -1,6 +1,7 @@
 [
   {
     "Name": "Xamarin.Forms.Element",
+    "InheritanceHierarchy": [],
     "Events": [
       {
         "Name": "ChildAdded",
@@ -50,6 +51,9 @@
   },
   {
     "Name": "Xamarin.Forms.Application",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "ModalPopped",
@@ -87,6 +91,9 @@
   },
   {
     "Name": "Xamarin.Forms.AppLinkEntry",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": [
@@ -119,18 +126,29 @@
   },
   {
     "Name": "Xamarin.Forms.BaseMenuItem",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": []
   },
   {
     "Name": "Xamarin.Forms.Menu",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.BaseMenuItem",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": []
   },
   {
     "Name": "Xamarin.Forms.MenuItem",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.BaseMenuItem",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "Clicked",
@@ -185,6 +203,11 @@
   },
   {
     "Name": "Xamarin.Forms.ToolbarItem",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.MenuItem",
+      "Xamarin.Forms.BaseMenuItem",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "Activated",
@@ -197,12 +220,19 @@
   },
   {
     "Name": "Xamarin.Forms.SeparatorMenuItem",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.BaseMenuItem",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": []
   },
   {
     "Name": "Xamarin.Forms.Cell",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "Appearing",
@@ -236,6 +266,10 @@
   },
   {
     "Name": "Xamarin.Forms.EntryCell",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.Cell",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "Completed",
@@ -284,6 +318,11 @@
   },
   {
     "Name": "Fabulous.XamarinForms.CustomEntryCell",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.EntryCell",
+      "Xamarin.Forms.Cell",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "TextChanged",
@@ -296,6 +335,10 @@
   },
   {
     "Name": "Xamarin.Forms.SwitchCell",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.Cell",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "OnChanged",
@@ -324,6 +367,10 @@
   },
   {
     "Name": "Xamarin.Forms.TextCell",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.Cell",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": [
@@ -361,6 +408,11 @@
   },
   {
     "Name": "Xamarin.Forms.ImageCell",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.TextCell",
+      "Xamarin.Forms.Cell",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": [
@@ -373,30 +425,49 @@
   },
   {
     "Name": "Xamarin.Forms.ViewCell",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.Cell",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": []
   },
   {
     "Name": "Fabulous.XamarinForms.ViewElementCell",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.ViewCell",
+      "Xamarin.Forms.Cell",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": []
   },
   {
     "Name": "Xamarin.Forms.FormattedString",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": []
   },
   {
     "Name": "Xamarin.Forms.GestureElement",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": []
   },
   {
     "Name": "Xamarin.Forms.Span",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.GestureElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": [
@@ -459,12 +530,19 @@
   },
   {
     "Name": "Xamarin.Forms.GestureRecognizer",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": []
   },
   {
     "Name": "Xamarin.Forms.ClickGestureRecognizer",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.GestureRecognizer",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "Clicked",
@@ -498,6 +576,10 @@
   },
   {
     "Name": "Xamarin.Forms.PanGestureRecognizer",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.GestureRecognizer",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "PanUpdated",
@@ -516,6 +598,10 @@
   },
   {
     "Name": "Xamarin.Forms.PinchGestureRecognizer",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.GestureRecognizer",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "PinchUpdated",
@@ -528,6 +614,10 @@
   },
   {
     "Name": "Xamarin.Forms.SwipeGestureRecognizer",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.GestureRecognizer",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "Swiped",
@@ -561,6 +651,10 @@
   },
   {
     "Name": "Xamarin.Forms.TapGestureRecognizer",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.GestureRecognizer",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "Tapped",
@@ -599,12 +693,19 @@
   },
   {
     "Name": "Xamarin.Forms.ImageSource",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": []
   },
   {
     "Name": "Xamarin.Forms.FileImageSource",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.ImageSource",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": [
@@ -617,6 +718,10 @@
   },
   {
     "Name": "Xamarin.Forms.FontImageSource",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.ImageSource",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": [
@@ -644,6 +749,10 @@
   },
   {
     "Name": "Xamarin.Forms.StreamImageSource",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.ImageSource",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": [
@@ -656,6 +765,9 @@
   },
   {
     "Name": "Xamarin.Forms.NavigableElement",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": [
@@ -673,6 +785,10 @@
   },
   {
     "Name": "Xamarin.Forms.BaseShellItem",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": [
@@ -715,6 +831,11 @@
   },
   {
     "Name": "Xamarin.Forms.ShellContent",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.BaseShellItem",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": [
@@ -737,6 +858,11 @@
   },
   {
     "Name": "Xamarin.Forms.ShellGroupItem",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.BaseShellItem",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": [
@@ -749,6 +875,12 @@
   },
   {
     "Name": "Xamarin.Forms.ShellItem",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.ShellGroupItem",
+      "Xamarin.Forms.BaseShellItem",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": [
@@ -766,24 +898,51 @@
   },
   {
     "Name": "Xamarin.Forms.MenuShellItem",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.ShellItem",
+      "Xamarin.Forms.ShellGroupItem",
+      "Xamarin.Forms.BaseShellItem",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": []
   },
   {
     "Name": "Xamarin.Forms.FlyoutItem",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.ShellItem",
+      "Xamarin.Forms.ShellGroupItem",
+      "Xamarin.Forms.BaseShellItem",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": []
   },
   {
     "Name": "Xamarin.Forms.TabBar",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.ShellItem",
+      "Xamarin.Forms.ShellGroupItem",
+      "Xamarin.Forms.BaseShellItem",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": []
   },
   {
     "Name": "Xamarin.Forms.ShellSection",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.ShellGroupItem",
+      "Xamarin.Forms.BaseShellItem",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": [
@@ -801,12 +960,23 @@
   },
   {
     "Name": "Xamarin.Forms.Tab",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.ShellSection",
+      "Xamarin.Forms.ShellGroupItem",
+      "Xamarin.Forms.BaseShellItem",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": []
   },
   {
     "Name": "Xamarin.Forms.VisualElement",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "ChildrenReordered",
@@ -1011,6 +1181,11 @@
   },
   {
     "Name": "Xamarin.Forms.Page",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "LayoutChanged",
@@ -1069,6 +1244,12 @@
   },
   {
     "Name": "Xamarin.Forms.MasterDetailPage",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.Page",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "IsPresentedChanged",
@@ -1102,6 +1283,12 @@
   },
   {
     "Name": "Xamarin.Forms.MultiPage`1",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.Page",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "CurrentPageChanged",
@@ -1119,12 +1306,26 @@
   },
   {
     "Name": "Xamarin.Forms.CarouselPage",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.MultiPage`1",
+      "Xamarin.Forms.Page",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": []
   },
   {
     "Name": "Xamarin.Forms.TabbedPage",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.MultiPage`1",
+      "Xamarin.Forms.Page",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": [
@@ -1152,6 +1353,12 @@
   },
   {
     "Name": "Xamarin.Forms.NavigationPage",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.Page",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "Popped",
@@ -1256,6 +1463,12 @@
   },
   {
     "Name": "Xamarin.Forms.Shell",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.Page",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "Navigated",
@@ -1410,6 +1623,12 @@
   },
   {
     "Name": "Xamarin.Forms.TemplatedPage",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.Page",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": [
@@ -1422,6 +1641,13 @@
   },
   {
     "Name": "Xamarin.Forms.ContentPage",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.TemplatedPage",
+      "Xamarin.Forms.Page",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": [
@@ -1434,12 +1660,25 @@
   },
   {
     "Name": "Fabulous.XamarinForms.CustomContentPage",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.ContentPage",
+      "Xamarin.Forms.TemplatedPage",
+      "Xamarin.Forms.Page",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": []
   },
   {
     "Name": "Xamarin.Forms.View",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": [
@@ -1462,6 +1701,12 @@
   },
   {
     "Name": "Xamarin.Forms.ActivityIndicator",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": [
@@ -1479,6 +1724,12 @@
   },
   {
     "Name": "Xamarin.Forms.BoxView",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": [
@@ -1496,6 +1747,12 @@
   },
   {
     "Name": "Xamarin.Forms.Button",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "Clicked",
@@ -1604,6 +1861,12 @@
   },
   {
     "Name": "Xamarin.Forms.CheckBox",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "CheckedChanged",
@@ -1627,6 +1890,12 @@
   },
   {
     "Name": "Xamarin.Forms.DatePicker",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "DateSelected",
@@ -1680,6 +1949,12 @@
   },
   {
     "Name": "Xamarin.Forms.Image",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": [
@@ -1707,6 +1982,12 @@
   },
   {
     "Name": "Xamarin.Forms.ImageButton",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "Clicked",
@@ -1785,6 +2066,12 @@
   },
   {
     "Name": "Xamarin.Forms.InputView",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": [
@@ -1812,6 +2099,13 @@
   },
   {
     "Name": "Xamarin.Forms.Editor",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.InputView",
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "Completed",
@@ -1875,6 +2169,13 @@
   },
   {
     "Name": "Xamarin.Forms.Entry",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.InputView",
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "Completed",
@@ -1968,6 +2269,13 @@
   },
   {
     "Name": "Xamarin.Forms.SearchBar",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.InputView",
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "SearchButtonPressed",
@@ -2041,12 +2349,25 @@
   },
   {
     "Name": "Xamarin.Forms.ItemsView`1",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": []
   },
   {
     "Name": "Xamarin.Forms.ListView",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.ItemsView`1",
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "ItemAppearing",
@@ -2175,30 +2496,68 @@
   },
   {
     "Name": "Fabulous.XamarinForms.CustomListView",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.ListView",
+      "Xamarin.Forms.ItemsView`1",
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": []
   },
   {
     "Name": "Fabulous.XamarinForms.CustomGroupListView",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.ListView",
+      "Xamarin.Forms.ItemsView`1",
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": []
   },
   {
     "Name": "Xamarin.Forms.CarouselView",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.ItemsView",
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": []
   },
   {
     "Name": "Fabulous.XamarinForms.CustomCarouselView",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.CarouselView",
+      "Xamarin.Forms.ItemsView",
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": []
   },
   {
     "Name": "Xamarin.Forms.SelectableItemsView",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.ItemsView",
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "SelectionChanged",
@@ -2237,18 +2596,41 @@
   },
   {
     "Name": "Xamarin.Forms.CollectionView",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.SelectableItemsView",
+      "Xamarin.Forms.ItemsView",
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": []
   },
   {
     "Name": "Fabulous.XamarinForms.CustomCollectionListView",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.CollectionView",
+      "Xamarin.Forms.SelectableItemsView",
+      "Xamarin.Forms.ItemsView",
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": []
   },
   {
     "Name": "Xamarin.Forms.Label",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": [
@@ -2331,6 +2713,12 @@
   },
   {
     "Name": "Xamarin.Forms.Layout",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "LayoutChanged",
@@ -2359,6 +2747,13 @@
   },
   {
     "Name": "Xamarin.Forms.ContentPresenter",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.Layout",
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": [
@@ -2371,12 +2766,27 @@
   },
   {
     "Name": "Xamarin.Forms.Layout`1",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.Layout",
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": []
   },
   {
     "Name": "Xamarin.Forms.AbsoluteLayout",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.Layout`1",
+      "Xamarin.Forms.Layout",
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [
       {
@@ -2394,6 +2804,14 @@
   },
   {
     "Name": "Xamarin.Forms.FlexLayout",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.Layout`1",
+      "Xamarin.Forms.Layout",
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [
       {
@@ -2457,6 +2875,14 @@
   },
   {
     "Name": "Xamarin.Forms.Grid",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.Layout`1",
+      "Xamarin.Forms.Layout",
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [
       {
@@ -2505,6 +2931,14 @@
   },
   {
     "Name": "Xamarin.Forms.RelativeLayout",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.Layout`1",
+      "Xamarin.Forms.Layout",
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [
       {
@@ -2537,6 +2971,14 @@
   },
   {
     "Name": "Xamarin.Forms.StackLayout",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.Layout`1",
+      "Xamarin.Forms.Layout",
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": [
@@ -2554,6 +2996,13 @@
   },
   {
     "Name": "Xamarin.Forms.ScrollView",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.Layout",
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "ScrollToRequested",
@@ -2602,6 +3051,13 @@
   },
   {
     "Name": "Xamarin.Forms.TemplatedView",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.Layout",
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": [
@@ -2614,6 +3070,14 @@
   },
   {
     "Name": "Xamarin.Forms.ContentView",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.TemplatedView",
+      "Xamarin.Forms.Layout",
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": [
@@ -2626,6 +3090,15 @@
   },
   {
     "Name": "Xamarin.Forms.Frame",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.ContentView",
+      "Xamarin.Forms.TemplatedView",
+      "Xamarin.Forms.Layout",
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": [
@@ -2653,12 +3126,27 @@
   },
   {
     "Name": "Fabulous.XamarinForms.ContentViewElement",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.ContentView",
+      "Xamarin.Forms.TemplatedView",
+      "Xamarin.Forms.Layout",
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": []
   },
   {
     "Name": "Xamarin.Forms.OpenGLView",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "DisplayRequested",
@@ -2677,6 +3165,12 @@
   },
   {
     "Name": "Xamarin.Forms.Picker",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "SelectedIndexChanged",
@@ -2735,6 +3229,12 @@
   },
   {
     "Name": "Xamarin.Forms.ProgressBar",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": [
@@ -2752,6 +3252,12 @@
   },
   {
     "Name": "Xamarin.Forms.Slider",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "ValueChanged",
@@ -2825,6 +3331,12 @@
   },
   {
     "Name": "Xamarin.Forms.Stepper",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "ValueChanged",
@@ -2858,6 +3370,12 @@
   },
   {
     "Name": "Xamarin.Forms.Switch",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "Toggled",
@@ -2881,6 +3399,12 @@
   },
   {
     "Name": "Xamarin.Forms.TableView",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "ModelChanged",
@@ -2904,6 +3428,12 @@
   },
   {
     "Name": "Xamarin.Forms.TimePicker",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [],
     "AttachedProperties": [],
     "Properties": [
@@ -2941,6 +3471,12 @@
   },
   {
     "Name": "Xamarin.Forms.WebView",
+    "InheritanceHierarchy": [
+      "Xamarin.Forms.View",
+      "Xamarin.Forms.VisualElement",
+      "Xamarin.Forms.NavigableElement",
+      "Xamarin.Forms.Element"
+    ],
     "Events": [
       {
         "Name": "Navigated",
