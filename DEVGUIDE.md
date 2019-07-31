@@ -3,7 +3,7 @@
 Contributing is easy:
 
 1. [Fork](https://help.github.com/articles/fork-a-repo/) the repository
-2. Create a new branch for the feature/fix and give it an appropriate name `my_fabulous_fix`
+2. Create a new branch for the feature/fix and give it an appropriate name, e.g. `my_fabulous_fix`
 3. Do your best work
 4. Build/Test as per the below
 5. Create a pull request back to `Fabulous/master`
@@ -13,14 +13,13 @@ Contributing is easy:
 ## Dev Notes - Prerequisites
 
 - Visual Studio 2017 / Visual Studio for Mac 7 or newer
-- Xamarin SDK (workload Mobile Development on Visual Studio)
-- .NET Core SDK 2.1.300 or newer
+- Xamarin SDK (Visual Studio Workload: Mobile Development with .NET)
+- .NET Core SDK 2.2.100 or newer (or Visual Studio Workload: .NET Desktop Development -> .NET Core 2.2 development tools)
 
 For more information, please refer to the Xamarin.Forms requirements.
 https://docs.microsoft.com/en-us/xamarin/xamarin-forms/get-started/installation
 
-.NET Core SDK 2.1.300 or newer is required for SourceLink to work.
-https://github.com/dotnet/sourcelink#prerequisites
+.NET Core SDK 2.2.100 or newer is required for building .NET Core 2.2 projects. (e.g. Fabulous.XamarinForms generator)
 
 ## Dev Notes - Building
 
@@ -47,7 +46,9 @@ At minimum, you need to run `.\build RunGeneratorForFabulousXamarinForms` to ens
 ## Dev Notes - Running the generator
 
 The Generator is built and run as part of the default build command
-If you only want to build the tools and run the generator, use the following commands:
+If you only want to build the tools and run the generator, use the following commands.
+
+### Please run the generator if there are build errors related to "Missing Xamarin.Forms.Core.fs".
 
 On OSX:
 
