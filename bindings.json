@@ -9,10 +9,12 @@
     {
       "Type": "Xamarin.Forms.Element",
       "CustomType": null,
+      "BaseTypeName": null,
       "Name": "Element",
       "AttachedProperties": [],
       "Events": [
         {
+          "Position": 2147483647,
           "Name": "Created",
           "ShortName": "created",
           "UniqueName": "ElementCreated",
@@ -23,6 +25,7 @@
       ],
       "Properties": [
         {
+          "Position": 2147483647,
           "Name": "AutomationId",
           "ShortName": "automationId",
           "UniqueName": "ElementAutomationId",
@@ -34,6 +37,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "ClassId",
           "ShortName": "classId",
           "UniqueName": "ElementClassId",
@@ -45,6 +49,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "StyleId",
           "ShortName": "styleId",
           "UniqueName": "ElementStyleId",
@@ -56,6 +61,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "Ref",
           "ShortName": "ref",
           "UniqueName": "ElementRef",
@@ -67,6 +73,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "Tag",
           "ShortName": "tag",
           "UniqueName": "ElementTag",
@@ -82,11 +89,13 @@
     {
       "Type": "Xamarin.Forms.NavigableElement",
       "CustomType": null,
+      "BaseTypeName": null,
       "Name": "NavigableElement",
       "AttachedProperties": [],
       "Events": [],
       "Properties": [
         {
+          "Position": 2147483647,
           "Name": "Style",
           "ShortName": "style",
           "UniqueName": "NavigableElementStyle",
@@ -98,6 +107,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "StyleClass",
           "ShortName": "styleClass",
           "UniqueName": "NavigableElementStyleClass",
@@ -113,10 +123,12 @@
     {
       "Type": "Xamarin.Forms.VisualElement",
       "CustomType": null,
+      "BaseTypeName": null,
       "Name": "VisualElement",
       "AttachedProperties": [],
       "Events": [
         {
+          "Position": 2147483647,
           "Name": "Focused",
           "ShortName": "focused",
           "UniqueName": "VisualElementFocused",
@@ -125,6 +137,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "Unfocused",
           "ShortName": "unfocused",
           "UniqueName": "VisualElementUnfocused",
@@ -135,6 +148,7 @@
       ],
       "Properties": [
         {
+          "Position": 2147483647,
           "Name": "AnchorX",
           "ShortName": "anchorX",
           "UniqueName": "VisualElementAnchorX",
@@ -146,6 +160,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "TranslationY",
           "ShortName": "translationY",
           "UniqueName": "VisualElementTranslationY",
@@ -157,6 +172,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "TranslationX",
           "ShortName": "translationX",
           "UniqueName": "VisualElementTranslationX",
@@ -168,6 +184,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "TabIndex",
           "ShortName": "tabIndex",
           "UniqueName": "VisualElementTabIndex",
@@ -179,6 +196,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "ScaleY",
           "ShortName": "scaleY",
           "UniqueName": "VisualElementScaleY",
@@ -190,6 +208,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "ScaleX",
           "ShortName": "scaleX",
           "UniqueName": "VisualElementScaleX",
@@ -201,6 +220,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "Scale",
           "ShortName": "scale",
           "UniqueName": "VisualElementScale",
@@ -212,6 +232,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "RotationY",
           "ShortName": "rotationY",
           "UniqueName": "VisualElementRotationY",
@@ -223,6 +244,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "RotationX",
           "ShortName": "rotationX",
           "UniqueName": "VisualElementRotationX",
@@ -234,6 +256,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "Rotation",
           "ShortName": "rotation",
           "UniqueName": "VisualElementRotation",
@@ -245,6 +268,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "Visual",
           "ShortName": "visual",
           "UniqueName": "VisualElementVisual",
@@ -256,6 +280,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "Opacity",
           "ShortName": "opacity",
           "UniqueName": "VisualElementOpacity",
@@ -267,6 +292,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "MinimumHeight",
           "ShortName": "minimumHeight",
           "UniqueName": "VisualElementMinimumHeight",
@@ -278,6 +304,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "IsVisible",
           "ShortName": "isVisible",
           "UniqueName": "VisualElementIsVisible",
@@ -289,6 +316,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "IsTabStop",
           "ShortName": "isTabStop",
           "UniqueName": "VisualElementIsTabStop",
@@ -300,6 +328,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "IsEnabled",
           "ShortName": "isEnabled",
           "UniqueName": "VisualElementIsEnabled",
@@ -311,6 +340,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "InputTransparent",
           "ShortName": "inputTransparent",
           "UniqueName": "VisualElementInputTransparent",
@@ -322,6 +352,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "Height",
           "ShortName": "height",
           "UniqueName": "VisualElementHeight",
@@ -333,6 +364,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "FlowDirection",
           "ShortName": "flowDirection",
           "UniqueName": "VisualElementFlowDirection",
@@ -344,6 +376,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "BackgroundColor",
           "ShortName": "backgroundColor",
           "UniqueName": "VisualElementBackgroundColor",
@@ -355,6 +388,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "AnchorY",
           "ShortName": "anchorY",
           "UniqueName": "VisualElementAnchorY",
@@ -366,6 +400,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "MinimumWidth",
           "ShortName": "minimumWidth",
           "UniqueName": "VisualElementMinimumWidth",
@@ -377,6 +412,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "Width",
           "ShortName": "width",
           "UniqueName": "VisualElementWidth",
@@ -392,11 +428,13 @@
     {
       "Type": "Xamarin.Forms.View",
       "CustomType": null,
+      "BaseTypeName": null,
       "Name": "View",
       "AttachedProperties": [],
       "Events": [],
       "Properties": [
         {
+          "Position": 2147483647,
           "Name": "HorizontalOptions",
           "ShortName": "horizontalOptions",
           "UniqueName": "ViewHorizontalOptions",
@@ -408,6 +446,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "VerticalOptions",
           "ShortName": "verticalOptions",
           "UniqueName": "ViewVerticalOptions",
@@ -419,6 +458,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "Margin",
           "ShortName": "margin",
           "UniqueName": "ViewMargin",
@@ -430,6 +470,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "GestureRecognizers",
           "ShortName": "gestureRecognizers",
           "UniqueName": "ViewGestureRecognizers",
@@ -445,11 +486,13 @@
     {
       "Type": "Xamarin.Forms.GestureElement",
       "CustomType": null,
+      "BaseTypeName": null,
       "Name": "GestureElement",
       "AttachedProperties": [],
       "Events": [],
       "Properties": [
         {
+          "Position": 2147483647,
           "Name": "GestureRecognizers",
           "ShortName": "gestureRecognizers",
           "UniqueName": "GestureElementGestureRecognizers",
@@ -465,10 +508,12 @@
     {
       "Type": "Xamarin.Forms.PanGestureRecognizer",
       "CustomType": null,
+      "BaseTypeName": null,
       "Name": "PanGestureRecognizer",
       "AttachedProperties": [],
       "Events": [
         {
+          "Position": 2147483647,
           "Name": "PanUpdated",
           "ShortName": "panUpdated",
           "UniqueName": "PanGestureRecognizerPanUpdated",
@@ -479,6 +524,7 @@
       ],
       "Properties": [
         {
+          "Position": 2147483647,
           "Name": "TouchPoints",
           "ShortName": "touchPoints",
           "UniqueName": "PanGestureRecognizerTouchPoints",
@@ -494,11 +540,13 @@
     {
       "Type": "Xamarin.Forms.ClickGestureRecognizer",
       "CustomType": null,
+      "BaseTypeName": null,
       "Name": "ClickGestureRecognizer",
       "AttachedProperties": [],
       "Events": [],
       "Properties": [
         {
+          "Position": 2147483647,
           "Name": "Command",
           "ShortName": "command",
           "UniqueName": "ClickGestureRecognizerCommand",
@@ -510,6 +558,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "NumberOfClicksRequired",
           "ShortName": "numberOfClicksRequired",
           "UniqueName": "ClickGestureRecognizerNumberOfClicksRequired",
@@ -521,6 +570,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "Buttons",
           "ShortName": "buttons",
           "UniqueName": "ClickGestureRecognizerButtons",
@@ -536,10 +586,12 @@
     {
       "Type": "Xamarin.Forms.PinchGestureRecognizer",
       "CustomType": null,
+      "BaseTypeName": null,
       "Name": "PinchGestureRecognizer",
       "AttachedProperties": [],
       "Events": [
         {
+          "Position": 2147483647,
           "Name": "PinchUpdated",
           "ShortName": "pinchUpdated",
           "UniqueName": "PinchGestureRecognizerPinchUpdated",
@@ -553,10 +605,12 @@
     {
       "Type": "Xamarin.Forms.SwipeGestureRecognizer",
       "CustomType": null,
+      "BaseTypeName": null,
       "Name": "SwipeGestureRecognizer",
       "AttachedProperties": [],
       "Events": [
         {
+          "Position": 2147483647,
           "Name": "Swiped",
           "ShortName": "swiped",
           "UniqueName": "SwipeGestureRecognizerSwiped",
@@ -567,6 +621,7 @@
       ],
       "Properties": [
         {
+          "Position": 2147483647,
           "Name": "Command",
           "ShortName": "command",
           "UniqueName": "SwipeGestureRecognizerCommand",
@@ -578,6 +633,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "Direction",
           "ShortName": "direction",
           "UniqueName": "SwipeGestureRecognizerDirection",
@@ -589,6 +645,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "Threshold",
           "ShortName": "threshold",
           "UniqueName": "SwipeGestureRecognizerThreshold",
@@ -604,11 +661,13 @@
     {
       "Type": "Xamarin.Forms.ActivityIndicator",
       "CustomType": null,
+      "BaseTypeName": null,
       "Name": "ActivityIndicator",
       "AttachedProperties": [],
       "Events": [],
       "Properties": [
         {
+          "Position": 2147483647,
           "Name": "Color",
           "ShortName": "color",
           "UniqueName": "ActivityIndicatorColor",
@@ -620,6 +679,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "IsRunning",
           "ShortName": "isRunning",
           "UniqueName": "ActivityIndicatorIsRunning",
@@ -635,11 +695,13 @@
     {
       "Type": "Xamarin.Forms.BoxView",
       "CustomType": null,
+      "BaseTypeName": null,
       "Name": "BoxView",
       "AttachedProperties": [],
       "Events": [],
       "Properties": [
         {
+          "Position": 2147483647,
           "Name": "Color",
           "ShortName": "color",
           "UniqueName": "BoxViewColor",
@@ -651,6 +713,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "CornerRadius",
           "ShortName": "cornerRadius",
           "UniqueName": "BoxViewCornerRadius",
@@ -666,11 +729,13 @@
     {
       "Type": "Xamarin.Forms.ProgressBar",
       "CustomType": null,
+      "BaseTypeName": null,
       "Name": "ProgressBar",
       "AttachedProperties": [],
       "Events": [],
       "Properties": [
         {
+          "Position": 2147483647,
           "Name": "Progress",
           "ShortName": "progress",
           "UniqueName": "ProgressBarProgress",
@@ -686,11 +751,13 @@
     {
       "Type": "Xamarin.Forms.Layout",
       "CustomType": null,
+      "BaseTypeName": null,
       "Name": "Layout",
       "AttachedProperties": [],
       "Events": [],
       "Properties": [
         {
+          "Position": 2147483647,
           "Name": "IsClippedToBounds",
           "ShortName": "isClippedToBounds",
           "UniqueName": "LayoutIsClippedToBounds",
@@ -702,6 +769,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "Padding",
           "ShortName": "padding",
           "UniqueName": "LayoutPadding",
@@ -717,10 +785,12 @@
     {
       "Type": "Xamarin.Forms.ScrollView",
       "CustomType": null,
+      "BaseTypeName": null,
       "Name": "ScrollView",
       "AttachedProperties": [],
       "Events": [
         {
+          "Position": 2147483647,
           "Name": "Scrolled",
           "ShortName": "scrolled",
           "UniqueName": "ScrollViewScrolled",
@@ -731,6 +801,7 @@
       ],
       "Properties": [
         {
+          "Position": 2147483647,
           "Name": "Content",
           "ShortName": "content",
           "UniqueName": "ScrollViewContent",
@@ -742,6 +813,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "Orientation",
           "ShortName": "orientation",
           "UniqueName": "ScrollViewOrientation",
@@ -753,6 +825,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "HorizontalScrollBarVisibility",
           "ShortName": "horizontalScrollBarVisibility",
           "UniqueName": "ScrollViewHorizontalScrollBarVisibility",
@@ -764,6 +837,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "VerticalScrollBarVisibility",
           "ShortName": "verticalScrollBarVisibility",
           "UniqueName": "ScrollViewVerticalScrollBarVisibility",
@@ -775,6 +849,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "ScrollTo",
           "ShortName": "scrollTo",
           "UniqueName": "ScrollViewScrollTo",
@@ -790,11 +865,13 @@
     {
       "Type": "Xamarin.Forms.Button",
       "CustomType": null,
+      "BaseTypeName": null,
       "Name": "Button",
       "AttachedProperties": [],
       "Events": [],
       "Properties": [
         {
+          "Position": 2147483647,
           "Name": "Text",
           "ShortName": "text",
           "UniqueName": "ButtonText",
@@ -806,6 +883,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "Command",
           "ShortName": "command",
           "UniqueName": "ButtonCommand",
@@ -817,6 +895,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "BorderColor",
           "ShortName": "borderColor",
           "UniqueName": "ButtonBorderColor",
@@ -828,6 +907,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "BorderWidth",
           "ShortName": "borderWidth",
           "UniqueName": "ButtonBorderWidth",
@@ -839,6 +919,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "ContentLayout",
           "ShortName": "contentLayout",
           "UniqueName": "ButtonContentLayout",
@@ -850,6 +931,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "CornerRadius",
           "ShortName": "cornerRadius",
           "UniqueName": "ButtonCornerRadius",
@@ -861,6 +943,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "FontFamily",
           "ShortName": "fontFamily",
           "UniqueName": "ButtonFontFamily",
@@ -872,6 +955,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "FontAttributes",
           "ShortName": "fontAttributes",
           "UniqueName": "ButtonFontAttributes",
@@ -883,6 +967,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "FontSize",
           "ShortName": "fontSize",
           "UniqueName": "ButtonFontSize",
@@ -894,6 +979,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "Image",
           "ShortName": "image",
           "UniqueName": "ButtonImage",
@@ -905,6 +991,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "TextColor",
           "ShortName": "textColor",
           "UniqueName": "ButtonTextColor",
@@ -916,6 +1003,7 @@
           "IsInherited": false
         },
         {
+          "Position": 2147483647,
           "Name": "Padding",
           "ShortName": "padding",
           "UniqueName": "ButtonPadding",

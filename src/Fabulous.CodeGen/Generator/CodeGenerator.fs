@@ -32,6 +32,56 @@ module CodeGenerator =
         w.printfn ""
         w
 
+    let generateBuildFunction (data: BuildData) (w: StringWriter) =
+        let memberNewLine = "\n                              " + String.replicate data.Name.Length " " + " "
+        let members =
+            data.Members
+            |> Array.map (fun m -> sprintf ",%s?%s: %s" memberNewLine m.Name m.InputType)
+            |> Array.fold (+) ""
+
+        let baseMembers =
+            data.Members
+            |> Array.filter (fun m -> m.IsInherited)
+            |> Array.map (fun m -> sprintf ", ?%s=%s" m.Name m.Name)
+            |> Array.fold (+) ""
+
+        let immediateMembers =
+            data.Members
+            |> Array.filter (fun m -> not m.IsInherited)
+
+        w.printfn "    /// Builds the attributes for a %s in the view" data.Name
+        w.printfn "    static member inline Build%s(attribCount: int%s) = " data.Name members
+
+        if immediateMembers.Length > 0 then
+            w.printfn ""
+            for m in immediateMembers do
+                w.printfn "        let attribCount = match %s with Some _ -> attribCount + 1 | None -> attribCount" m.Name
+            w.printfn ""
+
+        match data.BaseName with 
+        | None ->
+            w.printfn "        let attribBuilder = new AttributesBuilder(attribCount)"
+        | Some nameOfBaseCreator ->
+            w.printfn "        let attribBuilder = ViewBuilders.Build%s(attribCount%s)" nameOfBaseCreator baseMembers
+
+        for m in immediateMembers do
+            w.printfn "        match %s with None -> () | Some v -> attribBuilder.Add(ViewAttributes.%sAttribKey, %s(v)) " m.Name m.UniqueName m.ConvertInputToModel 
+
+        w.printfn "        attribBuilder"
+        w.printfn ""
+        w
+
+    let generateBuilders (data: BuilderData []) (w: StringWriter) =
+        w.printfn "type ViewBuilders() ="
+        for typ in data do
+            w
+            |> generateBuildFunction typ.Build
+            |> ignore
+//            |> generateCreateFunction typ.Create
+//            |> generateUpdateFunction typ.Update
+//            |> generateConstruct typ.Construct
+        w
+
     let generateCode bindings =
         let toString (w: StringWriter) = w.ToString()
 
@@ -41,4 +91,5 @@ module CodeGenerator =
         |> generateNamespace data.Namespace
         |> generateAttributes data.Attributes
         |> generateProto data.Proto
+        |> generateBuilders data.Builders
         |> toString

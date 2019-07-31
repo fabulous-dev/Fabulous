@@ -34,6 +34,11 @@ module BinderHelpers =
         let shortTypeName = typeFullName.Substring(typeFullName.LastIndexOf(".") + 1)
         getValueOrDefault value shortTypeName
         
+    let getPosition positionOpt =
+        match positionOpt with
+        | Some position -> position
+        | None -> System.Int32.MaxValue
+        
     let tryBind data source getNameFunc logNotFound bindFunc =
         let item = data |> Array.tryFind (fun m -> (getNameFunc m) = source)
         match item with
@@ -70,7 +75,8 @@ module Binder =
     /// Create an event binding from the AssemblyReader data and Overwrite data
     let bindEvent containerTypeName (readerData: EventReaderData) (overwriteData: EventOverwriteData) =
         let name = BinderHelpers.getValueOrDefault overwriteData.Name readerData.Name
-        { Name = name
+        { Position = BinderHelpers.getPosition overwriteData.Position
+          Name = name
           ShortName = BinderHelpers.getShortName overwriteData.ShortName name
           UniqueName = BinderHelpers.getUniqueName containerTypeName overwriteData.UniqueName name
           Type = BinderHelpers.getValueOrDefault overwriteData.Type readerData.Type
@@ -80,7 +86,8 @@ module Binder =
     /// Create a property binding from the AssemblyReader data and Overwrite data
     let bindProperty containerTypeName (readerData: PropertyReaderData) (overwriteData: PropertyOverwriteData) =
         let name = BinderHelpers.getValueOrDefault overwriteData.Name readerData.Name
-        { Name = name
+        { Position = BinderHelpers.getPosition overwriteData.Position
+          Name = name
           ShortName = BinderHelpers.getShortName overwriteData.ShortName name
           UniqueName = BinderHelpers.getUniqueName containerTypeName overwriteData.UniqueName name
           DefaultValue = BinderHelpers.getValueOrDefault overwriteData.DefaultValue readerData.DefaultValue
@@ -121,7 +128,8 @@ module Binder =
             let! eventArgsType = "EventArgsType", overwriteData.EventArgsType
             
             return
-                { Name = name
+                { Position = BinderHelpers.getPosition overwriteData.Position
+                  Name = name
                   ShortName = BinderHelpers.getShortName overwriteData.ShortName name
                   UniqueName = BinderHelpers.getUniqueName containerTypeName overwriteData.UniqueName name
                   Type = ``type``
@@ -139,7 +147,8 @@ module Binder =
             let! inputType = "InputType", overwriteData.InputType
 
             return
-                { Name = name
+                { Position = BinderHelpers.getPosition overwriteData.Position
+                  Name = name
                   ShortName = BinderHelpers.getShortName overwriteData.ShortName name
                   UniqueName = BinderHelpers.getUniqueName containerTypeName overwriteData.UniqueName name
                   DefaultValue = defaultValue
@@ -185,6 +194,7 @@ module Binder =
         let typeName = BinderHelpers.getTypeName readerData.Name overwriteData.Name
         { Type = readerData.Name
           CustomType = overwriteData.CustomType
+          BaseTypeName = None
           Name = typeName
           AttachedProperties =
               BinderHelpers.bindMembers

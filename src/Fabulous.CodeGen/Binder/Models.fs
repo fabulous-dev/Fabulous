@@ -13,7 +13,8 @@ module Models =
           IsInherited: bool  }
     
     type EventBinding =
-        { Name: string
+        { Position: int
+          Name: string
           ShortName: string
           UniqueName: string
           Type: string
@@ -21,7 +22,8 @@ module Models =
           IsInherited: bool }
     
     type PropertyBinding =
-        { Name: string
+        { Position: int
+          Name: string
           ShortName: string
           UniqueName: string
           DefaultValue: string
@@ -34,6 +36,7 @@ module Models =
     type TypeBinding =
         { Type: string
           CustomType: string option
+          BaseTypeName: string option
           Name: string
           AttachedProperties: AttachedPropertyBinding array
           Events: EventBinding array

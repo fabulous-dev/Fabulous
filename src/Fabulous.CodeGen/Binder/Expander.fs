@@ -16,6 +16,8 @@ module Expander =
                   for m in members do
                       yield m ]
         |> List.toArray
+        
+    let private recomputePositions () = () // TODO
     
     let expandType (readerDataTypes: TypeReaderData[]) (types: TypeBinding[]) (``type``: TypeBinding) =
         let readerDataType = readerDataTypes |> Array.find (fun t -> t.Name = ``type``.Type)
@@ -25,6 +27,7 @@ module Expander =
         let allBaseProperties = hierarchy |> getMembers types (fun t -> t.Properties) (fun p -> { p with IsInherited = true })
         
         { ``type`` with
+            BaseTypeName = if hierarchy.Length > 0 then Some hierarchy.[0] else None
             AttachedProperties = Array.concat [ ``type``.AttachedProperties; allBaseAttachedProperties ]
             Events = Array.concat [ ``type``.Events; allBaseEvents ]
             Properties = Array.concat [ ``type``.Properties; allBaseProperties ] }
