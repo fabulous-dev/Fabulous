@@ -165,7 +165,8 @@ module Converters =
                                 if i >= n then
                                     targetColl.Insert(i, targetChild)
                                 else
-                                    targetColl.[i] <- targetChild
+                                    targetColl.RemoveAt(i)
+                                    targetColl.Insert(i,targetChild)
                                 ValueNone, targetChild
                             else
                                 let targetChild = targetColl.[i]
